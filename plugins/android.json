@@ -12,6 +12,10 @@
     },
     "com.telerik.plugins.nativepagetransitions": {
       "PACKAGE_NAME": "com.gitmew.ddcar"
+    },
+    "phonegap-plugin-barcodescanner": {
+      "ANDROID_SUPPORT_V4_VERSION": "27.+",
+      "PACKAGE_NAME": "com.gitmew.ddcar"
     }
   },
   "dependent_plugins": {}

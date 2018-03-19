@@ -12,6 +12,9 @@
     },
     "com.telerik.plugins.nativepagetransitions": {
       "PACKAGE_NAME": "com.gitmew.ddcar"
+    },
+    "phonegap-plugin-barcodescanner": {
+      "PACKAGE_NAME": "com.gitmew.ddcar"
     }
   },
   "dependent_plugins": {}

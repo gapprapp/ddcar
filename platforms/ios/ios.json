@@ -11,6 +11,10 @@
             {
               "xml": "<feature name=\"NativePageTransitions\"><param name=\"ios-package\" value=\"NativePageTransitions\" /></feature>",
               "count": 1
+            },
+            {
+              "xml": "<feature name=\"BarcodeScanner\"><param name=\"ios-package\" value=\"CDVBarcodeScanner\" /></feature>",
+              "count": 1
             }
           ]
         }
@@ -23,6 +27,9 @@
     },
     "com.telerik.plugins.nativepagetransitions": {
       "PACKAGE_NAME": "com.gitmew.ddcar"
+    },
+    "phonegap-plugin-barcodescanner": {
+      "PACKAGE_NAME": "com.gitmew.ddcar"
     }
   },
   "dependent_plugins": {},
@@ -34,10 +41,19 @@
       "clobbers": [
         "window.plugins.nativepagetransitions"
       ]
+    },
+    {
+      "id": "phonegap-plugin-barcodescanner.BarcodeScanner",
+      "file": "plugins/phonegap-plugin-barcodescanner/www/barcodescanner.js",
+      "pluginId": "phonegap-plugin-barcodescanner",
+      "clobbers": [
+        "cordova.plugins.barcodeScanner"
+      ]
     }
   ],
   "plugin_metadata": {
     "cordova-plugin-whitelist": "1.3.3",
-    "com.telerik.plugins.nativepagetransitions": "0.6.5"
+    "com.telerik.plugins.nativepagetransitions": "0.6.5",
+    "phonegap-plugin-barcodescanner": "7.1.0"
   }
 }
