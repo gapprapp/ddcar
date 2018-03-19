@@ -39,6 +39,11 @@
       $("#i-" + arg).fadeOut(100).fadeIn(100, function() {
         $("#i-" + arg).addClass('active');
       });
+
+      if(arg == "qrcode"){
+        goto = "show_readqr.html"
+        transition_page_next(goto);
+      }
     }
 
     function admin(arg) {
