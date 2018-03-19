@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>Home</title>
+  <!-- Bootstrap Import -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+  <script type="text/javascript" src="js/jquery-3.3.1.min.js"></script>
+  <script type="text/javascript" src="js/jquery-ui.min.js"></script>
+  <script type="text/javascript" src="js/jquery.easing.1.3.min.js"></script>
+  <script type="text/javascript" src="js/transition.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.6/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+  <script defer src="https://use.fontawesome.com/releases/v5.0.8/js/all.js"></script>
+  <script src="cordova.js"></script>
+
+  <link rel="stylesheet" href="css/index.css">
+
+  <!-- Font -->
+  <link href="https://fonts.googleapis.com/css?family=Prompt" rel="stylesheet">
+
+  <style>
+    #title {
+      color: #666666;
+      letter-spacing: 2px;
+    }
+  </style>
+
+  <script>
+    $(document).ready(function() {
+      url = new URL(window.location.href);
+      folder = url.searchParams.get("folder");
+
+      if(folder != null)
+        $("#h5-title").text(folder);
+      else{
+        $("#h5-title").text("เลือกหมวดหมู่");
+      }
+    });
+
+    function disactive(arg) {
+      nav_menu = ['home', 'add', 'edit', 'del'];
+      for (i = 0; i < 4; i++) {
+        if (nav_menu[i] != arg) {
+          if ($("#i-" + nav_menu[i]).hasClass('active')) $("#i-" + nav_menu[i]).removeClass('active');
+        }
+      }
+    }
+
+    function menu(arg) {
+      // Animate
+      disactive(arg);
+      $("#i-" + arg).fadeOut(100).fadeIn(100, function() {
+        $("#i-" + arg).addClass('active');
+      });
+
+      if(arg == "add"){
+
+      }
+    }
+
+    function check(){
+      alert("check");
+    }
+  </script>
+</head>
+
+<body>
+  <!-- Nav menu top -->
+  <div class="row fixed-top navs">
+    <div class="col-1 text-center" onclick="transition_page_back_flip('add_prod.html')">
+      <i id="i-back" class="fas fa-angle-left"></i>
+    </div>
+    <div class="col-10 text-center">
+      <h5 id="h5-title"></h5>
+    </div>
+    <div class="col-1">
+    </div>
+  </div><br>
+
+  <!-- End big container -->
+  <div class="container justify-content-center" style="margin-top: 20%;">
+    <div class="container">
+      <hr><div class="row" onclick="check();">
+        <div class="col-2"></div>
+        <div class="col-8 text-center">
+          <h5 id="title">Toyota</h5>
+        </div>
+        <div class="col-2">
+          <i class="fa fa-trash-alt" hidden></i>
+          <i class="fa fa-edit" ></i>
+        </div>
+      </div><hr>
+      <div class="row" onclick="check();">
+        <div class="col-2"></div>
+        <div class="col-8 text-center">
+          <h5 id="title">Honda</h5>
+        </div>
+        <div class="col-2">
+          <i class="fa fa-trash-alt"></i>
+          <i class="fa fa-edit" hidden></i>
+        </div>
+      </div><hr>
+      <div class="row" onclick="check();">
+        <div class="col-1"></div>
+        <div class="col-10 text-center">
+          <h5 id="title">Mazda</h5>
+        </div>
+        <div class="col-1"></div>
+      </div><hr>
+      <div class="row" onclick="check();">
+        <div class="col-1"></div>
+        <div class="col-10 text-center">
+          <h5 id="title">Suzuki</h5>
+        </div>
+        <div class="col-1"></div>
+      </div><hr>
+      <div class="row" onclick="check();">
+        <div class="col-2 text-right">
+          <i class="fa fa-check"></i>
+        </div>
+        <div class="col-8 text-center">
+          <h5 id="title" hidden>Suzuki</h5>
+          <input id="email" type="text" class="w3-input">
+        </div>
+        <div class="col-2">
+          <i class="fa fa-times"></i>
+        </div>
+      </div><hr>
+    </div>
+  </div>
+  <!-- End big container -->
+
+  <!-- Nav menu bottom -->
+  <div class="row fixed-bottom navs">
+    <div class="col-3 text-center" onclick="menu('home')">
+      <i id="i-home" class="fas fa-home menu"></i>
+    </div>
+    <div class="col-3 text-center" onclick="menu('add')">
+      <i id="i-add" class="fas fa-plus menu"></i>
+    </div>
+    <div class="col-3 text-center" onclick="menu('edit')">
+      <i id="i-edit" class="fas fa-edit menu"></i>
+    </div>
+    <div class="col-3 text-center" onclick="menu('del')">
+      <i id="i-del" class="fa fa-trash-alt menu"></i>
+    </div>
+  </div>
+  <!-- End Nav menu bottom -->
+</body>
+
+</html>

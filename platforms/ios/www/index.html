@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>Home</title>
+  <!-- Bootstrap Import -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+  <script type="text/javascript" src="js/jquery-3.3.1.min.js"></script>
+  <script type="text/javascript" src="js/jquery-ui.min.js"></script>
+  <script type="text/javascript" src="js/jquery.easing.1.3.min.js"></script>
+  <script type="text/javascript" src="js/transition.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.6/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+  <script defer src="https://use.fontawesome.com/releases/v5.0.8/js/all.js"></script>
+  <script src="cordova.js"></script>
+
+  <link rel="stylesheet" href="css/index.css">
+
+  <!-- Font -->
+  <link href="https://fonts.googleapis.com/css?family=Prompt" rel="stylesheet">
+
+  <script>
+    $(document).ready(function() {});
+
+    function disactive(arg) {
+      nav_menu = ['home', 'bell', 'qrcode', 'bars'];
+      for (i = 0; i < 4; i++) {
+        if (nav_menu[i] != arg) {
+          if ($("#i-" + nav_menu[i]).hasClass('active')) $("#i-" + nav_menu[i]).removeClass('active');
+        }
+      }
+    }
+
+    function menu(arg) {
+      // Animate
+      disactive(arg);
+      $("#i-" + arg).fadeOut(100).fadeIn(100, function() {
+        $("#i-" + arg).addClass('active');
+      });
+    }
+
+    function admin(arg) {
+      var goto;
+      if (arg == "member") goto = "mng_member.html";
+      else goto = "add_" + arg + ".html";
+
+      transition_page_next(goto);
+    }
+
+    //$("div.inbox").collapse({toggle: false});
+    function func(arg) {
+      if (arg == "admin") {
+        $("#admin-collapse").slideToggle('collapse');
+        if ($("#main-collapse").is(":visible")) {
+          $("#main-collapse").slideToggle('collapse');
+        }
+        if ($("#log-collapse").is(":visible")) {
+          $("#log-collapse").slideToggle('collapse');
+        }
+      } else if (arg == "main") {
+        $("#main-collapse").slideToggle('collapse');
+        if ($("#admin-collapse").is(":visible")) {
+          $("#admin-collapse").slideToggle('collapse');
+        }
+        if ($("#log-collapse").is(":visible")) {
+          $("#log-collapse").slideToggle('collapse');
+        }
+      } else if (arg == "log") {
+        $("#log-collapse").slideToggle('collapse');
+        if ($("#main-collapse").is(":visible")) {
+          $("#main-collapse").slideToggle('collapse');
+        }
+        if ($("#admin-collapse").is(":visible")) {
+          $("#admin-collapse").slideToggle('collapse');
+        }
+      }
+    }
+  </script>
+</head>
+
+<body>
+  <!-- Nav menu top -->
+  <div class="row fixed-top navs">
+    <div class="col-1 text-center" onclick="">
+      <i class="fas fa-angle-left" hidden></i>
+    </div>
+    <div class="col-10 text-center">
+      <h5 id="h5-title">หน้าแรก</h5>
+    </div>
+    <div class="col-1"></div>
+  </div><br>
+
+  <!-- End big container -->
+  <div class="container justify-content-center" style="margin-top: 30%; margin-bottom: 30%;">
+    <!-- Admin -->
+    <div class="row" style="margin-bottom: 15%;">
+      <div class="col-12 text-center">
+        <button id="func-admin" class="mbtn" href="#admin-collapse" onclick="func('admin');">แอดมิน</button>
+      </div>
+    </div>
+    <!-- Admin Collapse -->
+    <div id="admin-collapse" class="container collapse">
+      <div class="row" style="margin-bottom: 15%;">
+        <div class="col-12 text-center">
+          <button id="mng-member" class="sub" onclick="admin('member');">จัดการสมาชิก</button>
+        </div>
+      </div>
+      <div class="row" style="margin-bottom: 15%;">
+        <div class="col-12 text-center">
+          <button id="add-prod" class="sub" onclick="admin('prod');">เพิ่มสินค้า</button>
+        </div>
+      </div>
+      <div class="row" style="margin-bottom: 15%;">
+        <div class="col-12 text-center">
+          <button id="add-cus" class="sub" onclick="admin('cus');">เพิ่มลูกค้า</button>
+        </div>
+      </div>
+      <div class="row" style="margin-bottom: 15%;">
+        <div class="col-12 text-center">
+          <button id="add-ware" class="sub" onclick="admin('ware');">เพิ่มหน้าร้าน / โกดัง</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Main -->
+    <div class="row" style="margin-bottom: 15%;">
+      <div class="col-12 text-center">
+        <button id="func-main" class="mbtn" href="#main-collapse" onclick="func('main');">ฟังก์ชั่นหลัก</button>
+      </div>
+    </div>
+    <!-- Main Collapse -->
+    <div id="main-collapse" class="container collapse">
+      <div class="row" style="margin-bottom: 15%;">
+        <div class="col-12 text-center">
+          <button id="" class="sub" onclick="sub();">ขายสินค้า</button>
+        </div>
+      </div>
+      <div class="row" style="margin-bottom: 15%;">
+        <div class="col-12 text-center">
+          <button id="" class="sub" onclick="sub();">เช็คสต๊อก</button>
+        </div>
+      </div>
+      <div class="row" style="margin-bottom: 15%;">
+        <div class="col-12 text-center">
+          <button id="" class="sub" onclick="sub();">สินค้าเข้าโกดัง</button>
+        </div>
+      </div>
+      <div class="row" style="margin-bottom: 15%;">
+        <div class="col-12 text-center">
+          <button id="" class="sub" onclick="sub();">สินค้าออกโกดัง</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Log -->
+    <div class="row" style="margin-bottom: 15%;">
+      <div class="col-12 text-center">
+        <button id="func-log" class="mbtn" href="#log-collapse" onclick="func('log');">ดูย้อนหลัง</button>
+      </div>
+    </div>
+    <!-- Log Collapse -->
+    <div id="log-collapse" class="container collapse" style="margin-bottom: 30%;">
+      <div class="row" style="margin-bottom: 15%;">
+        <div class="col-12 text-center">
+          <button id="log-1" class="sub" onclick="sub(log-1);">foo bar</button>
+        </div>
+      </div>
+      <div class="row" style="margin-bottom: 15%;">
+        <div class="col-12 text-center">
+          <button id="log-2" class="sub" onclick="sub(log-2);">foo bar</button>
+        </div>
+      </div>
+      <div class="row" style="margin-bottom: 15%;">
+        <div class="col-12 text-center">
+          <button id="log-3" class="sub" onclick="sub(log-3);">foo bar</button>
+        </div>
+      </div>
+      <div class="row" style="margin-bottom: 15%;">
+        <div class="col-12 text-center">
+          <button id="log-4" class="sub" onclick="sub(log-4);">foo bar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- End big container -->
+
+  <!-- Nav menu bottom -->
+  <div class="row fixed-bottom navs">
+    <div class="col-3 text-center" onclick="menu('home')">
+      <i id="i-home" class="fas fa-home menu active"></i>
+    </div>
+    <div class="col-3 text-center" onclick="menu('bell')">
+      <i id="i-bell" class="fas fa-bell menu"></i>
+    </div>
+    <div class="col-3 text-center" onclick="menu('qrcode')">
+      <i id="i-qrcode" class="fas fa-qrcode menu"></i>
+    </div>
+    <div class="col-3 text-center" onclick="menu('bars')">
+      <i id="i-bars" class="fa fa-bars menu"></i>
+    </div>
+  </div>
+  <!-- End Nav menu bottom -->
+</body>
+
+</html>
