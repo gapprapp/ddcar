@@ -22,11 +22,6 @@
   <link href="https://fonts.googleapis.com/css?family=Prompt" rel="stylesheet">
 
   <script>
-    $(document).ready(function() {
-      alert("Mew is comming");
-      alert("Mew is comming");
-      alert("Mew is comming");
-    });
     $(document).ready(function() {});
 
     function disactive(arg) {
@@ -48,6 +43,10 @@
       if(arg == "qrcode"){
         goto = "show_readqr.html"
         transition_page_next(goto);
+      }
+
+      if(arg == "home"){
+        return 0;
       }
     }
 
