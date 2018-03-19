@@ -85,6 +85,12 @@ p{
 	font-sie: 85%;
 }
 
+label{
+	color: #666666;
+	letter-spacing: 2px;
+	font-size: 120%;
+}
+
 .w3-input{
 	display:block;
 	border:none;

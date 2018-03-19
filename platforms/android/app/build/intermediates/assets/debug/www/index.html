@@ -39,6 +39,22 @@
       $("#i-" + arg).fadeOut(100).fadeIn(100, function() {
         $("#i-" + arg).addClass('active');
       });
+
+      if(arg == "qrcode"){
+        //goto = "show_readqr.html"
+        //transition_page_next(goto);
+      }
+
+      if(arg == "home"){
+        return 0;
+      }
+      else if(arg == "bell"){
+        
+      }else if(arg == "bars"){
+        //goto = "setting.html"
+        //transition_page_next(goto);
+      }
+
     }
 
     function admin(arg) {
@@ -47,6 +63,9 @@
       else goto = "add_" + arg + ".html";
 
       transition_page_next(goto);
+
+      //Admin git do something.. .. ..
+      // Admin fixed by mew .. .. ..
     }
 
     //$("div.inbox").collapse({toggle: false});
