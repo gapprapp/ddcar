@@ -49,7 +49,7 @@
         return 0;
       }
       else if(arg == "bell"){
-        
+
       }else if(arg == "bars"){
         //goto = "setting.html"
         //transition_page_next(goto);
@@ -60,6 +60,7 @@
     function admin(arg) {
       var goto;
       if (arg == "member") goto = "mng_member.html";
+      else if (arg == "cus") goto = "mng_cus.html";
       else goto = "add_" + arg + ".html";
 
       transition_page_next(goto);
@@ -123,17 +124,17 @@
     <div id="admin-collapse" class="container collapse">
       <div class="row" style="margin-bottom: 15%;">
         <div class="col-12 text-center">
-          <button id="mng-member" class="sub" onclick="admin('member');">จัดการสมาชิก</button>
+          <button id="mng-member" class="sub" onclick="admin('member');">ผู้ใช้</button>
+        </div>
+      </div>
+      <div class="row" style="margin-bottom: 15%;">
+        <div class="col-12 text-center">
+          <button id="add-cus" class="sub" onclick="admin('cus');">ลูกค้า</button>
         </div>
       </div>
       <div class="row" style="margin-bottom: 15%;">
         <div class="col-12 text-center">
           <button id="add-prod" class="sub" onclick="admin('prod');">เพิ่มสินค้า</button>
-        </div>
-      </div>
-      <div class="row" style="margin-bottom: 15%;">
-        <div class="col-12 text-center">
-          <button id="add-cus" class="sub" onclick="admin('cus');">เพิ่มลูกค้า</button>
         </div>
       </div>
       <div class="row" style="margin-bottom: 15%;">

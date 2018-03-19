@@ -26,13 +26,19 @@
       color: #666666;
       letter-spacing: 2px;
     }
-    .no-pd{
-      padding-right: 0px;
-    }
   </style>
 
   <script>
-    $(document).ready(function() {});
+    $(document).ready(function() {
+      url = new URL(window.location.href);
+      folder = url.searchParams.get("folder");
+
+      if(folder != null)
+        $("#h5-title").text(folder);
+      else{
+        $("#h5-title").text("เลือกหมวดหมู่");
+      }
+    });
 
     function disactive(arg) {
       nav_menu = ['home', 'add', 'edit', 'del'];
@@ -51,9 +57,12 @@
       });
 
       if(arg == "add"){
-        goto = "register.html";
-        transition_page_back(goto);
+
       }
+    }
+
+    function check(){
+      alert("check");
     }
   </script>
 </head>
@@ -61,11 +70,11 @@
 <body>
   <!-- Nav menu top -->
   <div class="row fixed-top navs">
-    <div class="col-1 text-center" onclick="transition_page_back('mng_member.html')">
+    <div class="col-1 text-center" onclick="transition_page_back_flip('add_prod.html')">
       <i id="i-back" class="fas fa-angle-left"></i>
     </div>
     <div class="col-10 text-center">
-      <h5 id="h5-title">แก้ไข / ลบ</h5>
+      <h5 id="h5-title"></h5>
     </div>
     <div class="col-1">
     </div>
@@ -74,30 +83,52 @@
   <!-- End big container -->
   <div class="container justify-content-center" style="margin-top: 20%;">
     <div class="container">
-      <div class="row">
-        <div class="col-1"></div>
-        <div class="col-7 text-center no-pd">
-          <h5 id="title">อีเมล</h5>
+      <hr><div class="row" onclick="check();">
+        <div class="col-2"></div>
+        <div class="col-8 text-center">
+          <h5 id="title">Toyota</h5>
         </div>
-        <div class="col-3 text-center no-pd">
-          <h5 id="title">บทบาท</h5>
-        </div>
-        <div class="col-1"></div>
-      </div>
-      <hr>
-
-      <div class="row" style="margin-bottom: 5%;">
-        <div class="col-1 text-left">
+        <div class="col-2">
           <i class="fa fa-trash-alt" hidden></i>
+          <i class="fa fa-edit" ></i>
+        </div>
+      </div><hr>
+      <div class="row" onclick="check();">
+        <div class="col-2"></div>
+        <div class="col-8 text-center">
+          <h5 id="title">Honda</h5>
+        </div>
+        <div class="col-2">
+          <i class="fa fa-trash-alt"></i>
           <i class="fa fa-edit" hidden></i>
         </div>
-        <div class="col-7 text-center no-pd">
-          <p>puckcheetu56@gmail.com</p>
+      </div><hr>
+      <div class="row" onclick="check();">
+        <div class="col-1"></div>
+        <div class="col-10 text-center">
+          <h5 id="title">Mazda</h5>
         </div>
-        <div class="col-3 text-center no-pd">
-          <p>เจ้าของร้าน</p>
+        <div class="col-1"></div>
+      </div><hr>
+      <div class="row" onclick="check();">
+        <div class="col-1"></div>
+        <div class="col-10 text-center">
+          <h5 id="title">Suzuki</h5>
         </div>
-      </div>
+        <div class="col-1"></div>
+      </div><hr>
+      <div class="row" onclick="check();">
+        <div class="col-2 text-right">
+          <i class="fa fa-check"></i>
+        </div>
+        <div class="col-8 text-center">
+          <h5 id="title" hidden>Suzuki</h5>
+          <input id="email" type="text" class="w3-input">
+        </div>
+        <div class="col-2">
+          <i class="fa fa-times"></i>
+        </div>
+      </div><hr>
     </div>
   </div>
   <!-- End big container -->

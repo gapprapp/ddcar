@@ -26,6 +26,9 @@
       color: #666666;
       letter-spacing: 2px;
     }
+    .no-pd{
+      padding-right: 0px;
+    }
   </style>
 
   <script>
@@ -62,7 +65,7 @@
       <i id="i-back" class="fas fa-angle-left"></i>
     </div>
     <div class="col-10 text-center">
-      <h5 id="h5-title">แก้ไขสมาชิก</h5>
+      <h5 id="h5-title">แก้ไข / ลบ</h5>
     </div>
     <div class="col-1">
     </div>
@@ -72,20 +75,26 @@
   <div class="container justify-content-center" style="margin-top: 20%;">
     <div class="container">
       <div class="row">
-        <div class="col-8 text-center">
+        <div class="col-1"></div>
+        <div class="col-7 text-center no-pd">
           <h5 id="title">อีเมล</h5>
         </div>
-        <div class="col-4 text-center">
+        <div class="col-3 text-center no-pd">
           <h5 id="title">บทบาท</h5>
         </div>
+        <div class="col-1"></div>
       </div>
       <hr>
 
       <div class="row" style="margin-bottom: 5%;">
-        <div class="col-8 text-center" style="padding-left: 0px">
+        <div class="col-1 text-left">
+          <i class="fa fa-trash-alt" hidden></i>
+          <i class="fa fa-edit" hidden></i>
+        </div>
+        <div class="col-7 text-center no-pd">
           <p>puckcheetu56@gmail.com</p>
         </div>
-        <div class="col-4 text-center">
+        <div class="col-3 text-center no-pd">
           <p>เจ้าของร้าน</p>
         </div>
       </div>

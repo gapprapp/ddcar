@@ -26,8 +26,9 @@
       color: #666666;
       letter-spacing: 2px;
     }
-    .no-pd{
-      padding-right: 0px;
+    .pdlr {
+      padding-left: 10%;
+      padding-right: 10%;
     }
   </style>
 
@@ -35,7 +36,7 @@
     $(document).ready(function() {});
 
     function disactive(arg) {
-      nav_menu = ['home', 'add', 'edit', 'del'];
+      nav_menu = ['home', 'bell', 'qrcode', 'bars'];
       for (i = 0; i < 4; i++) {
         if (nav_menu[i] != arg) {
           if ($("#i-" + nav_menu[i]).hasClass('active')) $("#i-" + nav_menu[i]).removeClass('active');
@@ -49,53 +50,64 @@
       $("#i-" + arg).fadeOut(100).fadeIn(100, function() {
         $("#i-" + arg).addClass('active');
       });
-
-      if(arg == "add"){
-        goto = "register.html";
-        transition_page_back(goto);
-      }
     }
+
+    function addpic(){
+      $("#row-img").prop('hidden', false);
+    }
+
+    function selectfolder(){
+      //goto = location.reload();
+      goto = "select_folder.html";
+      transition_page_next_flip(goto);
+    }
+
   </script>
 </head>
 
 <body>
   <!-- Nav menu top -->
   <div class="row fixed-top navs">
-    <div class="col-1 text-center" onclick="transition_page_back('mng_member.html')">
+    <div class="col-1 text-center" onclick="transition_page_back('mng_cus.html')">
       <i id="i-back" class="fas fa-angle-left"></i>
     </div>
     <div class="col-10 text-center">
-      <h5 id="h5-title">แก้ไข / ลบ</h5>
+      <h5 id="h5-title">เพิ่ม</h5>
     </div>
     <div class="col-1">
     </div>
   </div><br>
 
   <!-- End big container -->
-  <div class="container justify-content-center" style="margin-top: 20%;">
+  <div class="container justify-content-center" style="margin-top: 15%; margin-bottom: 30%;">
     <div class="container">
-      <div class="row">
-        <div class="col-1"></div>
-        <div class="col-7 text-center no-pd">
-          <h5 id="title">อีเมล</h5>
+      <div class="row" style="margin-bottom: 10%;">
+        <div class="col-12 text-center pdlr">
+          <label for="name">ชื่อ</label>
+          <input id="name" type="text" class="w3-input">
         </div>
-        <div class="col-3 text-center no-pd">
-          <h5 id="title">บทบาท</h5>
-        </div>
-        <div class="col-1"></div>
       </div>
-      <hr>
-
-      <div class="row" style="margin-bottom: 5%;">
-        <div class="col-1 text-left">
-          <i class="fa fa-trash-alt" hidden></i>
-          <i class="fa fa-edit" hidden></i>
+      <div class="row" style="margin-bottom: 10%;">
+        <div class="col-12 text-center pdlr">
+          <label for="barcode">ที่อยู่</label>
+          <input id="barcode" type="text" class="w3-input">
         </div>
-        <div class="col-7 text-center no-pd">
-          <p>puckcheetu56@gmail.com</p>
+      </div>
+      <div class="row" style="margin-bottom: 10%;">
+        <div class="col-12 text-center pdlr">
+          <label for="barcode">เบอร์โทร</label>
+          <input id="barcode" type="text" class="w3-input">
         </div>
-        <div class="col-3 text-center no-pd">
-          <p>เจ้าของร้าน</p>
+      </div>
+      <div class="row" style="margin-bottom: 10%;">
+        <div class="col-12 text-center pdlr">
+          <label for="barcode">ประเภท</label>
+          <input id="barcode" type="text" class="w3-input">
+        </div>
+      </div>
+      <div class="row" style="margin-bottom: 15%;">
+        <div class="col-12 text-center">
+          <button class="mbtn" onclick="add_prod();">เพิ่ม</button>
         </div>
       </div>
     </div>
@@ -107,14 +119,14 @@
     <div class="col-3 text-center" onclick="menu('home')">
       <i id="i-home" class="fas fa-home menu"></i>
     </div>
-    <div class="col-3 text-center" onclick="menu('add')">
-      <i id="i-add" class="fas fa-plus menu"></i>
+    <div class="col-3 text-center" onclick="menu('bell')">
+      <i id="i-bell" class="fas fa-bell menu"></i>
     </div>
-    <div class="col-3 text-center" onclick="menu('edit')">
-      <i id="i-edit" class="fas fa-edit menu"></i>
+    <div class="col-3 text-center" onclick="menu('qrcode')">
+      <i id="i-qrcode" class="fas fa-qrcode menu"></i>
     </div>
-    <div class="col-3 text-center" onclick="menu('del')">
-      <i id="i-del" class="fa fa-trash-alt menu"></i>
+    <div class="col-3 text-center" onclick="menu('bars')">
+      <i id="i-bars" class="fa fa-bars menu"></i>
     </div>
   </div>
   <!-- End Nav menu bottom -->
