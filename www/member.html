@@ -26,7 +26,7 @@
       color: #666666;
       letter-spacing: 2px;
     }
-    .no-pd {
+    .no-pd{
       padding-right: 0px;
       padding-left: 0px;
     }
@@ -36,7 +36,7 @@
   </style>
 
   <script>
-    $(document).ready(function () { });
+    $(document).ready(function() {});
 
     function disactive(arg) {
       nav_menu = ['home', 'add', 'edit', 'del'];
@@ -50,20 +50,20 @@
     function menu(arg) {
       // Animate
       disactive(arg);
-      $("#i-" + arg).fadeOut(100).fadeIn(100, function () {
+      $("#i-" + arg).fadeOut(100).fadeIn(100, function() {
         $("#i-" + arg).addClass('active');
       });
 
-      if (arg == "add") {
+      if(arg == "add"){
         goto = "register.html";
-        transition_page_back(goto);
-      } else if (arg == "edit") {
+        transition_page_back_flip(goto);
+      }else if(arg == "edit"){
         // show edit all
         $("#i-edit-1").attr('hidden', false);
         $("#i-del-1").attr('hidden', true);
         $("#i-edit-2").attr('hidden', false);
         $("#i-del-2").attr('hidden', true);
-      } else if (arg == "del") {
+      }else if (arg == "del") {
         // show trash all 
         $("#i-del-1").attr('hidden', false);
         $("#i-edit-1").attr('hidden', true);
@@ -77,16 +77,15 @@
 <body>
   <!-- Nav menu top -->
   <div class="row fixed-top navs">
-    <div class="col-1 text-center" onclick="transition_page_back('mng_cus.html')">
+    <div class="col-1 text-center" onclick="transition_page_back('index.html')">
       <i id="i-back" class="fas fa-angle-left"></i>
     </div>
     <div class="col-10 text-center">
-      <h5 id="h5-title">แก้ไข / ลบ</h5>
+      <h5 id="h5-title">ผู้ใช้</h5>
     </div>
     <div class="col-1">
     </div>
-  </div>
-  <br>
+  </div><br>
 
   <!-- End big container -->
   <div class="container justify-content-center" style="margin-top: 20%;">
@@ -94,15 +93,15 @@
       <div class="row">
         <div class="col-1"></div>
         <div class="col-6 text-center no-pd">
-          <h5 id="title">ชื่อ</h5>
+          <h5 id="title">อีเมล</h5>
         </div>
         <div class="col-4 text-center no-pd">
-          <h5 id="title">เบอร์โทร</h5>
+          <h5 id="title">บทบาท</h5>
         </div>
         <div class="col-1"></div>
       </div>
       <hr>
-
+      
       <!-- Show -->
       <div class="row">
         <div class="col-1 text-left">
@@ -110,28 +109,26 @@
           <i id="i-edit-1" class="fa fa-edit" hidden></i>
         </div>
         <div class="col-6 text-center no-pd">
-          <p>สมพงษ์ โกทิสุวรรณ</p>
+          <p>puckcheetu56</p>
         </div>
         <div class="col-4 text-center no-pd">
-          <p>0829554261</p>
+          <p>เจ้าของร้าน</p>
         </div>
-      </div>
-      <div class="col-1"></div>
-      <hr>
+        <div class="col-1"></div>
+      </div> <hr>
       <div class="row">
         <div class="col-1 text-left">
           <i id="i-del-2" class="fa fa-trash-alt" hidden></i>
           <i id="i-edit-2" class="fa fa-edit" hidden></i>
         </div>
         <div class="col-6 text-center no-pd">
-          <p>พีรกฤต</p>
+          <p>puckcheetu56</p>
         </div>
         <div class="col-4 text-center no-pd">
-          <p>0875659150</p>
+          <p>เจ้าของร้าน</p>
         </div>
         <div class="col-1"></div>
-      </div>
-      <hr>
+      </div> <hr>
     </div>
   </div>
   <!-- End big container -->

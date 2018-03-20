@@ -52,14 +52,9 @@
       });
     }
 
-    function addpic(){
-      $("#row-img").prop('hidden', false);
-    }
-
-    function selectfolder(){
-      //goto = location.reload();
-      goto = "select_folder.html";
-      transition_page_next_flip(goto);
+    function add_cus(){
+      goto = "customer.html";
+      transition_page_back_flip(goto);
     }
 
   </script>
@@ -68,11 +63,11 @@
 <body>
   <!-- Nav menu top -->
   <div class="row fixed-top navs">
-    <div class="col-1 text-center" onclick="transition_page_back('mng_cus.html')">
+    <div class="col-1 text-center" onclick="transition_page_next('customer.html')">
       <i id="i-back" class="fas fa-angle-left"></i>
     </div>
     <div class="col-10 text-center">
-      <h5 id="h5-title">เพิ่ม</h5>
+      <h5 id="h5-title">เพิ่มลูกค้า</h5>
     </div>
     <div class="col-1">
     </div>
@@ -107,7 +102,7 @@
       </div>
       <div class="row" style="margin-bottom: 15%;">
         <div class="col-12 text-center">
-          <button class="mbtn" onclick="add_prod();">เพิ่ม</button>
+          <button class="mbtn" onclick="add_cus();">เพิ่ม</button>
         </div>
       </div>
     </div>

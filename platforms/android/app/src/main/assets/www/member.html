@@ -56,7 +56,7 @@
 
       if(arg == "add"){
         goto = "register.html";
-        transition_page_back(goto);
+        transition_page_back_flip(goto);
       }else if(arg == "edit"){
         // show edit all
         $("#i-edit-1").attr('hidden', false);
@@ -77,11 +77,11 @@
 <body>
   <!-- Nav menu top -->
   <div class="row fixed-top navs">
-    <div class="col-1 text-center" onclick="transition_page_back('mng_member.html')">
+    <div class="col-1 text-center" onclick="transition_page_back('index.html')">
       <i id="i-back" class="fas fa-angle-left"></i>
     </div>
     <div class="col-10 text-center">
-      <h5 id="h5-title">แก้ไข / ลบ</h5>
+      <h5 id="h5-title">ผู้ใช้</h5>
     </div>
     <div class="col-1">
     </div>

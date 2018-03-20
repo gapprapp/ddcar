@@ -59,8 +59,8 @@
 
     function admin(arg) {
       var goto;
-      if (arg == "member") goto = "mng_member.html";
-      else if (arg == "cus") goto = "mng_cus.html";
+      if (arg == "member") goto = "member.html";
+      else if (arg == "cus") goto = "customer.html";
       else goto = "add_" + arg + ".html";
 
       transition_page_next(goto);

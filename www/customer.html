@@ -26,7 +26,7 @@
       color: #666666;
       letter-spacing: 2px;
     }
-    .no-pd{
+    .no-pd {
       padding-right: 0px;
       padding-left: 0px;
     }
@@ -36,7 +36,7 @@
   </style>
 
   <script>
-    $(document).ready(function() {});
+    $(document).ready(function () { });
 
     function disactive(arg) {
       nav_menu = ['home', 'add', 'edit', 'del'];
@@ -50,25 +50,34 @@
     function menu(arg) {
       // Animate
       disactive(arg);
-      $("#i-" + arg).fadeOut(100).fadeIn(100, function() {
+      $("#i-" + arg).fadeOut(100).fadeIn(100, function () {
         $("#i-" + arg).addClass('active');
       });
 
-      if(arg == "add"){
-        goto = "register.html";
-        transition_page_back(goto);
-      }else if(arg == "edit"){
+      if (arg == "add") {
+        goto = "add_cus.html";
+        transition_page_next_flip(goto);
+      } else if (arg == "edit") {
         // show edit all
-        $("#i-edit-1").attr('hidden', false);
-        $("#i-del-1").attr('hidden', true);
-        $("#i-edit-2").attr('hidden', false);
-        $("#i-del-2").attr('hidden', true);
-      }else if (arg == "del") {
+        $(".i-edit").attr('hidden', false);
+        $(".i-del").attr('hidden', true);
+      } else if (arg == "del") {
         // show trash all 
-        $("#i-del-1").attr('hidden', false);
-        $("#i-edit-1").attr('hidden', true);
-        $("#i-del-2").attr('hidden', false);
-        $("#i-edit-2").attr('hidden', true);
+        $(".i-del").attr('hidden', false);
+        $(".i-edit").attr('hidden', true);
+      }
+    }
+
+    function show_cus(arg){
+      goto = "customer_show.html?cus="+arg;
+      transition_page_next_flip(goto);
+    }
+
+    function edit_del(arg){
+      if ($('#i-del-'+arg).is(':visible')) {
+        //alert("del"+arg);
+      }else if ($('#i-edit-' + arg).is(':visible')) {
+        //alert("edit"+arg);
       }
     }
   </script>
@@ -77,15 +86,16 @@
 <body>
   <!-- Nav menu top -->
   <div class="row fixed-top navs">
-    <div class="col-1 text-center" onclick="transition_page_back('mng_member.html')">
+    <div class="col-1 text-center" onclick="transition_page_back('index.html')">
       <i id="i-back" class="fas fa-angle-left"></i>
     </div>
     <div class="col-10 text-center">
-      <h5 id="h5-title">แก้ไข / ลบ</h5>
+      <h5 id="h5-title">ลูกค้า</h5>
     </div>
     <div class="col-1">
     </div>
-  </div><br>
+  </div>
+  <br>
 
   <!-- End big container -->
   <div class="container justify-content-center" style="margin-top: 20%;">
@@ -93,42 +103,45 @@
       <div class="row">
         <div class="col-1"></div>
         <div class="col-6 text-center no-pd">
-          <h5 id="title">อีเมล</h5>
+          <h5 id="title">ชื่อ</h5>
         </div>
         <div class="col-4 text-center no-pd">
-          <h5 id="title">บทบาท</h5>
+          <h5 id="title">เบอร์โทร</h5>
         </div>
         <div class="col-1"></div>
       </div>
       <hr>
-      
+
       <!-- Show -->
-      <div class="row">
-        <div class="col-1 text-left">
-          <i id="i-del-1" class="fa fa-trash-alt" hidden></i>
-          <i id="i-edit-1" class="fa fa-edit" hidden></i>
+      <div id="cus-1" class="row">
+        <span id="id-cus-1" hidden>id</span>
+        <div class="col-1 text-left" onclick="edit_del('1');">
+          <i id="i-del-1" class="fa fa-trash-alt i-del" hidden></i>
+          <i id="i-edit-1" class="fa fa-edit i-edit" onclick="show_cus('1');" hidden></i>
         </div>
         <div class="col-6 text-center no-pd">
-          <p>puckcheetu56</p>
+          <p>สมพงษ์ โกทิสุวรรณ</p>
         </div>
         <div class="col-4 text-center no-pd">
-          <p>เจ้าของร้าน</p>
+          <p>0829554261</p>
         </div>
-        <div class="col-1"></div>
-      </div> <hr>
-      <div class="row">
-        <div class="col-1 text-left">
-          <i id="i-del-2" class="fa fa-trash-alt" hidden></i>
-          <i id="i-edit-2" class="fa fa-edit" hidden></i>
+      </div>
+      <div class="col-1"></div>
+      <hr>
+      <div id="cus-1" class="row" disabled>
+        <div class="col-1 text-left" onclick="edit_del('2');">
+          <i id="i-del-2" class="fa fa-trash-alt i-del" hidden></i>
+          <i id="i-edit-2" class="fa fa-edit i-edit" onclick="show_cus('2');" hidden></i>
         </div>
         <div class="col-6 text-center no-pd">
-          <p>puckcheetu56</p>
+          <p>พีรกฤต</p>
         </div>
         <div class="col-4 text-center no-pd">
-          <p>เจ้าของร้าน</p>
+          <p>0875659150</p>
         </div>
         <div class="col-1"></div>
-      </div> <hr>
+      </div>
+      <hr>
     </div>
   </div>
   <!-- End big container -->
