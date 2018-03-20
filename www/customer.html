@@ -70,8 +70,13 @@
 
     function show_cus(arg){
       goto = "customer_show.html?cus="+arg;
-      transition_page_next_flip(goto);
+      transition_page_next(goto);
     }
+
+    function edit_cus(arg) {
+        goto = "customer_show.html?cus=" + arg + "&edit=true";
+        transition_page_next_flip(goto);
+      }
 
     function edit_del(arg){
       if ($('#i-del-'+arg).is(':visible')) {
@@ -117,12 +122,12 @@
         <span id="id-cus-1" hidden>id</span>
         <div class="col-1 text-left" onclick="edit_del('1');">
           <i id="i-del-1" class="fa fa-trash-alt i-del" hidden></i>
-          <i id="i-edit-1" class="fa fa-edit i-edit" onclick="show_cus('1');" hidden></i>
+          <i id="i-edit-1" class="fa fa-edit i-edit" onclick="edit_cus('1');" hidden></i>
         </div>
-        <div class="col-6 text-center no-pd">
+        <div class="col-6 text-center no-pd" onclick="show_cus('1');">
           <p>สมพงษ์ โกทิสุวรรณ</p>
         </div>
-        <div class="col-4 text-center no-pd">
+        <div class="col-4 text-center no-pd" onclick="show_cus('1');">
           <p>0829554261</p>
         </div>
       </div>
@@ -131,12 +136,12 @@
       <div id="cus-1" class="row" disabled>
         <div class="col-1 text-left" onclick="edit_del('2');">
           <i id="i-del-2" class="fa fa-trash-alt i-del" hidden></i>
-          <i id="i-edit-2" class="fa fa-edit i-edit" onclick="show_cus('2');" hidden></i>
+          <i id="i-edit-2" class="fa fa-edit i-edit" onclick="edit_cus('2');" hidden></i>
         </div>
-        <div class="col-6 text-center no-pd">
+        <div class="col-6 text-center no-pd" onclick="show_cus('2')";>
           <p>พีรกฤต</p>
         </div>
-        <div class="col-4 text-center no-pd">
+        <div class="col-4 text-center no-pd" onclick="show_cus('2')";>
           <p>0875659150</p>
         </div>
         <div class="col-1"></div>

@@ -36,6 +36,21 @@
     <script>
         $(document).ready(function () {
             //get from url (cus id)
+            url = new URL(window.location.href);
+            cus_id = url.searchParams.get("cus");
+            edit = url.searchParams.get("edit");
+
+            if(edit == "true"){
+                ""
+                $('#h5-title').text("แก้ไข")
+                $('#name').prop('disabled', false);
+                $('#addr').prop('disabled', false);
+                $('#tel').prop('disabled', false);
+                $('#type').prop('disabled', false);
+                $('#btn-update').prop('disabled', false);
+            }else{
+                 $('#h5-title').text('แสดง')
+            }
         });
 
         function disactive(arg) {
@@ -71,7 +86,7 @@
             <i id="i-back" class="fas fa-angle-left"></i>
         </div>
         <div class="col-10 text-center">
-            <h5 id="h5-title">แสดง</h5>
+            <h5 id="h5-title"></h5>
         </div>
         <div class="col-1">
         </div>
@@ -84,30 +99,30 @@
             <div class="row" style="margin-bottom: 10%;">
                 <div class="col-12 text-center pdlr">
                     <label for="name">ชื่อ</label>
-                    <input id="name" type="text" class="w3-input" value="สมพงษ์ โกทิสุวรรณ">
+                    <input id="name" type="text" class="w3-input" value="สมพงษ์ โกทิสุวรรณ" disabled>
                 </div>
             </div>
             <div class="row" style="margin-bottom: 10%;">
                 <div class="col-12 text-center pdlr">
                     <label for="addr">ที่อยู่</label>
-                    <input id="addr" type="text" class="w3-input" value="บางยี่เรือลาพลางเพื่อนพ้อง">
+                    <input id="addr" type="text" class="w3-input" value="บางยี่เรือลาพลางเพื่อนพ้อง" disabled>
                 </div>
             </div>
             <div class="row" style="margin-bottom: 10%;">
                 <div class="col-12 text-center pdlr">
                     <label for="tel">เบอร์โทร</label>
-                    <input id="tel" type="text" class="w3-input" value="0829554261">
+                    <input id="tel" type="text" class="w3-input" value="0829554261" disabled>
                 </div>
             </div>
             <div class="row" style="margin-bottom: 18%;">
                 <div class="col-12 text-center pdlr">
                     <label for="type">ประเภท</label>
-                    <input id="type" type="text" class="w3-input" value="ขายปลึก">
+                    <input id="type" type="text" class="w3-input" value="ขายปลึก" disabled>
                 </div>
             </div>
             <div class="row" style="margin-bottom: 15%;">
                 <div class="col-12 text-center">
-                    <button class="mbtn" onclick="update_cus();">บันทึก</button>
+                    <button id="btn-update" class="mbtn" onclick="update_cus();" disabled>บันทึก</button>
                 </div>
             </div>
         </div>

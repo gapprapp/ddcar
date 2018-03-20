@@ -36,6 +36,21 @@
     <script>
         $(document).ready(function () {
             //get from url (cus id)
+            url = new URL(window.location.href);
+            cus_id = url.searchParams.get("cus");
+            edit = url.searchParams.get("edit");
+
+            if(edit == "true"){
+                ""
+                $('#h5-title').text("แก้ไข")
+                $('#name').prop('disabled', false);
+                $('#addr').prop('disabled', false);
+                $('#tel').prop('disabled', false);
+                $('#type').prop('disabled', false);
+                $('#btn-update').prop('disabled', false);
+            }else{
+                 $('#h5-title').text('แสดง')
+            }
         });
 
         function disactive(arg) {
@@ -71,7 +86,7 @@
             <i id="i-back" class="fas fa-angle-left"></i>
         </div>
         <div class="col-10 text-center">
-            <h5 id="h5-title">แสดง</h5>
+            <h5 id="h5-title"></h5>
         </div>
         <div class="col-1">
         </div>
@@ -107,7 +122,7 @@
             </div>
             <div class="row" style="margin-bottom: 15%;">
                 <div class="col-12 text-center">
-                    <button class="mbtn" onclick="update_cus();">บันทึก</button>
+                    <button id="btn-update" class="mbtn" onclick="update_cus();" disabled>บันทึก</button>
                 </div>
             </div>
         </div>
