@@ -55,7 +55,7 @@
       });
 
       if (arg == "add") {
-        goto = "customer_add.html";
+        goto = "warehouse_add.html";
         transition_page_next_flip(goto);
       } else if (arg == "edit") {
         // show edit all
@@ -68,22 +68,8 @@
       }
     }
 
-    function show_cus(arg){
-      goto = "customer_show.html?cus="+arg;
-      transition_page_next(goto);
-    }
-
-    function edit_cus(arg) {
-        goto = "customer_show.html?cus=" + arg + "&edit=true";
-        transition_page_next_flip(goto);
-      }
-
-    function edit_del(arg){
-      if ($('#i-del-'+arg).is(':visible')) {
-        //alert("del"+arg);
-      }else if ($('#i-edit-' + arg).is(':visible')) {
-        //alert("edit"+arg);
-      }
+    function edit_ware(arg) {
+      // Change p tag -> to input tag
     }
   </script>
 </head>
@@ -95,7 +81,7 @@
       <i id="i-back" class="fas fa-angle-left"></i>
     </div>
     <div class="col-10 text-center">
-      <h5 id="h5-title">ลูกค้า</h5>
+      <h5 id="h5-title">หน้าร้าน / โกดัง</h5>
     </div>
     <div class="col-1">
     </div>
@@ -111,7 +97,7 @@
           <h5 id="title">ชื่อ</h5>
         </div>
         <div class="col-4 text-center no-pd">
-          <h5 id="title">เบอร์โทร</h5>
+          <h5 id="title">ประเภท</h5>
         </div>
         <div class="col-1"></div>
       </div>
@@ -122,13 +108,13 @@
         <span id="id-cus-1" hidden>id</span>
         <div class="col-1 text-left" onclick="edit_del('1');">
           <i id="i-del-1" class="fa fa-trash-alt i-del" hidden></i>
-          <i id="i-edit-1" class="fa fa-edit i-edit" onclick="edit_cus('1');" hidden></i>
+          <i id="i-edit-1" class="fa fa-edit i-edit" onclick="edit_ware('1');" hidden></i>
         </div>
-        <div class="col-6 text-center no-pd" onclick="show_cus('1');">
-          <p>สมพงษ์ โกทิสุวรรณ</p>
+        <div class="col-6 text-center no-pd">
+          <p>โกดังตึกเช่า</p>
         </div>
-        <div class="col-4 text-center no-pd" onclick="show_cus('1');">
-          <p>0829554261</p>
+        <div class="col-4 text-center no-pd">
+          <p>โกดัง</p>
         </div>
       </div>
       <div class="col-1"></div>
@@ -136,13 +122,13 @@
       <div id="cus-1" class="row" disabled>
         <div class="col-1 text-left" onclick="edit_del('2');">
           <i id="i-del-2" class="fa fa-trash-alt i-del" hidden></i>
-          <i id="i-edit-2" class="fa fa-edit i-edit" onclick="edit_cus('2');" hidden></i>
+          <i id="i-edit-2" class="fa fa-edit i-edit" onclick="edit_ware('2');" hidden></i>
         </div>
-        <div class="col-6 text-center no-pd" onclick="show_cus('2')";>
-          <p>พีรกฤต</p>
+        <div class="col-6 text-center no-pd">
+          <p>บ้าน</p>
         </div>
-        <div class="col-4 text-center no-pd" onclick="show_cus('2')";>
-          <p>0875659150</p>
+        <div class="col-4 text-center no-pd">
+          <p>โกดัง</p>
         </div>
         <div class="col-1"></div>
       </div>
