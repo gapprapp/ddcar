@@ -28,6 +28,10 @@
     }
     .no-pd{
       padding-right: 0px;
+      padding-left: 0px;
+    }
+    hr{
+      margin-top: 0;
     }
   </style>
 
@@ -53,6 +57,18 @@
       if(arg == "add"){
         goto = "register.html";
         transition_page_back(goto);
+      }else if(arg == "edit"){
+        // show edit all
+        $("#i-edit-1").attr('hidden', false);
+        $("#i-del-1").attr('hidden', true);
+        $("#i-edit-2").attr('hidden', false);
+        $("#i-del-2").attr('hidden', true);
+      }else if (arg == "del") {
+        // show trash all 
+        $("#i-del-1").attr('hidden', false);
+        $("#i-edit-1").attr('hidden', true);
+        $("#i-del-2").attr('hidden', false);
+        $("#i-edit-2").attr('hidden', true);
       }
     }
   </script>
@@ -76,28 +92,43 @@
     <div class="container">
       <div class="row">
         <div class="col-1"></div>
-        <div class="col-7 text-center no-pd">
+        <div class="col-6 text-center no-pd">
           <h5 id="title">อีเมล</h5>
         </div>
-        <div class="col-3 text-center no-pd">
+        <div class="col-4 text-center no-pd">
           <h5 id="title">บทบาท</h5>
         </div>
         <div class="col-1"></div>
       </div>
       <hr>
-
-      <div class="row" style="margin-bottom: 5%;">
+      
+      <!-- Show -->
+      <div class="row">
         <div class="col-1 text-left">
-          <i class="fa fa-trash-alt" hidden></i>
-          <i class="fa fa-edit" hidden></i>
+          <i id="i-del-1" class="fa fa-trash-alt" hidden></i>
+          <i id="i-edit-1" class="fa fa-edit" hidden></i>
         </div>
-        <div class="col-7 text-center no-pd">
-          <p>puckcheetu56@gmail.com</p>
+        <div class="col-6 text-center no-pd">
+          <p>puckcheetu56</p>
         </div>
-        <div class="col-3 text-center no-pd">
+        <div class="col-4 text-center no-pd">
           <p>เจ้าของร้าน</p>
         </div>
-      </div>
+        <div class="col-1"></div>
+      </div> <hr>
+      <div class="row">
+        <div class="col-1 text-left">
+          <i id="i-del-2" class="fa fa-trash-alt" hidden></i>
+          <i id="i-edit-2" class="fa fa-edit" hidden></i>
+        </div>
+        <div class="col-6 text-center no-pd">
+          <p>puckcheetu56</p>
+        </div>
+        <div class="col-4 text-center no-pd">
+          <p>เจ้าของร้าน</p>
+        </div>
+        <div class="col-1"></div>
+      </div> <hr>
     </div>
   </div>
   <!-- End big container -->

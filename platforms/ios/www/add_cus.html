@@ -22,6 +22,10 @@
   <link href="https://fonts.googleapis.com/css?family=Prompt" rel="stylesheet">
 
   <style>
+    #title {
+      color: #666666;
+      letter-spacing: 2px;
+    }
     .pdlr {
       padding-left: 10%;
       padding-right: 10%;
@@ -47,46 +51,63 @@
         $("#i-" + arg).addClass('active');
       });
     }
+
+    function addpic(){
+      $("#row-img").prop('hidden', false);
+    }
+
+    function selectfolder(){
+      //goto = location.reload();
+      goto = "select_folder.html";
+      transition_page_next_flip(goto);
+    }
+
   </script>
 </head>
 
 <body>
   <!-- Nav menu top -->
   <div class="row fixed-top navs">
-    <div class="col-1 text-center" onclick="transition_page_back('mng_member.html')">
+    <div class="col-1 text-center" onclick="transition_page_back('mng_cus.html')">
       <i id="i-back" class="fas fa-angle-left"></i>
     </div>
     <div class="col-10 text-center">
-      <h5 id="h5-title">สมัคร</h5>
+      <h5 id="h5-title">เพิ่ม</h5>
     </div>
-    <div class="col-1"></div>
+    <div class="col-1">
+    </div>
   </div><br>
 
   <!-- End big container -->
-  <div class="container justify-content-center" style="margin-top: 25%;">
-    <!-- Register -->
+  <div class="container justify-content-center" style="margin-top: 15%; margin-bottom: 30%;">
     <div class="container">
       <div class="row" style="margin-bottom: 10%;">
         <div class="col-12 text-center pdlr">
-          <label for="email">อีเมล</label>
-          <input id="email" type="text" class="w3-input">
+          <label for="name">ชื่อ</label>
+          <input id="name" type="text" class="w3-input">
         </div>
       </div>
       <div class="row" style="margin-bottom: 10%;">
         <div class="col-12 text-center pdlr">
-          <label for="email">พาสเวิร์ด</label>
-          <input id="email" type="text" class="w3-input">
+          <label for="barcode">ที่อยู่</label>
+          <input id="barcode" type="text" class="w3-input">
+        </div>
+      </div>
+      <div class="row" style="margin-bottom: 10%;">
+        <div class="col-12 text-center pdlr">
+          <label for="barcode">เบอร์โทร</label>
+          <input id="barcode" type="text" class="w3-input">
         </div>
       </div>
       <div class="row" style="margin-bottom: 18%;">
         <div class="col-12 text-center pdlr">
-          <label for="email">บทบาท</label>
-          <input id="email" type="text" class="w3-input">
+          <label for="barcode">ประเภท</label>
+          <input id="barcode" type="text" class="w3-input">
         </div>
       </div>
       <div class="row" style="margin-bottom: 15%;">
         <div class="col-12 text-center">
-          <button class="mbtn" onclick="register();">สมัคร</button>
+          <button class="mbtn" onclick="add_prod();">เพิ่ม</button>
         </div>
       </div>
     </div>
