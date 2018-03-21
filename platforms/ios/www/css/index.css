@@ -61,14 +61,37 @@ body{
 	border-radius: 5px;
 }
 
+.select{
+	background-color: white;
+	border: 2px solid #e5e5e5;
+	height: 100%;
+	width: 60%;
+	font-weight: bold;
+	font-size: 120%;
+	color: #666666;
+	letter-spacing: 2px;
+	border-radius: 5px;
+}
+
 .func{
 	margin-bottom: 15%;
 }
 
-.w3-input{
+.i-edit{
+	margin-right: 2%;
+}
 
+label{
+	color: #666666;
+	letter-spacing: 2px;
+	font-size: 120%;
+}
+
+.w3-input{
 	display:block;
 	border:none;
 	border-bottom:1px solid #ccc;
-	width:100%
+	width:100%;
+	background-color: #fdfdfd;
+	text-align: center;
 }

@@ -26,13 +26,17 @@
       color: #666666;
       letter-spacing: 2px;
     }
-    .no-pd{
+    .no-pd {
       padding-right: 0px;
+      padding-left: 0px;
+    }
+    hr{
+      margin-top: 0;
     }
   </style>
 
   <script>
-    $(document).ready(function() {});
+    $(document).ready(function () { });
 
     function disactive(arg) {
       nav_menu = ['home', 'add', 'edit', 'del'];
@@ -46,14 +50,26 @@
     function menu(arg) {
       // Animate
       disactive(arg);
-      $("#i-" + arg).fadeOut(100).fadeIn(100, function() {
+      $("#i-" + arg).fadeOut(100).fadeIn(100, function () {
         $("#i-" + arg).addClass('active');
       });
 
-      if(arg == "add"){
-        goto = "register.html";
-        transition_page_back(goto);
+      if (arg == "add") {
+        goto = "warehouse_add.html";
+        transition_page_next_flip(goto);
+      } else if (arg == "edit") {
+        // show edit all
+        $(".i-edit").attr('hidden', false);
+        $(".i-del").attr('hidden', true);
+      } else if (arg == "del") {
+        // show trash all 
+        $(".i-del").attr('hidden', false);
+        $(".i-edit").attr('hidden', true);
       }
+    }
+
+    function edit_ware(arg) {
+      // Change p tag -> to input tag
     }
   </script>
 </head>
@@ -61,43 +77,62 @@
 <body>
   <!-- Nav menu top -->
   <div class="row fixed-top navs">
-    <div class="col-1 text-center" onclick="transition_page_back('mng_member.html')">
+    <div class="col-1 text-center" onclick="transition_page_back('index.html')">
       <i id="i-back" class="fas fa-angle-left"></i>
     </div>
     <div class="col-10 text-center">
-      <h5 id="h5-title">แก้ไข / ลบ</h5>
+      <h5 id="h5-title">หน้าร้าน / โกดัง</h5>
     </div>
     <div class="col-1">
     </div>
-  </div><br>
+  </div>
+  <br>
 
   <!-- End big container -->
   <div class="container justify-content-center" style="margin-top: 20%;">
     <div class="container">
       <div class="row">
         <div class="col-1"></div>
-        <div class="col-7 text-center no-pd">
-          <h5 id="title">อีเมล</h5>
+        <div class="col-6 text-center no-pd">
+          <h5 id="title">ชื่อ</h5>
         </div>
-        <div class="col-3 text-center no-pd">
-          <h5 id="title">บทบาท</h5>
+        <div class="col-4 text-center no-pd">
+          <h5 id="title">ประเภท</h5>
         </div>
         <div class="col-1"></div>
       </div>
       <hr>
 
-      <div class="row" style="margin-bottom: 5%;">
-        <div class="col-1 text-left">
-          <i class="fa fa-trash-alt" hidden></i>
-          <i class="fa fa-edit" hidden></i>
+      <!-- Show -->
+      <div id="cus-1" class="row">
+        <span id="id-cus-1" hidden>id</span>
+        <div class="col-1 text-left" onclick="edit_del('1');">
+          <i id="i-del-1" class="fa fa-trash-alt i-del" hidden></i>
+          <i id="i-edit-1" class="fa fa-edit i-edit" onclick="edit_ware('1');" hidden></i>
         </div>
-        <div class="col-7 text-center no-pd">
-          <p>puckcheetu56@gmail.com</p>
+        <div class="col-6 text-center no-pd">
+          <p>โกดังตึกเช่า</p>
         </div>
-        <div class="col-3 text-center no-pd">
-          <p>เจ้าของร้าน</p>
+        <div class="col-4 text-center no-pd">
+          <p>โกดัง</p>
         </div>
       </div>
+      <div class="col-1"></div>
+      <hr>
+      <div id="cus-1" class="row" disabled>
+        <div class="col-1 text-left" onclick="edit_del('2');">
+          <i id="i-del-2" class="fa fa-trash-alt i-del" hidden></i>
+          <i id="i-edit-2" class="fa fa-edit i-edit" onclick="edit_ware('2');" hidden></i>
+        </div>
+        <div class="col-6 text-center no-pd">
+          <p>บ้าน</p>
+        </div>
+        <div class="col-4 text-center no-pd">
+          <p>โกดัง</p>
+        </div>
+        <div class="col-1"></div>
+      </div>
+      <hr>
     </div>
   </div>
   <!-- End big container -->

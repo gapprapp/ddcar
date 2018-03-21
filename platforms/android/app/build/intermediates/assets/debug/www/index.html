@@ -57,10 +57,30 @@
 
     }
 
+    function member(){
+      goto = "member.html";
+      transition_page_next(goto);
+    }
+
+    function customer() {
+      goto = "customer.html";
+      transition_page_next(goto);
+    }
+
+    function add_prod() {
+      goto = "add_prod.html";
+      transition_page_next(goto);
+    }
+
+    function warehouse() {
+      goto = "warehouse.html";
+      transition_page_next(goto);
+    }
+
     function admin(arg) {
       var goto;
-      if (arg == "member") goto = "mng_member.html";
-      else if (arg == "cus") goto = "mng_cus.html";
+      if (arg == "member") goto = "member.html";
+      else if (arg == "cus") goto = "customer.html";
       else goto = "add_" + arg + ".html";
 
       transition_page_next(goto);
@@ -124,22 +144,22 @@
     <div id="admin-collapse" class="container collapse">
       <div class="row" style="margin-bottom: 15%;">
         <div class="col-12 text-center">
-          <button id="mng-member" class="sub" onclick="admin('member');">ผู้ใช้</button>
+          <button id="mng-member" class="sub" onclick="member();">ผู้ใช้</button>
         </div>
       </div>
       <div class="row" style="margin-bottom: 15%;">
         <div class="col-12 text-center">
-          <button id="add-cus" class="sub" onclick="admin('cus');">ลูกค้า</button>
+          <button id="add-cus" class="sub" onclick="customer();">ลูกค้า</button>
         </div>
       </div>
       <div class="row" style="margin-bottom: 15%;">
         <div class="col-12 text-center">
-          <button id="add-prod" class="sub" onclick="admin('prod');">เพิ่มสินค้า</button>
+          <button id="add-prod" class="sub" onclick="add_prod();">เพิ่มสินค้า</button>
         </div>
       </div>
       <div class="row" style="margin-bottom: 15%;">
         <div class="col-12 text-center">
-          <button id="add-ware" class="sub" onclick="admin('ware');">เพิ่มหน้าร้าน / โกดัง</button>
+          <button id="add-ware" class="sub" onclick="warehouse();">หน้าร้าน / โกดัง</button>
         </div>
       </div>
     </div>

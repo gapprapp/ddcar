@@ -47,13 +47,18 @@
         $("#i-" + arg).addClass('active');
       });
     }
+
+    function register(){
+      goto = "member.html";
+      transition_page_next_flip(goto);
+    }
   </script>
 </head>
 
 <body>
   <!-- Nav menu top -->
   <div class="row fixed-top navs">
-    <div class="col-1 text-center" onclick="transition_page_back('mng_member.html')">
+    <div class="col-1 text-center" onclick="transition_page_next('member.html')">
       <i id="i-back" class="fas fa-angle-left"></i>
     </div>
     <div class="col-10 text-center">

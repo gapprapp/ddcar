@@ -21,6 +21,17 @@
   <!-- Font -->
   <link href="https://fonts.googleapis.com/css?family=Prompt" rel="stylesheet">
 
+  <style>
+    #title {
+      color: #666666;
+      letter-spacing: 2px;
+    }
+    .pdlr {
+      padding-left: 10%;
+      padding-right: 10%;
+    }
+  </style>
+
   <script>
     $(document).ready(function() {});
 
@@ -40,37 +51,46 @@
         $("#i-" + arg).addClass('active');
       });
     }
+
+    function add_ware(){
+      goto = "warehouse.html";
+      transition_page_back_flip(goto);
+    }
+
   </script>
 </head>
 
 <body>
   <!-- Nav menu top -->
   <div class="row fixed-top navs">
-    <div class="col-1 text-center" onclick="transition_page_back('index.html');">
+    <div class="col-1 text-center" onclick="transition_page_next('warehouse.html')">
       <i id="i-back" class="fas fa-angle-left"></i>
     </div>
     <div class="col-10 text-center">
-      <h5 id="h5-title">จัดการ</h5>
+      <h5 id="h5-title">เพิ่มหน้าร้าน / โกดัง</h5>
     </div>
-    <div class="col-1"></div>
+    <div class="col-1">
+    </div>
   </div><br>
 
   <!-- End big container -->
   <div class="container justify-content-center" style="margin-top: 30%;">
-    <!-- Register -->
     <div class="container">
-      <div class="row" style="margin-bottom: 15%;">
-        <div class="col-12 text-center">
-          <button class="mbtn" onclick="transition_page_next('register.html')">สมัคร</button>
+      <div class="row" style="margin-bottom: 10%;">
+        <div class="col-12 text-center pdlr">
+          <label for="name">ชื่อ</label>
+          <input id="name" type="text" class="w3-input">
         </div>
       </div>
-    </div>
-
-    <!-- Change role -->
-    <div class="container">
+      <div class="row" style="margin-bottom: 18%;">
+        <div class="col-12 text-center pdlr">
+          <label for="barcode">ประเภท</label>
+          <input id="barcode" type="text" class="w3-input">
+        </div>
+      </div>
       <div class="row" style="margin-bottom: 15%;">
         <div class="col-12 text-center">
-          <button class="mbtn" onclick="transition_page_next('edit_member.html')">แก้ไข / ลบ</button>
+          <button class="mbtn" onclick="add_ware();">เพิ่ม</button>
         </div>
       </div>
     </div>

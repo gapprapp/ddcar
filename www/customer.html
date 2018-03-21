@@ -26,19 +26,17 @@
       color: #666666;
       letter-spacing: 2px;
     }
+    .no-pd {
+      padding-right: 0px;
+      padding-left: 0px;
+    }
+    hr{
+      margin-top: 0;
+    }
   </style>
 
   <script>
-    $(document).ready(function() {
-      url = new URL(window.location.href);
-      folder = url.searchParams.get("folder");
-
-      if(folder != null)
-        $("#h5-title").text(folder);
-      else{
-        $("#h5-title").text("หมวดหมู่");
-      }
-    });
+    $(document).ready(function () { });
 
     function disactive(arg) {
       nav_menu = ['home', 'add', 'edit', 'del'];
@@ -52,17 +50,32 @@
     function menu(arg) {
       // Animate
       disactive(arg);
-      $("#i-" + arg).fadeOut(100).fadeIn(100, function() {
+      $("#i-" + arg).fadeOut(100).fadeIn(100, function () {
         $("#i-" + arg).addClass('active');
       });
 
-      if(arg == "add"){
-
+      if (arg == "add") {
+        goto = "customer_add.html";
+        transition_page_next_flip(goto);
+      } else if (arg == "edit") {
+        // show edit all
+        $(".i-edit").attr('hidden', false);
+        $(".i-del").attr('hidden', true);
+      } else if (arg == "del") {
+        // show trash all 
+        $(".i-del").attr('hidden', false);
+        $(".i-edit").attr('hidden', true);
       }
     }
 
-    function check(){
-      alert("check");
+    function show_cus(arg){
+      goto = "customer_show.html?cus="+arg;
+      transition_page_next(goto);
+    }
+
+    function edit_cus(arg) {
+      goto = "customer_show.html?cus=" + arg + "&edit=true";
+      transition_page_next_flip(goto);
     }
   </script>
 </head>
@@ -70,65 +83,62 @@
 <body>
   <!-- Nav menu top -->
   <div class="row fixed-top navs">
-    <div class="col-1 text-center" onclick="transition_page_back_flip('add_prod.html')">
+    <div class="col-1 text-center" onclick="transition_page_back('index.html')">
       <i id="i-back" class="fas fa-angle-left"></i>
     </div>
     <div class="col-10 text-center">
-      <h5 id="h5-title"></h5>
+      <h5 id="h5-title">ลูกค้า</h5>
     </div>
     <div class="col-1">
     </div>
-  </div><br>
+  </div>
+  <br>
 
   <!-- End big container -->
   <div class="container justify-content-center" style="margin-top: 20%;">
     <div class="container">
-      <hr><div class="row" onclick="check();">
-        <div class="col-2"></div>
-        <div class="col-8 text-center">
-          <h5 id="title">Toyota</h5>
-        </div>
-        <div class="col-2">
-          <i class="fa fa-trash-alt" hidden></i>
-          <i class="fa fa-edit" ></i>
-        </div>
-      </div><hr>
-      <div class="row" onclick="check();">
-        <div class="col-2"></div>
-        <div class="col-8 text-center">
-          <h5 id="title">Honda</h5>
-        </div>
-        <div class="col-2">
-          <i class="fa fa-trash-alt"></i>
-          <i class="fa fa-edit" hidden></i>
-        </div>
-      </div><hr>
-      <div class="row" onclick="check();">
+      <div class="row">
         <div class="col-1"></div>
-        <div class="col-10 text-center">
-          <h5 id="title">Mazda</h5>
+        <div class="col-6 text-center no-pd">
+          <h5 id="title">ชื่อ</h5>
+        </div>
+        <div class="col-4 text-center no-pd">
+          <h5 id="title">เบอร์โทร</h5>
         </div>
         <div class="col-1"></div>
-      </div><hr>
-      <div class="row" onclick="check();">
-        <div class="col-1"></div>
-        <div class="col-10 text-center">
-          <h5 id="title">Suzuki</h5>
+      </div>
+      <hr>
+
+      <!-- Show -->
+      <div id="cus-1" class="row">
+        <span id="id-cus-1" hidden>id</span>
+        <div class="col-1 text-left" onclick="edit_del('1');">
+          <i id="i-del-1" class="fa fa-trash-alt i-del" hidden></i>
+          <i id="i-edit-1" class="fa fa-edit i-edit" onclick="edit_cus('1');" hidden></i>
+        </div>
+        <div class="col-6 text-center no-pd" onclick="show_cus('1');">
+          <p>สมพงษ์ โกทิสุวรรณ</p>
+        </div>
+        <div class="col-4 text-center no-pd" onclick="show_cus('1');">
+          <p>0829554261</p>
+        </div>
+      </div>
+      <div class="col-1"></div>
+      <hr>
+      <div id="cus-1" class="row" disabled>
+        <div class="col-1 text-left" onclick="edit_del('2');">
+          <i id="i-del-2" class="fa fa-trash-alt i-del" hidden></i>
+          <i id="i-edit-2" class="fa fa-edit i-edit" onclick="edit_cus('2');" hidden></i>
+        </div>
+        <div class="col-6 text-center no-pd" onclick="show_cus('2')";>
+          <p>พีรกฤต</p>
+        </div>
+        <div class="col-4 text-center no-pd" onclick="show_cus('2')";>
+          <p>0875659150</p>
         </div>
         <div class="col-1"></div>
-      </div><hr>
-      <div class="row" onclick="check();">
-        <div class="col-2 text-right">
-          <i class="fa fa-check"></i>
-        </div>
-        <div class="col-8 text-center">
-          <h5 id="title" hidden>Suzuki</h5>
-          <input id="email" type="text" class="w3-input">
-        </div>
-        <div class="col-2">
-          <i class="fa fa-times"></i>
-        </div>
-      </div><hr>
+      </div>
+      <hr>
     </div>
   </div>
   <!-- End big container -->
