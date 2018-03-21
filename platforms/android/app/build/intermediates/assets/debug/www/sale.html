@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Home</title>
+    <!-- Bootstrap Import -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <script type="text/javascript" src="js/jquery-3.3.1.min.js"></script>
+    <script type="text/javascript" src="js/jquery-ui.min.js"></script>
+    <script type="text/javascript" src="js/jquery.easing.1.3.min.js"></script>
+    <script type="text/javascript" src="js/transition.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.6/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+    <script defer src="https://use.fontawesome.com/releases/v5.0.8/js/all.js"></script>
+    <script src="cordova.js"></script>
+
+    <link rel="stylesheet" href="css/index.css">
+
+    <!-- Font -->
+    <link href="https://fonts.googleapis.com/css?family=Prompt" rel="stylesheet">
+
+    <style>
+        #title {
+            color: #666666;
+            letter-spacing: 2px;
+        }
+
+        .pdlr {
+            padding-left: 10%;
+            padding-right: 10%;
+        }
+    </style>
+
+    <script>
+        $(document).ready(function () { });
+
+        function disactive(arg) {
+            nav_menu = ['home', 'bell', 'qrcode', 'bars'];
+            for (i = 0; i < 4; i++) {
+                if (nav_menu[i] != arg) {
+                    if ($("#i-" + nav_menu[i]).hasClass('active')) $("#i-" + nav_menu[i]).removeClass('active');
+                }
+            }
+        }
+
+        function menu(arg) {
+            // Animate
+            disactive(arg);
+            $("#i-" + arg).fadeOut(100).fadeIn(100, function () {
+                $("#i-" + arg).addClass('active');
+            });
+        }
+
+        function addpic() {
+            $("#row-img").prop('hidden', false);
+        }
+
+        function selectfolder() {
+            //goto = location.reload();
+            goto = "select_folder.html?from=sale";
+            transition_page_next_flip(goto);
+        }
+
+    </script>
+</head>
+
+<body>
+    <!-- Nav menu top -->
+    <div class="row fixed-top navs">
+        <div class="col-1 text-center" onclick="transition_page_back('index.html')">
+            <i id="i-back" class="fas fa-angle-left"></i>
+        </div>
+        <div class="col-10 text-center">
+            <h5 id="h5-title">ขาย</h5>
+        </div>
+        <div class="col-1"></div>
+    </div>
+    <br>
+
+    <!-- End big container -->
+    <div class="container justify-content-center" style="margin-top: 15%; margin-bottom: 30%;">
+        <div class="container">
+            <div class="row" style="margin-bottom: 15%;">
+                <div class="col-12 text-center" onclick="selectfolder();">
+                    <button class="select_folder">เลือกหมวดหมู่</button>
+                </div>
+            </div>
+            <div class="row" style="margin-bottom: 10%;">
+                <div class="col-12 text-center pdlr">
+                    <label for="name">ชื่อสินค้า</label>
+                    <input id="name" type="text" class="w3-input">
+                </div>
+            </div>
+            <div class="row" style="margin-bottom: 10%;">
+                <div class="col-12 text-center pdlr">
+                    <label for="barcode">รหัส</label>
+                    <input id="barcode" type="text" class="w3-input">
+                </div>
+            </div>
+            <div id="row-img" class="row" style="margin-bottom: 5%;" hidden>
+                <div class="col-12 text-center">
+                    <img src="https://c2.staticflickr.com/4/3891/14354989289_2eec0ba724_b.jpg" alt="" style="width: 96%; height: 96%;">
+                </div>
+            </div>
+            <div class="row" style="margin-bottom: 15%;">
+                <div class="col-12 text-center">
+                    <button id="btn-addpic" class="mbtn" onclick="addpic();" style="width: 70%; color: green; border-color: green;">สแกน</button>
+                </div>
+            </div>
+            <div class="row" style="margin-bottom: 15%;">
+                <div class="col-12 text-center">
+                    <button class="mbtn" onclick="add_prod();">เพิ่มสินค้า</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End big container -->
+
+    <!-- Nav menu bottom -->
+    <div class="row fixed-bottom navs">
+        <div class="col-3 text-center" onclick="menu('home')">
+            <i id="i-home" class="fas fa-home menu"></i>
+        </div>
+        <div class="col-3 text-center" onclick="menu('bell')">
+            <i id="i-bell" class="fas fa-bell menu"></i>
+        </div>
+        <div class="col-3 text-center" onclick="menu('qrcode')">
+            <i id="i-qrcode" class="fas fa-qrcode menu"></i>
+        </div>
+        <div class="col-3 text-center" onclick="menu('bars')">
+            <i id="i-bars" class="fa fa-bars menu"></i>
+        </div>
+    </div>
+    <!-- End Nav menu bottom -->
+</body>
+
+</html>

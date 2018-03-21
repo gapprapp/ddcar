@@ -74,16 +74,8 @@
     }
 
     function edit_cus(arg) {
-        goto = "customer_show.html?cus=" + arg + "&edit=true";
-        transition_page_next_flip(goto);
-      }
-
-    function edit_del(arg){
-      if ($('#i-del-'+arg).is(':visible')) {
-        //alert("del"+arg);
-      }else if ($('#i-edit-' + arg).is(':visible')) {
-        //alert("edit"+arg);
-      }
+      goto = "customer_show.html?cus=" + arg + "&edit=true";
+      transition_page_next_flip(goto);
     }
   </script>
 </head>

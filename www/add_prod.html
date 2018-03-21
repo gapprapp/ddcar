@@ -58,7 +58,7 @@
 
     function selectfolder(){
       //goto = location.reload();
-      goto = "select_folder.html";
+      goto = "select_folder.html?from=add";
       transition_page_next_flip(goto);
     }
 
@@ -83,7 +83,7 @@
     <div class="container">
       <div class="row" style="margin-bottom: 15%;">
         <div class="col-12 text-center" onclick="selectfolder();">
-          <h5 id="title">เลือกหมวดหมู่ <i class="fa fa-angle-right" style="color: #666666;"></i></h5>
+          <button class="select_folder">เลือกหมวดหมู่</button>
         </div>
       </div>
       <div class="row" style="margin-bottom: 10%;">

@@ -94,7 +94,7 @@
     <br>
 
     <!-- End big container -->
-    <div class="container justify-content-center" style="margin-top: 15%;">
+    <div class="container justify-content-center" style="margin-top: 15%; overflow: scroll;">
         <div class="container">
             <div class="row" style="margin-bottom: 10%;">
                 <div class="col-12 text-center pdlr">
@@ -114,13 +114,56 @@
                     <input id="tel" type="text" class="w3-input" value="0829554261" disabled>
                 </div>
             </div>
-            <div class="row" style="margin-bottom: 18%;">
+            <div class="row" style="margin-bottom: 10%;">
                 <div class="col-12 text-center pdlr">
                     <label for="type">ประเภท</label>
                     <input id="type" type="text" class="w3-input" value="ขายปลึก" disabled>
                 </div>
             </div>
+
             <div class="row" style="margin-bottom: 15%;">
+                <div class="col-12 text-center">
+                    <button id="btn-cusprice" class="mbtn" href="#cusprice-collapse" data-toggle="collapse" style="width: 70%; color: green; border-color: green;">สินค้าราคาพิเศษ</button>
+                </div>
+            </div>
+
+            <div id="cusprice-collapse" class="container collapse">
+                <div class="row">
+                    <div class="col-7 text-center">
+                        <h5 class="title">สินค้า</h5>
+                    </div>
+                    <div class="col-4 text-center">
+                        <h5 class="title">ราคา</h5>
+                    </div>
+                </div> <hr style="width: 70%;">
+                <div class="row" style="margin-bottom: 5%;">
+                    <div class="col-7 text-center">
+                        <input type="text" class="w3-input2 text-center" value="กระจกหน้ารถฟอร์ด" disabled>
+                    </div>
+                    <div class="col-4 text-center">
+                        <input type="text" class="w3-input2 text-center" value="9800" disabled>
+                    </div>
+                </div>
+                <div class="row" style="margin-bottom: 5%;">
+                    <div class="col-7 text-center">
+                        <input type="text" class="w3-input2 text-center" value="กระจกหน้ารถฟอร์ด" disabled>
+                    </div>
+                    <div class="col-4 text-center">
+                        <input type="text" class="w3-input2 text-center" value="9700" disabled>
+                    </div>
+                </div>
+                <div class="row" style="margin-bottom: 5%;">
+                    <div class="col-7 text-center">
+                        <input type="text" class="w3-input2 text-center" value="กระจกหน้ารถฟอร์ด" disabled>
+                    </div>
+                    <div class="col-4 text-center">
+                        <input type="text" class="w3-input2 text-center" value="9800" disabled>
+                    </div>
+                </div>
+                <hr style="margin-bottom: 10%;">
+            </div>
+
+            <div class="row" style="margin-bottom: 35%;">
                 <div class="col-12 text-center">
                     <button id="btn-update" class="mbtn" onclick="update_cus();" disabled>บันทึก</button>
                 </div>

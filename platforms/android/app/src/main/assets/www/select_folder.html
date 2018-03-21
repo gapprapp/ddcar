@@ -29,15 +29,41 @@
   </style>
 
   <script>
+    var parent;
     $(document).ready(function() {
       url = new URL(window.location.href);
       folder = url.searchParams.get("folder");
-
-      if(folder != null)
+   
+      if(folder != null){
         $("#h5-title").text(folder);
-      else{
+        parent = folder;
+      } else{
         $("#h5-title").text("หมวดหมู่");
+        parent = "car";
       }
+
+      $.ajax({
+        type: "POST",
+        url:"https://omise-webpack.000webhostapp.com/www/php/get_folder.php",                         
+        data: {'parent' : parent},  
+        success: function(data){            
+            if(data == "last node"){
+              alert("last node");
+            }else{
+              var obj = jQuery.parseJSON(data); 
+              //console.log(obj); 
+              if(obj[obj.length-1] == "last node"){
+                alert("last node have product");
+              }
+              $.each(obj, function(i, field){
+                if(obj.length-1 > i){
+                  console.log(obj[i].title);           
+                }                                                   
+              });                  
+            }                          
+        }               
+      });
+
     });
 
     function disactive(arg) {
@@ -62,15 +88,63 @@
     }
 
     function check(){
-      alert("check");
+      window.location = "select_folder.html?folder=07s";
     }
+
+    function add(){
+      $.ajax({
+        type: "POST",
+        url:"https://omise-webpack.000webhostapp.com/www/php/add_folder.php",           
+        data: {'title' : "2",
+               'parent' : parent},               
+        success: function(data){                             
+            alert(data);           
+        }               
+      });
+    }
+
+    function rename(){
+      $.ajax({
+        type: "POST",
+        url:"https://omise-webpack.000webhostapp.com/www/php/rename_folder.php",           
+        data: {'old_name' : "toyota",
+               'name' : "bmw"},               
+        success: function(data){                             
+            alert(data);           
+        }               
+      });
+    }
+
+    function remove(){
+      $.ajax({
+        type: "POST",
+        url:"https://omise-webpack.000webhostapp.com/www/php/delete_folder.php",           
+        data: {'title' : "bmw"},               
+        success: function(data){                             
+            alert(data);           
+        }               
+      });
+    }
+
+    function page_back(){
+      url = new URL(window.location.href);
+      from = url.searchParams.get("from");
+
+      // from = add / sale
+      if(from == "add"){
+        transition_page_back_flip('add_prod.html');
+      }else if(from == "sale"){
+        transition_page_back_flip('sale.html');
+      }
+    }
+    //transition_page_back_flip('add_prod.html')
   </script>
 </head>
 
 <body>
   <!-- Nav menu top -->
   <div class="row fixed-top navs">
-    <div class="col-1 text-center" onclick="transition_page_back_flip('add_prod.html')">
+    <div class="col-1 text-center" onclick="page_back();">
       <i id="i-back" class="fas fa-angle-left"></i>
     </div>
     <div class="col-10 text-center">
@@ -83,17 +157,17 @@
   <!-- End big container -->
   <div class="container justify-content-center" style="margin-top: 20%;">
     <div class="container">
-      <hr><div class="row" onclick="check();">
+      <hr><div class="row" onclick="add()">
         <div class="col-2"></div>
         <div class="col-8 text-center">
           <h5 id="title">Toyota</h5>
         </div>
         <div class="col-2">
           <i class="fa fa-trash-alt" hidden></i>
-          <i class="fa fa-edit" ></i>
+          <i class="fa fa-edit"></i>
         </div>
       </div><hr>
-      <div class="row" onclick="check();">
+      <div class="row" onclick="check()">
         <div class="col-2"></div>
         <div class="col-8 text-center">
           <h5 id="title">Honda</h5>
@@ -103,21 +177,21 @@
           <i class="fa fa-edit" hidden></i>
         </div>
       </div><hr>
-      <div class="row" onclick="check();">
+      <div class="row" onclick="rename()">
         <div class="col-1"></div>
         <div class="col-10 text-center">
           <h5 id="title">Mazda</h5>
         </div>
         <div class="col-1"></div>
       </div><hr>
-      <div class="row" onclick="check();">
+      <div class="row" onclick="remove()">
         <div class="col-1"></div>
         <div class="col-10 text-center">
           <h5 id="title">Suzuki</h5>
         </div>
         <div class="col-1"></div>
       </div><hr>
-      <div class="row" onclick="check();">
+      <div class="row" onclick="check()">
         <div class="col-2 text-right">
           <i class="fa fa-check"></i>
         </div>

@@ -24,8 +24,9 @@ body{
 }
 
 #i-back{
-	font-size: 130%;
+	font-size: 150%;
 	color: #666666;
+	margin-top: 1px;
 }
 
 .menu {
@@ -54,6 +55,18 @@ body{
 	border: 2px solid #e5e5e5;
 	height: 160%;
 	width: 85%;
+	font-weight: bold;
+	font-size: 120%;
+	color: #666666;
+	letter-spacing: 2px;
+	border-radius: 5px;
+}
+
+.select_folder{
+	background-color: white;
+	border: 2px solid #e5e5e5;
+	height: 130%;
+	width: 70%;
 	font-weight: bold;
 	font-size: 120%;
 	color: #666666;
@@ -94,4 +107,12 @@ label{
 	width:100%;
 	background-color: #fdfdfd;
 	text-align: center;
+}
+
+.badge-notify{
+	background-color: white;
+	border-radius: 50%;
+	border: 1px solid red;
+	font-size: 95%;
+	color: red;
 }

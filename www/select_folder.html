@@ -125,13 +125,26 @@
         }               
       });
     }
+
+    function page_back(){
+      url = new URL(window.location.href);
+      from = url.searchParams.get("from");
+
+      // from = add / sale
+      if(from == "add"){
+        transition_page_back_flip('add_prod.html');
+      }else if(from == "sale"){
+        transition_page_back_flip('sale.html');
+      }
+    }
+    //transition_page_back_flip('add_prod.html')
   </script>
 </head>
 
 <body>
   <!-- Nav menu top -->
   <div class="row fixed-top navs">
-    <div class="col-1 text-center" onclick="transition_page_back_flip('add_prod.html')">
+    <div class="col-1 text-center" onclick="page_back();">
       <i id="i-back" class="fas fa-angle-left"></i>
     </div>
     <div class="col-10 text-center">
