@@ -63,6 +63,10 @@
             transition_page_next_flip(goto);
         }
 
+        function scanqr(){
+            alert("qr show");
+        }
+
     </script>
 </head>
 
@@ -99,14 +103,9 @@
                     <input id="barcode" type="text" class="w3-input">
                 </div>
             </div>
-            <div id="row-img" class="row" style="margin-bottom: 5%;" hidden>
-                <div class="col-12 text-center">
-                    <img src="https://c2.staticflickr.com/4/3891/14354989289_2eec0ba724_b.jpg" alt="" style="width: 96%; height: 96%;">
-                </div>
-            </div>
             <div class="row" style="margin-bottom: 15%;">
                 <div class="col-12 text-center">
-                    <button id="btn-addpic" class="mbtn" onclick="addpic();" style="width: 70%; color: green; border-color: green;">สแกน</button>
+                    <button id="btn-qr" class="mbtn" onclick="scanqr();" style="width: 70%; color: green; border-color: green;">สแกน</button>
                 </div>
             </div>
             <div class="row" style="margin-bottom: 15%;">

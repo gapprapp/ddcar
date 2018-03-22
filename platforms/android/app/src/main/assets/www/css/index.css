@@ -109,6 +109,14 @@ label{
 	text-align: center;
 }
 
+.w3-input2{
+	display:block;
+	border:none;
+	width:100%;
+	background-color: #fdfdfd;
+	text-align: center;
+}
+
 .badge-notify{
 	background-color: white;
 	border-radius: 50%;

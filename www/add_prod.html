@@ -33,7 +33,15 @@
   </style>
 
   <script>
-    $(document).ready(function() {});
+    $(document).ready(function() {
+      url = new URL(window.location.href);
+      folder = url.searchParams.get("folder");
+      if(folder != null){
+        $("#slct_folder").text(folder);
+      }else{
+        $("#slct_folder").text("เลือกหมวดหมู่");
+      }
+    });
 
     function disactive(arg) {
       nav_menu = ['home', 'bell', 'qrcode', 'bars'];
@@ -76,45 +84,44 @@
     function add_prod(){
       var name = $('#name').val();
       var code = $('#barcode').val();
+      url = new URL(window.location.href);
+      folder = url.searchParams.get("folder");
+      var parent = folder;
+              
+      if(name != "" && code != ""){
+          var image = document.getElementById('img');       
+          var fileURL = image.src;
+          var filename = fileURL.substr(fileURL.lastIndexOf('/') + 1).split("?");
+          
+          var success = function (r) {                
+              //alert(r.response);  
+              if(r.response != "fail"){                           
+                  out();
+              }else{
+                  alert("ลองอีกครั้ง");
+              }                                                   
+          }
 
-      $('#img').each(function () {
-          if(this.src.length > 0){
-            if(name != "" && code != ""){
-                var image = document.getElementById('img');       
-                var fileURL = image.src;
-                var filename = fileURL.substr(fileURL.lastIndexOf('/') + 1).split("?");
-                
-                var success = function (r) {                
-                    //alert(r.response);  
-                    if(r.response != "fail"){                           
-                        out();
-                    }else{
-                        alert("ลองอีกครั้ง");
-                    }                                                   
-                }
+          var fail = function (error) {
+              alert("An error has occurred: Code = " + error);
+          }
 
-                var fail = function (error) {
-                    alert("An error has occurred: Code = " + error);
-                }
+          var options = new FileUploadOptions();
+          options.fileKey = "file";
+          options.fileName = filename[0];
+          options.mimeType = "image/jpeg";       
+          //options.chunkedMode = false;        
+          
+          var ft = new FileTransfer();                   
+          ft.upload(fileURL,
+              "https://omise-webpack.000webhostapp.com/www/php/add_prod.php?name_prod="+name+"&code="+code+"&parent="+parent+""
+          , success, fail, options);
 
-                var options = new FileUploadOptions();
-                options.fileKey = "file";
-                options.fileName = filename[0];
-                options.mimeType = "image/jpeg";       
-                //options.chunkedMode = false;        
-                
-                var ft = new FileTransfer();                   
-                ft.upload(fileURL,
-                    "https://omise-webpack.000webhostapp.com/www/php/add_prod.php?name_prod="+name+"&code="+code+""
-                , success, fail, options);
-
-            }else{
-                alert("ข้อมูลว่างอยู่!");
-            }
-          }else{
-              alert("ไม่มีรูปภาพ!");
-          }              
-      });   
+      }else{
+          alert("ข้อมูลว่างอยู่!");
+      }
+                  
+        
     }
 
     function out(){  
@@ -152,7 +159,7 @@
     <div class="container">
       <div class="row" style="margin-bottom: 15%;">
         <div class="col-12 text-center" onclick="selectfolder();">
-          <button class="select_folder">เลือกหมวดหมู่</button>
+          <button id="slct_folder" class="select_folder">เลือกหมวดหมู่</button>
         </div>
       </div>
       <div class="row" style="margin-bottom: 10%;">
@@ -169,7 +176,6 @@
       </div>
       <div id="row-img" class="row" style="margin-bottom: 5%;" hidden>
         <div class="col-12 text-center">
-          <img src="https://c2.staticflickr.com/4/3891/14354989289_2eec0ba724_b.jpg" alt="" style="width: 96%; height: 96%;">
           <a id="a"><img id='img' src="https://c2.staticflickr.com/4/3891/14354989289_2eec0ba724_b.jpg" alt="" style="width: 96%; height: 96%;"></a>
         </div>
       </div>
@@ -181,7 +187,6 @@
       <div class="row" style="margin-bottom: 15%;">
         <div class="col-12 text-center">
           <button class="mbtn" onclick="add_prod();">เพิ่มสินค้า</button>
-          <button class="mbtn" onclick="add_prod()">เพิ่มสินค้า</button>
         </div>
       </div>
     </div>

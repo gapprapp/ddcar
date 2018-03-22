@@ -30,6 +30,7 @@
 
   <script>
     var parent;
+    var index;
     $(document).ready(function() {
       url = new URL(window.location.href);
       folder = url.searchParams.get("folder");
@@ -48,8 +49,17 @@
         data: {'parent' : parent},  
         success: function(data){            
             if(data == "last node"){
-              alert("last node");
+              // เลือกกับเข้าไป
+              if(parent == "car"){
+                $("#add-ctn").prop('hidden', false);
+              }else{
+                $("#add-ctn").prop('hidden', false);
+                $("#row-select").prop('hidden', false);
+              }
             }else{
+              $("#main-ctn").prop('hidden', false);
+              $("#add-ctn").prop('hidden', true);
+
               var obj = jQuery.parseJSON(data); 
               //console.log(obj); 
               if(obj[obj.length-1] == "last node"){
@@ -57,13 +67,35 @@
               }
               $.each(obj, function(i, field){
                 if(obj.length-1 > i){
-                  console.log(obj[i].title);           
-                }                                                   
+                  text_html = "<div id='row-title-"+i+"' class='row'>" +
+                    "<div class='col-2'></div>" +
+                    "<div id='getin-"+i+"' class='col-8 text-center' onclick='getIn(\"" + obj[i].title + "\")'>" +
+                    "<h5 id='title-"+i+"'>" + obj[i].title + "</h5>" +
+                    "</div>" +
+                    "<div class='col-2'>" +
+                    "<i class='fa fa-trash-alt i-trash' onclick='remove("+i+")' hidden></i>" +
+                    "<i class='fa fa-edit i-edit' onclick='edit("+i+")' hidden></i>" +
+                    "</div>" +
+                    "</div >"+
+                    "<div id='row-edit-"+i+"' class='row' hidden>" +
+                    "<div class='col-2 text-right' onclick='rename("+i+");'>" +
+                    "<i class='fa fa-check'></i>" +
+                    "</div >" +
+                    "<div class='col-8 text-center'>" +
+                    "<input id='input-"+i+"' type='text' class='w3-input' value='"+ obj[i].title +"'>" +
+                    "</div>" +
+                    "<div class='col-2' onclick='close_row_edit("+i+");'>" +
+                    "<i class='fa fa-times'></i>" +
+                    "</div>" +
+                    "</div>" + "<hr id='hr-"+i+"'>";
+                  $("#append-ctn").append(text_html);
+                  index = i;
+                }                                                 
               });                  
             }                          
         }               
       });
-
+        // index = i;
     });
 
     function disactive(arg) {
@@ -75,6 +107,10 @@
       }
     }
 
+    function disac(arg){
+      if ($("#i-" + arg).hasClass('active')) $("#i-" + arg).removeClass('active');
+    }
+
     function menu(arg) {
       // Animate
       disactive(arg);
@@ -83,59 +119,213 @@
       });
 
       if(arg == "add"){
-
+        if($("#input-row").is(":visible")) return 0;
+        text_input = "<div id='input-row' class='row'>"+
+          "<div class='col-2 text-right' onclick='add();'>"+
+            "<i class='fa fa-check'></i>"+
+          "</div >"+
+          "<div class='col-8 text-center'>"+
+            "<input id='input-add' type='text' class='w3-input'>"+
+          "</div>"+
+            "<div class='col-2' onclick='input_clear();'>"+
+              "<i class='fa fa-times'></i>"+
+            "</div>"+
+          "</div>";
+        $("#append-ctn").append(text_input);
+        //add();
+      }else if(arg == "home"){
+        window.location = "index.html";
+      }else if(arg == "edit"){
+        if ($(".i-edit").is(":visible")) {
+          $(".i-trash").attr('hidden', true);
+          $(".i-edit").attr('hidden', true);
+          disac("edit");
+        } else {
+          $(".i-trash").attr('hidden', true);
+          $(".i-edit").attr('hidden', false);
+        }
+      }else if(arg == "del"){
+        if($(".i-trash").is(":visible")){
+          $(".i-edit").attr('hidden', true);
+          $(".i-trash").attr('hidden', true);
+          disac("del");
+        }else{
+          $(".i-edit").attr('hidden', true);
+          $(".i-trash").attr('hidden', false);
+        }
       }
     }
 
-    function check(){
-      window.location = "select_folder.html?folder=07s";
+    function getIn(arg){
+      url = new URL(window.location.href);
+      from = url.searchParams.get("from");
+      goto = "select_folder.html?from="+ from+ "&folder=" +arg;
+      transition_page_next(goto);
     }
 
     function add(){
-      $.ajax({
-        type: "POST",
-        url:"https://omise-webpack.000webhostapp.com/www/php/add_folder.php",           
-        data: {'title' : "2",
-               'parent' : parent},               
-        success: function(data){                             
-            alert(data);           
-        }               
-      });
+      // First State
+      if(!$("#main-ctn").is(":visible")){
+        input = $("#first-add").val();
+        if(input != ""){
+          $.ajax({
+            type: "POST",
+            url: "https://omise-webpack.000webhostapp.com/www/php/add_folder.php",
+            data: {
+              'title': input,
+              'parent': parent
+            },
+            success: function (data) {
+              if (data == "success") {
+                index++;
+                text_html = "<div id='row-title-" + index + "' class='row'>" +
+                  "<div class='col-2'></div>" +
+                  "<div id='getin-" + index + "' class='col-8 text-center' onclick='getIn(\"" + input + "\")'>" +
+                  "<h5 id='title-" + index + "'>" + input + "</h5>" +
+                  "</div>" +
+                  "<div class='col-2'>" +
+                  "<i class='fa fa-trash-alt i-trash' onclick='remove(" + index + ")' hidden></i>" +
+                  "<i class='fa fa-edit i-edit' onclick='edit(" + index + ")' hidden></i>" +
+                  "</div>" +
+                  "</div >" +
+                  "<div id='row-edit-" + index + "' class='row' hidden>" +
+                  "<div class='col-2 text-right' onclick='rename(" + index + ");'>" +
+                  "<i class='fa fa-check'></i>" +
+                  "</div >" +
+                  "<div class='col-8 text-center'>" +
+                  "<input id='input-" + index + "' type='text' class='w3-input' value='" + input + "'>" +
+                  "</div>" +
+                  "<div class='col-2' onclick='close_row_edit(" + index + ");'>" +
+                  "<i class='fa fa-times'></i>" +
+                  "</div>" +
+                  "</div>" + "<hr id='hr-" + index + "'>";
+                $("#main-ctn").prop('hidden', false);
+                $("#add-ctn").prop('hidden', true);
+                $("#append-ctn").append(text_html);
+              } else {
+                alert("เซิร์ฟเวอร์มีปัญหา กรุณาเข้าใหม่อีกครั้ง")
+              }
+            }
+          });
+        }else{
+          alert("กรอกหมวดหมู่ก่อนเพิ่ม");
+        }
+      }else{
+        input = $("#input-add").val();
+        if(input != "") {
+          $.ajax({
+            type: "POST",
+            url: "https://omise-webpack.000webhostapp.com/www/php/add_folder.php",
+            data: {
+              'title': input,
+              'parent': parent
+            },
+            success: function (data) {
+              if(data == "success"){
+                index++;
+                text_html = "<div id='row-title-" + index + "' class='row'>" +
+                  "<div class='col-2'></div>" +
+                  "<div id='getin-" + index + "' class='col-8 text-center' onclick='getIn(\"" + input + "\")'>" +
+                  "<h5 id='title-" + index + "'>" + input + "</h5>" +
+                  "</div>" +
+                  "<div class='col-2'>" +
+                  "<i class='fa fa-trash-alt i-trash' onclick='remove(" + index + ")' hidden></i>" +
+                  "<i class='fa fa-edit i-edit' onclick='edit(" + index + ")' hidden></i>" +
+                  "</div>" +
+                  "</div >" +
+                  "<div id='row-edit-" + index + "' class='row' hidden>" +
+                  "<div class='col-2 text-right' onclick='rename(" + index + ");'>" +
+                  "<i class='fa fa-check'></i>" +
+                  "</div >" +
+                  "<div class='col-8 text-center'>" +
+                  "<input id='input-" + index + "' type='text' class='w3-input' value='" + input + "'>" +
+                  "</div>" +
+                  "<div class='col-2' onclick='close_row_edit(" + index + ");'>" +
+                  "<i class='fa fa-times'></i>" +
+                  "</div>" +
+                  "</div>" + "<hr id='hr-" + index + "'>";
+                $("#input-row").remove();
+                $("#append-ctn").append(text_html);
+              }else{
+                alert("เซิร์ฟเวอร์มีปัญหา กรุณาเข้าใหม่อีกครั้ง")
+              }
+            }
+          });
+        }else{
+          alert("กรอกหมวดหมู่ก่อนเพิ่ม");
+        }
+        disactive(add);
+      }
     }
 
-    function rename(){
+    function close_row_edit(arg){
+      old_name = $("#title-" + arg).text();
+      $("#input-" + arg).val(old_name);
+      $("#row-title-" + arg).prop('hidden', false);
+      $("#row-edit-" + arg).prop('hidden', true); 
+    }
+
+    function edit(arg){
+      $("#row-title-" + arg).prop('hidden', true);
+      $("#row-edit-" + arg).prop('hidden', false);
+    }
+
+    function rename(arg){
+      old_name = $("#title-"+arg).text();
+      name = $("#input-"+arg).val();
+
+      // input hidden false
+      // h5 hidden true
       $.ajax({
         type: "POST",
         url:"https://omise-webpack.000webhostapp.com/www/php/rename_folder.php",           
-        data: {'old_name' : "toyota",
-               'name' : "bmw"},               
+        data: {'old_name' : old_name,
+               'name' : name},               
         success: function(data){                             
-            alert(data);           
+            $("#title-" + arg).text(name) 
+            $("#getin-"+arg).attr("onclick", "getIn(\"" + name + "\")");
+            $("#row-title-" + arg).prop('hidden', false);
+            $("#row-edit-" + arg).prop('hidden', true);          
         }               
       });
     }
 
-    function remove(){
+    function remove(arg){
+      title = $("#title-" + arg).text();
+      $("#hr-"+arg).remove();
+      $("#row-title-" + arg).remove();
+      $("#row-edit-" + arg).remove();
+
       $.ajax({
         type: "POST",
         url:"https://omise-webpack.000webhostapp.com/www/php/delete_folder.php",           
-        data: {'title' : "bmw"},               
+        data: {'title' : title},               
         success: function(data){                             
-            alert(data);           
+            //alert(data);           
         }               
       });
     }
 
-    function page_back(){
+    function input_clear(){
+      $("#input-row").remove();
+      disactive(add);
+    }
+
+    function select(){
       url = new URL(window.location.href);
       from = url.searchParams.get("from");
-
-      // from = add / sale
       if(from == "add"){
-        transition_page_back_flip('add_prod.html');
+        goto = "add_prod.html?folder="+parent;
       }else if(from == "sale"){
-        transition_page_back_flip('sale.html');
+        goto = "sale.html?folder=" + parent;
       }
+      
+      transition_page_back_flip(goto);
+    }
+
+    function page_back(){
+      goto = window.history.back();
+      transition_page_back(goto);
     }
     //transition_page_back_flip('add_prod.html')
   </script>
@@ -155,54 +345,28 @@
   </div><br>
 
   <!-- End big container -->
-  <div class="container justify-content-center" style="margin-top: 20%;">
+  <div id="main-ctn" class="container justify-content-center" style="margin-top: 20%;" hidden>
+    <div id="append-ctn" class="container">
+    </div>
+  </div>
+
+  <div id="add-ctn" class="container justify-content-center" style="margin-top: 50%;" hidden>
     <div class="container">
-      <hr><div class="row" onclick="add()">
-        <div class="col-2"></div>
-        <div class="col-8 text-center">
-          <h5 id="title">Toyota</h5>
+      <div class="row" style="margin-bottom: 10%;">
+        <div class="col-12 text-center">
+          <input id="first-add" type="text" class="w3-input" placeholder="เพิ่มหมวดหมู่">
         </div>
-        <div class="col-2">
-          <i class="fa fa-trash-alt" hidden></i>
-          <i class="fa fa-edit"></i>
+      </div>
+      <div id="row-add" class="row" style="margin-bottom: 15%;">
+        <div class="col-12 text-center">
+          <button class="mbtn" onclick="add();">เพิ่มหมวดหมู่</button>
         </div>
-      </div><hr>
-      <div class="row" onclick="check()">
-        <div class="col-2"></div>
-        <div class="col-8 text-center">
-          <h5 id="title">Honda</h5>
+      </div>
+      <div id="row-select" class="row" hidden>
+        <div class="col-12 text-center">
+          <button class="mbtn" onclick="select();">เลือก</button>
         </div>
-        <div class="col-2">
-          <i class="fa fa-trash-alt"></i>
-          <i class="fa fa-edit" hidden></i>
-        </div>
-      </div><hr>
-      <div class="row" onclick="rename()">
-        <div class="col-1"></div>
-        <div class="col-10 text-center">
-          <h5 id="title">Mazda</h5>
-        </div>
-        <div class="col-1"></div>
-      </div><hr>
-      <div class="row" onclick="remove()">
-        <div class="col-1"></div>
-        <div class="col-10 text-center">
-          <h5 id="title">Suzuki</h5>
-        </div>
-        <div class="col-1"></div>
-      </div><hr>
-      <div class="row" onclick="check()">
-        <div class="col-2 text-right">
-          <i class="fa fa-check"></i>
-        </div>
-        <div class="col-8 text-center">
-          <h5 id="title" hidden>Suzuki</h5>
-          <input id="email" type="text" class="w3-input">
-        </div>
-        <div class="col-2">
-          <i class="fa fa-times"></i>
-        </div>
-      </div><hr>
+      </div>
     </div>
   </div>
   <!-- End big container -->

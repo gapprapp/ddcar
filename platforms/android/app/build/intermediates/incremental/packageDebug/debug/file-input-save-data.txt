@@ -1,5 +1,5 @@
 #Internal package file, do not edit.
-#Wed Mar 21 22:11:54 ICT 2018
+#Thu Mar 22 14:47:27 ICT 2018
 210.set=ANDROID_RESOURCE
 14.set=ASSET
 180.file=/Users/phoenix/Documents/ddcar/platforms/android/app/build/intermediates/assets/debug/www/php/get_folder.php
