@@ -72,8 +72,7 @@
 
       function onSuccess(imageData) {                
           var image = document.getElementById('img');
-          image.src =  imageData;  
-          $('#a').attr("href",imageData);                      
+          image.src =  imageData;                        
       }
 
       function onFail(message) {
@@ -89,36 +88,56 @@
       var parent = folder;
               
       if(name != "" && code != ""){
-          var image = document.getElementById('img');       
-          var fileURL = image.src;
-          var filename = fileURL.substr(fileURL.lastIndexOf('/') + 1).split("?");
-          
-          var success = function (r) {                
-              //alert(r.response);  
-              if(r.response != "fail"){                           
+        $('#img').each(function () {
+          if(this.src.length > 0){  
+            var image = document.getElementById('img');       
+            var fileURL = image.src;
+            var filename = fileURL.substr(fileURL.lastIndexOf('/') + 1).split("?");
+            
+            var success = function (r) {                
+                //alert(r.response);  
+              if(r.response == "success"){                           
                   out();
               }else{
                   alert("ลองอีกครั้ง");
               }                                                   
-          }
+            }
 
-          var fail = function (error) {
+            var fail = function (error) {
               alert("An error has occurred: Code = " + error);
-          }
+            }
 
-          var options = new FileUploadOptions();
-          options.fileKey = "file";
-          options.fileName = filename[0];
-          options.mimeType = "image/jpeg";       
-          //options.chunkedMode = false;        
-          
-          var ft = new FileTransfer();                   
-          ft.upload(fileURL,
-              "https://omise-webpack.000webhostapp.com/www/php/add_prod.php?name_prod="+name+"&code="+code+"&parent="+parent+""
-          , success, fail, options);
+            var options = new FileUploadOptions();
+            options.fileKey = "file";
+            options.fileName = filename[0];
+            options.mimeType = "image/jpeg";       
+            //options.chunkedMode = false;        
+            
+            var ft = new FileTransfer();                   
+            ft.upload(fileURL,
+                "https://omise-webpack.000webhostapp.com/www/php/add_prod.php?name_prod="+name+"&code="+code+"&parent="+parent+""
+            , success, fail, options);
 
+          }else{
+            $.ajax({
+              type: "POST",
+              url:"https://omise-webpack.000webhostapp.com/www/php/add_prod_noimg.php",           
+              data: {'name_prod' : name,
+                    'code' : code,
+                    'parent' : parent},               
+              success: function(data){                             
+                if(data == "success"){
+                  out();
+                }else{
+                  alert("ลองอีกครั้ง");
+                }
+              }               
+            });
+          }              
+        });   
+      
       }else{
-          alert("ข้อมูลว่างอยู่!");
+          alert("กรุณากรอกข้อมูลให้ครบ!");
       }
                   
         
@@ -176,7 +195,7 @@
       </div>
       <div id="row-img" class="row" style="margin-bottom: 5%;" hidden>
         <div class="col-12 text-center">
-          <a id="a"><img id='img' src="https://c2.staticflickr.com/4/3891/14354989289_2eec0ba724_b.jpg" alt="" style="width: 96%; height: 96%;"></a>
+         <img id='img' alt="" style="width: 96%; height: 96%;">
         </div>
       </div>
       <div class="row" style="margin-bottom: 15%;">

@@ -56,16 +56,19 @@
                 $("#add-ctn").prop('hidden', false);
                 $("#row-select").prop('hidden', false);
               }
-            }else{
-              $("#main-ctn").prop('hidden', false);
-              $("#add-ctn").prop('hidden', true);
-
+            }else{           
               var obj = jQuery.parseJSON(data); 
               //console.log(obj); 
               if(obj[obj.length-1] == "last node"){
                 alert("last node have product");
-              }
-              $.each(obj, function(i, field){
+                $("#add-ctn").prop('hidden', false);
+                $("#row-add").prop('hidden', true);
+                $("#row-input-add").prop('hidden', true);
+                $("#row-select").prop('hidden', false);
+              }else{
+                $("#main-ctn").prop('hidden', false);      
+                $("#add-ctn").prop('hidden', true);
+                $.each(obj, function(i, field){
                 if(obj.length-1 > i){
                   text_html = "<div id='row-title-"+i+"' class='row'>" +
                     "<div class='col-2'></div>" +
@@ -90,8 +93,9 @@
                     "</div>" + "<hr id='hr-"+i+"'>";
                   $("#append-ctn").append(text_html);
                   index = i;
-                }                                                 
-              });                  
+                  }                                                 
+                }); 
+              }                               
             }                          
         }               
       });
@@ -352,7 +356,7 @@
 
   <div id="add-ctn" class="container justify-content-center" style="margin-top: 50%;" hidden>
     <div class="container">
-      <div class="row" style="margin-bottom: 10%;">
+      <div id="row-input-add" class="row" style="margin-bottom: 10%;">
         <div class="col-12 text-center">
           <input id="first-add" type="text" class="w3-input" placeholder="เพิ่มหมวดหมู่">
         </div>

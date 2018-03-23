@@ -9,8 +9,7 @@
     $image_base64 = base64_encode(file_get_contents($_FILES['file']['tmp_name']) );
     $image = 'data:image/jpeg;base64,'.$image_base64;
 
-    $sql = "INSERT INTO product(prod_name,prod_code,img) 
-    VALUE ('$name','$code','".$image."')";
+    $sql = "INSERT INTO product(prod_name,prod_code,img) VALUE ('$name','$code','".$image."')";
     $result = mysqli_query($conn, $sql);    
     $title = mysqli_insert_id($conn);	
 
@@ -37,8 +36,6 @@
     }else{
         echo "fail";
         mysqli_rollback($conn);
-    }
-
-    
+    }   
     mysqli_close($conn);
 ?>
