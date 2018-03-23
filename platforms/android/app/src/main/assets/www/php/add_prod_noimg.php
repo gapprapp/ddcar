@@ -1,15 +1,11 @@
 <?php
     $conn = mysqli_connect("localhost", "id3340019_dd", "pkl2468GG", "id3340019_dd");
-    $name  = $_GET['name_prod'];    
-    $code  = $_GET['code'];   
-    $parent  = $_GET['parent'];
+    $name  = $_POST['name_prod'];    
+    $code  = $_POST['code'];   
+    $parent  = $_POST['parent'];
 
-    mysqli_autocommit($conn,FALSE);   
-    // Convert to base64 
-    $image_base64 = base64_encode(file_get_contents($_FILES['file']['tmp_name']) );
-    $image = 'data:image/jpeg;base64,'.$image_base64;
-
-    $sql = "INSERT INTO product(prod_name,prod_code,img) VALUE ('$name','$code','".$image."')";
+    mysqli_autocommit($conn,FALSE);
+    $sql = "INSERT INTO product(prod_name,prod_code) VALUE ('$name','$code')";
     $result = mysqli_query($conn, $sql);    
     $title = mysqli_insert_id($conn);	
 
@@ -36,6 +32,6 @@
     }else{
         echo "fail";
         mysqli_rollback($conn);
-    }   
+    }    
     mysqli_close($conn);
 ?>

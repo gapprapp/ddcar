@@ -4,13 +4,11 @@
     $code  = $_GET['code'];   
     $parent  = $_GET['parent'];
 
-    if(isset($_FILES['file']['tmp_name'])){
-        $image_base64 = base64_encode(file_get_contents($_FILES['file']['tmp_name']) );
-        $image = 'data:image/jpeg;base64,'.$image_base64;
-    }else{
-        $image = "";
-    }
-    mysqli_autocommit($conn,FALSE);
+    mysqli_autocommit($conn,FALSE);   
+    // Convert to base64 
+    $image_base64 = base64_encode(file_get_contents($_FILES['file']['tmp_name']) );
+    $image = 'data:image/jpeg;base64,'.$image_base64;
+
     $sql = "INSERT INTO product(prod_name,prod_code,img) VALUE ('$name','$code','".$image."')";
     $result = mysqli_query($conn, $sql);    
     $title = mysqli_insert_id($conn);	
@@ -38,8 +36,6 @@
     }else{
         echo "fail";
         mysqli_rollback($conn);
-    }
-
-    
+    }   
     mysqli_close($conn);
 ?>
