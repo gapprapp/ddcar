@@ -16,7 +16,17 @@
     "phonegap-plugin-barcodescanner": {
       "ANDROID_SUPPORT_V4_VERSION": "27.+",
       "PACKAGE_NAME": "com.gitmew.ddcar"
+    },
+    "cordova-plugin-file-transfer": {
+      "PACKAGE_NAME": "com.gitmew.ddcar"
+    },
+    "cordova-plugin-camera": {
+      "PACKAGE_NAME": "com.gitmew.ddcar"
     }
   },
-  "dependent_plugins": {}
+  "dependent_plugins": {
+    "cordova-plugin-file": {
+      "PACKAGE_NAME": "com.gitmew.ddcar"
+    }
+  }
 }
