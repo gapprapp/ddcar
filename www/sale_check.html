@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Home</title>
+    <!-- Bootstrap Import -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <script type="text/javascript" src="js/jquery-3.3.1.min.js"></script>
+    <script type="text/javascript" src="js/jquery-ui.min.js"></script>
+    <script type="text/javascript" src="js/jquery.easing.1.3.min.js"></script>
+    <script type="text/javascript" src="js/transition.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.6/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+    <script defer src="https://use.fontawesome.com/releases/v5.0.8/js/all.js"></script>
+    <script src="cordova.js"></script>
+
+    <link rel="stylesheet" href="css/index.css">
+
+    <!-- Font -->
+    <link href="https://fonts.googleapis.com/css?family=Prompt" rel="stylesheet">
+
+    <style>
+        #title {
+            color: #666666;
+            letter-spacing: 2px;
+        }
+
+        .no-pd {
+            padding-right: 0px;
+            padding-left: 0px;
+        }
+
+        hr {
+            margin-top: 0;
+        }
+    </style>
+
+    <script>
+        $(document).ready(function () { });
+
+        function disactive(arg) {
+            nav_menu = ['home', 'add', 'edit', 'del'];
+            for (i = 0; i < 4; i++) {
+                if (nav_menu[i] != arg) {
+                    if ($("#i-" + nav_menu[i]).hasClass('active')) $("#i-" + nav_menu[i]).removeClass('active');
+                }
+            }
+        }
+
+        function menu(arg) {
+            // Animate
+            disactive(arg);
+            $("#i-" + arg).fadeOut(100).fadeIn(100, function () {
+                $("#i-" + arg).addClass('active');
+            });
+
+            if (arg == "add") {
+                goto = "customer_add.html";
+                transition_page_next_flip(goto);
+            } else if (arg == "edit") {
+                // show edit all
+                $(".i-edit").attr('hidden', false);
+                $(".i-del").attr('hidden', true);
+            } else if (arg == "del") {
+                // show trash all 
+                $(".i-del").attr('hidden', false);
+                $(".i-edit").attr('hidden', true);
+            }
+        }
+
+        function show_cus(arg) {
+            goto = "customer_show.html?cus=" + arg;
+            transition_page_next(goto);
+        }
+
+        function edit_prod(arg) {
+            $("#i-edit-"+arg).attr('hidden', true);
+            $("#i-check-"+arg).attr('hidden', false);
+            $("#amount-"+arg).removeAttr('style');
+            $("#price-" + arg).removeAttr('style');
+            $("#amount-"+arg).attr("readonly", false);
+            $("#price-" + arg).attr("readonly", false);
+        }
+
+        function update_prod(arg){
+            $("#i-edit-"+arg).attr('hidden', true);
+            $("#i-check-"+arg).attr('hidden', true);
+            $("#amount-" + arg).css('border', 'none');
+            $("#price-" + arg).css('border', 'none');
+            $("#amount-" + arg).attr("readonly", true);
+            $("#price-" + arg).attr("readonly", true);
+            alert("บันทึกการเปลี่ยนแปลง")
+        }
+        
+        function collapse(arg){
+            $("#collapse-"+arg).slideToggle('collapse');
+        }
+    </script>
+</head>
+
+<body>
+    <!-- Nav menu top -->
+    <div class="row fixed-top navs">
+        <div class="col-1 text-center" onclick="transition_page_back('index.html')">
+            <i id="i-back" class="fas fa-angle-left"></i>
+        </div>
+        <div class="col-10 text-center">
+            <h5 id="h5-title">ตรวจสอบ</h5>
+        </div>
+        <div class="col-1">
+        </div>
+    </div>
+    <br>
+
+    <!-- End big container -->
+    <div class="container justify-content-center" style="margin-top: 15%;">
+
+        <div class="container">
+            <div class="row" style="margin-bottom: 5%;">
+                <div class="col-3 text-center no-pd">วันที่ : </div>
+                <div class="col-2 text-center no-pd">31/11/2011</div>
+                <div class="col-2 text-center no-pd"></div>
+                <div class="col-4 text-center no-pd">เลขที่ใบเสร็จ : </div>
+                <div class="col-1 text-center no-pd">2</div>
+            </div>
+            <div class="row" style="margin-bottom: 10%;">
+                <div class="col-3 text-center no-pd">ผู้ขาย : </div>
+                <div class="col-3 text-center no-pd">ศิริพร</div>
+                <div class="col-1 text-center no-pd"></div>
+                <div class="col-2 text-center no-pd">ลูกค้า : </div>
+                <div class="col-3 text-center no-pd">
+                    <input type="text" class="w3-input" value="สมจิต">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-1 text-center no-pd"></div>
+                <div class="col-6 text-center no-pd">
+                    <h5 id="title">สินค้า</h5>
+                </div>
+                <div class="col-3 text-center">
+                    <h5 id="title">ราคา</h5>
+                </div>
+            </div>
+            <hr>
+
+            <!-- Show -->
+            <div id="prod-1" class="row">
+                <span id="id-prod-1" hidden>id</span>
+                <div class="col-1 text-center no-pd">
+                    <i id="i-del-1" class="fa fa-trash-alt i-del" hidden></i>
+                    <i id="i-edit-1" class="fa fa-edit i-edit" onclick="edit_prod('1');" hidden></i>
+                    <i id="i-check-1" class="fa fa-check i-check" onclick="update_prod('1');" hidden style="color: green;"></i>
+                </div>
+                <div class="col-6 text-center no-pd" data-toggle="collapse" data-target="#collapse-1">ไฟหน้าเรนเจอร์ปี 08</div>
+                <div class="col-3 text-center">
+                    <input id="price-1" type="text" class="w3-input" value="1000" style="border: none;">
+                </div>
+                <span>x</span>
+                <div  class="col-1 text-center no-pd">
+                    <input id="amount-1" type="text" class="w3-input" value="5" style="border: none;" readonly>
+                </div>
+            </div>
+
+            <!-- Collapse-1 -->
+            <div id="collapse-1" class="container collapse" style="margin-top: 5%;">
+                <div class="row">
+                    <div class="col-12 text-center">
+                        <img id='img' src="https://c2.staticflickr.com/4/3891/14354989289_2eec0ba724_b.jpg" alt="" style="width: 96%; height: 96%; border-radius: 3px;">
+                    </div>
+                </div>
+                <div class="row" style="margin-bottom: 4%; margin-top: 4%;">
+                    <div class="col-2"></div>
+                    <div class="col-4 text-center no-pd">รหัส : </div>
+                    <div class="col-4 text-center no-pd">fdrng0408</div>
+                    <div class="col-2"></div>
+                </div>
+                <div class="row" style="margin-bottom: 4%;">
+                    <div class="col-2"></div>
+                    <div class="col-4 text-center no-pd">รวม : </div>
+                    <div class="col-4 text-center no-pd">5000</div>
+                    <div class="col-2"></div>
+                </div>
+                <div class="row">
+                    <div class="col-2"></div>
+                    <div class="col-4 text-center no-pd">คงเหลือ : </div>
+                    <div class="col-4 text-center no-pd">15</div>
+                    <div class="col-2"></div>
+                </div>
+            </div><hr style="margin-top: 5%;">
+
+            <div id="prod-2" class="row">
+                <span id="id-prod-2" hidden>id</span>
+                <div class="col-1 text-center no-pd">
+                    <i id="i-del-2" class="fa fa-trash-alt i-del" hidden></i>
+                    <i id="i-edit-2" class="fa fa-edit i-edit" onclick="edit_prod('1');" hidden></i>
+                    <i id="i-check-2" class="fa fa-check i-check" onclick="update_prod('1');" hidden style="color: green;"></i>
+                </div>
+                <div class="col-6 text-center no-pd" data-toggle="collapse" data-target="#collapse-2">ไฟหน้าเรนเจอร์ปี 08</div>
+                <div class="col-3 text-center">
+                    <input id="price-2" type="text" class="w3-input" value="1000" style="border: none;">
+                </div>
+                <span>x</span>
+                <div class="col-1 text-center no-pd">
+                    <input id="amount-2" type="text" class="w3-input" value="5" style="border: none;" readonly>
+                </div>
+            </div>
+            
+            <!-- Collapse-2 -->
+            <div id="collapse-2" class="container collapse" style="margin-top: 5%;">
+                <div class="row">
+                    <div class="col-12 text-center">
+                        <img id='img' src="https://c2.staticflickr.com/4/3891/14354989289_2eec0ba724_b.jpg" alt="" style="width: 96%; height: 96%; border-radius: 3px;">
+                    </div>
+                </div>
+                <div class="row" style="margin-bottom: 4%; margin-top: 4%;">
+                    <div class="col-2"></div>
+                    <div class="col-4 text-center no-pd">รหัส : </div>
+                    <div class="col-4 text-center no-pd">fdrng0408</div>
+                    <div class="col-2"></div>
+                </div>
+                <div class="row" style="margin-bottom: 4%;">
+                    <div class="col-2"></div>
+                    <div class="col-4 text-center no-pd">รวม : </div>
+                    <div class="col-4 text-center no-pd">5000</div>
+                    <div class="col-2"></div>
+                </div>
+                <div class="row">
+                    <div class="col-2"></div>
+                    <div class="col-4 text-center no-pd">คงเหลือ : </div>
+                    <div class="col-4 text-center no-pd">15</div>
+                    <div class="col-2"></div>
+                </div>
+            </div>
+            <hr style="margin-top: 5%;">
+        </div>
+    </div>
+    <!-- End big container -->
+
+    <!-- Nav menu bottom -->
+    <div class="row fixed-bottom navs">
+        <div class="col-3 text-center" onclick="menu('home')">
+            <i id="i-home" class="fas fa-home menu"></i>
+        </div>
+        <div class="col-3 text-center" onclick="menu('add')">
+            <i id="i-add" class="fas fa-plus menu"></i>
+        </div>
+        <div class="col-3 text-center" onclick="menu('edit')">
+            <i id="i-edit" class="fas fa-edit menu"></i>
+        </div>
+        <div class="col-3 text-center" onclick="menu('del')">
+            <i id="i-del" class="fa fa-trash-alt menu"></i>
+        </div>
+    </div>
+    <!-- End Nav menu bottom -->
+</body>
+
+</html>
