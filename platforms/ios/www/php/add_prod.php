@@ -4,13 +4,14 @@
     $code  = $_GET['code'];   
     $parent  = $_GET['parent'];
 
-    mysqli_autocommit($conn,FALSE);   
-    // Convert to base64 
-    $image_base64 = base64_encode(file_get_contents($_FILES['file']['tmp_name']) );
-    $image = 'data:image/jpeg;base64,'.$image_base64;
-
-    $sql = "INSERT INTO product(prod_name,prod_code,img) 
-    VALUE ('$name','$code','".$image."')";
+    if($_FILES['file']){
+        $image_base64 = base64_encode(file_get_contents($_FILES['file']['tmp_name']) );
+        $image = 'data:image/jpeg;base64,'.$image_base64;
+    }else{
+        $image = "";
+    }
+    mysqli_autocommit($conn,FALSE);
+    $sql = "INSERT INTO product(prod_name,prod_code,img) VALUE ('$name','$code','".$image."')";
     $result = mysqli_query($conn, $sql);    
     $title = mysqli_insert_id($conn);	
 

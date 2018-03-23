@@ -89,33 +89,33 @@
       var parent = folder;
               
       if(name != "" && code != ""){
-          var image = document.getElementById('img');       
-          var fileURL = image.src;
-          var filename = fileURL.substr(fileURL.lastIndexOf('/') + 1).split("?");
-          
-          var success = function (r) {                
-              //alert(r.response);  
-              if(r.response != "fail"){                           
-                  out();
-              }else{
-                  alert("ลองอีกครั้ง");
-              }                                                   
-          }
+        var image = document.getElementById('img');       
+        var fileURL = image.src;
+        var filename = fileURL.substr(fileURL.lastIndexOf('/') + 1).split("?");
+        
+        var success = function (r) {                
+            //alert(r.response);  
+          if(r.response == "success"){                           
+              out();
+          }else{
+              alert("ลองอีกครั้ง");
+          }                                                   
+        }
 
-          var fail = function (error) {
-              alert("An error has occurred: Code = " + error);
-          }
+        var fail = function (error) {
+          alert("An error has occurred: Code = " + error);
+        }
 
-          var options = new FileUploadOptions();
-          options.fileKey = "file";
-          options.fileName = filename[0];
-          options.mimeType = "image/jpeg";       
-          //options.chunkedMode = false;        
-          
-          var ft = new FileTransfer();                   
-          ft.upload(fileURL,
-              "https://omise-webpack.000webhostapp.com/www/php/add_prod.php?name_prod="+name+"&code="+code+"&parent="+parent+""
-          , success, fail, options);
+        var options = new FileUploadOptions();
+        options.fileKey = "file";
+        options.fileName = filename[0];
+        options.mimeType = "image/jpeg";       
+        //options.chunkedMode = false;        
+        
+        var ft = new FileTransfer();                   
+        ft.upload(fileURL,
+            "https://omise-webpack.000webhostapp.com/www/php/add_prod.php?name_prod="+name+"&code="+code+"&parent="+parent+""
+        , success, fail, options);
 
       }else{
           alert("ข้อมูลว่างอยู่!");
