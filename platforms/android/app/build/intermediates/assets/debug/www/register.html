@@ -52,6 +52,11 @@
       goto = "member.html";
       transition_page_next_flip(goto);
     }
+
+    function setrole(arg){
+      role = $("#li-role-"+arg).text();
+      $("#role").val(role);
+    }
   </script>
 </head>
 
@@ -85,8 +90,13 @@
       </div>
       <div class="row" style="margin-bottom: 18%;">
         <div class="col-12 text-center pdlr">
-          <label for="email">บทบาท</label>
-          <input id="email" type="text" class="w3-input">
+          <label for="role">บทบาท</label>
+          <input id="role" type="text" class="w3-input" data-toggle="dropdown" readonly>
+          <ul class="dropdown-menu text-center" aria-labelledby="role" style="width: 80%;">
+            <li id="li-role-1" onclick="setrole('1');" style="padding-bottom: 10px; padding-top: 10px;">แอดมิน</li>
+            <li id="li-role-2" onclick="setrole('2');" style="padding-bottom: 10px;">เจ้าของร้าน</li>
+            <li id="li-role-3" onclick="setrole('3');" style="padding-bottom: 10px;">พนักงาน</li>
+          </ul>
         </div>
       </div>
       <div class="row" style="margin-bottom: 15%;">

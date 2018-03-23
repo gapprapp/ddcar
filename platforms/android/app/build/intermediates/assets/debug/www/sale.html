@@ -67,6 +67,11 @@
             alert("qr show");
         }
 
+        function check(){
+            goto = "sale_check.html";
+            transition_page_next(goto);
+        }
+
     </script>
 </head>
 
@@ -98,9 +103,13 @@
                 </div>
             </div>
             <div class="row" style="margin-bottom: 10%;">
-                <div class="col-12 text-center pdlr">
+                <div class="col-8 text-center">
                     <label for="barcode">รหัส</label>
                     <input id="barcode" type="text" class="w3-input">
+                </div>
+                <div class="col-4 text-center">
+                    <label for="amount">จำนวน</label>
+                    <input id="amount" type="number" class="w3-input">
                 </div>
             </div>
             <div class="row" style="margin-bottom: 15%;">
@@ -111,6 +120,13 @@
             <div class="row" style="margin-bottom: 15%;">
                 <div class="col-12 text-center">
                     <button class="mbtn" onclick="add_prod();">เพิ่มสินค้า</button>
+                </div>
+            </div>
+            <div class="row" style="margin-bottom: 15%;">
+                <div class="col-12 text-center">
+                    <button id="btn-check" class="mbtn" onclick="check();" style= "color: red; border-color: red;">
+                        ตรวจสอบ <span id="check-prod">(1)</span>
+                    </button>
                 </div>
             </div>
         </div>
