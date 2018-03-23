@@ -72,8 +72,7 @@
 
       function onSuccess(imageData) {                
           var image = document.getElementById('img');
-          image.src =  imageData;  
-          $('#a').attr("href",imageData);                      
+          image.src =  imageData;                        
       }
 
       function onFail(message) {
@@ -176,7 +175,7 @@
       </div>
       <div id="row-img" class="row" style="margin-bottom: 5%;" hidden>
         <div class="col-12 text-center">
-          <a id="a"><img id='img' src="https://c2.staticflickr.com/4/3891/14354989289_2eec0ba724_b.jpg" alt="" style="width: 96%; height: 96%;"></a>
+         <img id='img' alt="" style="width: 96%; height: 96%;">
         </div>
       </div>
       <div class="row" style="margin-bottom: 15%;">

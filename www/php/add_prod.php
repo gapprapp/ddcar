@@ -4,7 +4,7 @@
     $code  = $_GET['code'];   
     $parent  = $_GET['parent'];
 
-    if($_FILES['file']){
+    if(isset($_FILES['file']['tmp_name'])){
         $image_base64 = base64_encode(file_get_contents($_FILES['file']['tmp_name']) );
         $image = 'data:image/jpeg;base64,'.$image_base64;
     }else{

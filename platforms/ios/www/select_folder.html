@@ -53,7 +53,7 @@
               if(parent == "car"){
                 $("#add-ctn").prop('hidden', false);
               }else{
-                //$("#add-ctn").prop('hidden', false);
+                $("#add-ctn").prop('hidden', false);
                 $("#row-select").prop('hidden', false);
               }
             }else{
@@ -64,7 +64,7 @@
               //console.log(obj); 
               if(obj[obj.length-1] == "last node"){
                 alert("last node have product");
-                $("#add-ctn").prop('hidden', false);
+                //$("#add-ctn").prop('hidden', false);
                 $("#row-select").prop('hidden', false);
               }else{
                 $.each(obj, function(i, field){
