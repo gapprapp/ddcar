@@ -46,21 +46,22 @@
                 url:"https://omise-webpack.000webhostapp.com/www/php/get_detail_cus.php",  
                 data: {'cus_id' : cus_id},                       
                 success: function(data){  
-                    var obj = jQuery.parseJSON(data);                    
-                    $.each(obj, function(i, field){                   
-                        $('#name').val(field.cus_name);
-                        $('#addr').val(field.cus_addr);
-                        $('#tel').val(field.cus_tel);
-                        $('#type').val(field.cus_type);   
-
-                        $('#cusprice-collapse').append("<div class='row' style='margin-bottom: 5%;'>" +
+                    var obj = jQuery.parseJSON(data);
+                    $('#name').val(obj[0].cus_name);
+                    $('#addr').val(obj[0].cus_addr);
+                    $('#tel').val(obj[0].cus_tel);
+                    $('#type').val(obj[0].cus_type);                       
+                    $.each(obj, function(i, field){
+                        if(i > 0){
+                            $('#cusprice-collapse').append("<div class='row' style='margin-bottom: 5%;'>" +
                             "<div class='col-7 text-center'>" +
-                                "<input type='text' class='w3-input2 text-center' value='"+field.prod_name+"' disabled>" +
+                                "<input type='text' class='w3-input2 text-center' value='"+obj[i].prod_name+"' disabled>" +
                             "</div>" +
                             "<div class='col-4 text-center'>" +
-                                "<input type='text' class='w3-input2 text-center' value='"+field.cus_price+"' disabled>" +
+                                "<input type='text' class='w3-input2 text-center' value='"+obj[i].cus_price+"' disabled>" +
                             "</div>" +
                             "</div>");
+                        }                       
                     });   
                     $('#cusprice-collapse').append("<hr style='margin-bottom: 10%;'>");                       
                 }               
