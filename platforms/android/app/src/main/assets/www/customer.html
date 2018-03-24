@@ -101,6 +101,19 @@
       goto = "customer_show.html?cus=" + arg + "&edit=true";
       transition_page_next_flip(goto);
     }
+
+    function edit_del(arg) {
+      $.ajax({
+        type: "POST",
+        url:"https://omise-webpack.000webhostapp.com/www/php/delete_cus.php",           
+        data: {'cus_id' : arg},               
+        success: function(data){                             
+            if(data == "success"){
+              $("#cus-"+arg).remove(); 
+            }          
+        }               
+      });
+    }
   </script>
 </head>
 
