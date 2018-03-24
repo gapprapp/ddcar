@@ -16,6 +16,9 @@
   <script defer src="https://use.fontawesome.com/releases/v5.0.8/js/all.js"></script>
   <script src="cordova.js"></script>
 
+  <script type="text/javascript" src="js/jquery.md5.min.js"></script> 
+  <script type="text/javascript" src="js/jquery.alphanumeric.js"></script>
+
   <link rel="stylesheet" href="css/index.css">
 
   <!-- Font -->
@@ -29,7 +32,9 @@
   </style>
 
   <script>
-    $(document).ready(function() {});
+    $(document).ready(function() {
+      $('#phone').numeric();
+    });
 
     function disactive(arg) {
       nav_menu = ['home', 'bell', 'qrcode', 'bars'];
@@ -49,8 +54,36 @@
     }
 
     function register(){
-      goto = "member.html";
-      transition_page_next_flip(goto);
+      var name = $('#name').val();
+      var pass = $('#pass').val();    
+      var phone = $('#phone').val();  
+      var role = $("#role").val();;           
+      var strMD5 = $.md5(pass);
+
+      if(name != "" && pass != "" && phone != "" && role != ""){
+          $.ajax({
+              type: "POST",
+              url:"https://omise-webpack.000webhostapp.com/www/php/register.php",           
+              data: {'user':name,
+                  'pass':strMD5,
+                  'phone':phone,
+                  'role':role},               
+              success: function(data){                             
+                  alert(data);
+                  if(data == "success"){                        
+                    goto = "member.html";
+                    transition_page_next_flip(goto);
+                  }
+              }               
+          });
+      }else{
+          alert("กรุณากรอกข้อมูลให้ครบ");
+      }     
+    }
+
+    function setrole(arg){
+      role = $("#li-role-"+arg).text();
+      $("#role").val(role);
     }
   </script>
 </head>
@@ -73,20 +106,31 @@
     <div class="container">
       <div class="row" style="margin-bottom: 10%;">
         <div class="col-12 text-center pdlr">
-          <label for="email">อีเมล</label>
-          <input id="email" type="text" class="w3-input">
+          <label for="name">ชื่อ</label>
+          <input id="name" type="text" class="w3-input">
         </div>
       </div>
       <div class="row" style="margin-bottom: 10%;">
         <div class="col-12 text-center pdlr">
           <label for="email">พาสเวิร์ด</label>
-          <input id="email" type="text" class="w3-input">
+          <input id="pass" type="password" class="w3-input">
+        </div>
+      </div>
+      <div class="row" style="margin-bottom: 10%;">
+        <div class="col-12 text-center pdlr">
+          <label for="phone">เบอร์โทรศัพท์</label>
+          <input id="phone" type="tel" class="w3-input">
         </div>
       </div>
       <div class="row" style="margin-bottom: 18%;">
         <div class="col-12 text-center pdlr">
-          <label for="email">บทบาท</label>
-          <input id="email" type="text" class="w3-input">
+          <label for="role">บทบาท</label>
+          <input id="role" type="text" class="w3-input" data-toggle="dropdown" readonly>
+          <ul class="dropdown-menu text-center" aria-labelledby="role" style="width: 80%;">
+            <li id="li-role-1" onclick="setrole('1');" style="padding-bottom: 10px; padding-top: 10px;">แอดมิน</li>
+            <li id="li-role-2" onclick="setrole('2');" style="padding-bottom: 10px;">เจ้าของร้าน</li>
+            <li id="li-role-3" onclick="setrole('3');" style="padding-bottom: 10px;">พนักงาน</li>
+          </ul>
         </div>
       </div>
       <div class="row" style="margin-bottom: 15%;">
