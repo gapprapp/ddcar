@@ -41,6 +41,8 @@
             cus_id = url.searchParams.get("cus");
             edit = url.searchParams.get("edit");
 
+            $('#phone').numeric();
+
              $.ajax({
                 type: "POST",
                 url:"https://omise-webpack.000webhostapp.com/www/php/get_detail_cus.php",  

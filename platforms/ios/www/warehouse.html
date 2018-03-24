@@ -36,7 +36,52 @@
   </style>
 
   <script>
-    $(document).ready(function () { });
+    $(document).ready(function () { 
+      $.ajax({
+        type: "GET",
+        url:"https://omise-webpack.000webhostapp.com/www/php/get_ware_shop.php",                         
+        success: function(data){  
+          var obj = jQuery.parseJSON(data); 
+          console.log(obj);                   
+          $.each(obj, function(i, field){     
+            if(obj[i][2] == "โกดัง"){
+              $('#show').append( "<div id='cus-"+i+"' class='row'>" +
+              "<span id='id-cus-"+i+"' hidden>"+obj[i].ware_id+"</span>" +              
+              "<div class='col-1 text-left'>" +
+                "<i class='fa fa-trash-alt i-del' onclick='edit_del("+i+");' hidden></i>" +
+                "<i class='fa fa-edit i-edit' onclick='edit_cus("+i+");' hidden></i>" +
+              "</div>" +
+              "<div class='col-6 text-center no-pd'>" +
+                "<p>"+obj[i].ware_name+"</p>" +
+              "</div>" +
+              "<div class='col-4 text-center no-pd'>" +
+                "<p id='type-cus-"+i+">โกดัง</p>" +
+              "</div>" +
+              "<div class='col-1'></div>" +
+              "</div>" +   
+              "<hr>");  
+            }else if(obj[i][2] == "หน้าร้าน"){
+              $('#show').append( "<div id='cus-"+i+"' class='row'>" +
+              "<span id='id-cus-"+i+"' hidden>"+obj[i].shop_id+"</span>" +              
+              "<div class='col-1 text-left'>" +
+                "<i class='fa fa-trash-alt i-del' onclick='edit_del("+i+");' hidden></i>" +
+                "<i class='fa fa-edit i-edit' onclick='edit_cus("+i+");' hidden></i>" +
+              "</div>" +
+              "<div class='col-6 text-center no-pd'>" +
+                "<p>"+obj[i].shop_name+"</p>" +
+              "</div>" +
+              "<div class='col-4 text-center no-pd'>" +
+                "<p id='type-cus-"+i+"'>หน้าร้าน</p>" +
+              "</div>" +
+              "<div class='col-1'></div>" +
+              "</div>" +   
+              "<hr>");  
+            }              
+                                                           
+          });                        
+        }               
+      });
+    });
 
     function disactive(arg) {
       nav_menu = ['home', 'add', 'edit', 'del'];
@@ -71,6 +116,22 @@
     function edit_ware(arg) {
       // Change p tag -> to input tag
     }
+
+     function edit_del(arg) {
+       var id = $('#id-cus-' + arg).text();
+       var type = $('#type-cus-' + arg).text();
+      $.ajax({
+        type: "POST",
+        url:"https://omise-webpack.000webhostapp.com/www/php/delete_ware_shop.php",           
+        data: {'id' : id,
+               'type' : type},               
+        success: function(data){                             
+            if(data == "success"){
+              $("#cus-"+arg).remove(); 
+            }          
+        }               
+      });
+    }
   </script>
 </head>
 
@@ -90,7 +151,7 @@
 
   <!-- End big container -->
   <div class="container justify-content-center" style="margin-top: 20%;">
-    <div class="container">
+    <div id="show" class="container">
       <div class="row">
         <div class="col-1"></div>
         <div class="col-6 text-center no-pd">
@@ -104,35 +165,7 @@
       <hr>
 
       <!-- Show -->
-      <div id="cus-1" class="row">
-        <span id="id-cus-1" hidden>id</span>
-        <div class="col-1 text-left" onclick="edit_del('1');">
-          <i id="i-del-1" class="fa fa-trash-alt i-del" hidden></i>
-          <i id="i-edit-1" class="fa fa-edit i-edit" onclick="edit_ware('1');" hidden></i>
-        </div>
-        <div class="col-6 text-center no-pd">
-          <p>โกดังตึกเช่า</p>
-        </div>
-        <div class="col-4 text-center no-pd">
-          <p>โกดัง</p>
-        </div>
-      </div>
-      <div class="col-1"></div>
-      <hr>
-      <div id="cus-1" class="row" disabled>
-        <div class="col-1 text-left" onclick="edit_del('2');">
-          <i id="i-del-2" class="fa fa-trash-alt i-del" hidden></i>
-          <i id="i-edit-2" class="fa fa-edit i-edit" onclick="edit_ware('2');" hidden></i>
-        </div>
-        <div class="col-6 text-center no-pd">
-          <p>บ้าน</p>
-        </div>
-        <div class="col-4 text-center no-pd">
-          <p>โกดัง</p>
-        </div>
-        <div class="col-1"></div>
-      </div>
-      <hr>
+     
     </div>
   </div>
   <!-- End big container -->
