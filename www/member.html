@@ -37,7 +37,28 @@
 
   <script>
     $(document).ready(function() {
-      // get show user
+      $.ajax({
+        type: "GET",
+        url:"https://omise-webpack.000webhostapp.com/www/php/get_user.php",     
+        success: function(data){               
+          var obj = jQuery.parseJSON(data);
+          $.each(obj, function(i, field){
+            $('#show_user').append(" <div class='row'>" +
+              "<div class='col-1 text-left'>" + 
+                "<i id='i-del-1' class='fa fa-trash-alt' hidden></i>" +
+                "<i id='i-edit-1' class='fa fa-edit' hidden></i>" +
+              "</div>" +
+              "<div class='col-6 text-center no-pd'>" +
+                "<p>"+obj[i].user_name+"</p>" +
+              "</div>" +
+              "<div class='col-4 text-center no-pd'>" +
+                "<p>"+obj[i].user_role+"</p>" +
+              "</div>" +
+              "<div class='col-1'></div>" +
+              "</div> <hr>");                  
+          }); 
+        }                    
+      });
     });
 
     function disactive(arg) {
@@ -91,7 +112,7 @@
 
   <!-- End big container -->
   <div class="container justify-content-center" style="margin-top: 20%;">
-    <div class="container">
+    <div id="show_user" class="container">
       <div class="row">
         <div class="col-1"></div>
         <div class="col-6 text-center no-pd">
@@ -105,32 +126,7 @@
       <hr>
       
       <!-- Show -->
-      <div class="row">
-        <div class="col-1 text-left">
-          <i id="i-del-1" class="fa fa-trash-alt" hidden></i>
-          <i id="i-edit-1" class="fa fa-edit" hidden></i>
-        </div>
-        <div class="col-6 text-center no-pd">
-          <p>puckcheetu56</p>
-        </div>
-        <div class="col-4 text-center no-pd">
-          <p>เจ้าของร้าน</p>
-        </div>
-        <div class="col-1"></div>
-      </div> <hr>
-      <div class="row">
-        <div class="col-1 text-left">
-          <i id="i-del-2" class="fa fa-trash-alt" hidden></i>
-          <i id="i-edit-2" class="fa fa-edit" hidden></i>
-        </div>
-        <div class="col-6 text-center no-pd">
-          <p>puckcheetu56</p>
-        </div>
-        <div class="col-4 text-center no-pd">
-          <p>เจ้าของร้าน</p>
-        </div>
-        <div class="col-1"></div>
-      </div> <hr>
+  
     </div>
   </div>
   <!-- End big container -->
