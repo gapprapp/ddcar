@@ -16,6 +16,8 @@
   <script defer src="https://use.fontawesome.com/releases/v5.0.8/js/all.js"></script>
   <script src="cordova.js"></script>
 
+  <script type="text/javascript" src="js/jquery.alphanumeric.js"></script>
+
   <link rel="stylesheet" href="css/index.css">
 
   <!-- Font -->
@@ -33,7 +35,9 @@
   </style>
 
   <script>
-    $(document).ready(function() {});
+    $(document).ready(function() {
+      $('#phone').numeric();
+    });
 
     function disactive(arg) {
       nav_menu = ['home', 'bell', 'qrcode', 'bars'];
@@ -53,8 +57,34 @@
     }
 
     function add_cus(){
-      goto = "customer.html";
-      transition_page_back_flip(goto);
+      var name = $('#name').val();  
+      var phone = $('#phone').val();  
+      var addr = $('#addr').val();          
+      var type = $('#type').val();          
+
+      if(name != "" && phone != "" && addr != "" /*&& type != ""*/){
+          $.ajax({
+              type: "POST",
+              url:"https://omise-webpack.000webhostapp.com/www/php/add_cus.php",           
+              data: {'cus_name':name,
+                  'phone':phone,
+                  'addr':addr},               
+              success: function(data){         
+                if(data == "success"){                        
+                  goto = "customer.html";
+                  transition_page_back_flip(goto);
+                }
+              }               
+          });
+      }else{
+          alert("กรุณากรอกข้อมูลให้ครบ");
+      }
+     
+    }
+
+    function setrole(arg){
+      role = $("#li-role-"+arg).text();
+      $("#type").val(role);
     }
 
   </script>
@@ -84,20 +114,24 @@
       </div>
       <div class="row" style="margin-bottom: 10%;">
         <div class="col-12 text-center pdlr">
-          <label for="barcode">ที่อยู่</label>
-          <input id="barcode" type="text" class="w3-input">
+          <label for="addr">ที่อยู่</label>
+          <input id="addr" type="text" class="w3-input">
         </div>
       </div>
       <div class="row" style="margin-bottom: 10%;">
         <div class="col-12 text-center pdlr">
-          <label for="barcode">เบอร์โทร</label>
-          <input id="barcode" type="text" class="w3-input">
+          <label for="phone">เบอร์โทร</label>
+          <input id="phone" type="tel" class="w3-input">
         </div>
       </div>
       <div class="row" style="margin-bottom: 18%;">
         <div class="col-12 text-center pdlr">
-          <label for="barcode">ประเภท</label>
-          <input id="barcode" type="text" class="w3-input">
+          <label for="type">ประเภท</label>
+          <input id="type" type="text" class="w3-input" data-toggle="dropdown" readonly>
+          <ul class="dropdown-menu text-center" aria-labelledby="role" style="width: 80%;">
+            <li id="li-role-1" onclick="setrole('1');" style="padding-bottom: 10px; padding-top: 10px;">ขายส่ง</li>
+            <li id="li-role-2" onclick="setrole('2');" style="padding-bottom: 10px;">ขายปลีก</li>            
+          </ul>
         </div>
       </div>
       <div class="row" style="margin-bottom: 15%;">

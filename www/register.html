@@ -60,7 +60,7 @@
       var role = $("#role").val();;           
       var strMD5 = $.md5(pass);
 
-      if(name != "" && pass != "" && phone != ""){
+      if(name != "" && pass != "" && phone != "" && role != ""){
           $.ajax({
               type: "POST",
               url:"https://omise-webpack.000webhostapp.com/www/php/register.php",           

@@ -36,7 +36,31 @@
   </style>
 
   <script>
-    $(document).ready(function () { });
+    $(document).ready(function () { 
+      $.ajax({
+        type: "GET",
+        url:"https://omise-webpack.000webhostapp.com/www/php/get_cus.php",                         
+        success: function(data){  
+          var obj = jQuery.parseJSON(data);                    
+          $.each(obj, function(i, field){                   
+            $('#show_cus').append( "<div id='cus-"+obj[i].cus_id+"' class='row'>" +              
+              "<div class='col-1 text-left'>" +
+                "<i class='fa fa-trash-alt i-del' onclick='edit_del("+obj[i].cus_id+");' hidden></i>" +
+                "<i class='fa fa-edit i-edit' onclick='edit_cus("+obj[i].cus_id+");' hidden></i>" +
+              "</div>" +
+              "<div class='col-6 text-center no-pd' onclick='show_cus("+obj[i].cus_id+");'>" +
+                "<p>"+obj[i].cus_name+"</p>" +
+              "</div>" +
+              "<div class='col-4 text-center no-pd' onclick='show_cus("+obj[i].cus_id+");'>" +
+                "<p>"+obj[i].cus_tel+"</p>" +
+              "</div>" +
+              "<div class='col-1'></div>" +
+              "</div>" +   
+              "<hr>");                                                  
+          });                          
+        }               
+      });
+    });
 
     function disactive(arg) {
       nav_menu = ['home', 'add', 'edit', 'del'];
@@ -96,7 +120,7 @@
 
   <!-- End big container -->
   <div class="container justify-content-center" style="margin-top: 20%;">
-    <div class="container">
+    <div id="show_cus" class="container">
       <div class="row">
         <div class="col-1"></div>
         <div class="col-6 text-center no-pd">
@@ -110,35 +134,7 @@
       <hr>
 
       <!-- Show -->
-      <div id="cus-1" class="row">
-        <span id="id-cus-1" hidden>id</span>
-        <div class="col-1 text-left" onclick="edit_del('1');">
-          <i id="i-del-1" class="fa fa-trash-alt i-del" hidden></i>
-          <i id="i-edit-1" class="fa fa-edit i-edit" onclick="edit_cus('1');" hidden></i>
-        </div>
-        <div class="col-6 text-center no-pd" onclick="show_cus('1');">
-          <p>สมพงษ์ โกทิสุวรรณ</p>
-        </div>
-        <div class="col-4 text-center no-pd" onclick="show_cus('1');">
-          <p>0829554261</p>
-        </div>
-      </div>
-      <div class="col-1"></div>
-      <hr>
-      <div id="cus-1" class="row" disabled>
-        <div class="col-1 text-left" onclick="edit_del('2');">
-          <i id="i-del-2" class="fa fa-trash-alt i-del" hidden></i>
-          <i id="i-edit-2" class="fa fa-edit i-edit" onclick="edit_cus('2');" hidden></i>
-        </div>
-        <div class="col-6 text-center no-pd" onclick="show_cus('2')";>
-          <p>พีรกฤต</p>
-        </div>
-        <div class="col-4 text-center no-pd" onclick="show_cus('2')";>
-          <p>0875659150</p>
-        </div>
-        <div class="col-1"></div>
-      </div>
-      <hr>
+     
     </div>
   </div>
   <!-- End big container -->
