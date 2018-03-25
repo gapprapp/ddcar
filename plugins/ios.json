@@ -21,6 +21,9 @@
     },
     "cordova-plugin-camera": {
       "PACKAGE_NAME": "com.gitmew.ddcar"
+    },
+    "cordova-plugin-device": {
+      "PACKAGE_NAME": "com.gitmew.ddcar"
     }
   },
   "dependent_plugins": {

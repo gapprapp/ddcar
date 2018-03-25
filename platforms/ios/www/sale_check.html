@@ -15,11 +15,8 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
     <script defer src="https://use.fontawesome.com/releases/v5.0.8/js/all.js"></script>
     <script src="cordova.js"></script>
-<<<<<<< HEAD
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.0/jquery-confirm.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.0/jquery-confirm.min.js"></script>
-=======
->>>>>>> aadd006a514f5ea463db9e276e5535f87bfdb6a1
 
     <link rel="stylesheet" href="css/index.css">
 
@@ -35,10 +32,7 @@
         .no-pd {
             padding-right: 0px;
             padding-left: 0px;
-<<<<<<< HEAD
             font-size: 120%;
-=======
->>>>>>> aadd006a514f5ea463db9e276e5535f87bfdb6a1
         }
 
         hr {
@@ -66,13 +60,8 @@
             });
 
             if (arg == "add") {
-<<<<<<< HEAD
                 goto = "sale.html";
                 transition_page_back(goto);
-=======
-                goto = "customer_add.html";
-                transition_page_next_flip(goto);
->>>>>>> aadd006a514f5ea463db9e276e5535f87bfdb6a1
             } else if (arg == "edit") {
                 // show edit all
                 $(".i-edit").attr('hidden', false);
@@ -89,7 +78,6 @@
             transition_page_next(goto);
         }
 
-<<<<<<< HEAD
         function check_edit(arg){
             val = true;
             // 4 is max prod
@@ -117,25 +105,11 @@
 
         function update_prod(arg){
             $("#i-edit-"+arg).attr('hidden', false);
-=======
-        function edit_prod(arg) {
-            $("#i-edit-"+arg).attr('hidden', true);
-            $("#i-check-"+arg).attr('hidden', false);
-            $("#amount-"+arg).removeAttr('style');
-            $("#price-" + arg).removeAttr('style');
-            $("#amount-"+arg).attr("readonly", false);
-            $("#price-" + arg).attr("readonly", false);
-        }
-
-        function update_prod(arg){
-            $("#i-edit-"+arg).attr('hidden', true);
->>>>>>> aadd006a514f5ea463db9e276e5535f87bfdb6a1
             $("#i-check-"+arg).attr('hidden', true);
             $("#amount-" + arg).css('border', 'none');
             $("#price-" + arg).css('border', 'none');
             $("#amount-" + arg).attr("readonly", true);
             $("#price-" + arg).attr("readonly", true);
-<<<<<<< HEAD
             $.alert({
                 title: 'สำเร็จ!',
                 content: 'บันทึกการเปลี่ยนแปลง',
@@ -155,13 +129,6 @@
                     scrollTop: $("#collapse-" + arg).height()
                 }, 900);
             });
-=======
-            alert("บันทึกการเปลี่ยนแปลง")
-        }
-        
-        function collapse(arg){
-            $("#collapse-"+arg).slideToggle('collapse');
->>>>>>> aadd006a514f5ea463db9e276e5535f87bfdb6a1
         }
     </script>
 </head>
@@ -181,11 +148,7 @@
     <br>
 
     <!-- End big container -->
-<<<<<<< HEAD
     <div id="big-ctn" class="container justify-content-center" style="margin-top: 15%; margin-bottom: 20%;">
-=======
-    <div class="container justify-content-center" style="margin-top: 15%;">
->>>>>>> aadd006a514f5ea463db9e276e5535f87bfdb6a1
 
         <div class="container">
             <div class="row" style="margin-bottom: 5%;">
@@ -201,7 +164,7 @@
                 <div class="col-1 text-center no-pd"></div>
                 <div class="col-2 text-center no-pd">ลูกค้า : </div>
                 <div class="col-3 text-center no-pd">
-                    <input type="text" class="w3-input" value="สมจิต">
+                    <input type="text" class="w3-input" value="สมจิต" style="border: none;">
                 </div>
             </div>
             <div class="row">
@@ -223,15 +186,11 @@
                     <i id="i-edit-1" class="fa fa-edit i-edit" onclick="edit_prod('1');" hidden></i>
                     <i id="i-check-1" class="fa fa-check i-check" onclick="update_prod('1');" hidden style="color: green;"></i>
                 </div>
-<<<<<<< HEAD
                 <div class="col-6 text-center no-pd" onclick="collapse('1');">ไฟหน้าเรนเจอร์ปี 08</div>
-=======
-                <div class="col-6 text-center no-pd" data-toggle="collapse" data-target="#collapse-1">ไฟหน้าเรนเจอร์ปี 08</div>
->>>>>>> aadd006a514f5ea463db9e276e5535f87bfdb6a1
                 <div class="col-3 text-center">
-                    <input id="price-1" type="text" class="w3-input" value="1000" style="border: none;">
+                    <input id="price-1" type="text" class="w3-input" value="1000" style="border: none; font-size: 120%;">
                 </div>
-                <span>x</span>
+                <span style="font-size: 120%;">x</span>
                 <div  class="col-1 text-center no-pd">
                     <input id="amount-1" type="text" class="w3-input" value="5" style="border: none;" readonly>
                 </div>
@@ -268,21 +227,14 @@
                 <span id="id-prod-2" hidden>id</span>
                 <div class="col-1 text-center no-pd">
                     <i id="i-del-2" class="fa fa-trash-alt i-del" hidden></i>
-<<<<<<< HEAD
                     <i id="i-edit-2" class="fa fa-edit i-edit" onclick="edit_prod('2');" hidden></i>
                     <i id="i-check-2" class="fa fa-check i-check" onclick="update_prod('2');" hidden style="color: green;"></i>
                 </div>
                 <div class="col-6 text-center no-pd" onclick="collapse('2');">ไฟหน้าเรนเจอร์ปี 08</div>
-=======
-                    <i id="i-edit-2" class="fa fa-edit i-edit" onclick="edit_prod('1');" hidden></i>
-                    <i id="i-check-2" class="fa fa-check i-check" onclick="update_prod('1');" hidden style="color: green;"></i>
-                </div>
-                <div class="col-6 text-center no-pd" data-toggle="collapse" data-target="#collapse-2">ไฟหน้าเรนเจอร์ปี 08</div>
->>>>>>> aadd006a514f5ea463db9e276e5535f87bfdb6a1
                 <div class="col-3 text-center">
-                    <input id="price-2" type="text" class="w3-input" value="1000" style="border: none;">
+                    <input id="price-2" type="text" class="w3-input" value="1000" style="border: none; font-size: 120%;">
                 </div>
-                <span>x</span>
+                <span style="font-size: 120%;">x</span>
                 <div class="col-1 text-center no-pd">
                     <input id="amount-2" type="text" class="w3-input" value="5" style="border: none;" readonly>
                 </div>
@@ -315,7 +267,6 @@
                 </div>
             </div>
             <hr style="margin-top: 5%;">
-<<<<<<< HEAD
 
             <div id="prod-3" class="row">
                 <span id="id-prod-3" hidden>id</span>
@@ -326,9 +277,9 @@
                 </div>
                 <div class="col-6 text-center no-pd" onclick="collapse('3');">ไฟหน้าเรนเจอร์ปี 08</div>
                 <div class="col-3 text-center">
-                    <input id="price-3" type="text" class="w3-input" value="1000" style="border: none;">
+                    <input id="price-3" type="text" class="w3-input" value="1000" style="border: none; font-size: 120%;">
                 </div>
-                <span>x</span>
+                <span style="font-size: 120%;">x</span>
                 <div class="col-1 text-center no-pd">
                     <input id="amount-3" type="text" class="w3-input" value="5" style="border: none;" readonly>
                 </div>
@@ -361,11 +312,17 @@
                 </div>
             </div>
             <hr style="margin-top: 5%;">
-=======
->>>>>>> aadd006a514f5ea463db9e276e5535f87bfdb6a1
         </div>
     </div>
     <!-- End big container -->
+
+    <div class="row fixed-bottom" style="margin-bottom: 17%;">
+        <div class="col-12 text-center">
+            <h5 class="title" style="font-size: 150%;">รวม :
+                <span id="net">50000</span>
+            </h5>
+        </div>
+    </div>
 
     <!-- Nav menu bottom -->
     <div class="row fixed-bottom navs">

@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Home</title>
+    <!-- Bootstrap Import -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <script type="text/javascript" src="js/jquery-3.3.1.min.js"></script>
+    <script type="text/javascript" src="js/jquery-ui.min.js"></script>
+    <script type="text/javascript" src="js/jquery.easing.1.3.min.js"></script>
+    <script type="text/javascript" src="js/transition.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.6/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+    <script defer src="https://use.fontawesome.com/releases/v5.0.8/js/all.js"></script>
+    <script src="cordova.js"></script>
+
+    <link rel="stylesheet" href="css/index.css">
+
+    <!-- Font -->
+    <link href="https://fonts.googleapis.com/css?family=Prompt" rel="stylesheet">
+    
+    <script>       
+        document.addEventListener("deviceready", function(){
+           scan();
+        });
+    
+        function scan(){
+            cordova.plugins.barcodeScanner.scan(
+            function (result) {
+                if(!result.cancelled){
+                    // In this case we only want to process QR Codes
+                    if(result.format == "QR_CODE"){
+                        var value = result.text;                        
+                                
+                        $.ajax({
+                            type: "POST",
+                            url: "https://omise-webpack.000webhostapp.com/www/php/check_amt_prod.php",                
+                            data: {'qr': value},             
+                            success: function(data){                             
+                                var name;
+                                var msg = "";                             
+                                var obj = jQuery.parseJSON(data); 
+                                console.log(obj);
+                                $.each(obj, function(i, field){ 
+                                    name = obj[i].prod_name;    
+                                    msg = msg + obj[i][0] + " : " + obj[i].amount + "\n";
+                                }); 
+                                alert(name + "\n" + msg);
+                                goto = "index.html"
+                                transition_page_back(goto);                                                     
+                            }               
+                        });         
+                    }else{
+                        alert("Sorry, only qr codes this time ;)");
+                    }
+                }else{
+                alert("The user has dismissed the scan");
+                }
+            },
+            function (error) {
+                alert("An error ocurred: " + error);
+            },
+            {
+                prompt : "วางคิวอาโค้ดภายในสี่เหลี่ยมผืนผ้าที่ช่องมองภาพเพื่อแสกน"
+            }
+            );
+    
+        }         
+                
+    </script> 
+</head>
+<body> 
+</body>
+</html>
