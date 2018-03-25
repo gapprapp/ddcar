@@ -41,7 +41,14 @@
     </style>
 
     <script>
+<<<<<<< HEAD
         $(document).ready(function () { });
+=======
+        $(document).ready(function () {
+            number = 50000;
+            $("#net").text(number.toLocaleString()); // 50000 -> 50,000;
+        });
+>>>>>>> 5025a25f75e3c6fe5780f5db89a5597490d4ae2b
 
         function disactive(arg) {
             nav_menu = ['home', 'add', 'edit', 'del'];
@@ -153,7 +160,11 @@
     <br>
 
     <!-- End big container -->
+<<<<<<< HEAD
     <div id="big-ctn" class="container justify-content-center" style="margin-top: 15%; margin-bottom: 20%;">
+=======
+    <div id="big-ctn" class="container justify-content-center" style="margin-top: 15%; margin-bottom: 30%;">
+>>>>>>> 5025a25f75e3c6fe5780f5db89a5597490d4ae2b
 
         <div class="container">
             <div class="row" style="margin-bottom: 5%;">
@@ -325,6 +336,14 @@
     </div>
     <!-- End big container -->
 
+<<<<<<< HEAD
+=======
+    <div class="row fixed-bottom" style="margin-bottom: 17%;">
+        <div class="col-12 text-center">
+            <h5 class="title" style="font-size: 150%;">รวม : <span id="net">50000</span></h5>
+        </div>
+    </div>
+>>>>>>> 5025a25f75e3c6fe5780f5db89a5597490d4ae2b
     <!-- Nav menu bottom -->
     <div class="row fixed-bottom navs">
         <div class="col-3 text-center" onclick="menu('home')">
