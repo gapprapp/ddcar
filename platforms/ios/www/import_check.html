@@ -78,7 +78,7 @@
             transition_page_next(goto);
         }
 
-        function check_edit(arg){
+        function check_edit(arg) {
             val = true;
             // 4 is max prod
             for (i = 0; i < 4; i++) {
@@ -93,7 +93,7 @@
 
         function edit_prod(arg) {
             //check if some i-check is show then
-            if(check_edit(arg)){
+            if (check_edit(arg)) {
                 $("#i-edit-" + arg).attr('hidden', true);
                 $("#i-check-" + arg).attr('hidden', false);
                 $("#amount-" + arg).removeAttr('style');
@@ -103,9 +103,9 @@
             }
         }
 
-        function update_prod(arg){
-            $("#i-edit-"+arg).attr('hidden', false);
-            $("#i-check-"+arg).attr('hidden', true);
+        function update_prod(arg) {
+            $("#i-edit-" + arg).attr('hidden', false);
+            $("#i-check-" + arg).attr('hidden', true);
             $("#amount-" + arg).css('border', 'none');
             $("#price-" + arg).css('border', 'none');
             $("#amount-" + arg).attr("readonly", true);
@@ -115,8 +115,8 @@
                 content: 'บันทึกการเปลี่ยนแปลง',
             });
         }
-        
-        function collapse(arg){
+
+        function collapse(arg) {
             // 4 is num of prod
             for (i = 0; i < 4; i++) {
                 if (i != arg && $("#collapse-" + i).is(":visible")) {
@@ -124,12 +124,17 @@
                 }
             }
 
-            $("#collapse-"+arg).slideToggle('collapse', function(){
+            $("#collapse-" + arg).slideToggle('collapse', function () {
                 $('html, body').animate({
                     scrollTop: $("#collapse-" + arg).height()
                 }, 900);
             });
         }
+
+        function setware(arg) {
+                ware = $("#li-ware-" + arg).text();
+                $("#ware").val(ware);
+            }
     </script>
 </head>
 
@@ -159,12 +164,15 @@
                 <div class="col-1 text-center no-pd">2</div>
             </div>
             <div class="row" style="margin-bottom: 10%;">
-                <div class="col-3 text-center no-pd">ผู้ขาย : </div>
+                <div class="col-3 text-center no-pd">ผู้ใช้ : </div>
                 <div class="col-3 text-center no-pd">ศิริพร</div>
                 <div class="col-1 text-center no-pd"></div>
-                <div class="col-2 text-center no-pd">ลูกค้า : </div>
-                <div class="col-3 text-center no-pd">
-                    <input type="text" class="w3-input" value="สมจิต" style="border: none;">
+                <div class="col-5 text-center no-pd">
+                    <input id="ware" type="text" class="w3-input" data-toggle="dropdown" placeholder="หน้าร้าน / โกดัง" readonly>
+                    <ul class="dropdown-menu text-center" aria-labelledby="role" style="width: 80%;">
+                        <li id="li-ware-1" onclick="setware('1');" style="padding-bottom: 10px; padding-top: 10px;">โกดังตึกเช่า</li>
+                        <li id="li-ware-2" onclick="setware('2');" style="padding-bottom: 10px;">บ้าน</li>
+                    </ul>
                 </div>
             </div>
             <div class="row">
@@ -191,7 +199,7 @@
                     <input id="price-1" type="text" class="w3-input" value="1000" style="border: none; font-size: 120%;">
                 </div>
                 <span style="font-size: 120%;">x</span>
-                <div  class="col-1 text-center no-pd">
+                <div class="col-1 text-center no-pd">
                     <input id="amount-1" type="text" class="w3-input" value="5" style="border: none;" readonly>
                 </div>
             </div>
@@ -221,7 +229,8 @@
                     <div class="col-4 text-center no-pd">15</div>
                     <div class="col-2"></div>
                 </div>
-            </div><hr style="margin-top: 5%;">
+            </div>
+            <hr style="margin-top: 5%;">
 
             <div id="prod-2" class="row">
                 <span id="id-prod-2" hidden>id</span>
@@ -239,7 +248,7 @@
                     <input id="amount-2" type="text" class="w3-input" value="5" style="border: none;" readonly>
                 </div>
             </div>
-            
+
             <!-- Collapse-2 -->
             <div id="collapse-2" class="container collapse" style="margin-top: 5%;">
                 <div class="row">
@@ -284,7 +293,7 @@
                     <input id="amount-3" type="text" class="w3-input" value="5" style="border: none;" readonly>
                 </div>
             </div>
-            
+
             <!-- Collapse-3 -->
             <div id="collapse-3" class="container collapse" style="margin-top: 5%;">
                 <div class="row">
