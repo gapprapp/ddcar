@@ -56,7 +56,7 @@
               "</div>" +
               "<div class='col-1'></div>" +
               "</div>" +   
-              "<hr>");                                                  
+              "<hr id='hr-"+obj[i].cus_id+"'>");                                                  
           });                          
         }               
       });
@@ -71,6 +71,10 @@
       }
     }
 
+    function disac(arg){
+      if ($("#i-" + arg).hasClass('active')) $("#i-" + arg).removeClass('active');
+    }
+
     function menu(arg) {
       // Animate
       disactive(arg);
@@ -83,12 +87,24 @@
         transition_page_next_flip(goto);
       } else if (arg == "edit") {
         // show edit all
-        $(".i-edit").attr('hidden', false);
-        $(".i-del").attr('hidden', true);
+        if ($(".i-edit").is(":visible")) {
+          $(".i-del").attr('hidden', true);
+          $(".i-edit").attr('hidden', true);
+          disac("edit");
+        } else {
+          $(".i-del").attr('hidden', true);
+          $(".i-edit").attr('hidden', false);
+        }
       } else if (arg == "del") {
         // show trash all 
-        $(".i-del").attr('hidden', false);
-        $(".i-edit").attr('hidden', true);
+        if($(".i-del").is(":visible")){
+          $(".i-edit").attr('hidden', true);
+          $(".i-del").attr('hidden', true);
+          disac("del");
+        }else{
+          $(".i-edit").attr('hidden', true);
+          $(".i-del").attr('hidden', false);
+        }
       }
     }
 
@@ -110,6 +126,7 @@
         success: function(data){                             
             if(data == "success"){
               $("#cus-"+arg).remove(); 
+              $("#hr-"+arg).remove(); 
             }          
         }               
       });

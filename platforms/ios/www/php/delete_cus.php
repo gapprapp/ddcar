@@ -5,6 +5,8 @@
     mysqli_autocommit($conn,FALSE);   
     $sql = "DELETE FROM customer WHERE cus_id = '$cus_id'";
     $result = mysqli_query($conn, $sql);      
+    $sql = "DELETE FROM detail_cus WHERE cus_id = '$cus_id'";
+    $result = mysqli_query($conn, $sql);      
         
     if($result){
         echo "success";
