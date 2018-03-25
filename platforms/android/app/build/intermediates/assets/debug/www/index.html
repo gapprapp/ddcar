@@ -22,7 +22,22 @@
   <link href="https://fonts.googleapis.com/css?family=Prompt" rel="stylesheet">
 
   <script>
-    $(document).ready(function() {});
+    $(document).ready(function() {
+      url = new URL(window.location.href);
+      u = url.searchParams.get("u");
+
+      if(u == "owner"){
+        //loging in?? else login.html
+        $("#row-admin").prop('hidden', true);
+      }else if(u == "member"){
+        //loging in?? else login.html
+        $("#big-ctn").css('margin-top', '30%');
+        $("#row-admin").prop('hidden', true);
+        $("#row-log").prop('hidden', true);
+        $("#main-collapse").slideToggle('collapse');
+
+      }
+    });
 
     function disactive(arg) {
       nav_menu = ['home', 'bell', 'qrcode', 'bars'];
@@ -92,7 +107,8 @@
     //$("div.inbox").collapse({toggle: false});
     function func(arg) {
       if (arg == "admin") {
-        $("#admin-collapse").slideToggle('collapse');
+        $("#admin-collapse").slideToggle('collapse', function(){
+        });
         if ($("#main-collapse").is(":visible")) {
           $("#main-collapse").slideToggle('collapse');
         }
@@ -100,7 +116,11 @@
           $("#log-collapse").slideToggle('collapse');
         }
       } else if (arg == "main") {
-        $("#main-collapse").slideToggle('collapse');
+        $("#main-collapse").slideToggle('collapse', function(){
+          $('html, body').animate({
+            scrollTop: $("#main-collapse").height()
+          }, 900);
+        });
         if ($("#admin-collapse").is(":visible")) {
           $("#admin-collapse").slideToggle('collapse');
         }
@@ -108,7 +128,11 @@
           $("#log-collapse").slideToggle('collapse');
         }
       } else if (arg == "log") {
-        $("#log-collapse").slideToggle('collapse');
+        $("#log-collapse").slideToggle('collapse', function(){
+          $('html, body').animate({
+            scrollTop: $("#log-collapse").height()
+          }, 900);
+        });
         if ($("#main-collapse").is(":visible")) {
           $("#main-collapse").slideToggle('collapse');
         }
@@ -120,6 +144,16 @@
 
     function sale(){
       goto = "sale.html";
+      transition_page_next(goto);
+    }
+
+    function ware_import(){
+      goto = "import.html";
+      transition_page_next(goto);
+    }
+
+    function ware_export() {
+      goto = "export.html";
       transition_page_next(goto);
     }
   </script>
@@ -138,9 +172,9 @@
   </div><br>
 
   <!-- End big container -->
-  <div class="container justify-content-center" style="margin-top: 30%; margin-bottom: 30%;">
+  <div id="big-ctn" class="container justify-content-center" style="margin-top: 40%; margin-bottom: 30%;">
     <!-- Admin -->
-    <div class="row" style="margin-bottom: 15%;">
+    <div id="row-admin" class="row" style="margin-bottom: 15%;">
       <div class="col-12 text-center">
         <button id="func-admin" class="mbtn" href="#admin-collapse" onclick="func('admin');">แอดมิน</button>
       </div>
@@ -171,7 +205,7 @@
 
     <!-- Main -->
     <div class="row" style="margin-bottom: 15%;">
-      <div class="col-12 text-center">
+      <div id="row-main" class="col-12 text-center">
         <button id="func-main" class="mbtn" href="#main-collapse" onclick="func('main');">ฟังก์ชั่นหลัก</button>
       </div>
     </div>
@@ -184,24 +218,24 @@
       </div>
       <div class="row" style="margin-bottom: 15%;">
         <div class="col-12 text-center">
-          <button id="" class="sub" onclick="sub();">เช็คสต๊อก</button>
+          <button id="" class="sub" onclick="stock();">เช็คสต๊อก</button>
         </div>
       </div>
       <div class="row" style="margin-bottom: 15%;">
         <div class="col-12 text-center">
-          <button id="" class="sub" onclick="sub();">สินค้าเข้าโกดัง</button>
+          <button id="" class="sub" onclick="ware_import();">สินค้าเข้าโกดัง</button>
         </div>
       </div>
       <div class="row" style="margin-bottom: 15%;">
         <div class="col-12 text-center">
-          <button id="" class="sub" onclick="sub();">สินค้าออกโกดัง</button>
+          <button id="" class="sub" onclick="ware_export();">สินค้าออกโกดัง</button>
         </div>
       </div>
     </div>
 
     <!-- Log -->
     <div class="row" style="margin-bottom: 15%;">
-      <div class="col-12 text-center">
+      <div id="row-log" class="col-12 text-center">
         <button id="func-log" class="mbtn" href="#log-collapse" onclick="func('log');">ดูย้อนหลัง</button>
       </div>
     </div>
