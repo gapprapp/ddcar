@@ -30,6 +30,12 @@
       padding-left: 10%;
       padding-right: 10%;
     }
+    #btn-addpic{
+      width: 70%; 
+      color: green; 
+      border-color: green;
+      box-shadow: 0 1px 1px  green, 0 0px 0px green;
+    }
   </style>
 
   <script>
@@ -176,18 +182,18 @@
   <!-- End big container -->
   <div class="container justify-content-center" style="margin-top: 15%; margin-bottom: 30%;">
     <div class="container">
-      <div class="row" style="margin-bottom: 15%;">
+      <div class="row mg-15">
         <div class="col-12 text-center" onclick="selectfolder();">
           <button id="slct_folder" class="select_folder">เลือกหมวดหมู่</button>
         </div>
       </div>
-      <div class="row" style="margin-bottom: 10%;">
+      <div class="row mg-10">
         <div class="col-12 text-center pdlr">
           <label for="name">ชื่อสินค้า</label>
           <input id="name" type="text" class="w3-input">
         </div>
       </div>
-      <div class="row" style="margin-bottom: 10%;">
+      <div class="row mg-10">
         <div class="col-12 text-center pdlr">
           <label for="barcode">รหัส</label>
           <input id="barcode" type="text" class="w3-input">
@@ -198,12 +204,12 @@
          <img id='img' alt="" style="width: 96%; height: 96%;">
         </div>
       </div>
-      <div class="row" style="margin-bottom: 15%;">
+      <div class="row mg-15">
         <div class="col-12 text-center">
-          <button id="btn-addpic" class="mbtn" onclick="addpic();" style="width: 70%; color: green; border-color: green;">เพิ่มรูปภาพ</button>
+          <button id="btn-addpic" class="mbtn" onclick="addpic();">เพิ่มรูปภาพ</button>
         </div>
       </div>
-      <div class="row" style="margin-bottom: 15%;">
+      <div class="row mg-15">
         <div class="col-12 text-center">
           <button class="mbtn" onclick="add_prod();">เพิ่มสินค้า</button>
         </div>

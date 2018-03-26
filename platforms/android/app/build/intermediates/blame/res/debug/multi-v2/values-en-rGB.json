@@ -1,10 +1,10 @@
 {
     "logs": [
         {
-            "outputFile": "C:\\Users\\phoenix\\Documents\\ddcar\\C:\\Users\\phoenix\\Documents\\ddcar\\platforms\\android\\app\\build\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values-en-rGB\\values-en-rGB.xml",
+            "outputFile": "/Users/phoenix/Documents/ddcar/C:\\Users\\phoenix\\Documents\\ddcar\\C:\\Users\\moronz\\Documents\\GitHub\\ddcar\\platforms\\android\\app\\build\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values-en-rGB\\values-en-rGB.xml",
             "map": [
                 {
-                    "source": "C:\\Users\\phoenix\\Documents\\ddcar\\C:\\Users\\phoenix\\.gradle\\caches\\transforms-1\\files-1.1\\support-compat-27.1.0.aar\\aa1cf4be73e9345a9d205ae0114b428d\\res\\values-en-rGB\\values-en-rGB.xml",
+                    "source": "/Users/phoenix/Documents/ddcar/C:\\Users\\phoenix\\Documents\\ddcar\\C:\\Users\\moronz\\.gradle\\caches\\transforms-1\\files-1.1\\support-compat-27.1.0.aar\\942ddabff202fc2e16b403d091da395d\\res\\values-en-rGB\\values-en-rGB.xml",
                     "from": {
                         "startLines": "2",
                         "startColumns": "4",
@@ -16,10 +16,10 @@
             ]
         },
         {
-            "outputFile": "C:\\Users\\phoenix\\Documents\\ddcar\\platforms\\android\\app\\build\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values-en-rGB\\values-en-rGB.xml",
+            "outputFile": "/Users/phoenix/Documents/ddcar/C:\\Users\\phoenix\\Documents\\ddcar\\C:\\Users\\phoenix\\Documents\\ddcar\\platforms\\android\\app\\build\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values-en-rGB\\values-en-rGB.xml",
             "map": [
                 {
-                    "source": "C:\\Users\\phoenix\\.gradle\\caches\\transforms-1\\files-1.1\\support-compat-27.1.0.aar\\aa1cf4be73e9345a9d205ae0114b428d\\res\\values-en-rGB\\values-en-rGB.xml",
+                    "source": "/Users/phoenix/Documents/ddcar/C:\\Users\\phoenix\\Documents\\ddcar\\C:\\Users\\phoenix\\.gradle\\caches\\transforms-1\\files-1.1\\support-compat-27.1.0.aar\\aa1cf4be73e9345a9d205ae0114b428d\\res\\values-en-rGB\\values-en-rGB.xml",
                     "from": {
                         "startLines": "2",
                         "startColumns": "4",
@@ -31,10 +31,10 @@
             ]
         },
         {
-            "outputFile": "C:\\Users\\phoenix\\Documents\\ddcar\\C:\\Users\\moronz\\Documents\\GitHub\\ddcar\\platforms\\android\\app\\build\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values-en-rGB\\values-en-rGB.xml",
+            "outputFile": "/Users/phoenix/Documents/ddcar/platforms/android/app/build/intermediates/incremental/mergeDebugResources/merged.dir/values-en-rGB/values-en-rGB.xml",
             "map": [
                 {
-                    "source": "C:\\Users\\phoenix\\Documents\\ddcar\\C:\\Users\\moronz\\.gradle\\caches\\transforms-1\\files-1.1\\support-compat-27.1.0.aar\\942ddabff202fc2e16b403d091da395d\\res\\values-en-rGB\\values-en-rGB.xml",
+                    "source": "/Users/phoenix/.gradle/caches/transforms-1/files-1.1/support-compat-27.1.0.aar/aa1cf4be73e9345a9d205ae0114b428d/res/values-en-rGB/values-en-rGB.xml",
                     "from": {
                         "startLines": "2",
                         "startColumns": "4",
@@ -46,10 +46,10 @@
             ]
         },
         {
-            "outputFile": "C:\\Users\\phoenix\\Documents\\ddcar\\C:\\Users\\phoenix\\Documents\\ddcar\\C:\\Users\\phoenix\\Documents\\ddcar\\platforms\\android\\app\\build\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values-en-rGB\\values-en-rGB.xml",
+            "outputFile": "/Users/phoenix/Documents/ddcar/C:\\Users\\phoenix\\Documents\\ddcar\\C:\\Users\\phoenix\\Documents\\ddcar\\C:\\Users\\phoenix\\Documents\\ddcar\\platforms\\android\\app\\build\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values-en-rGB\\values-en-rGB.xml",
             "map": [
                 {
-                    "source": "C:\\Users\\phoenix\\Documents\\ddcar\\C:\\Users\\phoenix\\Documents\\ddcar\\C:\\Users\\phoenix\\.gradle\\caches\\transforms-1\\files-1.1\\support-compat-27.1.0.aar\\aa1cf4be73e9345a9d205ae0114b428d\\res\\values-en-rGB\\values-en-rGB.xml",
+                    "source": "/Users/phoenix/Documents/ddcar/C:\\Users\\phoenix\\Documents\\ddcar\\C:\\Users\\phoenix\\Documents\\ddcar\\C:\\Users\\phoenix\\.gradle\\caches\\transforms-1\\files-1.1\\support-compat-27.1.0.aar\\aa1cf4be73e9345a9d205ae0114b428d\\res\\values-en-rGB\\values-en-rGB.xml",
                     "from": {
                         "startLines": "2",
                         "startColumns": "4",
@@ -61,10 +61,10 @@
             ]
         },
         {
-            "outputFile": "C:\\Users\\phoenix\\Documents\\ddcar\\C:\\Users\\phoenix\\Documents\\ddcar\\C:\\Users\\moronz\\Documents\\GitHub\\ddcar\\platforms\\android\\app\\build\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values-en-rGB\\values-en-rGB.xml",
+            "outputFile": "/Users/phoenix/Documents/ddcar/C:\\Users\\phoenix\\Documents\\ddcar\\platforms\\android\\app\\build\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values-en-rGB\\values-en-rGB.xml",
             "map": [
                 {
-                    "source": "C:\\Users\\phoenix\\Documents\\ddcar\\C:\\Users\\phoenix\\Documents\\ddcar\\C:\\Users\\moronz\\.gradle\\caches\\transforms-1\\files-1.1\\support-compat-27.1.0.aar\\942ddabff202fc2e16b403d091da395d\\res\\values-en-rGB\\values-en-rGB.xml",
+                    "source": "/Users/phoenix/Documents/ddcar/C:\\Users\\phoenix\\.gradle\\caches\\transforms-1\\files-1.1\\support-compat-27.1.0.aar\\aa1cf4be73e9345a9d205ae0114b428d\\res\\values-en-rGB\\values-en-rGB.xml",
                     "from": {
                         "startLines": "2",
                         "startColumns": "4",
@@ -76,10 +76,25 @@
             ]
         },
         {
-            "outputFile": "C:\\Users\\moronz\\Documents\\GitHub\\ddcar\\platforms\\android\\app\\build\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values-en-rGB\\values-en-rGB.xml",
+            "outputFile": "/Users/phoenix/Documents/ddcar/C:\\Users\\phoenix\\Documents\\ddcar\\C:\\Users\\phoenix\\Documents\\ddcar\\C:\\Users\\moronz\\Documents\\GitHub\\ddcar\\platforms\\android\\app\\build\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values-en-rGB\\values-en-rGB.xml",
             "map": [
                 {
-                    "source": "C:\\Users\\moronz\\.gradle\\caches\\transforms-1\\files-1.1\\support-compat-27.1.0.aar\\942ddabff202fc2e16b403d091da395d\\res\\values-en-rGB\\values-en-rGB.xml",
+                    "source": "/Users/phoenix/Documents/ddcar/C:\\Users\\phoenix\\Documents\\ddcar\\C:\\Users\\phoenix\\Documents\\ddcar\\C:\\Users\\moronz\\.gradle\\caches\\transforms-1\\files-1.1\\support-compat-27.1.0.aar\\942ddabff202fc2e16b403d091da395d\\res\\values-en-rGB\\values-en-rGB.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endColumns": "100",
+                        "endOffsets": "151"
+                    }
+                }
+            ]
+        },
+        {
+            "outputFile": "/Users/phoenix/Documents/ddcar/C:\\Users\\moronz\\Documents\\GitHub\\ddcar\\platforms\\android\\app\\build\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values-en-rGB\\values-en-rGB.xml",
+            "map": [
+                {
+                    "source": "/Users/phoenix/Documents/ddcar/C:\\Users\\moronz\\.gradle\\caches\\transforms-1\\files-1.1\\support-compat-27.1.0.aar\\942ddabff202fc2e16b403d091da395d\\res\\values-en-rGB\\values-en-rGB.xml",
                     "from": {
                         "startLines": "2",
                         "startColumns": "4",
