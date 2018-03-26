@@ -148,9 +148,6 @@
     function func(arg) {
       if (arg == "admin") {
         $("#admin-collapse").slideToggle('collapse', function(){
-          $('html, body').animate({
-            scrollTop: $("#admin-collapse").height()
-          }, 900);
         });
         if ($("#main-collapse").is(":visible")) {
           $("#main-collapse").slideToggle('collapse');
@@ -189,6 +186,16 @@
       goto = "sale.html";
       transition_page_next(goto);
     }
+
+    function ware_import(){
+      goto = "import.html";
+      transition_page_next(goto);
+    }
+
+    function ware_export() {
+      goto = "export.html";
+      transition_page_next(goto);
+    }
   </script>
 </head>
 
@@ -205,7 +212,7 @@
   </div><br>
 
   <!-- End big container -->
-  <div id="big-ctn" class="container justify-content-center" style="margin-top: 50%; margin-bottom: 30%;">
+  <div id="big-ctn" class="container justify-content-center" style="margin-top: 40%; margin-bottom: 30%;">
     <!-- Admin -->
     <div id="row-admin" class="row" style="margin-bottom: 15%;">
       <div class="col-12 text-center">
@@ -256,12 +263,12 @@
       </div>
       <div class="row" style="margin-bottom: 15%;">
         <div class="col-12 text-center">
-          <button id="" class="sub" onclick="import();">สินค้าเข้าโกดัง</button>
+          <button id="" class="sub" onclick="ware_import();">สินค้าเข้าโกดัง</button>
         </div>
       </div>
       <div class="row" style="margin-bottom: 15%;">
         <div class="col-12 text-center">
-          <button id="" class="sub" onclick="ex_port();">สินค้าออกโกดัง</button>
+          <button id="" class="sub" onclick="ware_export();">สินค้าออกโกดัง</button>
         </div>
       </div>
     </div>
