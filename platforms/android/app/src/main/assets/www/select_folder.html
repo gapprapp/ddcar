@@ -200,8 +200,7 @@
       from = url.searchParams.get("from");
       if(last_node == 0){
         goto = "select_folder.html?from="+ from+ "&folder=" +arg;
-      }else if(last_node == 1){
-        alert(arg);
+      }else if(last_node == 1){       
         goto = "import.html?product="+arg;
       }     
       transition_page_next(goto);

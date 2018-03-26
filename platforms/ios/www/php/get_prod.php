@@ -1,14 +1,12 @@
 <?php
-    $conn = mysqli_connect("localhost", "id3340019_dd", "pkl2468GG", "id3340019_dd");
-    $qr = $_POST['qr'];    
-    $prod_id = $_POST['prod_id']; 
+    $conn = mysqli_connect("localhost", "id3340019_dd", "pkl2468GG", "id3340019_dd"); 
 
-    if(isset($qr)){
-        $query = "SELECT prod_id,prod_name,prod_code,prod_price,prod_pricesend,prod_cost 
-        FROM product WHERE prod_code = '$qr'";
-    }else if(isset($prod_id)){
-        $query = "SELECT prod_id,prod_name,prod_code,prod_price,prod_pricesend,prod_cost 
-        FROM product WHERE prod_id = '$prod_id'";
+    if(isset($_POST['qr'])){
+        $qr = $_POST['qr'];    
+        $query = "SELECT * FROM product WHERE prod_code = '$qr'";
+    }else if(isset($_POST['prod_id'])){
+        $prod_id = $_POST['prod_id']; 
+        $query = "SELECT * FROM product WHERE prod_id = '$prod_id'";
     }    
     $result = mysqli_query($conn, $query);
 

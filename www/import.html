@@ -16,8 +16,7 @@
     <script defer src="https://use.fontawesome.com/releases/v5.0.8/js/all.js"></script>
     <script src="cordova.js"></script>
 
-    <script src="js/jquery.easy-autocomplete.min.js"></script>    
-    <link rel="stylesheet" href="css/easy-autocomplete.min.css">    
+    <script src="js/jquery.easy-autocomplete.min.js"></script>   
     <link rel="stylesheet" href="css/easy-autocomplete.themes.min.css">
 
     <link rel="stylesheet" href="css/index.css">
@@ -50,7 +49,13 @@
         var img;    
         $(document).ready(function () { 
             url = new URL(window.location.href);
-            product = url.searchParams.get("product");           
+            product = url.searchParams.get("product");  
+
+            if(localStorage.arr_prod){
+                var retrievedObject = localStorage.getItem('arr_prod');
+                var arr_data = JSON.parse(retrievedObject);             
+                $('#check-import').text("("+arr_data.length+")");       
+            }          
 
             if(product != null){
                 $.ajax({
@@ -115,14 +120,14 @@
                         prod_id = $("#name").getSelectedItemData().prod_id;
                         img = $("#name").getSelectedItemData().img; 
 
-                        $('#code').val(code);
+                        $('#barcode').val(code);
                         if(cost_o == 0 && price_w == 0 && price_s == 0){
-                            $('#price_s').val("");      
-                            $('#price_w').val("");  
+                            $('#wholesale').val("");      
+                            $('#retail').val("");  
                             $('#cost').val("");       
                         }else{
-                            $('#price_s').val(price_s);      
-                            $('#price_w').val(price_w);  
+                            $('#wholesale').val(price_s);      
+                            $('#retail').val(price_w);  
                             $('#cost').val(cost_o);                         
                             flag = 1;
                         }                                                                           
@@ -172,8 +177,7 @@
             }           
         }  
 
-        function add_import(){
-            alert("add");
+        function add_import(){           
             var code = $('#barcode').val();
             var cost = $('#cost').val();
             var price_s =$('#wholesale').val();
@@ -218,9 +222,13 @@
         }     
         
         function show(code,cost){
-            var arr_data = [];
-            var retrievedObject = localStorage.getItem('arr_prod');
-            arr_data = JSON.parse(retrievedObject);
+            if(localStorage.arr_prod){
+                var retrievedObject = localStorage.getItem('arr_prod');
+                var arr_data = JSON.parse(retrievedObject);
+            }else{
+                var arr_data = [];
+            }        
+           
             item = {}            
             item ["qr"] =  code;
             item ["prod_id"] =  prod_id;
@@ -230,12 +238,11 @@
             item ["img"] =  img;     
 
             arr_data.push(item); 
-            localStorage.setItem('arr_prod', JSON.stringify(arr_data));            
-            localStorage.index = 0;
-            localStorage.index += 1;
-            $('#check-import').text("("+localStorage.index+")");       
+            localStorage.setItem('arr_prod', JSON.stringify(arr_data));         
+           
+            $('#check-import').text("("+arr_data.length+")");       
 
-            $('#code').val("");
+            $('#barcode').val("");
             $('#name').val("");
             $('#cost').val("");
             $('#wholesale').val("");
@@ -268,10 +275,11 @@
             transition_page_next_flip(goto);
         }     
 
-        function report() {
-            alert("check");
-            goto = "import_check.html";
-            transition_page_next(goto);
+        function report() {     
+            if(arr_data.length > 0){      
+                goto = "import_check.html";
+                transition_page_next(goto);
+            }
         }
 
     </script>

@@ -53,17 +53,19 @@
                 type: "GET",
                 url:"https://omise-webpack.000webhostapp.com/www/php/get_ware.php",                            
                 success: function(data){
-                    var obj = jQuery.parseJSON(data);                                         
+                    var obj = jQuery.parseJSON(data);                                                      
                     $.each(obj, function(i, field){                                        
-                        $('#ware').append("<li id='li-ware-"+i+"' onclick='setware("+i+");' style='padding-bottom: 10px;>"+field.ware_name+"</li>" +
-                        "<span id='id-ware-"+i+"' hidden>"+field.ware_id+"</span>");
+                        $('#ware').append("<li id='li-ware-"+i+"' onclick='setware("+i+");' style='padding-bottom: 10px;'>"+field.ware_name+"</li>"/* +
+                        "<span id='id-ware-"+i+"' hidden>"+field.ware_id+"</span>"*/);
                     });                                        
                 }               
             });
 
             var retrievedObject = localStorage.getItem('arr_prod');
             var arr_data = JSON.parse(retrievedObject);
-            alert(arr_data[0].name);
+            for(var i = 0 ; i < arr_data.length ; i ++){
+
+            }
         });
 
         function disactive(arg) {
@@ -161,7 +163,7 @@
 <body>
     <!-- Nav menu top -->
     <div class="row fixed-top navs">
-        <div class="col-1 text-center" onclick="transition_page_back('index.html')">
+        <div class="col-1 text-center" onclick="transition_page_back('import.html')">
             <i id="i-back" class="fas fa-angle-left"></i>
         </div>
         <div class="col-10 text-center">
@@ -181,7 +183,7 @@
                 <div id="date" class="col-2 text-center no-pd"></div>
                 <div class="col-2 text-center no-pd"></div>
                 <div class="col-4 text-center no-pd">เลขที่ใบเสร็จ : </div>
-                <div class="col-1 text-center no-pd">ทำอัตโนมัตเมื่อบันทึก</div>
+                <div class="col-1 text-center no-pd">AUTO</div>
             </div>
             <div class="row" style="margin-bottom: 10%;">
                 <div class="col-3 text-center no-pd">ผู้ใช้ : </div>
@@ -189,7 +191,7 @@
                 <div class="col-1 text-center no-pd"></div>
                 <div class="col-5 text-center no-pd">
                     <input id="ware" type="text" class="w3-input" data-toggle="dropdown" placeholder="โกดัง" readonly>
-                    <ul id="ware" class="dropdown-menu text-center" aria-labelledby="role" style="width: 80%;">                       
+                    <ul id="ware" class="dropdown-menu text-center" aria-labelledby="role" style="width: 80%;">                                        
                     </ul>
                 </div>
             </div>
