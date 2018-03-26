@@ -31,6 +31,7 @@
   <script>
     var parent;
     var index;
+    var last_node = 0;
     $(document).ready(function() {
       url = new URL(window.location.href);
       folder = url.searchParams.get("folder");  
@@ -60,12 +61,45 @@
             }else{           
               var obj = jQuery.parseJSON(data); 
               //console.log(obj); 
-              if(obj[obj.length-1] == "last node" && from == "add"){
-                //last node have product                
-                  $("#add-ctn").prop('hidden', false);
-                  $("#row-add").prop('hidden', true);
-                  $("#row-input-add").prop('hidden', true);
-                  $("#row-select").prop('hidden', false);                            
+              if(obj[obj.length-1] == "last node"){
+                //last node have product 
+                  if(from == "add"){
+                    $("#add-ctn").prop('hidden', false);
+                    $("#row-add").prop('hidden', true);
+                    $("#row-input-add").prop('hidden', true);
+                    $("#row-select").prop('hidden', false);       
+                  }else if(from == "import"){
+                    $("#main-ctn").prop('hidden', false);      
+                    $("#add-ctn").prop('hidden', true);
+                    $.each(obj, function(i, field){
+                    if(obj.length-1 > i){
+                      text_html = "<div id='row-title-"+i+"' class='row'>" +
+                        "<div class='col-2'></div>" +
+                        "<div id='getin-"+i+"' class='col-8 text-center' onclick='getIn(\"" + obj[i].title + "\")'>" +
+                        "<h5 id='title-"+i+"'>" + obj[i].title + "</h5>" +
+                        "</div>" +
+                        "<div class='col-2'>" +
+                        "<i class='fa fa-trash-alt i-trash' onclick='remove("+i+")' hidden></i>" +
+                        "<i class='fa fa-edit i-edit' onclick='edit("+i+")' hidden></i>" +
+                        "</div>" +
+                        "</div >"+
+                        "<div id='row-edit-"+i+"' class='row' hidden>" +
+                        "<div class='col-2 text-right' onclick='rename("+i+");'>" +
+                        "<i class='fa fa-check'></i>" +
+                        "</div >" +
+                        "<div class='col-8 text-center'>" +
+                        "<input id='input-"+i+"' type='text' class='w3-input' value='"+ obj[i].title +"'>" +
+                        "</div>" +
+                        "<div class='col-2' onclick='close_row_edit("+i+");'>" +
+                        "<i class='fa fa-times'></i>" +
+                        "</div>" +
+                        "</div>" + "<hr id='hr-"+i+"'>";
+                      $("#append-ctn").append(text_html);
+                      index = i;
+                      }                                                 
+                    });
+                    last_node = 1; 
+                  }                                     
               }else{
                 $("#main-ctn").prop('hidden', false);      
                 $("#add-ctn").prop('hidden', true);
@@ -95,7 +129,7 @@
                   $("#append-ctn").append(text_html);
                   index = i;
                   }                                                 
-                }); 
+                });               
               }                               
             }                          
         }               
@@ -164,9 +198,9 @@
     function getIn(arg){
       url = new URL(window.location.href);
       from = url.searchParams.get("from");
-      if(from == "add"){
+      if(last_node == 0){
         goto = "select_folder.html?from="+ from+ "&folder=" +arg;
-      }else if(from == "import"){
+      }else if(last_node == 1){       
         goto = "import.html?product="+arg;
       }     
       transition_page_next(goto);

@@ -197,6 +197,11 @@
       transition_page_next(goto);
     }
 
+    function transfer_in(){
+      goto = "transfer_in.html";
+      transition_page_next(goto);
+    }
+
   </script>
 </head>
 
@@ -215,91 +220,96 @@
   <!-- End big container -->
   <div id="big-ctn" class="container justify-content-center" style="margin-top: 40%; margin-bottom: 30%;">
     <!-- Admin -->
-    <div id="row-admin" class="row" style="margin-bottom: 15%;">
+    <div id="row-admin" class="row mg-15">
       <div class="col-12 text-center">
         <button id="func-admin" class="mbtn" href="#admin-collapse" onclick="func('admin');">แอดมิน</button>
       </div>
     </div>
     <!-- Admin Collapse -->
     <div id="admin-collapse" class="container collapse">
-      <div class="row" style="margin-bottom: 15%;">
+      <div class="row mg-15">
         <div class="col-12 text-center">
-          <button id="mng-member" class="sub" onclick="member();">ผู้ใช้</button>
+          <button id="mng-member" class="mbtn sub" onclick="member();">ผู้ใช้</button>
         </div>
       </div>
-      <div class="row" style="margin-bottom: 15%;">
+      <div class="row mg-15">
         <div class="col-12 text-center">
-          <button id="add-cus" class="sub" onclick="customer();">ลูกค้า</button>
+          <button id="add-cus" class="mbtn sub" onclick="customer();">ลูกค้า</button>
         </div>
       </div>
-      <div class="row" style="margin-bottom: 15%;">
+      <div class="row mg-15">
         <div class="col-12 text-center">
-          <button id="add-prod" class="sub" onclick="add_prod();">เพิ่มสินค้า</button>
+          <button id="add-prod" class="mbtn sub" onclick="add_prod();">เพิ่มสินค้า</button>
         </div>
       </div>
-      <div class="row" style="margin-bottom: 15%;">
+      <div class="row mg-15">
         <div class="col-12 text-center">
-          <button id="add-ware" class="sub" onclick="warehouse();">หน้าร้าน / โกดัง</button>
+          <button id="add-ware" class="mbtn sub" onclick="warehouse();">หน้าร้าน / โกดัง</button>
         </div>
       </div>
     </div>
 
     <!-- Main -->
-    <div class="row" style="margin-bottom: 15%;">
+    <div class="row mg-15">
       <div id="row-main" class="col-12 text-center">
         <button id="func-main" class="mbtn" href="#main-collapse" onclick="func('main');">ฟังก์ชั่นหลัก</button>
       </div>
     </div>
     <!-- Main Collapse -->
     <div id="main-collapse" class="container collapse">
-      <div class="row" style="margin-bottom: 15%;">
+      <div class="row mg-15">
         <div class="col-12 text-center">
-          <button id="" class="sub" onclick="sale();">ขาย</button>
+          <button id="" class="mbtn sub" onclick="sale();">ขาย</button>
         </div>
       </div>
-      <div class="row" style="margin-bottom: 15%;">
+      <div class="row mg-15">
         <div class="col-12 text-center">
-          <button id="" class="sub" onclick="stock();">เช็คสต๊อก</button>
+          <button id="" class="mbtn sub" onclick="stock();">เช็คสต๊อก</button>
         </div>
       </div>
-      <div class="row" style="margin-bottom: 15%;">
+      <div class="row mg-15">
+        <div class="col-12 text-center">
+          <button id="" class="mbtn sub" onclick="transfer_in();">สินค้าเข้าหน้าร้าน</button>
+        </div>
+      </div>
+      <div class="row mg-15">
         <div class="col-12 text-center">       
-          <button id="" class="sub" onclick="ware_import();">สินค้าเข้าโกดัง</button>
+          <button id="" class="mbtn sub" onclick="ware_import();">สินค้าเข้าโกดัง</button>
         </div>
       </div>
-      <div class="row" style="margin-bottom: 15%;">
+      <div class="row mg-15">
         <div class="col-12 text-center">
-          <button id="" class="sub" onclick="ware_export();">สินค้าออกโกดัง</button>
+          <button id="" class="mbtn sub" onclick="ware_export();">สินค้าออกโกดัง</button>
         </div>
       </div>
     </div>
 
     <!-- Log -->
-    <div class="row" style="margin-bottom: 15%;">
+    <div class="row mg-15">
       <div id="row-log" class="col-12 text-center">
         <button id="func-log" class="mbtn" href="#log-collapse" onclick="func('log');">ดูย้อนหลัง</button>
       </div>
     </div>
     <!-- Log Collapse -->
     <div id="log-collapse" class="container collapse" style="margin-bottom: 30%;">
-      <div class="row" style="margin-bottom: 15%;">
+      <div class="row mg-15">
         <div class="col-12 text-center">
-          <button id="log-1" class="sub" onclick="sub(log-1);">foo bar</button>
+          <button id="log-1" class="mbtn sub" onclick="sub(log-1);">foo bar</button>
         </div>
       </div>
-      <div class="row" style="margin-bottom: 15%;">
+      <div class="row mg-15">
         <div class="col-12 text-center">
-          <button id="log-2" class="sub" onclick="sub(log-2);">foo bar</button>
+          <button id="log-2" class="mbtn sub" onclick="sub(log-2);">foo bar</button>
         </div>
       </div>
-      <div class="row" style="margin-bottom: 15%;">
+      <div class="row mg-15">
         <div class="col-12 text-center">
-          <button id="log-3" class="sub" onclick="sub(log-3);">foo bar</button>
+          <button id="log-3" class="mbtn sub" onclick="sub(log-3);">foo bar</button>
         </div>
       </div>
-      <div class="row" style="margin-bottom: 15%;">
+      <div class="row mg-15">
         <div class="col-12 text-center">
-          <button id="log-4" class="sub" onclick="sub(log-4);">foo bar</button>
+          <button id="log-4" class="mbtn sub" onclick="sub(log-4);">foo bar</button>
         </div>
       </div>
     </div>

@@ -16,6 +16,10 @@
     <script defer src="https://use.fontawesome.com/releases/v5.0.8/js/all.js"></script>
     <script src="cordova.js"></script>
 
+    <script src="js/jquery.easy-autocomplete.min.js"></script>    
+    <link rel="stylesheet" href="css/easy-autocomplete.min.css">    
+    <link rel="stylesheet" href="css/easy-autocomplete.themes.min.css">
+
     <link rel="stylesheet" href="css/index.css">
 
     <!-- Font -->
@@ -42,10 +46,11 @@
     <script>      
         var prod_id;       
         var cost_o; 
-        var flag = 0;     
+        var flag = 0; 
+        var img;    
         $(document).ready(function () { 
             url = new URL(window.location.href);
-            product = url.searchParams.get("product");
+            product = url.searchParams.get("product");           
 
             if(product != null){
                 $.ajax({
@@ -58,13 +63,15 @@
                         $.each(obj, function(i, field){
                             $('#name').val(obj[i].prod_name);
                             $('#barcode').val(obj[i].prod_code); 
-                            prod_id = obj[i].prod_id;    
+                            cost_o = obj[i].prod_cost;
+                            prod_id = obj[i].prod_id;   
+                            img = obj[i].img;   
                             if(obj[i].prod_cost == 0 && obj[i].prod_price == 0 && obj[i].prod_pricesend == 0){
                                 $('#cost').val("");
                                 $('#wholesale').val("");
                                 $('#retail').val("");  
                             }else{
-                                $('#cost').val(obj[i].prod_cost);
+                                $('#cost').val(cost_o);
                                 $('#wholesale').val(obj[i].prod_pricesend);
                                 $('#retail').val(obj[i].prod_price);                     
                                 flag = 1;
@@ -106,6 +113,7 @@
                         var price_s = $("#name").getSelectedItemData().prod_pricesend;
                         cost_o = $("#name").getSelectedItemData().prod_cost;
                         prod_id = $("#name").getSelectedItemData().prod_id;
+                        img = $("#name").getSelectedItemData().img; 
 
                         $('#code').val(code);
                         if(cost_o == 0 && price_w == 0 && price_s == 0){
@@ -165,6 +173,7 @@
         }  
 
         function add_import(){
+            alert("add");
             var code = $('#barcode').val();
             var cost = $('#cost').val();
             var price_s =$('#wholesale').val();
@@ -218,6 +227,7 @@
             item ["name"] =  $('#name').val();
             item ["cost"] =  cost;               
             item ["amt"] =  $('#amount').val();
+            item ["img"] =  img;     
 
             arr_data.push(item); 
             localStorage.setItem('arr_prod', JSON.stringify(arr_data));            
@@ -258,7 +268,8 @@
             transition_page_next_flip(goto);
         }     
 
-        function check() {
+        function report() {
+            alert("check");
             goto = "import_check.html";
             transition_page_next(goto);
         }
@@ -324,7 +335,7 @@
             </div>
             <div class="row mg-15">
                 <div class="col-12 text-center">
-                    <button id="btn-check" class="mbtn" onclick="check();">
+                    <button id="btn-check" class="mbtn" onclick="report();">
                         ตรวจสอบ
                         <span id="check-import"></span>
                     </button>

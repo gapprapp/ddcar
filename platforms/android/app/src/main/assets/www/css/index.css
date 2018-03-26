@@ -38,6 +38,14 @@ body{
   color: #4c4c4c !important;
 }
 
+.mg-10{
+	margin-bottom: 10%;
+}
+
+.mg-15{
+	margin-bottom: 15%;
+}
+
 .mbtn{
 	background-color: #fdfdfd;
 	border: 1px solid #e5e5e5;
@@ -49,19 +57,6 @@ body{
 	letter-spacing: 2px;
 	border-radius: 5px;
 	box-shadow: 0 1px 2px  #e5e5e5, 0 1px 1px #e5e5e5;
-}
-
-.sub{
-	background-color: #fdfdfd;
-	border: 1px solid #e5e5e5;
-	height: 160%;
-	width: 85%;
-	font-weight: bold;
-	font-size: 120%;
-	color: #666666;
-	letter-spacing: 2px;
-	border-radius: 5px;
-	box-shadow: 0 1px 2px  #e5e5e5, 0 0px 0px #e5e5e5;
 }
 
 .select_folder{

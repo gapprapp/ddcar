@@ -27,7 +27,17 @@
     if(mysqli_num_rows($result) > 0){    
         while($row = mysqli_fetch_array($result)){
             if(is_numeric($row['title'])){
-                $msg = "last node";               
+                $msg = "last node";
+                /*$prod_id = $row['title']; 
+                $sql = "SELECT prod_name FROM produt WHERE prod_id = '$prod_id'" 
+                $result1 = mysqli_query($conn, $sql);
+                if(mysqli_num_rows($result1) > 0){    
+                    while($row = mysqli_fetch_array($result1)){                      
+                        $output[] = $row;             
+                    }
+                    array_push($output,$msg);
+                    echo json_encode($output);   
+                }*/
             }
             $output[] = $row;             
         }

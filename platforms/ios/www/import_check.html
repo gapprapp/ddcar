@@ -44,6 +44,26 @@
         $(document).ready(function () {
             number = 50000;
             $("#net").text(number.toLocaleString()); // 50000 -> 50,000;
+
+            var d = new Date($.now());            
+            $('#date').text(d.getDate() + "/" + (d.getMonth()+1) + "/" + d.getFullYear()); 
+            var datetime = d.getFullYear() + "-" + (d.getMonth()+1) + "-" + d.getDate() + " " + d.getHours() + ":" + d.getMinutes() + ":" + d.getSeconds(); 
+
+            $.ajax({
+                type: "GET",
+                url:"https://omise-webpack.000webhostapp.com/www/php/get_ware.php",                            
+                success: function(data){
+                    var obj = jQuery.parseJSON(data);                                         
+                    $.each(obj, function(i, field){                                        
+                        $('#ware').append("<li id='li-ware-"+i+"' onclick='setware("+i+");' style='padding-bottom: 10px;>"+field.ware_name+"</li>" +
+                        "<span id='id-ware-"+i+"' hidden>"+field.ware_id+"</span>");
+                    });                                        
+                }               
+            });
+
+            var retrievedObject = localStorage.getItem('arr_prod');
+            var arr_data = JSON.parse(retrievedObject);
+            alert(arr_data[0].name);
         });
 
         function disactive(arg) {
@@ -63,8 +83,8 @@
             });
 
             if (arg == "add") {
-                goto = "sale.html";
-                transition_page_back(goto);
+                /*goto = "sale.html";
+                transition_page_back(goto);*/
             } else if (arg == "edit") {
                 // show edit all
                 $(".i-edit").attr('hidden', false);
@@ -74,12 +94,7 @@
                 $(".i-del").attr('hidden', false);
                 $(".i-edit").attr('hidden', true);
             }
-        }
-
-        function show_cus(arg) {
-            goto = "customer_show.html?cus=" + arg;
-            transition_page_next(goto);
-        }
+        }      
 
         function check_edit(arg) {
             val = true;
@@ -134,10 +149,12 @@
             });
         }
 
+        var ware_id;
         function setware(arg) {
-                ware = $("#li-ware-" + arg).text();
-                $("#ware").val(ware);
-            }
+            ware = $("#li-ware-" + arg).text();
+            $("#ware").val(ware);
+            ware_id = $("#id-ware-" + arg).text();
+        }
     </script>
 </head>
 
@@ -161,20 +178,18 @@
         <div class="container">
             <div class="row" style="margin-bottom: 5%;">
                 <div class="col-3 text-center no-pd">วันที่ : </div>
-                <div class="col-2 text-center no-pd">31/11/2011</div>
+                <div id="date" class="col-2 text-center no-pd"></div>
                 <div class="col-2 text-center no-pd"></div>
                 <div class="col-4 text-center no-pd">เลขที่ใบเสร็จ : </div>
-                <div class="col-1 text-center no-pd">2</div>
+                <div class="col-1 text-center no-pd">ทำอัตโนมัตเมื่อบันทึก</div>
             </div>
             <div class="row" style="margin-bottom: 10%;">
                 <div class="col-3 text-center no-pd">ผู้ใช้ : </div>
-                <div class="col-3 text-center no-pd">ศิริพร</div>
+                <div id="user" class="col-3 text-center no-pd">ทดสอบ</div>
                 <div class="col-1 text-center no-pd"></div>
                 <div class="col-5 text-center no-pd">
                     <input id="ware" type="text" class="w3-input" data-toggle="dropdown" placeholder="โกดัง" readonly>
-                    <ul class="dropdown-menu text-center" aria-labelledby="role" style="width: 80%;">
-                        <li id="li-ware-1" onclick="setware('1');" style="padding-bottom: 10px; padding-top: 10px;">โกดังตึกเช่า</li>
-                        <li id="li-ware-2" onclick="setware('2');" style="padding-bottom: 10px;">โกดัง2</li>
+                    <ul id="ware" class="dropdown-menu text-center" aria-labelledby="role" style="width: 80%;">                       
                     </ul>
                 </div>
             </div>
@@ -328,9 +343,12 @@
     </div>
     <!-- End big container -->
 
-    <div class="row fixed-bottom" style="margin-bottom: 17%;">
-        <div class="col-12 text-center">
-            <h5 class="title" style="font-size: 150%;">รวม : <span id="net">50000</span></h5>
+    <div class="row fixed-bottom navs" style="margin-bottom: 15%; border: none !important; background-color: #fdfdfd !important;">
+        <div class="col-6 text-center">
+            <button id="btn-check" class="svbtn" onclick="save();">บันทึก</button>
+        </div>
+        <div class="col-6 text-right">
+            <h5 class="title" style="font-size: 150%; text-decoration: underline;">รวม : <span id="net" style="color: red;">50000</span></h5>
         </div>
     </div>
     <!-- Nav menu bottom -->

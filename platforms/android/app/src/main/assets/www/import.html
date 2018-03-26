@@ -31,10 +31,210 @@
             padding-left: 10%;
             padding-right: 10%;
         }
+
+        #btn-check{
+            color: red; 
+            border-color: red;
+            box-shadow: 0 1px 1px  red, 0 0px 0px red;
+        }
     </style>
 
-    <script>
-        $(document).ready(function () { });
+    <script>      
+        var prod_id;       
+        var cost_o; 
+        var flag = 0;     
+        $(document).ready(function () { 
+            url = new URL(window.location.href);
+            product = url.searchParams.get("product");
+            alert(product);
+
+            if(product != null){
+                $.ajax({
+                    type: "POST",
+                    url:"https://omise-webpack.000webhostapp.com/www/php/get_prod.php",    
+                    data:{'prod_id' : product},
+                    async: false,                       
+                    success: function(data){
+                        var obj = jQuery.parseJSON(data);                                         
+                        $.each(obj, function(i, field){
+                            $('#name').val(obj[i].prod_name);
+                            $('#barcode').val(obj[i].prod_code); 
+                            prod_id = obj[i].prod_id;    
+                            if(obj[i].prod_cost == 0 && obj[i].prod_price == 0 && obj[i].prod_pricesend == 0){
+                                $('#cost').val("");
+                                $('#wholesale').val("");
+                                $('#retail').val("");  
+                            }else{
+                                $('#cost').val(obj[i].prod_cost);
+                                $('#wholesale').val(obj[i].prod_pricesend);
+                                $('#retail').val(obj[i].prod_price);                     
+                                flag = 1;
+                            }                        
+                        });                                        
+                    }               
+                }); 
+            }
+
+            var options = {
+                url: function(phrase) {
+                    return "https://omise-webpack.000webhostapp.com/www/php/searh_prod.php";
+                },
+                getValue: function(element) {    
+                    //console.log(element);                               
+                    return element.prod_name;
+                },
+                ajaxSettings: {                      
+                method: "POST",
+                data: {}
+                },
+                preparePostData: function(data) {
+                    data.phrase = $("#name").val();                  
+                    return data;
+                },
+                list: {                        
+                    maxNumberOfElements: 5,
+                    showAnimation: {
+                        type: "slide",
+                        time: 200
+                    },
+                    hideAnimation: {
+                        type: "slide",
+                        time: 200
+                    },
+                    onChooseEvent: function() {
+                        var code = $("#name").getSelectedItemData().prod_code;
+                        var price_w = $("#name").getSelectedItemData().prod_price;
+                        var price_s = $("#name").getSelectedItemData().prod_pricesend;
+                        cost_o = $("#name").getSelectedItemData().prod_cost;
+                        prod_id = $("#name").getSelectedItemData().prod_id;
+
+                        $('#code').val(code);
+                        if(cost_o == 0 && price_w == 0 && price_s == 0){
+                            $('#price_s').val("");      
+                            $('#price_w').val("");  
+                            $('#cost').val("");       
+                        }else{
+                            $('#price_s').val(price_s);      
+                            $('#price_w').val(price_w);  
+                            $('#cost').val(cost_o);                         
+                            flag = 1;
+                        }                                                                           
+                    }
+                }, 
+                //theme: "blue-light",                   
+                };
+                $("#name").easyAutocomplete(options);      
+        });
+
+        var check =  0;
+        function cal_avg(type){  
+            if(flag == 1){
+                if(type == "cost"){
+                    $.ajax({
+                        type: "POST",
+                        url:"https://omise-webpack.000webhostapp.com/www/php/get_amt_prod.php",           
+                        data: {prod:prod_id},               
+                        success: function(data){                                                                    
+                            var cost_n = $('#cost').val();
+                            var amt_n = $('#amount').val();
+                            var amt_o = data;
+
+                            var avg = (parseInt(cost_n*amt_n) + parseInt(cost_o*amt_o))/(parseInt(amt_n)+parseInt(amt_o));    
+                            
+                            $('#cost').attr("placeholder","avg: " + Math.round(avg));
+                            check = 1;                              
+                        }               
+                    });            
+                }else if(type == "amt" && check == 1){
+                    $.ajax({
+                        type: "POST",
+                        url:"https://omise-webpack.000webhostapp.com/www/php/get_amt_prod.php",           
+                        data: {prod:prod_id},               
+                        success: function(data){                                         
+                            var cost_n = $('#cost').val();
+                            var amt_n = $('#amount').val();
+                            var amt_o = data;
+
+                            var avg = (parseInt(cost_n*amt_n) + parseInt(cost_o*amt_o))/(parseInt(amt_n)+parseInt(amt_o));    
+                            
+                            $('#cost').attr("placeholder","avg: " + Math.round(avg));                                                     
+                        }               
+                    });            
+                }
+              
+            }           
+        }  
+
+        function add_import(){
+            var code = $('#barcode').val();
+            var cost = $('#cost').val();
+            var price_s =$('#wholesale').val();
+            var price_w =$('#retail').val(); 
+            if(code != "" && cost != "" && price_s != "" && price_w != ""){      
+                if(flag == 0){                 
+                    $.ajax({
+                        type: "POST",
+                        url:"https://omise-webpack.000webhostapp.com/www/php/update_prod.php",           
+                        data: {prod:prod_id , cost:cost , price_s:price_s , price_w:price_w},               
+                        success: function(data){                             
+                           if(data == "success"){
+                                show(code,cost);
+                           }else{
+                               alert("ลองอีกครั้ง");
+                           }
+                        }               
+                    });                   
+                }else if(flag == 1 && check == 1){
+                    $.ajax({
+                        type: "POST",
+                        url:"https://omise-webpack.000webhostapp.com/www/php/update_prod.php",           
+                        data: {prod:prod_id , cost:cost , price_s:price_s , price_w:price_w},               
+                        success: function(data){                             
+                           if(data == "success"){
+                                flag = 0;
+                                check = 0;
+                                show(code,cost);
+                           }else{
+                               alert("ลองอีกครั้ง");
+                           }
+                        }               
+                    });                   
+                                       
+                }else{
+                    flag = 0;
+                    show(code,cost);
+                }               
+            }else{
+                alert("กรุณาใส่ข้อมูลให้ครบ");
+            }          
+        }     
+        
+        function show(code,cost){
+            var arr_data = [];
+            var retrievedObject = localStorage.getItem('arr_prod');
+            arr_data = JSON.parse(retrievedObject);
+            item = {}            
+            item ["qr"] =  code;
+            item ["prod_id"] =  prod_id;
+            item ["name"] =  $('#name').val();
+            item ["cost"] =  cost;               
+            item ["amt"] =  $('#amount').val();
+
+            arr_data.push(item); 
+            localStorage.setItem('arr_prod', JSON.stringify(arr_data));            
+            localStorage.index = 0;
+            localStorage.index += 1;
+            $('#check-import').text("("+localStorage.index+")");       
+
+            $('#code').val("");
+            $('#name').val("");
+            $('#cost').val("");
+            $('#wholesale').val("");
+            $('#retail').val("");
+            $('#amount').val("1"); 
+            $('#amount').attr("placeholder","");              
+        }  
+
 
         function disactive(arg) {
             nav_menu = ['home', 'bell', 'qrcode', 'bars'];
@@ -51,21 +251,13 @@
             $("#i-" + arg).fadeOut(100).fadeIn(100, function () {
                 $("#i-" + arg).addClass('active');
             });
-        }
-
-        function addpic() {
-            $("#row-img").prop('hidden', false);
-        }
+        }       
 
         function selectfolder() {
             //goto = location.reload();
-            goto = "select_folder.html?from=sale";
+            goto = "select_folder.html?from=import";
             transition_page_next_flip(goto);
-        }
-
-        function scanqr() {
-            alert("qr show");
-        }
+        }     
 
         function check() {
             goto = "import_check.html";
@@ -91,51 +283,51 @@
     <!-- End big container -->
     <div class="container justify-content-center" style="margin-top: 15%; margin-bottom: 30%;">
         <div class="container">
-            <div class="row" style="margin-bottom: 15%;">
+            <div class="row mg-15">
                 <div class="col-12 text-center" onclick="selectfolder();">
                     <button class="select_folder">เลือกหมวดหมู่</button>
                 </div>
             </div>
-            <div class="row" style="margin-bottom: 10%;">
+            <div class="row mg-10">
                 <div class="col-12 text-center pdlr">
                     <label for="name">ชื่อสินค้า</label>
                     <input id="name" type="text" class="w3-input">
                 </div>
             </div>
-            <div class="row" style="margin-bottom: 10%;">
+            <div class="row mg-10">
                 <div class="col-6 text-center">
                     <label for="barcode">รหัส</label>
                     <input id="barcode" type="text" class="w3-input">
                 </div>
                 <div class="col-3 text-center">
                     <label for="amount">จำนวน</label>
-                    <input id="amount" type="number" class="w3-input">
+                    <input id="amount" type="number" min="1" value="1" class="w3-input" onchange="cal_avg('amt')">
                 </div>
                 <div class="col-3 text-center">
-                    <label for="amount">ทุน</label>
-                    <input id="amount" type="number" class="w3-input">
+                    <label for="cost">ทุน</label>
+                    <input id="cost" type="number" class="w3-input" onchange="cal_avg('cost')">
                 </div>
             </div>
-            <div class="row" style="margin-bottom: 12%;">
+            <div class="row mg-10">
                 <div class="col-6 text-center">
                     <label for="wholesale">ราคาส่ง</label>
-                    <input id="wholesale" type="text" class="w3-input">
+                    <input id="wholesale" type="number" class="w3-input">
                 </div>
                 <div class="col-6 text-center">
                     <label for="retail">ราคาปลีก</label>
                     <input id="retail" type="number" class="w3-input">
                 </div>
             </div>
-            <div class="row" style="margin-bottom: 12%;">
+            <div class="row mg-15">
                 <div class="col-12 text-center">
                     <button class="mbtn" onclick="add_import();" style="width: 70%;">เพิ่มสินค้า</button>
                 </div>
             </div>
-            <div class="row" style="margin-bottom: 15%;">
+            <div class="row mg-15">
                 <div class="col-12 text-center">
-                    <button id="btn-check" class="mbtn" onclick="check();" style="color: red; border-color: red; box-shadow: 0 1px 1px  red, 0 0px 0px red;">
+                    <button id="btn-check" class="mbtn" onclick="check();">
                         ตรวจสอบ
-                        <span id="check-import">(1)</span>
+                        <span id="check-import"></span>
                     </button>
                 </div>
             </div>
