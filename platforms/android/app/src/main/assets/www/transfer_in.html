@@ -36,10 +36,89 @@
             padding-left: 5px;
             padding-right: 5px;
         }
+
+        input{
+            font-size: 110%;
+        }
     </style>
 
     <script>
-        $(document).ready(function () { });
+        var prod_id;
+        $(document).ready(function () { 
+            url = new URL(window.location.href);
+            product = url.searchParams.get("product");
+
+            if(localStorage.shop_name && localStorage.shop_id){
+                $("#store").val(localStorage.shop_name);
+            }
+            if(localStorage.arr_tranin){
+                var retrievedObject = localStorage.getItem('arr_tranin');
+                var arr = JSON.parse(retrievedObject);
+                for(var i = 0 ; i < arr.length ; i++){
+                    if(i == 0){
+                        $("#ctn-add").prop('hidden', false);
+                        text_html = "<hr id='hr-top-"+i+"'><div id='prod-"+i+"' class='row'>" +
+                            "<div class='col-9 text-center pdlr'>" +
+                            "<h5>"+arr[i].name+"</h5>" +
+                            "<input id='name-"+i+"' type='text' class='w3-input' hidden>" +
+                            "</div>" +
+                            "<div class='col-3 text-center'>" +
+                            "<h5>"+arr[i].amt+"</h5>" +
+                            "<input id='amount-"+i+"' type='number' min='1' value='1' class='w3-input' hidden>" +
+                            "</div>" +
+                            "</div><hr id='hr-btm-"+i+"'>";  
+
+                    }else{
+                        text_html = "<div id='prod-"+i+"' class='row'>" +
+                            "<div class='col-9 text-center pdlr'>" +
+                            "<h5>"+arr[i].name+"</h5>" +
+                            "<input id='name-"+i+"' type='text' class='w3-input' hidden>" +
+                            "</div>" +
+                            "<div class='col-3 text-center'>" +
+                            "<h5>"+arr[i].amt+"</h5>" +
+                            "<input id='amount-"+i+"' type='number' min='1' value='1' class='w3-input' hidden>" +
+                            "</div>" +
+                            "</div><hr id='hr-btm-"+i+"'>";
+                    }
+                    $("#ctn-add").append(text_html);                       
+                }                                   
+            }      
+
+            if(product != null){
+                $.ajax({
+                    type: "POST",
+                    url:"https://omise-webpack.000webhostapp.com/www/php/get_prod.php",    
+                    data:{'prod_id' : product},
+                    async: false,                       
+                    success: function(data){
+                        var obj = jQuery.parseJSON(data);                                         
+                        $.each(obj, function(i, field){
+                            $('#name').val(obj[i].prod_name);
+                            prod_id = field.prod_id                           
+                        });                                        
+                    }               
+                }); 
+            }
+
+            $.ajax({
+                type: "GET",
+                url:"https://omise-webpack.000webhostapp.com/www/php/get_shop.php",                            
+                success: function(data){
+                    var obj = jQuery.parseJSON(data);                                         
+                    $.each(obj, function(i, field){                                        
+                        $('#ul-store').append("<li id='li-store-"+i+"' onclick='setstore("+i+");' style='padding-bottom: 10px;'>"+field.shop_name+"</li>" +
+                        "<span id='id-store-"+i+"' hidden>"+field.shop_id+"</span>");
+                    });                                        
+                }               
+            });
+        });
+        
+        function setstore(arg) {
+            shop = $("#li-store-" + arg).text();
+            $("#store").val(shop);
+            localStorage.shop_name = shop;
+            localStorage.shop_id = $("#id-store-" + arg).text();
+        }
 
         function disactive(arg) {
             nav_menu = ['home', 'bell', 'qrcode', 'bars'];
@@ -58,24 +137,128 @@
             });
         }
 
-        function addpic() {
-            $("#row-img").prop('hidden', false);
-        }
-
         function selectfolder() {
             //goto = location.reload();
-            goto = "select_folder.html?from=sale";
+            goto = "select_folder.html?from=tran_in";
             transition_page_next_flip(goto);
+        }       
+
+        function scanqr(){
+            cordova.plugins.barcodeScanner.scan(
+            function (result) {
+                    if(!result.cancelled){
+                        // In this case we only want to process QR Codes
+                        if(result.format == "QR_CODE"){
+                                var value = result.text;
+                                // This is the retrieved content of the qr code
+                                //alert(value);                        
+                                $.ajax({
+                                    type: "POST",
+                                    url: "https://omise-webpack.000webhostapp.com/www/php/get_prod.php",                
+                                    data: {'qr' : value},             
+                                    success: function(data){                             
+                                        var obj = jQuery.parseJSON(data); 
+                                        $.each(obj, function(i, field){                                           
+                                            $('#name').val(field.prod_name);                                          
+                                            prod_id = field.prod_id;       
+                                        });                                                 
+                                    }               
+                                });         
+                        }else{
+                            alert("Sorry, only qr codes this time ;)");
+                        }
+                    }else{
+                    alert("The user has dismissed the scan");
+                    }
+                },
+                function (error) {
+                    alert("An error ocurred: " + error);
+                },
+                {
+                    prompt : "วางคิวอาโค้ดภายในสี่เหลี่ยมผืนผ้าที่ช่องมองภาพเพื่อแสกน"
+                }
+            );
+
+        } 
+
+        var index = 0;
+        arr_data = [];
+        function add_import(){
+            var name = $('#name').val();
+            var amt = $('#amount').val();
+            if(name != ""){
+                if(localStorage.arr_tranin){
+                    var retrievedObject = localStorage.getItem('arr_tranin');
+                    arr_data = JSON.parse(retrievedObject);
+                    index = arr_data.length;               
+                }           
+
+                item = {}              
+                item ["prod_id"] =  prod_id; 
+                item ["name"] =  name;                          
+                item ["amt"] =  amt;
+                arr_data.push(item);
+                localStorage.setItem('arr_tranin', JSON.stringify(arr_data));
+                
+                if(index == 0){
+                    $("#ctn-add").prop('hidden', false);
+                    text_html = "<hr id='hr-top-"+index+"'><div id='prod-"+index+"' class='row'>" +
+                        "<div class='col-9 text-center pdlr'>" +
+                        "<h5>"+name+"</h5>" +
+                        "<input id='name-"+index+"' type='text' class='w3-input' hidden>" +
+                        "</div>" +
+                        "<div class='col-3 text-center'>" +
+                        "<h5>"+amt+"</h5>" +
+                        "<input id='amount-"+index+"' type='number' min='1' value='1' class='w3-input' hidden>" +
+                        "</div>" +
+                        "</div><hr id='hr-btm-"+index+"'>";  
+
+                }else{
+                    text_html = "<div id='prod-"+index+"' class='row'>" +
+                        "<div class='col-9 text-center pdlr'>" +
+                        "<h5>"+name+"</h5>" +
+                        "<input id='name-"+index+"' type='text' class='w3-input' hidden>" +
+                        "</div>" +
+                        "<div class='col-3 text-center'>" +
+                        "<h5>"+amt+"</h5>" +
+                        "<input id='amount-"+index+"' type='number' min='1' value='1' class='w3-input' hidden>" +
+                        "</div>" +
+                        "</div><hr id='hr-btm-"+index+"'>";
+                }  
+                index++;          
+                $("#ctn-add").append(text_html);           
+
+                $('#name').val("");              
+                $('#amount').val("1");                                  
+            }    
         }
 
-        function scanqr() {
-            alert("qr show");
-        }
+        function save(){
+            if(arr_data.length > 0){
+                var json_string = JSON.stringify(arr_data); 
+                var d = new Date($.now());            
+                $('#date').text("วันที่ : " + d.getDate() + "/" + (d.getMonth()+1) + "/" + d.getFullYear()); 
+                var datetime = d.getFullYear() + "-" + (d.getMonth()+1) + "-" + d.getDate() + " " + d.getHours() + ":" + d.getMinutes() + ":" + d.getSeconds();                   
+                var dataString =  "JSON=" + json_string + "&shop_id=" + localStorage.shop_id + "&date=" + datetime;                                    
 
-        function check() {
-            goto = "import_check.html";
-            transition_page_next(goto);
-        }
+                $.ajax({
+                    type: "POST",
+                    url:"https://omise-webpack.000webhostapp.com/www/php/transfer_in.php",           
+                    data: dataString,               
+                    success: function(data){                             
+                        alert(data);
+                        if(data == "success"){                                                   
+                            $('#ctn-add').empty();
+                            arr_data = [];                           
+                            index = 0; 
+                            localStorage.arr_tranin = ""; 
+                            localStorage.shop_name = "";
+                            localStorage.shop_id = "";                                         
+                        }
+                    }               
+                });
+            }
+        }      
 
     </script>
 </head>
@@ -101,19 +284,33 @@
                     <button class="select_folder">เลือกหมวดหมู่</button>
                 </div>
                 <div class="col-5 text-center no-pd">
-                    <input id="ware" type="text" class="w3-input" data-toggle="dropdown" placeholder="โกดัง" readonly>
-                    <ul id="ul-ware" class="dropdown-menu text-center no-pd" aria-labelledby="role" style="width: 80%;">
+                    <input id="store" type="text" class="w3-input no-pd" data-toggle="dropdown" placeholder="หน้าร้าน" readonly>
+                    <ul id="ul-store" class="dropdown-menu text-center no-pd" aria-labelledby="role" >
+
                     </ul>
                 </div>
             </div>
-            <div class="row mg-10">
-                <div class="col-9 text-center pdlr">
-                    <label for="name">ชื่อสินค้า</label>
-                    <input id="name" type="text" class="w3-input">
+            <div class="container">
+                <div class="row">
+                    <div class="col-9 text-center pdlr">
+                        <label for="name">ชื่อสินค้า</label>
+                    </div>
+                    <div class="col-3 text-center">
+                        <label for="amount">จำนวน</label>
+                    </div>
                 </div>
-                <div class="col-3 text-center">
-                    <label for="amount">จำนวน</label>
-                    <input id="amount" type="number" class="w3-input">
+            </div>
+            <div id="ctn-add" class="container" style="margin-top: 5%;">
+                
+            </div>
+            <div class="container" style="margin-top: 10%;">
+                <div class="row mg-10">
+                    <div class="col-9 text-center pdlr">
+                        <input id="name" type="text" class="w3-input">
+                    </div>
+                    <div class="col-3 text-center">
+                        <input id="amount" type="number" min="1" value="1" class="w3-input">
+                    </div>
                 </div>
             </div>
             <div class="row mg-15">

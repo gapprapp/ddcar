@@ -14,6 +14,8 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.6/umd/popper.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
   <script defer src="https://use.fontawesome.com/releases/v5.0.8/js/all.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.0/jquery-confirm.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.0/jquery-confirm.min.js"></script>
   <script src="cordova.js"></script>
 
   <link rel="stylesheet" href="css/index.css">
@@ -92,7 +94,11 @@
                                 name = obj[i].prod_name;    
                                 msg = msg + obj[i][0] + " : " + obj[i].amount + "\n";
                             }); 
-                            alert(name + "\n" + msg);                                                                             
+                            $.alert({
+                                title: name,
+                                content: msg,
+                                type: 'blue',
+                            });                                                                                                     
                         }               
                     });         
                 }else{

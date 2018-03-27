@@ -291,18 +291,10 @@
         }     
 
         function report() {     
-<<<<<<< HEAD
-            if(arr_data.length > 0){      
-                goto = "import_check.html";
-                transition_page_next(goto);
-            }
-=======
             if(localStorage.arr_prod){      
                 goto = "import_check.html";
                 transition_page_next(goto);
-            }
-            window.print();
->>>>>>> 390c4c9a6947a0c91a074096c6886c7922986ea2
+            }            
         }
 
         function show_avg(){
@@ -350,13 +342,8 @@
                     <input id="amount" type="number" min="1" value="1" class="w3-input" onchange="cal_avg('amt')">
                 </div>
                 <div class="col-3 text-center">
-<<<<<<< HEAD
-                    <label for="cost" class="popup" onclick="show_avg()">ทุน
-                        <span class="popuptext" id="myPopup">เฉลี่ย: <span id="avg-rate">5000</span></span>
-=======
                     <label for="cost" class="popup">ทุน
                         <span class="popuptext" id="myPopup">เฉลี่ย: <span id="avg-rate"></span></span>
->>>>>>> 390c4c9a6947a0c91a074096c6886c7922986ea2
                     </label>
                     <input id="cost" type="number" class="w3-input" onchange="cal_avg('cost')">
                 </div>

@@ -46,7 +46,43 @@
         var prod_id;
         $(document).ready(function () { 
             url = new URL(window.location.href);
-            product = url.searchParams.get("product");  
+            product = url.searchParams.get("product");
+
+            if(localStorage.shop_name && localStorage.shop_id){
+                $("#store").val(localStorage.shop_name);
+            }
+            if(localStorage.arr_tranin){
+                var retrievedObject = localStorage.getItem('arr_tranin');
+                var arr = JSON.parse(retrievedObject);
+                for(var i = 0 ; i < arr.length ; i++){
+                    if(i == 0){
+                        $("#ctn-add").prop('hidden', false);
+                        text_html = "<hr id='hr-top-"+i+"'><div id='prod-"+i+"' class='row'>" +
+                            "<div class='col-9 text-center pdlr'>" +
+                            "<h5>"+arr[i].name+"</h5>" +
+                            "<input id='name-"+i+"' type='text' class='w3-input' hidden>" +
+                            "</div>" +
+                            "<div class='col-3 text-center'>" +
+                            "<h5>"+arr[i].amt+"</h5>" +
+                            "<input id='amount-"+i+"' type='number' min='1' value='1' class='w3-input' hidden>" +
+                            "</div>" +
+                            "</div><hr id='hr-btm-"+i+"'>";  
+
+                    }else{
+                        text_html = "<div id='prod-"+i+"' class='row'>" +
+                            "<div class='col-9 text-center pdlr'>" +
+                            "<h5>"+arr[i].name+"</h5>" +
+                            "<input id='name-"+i+"' type='text' class='w3-input' hidden>" +
+                            "</div>" +
+                            "<div class='col-3 text-center'>" +
+                            "<h5>"+arr[i].amt+"</h5>" +
+                            "<input id='amount-"+i+"' type='number' min='1' value='1' class='w3-input' hidden>" +
+                            "</div>" +
+                            "</div><hr id='hr-btm-"+i+"'>";
+                    }
+                    $("#ctn-add").append(text_html);                       
+                }                                   
+            }      
 
             if(product != null){
                 $.ajax({
@@ -64,8 +100,25 @@
                 }); 
             }
 
-            //get dropdown shop
+            $.ajax({
+                type: "GET",
+                url:"https://omise-webpack.000webhostapp.com/www/php/get_shop.php",                            
+                success: function(data){
+                    var obj = jQuery.parseJSON(data);                                         
+                    $.each(obj, function(i, field){                                        
+                        $('#ul-store').append("<li id='li-store-"+i+"' onclick='setstore("+i+");' style='padding-bottom: 10px;'>"+field.shop_name+"</li>" +
+                        "<span id='id-store-"+i+"' hidden>"+field.shop_id+"</span>");
+                    });                                        
+                }               
+            });
         });
+        
+        function setstore(arg) {
+            shop = $("#li-store-" + arg).text();
+            $("#store").val(shop);
+            localStorage.shop_name = shop;
+            localStorage.shop_id = $("#id-store-" + arg).text();
+        }
 
         function disactive(arg) {
             nav_menu = ['home', 'bell', 'qrcode', 'bars'];
@@ -132,49 +185,52 @@
         arr_data = [];
         function add_import(){
             var name = $('#name').val();
+            var amt = $('#amount').val();
             if(name != ""){
-                $('#show_list_add').append(""); // append here
-
-                index++;
+                if(localStorage.arr_tranin){
+                    var retrievedObject = localStorage.getItem('arr_tranin');
+                    arr_data = JSON.parse(retrievedObject);
+                    index = arr_data.length;               
+                }           
 
                 item = {}              
-                item ["prod_id"] =  prod_id;                          
-                item ["amt"] =  $('#amount').val();
+                item ["prod_id"] =  prod_id; 
+                item ["name"] =  name;                          
+                item ["amt"] =  amt;
                 arr_data.push(item);
+                localStorage.setItem('arr_tranin', JSON.stringify(arr_data));
+                
+                if(index == 0){
+                    $("#ctn-add").prop('hidden', false);
+                    text_html = "<hr id='hr-top-"+index+"'><div id='prod-"+index+"' class='row'>" +
+                        "<div class='col-9 text-center pdlr'>" +
+                        "<h5>"+name+"</h5>" +
+                        "<input id='name-"+index+"' type='text' class='w3-input' hidden>" +
+                        "</div>" +
+                        "<div class='col-3 text-center'>" +
+                        "<h5>"+amt+"</h5>" +
+                        "<input id='amount-"+index+"' type='number' min='1' value='1' class='w3-input' hidden>" +
+                        "</div>" +
+                        "</div><hr id='hr-btm-"+index+"'>";  
+
+                }else{
+                    text_html = "<div id='prod-"+index+"' class='row'>" +
+                        "<div class='col-9 text-center pdlr'>" +
+                        "<h5>"+name+"</h5>" +
+                        "<input id='name-"+index+"' type='text' class='w3-input' hidden>" +
+                        "</div>" +
+                        "<div class='col-3 text-center'>" +
+                        "<h5>"+amt+"</h5>" +
+                        "<input id='amount-"+index+"' type='number' min='1' value='1' class='w3-input' hidden>" +
+                        "</div>" +
+                        "</div><hr id='hr-btm-"+index+"'>";
+                }  
+                index++;          
+                $("#ctn-add").append(text_html);           
 
                 $('#name').val("");              
-                $('#amount').val("1");                   
-            }else{
-                return 0;
-            }
-
-            if(index == 1){
-                $("#ctn-add").prop('hidden', false);
-                text_html = "<hr><div id='prod-1' class='row'>" +
-                    "<div class='col-9 text-center pdlr'>" +
-                    "<h5>ข้าวสาร</h5>" +
-                    "<input id='name-1' type='text' class='w3-input' hidden>" +
-                    "</div>" +
-                    "<div class='col-3 text-center'>" +
-                    "<h5>5</h5>" +
-                    "<input id='amount-2' type='number' min='1' value='1' class='w3-input' hidden>" +
-                    "</div>" +
-                    "</div><hr>";  
-
-            }else{
-                text_html = "<div id='prod-1' class='row'>" +
-                    "<div class='col-9 text-center pdlr'>" +
-                    "<h5>ข้าวสาร</h5>" +
-                    "<input id='name-1' type='text' class='w3-input' hidden>" +
-                    "</div>" +
-                    "<div class='col-3 text-center'>" +
-                    "<h5>5</h5>" +
-                    "<input id='amount-2' type='number' min='1' value='1' class='w3-input' hidden>" +
-                    "</div>" +
-                    "</div><hr>";
-            }  
-
-            $("#ctn-add").append(text_html);        
+                $('#amount').val("1");                                  
+            }    
         }
 
         function save(){
@@ -183,7 +239,7 @@
                 var d = new Date($.now());            
                 $('#date').text("วันที่ : " + d.getDate() + "/" + (d.getMonth()+1) + "/" + d.getFullYear()); 
                 var datetime = d.getFullYear() + "-" + (d.getMonth()+1) + "-" + d.getDate() + " " + d.getHours() + ":" + d.getMinutes() + ":" + d.getSeconds();                   
-                var dataString =  "JSON=" + json_string + "&shop_id=" + shop_id + "&date=" + datetime;                                    
+                var dataString =  "JSON=" + json_string + "&shop_id=" + localStorage.shop_id + "&date=" + datetime;                                    
 
                 $.ajax({
                     type: "POST",
@@ -192,9 +248,12 @@
                     success: function(data){                             
                         alert(data);
                         if(data == "success"){                                                   
-                            $('#show_list_add').empty();
+                            $('#ctn-add').empty();
                             arr_data = [];                           
-                            index = 0;                                           
+                            index = 0; 
+                            localStorage.arr_tranin = ""; 
+                            localStorage.shop_name = "";
+                            localStorage.shop_id = "";                                         
                         }
                     }               
                 });
@@ -225,8 +284,10 @@
                     <button class="select_folder">เลือกหมวดหมู่</button>
                 </div>
                 <div class="col-5 text-center no-pd">
-                    <input id="store" type="text" class="w3-input no-pd" data-toggle="dropdown" placeholder="โกดัง" readonly>
-                    <ul id="ul-store" class="dropdown-menu text-center no-pd" aria-labelledby="role" ></ul>
+                    <input id="store" type="text" class="w3-input no-pd" data-toggle="dropdown" placeholder="หน้าร้าน" readonly>
+                    <ul id="ul-store" class="dropdown-menu text-center no-pd" aria-labelledby="role" >
+
+                    </ul>
                 </div>
             </div>
             <div class="container">
@@ -239,7 +300,7 @@
                     </div>
                 </div>
             </div>
-            <div id="ctn-add" class="container" style="margin-top: 5%;" hidden>
+            <div id="ctn-add" class="container" style="margin-top: 5%;">
                 
             </div>
             <div class="container" style="margin-top: 10%;">
