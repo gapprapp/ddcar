@@ -14,7 +14,7 @@
     if(mysqli_num_rows($result) > 0){    
         while($row = mysqli_fetch_array($result)){  
             $number = $row['stock_number'];
-            $year_old = substr($number,1,2);
+            $year_old = substr($number,3,2);
             $year_cur = date("y");
             if($year_cur == $year_old){
                 $count = $row['count']+1;

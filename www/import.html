@@ -140,6 +140,7 @@
         });
 
         var check =  0;
+        var is_show = 0;
         function cal_avg(type){  
             if(flag == 1){
                 if(type == "cost"){
@@ -154,7 +155,11 @@
 
                             var avg = (parseInt(cost_n*amt_n) + parseInt(cost_o*amt_o))/(parseInt(amt_n)+parseInt(amt_o));    
                             
-                            $('#cost').attr("placeholder","avg: " + Math.round(avg));
+                            $('#avg-rate').text(Math.round(avg));
+                            if(is_show == 0){
+                               show_avg(); 
+                               is_show = 1;
+                            }                       
                             check = 1;                              
                         }               
                     });            
@@ -170,7 +175,11 @@
 
                             var avg = (parseInt(cost_n*amt_n) + parseInt(cost_o*amt_o))/(parseInt(amt_n)+parseInt(amt_o));    
                             
-                            $('#cost').attr("placeholder","avg: " + Math.round(avg));                                                     
+                            $('#avg-rate').text(Math.round(avg)); 
+                            if(is_show == 0){
+                               show_avg(); 
+                               is_show = 1;
+                            }                                                         
                         }               
                     });            
                 }
@@ -201,7 +210,8 @@
                     $.ajax({
                         type: "POST",
                         url:"https://omise-webpack.000webhostapp.com/www/php/update_prod.php",           
-                        data: {prod:prod_id , cost:cost , price_s:price_s , price_w:price_w},               
+                        data: {prod:prod_id , cost:cost , price_s:price_s , price_w:price_w},
+                        async : false,              
                         success: function(data){                             
                            if(data == "success"){
                                 flag = 0;
@@ -226,8 +236,10 @@
             if(localStorage.arr_prod){
                 var retrievedObject = localStorage.getItem('arr_prod');
                 var arr_data = JSON.parse(retrievedObject);
+                alert("local");
             }else{
                 var arr_data = [];
+                alert("empty");
             }        
            
             item = {}            
@@ -248,8 +260,12 @@
             $('#cost').val("");
             $('#wholesale').val("");
             $('#retail').val("");
-            $('#amount').val("1"); 
-            $('#amount').attr("placeholder","");              
+            $('#amount').val("1");
+            if(is_show == 1){
+                show_avg(); 
+                is_show = 0;
+            }            
+            $('#avg-rate').text("");           
         }  
 
 
@@ -328,8 +344,8 @@
                     <input id="amount" type="number" min="1" value="1" class="w3-input" onchange="cal_avg('amt')">
                 </div>
                 <div class="col-3 text-center">
-                    <label for="cost" class="popup" onclick="show_avg()">ทุน
-                        <span class="popuptext" id="myPopup">เฉลี่ย: <span id="avg-rate">5000</span></span>
+                    <label for="cost" class="popup">ทุน
+                        <span class="popuptext" id="myPopup">เฉลี่ย: <span id="avg-rate"></span></span>
                     </label>
                     <input id="cost" type="number" class="w3-input" onchange="cal_avg('cost')">
                 </div>
