@@ -127,6 +127,11 @@
         }
 
         function remove(num){
+            var cost = $('#price-'+num).val();   
+            var amt = $('#amount-'+num).val();
+            var net = $("#net").html();           
+            var sum = parseFloat(net.replace(/,/g, ''))-(cost*amt);          
+            $("#net").text(sum.toLocaleString());   
             $('#prod-'+num).remove();   
             $('#collapse-'+num).remove();   
             $('#hr-'+num).remove();   
@@ -303,7 +308,7 @@
             <button id="btn-check" class="svbtn" onclick="save();">บันทึก</button>
         </div>
         <div class="col-6 text-right">
-            <h5 class="title" style="font-size: 150%; text-decoration: underline;">รวม : <span id="net" style="color: red;">50000</span></h5>
+            <h5 class="title" style="font-size: 150%; text-decoration: underline;">รวม : <span id="net" style="color: red;"></span></h5>
         </div>
     </div>
     <!-- Nav menu bottom -->
