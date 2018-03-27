@@ -20,6 +20,7 @@
     <link rel="stylesheet" href="css/easy-autocomplete.themes.min.css">
 
     <link rel="stylesheet" href="css/index.css">
+    <link rel="stylesheet" href="css/popup.css">
 
     <!-- Font -->
     <link href="https://fonts.googleapis.com/css?family=Prompt" rel="stylesheet">
@@ -282,6 +283,11 @@
             }
         }
 
+        function show_avg(){
+            var popup = document.getElementById("myPopup");
+            popup.classList.toggle("show");
+        }
+
     </script>
 </head>
 
@@ -322,7 +328,9 @@
                     <input id="amount" type="number" min="1" value="1" class="w3-input" onchange="cal_avg('amt')">
                 </div>
                 <div class="col-3 text-center">
-                    <label for="cost">ทุน</label>
+                    <label for="cost" class="popup" onclick="show_avg()">ทุน
+                        <span class="popuptext" id="myPopup">เฉลี่ย: <span id="avg-rate">5000</span></span>
+                    </label>
                     <input id="cost" type="number" class="w3-input" onchange="cal_avg('cost')">
                 </div>
             </div>
