@@ -235,11 +235,9 @@
         function show(code,cost){
             if(localStorage.arr_prod){
                 var retrievedObject = localStorage.getItem('arr_prod');
-                var arr_data = JSON.parse(retrievedObject);
-                alert("local");
+                var arr_data = JSON.parse(retrievedObject);               
             }else{
-                var arr_data = [];
-                alert("empty");
+                var arr_data = [];              
             }        
            
             item = {}            
@@ -296,7 +294,7 @@
             if(localStorage.arr_prod){      
                 goto = "import_check.html";
                 transition_page_next(goto);
-            }
+            }            
         }
 
         function show_avg(){

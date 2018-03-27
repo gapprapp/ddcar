@@ -1,5 +1,5 @@
 #Internal package file, do not edit.
-#Tue Mar 27 14:18:36 ICT 2018
+#Tue Mar 27 15:02:55 ICT 2018
 210.set=ANDROID_RESOURCE
 282.file=C\:\\Users\\moronz\\Documents\\GitHub\\ddcar\\platforms\\android\\app\\build\\intermediates\\transforms\\mergeJavaRes\\debug\\0.jar\\META-INF\\com.android.support_support-v4.version
 14.set=ASSET
