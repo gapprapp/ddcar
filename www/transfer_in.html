@@ -36,6 +36,10 @@
             padding-left: 5px;
             padding-right: 5px;
         }
+
+        input{
+            font-size: 110%;
+        }
     </style>
 
     <script>
@@ -140,7 +144,37 @@
 
                 $('#name').val("");              
                 $('#amount').val("1");                   
-            }           
+            }else{
+                return 0;
+            }
+
+            if(index == 1){
+                $("#ctn-add").prop('hidden', false);
+                text_html = "<hr><div id='prod-1' class='row'>" +
+                    "<div class='col-9 text-center pdlr'>" +
+                    "<h5>ข้าวสาร</h5>" +
+                    "<input id='name-1' type='text' class='w3-input' hidden>" +
+                    "</div>" +
+                    "<div class='col-3 text-center'>" +
+                    "<h5>5</h5>" +
+                    "<input id='amount-2' type='number' min='1' value='1' class='w3-input' hidden>" +
+                    "</div>" +
+                    "</div><hr>";  
+
+            }else{
+                text_html = "<div id='prod-1' class='row'>" +
+                    "<div class='col-9 text-center pdlr'>" +
+                    "<h5>ข้าวสาร</h5>" +
+                    "<input id='name-1' type='text' class='w3-input' hidden>" +
+                    "</div>" +
+                    "<div class='col-3 text-center'>" +
+                    "<h5>5</h5>" +
+                    "<input id='amount-2' type='number' min='1' value='1' class='w3-input' hidden>" +
+                    "</div>" +
+                    "</div><hr>";
+            }  
+
+            $("#ctn-add").append(text_html);        
         }
 
         function save(){
@@ -192,18 +226,30 @@
                 </div>
                 <div class="col-5 text-center no-pd">
                     <input id="store" type="text" class="w3-input no-pd" data-toggle="dropdown" placeholder="โกดัง" readonly>
-                    <ul id="ul-store" class="dropdown-menu text-center no-pd" aria-labelledby="role" style="width: 80% !important;">
-                    </ul>
+                    <ul id="ul-store" class="dropdown-menu text-center no-pd" aria-labelledby="role" ></ul>
                 </div>
             </div>
-            <div class="row mg-10">
-                <div class="col-9 text-center pdlr">
-                    <label for="name">ชื่อสินค้า</label>
-                    <input id="name" type="text" class="w3-input">
+            <div class="container">
+                <div class="row">
+                    <div class="col-9 text-center pdlr">
+                        <label for="name">ชื่อสินค้า</label>
+                    </div>
+                    <div class="col-3 text-center">
+                        <label for="amount">จำนวน</label>
+                    </div>
                 </div>
-                <div class="col-3 text-center">
-                    <label for="amount">จำนวน</label>
-                    <input id="amount" type="number" min="1" value="1" class="w3-input">
+            </div>
+            <div id="ctn-add" class="container" style="margin-top: 5%;" hidden>
+                
+            </div>
+            <div class="container" style="margin-top: 10%;">
+                <div class="row mg-10">
+                    <div class="col-9 text-center pdlr">
+                        <input id="name" type="text" class="w3-input">
+                    </div>
+                    <div class="col-3 text-center">
+                        <input id="amount" type="number" min="1" value="1" class="w3-input">
+                    </div>
                 </div>
             </div>
             <div class="row mg-15">
