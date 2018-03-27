@@ -1,4 +1,9 @@
+<<<<<<< HEAD
 #Tue Mar 27 17:27:50 ICT 2018
 base.0=/Users/phoenix/Documents/ddcar/platforms/android/app/build/intermediates/transforms/dexMerger/debug/0
+=======
+#Tue Mar 27 15:02:54 ICT 2018
+base.0=C\:\\Users\\moronz\\Documents\\GitHub\\ddcar\\platforms\\android\\app\\build\\intermediates\\transforms\\dexMerger\\debug\\0
+>>>>>>> 390c4c9a6947a0c91a074096c6886c7922986ea2
 renamed.0=classes.dex
 file.0=/Users/phoenix/Documents/ddcar/platforms/android/app/build/intermediates/transforms/dexMerger/debug/0/classes.dex

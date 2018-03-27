@@ -68,7 +68,7 @@
                     $("#row-add").prop('hidden', true);
                     $("#row-input-add").prop('hidden', true);
                     $("#row-select").prop('hidden', false);       
-                  }else if(from == "import"){
+                  }else if(from == "import" || from == "tran_in"){
                     $("#main-ctn").prop('hidden', false);      
                     $("#add-ctn").prop('hidden', true);
                     $.each(obj, function(i, field){
@@ -200,8 +200,12 @@
       from = url.searchParams.get("from");
       if(last_node == 0){
         goto = "select_folder.html?from="+ from+ "&folder=" +arg;
-      }else if(last_node == 1){       
-        goto = "import.html?product="+arg;
+      }else if(last_node == 1){ 
+        if(from == "import"){
+          goto = "import.html?product="+arg;
+        }else if(from == "tran_in"){
+          goto = "transfer_in.html?product="+arg;
+        }       
       }     
       transition_page_next(goto);
     }

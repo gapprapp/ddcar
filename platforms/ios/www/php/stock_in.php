@@ -4,20 +4,55 @@
     $obj = json_decode($input,true);  	
     $ware_id  = $_POST['ware_id'];   
     $dt  = $_POST['date']; 
+    $last_id = "";
+    $i = 0;
 
-    mysqli_autocommit($conn,FALSE); 
-    $sql = "INSERT INTO stock_in (date_time) VALUE ('$dt')"; 
-    $result = mysqli_query($conn, $sql); 
-    $last_id = mysqli_insert_id($conn);	
-   
+    mysqli_autocommit($conn,FALSE);
+    $sql = "SELECT stock_number,count FROM stock_in ORDER BY stock_id DESC LIMIT 1"; 
+    $result = mysqli_query($conn, $sql);   
+  
+    if(mysqli_num_rows($result) > 0){    
+        while($row = mysqli_fetch_array($result)){  
+            $number = $row['stock_number'];
+            $year_old = substr($number,3,2);
+            $year_cur = date("y");
+            if($year_cur == $year_old){
+                $count = $row['count']+1;
+                $year = "IMP" . $year_cur . "-";
+                $stock_number = $year . str_pad($count, 5, "0",STR_PAD_LEFT);
+                $sql2 = "INSERT INTO stock_in (stock_number,date_time,ware_id,count) 
+                VALUES ('$stock_number','$dt','$ware_id','$count')"; 
+                $result2 = mysqli_query($conn, $sql2);
+                $last_id = mysqli_insert_id($conn);	
+                //echo "normal"; 
+            }else{
+                $year = "IMP" . $year_cur . "-";
+                $stock_number = $year . str_pad(1, 5, "0",STR_PAD_LEFT);
+                $sql3 = "INSERT INTO stock_in (stock_number,date_time,ware_id,count) 
+                VALUES ('$stock_number','$dt','$ware_id',1)"; 
+                $result3 = mysqli_query($conn, $sql3);
+                $last_id = mysqli_insert_id($conn);	
+                //echo "year dif"; 
+            }           
+        }
+    }else{
+        $year = "IMP" . date("y") . "-";
+        $stock_number = $year . str_pad(1, 5, "0",STR_PAD_LEFT);
+        $sql1 = "INSERT INTO stock_in (stock_number,date_time,ware_id,count) 
+        VALUES ('$stock_number','$dt','$ware_id',1)"; 
+        $result1 = mysqli_query($conn, $sql1);
+        $last_id = mysqli_insert_id($conn);	
+        //echo "empty"; 
+    }   
     foreach ($obj as $data)
     {
-        $item = $data['item_id'];
+        $i++;
+        $item = $i;
         $prod_id = $data['prod_id'];
         $cost = $data['cost'];    
         $amt = $data['amt'];  
 
-        $sql_item = "INSERT INTO stock_in_item (stock_id,item_id,prod_id,ware_id,stock_cost,amount) VALUE ('$last_id','$item','$prod_id','$ware_id','$cost','$amt')"; 
+        $sql_item = "INSERT INTO stock_in_item (stock_id,item_id,prod_id,stock_cost,amount) VALUE ('$last_id','$item','$prod_id','$cost','$amt')"; 
         $result_item = mysqli_query($conn, $sql_item);
         
         $query = "SELECT prod_id FROM warehouse WHERE ware_id = '$ware_id' AND prod_id = '$prod_id'";
@@ -28,9 +63,7 @@
         }else{
             $sql_in = "INSERT INTO warehouse (ware_id,prod_id,amount) VALUE ('$ware_id','$prod_id','$amt')"; 
             $result_in = mysqli_query($conn, $sql_in);
-        }  
-
-      
+        }       
                
     }
 

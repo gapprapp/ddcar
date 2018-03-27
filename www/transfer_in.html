@@ -39,7 +39,29 @@
     </style>
 
     <script>
-        $(document).ready(function () { });
+        var prod_id;
+        $(document).ready(function () { 
+            url = new URL(window.location.href);
+            product = url.searchParams.get("product");  
+
+            if(product != null){
+                $.ajax({
+                    type: "POST",
+                    url:"https://omise-webpack.000webhostapp.com/www/php/get_prod.php",    
+                    data:{'prod_id' : product},
+                    async: false,                       
+                    success: function(data){
+                        var obj = jQuery.parseJSON(data);                                         
+                        $.each(obj, function(i, field){
+                            $('#name').val(obj[i].prod_name);
+                            prod_id = field.prod_id                           
+                        });                                        
+                    }               
+                }); 
+            }
+
+            //get dropdown shop
+        });
 
         function disactive(arg) {
             nav_menu = ['home', 'bell', 'qrcode', 'bars'];
@@ -58,24 +80,92 @@
             });
         }
 
-        function addpic() {
-            $("#row-img").prop('hidden', false);
-        }
-
         function selectfolder() {
             //goto = location.reload();
-            goto = "select_folder.html?from=sale";
+            goto = "select_folder.html?from=tran_in";
             transition_page_next_flip(goto);
+        }       
+
+        function scanqr(){
+            cordova.plugins.barcodeScanner.scan(
+            function (result) {
+                    if(!result.cancelled){
+                        // In this case we only want to process QR Codes
+                        if(result.format == "QR_CODE"){
+                                var value = result.text;
+                                // This is the retrieved content of the qr code
+                                //alert(value);                        
+                                $.ajax({
+                                    type: "POST",
+                                    url: "https://omise-webpack.000webhostapp.com/www/php/get_prod.php",                
+                                    data: {'qr' : value},             
+                                    success: function(data){                             
+                                        var obj = jQuery.parseJSON(data); 
+                                        $.each(obj, function(i, field){                                           
+                                            $('#name').val(field.prod_name);                                          
+                                            prod_id = field.prod_id;       
+                                        });                                                 
+                                    }               
+                                });         
+                        }else{
+                            alert("Sorry, only qr codes this time ;)");
+                        }
+                    }else{
+                    alert("The user has dismissed the scan");
+                    }
+                },
+                function (error) {
+                    alert("An error ocurred: " + error);
+                },
+                {
+                    prompt : "วางคิวอาโค้ดภายในสี่เหลี่ยมผืนผ้าที่ช่องมองภาพเพื่อแสกน"
+                }
+            );
+
+        } 
+
+        var index = 0;
+        arr_data = [];
+        function add_import(){
+            var name = $('#name').val();
+            if(name != ""){
+                $('#show_list_add').append(""); // append here
+
+                index++;
+
+                item = {}              
+                item ["prod_id"] =  prod_id;                          
+                item ["amt"] =  $('#amount').val();
+                arr_data.push(item);
+
+                $('#name').val("");              
+                $('#amount').val("1");                   
+            }           
         }
 
-        function scanqr() {
-            alert("qr show");
-        }
+        function save(){
+            if(arr_data.length > 0){
+                var json_string = JSON.stringify(arr_data); 
+                var d = new Date($.now());            
+                $('#date').text("วันที่ : " + d.getDate() + "/" + (d.getMonth()+1) + "/" + d.getFullYear()); 
+                var datetime = d.getFullYear() + "-" + (d.getMonth()+1) + "-" + d.getDate() + " " + d.getHours() + ":" + d.getMinutes() + ":" + d.getSeconds();                   
+                var dataString =  "JSON=" + json_string + "&shop_id=" + shop_id + "&date=" + datetime;                                    
 
-        function check() {
-            goto = "import_check.html";
-            transition_page_next(goto);
-        }
+                $.ajax({
+                    type: "POST",
+                    url:"https://omise-webpack.000webhostapp.com/www/php/transfer_in.php",           
+                    data: dataString,               
+                    success: function(data){                             
+                        alert(data);
+                        if(data == "success"){                                                   
+                            $('#show_list_add').empty();
+                            arr_data = [];                           
+                            index = 0;                                           
+                        }
+                    }               
+                });
+            }
+        }      
 
     </script>
 </head>
@@ -113,7 +203,7 @@
                 </div>
                 <div class="col-3 text-center">
                     <label for="amount">จำนวน</label>
-                    <input id="amount" type="number" class="w3-input">
+                    <input id="amount" type="number" min="1" value="1" class="w3-input">
                 </div>
             </div>
             <div class="row mg-15">
