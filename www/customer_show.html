@@ -16,6 +16,8 @@
     <script defer src="https://use.fontawesome.com/releases/v5.0.8/js/all.js"></script>
     <script src="cordova.js"></script>
 
+    <script type="text/javascript" src="js/jquery.alphanumeric.js"></script>
+
     <link rel="stylesheet" href="css/index.css">
 
     <!-- Font -->
@@ -41,7 +43,7 @@
             cus_id = url.searchParams.get("cus");
             edit = url.searchParams.get("edit");
 
-            $('#phone').numeric();
+            $('#tel').numeric();
 
              $.ajax({
                 type: "POST",
@@ -106,13 +108,13 @@
             var tel = $('#tel').val();
             var type = $('#type').val();  
 
-             if(name != "" && phone != "" && addr != "" /*&& type != ""*/){
+             if(name != "" && tel != "" && addr != "" /*&& type != ""*/){
                 $.ajax({
                     type: "POST",
                     url:"https://omise-webpack.000webhostapp.com/www/php/rename_cus.php",           
                     data: {'cus_id' : cus_id,
                         'cus_name':name,
-                        'phone':phone,
+                        'phone':tel,
                         'addr':addr},               
                     success: function(data){         
                         if(data == "success"){                        
