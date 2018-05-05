@@ -56,7 +56,11 @@
                 $("#add-ctn").prop('hidden', false);
               }else{
                 $("#add-ctn").prop('hidden', false);
-                $("#row-select").prop('hidden', false);
+                if(from == "add"){                 
+                  $("#row-select").prop('hidden', false);
+                }else if(from == "import" || from == "tran_in"){                 
+                  $("#row-select").prop('hidden', true);
+                }                
               }
             }else{           
               var obj = jQuery.parseJSON(data); 
@@ -66,11 +70,12 @@
                 $("#main-ctn").prop('hidden', false);     
                   if(from == "add"){
                     $("#add-ctn").prop('hidden', false);
+                    $("#add-ctn").prop('style', "margin-top: 20%;");
                     $("#row-add").prop('hidden', true);
                     $("#row-input-add").prop('hidden', true);
                     $("#row-select").prop('hidden', false);       
                   }else if(from == "import" || from == "tran_in"){                    
-                    $("#add-ctn").prop('hidden', true);                   
+                    $("#add-ctn").prop('hidden', true);                                       
                   } 
                   $.each(obj, function(i, field){
                     if(obj.length-1 > i){
@@ -398,11 +403,6 @@
   </div><br>
 
   <!-- End big container -->
-  <div id="main-ctn" class="container justify-content-center" style="margin-top: 20%;" hidden>
-    <div id="append-ctn" class="container">
-    </div>
-  </div>
-
   <div id="add-ctn" class="container justify-content-center" style="margin-top: 50%;" hidden>
     <div class="container">
       <div id="row-input-add" class="row" style="margin-bottom: 10%;">
@@ -422,6 +422,11 @@
       </div>
     </div>
   </div>
+
+  <div id="main-ctn" class="container justify-content-center" style="margin-top: 20%;" hidden>
+    <div id="append-ctn" class="container">
+    </div>
+  </div> 
   <!-- End big container -->
 
   <!-- Nav menu bottom -->
