@@ -33,7 +33,7 @@
                 $result1 = mysqli_query($conn, $sql);
                 if(mysqli_num_rows($result1) > 0){    
                     while($row1 = mysqli_fetch_array($result1)){                      
-                        array_push($row,$row1);              
+                        array_push($row,$row1['prod_name']);              
                     }                    
                 }
             }
