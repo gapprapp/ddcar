@@ -41,10 +41,130 @@
     </style>
 
     <script>
+        var arr_data;
+        var datetime;
         $(document).ready(function () {
-            number = 50000;
-            $("#net").text(number.toLocaleString()); // 50000 -> 50,000;
+            var d = new Date($.now());            
+            $('#date').text(d.getDate() + "/" + (d.getMonth()+1) + "/" + d.getFullYear()); 
+            datetime = d.getFullYear() + "-" + (d.getMonth()+1) + "-" + d.getDate() + " " + d.getHours() + ":" + d.getMinutes() + ":" + d.getSeconds(); 
+
+            $.ajax({
+                type: "GET",
+                url:"https://omise-webpack.000webhostapp.com/www/php/get_ware.php",                            
+                success: function(data){
+                    var obj = jQuery.parseJSON(data);                                                      
+                    $.each(obj, function(i, field){                                        
+                        $('#ul-ware').append("<li id='li-ware-"+i+"' onclick='setware("+i+");' style='padding-bottom: 10px;'>"+field.ware_name+"</li>" +
+                        "<span id='id-ware-"+i+"' hidden>"+field.ware_id+"</span>");
+                    });                                        
+                }               
+            });
+
+            var retrievedObject = localStorage.getItem('arr_ex');
+            arr_data = JSON.parse(retrievedObject);
+            var sum = 0;
+            for(var i = 0 ; i < arr_data.length ; i ++){                              
+                var sum_prod = arr_data[i].cost*arr_data[i].amt;
+                sum += parseInt(sum_prod);
+                $('#show-export').append("<div id='prod-"+i+"' class='row'>\
+                <span id='id-prod-"+i+"' hidden>"+arr_data[i].prod_id+"</span>\
+                <div class='col-1 text-center no-pd'>\
+                    <i id='i-del-"+i+"' class='fa fa-trash-alt i-del' onclick='remove("+i+");' hidden></i>\
+                    <i id='i-edit-"+i+"' class='fa fa-edit i-edit' onclick='edit_prod("+i+");' hidden></i>\
+                    <i id='i-check-"+i+"' class='fa fa-check i-check' onclick='update_prod("+i+");' hidden style='color: green;'></i>\
+                </div>\
+                <div id='i-collapse-"+i+"' class='col-6 text-center no-pd' onclick='collapse("+i+");'>"+arr_data[i].name+"</div>\
+                <div class='col-3 text-center'>\
+                    <input id='price-"+i+"' type='number' class='w3-input' value='"+arr_data[i].cost+"' style='border: none; font-size: 120%;' readonly>\
+                </div>\
+                <span style='font-size: 120%;'>x</span>\
+                <div class='col-1 text-center no-pd'>\
+                    <input id='amount-"+i+"' type='number' class='w3-input' value='"+arr_data[i].amt+"' style='border: none;' readonly>\
+                </div>\
+            </div>\
+            <!-- Collapse-1 -->\
+            <div id='collapse-"+i+"' class='container collapse' style='margin-top: 5%;'>\
+                <div class='row'>\
+                    <div class='col-12 text-center'>\
+                        <img id='img' src='"+arr_data[i].img+"' alt='' style='width: 96%; height: 96%; border-radius: 3px;'>\
+                    </div>\
+                </div>\
+                <div class='row' style='margin-bottom: 4%; margin-top: 4%;'>\
+                    <div class='col-2'></div>\
+                    <div class='col-4 text-center no-pd'>รหัส : </div>\
+                    <div class='col-4 text-center no-pd'>"+arr_data[i].qr+"</div>\
+                    <div class='col-2'></div>\
+                </div>\
+                <div class='row' style='margin-bottom: 4%;'>\
+                    <div class='col-2'></div>\
+                    <div class='col-4 text-center no-pd'>รวม : </div>\
+                    <div class='col-4 text-center no-pd'>"+sum_prod+"</div>\
+                    <div class='col-2'></div>\
+                </div>\
+                <!--<div class='row'>\
+                    <div class='col-2'></div>\
+                    <div class='col-4 text-center no-pd'>คงเหลือ : </div>\
+                    <div class='col-4 text-center no-pd'>15</div>\
+                    <div class='col-2'></div>\
+                </div>-->\
+            </div>\
+            <hr id='hr-"+i+"' style='margin-top: 5%;'>");                    
+            }            
+            $("#net").text(sum.toLocaleString()); // 50000 -> 50,000;
         });
+
+        function save(){
+            json_string = JSON.stringify(arr_data); 
+            var dataString =  "JSON=" + json_string + "&ware_id=" + ware_id + "&date=" + datetime;                        
+
+            $.ajax({
+                type: "POST",
+                url:"https://omise-webpack.000webhostapp.com/www/php/stock_out.php",           
+                data: dataString,               
+                success: function(data){                             
+                    alert(data);
+                    if(data == "success"){
+                        localStorage.arr_ex = "";                                                   
+                        goto = "export.html";
+                        transition_page_back(goto);            
+                    }
+                }               
+            });
+        }
+
+        function remove(num){
+            var cost = $('#price-'+num).val();   
+            var amt = $('#amount-'+num).val();
+            var net = $("#net").html();           
+            var sum = parseFloat(net.replace(/,/g, ''))-(cost*amt);          
+            $("#net").text(sum.toLocaleString());   
+            $('#prod-'+num).remove();   
+            $('#collapse-'+num).remove();   
+            $('#hr-'+num).remove();   
+            //arr_data[num].qr = 0;
+            arrange(num);
+        }
+
+        function arrange(arg){
+            arr_data.splice(arg,1);       
+            for(var i = arg+1; i <= arr_data.length; i++){
+                $("#prod-"+i).prop('id', 'prod-'+(i-1));
+                $("#id-prod-"+i).prop('id', 'id-prod-'+(i-1));
+                $("#i-del-"+i).attr('onclick', "remove("+(i-1)+")");          
+                $("#i-edit-"+i).attr('onclick', "edit_prod("+(i-1)+")");        
+                $("#i-check-"+i).attr('onclick', "update_prod("+(i-1)+")");       
+                $("#i-del-"+i).prop('id', 'i-del-'+(i-1));
+                $("#i-edit-"+i).prop('id', 'i-edit-'+(i-1));
+                $("#i-check-"+i).prop('id', 'i-check-'+(i-1));
+                $("#price-"+i).prop('id', 'price-'+(i-1));
+                $("#amount-"+i).prop('id', 'amount-'+(i-1));
+                $("#i-collapse-"+i).attr('onclick', "collapse("+(i-1)+")");      
+                $("#i-collapse-"+i).prop('id', 'i-collapse-'+(i-1));
+                $("#collapse-"+i).prop('id', 'collapse-'+(i-1));
+                $("#hr-"+i).prop('id', 'hr-'+(i-1));      
+            } 
+            localStorage.setItem('arr_ex', JSON.stringify(arr_data));          
+        }
 
         function disactive(arg) {
             nav_menu = ['home', 'add', 'edit', 'del'];
@@ -63,8 +183,8 @@
             });
 
             if (arg == "add") {
-                goto = "sale.html";
-                transition_page_back(goto);
+               /* goto = "sale.html";
+                transition_page_back(goto);*/
             } else if (arg == "edit") {
                 // show edit all
                 $(".i-edit").attr('hidden', false);
@@ -74,11 +194,6 @@
                 $(".i-del").attr('hidden', false);
                 $(".i-edit").attr('hidden', true);
             }
-        }
-
-        function show_cus(arg) {
-            goto = "customer_show.html?cus=" + arg;
-            transition_page_next(goto);
         }
 
         function check_edit(arg) {
@@ -94,15 +209,19 @@
             return val;
         }
 
+        var sum_old;
         function edit_prod(arg) {
             //check if some i-check is show then
             if (check_edit(arg)) {
                 $("#i-edit-" + arg).attr('hidden', true);
                 $("#i-check-" + arg).attr('hidden', false);
                 $("#amount-" + arg).removeAttr('style');
-                $("#price-" + arg).removeAttr('style');
+                //$("#price-" + arg).removeAttr('style');
                 $("#amount-" + arg).attr("readonly", false);
-                $("#price-" + arg).attr("readonly", false);
+                //$("#price-" + arg).attr("readonly", false);
+                var amt = $("#amount-" + arg).val();
+                var cost = $('#price-'+arg).val();
+                sum_old = amt*cost;   
             }
         }
 
@@ -110,13 +229,19 @@
             $("#i-edit-" + arg).attr('hidden', false);
             $("#i-check-" + arg).attr('hidden', true);
             $("#amount-" + arg).css('border', 'none');
-            $("#price-" + arg).css('border', 'none');
+            //$("#price-" + arg).css('border', 'none');
             $("#amount-" + arg).attr("readonly", true);
-            $("#price-" + arg).attr("readonly", true);
-            $.alert({
+            //$("#price-" + arg).attr("readonly", true);
+            /*$.alert({
                 title: 'สำเร็จ!',
                 content: 'บันทึกการเปลี่ยนแปลง',
-            });
+            });*/
+            var cost = $('#price-'+arg).val();   
+            var amt = $('#amount-'+arg).val();
+            var net = $("#net").html(); 
+            var sum = parseFloat(net.replace(/,/g, ''));
+            var new_net = (sum-sum_old)+(amt*cost);
+            $("#net").text(new_net.toLocaleString());  
         }
 
         function collapse(arg) {
@@ -133,10 +258,12 @@
                 }, 900);
             });
         }
-
+        
+        var ware_id;
         function setware(arg) {
             ware = $("#li-ware-" + arg).text();
             $("#ware").val(ware);
+            ware_id = $("#id-ware-" + arg).text();
         }
     </script>
 </head>
@@ -158,23 +285,21 @@
     <!-- End big container -->
     <div id="big-ctn" class="container justify-content-center" style="margin-top: 15%; margin-bottom: 30%;">
 
-        <div class="container">
+        <div id="show-export" class="container">
             <div class="row" style="margin-bottom: 5%;">
                 <div class="col-3 text-center no-pd">วันที่ : </div>
-                <div class="col-2 text-center no-pd">31/11/2011</div>
+                <div id="date" class="col-2 text-center no-pd"></div>
                 <div class="col-2 text-center no-pd"></div>
                 <div class="col-4 text-center no-pd">เลขที่ใบเสร็จ : </div>
-                <div class="col-1 text-center no-pd">2</div>
+                <div class="col-1 text-center no-pd">auto</div>
             </div>
             <div class="row" style="margin-bottom: 10%;">
                 <div class="col-3 text-center no-pd">ผู้ใช้ : </div>
-                <div class="col-3 text-center no-pd">ศิริพร</div>
+                <div id="user" class="col-3 text-center no-pd">test</div>
                 <div class="col-1 text-center no-pd"></div>
                 <div class="col-5 text-center no-pd">
                     <input id="ware" type="text" class="w3-input" data-toggle="dropdown" placeholder="โกดัง" readonly>
-                    <ul class="dropdown-menu text-center" aria-labelledby="role" style="width: 80%;">
-                        <li id="li-ware-1" onclick="setware('1');" style="padding-bottom: 10px; padding-top: 10px;">โกดังตึกเช่า</li>
-                        <li id="li-ware-2" onclick="setware('2');" style="padding-bottom: 10px;">โกดัง 2</li>
+                    <ul id="ul-ware" class="dropdown-menu text-center" aria-labelledby="role" style="width: 80%;">                      
                     </ul>
                 </div>
             </div>
@@ -188,151 +313,17 @@
                 </div>
             </div>
             <hr>
-
-            <!-- Show -->
-            <div id="prod-1" class="row">
-                <span id="id-prod-1" hidden>id</span>
-                <div class="col-1 text-center no-pd">
-                    <i id="i-del-1" class="fa fa-trash-alt i-del" hidden></i>
-                    <i id="i-edit-1" class="fa fa-edit i-edit" onclick="edit_prod('1');" hidden></i>
-                    <i id="i-check-1" class="fa fa-check i-check" onclick="update_prod('1');" hidden style="color: green;"></i>
-                </div>
-                <div class="col-6 text-center no-pd" onclick="collapse('1');">ไฟหน้าเรนเจอร์ปี 08</div>
-                <div class="col-3 text-center">
-                    <input id="price-1" type="text" class="w3-input" value="1000" style="border: none; font-size: 120%;">
-                </div>
-                <span style="font-size: 120%;">x</span>
-                <div class="col-1 text-center no-pd">
-                    <input id="amount-1" type="text" class="w3-input" value="5" style="border: none;" readonly>
-                </div>
-            </div>
-
-            <!-- Collapse-1 -->
-            <div id="collapse-1" class="container collapse" style="margin-top: 5%;">
-                <div class="row">
-                    <div class="col-12 text-center">
-                        <img id='img' src="https://c2.staticflickr.com/4/3891/14354989289_2eec0ba724_b.jpg" alt="" style="width: 96%; height: 96%; border-radius: 3px;">
-                    </div>
-                </div>
-                <div class="row" style="margin-bottom: 4%; margin-top: 4%;">
-                    <div class="col-2"></div>
-                    <div class="col-4 text-center no-pd">รหัส : </div>
-                    <div class="col-4 text-center no-pd">fdrng0408</div>
-                    <div class="col-2"></div>
-                </div>
-                <div class="row" style="margin-bottom: 4%;">
-                    <div class="col-2"></div>
-                    <div class="col-4 text-center no-pd">รวม : </div>
-                    <div class="col-4 text-center no-pd">5000</div>
-                    <div class="col-2"></div>
-                </div>
-                <div class="row">
-                    <div class="col-2"></div>
-                    <div class="col-4 text-center no-pd">คงเหลือ : </div>
-                    <div class="col-4 text-center no-pd">15</div>
-                    <div class="col-2"></div>
-                </div>
-            </div>
-            <hr style="margin-top: 5%;">
-
-            <div id="prod-2" class="row">
-                <span id="id-prod-2" hidden>id</span>
-                <div class="col-1 text-center no-pd">
-                    <i id="i-del-2" class="fa fa-trash-alt i-del" hidden></i>
-                    <i id="i-edit-2" class="fa fa-edit i-edit" onclick="edit_prod('2');" hidden></i>
-                    <i id="i-check-2" class="fa fa-check i-check" onclick="update_prod('2');" hidden style="color: green;"></i>
-                </div>
-                <div class="col-6 text-center no-pd" onclick="collapse('2');">ไฟหน้าเรนเจอร์ปี 08</div>
-                <div class="col-3 text-center">
-                    <input id="price-2" type="text" class="w3-input" value="1000" style="border: none; font-size: 120%;">
-                </div>
-                <span style="font-size: 120%;">x</span>
-                <div class="col-1 text-center no-pd">
-                    <input id="amount-2" type="text" class="w3-input" value="5" style="border: none;" readonly>
-                </div>
-            </div>
-
-            <!-- Collapse-2 -->
-            <div id="collapse-2" class="container collapse" style="margin-top: 5%;">
-                <div class="row">
-                    <div class="col-12 text-center">
-                        <img id='img' src="https://c2.staticflickr.com/4/3891/14354989289_2eec0ba724_b.jpg" alt="" style="width: 96%; height: 96%; border-radius: 3px;">
-                    </div>
-                </div>
-                <div class="row" style="margin-bottom: 4%; margin-top: 4%;">
-                    <div class="col-2"></div>
-                    <div class="col-4 text-center no-pd">รหัส : </div>
-                    <div class="col-4 text-center no-pd">fdrng0408</div>
-                    <div class="col-2"></div>
-                </div>
-                <div class="row" style="margin-bottom: 4%;">
-                    <div class="col-2"></div>
-                    <div class="col-4 text-center no-pd">รวม : </div>
-                    <div class="col-4 text-center no-pd">5000</div>
-                    <div class="col-2"></div>
-                </div>
-                <div class="row">
-                    <div class="col-2"></div>
-                    <div class="col-4 text-center no-pd">คงเหลือ : </div>
-                    <div class="col-4 text-center no-pd">15</div>
-                    <div class="col-2"></div>
-                </div>
-            </div>
-            <hr style="margin-top: 5%;">
-
-            <div id="prod-3" class="row">
-                <span id="id-prod-3" hidden>id</span>
-                <div class="col-1 text-center no-pd">
-                    <i id="i-del-3" class="fa fa-trash-alt i-del" hidden></i>
-                    <i id="i-edit-3" class="fa fa-edit i-edit" onclick="edit_prod('3');" hidden></i>
-                    <i id="i-check-3" class="fa fa-check i-check" onclick="update_prod('3');" hidden style="color: green;"></i>
-                </div>
-                <div class="col-6 text-center no-pd" onclick="collapse('3');">ไฟหน้าเรนเจอร์ปี 08</div>
-                <div class="col-3 text-center">
-                    <input id="price-3" type="text" class="w3-input" value="1000" style="border: none; font-size: 120%;">
-                </div>
-                <span style="font-size: 120%;">x</span>
-                <div class="col-1 text-center no-pd">
-                    <input id="amount-3" type="text" class="w3-input" value="5" style="border: none;" readonly>
-                </div>
-            </div>
-
-            <!-- Collapse-3 -->
-            <div id="collapse-3" class="container collapse" style="margin-top: 5%;">
-                <div class="row">
-                    <div class="col-12 text-center">
-                        <img id='img' src="https://c2.staticflickr.com/4/3891/14354989289_2eec0ba724_b.jpg" alt="" style="width: 96%; height: 96%; border-radius: 3px;">
-                    </div>
-                </div>
-                <div class="row" style="margin-bottom: 4%; margin-top: 4%;">
-                    <div class="col-2"></div>
-                    <div class="col-4 text-center no-pd">รหัส : </div>
-                    <div class="col-4 text-center no-pd">fdrng0408</div>
-                    <div class="col-2"></div>
-                </div>
-                <div class="row" style="margin-bottom: 4%;">
-                    <div class="col-2"></div>
-                    <div class="col-4 text-center no-pd">รวม : </div>
-                    <div class="col-4 text-center no-pd">5000</div>
-                    <div class="col-2"></div>
-                </div>
-                <div class="row">
-                    <div class="col-2"></div>
-                    <div class="col-4 text-center no-pd">คงเหลือ : </div>
-                    <div class="col-4 text-center no-pd">15</div>
-                    <div class="col-2"></div>
-                </div>
-            </div>
-            <hr style="margin-top: 5%;">
+            <!-- Show -->   
         </div>
     </div>
     <!-- End big container -->
 
-    <div class="row fixed-bottom" style="margin-bottom: 17%;">
-        <div class="col-12 text-center">
-            <h5 class="title" style="font-size: 150%;">รวม :
-                <span id="net">50000</span>
-            </h5>
+    <div class="row fixed-bottom navs" style="margin-bottom: 15%; border: none !important; background-color: #fdfdfd !important;">
+        <div class="col-6 text-center">
+            <button id="btn-check" class="svbtn" onclick="save()">บันทึก</button>
+        </div>
+        <div class="col-6 text-right">
+            <h5 class="title" style="font-size: 150%; text-decoration: underline;">รวม : <span id="net" style="color: red;"></span></h5>
         </div>
     </div>
     <!-- Nav menu bottom -->

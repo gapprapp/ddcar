@@ -66,7 +66,7 @@
             for(var i = 0 ; i < arr_data.length ; i ++){                              
                 var sum_prod = arr_data[i].cost*arr_data[i].amt;
                 sum += parseInt(sum_prod);
-                $('#show-import').append("<div id='prod-"+i+"' class='row'>\
+                $('#show-export').append("<div id='prod-"+i+"' class='row'>\
                 <span id='id-prod-"+i+"' hidden>"+arr_data[i].prod_id+"</span>\
                 <div class='col-1 text-center no-pd'>\
                     <i id='i-del-"+i+"' class='fa fa-trash-alt i-del' onclick='remove("+i+");' hidden></i>\
@@ -75,11 +75,11 @@
                 </div>\
                 <div id='i-collapse-"+i+"' class='col-6 text-center no-pd' onclick='collapse("+i+");'>"+arr_data[i].name+"</div>\
                 <div class='col-3 text-center'>\
-                    <input id='price-"+i+"' type='text' class='w3-input' value='"+arr_data[i].cost+"' style='border: none; font-size: 120%;' readonly>\
+                    <input id='price-"+i+"' type='number' class='w3-input' value='"+arr_data[i].cost+"' style='border: none; font-size: 120%;' readonly>\
                 </div>\
                 <span style='font-size: 120%;'>x</span>\
                 <div class='col-1 text-center no-pd'>\
-                    <input id='amount-"+i+"' type='text' class='w3-input' value='"+arr_data[i].amt+"' style='border: none;' readonly>\
+                    <input id='amount-"+i+"' type='number' class='w3-input' value='"+arr_data[i].amt+"' style='border: none;' readonly>\
                 </div>\
             </div>\
             <!-- Collapse-1 -->\
@@ -101,12 +101,12 @@
                     <div class='col-4 text-center no-pd'>"+sum_prod+"</div>\
                     <div class='col-2'></div>\
                 </div>\
-                <div class='row'>\
+                <!--<div class='row'>\
                     <div class='col-2'></div>\
                     <div class='col-4 text-center no-pd'>คงเหลือ : </div>\
                     <div class='col-4 text-center no-pd'>15</div>\
                     <div class='col-2'></div>\
-                </div>\
+                </div>-->\
             </div>\
             <hr id='hr-"+i+"' style='margin-top: 5%;'>");                    
             }            
@@ -150,18 +150,18 @@
             for(var i = arg+1; i <= arr_data.length; i++){
                 $("#prod-"+i).prop('id', 'prod-'+(i-1));
                 $("#id-prod-"+i).prop('id', 'id-prod-'+(i-1));
+                $("#i-del-"+i).attr('onclick', "remove("+(i-1)+")");          
+                $("#i-edit-"+i).attr('onclick', "edit_prod("+(i-1)+")");        
+                $("#i-check-"+i).attr('onclick', "update_prod("+(i-1)+")");       
                 $("#i-del-"+i).prop('id', 'i-del-'+(i-1));
                 $("#i-edit-"+i).prop('id', 'i-edit-'+(i-1));
                 $("#i-check-"+i).prop('id', 'i-check-'+(i-1));
                 $("#price-"+i).prop('id', 'price-'+(i-1));
                 $("#amount-"+i).prop('id', 'amount-'+(i-1));
+                $("#i-collapse-"+i).attr('onclick', "collapse("+(i-1)+")");      
                 $("#i-collapse-"+i).prop('id', 'i-collapse-'+(i-1));
                 $("#collapse-"+i).prop('id', 'collapse-'+(i-1));
-                $("#hr-"+i).prop('id', 'hr-'+(i-1));
-                $("#i-del-"+i).attr('onclick', "remove("+(i-1)+")");          
-                $("#i-edit-"+i).attr('onclick', "edit_prod("+(i-1)+")");        
-                $("#i-check-"+i).attr('onclick', "update_prod("+(i-1)+")");       
-                $("#i-collapse-"+i).attr('onclick', "collapse("+(i-1)+")");      
+                $("#hr-"+i).prop('id', 'hr-'+(i-1));      
             } 
             localStorage.setItem('arr_ex', JSON.stringify(arr_data));          
         }
@@ -209,15 +209,19 @@
             return val;
         }
 
+        var sum_old;
         function edit_prod(arg) {
             //check if some i-check is show then
             if (check_edit(arg)) {
                 $("#i-edit-" + arg).attr('hidden', true);
                 $("#i-check-" + arg).attr('hidden', false);
                 $("#amount-" + arg).removeAttr('style');
-                $("#price-" + arg).removeAttr('style');
+                //$("#price-" + arg).removeAttr('style');
                 $("#amount-" + arg).attr("readonly", false);
-                $("#price-" + arg).attr("readonly", false);
+                //$("#price-" + arg).attr("readonly", false);
+                var amt = $("#amount-" + arg).val();
+                var cost = $('#price-'+arg).val();
+                sum_old = amt*cost;   
             }
         }
 
@@ -225,13 +229,19 @@
             $("#i-edit-" + arg).attr('hidden', false);
             $("#i-check-" + arg).attr('hidden', true);
             $("#amount-" + arg).css('border', 'none');
-            $("#price-" + arg).css('border', 'none');
+            //$("#price-" + arg).css('border', 'none');
             $("#amount-" + arg).attr("readonly", true);
-            $("#price-" + arg).attr("readonly", true);
-            $.alert({
+            //$("#price-" + arg).attr("readonly", true);
+            /*$.alert({
                 title: 'สำเร็จ!',
                 content: 'บันทึกการเปลี่ยนแปลง',
-            });
+            });*/
+            var cost = $('#price-'+arg).val();   
+            var amt = $('#amount-'+arg).val();
+            var net = $("#net").html(); 
+            var sum = parseFloat(net.replace(/,/g, ''));
+            var new_net = (sum-sum_old)+(amt*cost);
+            $("#net").text(new_net.toLocaleString());  
         }
 
         function collapse(arg) {

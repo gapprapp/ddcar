@@ -58,7 +58,7 @@
                 $("#add-ctn").prop('hidden', false);
                 if(from == "add"){                 
                   $("#row-select").prop('hidden', false);
-                }else if(from == "import" || from == "tran_in"){                 
+                }else if(from == "import" || from == "tran_in" || from == "export"){                 
                   $("#row-select").prop('hidden', true);
                 }                
               }
@@ -74,7 +74,7 @@
                     $("#row-add").prop('hidden', true);
                     $("#row-input-add").prop('hidden', true);
                     $("#row-select").prop('hidden', false);       
-                  }else if(from == "import" || from == "tran_in"){                    
+                  }else if(from == "import" || from == "tran_in" || from == "export"){                    
                     $("#add-ctn").prop('hidden', true);                                       
                   } 
                   $.each(obj, function(i, field){
@@ -215,7 +215,9 @@
           goto = "import.html?product="+arg;
         }else if(from == "tran_in"){
           goto = "transfer_in.html?product="+arg;
-        }     
+        }else if(from == "export"){
+          goto = "export.html?product="+arg;
+        }    
       }     
       transition_page_next(goto);
     }
