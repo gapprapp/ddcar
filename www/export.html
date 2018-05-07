@@ -16,6 +16,9 @@
     <script defer src="https://use.fontawesome.com/releases/v5.0.8/js/all.js"></script>
     <script src="cordova.js"></script>
 
+    <script src="js/jquery.easy-autocomplete.min.js"></script>   
+    <link rel="stylesheet" href="css/easy-autocomplete.themes.min.css">
+
     <link rel="stylesheet" href="css/index.css">
 
     <!-- Font -->
@@ -34,7 +37,109 @@
     </style>
 
     <script>
-        $(document).ready(function () { });
+        var prod_id;     
+        var img;    
+        $(document).ready(function () { 
+            url = new URL(window.location.href);
+            product = url.searchParams.get("product");  
+
+            if(localStorage.arr_ex){
+                var retrievedObject = localStorage.getItem('arr_ex');
+                var arr_data = JSON.parse(retrievedObject);             
+                $('#check-import').text("("+arr_data.length+")");       
+            }          
+
+            if(product != null){
+                $.ajax({
+                    type: "POST",
+                    url:"https://omise-webpack.000webhostapp.com/www/php/get_prod.php",    
+                    data:{'prod_id' : product},
+                    async: false,                       
+                    success: function(data){
+                        var obj = jQuery.parseJSON(data);                                         
+                        $.each(obj, function(i, field){
+                            $('#name').val(obj[i].prod_name);
+                            $('#barcode').val(obj[i].prod_code); 
+                            $('#cost').val(obj[i].prod_cost);
+                            prod_id = obj[i].prod_id;   
+                            img = obj[i].img;                           
+                        });                                        
+                    }               
+                }); 
+            }
+
+            var options = {
+                url: function(phrase) {
+                    return "https://omise-webpack.000webhostapp.com/www/php/searh_prod.php";
+                },
+                getValue: function(element) {    
+                    //console.log(element);                               
+                    return element.prod_name;
+                },
+                ajaxSettings: {                      
+                method: "POST",
+                data: {}
+                },
+                preparePostData: function(data) {
+                    data.phrase = $("#name").val();                  
+                    return data;
+                },
+                list: {                        
+                    maxNumberOfElements: 5,
+                    showAnimation: {
+                        type: "slide",
+                        time: 200
+                    },
+                    hideAnimation: {
+                        type: "slide",
+                        time: 200
+                    },
+                    onChooseEvent: function() {
+                        var code = $("#name").getSelectedItemData().prod_code;                    
+                        var cost = $("#name").getSelectedItemData().prod_cost;
+                        prod_id = $("#name").getSelectedItemData().prod_id;
+                        img = $("#name").getSelectedItemData().img; 
+
+                        $('#barcode').val(code);
+                        $('#cost').val(cost);                                                                                             
+                    }
+                }, 
+                //theme: "blue-light",                   
+                };
+            $("#name").easyAutocomplete(options);      
+        });
+
+        function add_export(){           
+            var code = $('#barcode').val();
+            var cost = $('#cost').val();          
+            if(code != "" && cost != ""){             
+                if(localStorage.arr_prod){
+                    var retrievedObject = localStorage.getItem('arr_prod');
+                    var arr_data = JSON.parse(retrievedObject);               
+                }else{
+                    var arr_data = [];              
+                }           
+                item = {}            
+                item ["qr"] =  code;
+                item ["prod_id"] =  prod_id;
+                item ["name"] =  $('#name').val();
+                item ["cost"] =  cost;               
+                item ["amt"] =  $('#amount').val();
+                item ["img"] =  img;     
+
+                arr_data.push(item); 
+                localStorage.setItem('arr_ex', JSON.stringify(arr_data));         
+            
+                $('#check-import').text("("+arr_data.length+")");       
+
+                $('#barcode').val("");
+                $('#name').val("");
+                $('#cost').val("");                
+                $('#amount').val("1");                                     
+            }else{
+                alert("กรุณาใส่ข้อมูลให้ครบ");
+            }          
+        }     
 
         function disactive(arg) {
             nav_menu = ['home', 'bell', 'qrcode', 'bars'];
@@ -52,19 +157,51 @@
                 $("#i-" + arg).addClass('active');
             });
         }
-
-        function addpic() {
-            $("#row-img").prop('hidden', false);
-        }
-
+       
         function selectfolder() {
             //goto = location.reload();
-            goto = "select_folder.html?from=sale";
+            goto = "select_folder.html?from=export";
             transition_page_next_flip(goto);
         }
 
         function scanqr() {
-            alert("qr show");
+            cordova.plugins.barcodeScanner.scan(
+                function (result) {
+                    if(!result.cancelled){
+                        // In this case we only want to process QR Codes
+                        if(result.format == "QR_CODE"){
+                                var value = result.text;
+                                // This is the retrieved content of the qr code
+                                //alert(value);                        
+                                $.ajax({
+                                    type: "POST",
+                                    url: "https://omise-webpack.000webhostapp.com/www/php/get_prod.php",                
+                                    data: {'qr' : value},             
+                                    success: function(data){                             
+                                        var obj = jQuery.parseJSON(data); 
+                                        $.each(obj, function(i, field){                                           
+                                            $('#name').val(field.prod_name);    
+                                            $('#cost').val(field.prod_cost);  
+                                            $('#barcode').val(field.prod_code);                                            
+                                            prod_id = field.prod_id;
+                                            img = field.img;       
+                                        });                                                 
+                                    }               
+                                });         
+                        }else{
+                            alert("Sorry, only qr codes this time ;)");
+                        }
+                    }else{
+                    alert("The user has dismissed the scan");
+                    }
+                },
+                function (error) {
+                    alert("An error ocurred: " + error);
+                },
+                {
+                    prompt : "วางคิวอาโค้ดภายในสี่เหลี่ยมผืนผ้าที่ช่องมองภาพเพื่อแสกน"
+                }
+            );
         }
 
         function check() {
@@ -109,11 +246,11 @@
                 </div>
                 <div class="col-3 text-center">
                     <label for="amount">จำนวน</label>
-                    <input id="amount" type="number" class="w3-input">
+                    <input id="amount" type="number" min="1" value="1" class="w3-input">
                 </div>
                 <div class="col-3 text-center">
-                    <label for="amount">ทุน</label>
-                    <input id="amount" type="number" class="w3-input">
+                    <label for="cost">ทุน</label>
+                    <input id="cost" type="number" class="w3-input">
                 </div>
             </div>
             <div class="row" style="margin-bottom: 15%;">
@@ -123,14 +260,14 @@
             </div>
             <div class="row" style="margin-bottom: 15%;">
                 <div class="col-12 text-center">
-                    <button class="mbtn" onclick="add_import();">เพิ่มสินค้า</button>
+                    <button class="mbtn" onclick="add_export();">เพิ่มสินค้า</button>
                 </div>
             </div>
             <div class="row" style="margin-bottom: 15%;">
                 <div class="col-12 text-center">
                     <button id="btn-check" class="mbtn" onclick="check();" style="color: red; border-color: red;">
                         ตรวจสอบ
-                        <span id="check-import">(1)</span>
+                        <span id="check-import"></span>
                     </button>
                 </div>
             </div>
