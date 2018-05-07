@@ -113,8 +113,8 @@
             var code = $('#barcode').val();
             var cost = $('#cost').val();          
             if(code != "" && cost != ""){             
-                if(localStorage.arr_prod){
-                    var retrievedObject = localStorage.getItem('arr_prod');
+                if(localStorage.arr_ex){
+                    var retrievedObject = localStorage.getItem('arr_ex');
                     var arr_data = JSON.parse(retrievedObject);               
                 }else{
                     var arr_data = [];              
