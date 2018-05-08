@@ -115,8 +115,7 @@
                 type: "POST",
                 url:"https://omise-webpack.000webhostapp.com/www/php/stock_in.php",           
                 data: dataString,               
-                success: function(data){                             
-                    alert(data);
+                success: function(data){              
                     if(data == "success"){
                         localStorage.arr_prod = "";                                                   
                         goto = "import.html";
