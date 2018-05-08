@@ -15,6 +15,8 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
     <script defer src="https://use.fontawesome.com/releases/v5.0.8/js/all.js"></script>
     <script src="cordova.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.0/jquery-confirm.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.0/jquery-confirm.min.js"></script>
 
     <script src="js/jquery.easy-autocomplete.min.js"></script>   
     <link rel="stylesheet" href="css/easy-autocomplete.themes.min.css">
@@ -137,7 +139,10 @@
                 $('#cost').val("");                
                 $('#amount').val("1");                                     
             }else{
-                alert("กรุณาใส่ข้อมูลให้ครบ");
+                $.alert({
+                    title: 'คำเตือน!',
+                    content: 'กรุณากรอกข้อมูลให้ครบ',
+                });
             }          
         }     
 
@@ -189,14 +194,17 @@
                                     }               
                                 });         
                         }else{
-                            alert("Sorry, only qr codes this time ;)");
+                            //alert("Sorry, only qr codes this time ;)");
                         }
                     }else{
-                    alert("The user has dismissed the scan");
+                        //alert("The user has dismissed the scan");
                     }
                 },
                 function (error) {
-                    alert("An error ocurred: " + error);
+                    $.alert({
+                        title: 'คำเตือน!',
+                        content: error,
+                    });
                 },
                 {
                     prompt : "วางคิวอาโค้ดภายในสี่เหลี่ยมผืนผ้าที่ช่องมองภาพเพื่อแสกน"
