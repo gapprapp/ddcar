@@ -238,6 +238,8 @@
             });*/
             var cost = $('#price-'+arg).val();   
             var amt = $('#amount-'+arg).val();
+            arr_data[arg].amt = amt;  
+            localStorage.setItem('arr_ex', JSON.stringify(arr_data));   
             var net = $("#net").html(); 
             var sum = parseFloat(net.replace(/,/g, ''));
             var new_net = (sum-sum_old)+(amt*cost);

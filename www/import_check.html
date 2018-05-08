@@ -232,7 +232,9 @@
                 content: 'บันทึกการเปลี่ยนแปลง',
             });*/
             var cost = $('#price-'+arg).val();   
-            var amt = $('#amount-'+arg).val();    
+            var amt = $('#amount-'+arg).val();
+            arr_data[arg].amt = amt; 
+            localStorage.setItem('arr_prod', JSON.stringify(arr_data));     
             sum = (sum-sum_old)+(amt*cost);
             $("#net").text(sum.toLocaleString());  
         }

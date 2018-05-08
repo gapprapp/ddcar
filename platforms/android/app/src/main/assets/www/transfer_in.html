@@ -44,6 +44,7 @@
 
     <script>
         var prod_id;
+        arr_data = [];
         $(document).ready(function () { 
             url = new URL(window.location.href);
             product = url.searchParams.get("product");
@@ -53,30 +54,40 @@
             }
             if(localStorage.arr_tranin){
                 var retrievedObject = localStorage.getItem('arr_tranin');
-                var arr = JSON.parse(retrievedObject);
-                for(var i = 0 ; i < arr.length ; i++){
+                arr_data = JSON.parse(retrievedObject);
+                for(var i = 0 ; i < arr_data.length ; i++){
                     if(i == 0){
                         $("#ctn-add").prop('hidden', false);
                         text_html = "<hr id='hr-top-"+i+"'><div id='prod-"+i+"' class='row'>" +
+                            "<div class='col-1 text-center no-pd'>" +
+                                "<i id='i-del-"+i+"' class='fa fa-trash-alt i-del' onclick='remove("+i+");' hidden></i>" +
+                                "<i id='i-edit-"+i+"' class='fa fa-edit i-edit' onclick='edit_prod("+i+");' hidden></i>" +
+                                "<i id='i-check-"+i+"' class='fa fa-check i-check' onclick='update_prod("+i+");' hidden style='color: green;'></i>" +
+                            "</div>" +
                             "<div class='col-9 text-center pdlr'>" +
-                            "<h5>"+arr[i].name+"</h5>" +
+                            "<h5>"+arr_data[i].name+"</h5>" +
                             "<input id='name-"+i+"' type='text' class='w3-input' hidden>" +
                             "</div>" +
                             "<div class='col-3 text-center'>" +
-                            "<h5>"+arr[i].amt+"</h5>" +
-                            "<input id='amount-"+i+"' type='number' min='1' value='1' class='w3-input' hidden>" +
+                            "<h5 id='h5-amt-"+i+"'>"+arr_data[i].amt+"</h5>" +
+                            "<input id='amount-"+i+"' type='number' min='1' value='"+arr_data[i].amt+"' class='w3-input' hidden>" +
                             "</div>" +
                             "</div><hr id='hr-btm-"+i+"'>";  
 
                     }else{
                         text_html = "<div id='prod-"+i+"' class='row'>" +
+                            "<div class='col-1 text-center no-pd'>" +
+                                "<i id='i-del-"+i+"' class='fa fa-trash-alt i-del' onclick='remove("+i+");' hidden></i>" +
+                                "<i id='i-edit-"+i+"' class='fa fa-edit i-edit' onclick='edit_prod("+i+");' hidden></i>" +
+                                "<i id='i-check-"+i+"' class='fa fa-check i-check' onclick='update_prod("+i+");' hidden style='color: green;'></i>" +
+                            "</div>" +
                             "<div class='col-9 text-center pdlr'>" +
-                            "<h5>"+arr[i].name+"</h5>" +
+                            "<h5>"+arr_data[i].name+"</h5>" +
                             "<input id='name-"+i+"' type='text' class='w3-input' hidden>" +
                             "</div>" +
                             "<div class='col-3 text-center'>" +
-                            "<h5>"+arr[i].amt+"</h5>" +
-                            "<input id='amount-"+i+"' type='number' min='1' value='1' class='w3-input' hidden>" +
+                            "<h5 id='h5-amt-"+i+"'>"+arr_data[i].amt+"</h5>" +
+                            "<input id='amount-"+i+"' type='number' min='1' value='"+arr_data[i].amt+"' class='w3-input' hidden>" +
                             "</div>" +
                             "</div><hr id='hr-btm-"+i+"'>";
                     }
@@ -112,7 +123,66 @@
                 }               
             });
         });
+
+        function remove(num){ 
+            if(arr_data.length == 1){
+                $('#hr-top-'+num).remove();  
+            } 
+            $('#prod-'+num).remove();           
+            $('#hr-btm-'+num).remove();            
+            arrange(num);
+        }
+
+        function arrange(arg){
+            arr_data.splice(arg,1);       
+            for(var i = arg+1; i <= arr_data.length; i++){
+                $("#prod-"+i).prop('id', 'prod-'+(i-1));
+                $("#h5-amt-"+i).prop('id', 'h5-amt-'+(i-1));
+                $("#i-del-"+i).attr('onclick', "remove("+(i-1)+")");          
+                $("#i-edit-"+i).attr('onclick', "edit_prod("+(i-1)+")");        
+                $("#i-check-"+i).attr('onclick', "update_prod("+(i-1)+")");       
+                $("#i-del-"+i).prop('id', 'i-del-'+(i-1));
+                $("#i-edit-"+i).prop('id', 'i-edit-'+(i-1));
+                $("#i-check-"+i).prop('id', 'i-check-'+(i-1));
+                $("#amount-"+i).prop('id', 'amount-'+(i-1));               
+                $("#hr-btm-"+i).prop('id', 'hr-btm-'+(i-1));              
+            } 
+            localStorage.setItem('arr_tranin', JSON.stringify(arr_data));          
+        }
         
+        function check_edit(arg) {
+            val = true;
+            // 4 is max prod
+            for (i = 0; i < 4; i++) {
+                if ($("#i-check-" + i).is(":visible") && i != arg) {
+                    val = false;
+                    break;
+                }
+            }
+
+            return val;
+        }
+       
+        function edit_prod(arg) {
+            //check if some i-check is show then
+            if (check_edit(arg)) {
+                $("#i-edit-" + arg).attr('hidden', true);
+                $("#i-check-" + arg).attr('hidden', false);              
+                $("#amount-" + arg).attr('hidden', false);
+                $("#h5-amt-" + arg).attr('hidden', true);          
+            }
+        }
+
+        function update_prod(arg) {
+            arr_data[arg].amt = $("#amount-" + arg).val();
+            localStorage.setItem('arr_tranin', JSON.stringify(arr_data)); 
+            $("#h5-amt-" + arg).text($("#amount-" + arg).val());
+            $("#i-edit-" + arg).attr('hidden', false);
+            $("#i-check-" + arg).attr('hidden', true);
+            $("#amount-" + arg).attr('hidden', true);
+            $("#h5-amt-" + arg).attr('hidden', false);        
+        }
+
         function setstore(arg) {
             shop = $("#li-store-" + arg).text();
             $("#store").val(shop);
@@ -121,7 +191,7 @@
         }
 
         function disactive(arg) {
-            nav_menu = ['home', 'bell', 'qrcode', 'bars'];
+            nav_menu = ['home', 'add', 'edit', 'del'];
             for (i = 0; i < 4; i++) {
                 if (nav_menu[i] != arg) {
                     if ($("#i-" + nav_menu[i]).hasClass('active')) $("#i-" + nav_menu[i]).removeClass('active');
@@ -130,11 +200,24 @@
         }
 
         function menu(arg) {
-            // Animate
+            // Animate             
             disactive(arg);
             $("#i-" + arg).fadeOut(100).fadeIn(100, function () {
                 $("#i-" + arg).addClass('active');
             });
+
+            if (arg == "add") {
+                /*goto = "sale.html";
+                transition_page_back(goto);*/
+            } else if (arg == "edit") {
+                // show edit all
+                $(".i-edit").attr('hidden', false);
+                $(".i-del").attr('hidden', true);
+            } else if (arg == "del") {
+                // show trash all 
+                $(".i-del").attr('hidden', false);
+                $(".i-edit").attr('hidden', true);
+            }
         }
 
         function selectfolder() {
@@ -181,9 +264,8 @@
 
         } 
 
-        var index = 0;
-        arr_data = [];
-        function add_import(){
+        var index = 0;       
+        function add_trans(){
             var name = $('#name').val();
             var amt = $('#amount').val();
             if(name != ""){
@@ -203,25 +285,35 @@
                 if(index == 0){
                     $("#ctn-add").prop('hidden', false);
                     text_html = "<hr id='hr-top-"+index+"'><div id='prod-"+index+"' class='row'>" +
+                        "<div class='col-1 text-center no-pd'>" +
+                            "<i id='i-del-"+index+"' class='fa fa-trash-alt i-del' onclick='remove("+index+");' hidden></i>" +
+                            "<i id='i-edit-"+index+"' class='fa fa-edit i-edit' onclick='edit_prod("+index+");' hidden></i>" +
+                            "<i id='i-check-"+index+"' class='fa fa-check i-check' onclick='update_prod("+index+");' hidden style='color: green;'></i>" +
+                        "</div>" +
                         "<div class='col-9 text-center pdlr'>" +
                         "<h5>"+name+"</h5>" +
                         "<input id='name-"+index+"' type='text' class='w3-input' hidden>" +
                         "</div>" +
                         "<div class='col-3 text-center'>" +
-                        "<h5>"+amt+"</h5>" +
-                        "<input id='amount-"+index+"' type='number' min='1' value='1' class='w3-input' hidden>" +
+                        "<h5 id='h5-amt-"+index+"'>"+amt+"</h5>" +
+                        "<input id='amount-"+index+"' type='number' min='1' value='"+amt+"' class='w3-input' hidden>" +
                         "</div>" +
                         "</div><hr id='hr-btm-"+index+"'>";  
 
                 }else{
                     text_html = "<div id='prod-"+index+"' class='row'>" +
+                        "<div class='col-1 text-center no-pd'>" +
+                            "<i id='i-del-"+index+"' class='fa fa-trash-alt i-del' onclick='remove("+index+");' hidden></i>" +
+                            "<i id='i-edit-"+index+"' class='fa fa-edit i-edit' onclick='edit_prod("+index+");' hidden></i>" +
+                            "<i id='i-check-"+index+"' class='fa fa-check i-check' onclick='update_prod("+index+");' hidden style='color: green;'></i>" +
+                        "</div>" +
                         "<div class='col-9 text-center pdlr'>" +
                         "<h5>"+name+"</h5>" +
                         "<input id='name-"+index+"' type='text' class='w3-input' hidden>" +
                         "</div>" +
                         "<div class='col-3 text-center'>" +
-                        "<h5>"+amt+"</h5>" +
-                        "<input id='amount-"+index+"' type='number' min='1' value='1' class='w3-input' hidden>" +
+                        "<h5 id='h5-amt-"+index+"'>"+amt+"</h5>" +
+                        "<input id='amount-"+index+"' type='number' min='1' value='"+amt+"' class='w3-input' hidden>" +
                         "</div>" +
                         "</div><hr id='hr-btm-"+index+"'>";
                 }  
@@ -323,7 +415,7 @@
                     <button class="mbtn" onclick="save();" style="width: 100%; color: #428bca; border-color: #428bca; box-shadow: 0 1px 1px #428bca, 0 0px 0px #428bca;">บันทึก</button>
                 </div>
                 <div class="col-8 text-center no-pd">
-                    <button class="mbtn" onclick="add_import();" style="width: 100%;">เพิ่มสินค้า</button>
+                    <button class="mbtn" onclick="add_trans();" style="width: 100%;">เพิ่มสินค้า</button>
                 </div>
             </div>
         </div>
@@ -335,14 +427,14 @@
         <div class="col-3 text-center" onclick="menu('home')">
             <i id="i-home" class="fas fa-home menu"></i>
         </div>
-        <div class="col-3 text-center" onclick="menu('bell')">
-            <i id="i-bell" class="fas fa-bell menu"></i>
+        <div class="col-3 text-center" onclick="menu('add')">
+            <i id="i-add" class="fas fa-plus menu"></i>
         </div>
-        <div class="col-3 text-center" onclick="menu('qrcode')">
-            <i id="i-qrcode" class="fas fa-qrcode menu"></i>
+        <div class="col-3 text-center" onclick="menu('edit')">
+            <i id="i-edit" class="fas fa-edit menu"></i>
         </div>
-        <div class="col-3 text-center" onclick="menu('bars')">
-            <i id="i-bars" class="fa fa-bars menu"></i>
+        <div class="col-3 text-center" onclick="menu('del')">
+            <i id="i-del" class="fa fa-trash-alt menu"></i>
         </div>
     </div>
     <!-- End Nav menu bottom -->
