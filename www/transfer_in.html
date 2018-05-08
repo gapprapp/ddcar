@@ -16,6 +16,9 @@
     <script defer src="https://use.fontawesome.com/releases/v5.0.8/js/all.js"></script>
     <script src="cordova.js"></script>
 
+    <script src="js/jquery.easy-autocomplete.min.js"></script>   
+    <link rel="stylesheet" href="css/easy-autocomplete.themes.min.css">
+
     <link rel="stylesheet" href="css/index.css">
 
     <!-- Font -->
@@ -64,7 +67,7 @@
                                 "<i id='i-edit-"+i+"' class='fa fa-edit i-edit' onclick='edit_prod("+i+");' hidden></i>" +
                                 "<i id='i-check-"+i+"' class='fa fa-check i-check' onclick='update_prod("+i+");' hidden style='color: green;'></i>" +
                             "</div>" +
-                            "<div class='col-9 text-center pdlr'>" +
+                            "<div class='col-8 text-center pdlr'>" +
                             "<h5>"+arr_data[i].name+"</h5>" +
                             "<input id='name-"+i+"' type='text' class='w3-input' hidden>" +
                             "</div>" +
@@ -81,7 +84,7 @@
                                 "<i id='i-edit-"+i+"' class='fa fa-edit i-edit' onclick='edit_prod("+i+");' hidden></i>" +
                                 "<i id='i-check-"+i+"' class='fa fa-check i-check' onclick='update_prod("+i+");' hidden style='color: green;'></i>" +
                             "</div>" +
-                            "<div class='col-9 text-center pdlr'>" +
+                            "<div class='col-8 text-center pdlr'>" +
                             "<h5>"+arr_data[i].name+"</h5>" +
                             "<input id='name-"+i+"' type='text' class='w3-input' hidden>" +
                             "</div>" +
@@ -122,6 +125,40 @@
                     });                                        
                 }               
             });
+
+            var options = {
+                url: function(phrase) {
+                    return "https://omise-webpack.000webhostapp.com/www/php/searh_prod.php";
+                },
+                getValue: function(element) {    
+                    //console.log(element);                               
+                    return element.prod_name;
+                },
+                ajaxSettings: {                      
+                method: "POST",
+                data: {}
+                },
+                preparePostData: function(data) {
+                    data.phrase = $("#name").val();                  
+                    return data;
+                },
+                list: {                        
+                    maxNumberOfElements: 5,
+                    showAnimation: {
+                        type: "slide",
+                        time: 200
+                    },
+                    hideAnimation: {
+                        type: "slide",
+                        time: 200
+                    },
+                    onChooseEvent: function() {                     
+                        prod_id = $("#name").getSelectedItemData().prod_id;                                                                           
+                    }
+                }, 
+                //theme: "blue-light",                   
+                };
+            $("#name").easyAutocomplete(options);      
         });
 
         function remove(num){ 
@@ -251,7 +288,7 @@
                             alert("Sorry, only qr codes this time ;)");
                         }
                     }else{
-                    alert("The user has dismissed the scan");
+                        alert("The user has dismissed the scan");
                     }
                 },
                 function (error) {
@@ -290,7 +327,7 @@
                             "<i id='i-edit-"+index+"' class='fa fa-edit i-edit' onclick='edit_prod("+index+");' hidden></i>" +
                             "<i id='i-check-"+index+"' class='fa fa-check i-check' onclick='update_prod("+index+");' hidden style='color: green;'></i>" +
                         "</div>" +
-                        "<div class='col-9 text-center pdlr'>" +
+                        "<div class='col-8 text-center pdlr'>" +
                         "<h5>"+name+"</h5>" +
                         "<input id='name-"+index+"' type='text' class='w3-input' hidden>" +
                         "</div>" +
@@ -307,7 +344,7 @@
                             "<i id='i-edit-"+index+"' class='fa fa-edit i-edit' onclick='edit_prod("+index+");' hidden></i>" +
                             "<i id='i-check-"+index+"' class='fa fa-check i-check' onclick='update_prod("+index+");' hidden style='color: green;'></i>" +
                         "</div>" +
-                        "<div class='col-9 text-center pdlr'>" +
+                        "<div class='col-8 text-center pdlr'>" +
                         "<h5>"+name+"</h5>" +
                         "<input id='name-"+index+"' type='text' class='w3-input' hidden>" +
                         "</div>" +
@@ -384,7 +421,8 @@
             </div>
             <div class="container">
                 <div class="row">
-                    <div class="col-9 text-center pdlr">
+                    <div class="col-1 text-center no-pd"></div>
+                    <div class="col-8 text-center pdlr">
                         <label for="name">ชื่อสินค้า</label>
                     </div>
                     <div class="col-3 text-center">
@@ -397,7 +435,8 @@
             </div>
             <div class="container" style="margin-top: 10%;">
                 <div class="row mg-10">
-                    <div class="col-9 text-center pdlr">
+                    <div class="col-1 text-center no-pd"></div>
+                    <div class="col-8 text-center pdlr">
                         <input id="name" type="text" class="w3-input">
                     </div>
                     <div class="col-3 text-center">
