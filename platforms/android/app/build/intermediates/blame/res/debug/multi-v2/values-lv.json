@@ -1,17 +1,10 @@
 {
     "logs": [
         {
-<<<<<<< HEAD
             "outputFile": "/Users/phoenix/Documents/ddcar/platforms/android/app/build/intermediates/incremental/mergeDebugResources/merged.dir/values-lv/values-lv.xml",
             "map": [
                 {
-                    "source": "/Users/phoenix/.gradle/caches/transforms-1/files-1.1/support-compat-27.1.1.aar/7776a4c1938dae0f8ea685b3d4d18903/res/values-lv/values-lv.xml",
-=======
-            "outputFile": "D:\\GitHub\\ddcar\\platforms\\android\\app\\build\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values-lv\\values-lv.xml",
-            "map": [
-                {
-                    "source": "C:\\Users\\moronz\\.gradle\\caches\\transforms-1\\files-1.1\\support-compat-27.1.1.aar\\6fbd0ab55dc61ca6c0d5a5e352bd6f0b\\res\\values-lv\\values-lv.xml",
->>>>>>> af139f4d1ec2a452e5186e4c073d5bae877a4e3c
+                    "source": "/Users/phoenix/.gradle/caches/transforms-1/files-1.1/support-compat-27.1.1.aar/50561e229d5364de474e813611b88f65/res/values-lv/values-lv.xml",
                     "from": {
                         "startLines": "2",
                         "startColumns": "4",
