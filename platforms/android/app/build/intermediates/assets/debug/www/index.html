@@ -168,14 +168,17 @@
                         }               
                     });         
                 }else{
-                    alert("Sorry, only qr codes this time ;)");
+                    //alert("Sorry, only qr codes this time ;)");
                 }
             }else{
-            alert("The user has dismissed the scan");
+              //alert("The user has dismissed the scan");
             }
         },
         function (error) {
-            alert("An error ocurred: " + error);
+          $.alert({
+              title: 'คำเตือน!',
+              content: error,
+          });
         },
         {
             prompt : "วางคิวอาโค้ดภายในสี่เหลี่ยมผืนผ้าที่ช่องมองภาพเพื่อแสกน"

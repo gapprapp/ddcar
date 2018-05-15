@@ -56,27 +56,33 @@
                 $("#add-ctn").prop('hidden', false);
               }else{
                 $("#add-ctn").prop('hidden', false);
-                $("#row-select").prop('hidden', false);
+                if(from == "add"){                 
+                  $("#row-select").prop('hidden', false);
+                }else if(from == "import" || from == "tran_in" || from == "export"){                 
+                  $("#row-select").prop('hidden', true);
+                }                
               }
             }else{           
               var obj = jQuery.parseJSON(data); 
               //console.log(obj); 
               if(obj[obj.length-1] == "last node"){
                 //last node have product 
+                $("#main-ctn").prop('hidden', false);     
                   if(from == "add"){
                     $("#add-ctn").prop('hidden', false);
+                    $("#add-ctn").prop('style', "margin-top: 20%;");
                     $("#row-add").prop('hidden', true);
                     $("#row-input-add").prop('hidden', true);
                     $("#row-select").prop('hidden', false);       
-                  }else if(from == "import" || from == "tran_in"){
-                    $("#main-ctn").prop('hidden', false);      
-                    $("#add-ctn").prop('hidden', true);
-                    $.each(obj, function(i, field){
+                  }else if(from == "import" || from == "tran_in" || from == "export"){                    
+                    $("#add-ctn").prop('hidden', true);                                       
+                  } 
+                  $.each(obj, function(i, field){
                     if(obj.length-1 > i){
                       text_html = "<div id='row-title-"+i+"' class='row'>" +
                         "<div class='col-2'></div>" +
                         "<div id='getin-"+i+"' class='col-8 text-center' onclick='getIn(\"" + obj[i].title + "\")'>" +
-                        "<h5 id='title-"+i+"'>" + obj[i].title + "</h5>" +
+                        "<h5 id='title-"+i+"'>" + obj[i][2] + "</h5>" +
                         "</div>" +
                         "<div class='col-2'>" +
                         "<i class='fa fa-trash-alt i-trash' onclick='remove("+i+")' hidden></i>" +
@@ -88,7 +94,7 @@
                         "<i class='fa fa-check'></i>" +
                         "</div >" +
                         "<div class='col-8 text-center'>" +
-                        "<input id='input-"+i+"' type='text' class='w3-input' value='"+ obj[i].title +"'>" +
+                        "<input id='input-"+i+"' type='text' class='w3-input' value='"+ obj[i][2] +"'>" +
                         "</div>" +
                         "<div class='col-2' onclick='close_row_edit("+i+");'>" +
                         "<i class='fa fa-times'></i>" +
@@ -98,8 +104,7 @@
                       index = i;
                       }                                                 
                     });
-                    last_node = 1; 
-                  }                                     
+                    last_node = 1;                                     
               }else{
                 $("#main-ctn").prop('hidden', false);      
                 $("#add-ctn").prop('hidden', true);
@@ -154,10 +159,13 @@
       // Animate
       disactive(arg);
       $("#i-" + arg).fadeOut(100).fadeIn(100, function() {
-        $("#i-" + arg).addClass('active');
+        if(last_node != 1){
+          $("#i-" + arg).addClass('active');
+        }        
       });
 
       if(arg == "add"){
+        if(last_node == 1){ disac("add"); return 0;}
         if($("#input-row").is(":visible")) return 0;
         text_input = "<div id='input-row' class='row'>"+
           "<div class='col-2 text-right' onclick='add();'>"+
@@ -175,6 +183,7 @@
       }else if(arg == "home"){
         window.location = "index.html";
       }else if(arg == "edit"){
+        if(last_node == 1){ disac("edit"); return 0;}
         if ($(".i-edit").is(":visible")) {
           $(".i-trash").attr('hidden', true);
           $(".i-edit").attr('hidden', true);
@@ -184,6 +193,7 @@
           $(".i-edit").attr('hidden', false);
         }
       }else if(arg == "del"){
+        if(last_node == 1){ disac("del"); return 0;}
         if($(".i-trash").is(":visible")){
           $(".i-edit").attr('hidden', true);
           $(".i-trash").attr('hidden', true);
@@ -205,7 +215,9 @@
           goto = "import.html?product="+arg;
         }else if(from == "tran_in"){
           goto = "transfer_in.html?product="+arg;
-        }       
+        }else if(from == "export"){
+          goto = "export.html?product="+arg;
+        }    
       }     
       transition_page_next(goto);
     }
@@ -393,11 +405,6 @@
   </div><br>
 
   <!-- End big container -->
-  <div id="main-ctn" class="container justify-content-center" style="margin-top: 20%;" hidden>
-    <div id="append-ctn" class="container">
-    </div>
-  </div>
-
   <div id="add-ctn" class="container justify-content-center" style="margin-top: 50%;" hidden>
     <div class="container">
       <div id="row-input-add" class="row" style="margin-bottom: 10%;">
@@ -417,6 +424,11 @@
       </div>
     </div>
   </div>
+
+  <div id="main-ctn" class="container justify-content-center" style="margin-top: 20%;" hidden>
+    <div id="append-ctn" class="container">
+    </div>
+  </div> 
   <!-- End big container -->
 
   <!-- Nav menu bottom -->

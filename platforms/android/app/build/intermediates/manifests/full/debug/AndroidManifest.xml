@@ -37,8 +37,13 @@
             android:configChanges="orientation|keyboardHidden|keyboard|screenSize|locale"
             android:label="@string/activity_name"
             android:launchMode="singleTop"
+<<<<<<< HEAD
             android:theme="@android:style/Theme.Holo.NoActionBar.Fullscreen"
             android:windowSoftInputMode="adjustPan" >
+=======
+            android:theme="@android:style/Theme.DeviceDefault.NoActionBar"
+            android:windowSoftInputMode="adjustResize" >
+>>>>>>> af139f4d1ec2a452e5186e4c073d5bae877a4e3c
             <intent-filter android:label="@string/launcher_name" >
                 <action android:name="android.intent.action.MAIN" />
 

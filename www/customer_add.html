@@ -17,6 +17,8 @@
   <script type="text/javascript" src="js/jquery.alphanumeric.js"></script>
   <script defer src="https://use.fontawesome.com/releases/v5.0.8/js/all.js"></script>
   <script src="cordova.js"></script> 
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.0/jquery-confirm.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.0/jquery-confirm.min.js"></script>
 
   <link rel="stylesheet" href="css/index.css">
   <link rel="stylesheet" href="css/jquery-confirm.css">
@@ -91,6 +93,7 @@
               }               
           });
       }else{
+<<<<<<< HEAD
         $.confirm({
           title: 'พบข้อผิดพลาด',
           content: 'กรุณากรอกข้อมูลให้ครบ',
@@ -104,6 +107,12 @@
             }
           }
         }); 
+=======
+        $.alert({
+          title: 'คำเตือน!',
+          content: 'กรุณากรอกข้อมูลให้ครบ',
+        });
+>>>>>>> af139f4d1ec2a452e5186e4c073d5bae877a4e3c
       }
      
     }
