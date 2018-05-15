@@ -11,12 +11,15 @@
     <script type="text/javascript" src="js/jquery-ui.min.js"></script>
     <script type="text/javascript" src="js/jquery.easing.1.3.min.js"></script>
     <script type="text/javascript" src="js/transition.js"></script>
+    <script type="text/javascript" src="js/jquery-confirm.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.6/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
     <script defer src="https://use.fontawesome.com/releases/v5.0.8/js/all.js"></script>
-    <script src="cordova.js"></script>
+    <script type="text/javascript" src="js/jquery.alphanumeric.js"></script>
+    <script src="cordova.js"></script>   
 
     <link rel="stylesheet" href="css/index.css">
+    <link rel="stylesheet" href="css/jquery-confirm.css">
 
     <!-- Font -->
     <link href="https://fonts.googleapis.com/css?family=Prompt" rel="stylesheet">
@@ -41,7 +44,7 @@
             cus_id = url.searchParams.get("cus");
             edit = url.searchParams.get("edit");
 
-            $('#phone').numeric();
+            $('#tel').numeric();
 
              $.ajax({
                 type: "POST",
@@ -71,14 +74,14 @@
 
             if(edit == "true"){
                 
-                $('#h5-title').text("แก้ไข")
+                $('#h5-title').text("แก้ไข");
                 $('#name').prop('disabled', false);
                 $('#addr').prop('disabled', false);
                 $('#tel').prop('disabled', false);
                 $('#type').prop('disabled', false);
-                $('#btn-update').prop('disabled', false);
             }else{
-                 $('#h5-title').text('แสดง')
+                 $('#h5-title').text('ข้อมูล');
+                 $('#btn-update').prop('hidden', true);
             }
         });
 
@@ -106,29 +109,55 @@
             var tel = $('#tel').val();
             var type = $('#type').val();  
 
-             if(name != "" && phone != "" && addr != "" /*&& type != ""*/){
+             if(name != "" && tel != "" && addr != "" /*&& type != ""*/){
                 $.ajax({
                     type: "POST",
                     url:"https://omise-webpack.000webhostapp.com/www/php/rename_cus.php",           
                     data: {'cus_id' : cus_id,
                         'cus_name':name,
-                        'phone':phone,
+                        'phone':tel,
                         'addr':addr},               
                     success: function(data){         
-                        if(data == "success"){                        
+                        if(data == "success"){  
+                            $.confirm({
+                                title: 'เสร็จสิ้น',
+                                content: 'ทำการแก้ไขข้อมูลของลูกค้า '+name+' เสร็จสิ้น',
+                                backgroundDismiss: true,
+                                buttons: {
+                                  formSubmit: {
+                                    text: 'ตกลง',
+                                    btnClass: 'btn-regis',
+                                    action: function () {
+                                        goto = "member.html";
+                                        transition_page_next_flip(goto);
+                                      }
+                                  }
+                                }
+                            });                       
                             goto = "customer.html";
                             transition_page_back_flip(goto);
                         }
                     }               
                 });
             }else{
-                alert("กรุณากรอกข้อมูลให้ครบ");
+                $.confirm({
+                  title: 'พบข้อผิดพลาด',
+                  content: 'กรุณากรอกข้อมูลให้ครบ',
+                  backgroundDismiss: true,
+                  buttons: {
+                    formSubmit: {
+                      text: 'ตกลง',
+                      btnClass: 'btn-regis',
+                      action: function () {
+                      }
+                    }
+                  }
+                }); 
             }          
         }
 
         function setrole(arg){
-            role = $("#li-role-"+arg).text();
-            $("#type").val(role);
+            $("#type").val(arg);
         }
 
     </script>
@@ -149,40 +178,36 @@
     <br>
 
     <!-- End big container -->
-    <div class="container justify-content-center" style="margin-top: 15%; overflow: scroll;">
+    <div class="container justify-content-center" style="margin-top: 20%;">
         <div class="container">
-            <div class="row" style="margin-bottom: 10%;">
+            <div class="row mg-10">
                 <div class="col-12 text-center pdlr">
                     <label for="name">ชื่อ</label>
                     <input id="name" type="text" class="w3-input" disabled>
                 </div>
             </div>
-            <div class="row" style="margin-bottom: 10%;">
+            <div class="row mg-10">
                 <div class="col-12 text-center pdlr">
                     <label for="addr">ที่อยู่</label>
                     <input id="addr" type="text" class="w3-input" disabled>
                 </div>
             </div>
-            <div class="row" style="margin-bottom: 10%;">
+            <div class="row mg-10">
                 <div class="col-12 text-center pdlr">
                     <label for="tel">เบอร์โทร</label>
-                    <input id="tel" type="text" class="w3-input" disabled>
+                    <input id="tel" type="tel" class="w3-input" disabled>
                 </div>
             </div>
-            <div class="row" style="margin-bottom: 10%;">
+            <div class="row" style="margin-bottom: 16%;">
                 <div class="col-12 text-center pdlr">
                     <label for="type">ประเภท</label>
-                    <input id="type" type="text" class="w3-input" data-toggle="dropdown" readonly disabled>
-                    <ul class="dropdown-menu text-center" aria-labelledby="role" style="width: 80%;">
-                        <li id="li-role-1" onclick="setrole('1');" style="padding-bottom: 10px; padding-top: 10px;">ขายส่ง</li>
-                        <li id="li-role-2" onclick="setrole('2');" style="padding-bottom: 10px;">ขายปลีก</li>            
-                    </ul>
+                    <input id="type" type="text" class="w3-input" readonly>
                 </div>
             </div>
 
-            <div class="row" style="margin-bottom: 15%;">
+            <div class="row mg-10">
                 <div class="col-12 text-center">
-                    <button id="btn-cusprice" class="mbtn" href="#cusprice-collapse" data-toggle="collapse" style="width: 70%; color: green; border-color: green;">สินค้าราคาพิเศษ</button>
+                    <button id="btn-cusprice" class="mbtn-green" href="#cusprice-collapse" data-toggle="collapse">สินค้าราคาพิเศษ</button>
                 </div>
             </div>
 
@@ -199,31 +224,46 @@
                 
             </div>
 
-            <div class="row" style="margin-bottom: 35%;">
+            <div class="row">
                 <div class="col-12 text-center">
-                    <button id="btn-update" class="mbtn" onclick="update_cus();" disabled>บันทึก</button>
+                    <button id="btn-update" class="mbtn" onclick="update_cus();">บันทึก</button>
                 </div>
             </div>
         </div>
     </div>
     <!-- End big container -->
-
-    <!-- Nav menu bottom -->
-    <div class="row fixed-bottom navs">
-        <div class="col-3 text-center" onclick="menu('home')">
-            <i id="i-home" class="fas fa-home menu"></i>
-        </div>
-        <div class="col-3 text-center" onclick="menu('bell')">
-            <i id="i-bell" class="fas fa-bell menu"></i>
-        </div>
-        <div class="col-3 text-center" onclick="menu('qrcode')">
-            <i id="i-qrcode" class="fas fa-qrcode menu"></i>
-        </div>
-        <div class="col-3 text-center" onclick="menu('bars')">
-            <i id="i-bars" class="fa fa-bars menu"></i>
-        </div>
-    </div>
-    <!-- End Nav menu bottom -->
+    <script>
+        $("#type").click(function(event) {
+            url = new URL(window.location.href);
+            cus_id = url.searchParams.get("cus");
+            edit = url.searchParams.get("edit");
+            if(edit){
+                $.confirm({
+                    title: 'บทบาท',
+                    content: '<hr style="width: 80%; margin-bottom: 0;">',
+                    backgroundDismiss: true,
+                    buttons: {
+                      form1: {
+                        text: 'ขายส่ง',
+                        btnClass: 'btn-choice',
+                        action: function () {
+                          setrole('ขายส่ง');
+                        }
+                      },
+                      form2: {
+                        text: 'ขายปลีก',
+                        btnClass: 'btn-choice',
+                        action: function () {
+                          setrole('ขายปลีก');
+                        }
+                      }
+                    }
+                });
+            }else{
+                return false;
+            }
+        });
+    </script>
 </body>
 
 </html>

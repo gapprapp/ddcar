@@ -11,12 +11,14 @@
   <script type="text/javascript" src="js/jquery-ui.min.js"></script>
   <script type="text/javascript" src="js/jquery.easing.1.3.min.js"></script>
   <script type="text/javascript" src="js/transition.js"></script>
+  <script type="text/javascript" src="js/jquery-confirm.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.6/umd/popper.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
   <script defer src="https://use.fontawesome.com/releases/v5.0.8/js/all.js"></script>
   <script src="cordova.js"></script>
 
   <link rel="stylesheet" href="css/index.css">
+  <link rel="stylesheet" href="css/jquery-confirm.css">
 
   <!-- Font -->
   <link href="https://fonts.googleapis.com/css?family=Prompt" rel="stylesheet">
@@ -46,32 +48,32 @@
           $.each(obj, function(i, field){     
             if(obj[i][2] == "โกดัง"){
               $('#show').append( "<div id='cus-"+i+"' class='row'>" +
-              "<span id='id-cus-"+i+"' hidden>"+obj[i].ware_id+"</span>" +              
+              "<span id='id-ware-"+i+"' hidden>"+obj[i].ware_id+"</span>" +              
               "<div class='col-1 text-left'>" +
-                "<i class='fa fa-trash-alt i-del' onclick='edit_del("+i+");' hidden></i>" +
-                "<i class='fa fa-edit i-edit' onclick='edit_cus("+i+");' hidden></i>" +
+                "<i class='fa fa-trash-alt i-del' onclick='edit_del("+i+");' style='color: #666666;' hidden></i>" +
+                "<i class='fa fa-edit i-edit' onclick='edit_ware("+i+");' style='color: #666666;' hidden></i>" +
               "</div>" +
               "<div class='col-6 text-center no-pd'>" +
-                "<p>"+obj[i].ware_name+"</p>" +
+                "<p id='name-ware-"+i+"'>"+obj[i].ware_name+"</p>" +
               "</div>" +
               "<div class='col-4 text-center no-pd'>" +
-                "<p id='type-cus-"+i+"'>โกดัง</p>" +
+                "<p id='type-ware-"+i+"'>โกดัง</p>" +
               "</div>" +
               "<div class='col-1'></div>" +
               "</div>" +   
               "<hr id='hr-"+i+"'>");  
             }else if(obj[i][2] == "หน้าร้าน"){
               $('#show').append( "<div id='cus-"+i+"' class='row'>" +
-              "<span id='id-cus-"+i+"' hidden>"+obj[i].shop_id+"</span>" +              
+              "<span id='id-ware-"+i+"' hidden>"+obj[i].shop_id+"</span>" +              
               "<div class='col-1 text-left'>" +
-                "<i class='fa fa-trash-alt i-del' onclick='edit_del("+i+");' hidden></i>" +
-                "<i class='fa fa-edit i-edit' onclick='edit_cus("+i+");' hidden></i>" +
+                "<i class='fa fa-trash-alt i-del' onclick='edit_del("+i+");' style='color: #666666;' hidden></i>" +
+                "<i class='fa fa-edit i-edit' onclick='edit_ware("+i+");' style='color: #666666;' hidden></i>" +
               "</div>" +
               "<div class='col-6 text-center no-pd'>" +
-                "<p>"+obj[i].shop_name+"</p>" +
+                "<p id='name-ware-"+i+"'>"+obj[i].shop_name+"</p>" +
               "</div>" +
               "<div class='col-4 text-center no-pd'>" +
-                "<p id='type-cus-"+i+"'>หน้าร้าน</p>" +
+                "<p id='type-ware-"+i+"'>หน้าร้าน</p>" +
               "</div>" +
               "<div class='col-1'></div>" +
               "</div>" +   
@@ -130,24 +132,58 @@
     }
 
     function edit_ware(arg) {
-      // Change p tag -> to input tag
+      $.confirm({
+        title: 'หน้าร้าน / โกดัง',
+        content: '<hr style="width: 80%; margin-bottom: 0;">',
+        backgroundDismiss: true,
+        buttons: {
+          form1: {
+            text: 'โกดัง',
+            btnClass: 'btn-choice',
+            action: function () {
+              $("#type-ware-"+arg).text('โกดัง');
+            }
+          },
+          form2: {
+            text: 'หน้าร้าน',
+            btnClass: 'btn-choice',
+            action: function () {
+              $("#type-ware-"+arg).text('หน้าร้าน');
+            }
+          }
+        }
+      });
     }
 
     function edit_del(arg) {
-       var id = $('#id-cus-' + arg).text();
-       var type = $('#type-cus-' + arg).text();
-      $.ajax({
-        type: "POST",
-        url:"https://omise-webpack.000webhostapp.com/www/php/delete_ware_shop.php",           
-        data: {'id' : id,
-               'type' : type},               
-        success: function(data){                             
-            if(data == "success"){
-              $("#cus-"+arg).remove(); 
-              $("#hr-"+arg).remove(); 
-            }          
-        }               
-      });
+      var id = $('#id-ware-' + arg).text();
+      var type = $('#type-ware-' + arg).text();
+      var name = $('#name-ware-' + arg).text();
+      $.confirm({
+        title: 'ยืนยันการลบรายการ',
+        content: 'ต้องการลบ '+name+' หรือไม่',
+        backgroundDismiss: true,
+        buttons: {
+          formSubmit: {
+            text: 'ตกลง',
+            btnClass: 'btn-danger',
+            action: function () {
+              $.ajax({
+                type: "POST",
+                url:"https://omise-webpack.000webhostapp.com/www/php/delete_ware_shop.php",           
+                data: {'id' : id,
+                       'type' : type},               
+                success: function(data){                             
+                    if(data == "success"){
+                      $("#cus-"+arg).remove(); 
+                      $("#hr-"+arg).remove(); 
+                    }          
+                }               
+              });
+            }
+          },ยกเลิก: function () {}
+        }
+      }); 
     }
   </script>
 </head>
@@ -189,7 +225,7 @@
 
   <!-- Nav menu bottom -->
   <div class="row fixed-bottom navs">
-    <div class="col-3 text-center" onclick="menu('home')">
+    <div class="col-3 text-center" onclick="window.location='index.html';">
       <i id="i-home" class="fas fa-home menu"></i>
     </div>
     <div class="col-3 text-center" onclick="menu('add')">

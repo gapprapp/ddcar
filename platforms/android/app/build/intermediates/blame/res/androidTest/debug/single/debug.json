@@ -1,0 +1,258 @@
+[
+    {
+        "merged": "/Users/phoenix/Documents/ddcar/platforms/android/app/build/intermediates/res/merged/androidTest/debug/drawable-xhdpi-v4_notification_bg_low_pressed.9.png.flat",
+        "source": "/Users/phoenix/.gradle/caches/transforms-1/files-1.1/support-compat-27.1.1.aar/c54102bc8c14fc78f2963d25ac3cca9a/res/drawable-xhdpi-v4/notification_bg_low_pressed.9.png"
+    },
+    {
+        "merged": "/Users/phoenix/Documents/ddcar/platforms/android/app/build/intermediates/res/merged/androidTest/debug/layout-v21_notification_action_tombstone.xml.flat",
+        "source": "/Users/phoenix/.gradle/caches/transforms-1/files-1.1/support-compat-27.1.1.aar/c54102bc8c14fc78f2963d25ac3cca9a/res/layout-v21/notification_action_tombstone.xml"
+    },
+    {
+        "merged": "/Users/phoenix/Documents/ddcar/platforms/android/app/build/intermediates/res/merged/androidTest/debug/layout-land_encode.xml.flat",
+        "source": "/Users/phoenix/.gradle/caches/transforms-1/files-1.1/barcodescanner-release-2.1.5.aar/10d0ba62e15015722e058ab452d6d21d/res/layout-land/encode.xml"
+    },
+    {
+        "merged": "/Users/phoenix/Documents/ddcar/platforms/android/app/build/intermediates/res/merged/androidTest/debug/drawable-xhdpi-v4_notification_bg_normal_pressed.9.png.flat",
+        "source": "/Users/phoenix/.gradle/caches/transforms-1/files-1.1/support-compat-27.1.1.aar/c54102bc8c14fc78f2963d25ac3cca9a/res/drawable-xhdpi-v4/notification_bg_normal_pressed.9.png"
+    },
+    {
+        "merged": "/Users/phoenix/Documents/ddcar/platforms/android/app/build/intermediates/res/merged/androidTest/debug/layout_notification_media_cancel_action.xml.flat",
+        "source": "/Users/phoenix/.gradle/caches/transforms-1/files-1.1/support-media-compat-27.1.1.aar/cc590e2d454abf0177e7c628ff742c60/res/layout/notification_media_cancel_action.xml"
+    },
+    {
+        "merged": "/Users/phoenix/Documents/ddcar/platforms/android/app/build/intermediates/res/merged/androidTest/debug/layout_bookmark_picker_list_item.xml.flat",
+        "source": "/Users/phoenix/.gradle/caches/transforms-1/files-1.1/barcodescanner-release-2.1.5.aar/10d0ba62e15015722e058ab452d6d21d/res/layout/bookmark_picker_list_item.xml"
+    },
+    {
+        "merged": "/Users/phoenix/Documents/ddcar/platforms/android/app/build/intermediates/res/merged/androidTest/debug/layout_app_picker_list_item.xml.flat",
+        "source": "/Users/phoenix/.gradle/caches/transforms-1/files-1.1/barcodescanner-release-2.1.5.aar/10d0ba62e15015722e058ab452d6d21d/res/layout/app_picker_list_item.xml"
+    },
+    {
+        "merged": "/Users/phoenix/Documents/ddcar/platforms/android/app/build/intermediates/res/merged/androidTest/debug/drawable-v21_notification_action_background.xml.flat",
+        "source": "/Users/phoenix/.gradle/caches/transforms-1/files-1.1/support-compat-27.1.1.aar/c54102bc8c14fc78f2963d25ac3cca9a/res/drawable-v21/notification_action_background.xml"
+    },
+    {
+        "merged": "/Users/phoenix/Documents/ddcar/platforms/android/app/build/intermediates/res/merged/androidTest/debug/layout-v21_notification_action.xml.flat",
+        "source": "/Users/phoenix/.gradle/caches/transforms-1/files-1.1/support-compat-27.1.1.aar/c54102bc8c14fc78f2963d25ac3cca9a/res/layout-v21/notification_action.xml"
+    },
+    {
+        "merged": "/Users/phoenix/Documents/ddcar/platforms/android/app/build/intermediates/res/merged/androidTest/debug/drawable_notification_bg.xml.flat",
+        "source": "/Users/phoenix/.gradle/caches/transforms-1/files-1.1/support-compat-27.1.1.aar/c54102bc8c14fc78f2963d25ac3cca9a/res/drawable/notification_bg.xml"
+    },
+    {
+        "merged": "/Users/phoenix/Documents/ddcar/platforms/android/app/build/intermediates/res/merged/androidTest/debug/layout_history_list_item.xml.flat",
+        "source": "/Users/phoenix/.gradle/caches/transforms-1/files-1.1/barcodescanner-release-2.1.5.aar/10d0ba62e15015722e058ab452d6d21d/res/layout/history_list_item.xml"
+    },
+    {
+        "merged": "/Users/phoenix/Documents/ddcar/platforms/android/app/build/intermediates/res/merged/androidTest/debug/menu_encode.xml.flat",
+        "source": "/Users/phoenix/.gradle/caches/transforms-1/files-1.1/barcodescanner-release-2.1.5.aar/10d0ba62e15015722e058ab452d6d21d/res/menu/encode.xml"
+    },
+    {
+        "merged": "/Users/phoenix/Documents/ddcar/platforms/android/app/build/intermediates/res/merged/androidTest/debug/drawable-xhdpi-v4_notify_panel_notification_icon_bg.png.flat",
+        "source": "/Users/phoenix/.gradle/caches/transforms-1/files-1.1/support-compat-27.1.1.aar/c54102bc8c14fc78f2963d25ac3cca9a/res/drawable-xhdpi-v4/notify_panel_notification_icon_bg.png"
+    },
+    {
+        "merged": "/Users/phoenix/Documents/ddcar/platforms/android/app/build/intermediates/res/merged/androidTest/debug/layout_notification_template_media_custom.xml.flat",
+        "source": "/Users/phoenix/.gradle/caches/transforms-1/files-1.1/support-media-compat-27.1.1.aar/cc590e2d454abf0177e7c628ff742c60/res/layout/notification_template_media_custom.xml"
+    },
+    {
+        "merged": "/Users/phoenix/Documents/ddcar/platforms/android/app/build/intermediates/res/merged/androidTest/debug/layout-v21_notification_template_icon_group.xml.flat",
+        "source": "/Users/phoenix/.gradle/caches/transforms-1/files-1.1/support-compat-27.1.1.aar/c54102bc8c14fc78f2963d25ac3cca9a/res/layout-v21/notification_template_icon_group.xml"
+    },
+    {
+        "merged": "/Users/phoenix/Documents/ddcar/platforms/android/app/build/intermediates/res/merged/androidTest/debug/layout-v21_notification_template_custom_big.xml.flat",
+        "source": "/Users/phoenix/.gradle/caches/transforms-1/files-1.1/support-compat-27.1.1.aar/c54102bc8c14fc78f2963d25ac3cca9a/res/layout-v21/notification_template_custom_big.xml"
+    },
+    {
+        "merged": "/Users/phoenix/Documents/ddcar/platforms/android/app/build/intermediates/res/merged/androidTest/debug/drawable-hdpi-v4_notification_bg_low_normal.9.png.flat",
+        "source": "/Users/phoenix/.gradle/caches/transforms-1/files-1.1/support-compat-27.1.1.aar/c54102bc8c14fc78f2963d25ac3cca9a/res/drawable-hdpi-v4/notification_bg_low_normal.9.png"
+    },
+    {
+        "merged": "/Users/phoenix/Documents/ddcar/platforms/android/app/build/intermediates/res/merged/androidTest/debug/layout_help.xml.flat",
+        "source": "/Users/phoenix/.gradle/caches/transforms-1/files-1.1/barcodescanner-release-2.1.5.aar/10d0ba62e15015722e058ab452d6d21d/res/layout/help.xml"
+    },
+    {
+        "merged": "/Users/phoenix/Documents/ddcar/platforms/android/app/build/intermediates/res/merged/androidTest/debug/xml_preferences.xml.flat",
+        "source": "/Users/phoenix/.gradle/caches/transforms-1/files-1.1/barcodescanner-release-2.1.5.aar/10d0ba62e15015722e058ab452d6d21d/res/xml/preferences.xml"
+    },
+    {
+        "merged": "/Users/phoenix/Documents/ddcar/platforms/android/app/build/intermediates/res/merged/androidTest/debug/drawable-xxhdpi_launcher_icon.png.flat",
+        "source": "/Users/phoenix/.gradle/caches/transforms-1/files-1.1/barcodescanner-release-2.1.5.aar/10d0ba62e15015722e058ab452d6d21d/res/drawable-xxhdpi/launcher_icon.png"
+    },
+    {
+        "merged": "/Users/phoenix/Documents/ddcar/platforms/android/app/build/intermediates/res/merged/androidTest/debug/layout-ldpi_capture.xml.flat",
+        "source": "/Users/phoenix/.gradle/caches/transforms-1/files-1.1/barcodescanner-release-2.1.5.aar/10d0ba62e15015722e058ab452d6d21d/res/layout-ldpi/capture.xml"
+    },
+    {
+        "merged": "/Users/phoenix/Documents/ddcar/platforms/android/app/build/intermediates/res/merged/androidTest/debug/drawable-xhdpi-v4_notification_bg_normal.9.png.flat",
+        "source": "/Users/phoenix/.gradle/caches/transforms-1/files-1.1/support-compat-27.1.1.aar/c54102bc8c14fc78f2963d25ac3cca9a/res/drawable-xhdpi-v4/notification_bg_normal.9.png"
+    },
+    {
+        "merged": "/Users/phoenix/Documents/ddcar/platforms/android/app/build/intermediates/res/merged/androidTest/debug/layout_notification_template_big_media_narrow_custom.xml.flat",
+        "source": "/Users/phoenix/.gradle/caches/transforms-1/files-1.1/support-media-compat-27.1.1.aar/cc590e2d454abf0177e7c628ff742c60/res/layout/notification_template_big_media_narrow_custom.xml"
+    },
+    {
+        "merged": "/Users/phoenix/Documents/ddcar/platforms/android/app/build/intermediates/res/merged/androidTest/debug/drawable-xhdpi-v4_notification_bg_low_normal.9.png.flat",
+        "source": "/Users/phoenix/.gradle/caches/transforms-1/files-1.1/support-compat-27.1.1.aar/c54102bc8c14fc78f2963d25ac3cca9a/res/drawable-xhdpi-v4/notification_bg_low_normal.9.png"
+    },
+    {
+        "merged": "/Users/phoenix/Documents/ddcar/platforms/android/app/build/intermediates/res/merged/androidTest/debug/layout_share.xml.flat",
+        "source": "/Users/phoenix/.gradle/caches/transforms-1/files-1.1/barcodescanner-release-2.1.5.aar/10d0ba62e15015722e058ab452d6d21d/res/layout/share.xml"
+    },
+    {
+        "merged": "/Users/phoenix/Documents/ddcar/platforms/android/app/build/intermediates/res/merged/androidTest/debug/layout_capture.xml.flat",
+        "source": "/Users/phoenix/.gradle/caches/transforms-1/files-1.1/barcodescanner-release-2.1.5.aar/10d0ba62e15015722e058ab452d6d21d/res/layout/capture.xml"
+    },
+    {
+        "merged": "/Users/phoenix/Documents/ddcar/platforms/android/app/build/intermediates/res/merged/androidTest/debug/layout_search_book_contents.xml.flat",
+        "source": "/Users/phoenix/.gradle/caches/transforms-1/files-1.1/barcodescanner-release-2.1.5.aar/10d0ba62e15015722e058ab452d6d21d/res/layout/search_book_contents.xml"
+    },
+    {
+        "merged": "/Users/phoenix/Documents/ddcar/platforms/android/app/build/intermediates/res/merged/androidTest/debug/drawable-hdpi-v4_notification_bg_low_pressed.9.png.flat",
+        "source": "/Users/phoenix/.gradle/caches/transforms-1/files-1.1/support-compat-27.1.1.aar/c54102bc8c14fc78f2963d25ac3cca9a/res/drawable-hdpi-v4/notification_bg_low_pressed.9.png"
+    },
+    {
+        "merged": "/Users/phoenix/Documents/ddcar/platforms/android/app/build/intermediates/res/merged/androidTest/debug/drawable_share_via_barcode.png.flat",
+        "source": "/Users/phoenix/.gradle/caches/transforms-1/files-1.1/barcodescanner-release-2.1.5.aar/10d0ba62e15015722e058ab452d6d21d/res/drawable/share_via_barcode.png"
+    },
+    {
+        "merged": "/Users/phoenix/Documents/ddcar/platforms/android/app/build/intermediates/res/merged/androidTest/debug/raw_beep.ogg.flat",
+        "source": "/Users/phoenix/.gradle/caches/transforms-1/files-1.1/barcodescanner-release-2.1.5.aar/10d0ba62e15015722e058ab452d6d21d/res/raw/beep.ogg"
+    },
+    {
+        "merged": "/Users/phoenix/Documents/ddcar/platforms/android/app/build/intermediates/res/merged/androidTest/debug/drawable_notification_tile_bg.xml.flat",
+        "source": "/Users/phoenix/.gradle/caches/transforms-1/files-1.1/support-compat-27.1.1.aar/c54102bc8c14fc78f2963d25ac3cca9a/res/drawable/notification_tile_bg.xml"
+    },
+    {
+        "merged": "/Users/phoenix/Documents/ddcar/platforms/android/app/build/intermediates/res/merged/androidTest/debug/layout_notification_template_lines_media.xml.flat",
+        "source": "/Users/phoenix/.gradle/caches/transforms-1/files-1.1/support-media-compat-27.1.1.aar/cc590e2d454abf0177e7c628ff742c60/res/layout/notification_template_lines_media.xml"
+    },
+    {
+        "merged": "/Users/phoenix/Documents/ddcar/platforms/android/app/build/intermediates/res/merged/androidTest/debug/menu_history.xml.flat",
+        "source": "/Users/phoenix/.gradle/caches/transforms-1/files-1.1/barcodescanner-release-2.1.5.aar/10d0ba62e15015722e058ab452d6d21d/res/menu/history.xml"
+    },
+    {
+        "merged": "/Users/phoenix/Documents/ddcar/platforms/android/app/build/intermediates/res/merged/androidTest/debug/layout-v16_notification_template_custom_big.xml.flat",
+        "source": "/Users/phoenix/.gradle/caches/transforms-1/files-1.1/support-compat-27.1.1.aar/c54102bc8c14fc78f2963d25ac3cca9a/res/layout-v16/notification_template_custom_big.xml"
+    },
+    {
+        "merged": "/Users/phoenix/Documents/ddcar/platforms/android/app/build/intermediates/res/merged/androidTest/debug/drawable_notification_bg_low.xml.flat",
+        "source": "/Users/phoenix/.gradle/caches/transforms-1/files-1.1/support-compat-27.1.1.aar/c54102bc8c14fc78f2963d25ac3cca9a/res/drawable/notification_bg_low.xml"
+    },
+    {
+        "merged": "/Users/phoenix/Documents/ddcar/platforms/android/app/build/intermediates/res/merged/androidTest/debug/drawable-hdpi-v4_notify_panel_notification_icon_bg.png.flat",
+        "source": "/Users/phoenix/.gradle/caches/transforms-1/files-1.1/support-compat-27.1.1.aar/c54102bc8c14fc78f2963d25ac3cca9a/res/drawable-hdpi-v4/notify_panel_notification_icon_bg.png"
+    },
+    {
+        "merged": "/Users/phoenix/Documents/ddcar/platforms/android/app/build/intermediates/res/merged/androidTest/debug/layout_notification_template_media.xml.flat",
+        "source": "/Users/phoenix/.gradle/caches/transforms-1/files-1.1/support-media-compat-27.1.1.aar/cc590e2d454abf0177e7c628ff742c60/res/layout/notification_template_media.xml"
+    },
+    {
+        "merged": "/Users/phoenix/Documents/ddcar/platforms/android/app/build/intermediates/res/merged/androidTest/debug/drawable-hdpi-v4_notification_bg_normal.9.png.flat",
+        "source": "/Users/phoenix/.gradle/caches/transforms-1/files-1.1/support-compat-27.1.1.aar/c54102bc8c14fc78f2963d25ac3cca9a/res/drawable-hdpi-v4/notification_bg_normal.9.png"
+    },
+    {
+        "merged": "/Users/phoenix/Documents/ddcar/platforms/android/app/build/intermediates/res/merged/androidTest/debug/drawable_launcher_icon.png.flat",
+        "source": "/Users/phoenix/.gradle/caches/transforms-1/files-1.1/barcodescanner-release-2.1.5.aar/10d0ba62e15015722e058ab452d6d21d/res/drawable/launcher_icon.png"
+    },
+    {
+        "merged": "/Users/phoenix/Documents/ddcar/platforms/android/app/build/intermediates/res/merged/androidTest/debug/drawable-mdpi-v4_notification_bg_low_normal.9.png.flat",
+        "source": "/Users/phoenix/.gradle/caches/transforms-1/files-1.1/support-compat-27.1.1.aar/c54102bc8c14fc78f2963d25ac3cca9a/res/drawable-mdpi-v4/notification_bg_low_normal.9.png"
+    },
+    {
+        "merged": "/Users/phoenix/Documents/ddcar/platforms/android/app/build/intermediates/res/merged/androidTest/debug/layout_search_book_contents_list_item.xml.flat",
+        "source": "/Users/phoenix/.gradle/caches/transforms-1/files-1.1/barcodescanner-release-2.1.5.aar/10d0ba62e15015722e058ab452d6d21d/res/layout/search_book_contents_list_item.xml"
+    },
+    {
+        "merged": "/Users/phoenix/Documents/ddcar/platforms/android/app/build/intermediates/res/merged/androidTest/debug/menu_capture.xml.flat",
+        "source": "/Users/phoenix/.gradle/caches/transforms-1/files-1.1/barcodescanner-release-2.1.5.aar/10d0ba62e15015722e058ab452d6d21d/res/menu/capture.xml"
+    },
+    {
+        "merged": "/Users/phoenix/Documents/ddcar/platforms/android/app/build/intermediates/res/merged/androidTest/debug/layout_notification_template_icon_group.xml.flat",
+        "source": "/Users/phoenix/.gradle/caches/transforms-1/files-1.1/support-compat-27.1.1.aar/c54102bc8c14fc78f2963d25ac3cca9a/res/layout/notification_template_icon_group.xml"
+    },
+    {
+        "merged": "/Users/phoenix/Documents/ddcar/platforms/android/app/build/intermediates/res/merged/androidTest/debug/drawable-mdpi-v4_notification_bg_normal.9.png.flat",
+        "source": "/Users/phoenix/.gradle/caches/transforms-1/files-1.1/support-compat-27.1.1.aar/c54102bc8c14fc78f2963d25ac3cca9a/res/drawable-mdpi-v4/notification_bg_normal.9.png"
+    },
+    {
+        "merged": "/Users/phoenix/Documents/ddcar/platforms/android/app/build/intermediates/res/merged/androidTest/debug/drawable_flip_camera.png.flat",
+        "source": "/Users/phoenix/.gradle/caches/transforms-1/files-1.1/barcodescanner-release-2.1.5.aar/10d0ba62e15015722e058ab452d6d21d/res/drawable/flip_camera.png"
+    },
+    {
+        "merged": "/Users/phoenix/Documents/ddcar/platforms/android/app/build/intermediates/res/merged/androidTest/debug/layout_notification_action_tombstone.xml.flat",
+        "source": "/Users/phoenix/.gradle/caches/transforms-1/files-1.1/support-compat-27.1.1.aar/c54102bc8c14fc78f2963d25ac3cca9a/res/layout/notification_action_tombstone.xml"
+    },
+    {
+        "merged": "/Users/phoenix/Documents/ddcar/platforms/android/app/build/intermediates/res/merged/androidTest/debug/layout_notification_template_part_time.xml.flat",
+        "source": "/Users/phoenix/.gradle/caches/transforms-1/files-1.1/support-compat-27.1.1.aar/c54102bc8c14fc78f2963d25ac3cca9a/res/layout/notification_template_part_time.xml"
+    },
+    {
+        "merged": "/Users/phoenix/Documents/ddcar/platforms/android/app/build/intermediates/res/merged/androidTest/debug/layout_encode.xml.flat",
+        "source": "/Users/phoenix/.gradle/caches/transforms-1/files-1.1/barcodescanner-release-2.1.5.aar/10d0ba62e15015722e058ab452d6d21d/res/layout/encode.xml"
+    },
+    {
+        "merged": "/Users/phoenix/Documents/ddcar/platforms/android/app/build/intermediates/res/merged/androidTest/debug/drawable-hdpi_launcher_icon.png.flat",
+        "source": "/Users/phoenix/.gradle/caches/transforms-1/files-1.1/barcodescanner-release-2.1.5.aar/10d0ba62e15015722e058ab452d6d21d/res/drawable-hdpi/launcher_icon.png"
+    },
+    {
+        "merged": "/Users/phoenix/Documents/ddcar/platforms/android/app/build/intermediates/res/merged/androidTest/debug/drawable-mdpi-v4_notification_bg_normal_pressed.9.png.flat",
+        "source": "/Users/phoenix/.gradle/caches/transforms-1/files-1.1/support-compat-27.1.1.aar/c54102bc8c14fc78f2963d25ac3cca9a/res/drawable-mdpi-v4/notification_bg_normal_pressed.9.png"
+    },
+    {
+        "merged": "/Users/phoenix/Documents/ddcar/platforms/android/app/build/intermediates/res/merged/androidTest/debug/drawable-mdpi-v4_notification_bg_low_pressed.9.png.flat",
+        "source": "/Users/phoenix/.gradle/caches/transforms-1/files-1.1/support-compat-27.1.1.aar/c54102bc8c14fc78f2963d25ac3cca9a/res/drawable-mdpi-v4/notification_bg_low_pressed.9.png"
+    },
+    {
+        "merged": "/Users/phoenix/Documents/ddcar/platforms/android/app/build/intermediates/res/merged/androidTest/debug/layout_search_book_contents_header.xml.flat",
+        "source": "/Users/phoenix/.gradle/caches/transforms-1/files-1.1/barcodescanner-release-2.1.5.aar/10d0ba62e15015722e058ab452d6d21d/res/layout/search_book_contents_header.xml"
+    },
+    {
+        "merged": "/Users/phoenix/Documents/ddcar/platforms/android/app/build/intermediates/res/merged/androidTest/debug/drawable_notification_icon_background.xml.flat",
+        "source": "/Users/phoenix/.gradle/caches/transforms-1/files-1.1/support-compat-27.1.1.aar/c54102bc8c14fc78f2963d25ac3cca9a/res/drawable/notification_icon_background.xml"
+    },
+    {
+        "merged": "/Users/phoenix/Documents/ddcar/platforms/android/app/build/intermediates/res/merged/androidTest/debug/layout_notification_template_big_media_narrow.xml.flat",
+        "source": "/Users/phoenix/.gradle/caches/transforms-1/files-1.1/support-media-compat-27.1.1.aar/cc590e2d454abf0177e7c628ff742c60/res/layout/notification_template_big_media_narrow.xml"
+    },
+    {
+        "merged": "/Users/phoenix/Documents/ddcar/platforms/android/app/build/intermediates/res/merged/androidTest/debug/layout_notification_template_big_media.xml.flat",
+        "source": "/Users/phoenix/.gradle/caches/transforms-1/files-1.1/support-media-compat-27.1.1.aar/cc590e2d454abf0177e7c628ff742c60/res/layout/notification_template_big_media.xml"
+    },
+    {
+        "merged": "/Users/phoenix/Documents/ddcar/platforms/android/app/build/intermediates/res/merged/androidTest/debug/drawable-xhdpi_launcher_icon.png.flat",
+        "source": "/Users/phoenix/.gradle/caches/transforms-1/files-1.1/barcodescanner-release-2.1.5.aar/10d0ba62e15015722e058ab452d6d21d/res/drawable-xhdpi/launcher_icon.png"
+    },
+    {
+        "merged": "/Users/phoenix/Documents/ddcar/platforms/android/app/build/intermediates/res/merged/androidTest/debug/drawable-hdpi-v4_notification_bg_normal_pressed.9.png.flat",
+        "source": "/Users/phoenix/.gradle/caches/transforms-1/files-1.1/support-compat-27.1.1.aar/c54102bc8c14fc78f2963d25ac3cca9a/res/drawable-hdpi-v4/notification_bg_normal_pressed.9.png"
+    },
+    {
+        "merged": "/Users/phoenix/Documents/ddcar/platforms/android/app/build/intermediates/res/merged/androidTest/debug/layout-land_share.xml.flat",
+        "source": "/Users/phoenix/.gradle/caches/transforms-1/files-1.1/barcodescanner-release-2.1.5.aar/10d0ba62e15015722e058ab452d6d21d/res/layout-land/share.xml"
+    },
+    {
+        "merged": "/Users/phoenix/Documents/ddcar/platforms/android/app/build/intermediates/res/merged/androidTest/debug/drawable-mdpi-v4_notify_panel_notification_icon_bg.png.flat",
+        "source": "/Users/phoenix/.gradle/caches/transforms-1/files-1.1/support-compat-27.1.1.aar/c54102bc8c14fc78f2963d25ac3cca9a/res/drawable-mdpi-v4/notify_panel_notification_icon_bg.png"
+    },
+    {
+        "merged": "/Users/phoenix/Documents/ddcar/platforms/android/app/build/intermediates/res/merged/androidTest/debug/drawable_toggle_torch.png.flat",
+        "source": "/Users/phoenix/.gradle/caches/transforms-1/files-1.1/barcodescanner-release-2.1.5.aar/10d0ba62e15015722e058ab452d6d21d/res/drawable/toggle_torch.png"
+    },
+    {
+        "merged": "/Users/phoenix/Documents/ddcar/platforms/android/app/build/intermediates/res/merged/androidTest/debug/layout_notification_action.xml.flat",
+        "source": "/Users/phoenix/.gradle/caches/transforms-1/files-1.1/support-compat-27.1.1.aar/c54102bc8c14fc78f2963d25ac3cca9a/res/layout/notification_action.xml"
+    },
+    {
+        "merged": "/Users/phoenix/Documents/ddcar/platforms/android/app/build/intermediates/res/merged/androidTest/debug/layout_notification_media_action.xml.flat",
+        "source": "/Users/phoenix/.gradle/caches/transforms-1/files-1.1/support-media-compat-27.1.1.aar/cc590e2d454abf0177e7c628ff742c60/res/layout/notification_media_action.xml"
+    },
+    {
+        "merged": "/Users/phoenix/Documents/ddcar/platforms/android/app/build/intermediates/res/merged/androidTest/debug/layout_notification_template_big_media_custom.xml.flat",
+        "source": "/Users/phoenix/.gradle/caches/transforms-1/files-1.1/support-media-compat-27.1.1.aar/cc590e2d454abf0177e7c628ff742c60/res/layout/notification_template_big_media_custom.xml"
+    },
+    {
+        "merged": "/Users/phoenix/Documents/ddcar/platforms/android/app/build/intermediates/res/merged/androidTest/debug/layout_notification_template_part_chronometer.xml.flat",
+        "source": "/Users/phoenix/.gradle/caches/transforms-1/files-1.1/support-compat-27.1.1.aar/c54102bc8c14fc78f2963d25ac3cca9a/res/layout/notification_template_part_chronometer.xml"
+    }
+]
