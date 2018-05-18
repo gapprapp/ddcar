@@ -20,6 +20,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.0/jquery-confirm.min.js"></script>
   <script type="text/javascript" src="js/jquery.touchSwipe.min.js"></script>
   <script src="cordova.js"></script>
+  <script type="text/javascript" src="js/scanqr.js"></script>
 
   <link rel="stylesheet" href="css/index.css">
 
@@ -123,72 +124,11 @@
       $("#i-" + arg).fadeOut(100).fadeIn(100, function() {
         $("#i-" + arg).addClass('active');
       });
-
-      if(arg == "qrcode"){
-        scan();
-      }
-
-      if(arg == "home"){
-        return 0;
-      }
-      else if(arg == "bell"){
-
-      }else if(arg == "bars"){
-        //goto = "setting.html"
-        //window.location = (goto);
-      }
-    }
-
-    function scan(){
-        cordova.plugins.barcodeScanner.scan(
-        function (result) {
-            if(!result.cancelled){
-                // In this case we only want to process QR Codes
-                if(result.format == "QR_CODE"){
-                    var value = result.text;                        
-                            
-                    $.ajax({
-                        type: "POST",
-                        url: "https://omise-webpack.000webhostapp.com/www/php/check_amt_prod.php",                
-                        data: {'qr': value},             
-                        success: function(data){                             
-                            var name;
-                            var msg = "";                             
-                            var obj = jQuery.parseJSON(data); 
-                            console.log(obj);
-                            $.each(obj, function(i, field){ 
-                                name = obj[i].prod_name;    
-                                msg = msg + obj[i][0] + " : " + obj[i].amount + "<br>";
-                            }); 
-                            $.alert({
-                                title: name,
-                                content: msg,
-                                type: 'blue',
-                            });                                                                                                     
-                        }               
-                    });         
-                }else{
-                    //alert("Sorry, only qr codes this time ;)");
-                }
-            }else{
-              //alert("The user has dismissed the scan");
-            }
-        },
-        function (error) {
-          $.alert({
-              title: 'คำเตือน!',
-              content: error,
-          });
-        },
-        {
-            prompt : "วางคิวอาโค้ดภายในสี่เหลี่ยมผืนผ้าที่ช่องมองภาพเพื่อแสกน"
-        }
-        );
     }
   </script>
 </head>
 
-<body>
+<body style="overflow: hidden;">
   <!-- Nav menu top -->
   <div class="row fixed-top navs">
     <div class="col-1 text-center" onclick="">
@@ -207,7 +147,7 @@
       <div id="tabs-log" class="col-4 text-center non" onclick="tabs('log');">ย้อนหลัง</div>
     </div><br>
     <!-- Admin -->
-    <div id="admin" class="container" style="margin-top: 25%; padding-bottom: 30%;">
+    <div id="admin" class="container" style="margin-top: 15%; padding-bottom: 50%;">
       <div class="row mg-10">
         <div class="col-12 text-center nopd">
           <button id="mng-member" class="mbtn" onclick="transition_page_next('member.html');">ผู้ใช้</button>
@@ -230,7 +170,7 @@
       </div>
     </div>
     <!-- Main -->
-    <div id="main" class="container" style="margin-top: 25%; padding-bottom: 12%;" hidden>
+    <div id="main" class="container" style="margin-top: 15%; padding-bottom: 50%;" hidden>
       <div class="row mg-10">
         <div class="col-12 text-center nopd">
           <button class="mbtn" onclick="transition_page_next('sale.html');">ขาย</button>
@@ -258,7 +198,7 @@
       </div>
     </div>
     <!-- Log -->
-    <div id="log" class="container" style="margin-top: 25%; padding-bottom: 30%;" hidden>
+    <div id="log" class="container" style="margin-top: 15%; padding-bottom: 50%;" hidden>
       <div class="row mg-10">
         <div class="col-12 text-center nopd">
           <button id="log-1" class="mbtn">foo bar</button>
@@ -284,13 +224,13 @@
 
   <!-- Nav menu bottom -->
   <div class="row fixed-bottom navs">
-    <div class="col-3 text-center" onclick="menu('home')">
+    <div class="col-3 text-center" onclick="return 0;">
       <i id="i-home" class="fas fa-home menu active"></i>
     </div>
     <div class="col-3 text-center" onclick="menu('bell')">
       <i id="i-bell" class="fas fa-bell menu"></i>
     </div>
-    <div class="col-3 text-center" onclick="menu('qrcode')">
+    <div class="col-3 text-center" onclick="scan();">
       <i id="i-qrcode" class="fas fa-qrcode menu"></i>
     </div>
     <div class="col-3 text-center" onclick="menu('bars')">

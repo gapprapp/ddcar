@@ -64,20 +64,41 @@
           $.ajax({
               type: "POST",
               url:"https://omise-webpack.000webhostapp.com/www/php/add_ware_shop.php",           
-              data: {'cus_name':name,
-                  'phone':phone,
-                  'addr':addr},               
+              data: {'name':name,
+                  'type':type},               
               success: function(data){         
-                if(data == "success"){                        
-                  goto = "warehouse.html";
-                  transition_page_back_flip(goto);
+                if(data == "success"){
+                  $.confirm({
+                      title: 'เสร็จสิ้น',
+                      content: 'เพิ่มสินค้า ' +type+ ' ' +name+ ' เสร็จสิ้น',
+                      backgroundDismiss: true,
+                      buttons: {
+                        formSubmit: {
+                          text: 'ตกลง',
+                          btnClass: 'btn-regis',
+                          action: function () {
+                              goto = "warehouse.html";
+                              transition_page_back_flip(goto);
+                          }
+                        }
+                      }
+                  });                        
                 }
               }               
           });
       }else{
-        $.alert({
-          title: 'คำเตือน!',
+        $.confirm({
+          title: 'พบข้อผิดพลาด',
           content: 'กรุณากรอกข้อมูลให้ครบ',
+          backgroundDismiss: true,
+          buttons: {
+            formSubmit: {
+              text: 'ตกลง',
+              btnClass: 'btn-regis',
+              action: function () {
+              }
+            }
+          }
         });
       }
       
@@ -118,7 +139,7 @@
           <input id="type" type="text" class="w3-input" readonly>
         </div>
       </div>
-      <div class="row" style="margin-bottom: 15%;">
+      <div class="row" style="margin-bottom: 18%;">
         <div class="col-12 text-center">
           <button class="mbtn" onclick="add_ware();">เพิ่ม</button>
         </div>

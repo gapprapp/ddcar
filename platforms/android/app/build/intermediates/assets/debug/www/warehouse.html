@@ -101,14 +101,20 @@
     function menu(arg) {
       // Animate
       disactive(arg);
-      $("#i-" + arg).fadeOut(100).fadeIn(100, function () {
-        $("#i-" + arg).addClass('active');
-      });
+      console.log(arg);
+      if($("#i-"+arg).hasClass('active')){
+        console.log("i-"+arg+"hasClass('active')");
+        $("#i-"+arg).removeClass('active');
+      }else{
+        $("#i-" + arg).fadeOut(150).fadeIn(100, function() {
+          $("#i-" + arg).addClass('active');
+        });
+      }
 
-      if (arg == "add") {
+      if(arg == "add"){
         goto = "warehouse_add.html";
-        transition_page_next_flip(goto);
-      } else if (arg == "edit") {
+        transition_page_back_flip(goto);
+      }else if(arg == "edit"){
         // show edit all
         if ($(".i-edit").is(":visible")) {
           $(".i-del").attr('hidden', true);
@@ -118,8 +124,8 @@
           $(".i-del").attr('hidden', true);
           $(".i-edit").attr('hidden', false);
         }
-      } else if (arg == "del") {
-        // show del all 
+      }else if (arg == "del") {
+        // show trash all 
         if($(".i-del").is(":visible")){
           $(".i-edit").attr('hidden', true);
           $(".i-del").attr('hidden', true);
@@ -225,7 +231,7 @@
 
   <!-- Nav menu bottom -->
   <div class="row fixed-bottom navs">
-    <div class="col-3 text-center" onclick="window.location='index.html';">
+    <div class="col-3 text-center" onclick="transition_page_back('index.html');">
       <i id="i-home" class="fas fa-home menu"></i>
     </div>
     <div class="col-3 text-center" onclick="menu('add')">

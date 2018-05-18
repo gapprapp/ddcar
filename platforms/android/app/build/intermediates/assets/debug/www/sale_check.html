@@ -11,14 +11,14 @@
     <script type="text/javascript" src="js/jquery-ui.min.js"></script>
     <script type="text/javascript" src="js/jquery.easing.1.3.min.js"></script>
     <script type="text/javascript" src="js/transition.js"></script>
+    <script type="text/javascript" src="js/jquery-confirm.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.6/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
     <script defer src="https://use.fontawesome.com/releases/v5.0.8/js/all.js"></script>
     <script src="cordova.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.0/jquery-confirm.min.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.0/jquery-confirm.min.js"></script>
 
     <link rel="stylesheet" href="css/index.css">
+    <link rel="stylesheet" href="css/jquery-confirm.css">
 
     <!-- Font -->
     <link href="https://fonts.googleapis.com/css?family=Prompt" rel="stylesheet">
@@ -38,10 +38,25 @@
         hr {
             margin-top: 0;
         }
+
+        .i-del, .i-edit{
+            color: #666666;
+        }
+
+        .collapse{
+            margin-top: 1%; 
+            background: #fafafa; 
+            padding-top: 5%; 
+            padding-bottom: 5%;
+            border-radius: 1%;
+        }
     </style>
 
     <script>
-        $(document).ready(function () { });
+        $(document).ready(function () { 
+            margin = $("#navs-menu").outerHeight();
+            $("#navs-net").css('margin-bottom', margin);
+        });
 
         function disactive(arg) {
             nav_menu = ['home', 'add', 'edit', 'del'];
@@ -78,42 +93,46 @@
             transition_page_next(goto);
         }
 
-        function check_edit(arg){
-            val = true;
-            // 4 is max prod
-            for (i = 0; i < 4; i++) {
-                if ($("#i-check-" + i).is(":visible") && i != arg) {
-                    val = false;
-                    break;
-                }
-            }
-
-            return val;
-        }
-
         function edit_prod(arg) {
-            //check if some i-check is show then
-            if(check_edit(arg)){
-                $("#i-edit-" + arg).attr('hidden', true);
-                $("#i-check-" + arg).attr('hidden', false);
-                $("#amount-" + arg).removeAttr('style');
-                $("#price-" + arg).removeAttr('style');
-                $("#amount-" + arg).attr("readonly", false);
-                $("#price-" + arg).attr("readonly", false);
-            }
+            name = $("#name-"+arg).text();
+            $.confirm({
+              title: name,
+              content: '<div class="row" style="margin-top: 2%; margin-bottom: 2%;"><div class="col-1"></div><div class="col-5 text-center" style="font-size: 110%; font-weight: bold;">ราคา</div><div class="col-1"></div><div class="col-4 text-center" style="font-size: 110%; font-weight: bold;">จำนวน</div><div class="col-1"></div></div><div class="row"><div class="col-1"></div><div class="col-5 text-center"><input id="edt-price" type="number" class="input-cf" value="5000"></div><div class="col-1">x</div><div class="col-4 text-center"><input id="edt-amt" type="number" class="input-cf" value="20"></div><div class="col-1"></div></div>',
+              backgroundDismiss: true,
+              buttons: {
+                formSubmit: {
+                  text: 'ตกลง',
+                  btnClass: 'btn-regis',
+                  action: function () {
+                    console.log($("#edt-price").val());
+                    console.log($("#edt-amt").val());
+                    $("#price-"+arg).text($("#edt-price").val()); 
+                    $("#amount-"+arg).text($("#edt-amt").val());
+                  }
+                }
+              }
+            }); 
         }
 
-        function update_prod(arg){
-            $("#i-edit-"+arg).attr('hidden', false);
-            $("#i-check-"+arg).attr('hidden', true);
-            $("#amount-" + arg).css('border', 'none');
-            $("#price-" + arg).css('border', 'none');
-            $("#amount-" + arg).attr("readonly", true);
-            $("#price-" + arg).attr("readonly", true);
-            $.alert({
-                title: 'สำเร็จ!',
-                content: 'บันทึกการเปลี่ยนแปลง',
-            });
+        function del_prod(arg){
+            name = $("#name-"+arg).text();
+            $.confirm({
+                title: 'ลบรายการ',
+                content: 'ต้องการลบ '+name+' หรือไม่',
+                backgroundDismiss: true,
+                buttons: {
+                  formSubmit: {
+                    text: 'ตกลง',
+                    btnClass: 'btn-danger',
+                    action: function () {
+                        $("#prod-"+arg).remove(); 
+                        $("#hr-"+arg).remove();
+                        $("#collapse-"+arg).remove();
+
+                    }
+                  },ยกเลิก: function () {}
+                }  
+            });       
         }
         
         function collapse(arg){
@@ -130,10 +149,28 @@
                 }, 900);
             });
         }
+
+        function edit_discount(){
+
+           $.confirm({
+                title: 'ลด',
+                content: '<input id="edt-discount" type="number" class="input-cf" style="width: 75%; margin-left: 12.5%; margin-top: 2%;" value="2000">',
+                backgroundDismiss: true,
+                buttons: {
+                  formSubmit: {
+                    text: 'ตกลง',
+                    btnClass: 'btn-danger',
+                    action: function () {
+                        $("#discount").text($("#edt-discount").val());
+                    }
+                  },ยกเลิก: function () {}
+                }  
+            }); 
+        }
     </script>
 </head>
 
-<body>
+<body style="overflow: auto;">
     <!-- Nav menu top -->
     <div class="row fixed-top navs">
         <div class="col-1 text-center" onclick="transition_page_back('index.html')">
@@ -148,7 +185,7 @@
     <br>
 
     <!-- End big container -->
-    <div id="big-ctn" class="container justify-content-center" style="margin-top: 15%; margin-bottom: 20%;">
+    <div id="big-ctn" class="container justify-content-center" style="margin-top: 10%; margin-bottom: 20%;">
 
         <div class="container">
             <div class="row" style="margin-bottom: 5%;">
@@ -182,22 +219,18 @@
             <div id="prod-1" class="row">
                 <span id="id-prod-1" hidden>id</span>
                 <div class="col-1 text-center no-pd">
-                    <i id="i-del-1" class="fa fa-trash-alt i-del" hidden></i>
+                    <i id="i-del-1" class="fa fa-trash-alt i-del" onclick="del_prod('1');" hidden></i>
                     <i id="i-edit-1" class="fa fa-edit i-edit" onclick="edit_prod('1');" hidden></i>
-                    <i id="i-check-1" class="fa fa-check i-check" onclick="update_prod('1');" hidden style="color: green;"></i>
+                    <!--<i id="i-check-1" class="fa fa-check i-check" onclick="update_prod('1');" hidden style="color: green;"></i>-->
                 </div>
-                <div class="col-6 text-center no-pd" onclick="collapse('1');">ไฟหน้าเรนเจอร์ปี 08</div>
-                <div class="col-3 text-center">
-                    <input id="price-1" type="text" class="w3-input" value="1000" style="border: none; font-size: 120%;">
-                </div>
-                <span style="font-size: 120%;">x</span>
-                <div  class="col-1 text-center no-pd">
-                    <input id="amount-1" type="text" class="w3-input" value="5" style="border: none;" readonly>
-                </div>
+                <div id="name-1" class="col-6 text-center no-pd" onclick="collapse('1');">ไฟหน้าเรนเจอร์ปี 08</div>
+                <div id="price-1" class="col-3 text-center no-pd">500</div>
+                <span>x</span>
+                <div id="amount-1" class="col-1 text-center no-pd">5</div>
             </div>
 
             <!-- Collapse-1 -->
-            <div id="collapse-1" class="container collapse" style="margin-top: 5%;">
+            <div id="collapse-1" class="container collapse">
                 <div class="row">
                     <div class="col-12 text-center">
                         <img id='img' src="https://c2.staticflickr.com/4/3891/14354989289_2eec0ba724_b.jpg" alt="" style="width: 96%; height: 96%; border-radius: 3px;">
@@ -221,72 +254,23 @@
                     <div class="col-4 text-center no-pd">15</div>
                     <div class="col-2"></div>
                 </div>
-            </div><hr style="margin-top: 5%;">
+            </div><hr id="hr-1" style="margin-top: 5%;">
 
             <div id="prod-2" class="row">
                 <span id="id-prod-2" hidden>id</span>
                 <div class="col-1 text-center no-pd">
-                    <i id="i-del-2" class="fa fa-trash-alt i-del" hidden></i>
-                    <i id="i-edit-2" class="fa fa-edit i-edit" onclick="edit_prod('2');" hidden></i>
-                    <i id="i-check-2" class="fa fa-check i-check" onclick="update_prod('2');" hidden style="color: green;"></i>
+                    <i id="i-del-2" class="fa fa-trash-alt i-del" onclick="del_prod('2');" hidden></i>
+                    <i id="i-edit-1" class="fa fa-edit i-edit" onclick="edit_prod('2');" hidden></i>
+                    <!--<i id="i-check-1" class="fa fa-check i-check" onclick="update_prod('1');" hidden style="color: green;"></i>-->
                 </div>
-                <div class="col-6 text-center no-pd" onclick="collapse('2');">ไฟหน้าเรนเจอร์ปี 08</div>
-                <div class="col-3 text-center">
-                    <input id="price-2" type="text" class="w3-input" value="1000" style="border: none; font-size: 120%;">
-                </div>
-                <span style="font-size: 120%;">x</span>
-                <div class="col-1 text-center no-pd">
-                    <input id="amount-2" type="text" class="w3-input" value="5" style="border: none;" readonly>
-                </div>
+                <div id="name-2" class="col-6 text-center no-pd" onclick="collapse('2');">ไฟหน้าเรนเจอร์ปี 08</div>
+                <div id="price-2" class="col-3 text-center no-pd">500</div>
+                <span>x</span>
+                <div id="amount-2" class="col-1 text-center no-pd">5</div>
             </div>
-            
-            <!-- Collapse-2 -->
-            <div id="collapse-2" class="container collapse" style="margin-top: 5%;">
-                <div class="row">
-                    <div class="col-12 text-center">
-                        <img id='img' src="https://c2.staticflickr.com/4/3891/14354989289_2eec0ba724_b.jpg" alt="" style="width: 96%; height: 96%; border-radius: 3px;">
-                    </div>
-                </div>
-                <div class="row" style="margin-bottom: 4%; margin-top: 4%;">
-                    <div class="col-2"></div>
-                    <div class="col-4 text-center no-pd">รหัส : </div>
-                    <div class="col-4 text-center no-pd">fdrng0408</div>
-                    <div class="col-2"></div>
-                </div>
-                <div class="row" style="margin-bottom: 4%;">
-                    <div class="col-2"></div>
-                    <div class="col-4 text-center no-pd">รวม : </div>
-                    <div class="col-4 text-center no-pd">5000</div>
-                    <div class="col-2"></div>
-                </div>
-                <div class="row">
-                    <div class="col-2"></div>
-                    <div class="col-4 text-center no-pd">คงเหลือ : </div>
-                    <div class="col-4 text-center no-pd">15</div>
-                    <div class="col-2"></div>
-                </div>
-            </div>
-            <hr style="margin-top: 5%;">
 
-            <div id="prod-3" class="row">
-                <span id="id-prod-3" hidden>id</span>
-                <div class="col-1 text-center no-pd">
-                    <i id="i-del-3" class="fa fa-trash-alt i-del" hidden></i>
-                    <i id="i-edit-3" class="fa fa-edit i-edit" onclick="edit_prod('3');" hidden></i>
-                    <i id="i-check-3" class="fa fa-check i-check" onclick="update_prod('3');" hidden style="color: green;"></i>
-                </div>
-                <div class="col-6 text-center no-pd" onclick="collapse('3');">ไฟหน้าเรนเจอร์ปี 08</div>
-                <div class="col-3 text-center">
-                    <input id="price-3" type="text" class="w3-input" value="1000" style="border: none; font-size: 120%;">
-                </div>
-                <span style="font-size: 120%;">x</span>
-                <div class="col-1 text-center no-pd">
-                    <input id="amount-3" type="text" class="w3-input" value="5" style="border: none;" readonly>
-                </div>
-            </div>
-            
-            <!-- Collapse-3 -->
-            <div id="collapse-3" class="container collapse" style="margin-top: 5%;">
+            <!-- Collapse-2 -->
+            <div id="collapse-2" class="container collapse">
                 <div class="row">
                     <div class="col-12 text-center">
                         <img id='img' src="https://c2.staticflickr.com/4/3891/14354989289_2eec0ba724_b.jpg" alt="" style="width: 96%; height: 96%; border-radius: 3px;">
@@ -310,23 +294,29 @@
                     <div class="col-4 text-center no-pd">15</div>
                     <div class="col-2"></div>
                 </div>
-            </div>
-            <hr style="margin-top: 5%;">
+            </div><hr id="hr-2" style="margin-top: 5%;">
         </div>
     </div>
     <!-- End big container -->
 
-    <div class="row fixed-bottom" style="margin-bottom: 17%;">
-        <div class="col-12 text-center">
-            <h5 class="title" style="font-size: 150%;">รวม :
-                <span id="net">50000</span>
+    <div id="navs-net" class="row fixed-bottom" style="background: #fafafa;">
+        <div class="col-1"></div>
+        <div class="col-5 text-center" onclick="edit_discount();">
+            <h5 class="title" style="font-size: 130%;">ลด :
+                <span style="color: green;" id="discount">50000</span>
             </h5>
         </div>
+        <div class="col-5 text-center">
+            <h5 class="title" style="font-size: 130%;">รวม :
+                <span  style="color: red;"id="net">50000</span>
+            </h5>
+        </div>
+        <div class="col-1"></div>
     </div>
 
     <!-- Nav menu bottom -->
-    <div class="row fixed-bottom navs">
-        <div class="col-3 text-center" onclick="window.location='index.html';">
+    <div id="navs-menu" class="row fixed-bottom navs">
+        <div class="col-3 text-center" onclick="transition_page_back('index.html');">
             <i id="i-home" class="fas fa-home menu"></i>
         </div>
         <div class="col-3 text-center" onclick="menu('add')">

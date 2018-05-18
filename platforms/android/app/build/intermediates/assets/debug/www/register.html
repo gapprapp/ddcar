@@ -73,10 +73,7 @@
                   'phone':phone,
                   'role':role},               
               success: function(data){                             
-<<<<<<< HEAD
-=======
                   //alert(data);
->>>>>>> af139f4d1ec2a452e5186e4c073d5bae877a4e3c
                   if(data == "success"){                        
                     $.confirm({
                         title: 'เสร็จสิ้น',
@@ -97,7 +94,6 @@
               }               
           });
       }else{
-<<<<<<< HEAD
         $.confirm({
           title: 'พบข้อผิดพลาด',
           content: 'กรุณากรอกข้อมูลให้ครบ',
@@ -112,13 +108,6 @@
           }
         }); 
       }
-=======
-        $.alert({
-          title: 'คำเตือน!',
-          content: 'กรุณากรอกข้อมูลให้ครบ',
-        });
-      }     
->>>>>>> af139f4d1ec2a452e5186e4c073d5bae877a4e3c
     }
 
     function setrole(arg){
