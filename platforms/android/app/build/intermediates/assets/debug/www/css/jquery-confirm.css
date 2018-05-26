@@ -406,17 +406,20 @@ body[class*=jconfirm-no-scroll-] {
   border: none;
   background-image: none;
 }
-.jconfirm .jconfirm-box .jconfirm-buttons button.btn-blue {
-  background-color: #3498db;
-  color: #FFF;
+
+.jconfirm .jconfirm-box .jconfirm-buttons button.btn-regis {
+  background-color: #d63232;
+  color: white;
+  width: 90% !important;
   text-shadow: none;
   -webkit-transition: background .2s;
   transition: background .2s;
 }
 
-.jconfirm .jconfirm-box .jconfirm-buttons button.btn-blue:hover {
-  background-color: #2980b9;
-  color: #FFF;
+.jconfirm .jconfirm-box .jconfirm-buttons button.btn-regis:hover {
+  background-color: #c02d2d;
+  color: white;
+  border: none;
 }
 .jconfirm .jconfirm-box .jconfirm-buttons button.btn-green {
   background-color: #2ecc71;
@@ -562,10 +565,21 @@ body[class*=jconfirm-no-scroll-] {
 .jconfirm.jconfirm-light .jconfirm-box .jconfirm-buttons button.btn-default:hover {
   background: #ddd;
 }
+
+.jconfirm.jconfirm-white .jconfirm-box .jconfirm-buttons button.btn-regis,
+.jconfirm.jconfirm-light .jconfirm-box .jconfirm-buttons button.btn-regis {
+  -webkit-box-shadow: none;
+  box-shadow: none;
+  color: white;
+}
+.jconfirm.jconfirm-white .jconfirm-box .jconfirm-buttons button.btn-regis:hover,
+.jconfirm.jconfirm-light .jconfirm-box .jconfirm-buttons button.btn-regis:hover {
+  background: #c02d2d;
+}
 .jconfirm.jconfirm-white .jconfirm-box .jconfirm-buttons button.btn-choice,
 .jconfirm.jconfirm-light .jconfirm-box .jconfirm-buttons button.btn-choice {
   -webkit-box-shadow: none;
-          box-shadow: none;
+  box-shadow: none;
   color: #333;
 }
 .jconfirm.jconfirm-white .jconfirm-box .jconfirm-buttons button.btn-choice:hover,
@@ -618,6 +632,15 @@ body[class*=jconfirm-no-scroll-] {
   color: #fff;
   background: none;
 }
+
+.jconfirm.jconfirm-black .jconfirm-box .jconfirm-buttons button.btn-regis,
+.jconfirm.jconfirm-dark .jconfirm-box .jconfirm-buttons button.btn-regis {
+  -webkit-box-shadow: none;
+  box-shadow: none;
+  color: #fff;
+  background: none;
+}
+
 .jconfirm.jconfirm-black .jconfirm-box .jconfirm-buttons button.btn-choice,
 .jconfirm.jconfirm-dark .jconfirm-box .jconfirm-buttons button.btn-choice {
   -webkit-box-shadow: none;
@@ -627,6 +650,11 @@ body[class*=jconfirm-no-scroll-] {
 }
 .jconfirm.jconfirm-black .jconfirm-box .jconfirm-buttons button.btn-default:hover,
 .jconfirm.jconfirm-dark .jconfirm-box .jconfirm-buttons button.btn-default:hover {
+  background: #666;
+}
+
+.jconfirm.jconfirm-black .jconfirm-box .jconfirm-buttons button.btn-regis:hover,
+.jconfirm.jconfirm-dark .jconfirm-box .jconfirm-buttons button.btn-regis:hover {
   background: #666;
 }
 .jconfirm.jconfirm-black .jconfirm-box .jconfirm-buttons button.btn-choice:hover,

@@ -19,6 +19,9 @@
     "cordova-plugin-file-transfer": {
       "PACKAGE_NAME": "com.gitmew.ddcar"
     },
+    "cordova-plugin-statusbar": {
+      "PACKAGE_NAME": "com.gitmew.ddcar"
+    },
     "cordova-plugin-whitelist": {
       "PACKAGE_NAME": "com.gitmew.ddcar"
     },

@@ -26,14 +26,21 @@ body{
 
 #h5-title{
 	font-weight: bold;
-	font-size: 145%;
+	font-size: 145% !important;
 	color: white;
 	letter-spacing: 2px;
 	margin-left: 3%;
 }
+#cus-title{
+	font-weight: bold;
+	font-size: 125% !important;
+	color: #666666;
+	letter-spacing: 1px;
+	margin-left: 2%;
+}
 
 #i-back{
-	font-size: 150%;
+	font-size: 145%;
 	color: white;
 	margin-top: 3px;
 }
@@ -85,6 +92,19 @@ body{
 	box-shadow: 0 1px 2px  #7fbf7f, 0 1px 1px #7fbf7f;
 }
 
+.mbtn-cancle{
+	background-color: #bcc0c0;
+	border: 1px solid #bcc0c0;
+	height: 145%;
+	width: 100%;
+	font-weight: bold;
+	font-size: 120%;
+	color: white;
+	letter-spacing: 2px;
+	border-radius: 5px;
+	box-shadow: 0 1px 2px  #c9cccc, 0 1px 1px #c9cccc;
+}
+
 .select_folder{
 	background-color: #fdfdfd;
 	border: 1px solid #e5e5e5;
@@ -108,12 +128,6 @@ body{
 	color: #666666;
 	letter-spacing: 2px;
 	border-radius: 5px;
-}
-
-.btn-regis{
-	color: white;
-	background: #d63232;
-	width: 90% !important;
 }
 
 .svbtn{

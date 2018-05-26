@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>Home</title>
+  <!-- Bootstrap Import -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+  <script type="text/javascript" src="js/jquery-3.3.1.min.js"></script>
+  <script type="text/javascript" src="js/jquery-ui.min.js"></script>
+  <script type="text/javascript" src="js/jquery.easing.1.3.min.js"></script>
+  <script type="text/javascript" src="js/transition.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.6/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+  <script defer src="https://use.fontawesome.com/releases/v5.0.8/js/all.js"></script>
+  <script src="cordova.js"></script>
+
+  <link rel="stylesheet" href="css/index.css">
+
+  <!-- Font -->
+  <link href="https://fonts.googleapis.com/css?family=Prompt" rel="stylesheet">
+  <script>
+    
+  </script>
+
+  <style>
+    #search_cus:focus, #search_cus:active {
+       outline: red !important;
+       box-shadow: none;
+       border-color: #d63232;
+    }
+    .title {
+      color: #666666;
+      letter-spacing: 2px;
+    }
+    hr{
+      margin-top: 0;
+    }
+  </style>
+
+  <script>
+    function select_cus(arg){
+      goto = 'sale.html?cus='+arg;
+      transition_page_back_flip(goto);
+    }
+  </script>
+</head>
+
+<body>
+  <!-- Nav menu top -->
+  <div class="row fixed-top navs">
+    <div class="col-1 text-center" onclick="transition_page_back('sale.html');">
+      <i id="i-back" class="fas fa-angle-left"></i>
+    </div>
+    <div class="col-10 text-center">
+      <h5 id="h5-title">ลูกค้า</h5>
+    </div>
+    <div class="col-1">
+    </div>
+  </div><br>
+
+  <!-- End big container -->
+  <div id="add-ctn" class="container justify-content-center" style="margin-top: 20%;">
+    <div class="container">
+      <div class="row mg-10">
+        <div class="col-12 text-center">
+          <div id="imaginary_container">
+                <div class="input-group-prepend">
+                  <div class="input-group">
+                    <input id="search_cus" type="text" class="form-control form-control-lg" placeholder="ค้นหาลูกค้า">
+                  </div>
+                </div> 
+            </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-7 text-center">
+          <h5 class="title">ชื่อ</h5>
+        </div>
+        <div class="col-4 text-center">
+          <h5 class="title">ประเภท</h5>
+        </div>
+      </div><hr>
+      <div id='cus-1' class='row' onclick = "select_cus('สมจริง');">              
+        <div class='col-7 text-center'>
+          <p id='cus_name-1'>สมจริง</p>
+        </div>
+        <div class='col-4 text-center'>
+          <p>4k</p>
+        </div>
+      </div>   
+      <hr id='hr-2'>
+      <div id='cus-2' class='row' onclick = "select_cus('จริงจัง');">              
+        <div class='col-7 text-center'>
+          <p id='cus_name-2'>จริงจัง</p>
+        </div>
+        <div class='col-4 text-center'>
+          <p>2k</p>
+        </div>
+      </div>   
+      <hr id='hr-2'>
+    </div>
+  <!-- End big container -->
+</body>
+
+</html>

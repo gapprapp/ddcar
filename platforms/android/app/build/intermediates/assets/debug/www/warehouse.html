@@ -116,6 +116,7 @@
         transition_page_back_flip(goto);
       }else if(arg == "edit"){
         // show edit all
+        //edit_ware("1");
         if ($(".i-edit").is(":visible")) {
           $(".i-del").attr('hidden', true);
           $(".i-edit").attr('hidden', true);
@@ -125,6 +126,7 @@
           $(".i-edit").attr('hidden', false);
         }
       }else if (arg == "del") {
+        //edit_del(1);
         // show trash all 
         if($(".i-del").is(":visible")){
           $(".i-edit").attr('hidden', true);
@@ -137,10 +139,37 @@
       }
     }
 
+    function save_edit_name(arg){
+      var txt = $("#i").val();
+      $(".jconfirm-title").text(txt);
+      $(".jconfirm-title").append('&nbsp&nbsp<i class="fa fa-edit" style="font-size: 80%; padding-bottom: 2%;"></i>');
+      $(".jconfirm-title").prop("hidden", false);
+      $("#name-ware-"+arg).text(txt);
+      $("#apd-row").remove();
+    }
+
     function edit_ware(arg) {
+      $("style").append('.jconfirm .jconfirm-box{margin-bottom: 60%;}');
+      name = $("#name-ware-"+arg).text();
+      //name = "โกดัง C  ";
       $.confirm({
-        title: 'หน้าร้าน / โกดัง',
+        title: name + '&nbsp&nbsp<i class="fa fa-edit" style="font-size: 80%; padding-bottom: 2%;"></i>',
         content: '<hr style="width: 80%; margin-bottom: 0;">',
+        onContentReady: function () {
+            this.$title.click(function(event) {
+              txt = $(".jconfirm-title").text();
+              txt = $.trim(txt);// remove white space
+              $(".jconfirm-title-c").append('<div id="apd-row" class="row"><div class="col-1"></div><div class="col-10 text-center"><div class="input-group-prepend"><input autofocus class="w3-input text-center" id="i" style="background: white; margin-left: 5%; margin-right: 2%; padding-left: 5%;"><i class="fa fa-check" style="color: green; margin-top: 2%;" onclick="save_edit_name('+arg+');"></i></div></div><div class="col-1"></div></div>');
+              $(".jconfirm-title").prop("hidden", true);
+              $("#i").val(txt);
+              $("#i").focus();
+            });
+        },
+        onOpenBefore: function () {
+          $(".jconfirm-buttons .btn-choice:nth-child(1)").css("border-bottom", "solid #848484 1px");
+            $(".jconfirm-buttons .btn-choice:nth-child(2)").css({"margin-bottom": "10%", "border-bottom": "solid #848484 1px"});
+          $(".jconfirm-title").css("padding-left", "7%");
+        },
         backgroundDismiss: true,
         buttons: {
           form1: {
@@ -148,6 +177,7 @@
             btnClass: 'btn-choice',
             action: function () {
               $("#type-ware-"+arg).text('โกดัง');
+              $("style").append('.jconfirm .jconfirm-box{margin-bottom: 5%;}');
             }
           },
           form2: {
@@ -155,6 +185,17 @@
             btnClass: 'btn-choice',
             action: function () {
               $("#type-ware-"+arg).text('หน้าร้าน');
+              $("style").append('.jconfirm .jconfirm-box{margin-bottom: 5%;}');
+            }
+          },
+          ยกเลิก: function () {
+              $("style").append('.jconfirm .jconfirm-box{margin-bottom: 5%;}');
+            },
+          formSubmit: {
+            text: 'ตกลง',
+            btnClass: 'btn-danger',
+            action: function () {
+              $("style").append('.jconfirm .jconfirm-box{margin-bottom: 5%;}');
             }
           }
         }
