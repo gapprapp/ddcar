@@ -1,18 +1,15 @@
 <?php
     $conn = mysqli_connect("localhost", "id3340019_dd", "pkl2468GG", "id3340019_dd");
-    $name  = $_POST['name'];   
-    $old_name  = $_POST['old_name']; 
+    $user_id  = $_POST['user_id'];   
+    $role  = $_POST['role'];
 
-    mysqli_autocommit($conn,FALSE);
-    $sql = "UPDATE user SET user_name = '$name' WHERE user_name = '$old_name'";
+    $sql = "UPDATE user SET user_role = '$role' WHERE user_id = '$user_id'";
     $result = mysqli_query($conn, $sql);
             
     if($result){
-        echo "success";
-        mysqli_commit($conn);
-    }else{
-        echo "fail";
-        mysqli_rollback($conn);
+        echo "success";       
+    }else{        
+        echo "fail";      
     }    
     mysqli_close($conn);
 ?>

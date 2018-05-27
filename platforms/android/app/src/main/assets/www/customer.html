@@ -47,7 +47,7 @@
           $.each(obj, function(i, field){                   
             $('#show_cus').append( "<div id='cus-"+i+"' class='row'>" +              
               "<div class='col-1 text-left'>" +
-                "<i class='fa fa-trash-alt i-del' onclick='edit_del("+i+");' style='color: #666666;' hidden></i>" +
+                "<i class='fa fa-trash-alt i-del' onclick='edit_del("+obj[i].cus_id+","+i+");' style='color: #666666;' hidden></i>" +
                 "<i class='fa fa-edit i-edit' onclick='edit_cus("+obj[i].cus_id+");' style='color: #666666;' hidden></i>" +
               "</div>" +
               "<div class='col-6 text-center no-pd' onclick='show_cus("+obj[i].cus_id+");'>" +
@@ -91,7 +91,7 @@
       }
 
       if(arg == "add"){
-        goto = "register.html";
+        goto = "customer_add.html";
         transition_page_back_flip(goto);
       }else if(arg == "edit"){
         // show edit all
@@ -126,9 +126,7 @@
       transition_page_next_flip(goto);
     }
 
-    function edit_del(arg) {
-      var name = $('#cus_name-' + arg).text();   
-      
+    function edit_del(arg,i) {   
       $.confirm({
           title: 'ลบรายการ',
           content: 'ต้องการลบ '+name+' หรือไม่',
@@ -140,12 +138,12 @@
               action: function () {
                   $.ajax({
                     type: "POST",
-                    url:"https://omise-webpack.000webhostapp.com/www/php/delete_user.php",           
-                    data: {'name' : name},               
+                    url:"https://omise-webpack.000webhostapp.com/www/php/delete_cus.php",           
+                    data: {'cus_id' : arg},               
                     success: function(data){  
                         if(data == "success"){
-                          $("#cus-"+arg).remove(); 
-                          $("#hr-"+arg).remove();
+                          $("#cus-"+i).remove(); 
+                          $("#hr-"+i).remove();
                         }          
                     }               
                   });

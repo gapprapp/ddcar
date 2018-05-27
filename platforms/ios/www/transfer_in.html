@@ -32,11 +32,6 @@
             letter-spacing: 2px;
         }
 
-        .pdlr {
-            padding-left: 10%;
-            padding-right: 10%;
-        }
-
         .no-pd{
             padding-left: 5px;
             padding-right: 5px;
@@ -69,7 +64,7 @@
                                 "<i id='i-edit-"+i+"' class='fa fa-edit i-edit' onclick='edit_prod("+i+");' hidden></i>" +
                                 "<i id='i-check-"+i+"' class='fa fa-check i-check' onclick='update_prod("+i+");' hidden style='color: green;'></i>" +
                             "</div>" +
-                            "<div class='col-8 text-center pdlr'>" +
+                            "<div class='col-8 text-center'>" +
                             "<h5>"+arr_data[i].name+"</h5>" +
                             "<input id='name-"+i+"' type='text' class='w3-input' hidden>" +
                             "</div>" +
@@ -86,7 +81,7 @@
                                 "<i id='i-edit-"+i+"' class='fa fa-edit i-edit' onclick='edit_prod("+i+");' hidden></i>" +
                                 "<i id='i-check-"+i+"' class='fa fa-check i-check' onclick='update_prod("+i+");' hidden style='color: green;'></i>" +
                             "</div>" +
-                            "<div class='col-8 text-center pdlr'>" +
+                            "<div class='col-8 text-center'>" +
                             "<h5>"+arr_data[i].name+"</h5>" +
                             "<input id='name-"+i+"' type='text' class='w3-input' hidden>" +
                             "</div>" +
@@ -332,7 +327,7 @@
                             "<i id='i-edit-"+index+"' class='fa fa-edit i-edit' onclick='edit_prod("+index+");' hidden></i>" +
                             "<i id='i-check-"+index+"' class='fa fa-check i-check' onclick='update_prod("+index+");' hidden style='color: green;'></i>" +
                         "</div>" +
-                        "<div class='col-8 text-center pdlr'>" +
+                        "<div class='col-8 text-center'>" +
                         "<h5>"+name+"</h5>" +
                         "<input id='name-"+index+"' type='text' class='w3-input' hidden>" +
                         "</div>" +
@@ -349,7 +344,7 @@
                             "<i id='i-edit-"+index+"' class='fa fa-edit i-edit' onclick='edit_prod("+index+");' hidden></i>" +
                             "<i id='i-check-"+index+"' class='fa fa-check i-check' onclick='update_prod("+index+");' hidden style='color: green;'></i>" +
                         "</div>" +
-                        "<div class='col-8 text-center pdlr'>" +
+                        "<div class='col-8 text-center'>" +
                         "<h5>"+name+"</h5>" +
                         "<input id='name-"+index+"' type='text' class='w3-input' hidden>" +
                         "</div>" +
@@ -397,7 +392,7 @@
     </script>
 </head>
 
-<body>
+<body style="overflow: auto;">
     <!-- Nav menu top -->
     <div class="row fixed-top navs">
         <div class="col-1 text-center" onclick="transition_page_back('index.html')">
@@ -411,54 +406,30 @@
     <br>
 
     <!-- End big container -->
-    <div class="container justify-content-center" style="margin-top: 15%; margin-bottom: 30%;">
+    <div class="container justify-content-center" style="margin-top: 20%; margin-bottom: 25%;">
         <div class="container">
-            <div class="row mg-15">
-                <div class="col-7 text-center no-pd" onclick="selectfolder();">
-                    <button class="select_folder">เลือกหมวดหมู่</button>
-                </div>
-                <div class="col-5 text-center no-pd">
-                    <input id="store" type="text" class="w3-input no-pd" data-toggle="dropdown" placeholder="หน้าร้าน" readonly>
-                    <ul id="ul-store" class="dropdown-menu text-center no-pd" aria-labelledby="role" >
-
-                    </ul>
-                </div>
+            <div class="row" style="margin-bottom: 20%;">
+              <div class="col-12 text-center" onclick="selectfolder();">
+                <button id="slct_folder" class="select_folder">เลือกสินค้า</button>
+              </div>
             </div>
-            <div class="container">
-                <div class="row">
-                    <div class="col-1 text-center no-pd"></div>
-                    <div class="col-8 text-center pdlr">
-                        <label for="name">ชื่อสินค้า</label>
-                    </div>
-                    <div class="col-3 text-center">
-                        <label for="amount">จำนวน</label>
-                    </div>
+            <div class="row" style="margin-bottom: 18%;">
+                <div class="col-9 text-center">
+                    <label for="name">ชื่อสินค้า</label>
+                    <input id="name" type="text" class="w3-input">
+                </div>
+                <div class="col-3 text-center">
+                    <label for="amount">จำนวน</label>
+                    <input id="amount" type="number" class="w3-input">
                 </div>
             </div>
-            <div id="ctn-add" class="container" style="margin-top: 5%;">
-                
-            </div>
-            <div class="container" style="margin-top: 10%;">
-                <div class="row mg-10">
-                    <div class="col-1 text-center no-pd"></div>
-                    <div class="col-8 text-center pdlr">
-                        <input id="name" type="text" class="w3-input">
-                    </div>
-                    <div class="col-3 text-center">
-                        <input id="amount" type="number" min="1" value="1" class="w3-input">
-                    </div>
-                </div>
-            </div>
-            <div class="row mg-15">
+            <div class="row mg-10">
                 <div class="col-12 text-center">
-                    <button id="btn-qr" class="mbtn" onclick="scanqr();" style="width: 70%; color: green; border-color: green; box-shadow: 0 1px 1px  green, 0 0px 0px green;">สแกน</button>
+                    <button id="btn-qr" class="mbtn-green" onclick="scanqr();" style="width: 70%;">สแกน</button>
                 </div>
             </div>
-            <div class="row" style="margin-bottom: 15%;">
-                <div class="col-4 text-center no-pd">
-                    <button class="mbtn" onclick="save();" style="width: 100%; color: #428bca; border-color: #428bca; box-shadow: 0 1px 1px #428bca, 0 0px 0px #428bca;">บันทึก</button>
-                </div>
-                <div class="col-8 text-center no-pd">
+            <div class="row">
+                <div class="col-12 text-center">
                     <button class="mbtn" onclick="add_trans();" style="width: 100%;">เพิ่มสินค้า</button>
                 </div>
             </div>
@@ -468,7 +439,7 @@
 
     <!-- Nav menu bottom -->
     <div class="row fixed-bottom navs">
-        <div class="col-3 text-center" onclick="menu('home')">
+        <div class="col-3 text-center" onclick="window.location='index.html';">
             <i id="i-home" class="fas fa-home menu"></i>
         </div>
         <div class="col-3 text-center" onclick="menu('add')">

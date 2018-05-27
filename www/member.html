@@ -46,6 +46,7 @@
           var obj = jQuery.parseJSON(data);
           $.each(obj, function(i, field){
             $('#show_user').append(" <div id='cus-"+i+"' class='row'>" +
+              "<span id='user-"+i+"' hidden>"+obj[i].user_id+"</span>" +
               "<div class='col-1 text-left'>" + 
                 "<i class='fa fa-trash-alt i-del' onclick='edit_del("+i+");' style='color: #666666;' hidden></i>" +
                 "<i class='fa fa-edit i-edit' onclick='edit_mem("+i+");' style='color: #666666;' hidden></i>" +
@@ -156,25 +157,40 @@
             text: 'แอดมิน',
             btnClass: 'btn-choice',
             action: function () {
-              $("#role-"+arg).text('แอดมิน');
+              update_user(arg,'แอดมิน');            
             }
           },
           form2: {
             text: 'เจ้าของร้าน',
             btnClass: 'btn-choice',
             action: function () {
-              $("#role-"+arg).text('เจ้าของร้าน');
+              update_user(arg,'เจ้าของร้าน');             
             }
           },
           form3: {
             text: 'พนักงาน',
             btnClass: 'btn-choice',
             action: function () {
-              $("#role-"+arg).text('พนักงาน');
+              update_user(arg,'พนักงาน');              
             }
           }
         }
       });
+    }
+
+    function update_user(arg,role){
+      var user_id = $("#user-"+arg).text();
+      $.ajax({
+        type: "POST",
+        url:"https://omise-webpack.000webhostapp.com/www/php/rename_user.php",           
+        data: {'user_id' : user_id,
+                'role' : role},               
+        success: function(data){  
+            if(data == "success"){
+              $("#role-"+arg).text(role);
+            }          
+        }               
+      });   
     }
   </script>
 </head>

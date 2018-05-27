@@ -11,6 +11,7 @@
   <script type="text/javascript" src="js/jquery-ui.min.js"></script>
   <script type="text/javascript" src="js/jquery.easing.1.3.min.js"></script>
   <script type="text/javascript" src="js/transition.js"></script>
+  <script type="text/javascript" src="js/jquery-confirm.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.6/umd/popper.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
   <script defer src="https://use.fontawesome.com/releases/v5.0.8/js/all.js"></script>
@@ -19,6 +20,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.0/jquery-confirm.min.js"></script>
 
   <link rel="stylesheet" href="css/index.css">
+  <link rel="stylesheet" href="css/jquery-confirm.css">
 
   <!-- Font -->
   <link href="https://fonts.googleapis.com/css?family=Prompt" rel="stylesheet">
@@ -62,28 +64,48 @@
           $.ajax({
               type: "POST",
               url:"https://omise-webpack.000webhostapp.com/www/php/add_ware_shop.php",           
-              data: {'cus_name':name,
-                  'phone':phone,
-                  'addr':addr},               
+              data: {'name':name,
+                  'type':type},               
               success: function(data){         
-                if(data == "success"){                        
-                  goto = "warehouse.html";
-                  transition_page_back_flip(goto);
+                if(data == "success"){
+                  $.confirm({
+                      title: 'เสร็จสิ้น',
+                      content: 'เพิ่มสินค้า ' +type+ ' ' +name+ ' เสร็จสิ้น',
+                      backgroundDismiss: true,
+                      buttons: {
+                        formSubmit: {
+                          text: 'ตกลง',
+                          btnClass: 'btn-regis',
+                          action: function () {
+                              goto = "warehouse.html";
+                              transition_page_back_flip(goto);
+                          }
+                        }
+                      }
+                  });                        
                 }
               }               
           });
       }else{
-        $.alert({
-          title: 'คำเตือน!',
+        $.confirm({
+          title: 'พบข้อผิดพลาด',
           content: 'กรุณากรอกข้อมูลให้ครบ',
+          backgroundDismiss: true,
+          buttons: {
+            formSubmit: {
+              text: 'ตกลง',
+              btnClass: 'btn-regis',
+              action: function () {
+              }
+            }
+          }
         });
       }
       
     }
 
     function setrole(arg){
-      role = $("#li-role-"+arg).text();
-      $("#type").val(role);
+      $("#type").val(arg);
     }
 
   </script>
@@ -103,7 +125,7 @@
   </div><br>
 
   <!-- End big container -->
-  <div class="container justify-content-center" style="margin-top: 30%;">
+  <div class="container justify-content-center" style="margin-top: 45%;">
     <div class="container">
       <div class="row" style="margin-bottom: 10%;">
         <div class="col-12 text-center pdlr">
@@ -114,14 +136,10 @@
       <div class="row" style="margin-bottom: 18%;">
         <div class="col-12 text-center pdlr">
           <label for="type">ประเภท</label>
-          <input id="type" type="text" class="w3-input" data-toggle="dropdown" readonly>
-          <ul class="dropdown-menu text-center" aria-labelledby="role" style="width: 80%;">
-              <li id="li-role-1" onclick="setrole('1');" style="padding-bottom: 10px; padding-top: 10px;">โกดัง</li>
-              <li id="li-role-2" onclick="setrole('2');" style="padding-bottom: 10px;">หน้าร้าน</li>            
-            </ul>
+          <input id="type" type="text" class="w3-input" readonly>
         </div>
       </div>
-      <div class="row" style="margin-bottom: 15%;">
+      <div class="row" style="margin-bottom: 18%;">
         <div class="col-12 text-center">
           <button class="mbtn" onclick="add_ware();">เพิ่ม</button>
         </div>
@@ -129,23 +147,31 @@
     </div>
   </div>
   <!-- End big container -->
-
-  <!-- Nav menu bottom -->
-  <div class="row fixed-bottom navs">
-    <div class="col-3 text-center" onclick="menu('home')">
-      <i id="i-home" class="fas fa-home menu"></i>
-    </div>
-    <div class="col-3 text-center" onclick="menu('bell')">
-      <i id="i-bell" class="fas fa-bell menu"></i>
-    </div>
-    <div class="col-3 text-center" onclick="menu('qrcode')">
-      <i id="i-qrcode" class="fas fa-qrcode menu"></i>
-    </div>
-    <div class="col-3 text-center" onclick="menu('bars')">
-      <i id="i-bars" class="fa fa-bars menu"></i>
-    </div>
-  </div>
-  <!-- End Nav menu bottom -->
+  <script>
+    $("#type").click(function(event) {
+      $.confirm({
+        title: 'ประเภท',
+        content: '<hr style="width: 80%; margin-bottom: 0;">',
+        backgroundDismiss: true,
+        buttons: {
+          form1: {
+            text: 'โกดัง',
+            btnClass: 'btn-choice',
+            action: function () {
+              setrole('โกดัง');
+            }
+          },
+          form2: {
+            text: 'หน้าร้าน',
+            btnClass: 'btn-choice',
+            action: function () {
+              setrole('หน้าร้าน');
+            }
+          }
+        }
+      });
+    });
+  </script>
 </body>
 
 </html>

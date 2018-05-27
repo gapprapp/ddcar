@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Home</title>
+    <!-- Bootstrap Import -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <script type="text/javascript" src="js/jquery-3.3.1.min.js"></script>
+    <script type="text/javascript" src="js/jquery-ui.min.js"></script>
+    <script type="text/javascript" src="js/jquery.easing.1.3.min.js"></script>
+    <script type="text/javascript" src="js/transition.js"></script>
+    <script type="text/javascript" src="js/jquery-confirm.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.6/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+    <script defer src="https://use.fontawesome.com/releases/v5.0.8/js/all.js"></script>
+    <script src="cordova.js"></script>
+
+    <link rel="stylesheet" href="css/index.css">
+    <link rel="stylesheet" href="css/jquery-confirm.css">
+
+    <!-- Font -->
+    <link href="https://fonts.googleapis.com/css?family=Prompt" rel="stylesheet">
+
+    <style>
+        #title {
+            color: #666666;
+            letter-spacing: 2px;
+        }
+
+        .no-pd {
+            padding-right: 0px;
+            padding-left: 0px;
+            font-size: 120%;
+        }
+
+        hr {
+            margin-top: 0;
+        }
+
+        .i-del, .i-edit{
+            color: #666666;
+        }
+
+        .collapse{
+            margin-top: 1%; 
+            background: #fafafa; 
+            padding-top: 5%; 
+            padding-bottom: 5%;
+            border-radius: 1%;
+        }
+    </style>
+
+    <script>
+        function showpay(){
+            $.confirm({
+              title: 'การชำระเงิน',
+              content: '<hr style="width: 80%; margin-bottom: 0;">',
+              backgroundDismiss: true,
+              buttons: {
+                form1: {
+                  text: 'เงินสด',
+                  btnClass: 'btn-choice',
+                  action: function () {
+                    $("#pay").val('เงินสด');
+                  }
+                },
+                form2: {
+                  text: 'เครดิต (30)',
+                  btnClass: 'btn-choice',
+                  action: function () {
+                    $("#pay").val('เครดิต (30)');
+                  }
+                },
+                form3: {
+                  text: 'เครดิต (60)',
+                  btnClass: 'btn-choice',
+                  action: function () {
+                    $("#pay").val('เครดิต (60)');
+                  }
+                },
+                form4: {
+                  text: 'เครดิต (90)',
+                  btnClass: 'btn-choice',
+                  action: function () {
+                    $("#pay").val('เครดิต (90)');
+                  }
+                }
+              }
+            });
+        }
+        function showbill(){
+            $.confirm({
+              title: 'ใบเสร็จ',
+              content: '<hr style="width: 80%; margin-bottom: 0;">',
+              backgroundDismiss: true,
+              buttons: {
+                form1: {
+                  text: 'ใบเสร็จ',
+                  btnClass: 'btn-choice',
+                  action: function () {
+                    $("#bill").val('ใบเสร็จ');
+                  }
+                },
+                form2: {
+                  text: 'ใบรายงานการขาย (A4)',
+                  btnClass: 'btn-choice',
+                  action: function () {
+                    $("#bill").val('ใบรายงานการขาย(A4)');
+                  }
+                },
+                form3: {
+                  text: 'ไม่พิมพ์',
+                  btnClass: 'btn-choice',
+                  action: function () {
+                    $("#bill").val('ไม่พิมพ์');
+                  }
+                }
+              }
+            });
+        }
+    </script>    
+</head>
+
+<body style="overflow: auto;">
+    <!-- Nav menu top -->
+    <div class="row fixed-top navs">
+        <div class="col-1 text-center" onclick="transition_page_back('sale_check.html')">
+            <i id="i-back" class="fas fa-angle-left"></i>
+        </div>
+        <div class="col-10 text-center">
+            <h5 id="h5-title">รายละเอียด</h5>
+        </div>
+        <div class="col-1">
+        </div>
+    </div>
+    <br>
+
+    <!-- End big container -->
+    <div id="big-ctn" class="container justify-content-center" style="margin-top: 45%;">
+        <div class="container">
+            <div class="row mg-15">
+                <div class="col-12 text-center pdlr">
+                    <label for="pay">รูปแบบการชำระเงิน</label>
+                    <input id="pay" type="text" class="w3-input" readonly onclick="showpay();" value="เงินสด">
+                </div>
+            </div> 
+            <div class="row" style="margin-bottom: 18%;">
+                <div class="col-12 text-center pdlr">
+                    <label for="bill">รูปแบบการพิมพ์</label>
+                    <input id="bill" type="text" class="w3-input" readonly onclick="showbill();" value="ใบเสร็จ">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    <button class="mbtn">บันทึก</button>
+                </div>
+            </div>  
+        </div>
+    </div>
+    <!-- End big container -->
+</body>
+
+</html>

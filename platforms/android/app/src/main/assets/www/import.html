@@ -37,12 +37,6 @@
             padding-left: 10%;
             padding-right: 10%;
         }
-
-        #btn-check{
-            color: red; 
-            border-color: red;
-            box-shadow: 0 1px 1px  red, 0 0px 0px red;
-        }
     </style>
 
     <script>      
@@ -337,7 +331,7 @@
                 </div>
             </div>
             <div class="row mg-10">
-                <div class="col-5 text-center">
+                <div class="col-6 text-center">
                     <label for="barcode">รหัส</label>
                     <input id="barcode" type="text" class="w3-input">
                 </div>
@@ -352,7 +346,7 @@
                     <input id="cost" type="number" class="w3-input" onchange="cal_avg('cost')">
                 </div>
             </div>
-            <div class="row mg-10">
+            <div class="row" style="margin-bottom: 18%;">
                 <div class="col-6 text-center">
                     <label for="wholesale">ราคาส่ง</label>
                     <input id="wholesale" type="number" class="w3-input">
@@ -362,14 +356,14 @@
                     <input id="retail" type="number" class="w3-input">
                 </div>
             </div>
-            <div class="row mg-15">
+            <div class="row mg-10">
                 <div class="col-12 text-center">
                     <button class="mbtn" onclick="add_import();" style="width: 70%;">เพิ่มสินค้า</button>
                 </div>
             </div>
-            <div class="row mg-15">
+            <div class="row">
                 <div class="col-12 text-center">
-                    <button id="btn-check" class="mbtn" onclick="report();">
+                    <button id="btn-check" class="mbtn-green" onclick="report();">
                         ตรวจสอบ
                         <span id="check-import"></span>
                     </button>

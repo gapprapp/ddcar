@@ -111,14 +111,15 @@
             var tel = $('#tel').val();
             var type = $('#type').val();  
 
-             if(name != "" && tel != "" && addr != "" /*&& type != ""*/){
+             if(name != "" && tel != "" && addr != "" && type != ""){
                 $.ajax({
                     type: "POST",
                     url:"https://omise-webpack.000webhostapp.com/www/php/rename_cus.php",           
                     data: {'cus_id' : cus_id,
                         'cus_name':name,
                         'phone':tel,
-                        'addr':addr},               
+                        'addr':addr,
+                        'type' : type},               
                     success: function(data){         
                         if(data == "success"){  
                             $.confirm({
@@ -130,7 +131,7 @@
                                     text: 'ตกลง',
                                     btnClass: 'btn-regis',
                                     action: function () {
-                                        goto = "member.html";
+                                        goto = "customer.html";
                                         transition_page_next_flip(goto);
                                       }
                                   }

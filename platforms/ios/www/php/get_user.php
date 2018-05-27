@@ -1,7 +1,7 @@
 <?php
     $conn = mysqli_connect("localhost", "id3340019_dd", "pkl2468GG", "id3340019_dd");    
 
-    $query = "SELECT user_name,pass,phone,user_role FROM user ORDER BY user_id ASC";
+    $query = "SELECT user_id,user_name,pass,phone,user_role FROM user ORDER BY user_id ASC";
     $result = mysqli_query($conn, $query);
 
     if(mysqli_num_rows($result) > 0){    

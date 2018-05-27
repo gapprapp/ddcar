@@ -11,12 +11,14 @@
     <script type="text/javascript" src="js/jquery-ui.min.js"></script>
     <script type="text/javascript" src="js/jquery.easing.1.3.min.js"></script>
     <script type="text/javascript" src="js/transition.js"></script>
+    <script type="text/javascript" src="js/jquery-confirm.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.6/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
     <script defer src="https://use.fontawesome.com/releases/v5.0.8/js/all.js"></script>
     <script src="cordova.js"></script>
 
     <link rel="stylesheet" href="css/index.css">
+    <link rel="stylesheet" href="css/jquery-confirm.css">
 
     <!-- Font -->
     <link href="https://fonts.googleapis.com/css?family=Prompt" rel="stylesheet">
@@ -32,22 +34,46 @@
             padding-right: 10%;
         }
 
-        #btn-qr{
-            width: 70%; 
-            color: green; 
-            border-color: green;
-            box-shadow: 0 1px 1px  green, 0 0px 0px green;
+        .nopd{
+            padding-right: 0;
+            padding-left: 0;
         }
 
-        #btn-check{
-            color: red; 
-            border-color: red;
-            box-shadow: 0 1px 1px  red, 0 0px 0px red;
+        .circle-text {
+            height: 1.7em; /*change this and the width
+            for the size of your initial circle*/
+            width: 1.7em;
+            line-height: 1.8em;
+            text-align: center;
+            vertical-align: middle;
+            border-radius: 50%;
+            /*make it pretty*/
+            background: #fafafa;
+            font-weight: bold;
+            color: #d63232;
         }
+        #btn-addpic{
+          width: 70%; 
+          color: white; 
+        }
+
+        
     </style>
 
     <script>
-        $(document).ready(function () { });
+        $(document).ready(function () { 
+            url = new URL(window.location.href);
+            cus = url.searchParams.get("cus");
+            if(cus){
+                $("#cus").val(cus);
+                $("#name").removeAttr('readonly');
+                $("#price").removeAttr('readonly');
+                $("#amount").removeAttr('readonly');
+                $("#barcode").removeAttr('readonly');
+                $("#btn-addpic").removeAttr('disabled');
+                $("#btn-addprod").removeAttr('disabled');
+            }
+        });
 
         function disactive(arg) {
             nav_menu = ['home', 'bell', 'qrcode', 'bars'];
@@ -66,8 +92,54 @@
             });
         }
 
-        function addpic() {
-            $("#row-img").prop('hidden', false);
+        function sleep(milliseconds) {
+          var start = new Date().getTime();
+          for (var i = 0; i < 1e7; i++) {
+            if ((new Date().getTime() - start) > milliseconds){
+              break;
+            }
+          }
+            clear();
+            document.elementFromPoint(0,0).click();
+        }
+
+        function clear(){
+            $("#name").val("");
+            $("#cus").val("");
+            $("#barcode").val("");
+            $("#amount").val("");
+            $("#price").val("");
+            $("#name").attr("readonly");
+            $("#barcode").attr("readonly");
+            $("#amount").attr("readonly");
+            $("#price").attr("readonly");
+            $("#btn-addpic").prop("disabled", true);
+            $("#btn-addprod").prop("disabled", true);
+        }
+
+        function add_prod(){
+            name = $("#name").val();
+            barcode = $("#barcode").val();
+            amount = $("#amount").val();
+
+            $.confirm({
+              title: "ชื่อสินค้า",
+              content: '<div class="row" style="margin-top: 2%; margin-bottom: 2%;"><div class="col-12 text-center"><img src="https://i.imgur.com/7LVwcUc.png" id="img" alt="" style="width: 96%; height: 96%;"></div></div><div class="row"><div class="col-2"></div><div class="col-3 nopd text-right">รหัส :</div><div class="col-4 text-right">bnk426816</div><div class="col-2"></div></div><div class="row"><div class="col-2"></div><div class="col-3 nopd text-right">ราคา :</div><div class="col-4 text-center">2500</div><div class="col-2"></div></div><div class="row"><div class="col-2"></div><div class="col-3 nopd text-right">จำนวน :</div><div class="col-4 text-center">12</div><div class="col-2"></div></div>',
+              backgroundDismiss: true,
+                onOpen: function () {
+                    sleep(800);
+                },
+              buttons: {
+                formSubmit: {
+                  text: 'ปิด',
+                  btnClass: 'btn-regis',
+                  autoClose: true,
+                  action: function () {
+                    clear();
+                  }
+                }
+              }
+            }); 
         }
 
         function selectfolder() {
@@ -90,57 +162,61 @@
 
 <body>
     <!-- Nav menu top -->
-    <div class="row fixed-top navs">
+    <div class="row fixed-top navs" >
         <div class="col-1 text-center" onclick="transition_page_back('index.html')">
             <i id="i-back" class="fas fa-angle-left"></i>
         </div>
-        <div class="col-10 text-center">
+        <div class="col-9 text-center" style="padding-left: 15%;">
             <h5 id="h5-title">ขาย</h5>
         </div>
-        <div class="col-1"></div>
+        <div class="col-2 text-right" onclick="check();"><div class="circle-text">10</div></div>
     </div>
     <br>
 
     <!-- End big container -->
-    <div class="container justify-content-center" style="margin-top: 15%; margin-bottom: 30%;">
+    <div class="container justify-content-center" style="margin-top: 15%;">
         <div class="container">
-            <div class="row" style="margin-bottom: 15%;">
+            <div class="row" style="margin-bottom: 10%;">
                 <div class="col-12 text-center" onclick="selectfolder();">
                     <button class="select_folder">เลือกหมวดหมู่</button>
                 </div>
             </div>
-            <div class="row" style="margin-bottom: 10%;">
+            <div class="row mg-10">
+                <div class="col-12 text-center pdlr">
+                    <label for="cus">ลูกค้า</label>
+                    <input id="cus" type="text" class="w3-input" onclick="transition_page_next_flip('select_cus.html');" placeholder="กรุณาใส่ชื่อลูกค้าก่อนทำการขาย">
+                </div>
+            </div>
+
+            <div class="row mg-10">
                 <div class="col-12 text-center pdlr">
                     <label for="name">ชื่อสินค้า</label>
-                    <input id="name" type="text" class="w3-input">
+                    <input readonly id="name" type="text" class="w3-input">
                 </div>
             </div>
-            <div class="row" style="margin-bottom: 10%;">
-                <div class="col-8 text-center">
+            <div class="row" style="margin-bottom: 18%;">
+                <div class="col-5 text-center">
                     <label for="barcode">รหัส</label>
-                    <input id="barcode" type="text" class="w3-input">
+                    <input readonly id="barcode" type="text" class="w3-input">
                 </div>
                 <div class="col-4 text-center">
+                    <label for="price">ราคา</label>
+                    <input readonly id="price" type="number" class="w3-input">
+                </div>
+                <div class="col-3 text-center">
                     <label for="amount">จำนวน</label>
-                    <input id="amount" type="number" class="w3-input">
+                    <input readonly id="amount" type="number" class="w3-input">
                 </div>
             </div>
-            <div class="row" style="margin-bottom: 15%;">
-                <div class="col-12 text-center">
-                    <button id="btn-qr" class="mbtn" onclick="scanqr();">สแกน</button>
-                </div>
+            <div class="row mg-10">
+              <div class="col-12 text-center">
+                <button id="btn-addpic" class="mbtn-green" onclick="scanqr();" disabled>สแกน</button>
+              </div>
             </div>
-            <div class="row" style="margin-bottom: 15%;">
-                <div class="col-12 text-center">
-                    <button class="mbtn" onclick="add_prod();">เพิ่มสินค้า</button>
-                </div>
-            </div>
-            <div class="row" style="margin-bottom: 15%;">
-                <div class="col-12 text-center">
-                    <button id="btn-check" class="mbtn" onclick="check();" style= "color: red; border-color: red;">
-                        ตรวจสอบ <span id="check-prod">(1)</span>
-                    </button>
-                </div>
+            <div class="row">
+              <div class="col-12 text-center">
+                <button id="btn-addprod" class="mbtn" onclick="add_prod();" disabled>เพิ่มสินค้า</button>
+              </div>
             </div>
         </div>
     </div>
@@ -148,7 +224,7 @@
 
     <!-- Nav menu bottom -->
     <div class="row fixed-bottom navs">
-        <div class="col-3 text-center" onclick="menu('home')">
+        <div class="col-3 text-center" onclick="transition_page_back('index.html');">
             <i id="i-home" class="fas fa-home menu"></i>
         </div>
         <div class="col-3 text-center" onclick="menu('bell')">

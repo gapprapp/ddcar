@@ -11,12 +11,14 @@
   <script type="text/javascript" src="js/jquery-ui.min.js"></script>
   <script type="text/javascript" src="js/jquery.easing.1.3.min.js"></script>
   <script type="text/javascript" src="js/transition.js"></script>
+  <script type="text/javascript" src="js/jquery-confirm.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.6/umd/popper.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
   <script defer src="https://use.fontawesome.com/releases/v5.0.8/js/all.js"></script>
   <script src="cordova.js"></script>
 
   <link rel="stylesheet" href="css/index.css">
+  <link rel="stylesheet" href="css/jquery-confirm.css">
 
   <!-- Font -->
   <link href="https://fonts.googleapis.com/css?family=Prompt" rel="stylesheet">
@@ -43,20 +45,20 @@
         success: function(data){  
           var obj = jQuery.parseJSON(data);                    
           $.each(obj, function(i, field){                   
-            $('#show_cus').append( "<div id='cus-"+obj[i].cus_id+"' class='row'>" +              
+            $('#show_cus').append( "<div id='cus-"+i+"' class='row'>" +              
               "<div class='col-1 text-left'>" +
-                "<i class='fa fa-trash-alt i-del' onclick='edit_del("+obj[i].cus_id+");' hidden></i>" +
-                "<i class='fa fa-edit i-edit' onclick='edit_cus("+obj[i].cus_id+");' hidden></i>" +
+                "<i class='fa fa-trash-alt i-del' onclick='edit_del("+obj[i].cus_id+","+i+");' style='color: #666666;' hidden></i>" +
+                "<i class='fa fa-edit i-edit' onclick='edit_cus("+obj[i].cus_id+");' style='color: #666666;' hidden></i>" +
               "</div>" +
               "<div class='col-6 text-center no-pd' onclick='show_cus("+obj[i].cus_id+");'>" +
-                "<p>"+obj[i].cus_name+"</p>" +
+                "<p id='cus_name-"+i+"'>"+obj[i].cus_name+"</p>" +
               "</div>" +
               "<div class='col-4 text-center no-pd' onclick='show_cus("+obj[i].cus_id+");'>" +
                 "<p>"+obj[i].cus_tel+"</p>" +
               "</div>" +
               "<div class='col-1'></div>" +
               "</div>" +   
-              "<hr id='hr-"+obj[i].cus_id+"'>");                                                  
+              "<hr id='hr-"+i+"'>");                                                  
           });                          
         }               
       });
@@ -78,14 +80,20 @@
     function menu(arg) {
       // Animate
       disactive(arg);
-      $("#i-" + arg).fadeOut(100).fadeIn(100, function () {
-        $("#i-" + arg).addClass('active');
-      });
+      console.log(arg);
+      if($("#i-"+arg).hasClass('active')){
+        console.log("i-"+arg+"hasClass('active')");
+        $("#i-"+arg).removeClass('active');
+      }else{
+        $("#i-" + arg).fadeOut(150).fadeIn(100, function() {
+          $("#i-" + arg).addClass('active');
+        });
+      }
 
-      if (arg == "add") {
+      if(arg == "add"){
         goto = "customer_add.html";
-        transition_page_next_flip(goto);
-      } else if (arg == "edit") {
+        transition_page_back_flip(goto);
+      }else if(arg == "edit"){
         // show edit all
         if ($(".i-edit").is(":visible")) {
           $(".i-del").attr('hidden', true);
@@ -95,7 +103,7 @@
           $(".i-del").attr('hidden', true);
           $(".i-edit").attr('hidden', false);
         }
-      } else if (arg == "del") {
+      }else if (arg == "del") {
         // show trash all 
         if($(".i-del").is(":visible")){
           $(".i-edit").attr('hidden', true);
@@ -118,18 +126,31 @@
       transition_page_next_flip(goto);
     }
 
-    function edit_del(arg) {
-      $.ajax({
-        type: "POST",
-        url:"https://omise-webpack.000webhostapp.com/www/php/delete_cus.php",           
-        data: {'cus_id' : arg},               
-        success: function(data){                             
-            if(data == "success"){
-              $("#cus-"+arg).remove(); 
-              $("#hr-"+arg).remove(); 
-            }          
-        }               
-      });
+    function edit_del(arg,i) {   
+      $.confirm({
+          title: 'ลบรายการ',
+          content: 'ต้องการลบ '+name+' หรือไม่',
+          backgroundDismiss: true,
+          buttons: {
+            formSubmit: {
+              text: 'ตกลง',
+              btnClass: 'btn-danger',
+              action: function () {
+                  $.ajax({
+                    type: "POST",
+                    url:"https://omise-webpack.000webhostapp.com/www/php/delete_cus.php",           
+                    data: {'cus_id' : arg},               
+                    success: function(data){  
+                        if(data == "success"){
+                          $("#cus-"+i).remove(); 
+                          $("#hr-"+i).remove();
+                        }          
+                    }               
+                  });
+              }
+            },ยกเลิก: function () {}
+          }  
+      });                         
     }
   </script>
 </head>
@@ -171,7 +192,7 @@
 
   <!-- Nav menu bottom -->
   <div class="row fixed-bottom navs">
-    <div class="col-3 text-center" onclick="menu('home')">
+    <div class="col-3 text-center" onclick="transition_page_back('index.html');">
       <i id="i-home" class="fas fa-home menu"></i>
     </div>
     <div class="col-3 text-center" onclick="menu('add')">

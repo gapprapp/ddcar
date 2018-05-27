@@ -10,19 +10,28 @@
   <script type="text/javascript" src="js/jquery-3.3.1.min.js"></script>
   <script type="text/javascript" src="js/jquery-ui.min.js"></script>
   <script type="text/javascript" src="js/jquery.easing.1.3.min.js"></script>
-  <script type="text/javascript" src="js/transition.js"></script>
+  
+  <script type="text/javascript" src="js/jquery-confirm.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.6/umd/popper.min.js"></script>
+  <script src="http://ajax.googleapis.com/ajax/libs/jquerymobile/1.4.5/jquery.mobile.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
   <script defer src="https://use.fontawesome.com/releases/v5.0.8/js/all.js"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.0/jquery-confirm.min.css">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.0/jquery-confirm.min.js"></script>
+  <script type="text/javascript" src="js/jquery.touchSwipe.min.js"></script>
   <script src="cordova.js"></script>
+  <script type="text/javascript" src="js/scanqr.js"></script>
 
   <link rel="stylesheet" href="css/index.css">
 
   <!-- Font -->
   <link href="https://fonts.googleapis.com/css?family=Prompt" rel="stylesheet">
-
+  <style>
+    .nopd{
+      padding-right: 5px;
+      padding-left: 5px;
+    }
+  </style>
   <script>
     $(document).ready(function() {
       url = new URL(window.location.href);
@@ -37,9 +46,64 @@
         $("#row-admin").prop('hidden', true);
         $("#row-log").prop('hidden', true);
         $("#main-collapse").slideToggle('collapse');
-
       }
+
+      //Slide tabs
+      $("#admin").swipe( {swipe:function(event, direction, distance, duration, fingerCount, fingerData) {
+        if(direction == "left"){ 
+          $("#tabs-admin").removeClass('tabs'); $("#tabs-admin").addClass('non'); 
+          $("#tabs-main").removeClass('non'); $("#tabs-main").addClass('tabs');
+          $("#admin").prop('hidden', true);
+          $("#main").prop('hidden',false);
+        }
+        },threshold:75
+      });
+      $("#main").swipe( {swipe:function(event, direction, distance, duration, fingerCount, fingerData) {
+        if(direction == "right"){ 
+          $("#tabs-main").removeClass('tabs'); $("#tabs-main").addClass('non'); 
+          $("#tabs-admin").removeClass('non'); $("#tabs-admin").addClass('tabs');
+          $("#main").prop('hidden', true);
+          $("#admin").prop('hidden', false);
+        }else if(direction == "left"){ 
+          $("#tabs-main").removeClass('tabs'); $("#tabs-main").addClass('non'); 
+          $("#tabs-log").removeClass('non'); $("#tabs-log").addClass('tabs');
+          $("#main").prop('hidden', true);
+          $("#log").prop('hidden', false);
+        }
+        },threshold:75
+      }); 
+      $("#log").swipe( {swipe:function(event, direction, distance, duration, fingerCount, fingerData) {
+        if(direction == "right"){ 
+          $("#tabs-log").removeClass('tabs'); $("#tabs-log").addClass('non'); 
+          $("#tabs-main").removeClass('non'); $("#tabs-main").addClass('tabs');
+          $("#log").prop('hidden',true);
+          $("#main").prop('hidden', false);
+        }
+        },threshold:75
+      }); 
     });
+
+    function tabs(arg){
+      arr = ['admin', 'main', 'log'];
+      if($("#tabs-"+arg).hasClass('tabs')){
+        return 0;
+      }else{
+        // Get from
+        for(var j = 0; j < 3; j++){
+          if($("#tabs-"+arr[j]).hasClass('tabs')){
+            from = arr[j];
+          }
+        }
+        // Clear old tabs , Add class, Remove class
+        for(var i = 0; i < 3; i++){
+          if(arr[i] != arg){
+            $("#tabs-"+arr[i]).removeClass('tabs');
+            $("#tabs-"+arr[i]).addClass('non');
+            $("div #"+arr[i]).prop('hidden', true);
+          }
+        }$("#tabs-"+arg).addClass('tabs'); $("#tabs-"+arg).removeClass('non'); $("div #"+arg).prop('hidden', false);
+      }
+    }
 
     function disactive(arg) {
       nav_menu = ['home', 'bell', 'qrcode', 'bars'];
@@ -56,165 +120,11 @@
       $("#i-" + arg).fadeOut(100).fadeIn(100, function() {
         $("#i-" + arg).addClass('active');
       });
-
-      if(arg == "qrcode"){
-        scan();
-      }
-
-      if(arg == "home"){
-        return 0;
-      }
-      else if(arg == "bell"){
-
-      }else if(arg == "bars"){
-        //goto = "setting.html"
-        //transition_page_next(goto);
-      }
-
     }
-
-    function scan(){
-        cordova.plugins.barcodeScanner.scan(
-        function (result) {
-            if(!result.cancelled){
-                // In this case we only want to process QR Codes
-                if(result.format == "QR_CODE"){
-                    var value = result.text;                        
-                            
-                    $.ajax({
-                        type: "POST",
-                        url: "https://omise-webpack.000webhostapp.com/www/php/check_amt_prod.php",                
-                        data: {'qr': value},             
-                        success: function(data){                             
-                            var name;
-                            var msg = "";                             
-                            var obj = jQuery.parseJSON(data); 
-                            console.log(obj);
-                            $.each(obj, function(i, field){ 
-                                name = obj[i].prod_name;    
-                                msg = msg + obj[i][0] + " : " + obj[i].amount + "<br>";
-                            }); 
-                            $.alert({
-                                title: name,
-                                content: msg,
-                                type: 'blue',
-                            });                                                                                                     
-                        }               
-                    });         
-                }else{
-                    //alert("Sorry, only qr codes this time ;)");
-                }
-            }else{
-              //alert("The user has dismissed the scan");
-            }
-        },
-        function (error) {
-          $.alert({
-              title: 'คำเตือน!',
-              content: error,
-          });
-        },
-        {
-            prompt : "วางคิวอาโค้ดภายในสี่เหลี่ยมผืนผ้าที่ช่องมองภาพเพื่อแสกน"
-        }
-        );
-
-    }         
-
-    function member(){
-      goto = "member.html";
-      transition_page_next(goto);
-    }
-
-    function customer() {
-      goto = "customer.html";
-      transition_page_next(goto);
-    }
-
-    function add_prod() {
-      goto = "add_prod.html";
-      transition_page_next(goto);
-    }
-
-    function warehouse() {
-      goto = "warehouse.html";
-      transition_page_next(goto);
-    }
-
-    function admin(arg) {
-      var goto;
-      if (arg == "member") goto = "member.html";
-      else if (arg == "cus") goto = "customer.html";
-      else goto = "add_" + arg + ".html";
-
-      transition_page_next(goto);
-
-      //Admin git do something.. .. ..
-      // Admin fixed by mew .. .. ..
-    }
-
-    //$("div.inbox").collapse({toggle: false});
-    function func(arg) {
-      if (arg == "admin") {
-        $("#admin-collapse").slideToggle('collapse', function(){
-        });
-        if ($("#main-collapse").is(":visible")) {
-          $("#main-collapse").slideToggle('collapse');
-        }
-        if ($("#log-collapse").is(":visible")) {
-          $("#log-collapse").slideToggle('collapse');
-        }
-      } else if (arg == "main") {
-        $("#main-collapse").slideToggle('collapse', function(){
-          $('html, body').animate({
-            scrollTop: $("#main-collapse").height()
-          }, 900);
-        });
-        if ($("#admin-collapse").is(":visible")) {
-          $("#admin-collapse").slideToggle('collapse');
-        }
-        if ($("#log-collapse").is(":visible")) {
-          $("#log-collapse").slideToggle('collapse');
-        }
-      } else if (arg == "log") {
-        $("#log-collapse").slideToggle('collapse', function(){
-          $('html, body').animate({
-            scrollTop: $("#log-collapse").height()
-          }, 900);
-        });
-        if ($("#main-collapse").is(":visible")) {
-          $("#main-collapse").slideToggle('collapse');
-        }
-        if ($("#admin-collapse").is(":visible")) {
-          $("#admin-collapse").slideToggle('collapse');
-        }
-      }
-    }
-
-    function sale(){
-      goto = "sale.html";
-      transition_page_next(goto);
-    }
-
-    function ware_import(){
-      goto = "import.html";
-      transition_page_next(goto);
-    }
-
-    function ware_export() {
-      goto = "export.html";
-      transition_page_next(goto);
-    }
-
-    function transfer_in(){
-      goto = "transfer_in.html";
-      transition_page_next(goto);
-    }
-
   </script>
 </head>
 
-<body>
+<body style="overflow: hidden;">
   <!-- Nav menu top -->
   <div class="row fixed-top navs">
     <div class="col-1 text-center" onclick="">
@@ -225,115 +135,98 @@
     </div>
     <div class="col-1"></div>
   </div><br>
-
-  <!-- End big container -->
-  <div id="big-ctn" class="container justify-content-center" style="margin-top: 40%; margin-bottom: 30%;">
+  
+  <div id="big-ctn" class="container justify-content-center" style="margin-top: 7%;">
+    <div class="row navs" style="background: #fafafa !important;">
+      <div id="tabs-admin" class="col-4 text-center tabs" onclick="tabs('admin');">แอดมิน</div>
+      <div id="tabs-main" class="col-4 text-center non" onclick="tabs('main');">ฟังชั่น</div>
+      <div id="tabs-log" class="col-4 text-center non" onclick="tabs('log');">ย้อนหลัง</div>
+    </div><br>
     <!-- Admin -->
-    <div id="row-admin" class="row mg-15">
-      <div class="col-12 text-center">
-        <button id="func-admin" class="mbtn" href="#admin-collapse" onclick="func('admin');">แอดมิน</button>
-      </div>
-    </div>
-    <!-- Admin Collapse -->
-    <div id="admin-collapse" class="container collapse">
-      <div class="row mg-15">
-        <div class="col-12 text-center">
-          <button id="mng-member" class="mbtn sub" onclick="member();">ผู้ใช้</button>
+    <div id="admin" class="container" style="margin-top: 15%; padding-bottom: 50%;">
+      <div class="row mg-10">
+        <div class="col-12 text-center nopd">
+          <button id="mng-member" class="mbtn" onclick="transition_page_next('member.html');">ผู้ใช้</button>
         </div>
       </div>
-      <div class="row mg-15">
-        <div class="col-12 text-center">
-          <button id="add-cus" class="mbtn sub" onclick="customer();">ลูกค้า</button>
+      <div class="row mg-10">
+        <div class="col-12 text-center nopd">
+          <button id="add-cus" class="mbtn" onclick="transition_page_next('customer.html');">ลูกค้า</button>
         </div>
       </div>
-      <div class="row mg-15">
-        <div class="col-12 text-center">
-          <button id="add-prod" class="mbtn sub" onclick="add_prod();">เพิ่มสินค้า</button>
+      <div class="row mg-10">
+        <div class="col-12 text-center nopd">
+          <button id="add-prod" class="mbtn" onclick="transition_page_next('add_prod.html');">เพิ่มสินค้า</button>
         </div>
       </div>
-      <div class="row mg-15">
-        <div class="col-12 text-center">
-          <button id="add-ware" class="mbtn sub" onclick="warehouse();">หน้าร้าน / โกดัง</button>
+      <div class="row mg-10">
+        <div class="col-12 text-center nopd">
+          <button id="add-ware" class="mbtn" onclick="transition_page_next('warehouse.html');">หน้าร้าน / โกดัง</button>
         </div>
       </div>
     </div>
-
     <!-- Main -->
-    <div class="row mg-15">
-      <div id="row-main" class="col-12 text-center">
-        <button id="func-main" class="mbtn" href="#main-collapse" onclick="func('main');">ฟังก์ชั่นหลัก</button>
-      </div>
-    </div>
-    <!-- Main Collapse -->
-    <div id="main-collapse" class="container collapse">
-      <div class="row mg-15">
-        <div class="col-12 text-center">
-          <button id="" class="mbtn sub" onclick="sale();">ขาย</button>
+    <div id="main" class="container" style="margin-top: 15%; padding-bottom: 50%;" hidden>
+      <div class="row mg-10">
+        <div class="col-12 text-center nopd">
+          <button class="mbtn" onclick="transition_page_next('sale.html');">ขาย</button>
         </div>
       </div>
-      <div class="row mg-15">
-        <div class="col-12 text-center">
-          <button id="" class="mbtn sub" onclick="stock();">เช็คสต๊อก</button>
+      <div class="row mg-10">
+        <div class="col-12 text-center nopd">
+          <button class="mbtn" onclick="stock();">เช็คสต๊อก</button>
         </div>
       </div>
-      <div class="row mg-15">
-        <div class="col-12 text-center">
-          <button id="" class="mbtn sub" onclick="transfer_in();">สินค้าเข้าหน้าร้าน</button>
+      <div class="row mg-10">
+        <div class="col-12 text-center nopd">
+          <button class="mbtn" onclick="transition_page_next('transfer_in.html');">สินค้าเข้าหน้าร้าน</button>
         </div>
       </div>
-      <div class="row mg-15">
-        <div class="col-12 text-center">       
-          <button id="" class="mbtn sub" onclick="ware_import();">สินค้าเข้าโกดัง</button>
+      <div class="row mg-10">
+        <div class="col-12 text-center nopd">       
+          <button class="mbtn" onclick="transition_page_next('import.html');">สินค้าเข้าโกดัง</button>
         </div>
       </div>
-      <div class="row mg-15">
-        <div class="col-12 text-center">
-          <button id="" class="mbtn sub" onclick="ware_export();">สินค้าออกโกดัง</button>
+      <div class="row mg-10">
+        <div class="col-12 text-center nopd">
+          <button class="mbtn" onclick="transition_page_next('export.html');">สินค้าออกโกดัง</button>
         </div>
       </div>
     </div>
-
     <!-- Log -->
-    <div class="row mg-15">
-      <div id="row-log" class="col-12 text-center">
-        <button id="func-log" class="mbtn" href="#log-collapse" onclick="func('log');">ดูย้อนหลัง</button>
-      </div>
-    </div>
-    <!-- Log Collapse -->
-    <div id="log-collapse" class="container collapse" style="margin-bottom: 30%;">
-      <div class="row mg-15">
-        <div class="col-12 text-center">
-          <button id="log-1" class="mbtn sub" onclick="sub(log-1);">foo bar</button>
+    <div id="log" class="container" style="margin-top: 15%; padding-bottom: 50%;" hidden>
+      <div class="row mg-10">
+        <div class="col-12 text-center nopd">
+          <button id="log-1" class="mbtn">foo bar</button>
         </div>
       </div>
-      <div class="row mg-15">
-        <div class="col-12 text-center">
-          <button id="log-2" class="mbtn sub" onclick="sub(log-2);">foo bar</button>
+      <div class="row mg-10">
+        <div class="col-12 text-center nopd">
+          <button id="log-2" class="mbtn">foo bar</button>
         </div>
       </div>
-      <div class="row mg-15">
-        <div class="col-12 text-center">
-          <button id="log-3" class="mbtn sub" onclick="sub(log-3);">foo bar</button>
+      <div class="row mg-10">
+        <div class="col-12 text-center nopd">
+          <button id="log-3" class="mbtn">foo bar</button>
         </div>
       </div>
-      <div class="row mg-15">
-        <div class="col-12 text-center">
-          <button id="log-4" class="mbtn sub" onclick="sub(log-4);">foo bar</button>
+      <div class="row mg-10">
+        <div class="col-12 text-center nopd">
+          <button id="log-4" class="mbtn">foo bar</button>
         </div>
       </div>
     </div>
   </div>
-  <!-- End big container -->
 
   <!-- Nav menu bottom -->
   <div class="row fixed-bottom navs">
-    <div class="col-3 text-center" onclick="menu('home')">
+    <div class="col-3 text-center" onclick="return 0;">
       <i id="i-home" class="fas fa-home menu active"></i>
     </div>
     <div class="col-3 text-center" onclick="menu('bell')">
       <i id="i-bell" class="fas fa-bell menu"></i>
     </div>
-    <div class="col-3 text-center" onclick="menu('qrcode')">
+    <div class="col-3 text-center" onclick="scan();">
       <i id="i-qrcode" class="fas fa-qrcode menu"></i>
     </div>
     <div class="col-3 text-center" onclick="menu('bars')">
@@ -341,6 +234,7 @@
     </div>
   </div>
   <!-- End Nav menu bottom -->
+  <script type="text/javascript" src="js/transition.js"></script>
 </body>
 
 </html>

@@ -4,18 +4,15 @@
     $name  = $_POST['cus_name'];   
     $phone  = $_POST['phone'];   
     $addr  = $_POST['addr'];    
-
-    mysqli_autocommit($conn,FALSE); 
-    $sql = "UPDATE customer SET cus_name = '$name',cus_tel = '$phone',cus_addr = '$addr' WHERE cus_id = '$cus_id'"; 
+    $type = $_POST['type'];
+  
+    $sql = "UPDATE customer SET cus_name = '$name',cus_tel = '$phone',cus_addr = '$addr',cus_type = '$type' WHERE cus_id = '$cus_id'"; 
     $result = mysqli_query($conn, $sql); 
 
     if($result){
-        echo "success";
-        mysqli_commit($conn);          
+        echo "success";       
     }else{
-        echo "connection fail or name is not unique!";
-        mysqli_rollback($conn);
-    }
-	
+        echo "connection fail or name is not unique!";   
+    }	
 	mysqli_close($conn);
 ?>

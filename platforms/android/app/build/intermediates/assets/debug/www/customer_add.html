@@ -65,13 +65,14 @@
       var addr = $('#addr').val();          
       var type = $('#type').val();          
 
-      if(name != "" && phone != "" && addr != "" /*&& type != ""*/){
+      if(name != "" && phone != "" && addr != "" && type != ""){
           $.ajax({
               type: "POST",
               url:"https://omise-webpack.000webhostapp.com/www/php/add_cus.php",           
               data: {'cus_name':name,
                   'phone':phone,
-                  'addr':addr},               
+                  'addr':addr,
+                  'type' : type},               
               success: function(data){         
                 if(data == "success"){                        
                   $.confirm({

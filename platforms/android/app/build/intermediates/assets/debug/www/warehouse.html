@@ -140,19 +140,53 @@
     }
 
     function save_edit_name(arg){
+      var id = $("#id-ware-"+arg).text();
+      var name = $("#name-ware-"+arg).text();
       var txt = $("#i").val();
-      $(".jconfirm-title").text(txt);
-      $(".jconfirm-title").append('&nbsp&nbsp<i class="fa fa-edit" style="font-size: 80%; padding-bottom: 2%;"></i>');
-      $(".jconfirm-title").prop("hidden", false);
-      $("#name-ware-"+arg).text(txt);
-      $("#apd-row").remove();
+      var type = $("#type-ware-"+arg).text();
+      if(name == txt){       
+        return 0;
+      }
+      $.ajax({
+        type: "POST",
+        url:"https://omise-webpack.000webhostapp.com/www/php/rename_ware_shop.php",           
+        data: {'id' : id,
+                'type' : type,
+                'name' : txt},               
+        success: function(data){           
+            if(data == "success"){
+              $(".jconfirm-title").text(txt);
+              $(".jconfirm-title").append('&nbsp&nbsp<i class="fa fa-edit" style="font-size: 80%; padding-bottom: 2%;"></i>');
+              $(".jconfirm-title").prop("hidden", false);
+              $("#name-ware-"+arg).text(txt);
+              $("#apd-row").remove();
+            }          
+        }               
+      });     
+    }
+
+    function update_ware(arg,type){
+      var id = $("#id-ware-"+arg).text();     
+      $.ajax({
+        type: "POST",
+        url:"https://omise-webpack.000webhostapp.com/www/php/rename_ware_shop.php",           
+        data: {'id' : id,
+                'type' : type,
+                'name' : ""},               
+        success: function(data){            
+            if(data == "success"){
+              $("#type-ware-"+arg).text(type);
+              $("style").append('.jconfirm .jconfirm-box{margin-bottom: 5%;}');
+            }          
+        }               
+      });  
     }
 
     function edit_ware(arg) {
       $("style").append('.jconfirm .jconfirm-box{margin-bottom: 60%;}');
       name = $("#name-ware-"+arg).text();
       //name = "โกดัง C  ";
-      $.confirm({
+      $.dialog({
         title: name + '&nbsp&nbsp<i class="fa fa-edit" style="font-size: 80%; padding-bottom: 2%;"></i>',
         content: '<hr style="width: 80%; margin-bottom: 0;">',
         onContentReady: function () {
@@ -171,26 +205,30 @@
           $(".jconfirm-title").css("padding-left", "7%");
         },
         backgroundDismiss: true,
-        buttons: {
+        /*buttons: {
           form1: {
             text: 'โกดัง',
             btnClass: 'btn-choice',
             action: function () {
-              $("#type-ware-"+arg).text('โกดัง');
-              $("style").append('.jconfirm .jconfirm-box{margin-bottom: 5%;}');
+              if($("#type-ware-"+arg).text() == "โกดัง"){              
+                return 0;
+              }
+              update_ware(arg,'โกดัง');             
             }
           },
           form2: {
             text: 'หน้าร้าน',
             btnClass: 'btn-choice',
             action: function () {
-              $("#type-ware-"+arg).text('หน้าร้าน');
-              $("style").append('.jconfirm .jconfirm-box{margin-bottom: 5%;}');
+              if($("#type-ware-"+arg).text() == "หน้าร้าน"){             
+                return 0;
+              }
+              update_ware(arg,'หน้าร้าน');           
             }
           },
           ยกเลิก: function () {
               $("style").append('.jconfirm .jconfirm-box{margin-bottom: 5%;}');
-            },
+          },
           formSubmit: {
             text: 'ตกลง',
             btnClass: 'btn-danger',
@@ -198,7 +236,7 @@
               $("style").append('.jconfirm .jconfirm-box{margin-bottom: 5%;}');
             }
           }
-        }
+        }*/
       });
     }
 

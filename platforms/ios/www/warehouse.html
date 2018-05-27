@@ -11,12 +11,14 @@
   <script type="text/javascript" src="js/jquery-ui.min.js"></script>
   <script type="text/javascript" src="js/jquery.easing.1.3.min.js"></script>
   <script type="text/javascript" src="js/transition.js"></script>
+  <script type="text/javascript" src="js/jquery-confirm.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.6/umd/popper.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
   <script defer src="https://use.fontawesome.com/releases/v5.0.8/js/all.js"></script>
   <script src="cordova.js"></script>
 
   <link rel="stylesheet" href="css/index.css">
+  <link rel="stylesheet" href="css/jquery-confirm.css">
 
   <!-- Font -->
   <link href="https://fonts.googleapis.com/css?family=Prompt" rel="stylesheet">
@@ -46,32 +48,32 @@
           $.each(obj, function(i, field){     
             if(obj[i][2] == "โกดัง"){
               $('#show').append( "<div id='cus-"+i+"' class='row'>" +
-              "<span id='id-cus-"+i+"' hidden>"+obj[i].ware_id+"</span>" +              
+              "<span id='id-ware-"+i+"' hidden>"+obj[i].ware_id+"</span>" +              
               "<div class='col-1 text-left'>" +
-                "<i class='fa fa-trash-alt i-del' onclick='edit_del("+i+");' hidden></i>" +
-                "<i class='fa fa-edit i-edit' onclick='edit_cus("+i+");' hidden></i>" +
+                "<i class='fa fa-trash-alt i-del' onclick='edit_del("+i+");' style='color: #666666;' hidden></i>" +
+                "<i class='fa fa-edit i-edit' onclick='edit_ware("+i+");' style='color: #666666;' hidden></i>" +
               "</div>" +
               "<div class='col-6 text-center no-pd'>" +
-                "<p>"+obj[i].ware_name+"</p>" +
+                "<p id='name-ware-"+i+"'>"+obj[i].ware_name+"</p>" +
               "</div>" +
               "<div class='col-4 text-center no-pd'>" +
-                "<p id='type-cus-"+i+"'>โกดัง</p>" +
+                "<p id='type-ware-"+i+"'>โกดัง</p>" +
               "</div>" +
               "<div class='col-1'></div>" +
               "</div>" +   
               "<hr id='hr-"+i+"'>");  
             }else if(obj[i][2] == "หน้าร้าน"){
               $('#show').append( "<div id='cus-"+i+"' class='row'>" +
-              "<span id='id-cus-"+i+"' hidden>"+obj[i].shop_id+"</span>" +              
+              "<span id='id-ware-"+i+"' hidden>"+obj[i].shop_id+"</span>" +              
               "<div class='col-1 text-left'>" +
-                "<i class='fa fa-trash-alt i-del' onclick='edit_del("+i+");' hidden></i>" +
-                "<i class='fa fa-edit i-edit' onclick='edit_cus("+i+");' hidden></i>" +
+                "<i class='fa fa-trash-alt i-del' onclick='edit_del("+i+");' style='color: #666666;' hidden></i>" +
+                "<i class='fa fa-edit i-edit' onclick='edit_ware("+i+");' style='color: #666666;' hidden></i>" +
               "</div>" +
               "<div class='col-6 text-center no-pd'>" +
-                "<p>"+obj[i].shop_name+"</p>" +
+                "<p id='name-ware-"+i+"'>"+obj[i].shop_name+"</p>" +
               "</div>" +
               "<div class='col-4 text-center no-pd'>" +
-                "<p id='type-cus-"+i+"'>หน้าร้าน</p>" +
+                "<p id='type-ware-"+i+"'>หน้าร้าน</p>" +
               "</div>" +
               "<div class='col-1'></div>" +
               "</div>" +   
@@ -99,15 +101,22 @@
     function menu(arg) {
       // Animate
       disactive(arg);
-      $("#i-" + arg).fadeOut(100).fadeIn(100, function () {
-        $("#i-" + arg).addClass('active');
-      });
+      console.log(arg);
+      if($("#i-"+arg).hasClass('active')){
+        console.log("i-"+arg+"hasClass('active')");
+        $("#i-"+arg).removeClass('active');
+      }else{
+        $("#i-" + arg).fadeOut(150).fadeIn(100, function() {
+          $("#i-" + arg).addClass('active');
+        });
+      }
 
-      if (arg == "add") {
+      if(arg == "add"){
         goto = "warehouse_add.html";
-        transition_page_next_flip(goto);
-      } else if (arg == "edit") {
+        transition_page_back_flip(goto);
+      }else if(arg == "edit"){
         // show edit all
+        //edit_ware("1");
         if ($(".i-edit").is(":visible")) {
           $(".i-del").attr('hidden', true);
           $(".i-edit").attr('hidden', true);
@@ -116,8 +125,9 @@
           $(".i-del").attr('hidden', true);
           $(".i-edit").attr('hidden', false);
         }
-      } else if (arg == "del") {
-        // show del all 
+      }else if (arg == "del") {
+        //edit_del(1);
+        // show trash all 
         if($(".i-del").is(":visible")){
           $(".i-edit").attr('hidden', true);
           $(".i-del").attr('hidden', true);
@@ -129,25 +139,136 @@
       }
     }
 
+    function save_edit_name(arg){
+      var id = $("#id-ware-"+arg).text();
+      var name = $("#name-ware-"+arg).text();
+      var txt = $("#i").val();
+      var type = $("#type-ware-"+arg).text();
+      if(name == txt){       
+        return 0;
+      }
+      $.ajax({
+        type: "POST",
+        url:"https://omise-webpack.000webhostapp.com/www/php/rename_ware_shop.php",           
+        data: {'id' : id,
+                'type' : type,
+                'name' : txt},               
+        success: function(data){           
+            if(data == "success"){
+              $(".jconfirm-title").text(txt);
+              $(".jconfirm-title").append('&nbsp&nbsp<i class="fa fa-edit" style="font-size: 80%; padding-bottom: 2%;"></i>');
+              $(".jconfirm-title").prop("hidden", false);
+              $("#name-ware-"+arg).text(txt);
+              $("#apd-row").remove();
+            }          
+        }               
+      });     
+    }
+
+    function update_ware(arg,type){
+      var id = $("#id-ware-"+arg).text();     
+      $.ajax({
+        type: "POST",
+        url:"https://omise-webpack.000webhostapp.com/www/php/rename_ware_shop.php",           
+        data: {'id' : id,
+                'type' : type,
+                'name' : ""},               
+        success: function(data){            
+            if(data == "success"){
+              $("#type-ware-"+arg).text(type);
+              $("style").append('.jconfirm .jconfirm-box{margin-bottom: 5%;}');
+            }          
+        }               
+      });  
+    }
+
     function edit_ware(arg) {
-      // Change p tag -> to input tag
+      $("style").append('.jconfirm .jconfirm-box{margin-bottom: 60%;}');
+      name = $("#name-ware-"+arg).text();
+      //name = "โกดัง C  ";
+      $.dialog({
+        title: name + '&nbsp&nbsp<i class="fa fa-edit" style="font-size: 80%; padding-bottom: 2%;"></i>',
+        content: '<hr style="width: 80%; margin-bottom: 0;">',
+        onContentReady: function () {
+            this.$title.click(function(event) {
+              txt = $(".jconfirm-title").text();
+              txt = $.trim(txt);// remove white space
+              $(".jconfirm-title-c").append('<div id="apd-row" class="row"><div class="col-1"></div><div class="col-10 text-center"><div class="input-group-prepend"><input autofocus class="w3-input text-center" id="i" style="background: white; margin-left: 5%; margin-right: 2%; padding-left: 5%;"><i class="fa fa-check" style="color: green; margin-top: 2%;" onclick="save_edit_name('+arg+');"></i></div></div><div class="col-1"></div></div>');
+              $(".jconfirm-title").prop("hidden", true);
+              $("#i").val(txt);
+              $("#i").focus();
+            });
+        },
+        onOpenBefore: function () {
+          $(".jconfirm-buttons .btn-choice:nth-child(1)").css("border-bottom", "solid #848484 1px");
+            $(".jconfirm-buttons .btn-choice:nth-child(2)").css({"margin-bottom": "10%", "border-bottom": "solid #848484 1px"});
+          $(".jconfirm-title").css("padding-left", "7%");
+        },
+        backgroundDismiss: true,
+        /*buttons: {
+          form1: {
+            text: 'โกดัง',
+            btnClass: 'btn-choice',
+            action: function () {
+              if($("#type-ware-"+arg).text() == "โกดัง"){              
+                return 0;
+              }
+              update_ware(arg,'โกดัง');             
+            }
+          },
+          form2: {
+            text: 'หน้าร้าน',
+            btnClass: 'btn-choice',
+            action: function () {
+              if($("#type-ware-"+arg).text() == "หน้าร้าน"){             
+                return 0;
+              }
+              update_ware(arg,'หน้าร้าน');           
+            }
+          },
+          ยกเลิก: function () {
+              $("style").append('.jconfirm .jconfirm-box{margin-bottom: 5%;}');
+          },
+          formSubmit: {
+            text: 'ตกลง',
+            btnClass: 'btn-danger',
+            action: function () {
+              $("style").append('.jconfirm .jconfirm-box{margin-bottom: 5%;}');
+            }
+          }
+        }*/
+      });
     }
 
     function edit_del(arg) {
-       var id = $('#id-cus-' + arg).text();
-       var type = $('#type-cus-' + arg).text();
-      $.ajax({
-        type: "POST",
-        url:"https://omise-webpack.000webhostapp.com/www/php/delete_ware_shop.php",           
-        data: {'id' : id,
-               'type' : type},               
-        success: function(data){                             
-            if(data == "success"){
-              $("#cus-"+arg).remove(); 
-              $("#hr-"+arg).remove(); 
-            }          
-        }               
-      });
+      var id = $('#id-ware-' + arg).text();
+      var type = $('#type-ware-' + arg).text();
+      var name = $('#name-ware-' + arg).text();
+      $.confirm({
+        title: 'ยืนยันการลบรายการ',
+        content: 'ต้องการลบ '+name+' หรือไม่',
+        backgroundDismiss: true,
+        buttons: {
+          formSubmit: {
+            text: 'ตกลง',
+            btnClass: 'btn-danger',
+            action: function () {
+              $.ajax({
+                type: "POST",
+                url:"https://omise-webpack.000webhostapp.com/www/php/delete_ware_shop.php",           
+                data: {'id' : id,
+                       'type' : type},               
+                success: function(data){                             
+                    if(data == "success"){
+                      $("#cus-"+arg).remove(); 
+                      $("#hr-"+arg).remove(); 
+                    }          
+                }               
+              });
+            }
+          },ยกเลิก: function () {}
+        }
+      }); 
     }
   </script>
 </head>
@@ -189,7 +310,7 @@
 
   <!-- Nav menu bottom -->
   <div class="row fixed-bottom navs">
-    <div class="col-3 text-center" onclick="menu('home')">
+    <div class="col-3 text-center" onclick="transition_page_back('index.html');">
       <i id="i-home" class="fas fa-home menu"></i>
     </div>
     <div class="col-3 text-center" onclick="menu('add')">
