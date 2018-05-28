@@ -409,11 +409,16 @@
     <div class="container justify-content-center" style="margin-top: 20%; margin-bottom: 25%;">
         <div class="container">
             <div class="row" style="margin-bottom: 20%;">
-              <div class="col-12 text-center" onclick="selectfolder();">
+              <div class="col-7 text-center" onclick="selectfolder();">
                 <button id="slct_folder" class="select_folder">เลือกสินค้า</button>
               </div>
+              <div class="col-5 text-center no-pd">
+                  <input id="store" type="text" class="w3-input no-pd" data-toggle="dropdown" placeholder="หน้าร้าน" readonly>
+                  <ul id="ul-store" class="dropdown-menu text-center no-pd" aria-labelledby="role" >
+                  </ul>
+              </div>
             </div>
-            <div class="row" style="margin-bottom: 18%;">
+            <div class="row mg-10">
                 <div class="col-9 text-center">
                     <label for="name">ชื่อสินค้า</label>
                     <input id="name" type="text" class="w3-input">
@@ -423,7 +428,10 @@
                     <input id="amount" type="number" class="w3-input">
                 </div>
             </div>
-            <div class="row mg-10">
+            <div id="ctn-add" class="container" style="margin-top: 5%;">
+-                
+-            </div>
+            <div class="row mg-10" style="margin-top: 18%;">
                 <div class="col-12 text-center">
                     <button id="btn-qr" class="mbtn-green" onclick="scanqr();" style="width: 70%;">สแกน</button>
                 </div>
