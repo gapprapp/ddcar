@@ -101,7 +101,7 @@
                     "<div class='row' style='margin-bottom: 4%;'>" +
                         "<div class='col-2'></div>" +
                         "<div class='col-4 text-center no-pd'>รวม : </div>" +
-                        "<div class='col-4 text-center no-pd'>"+sum_prod+"</div>" +
+                        "<div id='sum-"+i+"' class='col-4 text-center no-pd'>"+sum_prod+"</div>" +
                         "<div class='col-2'></div>" +
                     "</div>" +
                     "<!--<div class='row'>" +
@@ -151,13 +151,13 @@
         }
        
         function edit_prod(arg) {
-            var amt_old = $("#amount-" + arg).val();
-            var price_old = $('#price-'+arg).val();
+            var amt_old = $("#amount-" + arg).text();
+            var price_old = $('#price-'+arg).text();
             var sum_old = amt_old*price_old;   
             var name = $("#name-"+arg).text();
             $.confirm({
               title: name,
-              content: '<div class="row" style="margin-top: 2%; margin-bottom: 2%;"><div class="col-1"></div><div class="col-5 text-center" style="font-size: 110%; font-weight: bold;">ราคา</div><div class="col-1"></div><div class="col-4 text-center" style="font-size: 110%; font-weight: bold;">จำนวน</div><div class="col-1"></div></div><div class="row"><div class="col-1"></div><div class="col-5 text-center"><input id="edt-price" type="number" class="input-cf" placeholder="'+$("#price-"+arg).text()+'" autofocus></div><div class="col-1">x</div><div class="col-4 text-center"><input id="edt-amt" type="number" class="input-cf" placeholder="'+$("#amount-"+arg).text()+'"></div><div class="col-1"></div></div>',
+              content: '<div class="row" style="margin-top: 2%; margin-bottom: 2%;"><div class="col-1"></div><div class="col-5 text-center" style="font-size: 110%; font-weight: bold;">ราคา</div><div class="col-1"></div><div class="col-4 text-center" style="font-size: 110%; font-weight: bold;">จำนวน</div><div class="col-1"></div></div><div class="row"><div class="col-1"></div><div class="col-5 text-center"><input id="edt-price" type="number" class="input-cf" placeholder="" value="'+$("#price-"+arg).text()+'" autofocus></div><div class="col-1">x</div><div class="col-4 text-center"><input id="edt-amt" type="number" class="input-cf" placeholder="" value="'+$("#amount-"+arg).text()+'"></div><div class="col-1"></div></div>',
               backgroundDismiss: true,
               buttons: {
                 ยกเลิก: function () {
@@ -171,13 +171,14 @@
                     var amt = $("#edt-amt").val();
                     arr_data[arg].amt = amt;  
                     arr_data[arg].price = price;  
-                    localStorage.setItem('arr_prod', JSON.stringify(arr_data));   
+                    localStorage.setItem('arr_sale', JSON.stringify(arr_data));   
                     var net = $("#net").html(); 
                     var sum = parseFloat(net.replace(/,/g, ''));
                     var new_net = (sum-sum_old)+(amt*price);
                     $("#net").text(new_net.toLocaleString());                    
-                    $("#price-"+arg).text($("#edt-price").val()); 
-                    $("#amount-"+arg).text($("#edt-amt").val());
+                    $("#price-"+arg).text(price); 
+                    $("#amount-"+arg).text(amt);
+                    $("#sum-"+arg).text(price*amt);
                   }
                 }
               }
@@ -197,8 +198,8 @@
                     text: 'ตกลง',
                     btnClass: 'btn-danger',
                     action: function () {
-                        var price = $('#price-'+arg).val();   
-                        var amt = $('#amount-'+arg).val();
+                        var price = $('#price-'+arg).text();   
+                        var amt = $('#amount-'+arg).text();
                         var net = $("#net").html();           
                         var sum = parseFloat(net.replace(/,/g, ''))-(price*amt);          
                         $("#net").text(sum.toLocaleString());   
@@ -229,6 +230,7 @@
                 $("#amount-"+i).prop('id', 'amount-'+(i-1));                 
                 $("#name-"+i).prop('id', 'name-'+(i-1));
                 $("#collapse-"+i).prop('id', 'collapse-'+(i-1));
+                $("#sum-"+i).prop('id', 'sum-'+(i-1));         
                 $("#hr-"+i).prop('id', 'hr-'+(i-1));      
             } 
             localStorage.setItem('arr_sale', JSON.stringify(arr_data));          
@@ -253,7 +255,7 @@
             $(".jconfirm .jconfirm-box").css('margin-bottom', '50%');
            $.confirm({
                 title: 'ลด',
-                content: '<input id="edt-discount" type="number" class="input-cf" style="width: 75%; margin-left: 12.5%; margin-top: 2%;" placeholder="'+$("#discount").text()+'" autofocus>',
+                content: '<input id="edt-discount" type="number" class="input-cf" style="width: 75%; margin-left: 12.5%; margin-top: 2%;" placeholder="" value="'+$("#discount").text()+'" autofocus>',
                 backgroundDismiss: true,
                 buttons: {
                   ยกเลิก: function () {

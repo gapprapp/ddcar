@@ -53,7 +53,7 @@
     </style>
 
     <script>
-        var arr_detail;
+        var arr_detail = [];
         $(document).ready(function () {
             $.ajax({
                 type: "GET",
@@ -76,15 +76,15 @@
 
             var retrievedObject = localStorage.getItem('arr_sale');
             var arr_data = JSON.parse(retrievedObject);
-            for(var i = 0 ; i < arr_data.length ; i ++){  
+            for(var i = 0 ; i < arr_data.length ; i ++){                
                 if(arr_data[i].old_price != arr_data[i].price){
-                    item = {}                  
-                    item ["prod_id"] =  arr_data[i].prod_id;                  
+                    item = {};                 
+                    item ["prod_id"] = arr_data[i].prod_id;                  
                     item ["price"] =  arr_data[i].price;          
 
                     arr_detail.push(item); 
                 }
-            }  
+            }            
         });
 
         function showpay(){
@@ -157,15 +157,18 @@
         }
 
         function save(){
+            if($("#ware").val() == ""){
+                return 0;
+            }
             var d = new Date($.now());
             var datetime = d.getFullYear() + "-" + (d.getMonth()+1) + "-" + d.getDate() + " " + d.getHours() + ":" + d.getMinutes() + ":" + d.getSeconds(); 
             var retrievedObject = localStorage.getItem('arr_sale');
             var arr_data = JSON.parse(retrievedObject);
             json_string = JSON.stringify(arr_data); 
-            json_detail = JSON.stringify(arr_detail);
+            json_detail = JSON.stringify(arr_detail);           
             var dataString =  "JSON=" + json_string + "&JSOND=" + json_detail + "&ware_id=" + b_id + "&date=" + datetime + "&type=" + type
             + "&cus_id=" + localStorage.cus_id + "&pay=" + $("#pay").val() + "&net=" + localStorage.net + "&dis=" + localStorage.dis;                        
-
+            alert(dataString);
             $.ajax({
                 type: "POST",
                 url:"https://omise-webpack.000webhostapp.com/www/php/save_order.php",           

@@ -18,7 +18,8 @@
         $result1 = mysqli_query($conn, $query);   
         if(mysqli_num_rows($result1) > 0){    
             while($row1 = mysqli_fetch_array($result1)){ 
-                array_push($row,$row1);              
+                $cus_price = $row1['cus_price'];
+                array_push($row,$cus_price);              
             }   
           } 
         $output[] = $row;  

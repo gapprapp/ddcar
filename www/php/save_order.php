@@ -29,7 +29,7 @@
         if(mysqli_num_rows($result) > 0){   
             $sql = "UPDATE detail_cus SET prod_id = '$prod_id',cus_id = '$cus',cus_price = '$price')"; 
         }else{
-            $sql = "INSERT INTO detail_cus (prod_id,cus_id,cus_price) VALUE ('$prod_id','$cus','$price')"; 
+            $sql = "INSERT INTO detail_cus(prod_id,cus_id,cus_price) VALUE ('$prod_id','$cus','$price')"; 
         }        
         $result = mysqli_query($conn, $sql);  
         if(!$result){

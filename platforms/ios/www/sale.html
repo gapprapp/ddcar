@@ -82,6 +82,7 @@
                 $("#btn-addprod").removeAttr('disabled');
             }
             if(localStorage.cus_name){
+                cus_id = localStorage.cus_id;
                 type = localStorage.type;
                 $("#cus").val(localStorage.cus_name);              
                 $("#name").removeAttr('readonly');
@@ -95,8 +96,8 @@
                 var retrievedObject = localStorage.getItem('arr_sale');
                 var arr_data = JSON.parse(retrievedObject);             
                 $('#check-sale').text(arr_data.length);       
-            }          
-
+            }
+          
             if(prod_id){
                 $.ajax({
                     type: "POST",
@@ -104,9 +105,9 @@
                     data:{'prod_id' : prod_id,'cus_id':cus_id},
                     //async: false,                       
                     success: function(data){
-                        var obj = jQuery.parseJSON(data);                                         
-                        $.each(obj, function(i, field){
-                            if(obj.length == 8){
+                        var obj = jQuery.parseJSON(data);                                                           
+                        $.each(obj, function(i, field){                           
+                            if(obj[i][7]){
                                 $('#price').val(obj[i][7]);  
                             }else{                                
                                 if(type == "ขายปลีก"){
@@ -280,11 +281,11 @@
                                 $.ajax({
                                     type: "POST",
                                     url: "https://omise-webpack.000webhostapp.com/www/php/get_sale.php",                
-                                    data: {'qr' : value},             
+                                    data: {'qr' : value,'cus_id':cus_id},             
                                     success: function(data){                             
                                         var obj = jQuery.parseJSON(data); 
                                         $.each(obj, function(i, field){                                           
-                                            if(obj.length == 8){
+                                            if(obj[i][7]){
                                                 $('#price').val(obj[i][7]);  
                                             }else{
                                                 if(type == "ขายปลีก"){
@@ -294,7 +295,8 @@
                                                 }                                
                                             }  
                                             $('#name').val(obj[i].prod_name);
-                                            $('#barcode').val(obj[i].prod_code);                                                       
+                                            $('#barcode').val(obj[i].prod_code);   
+                                            prod_id = obj[i].prod_id;                                                    
                                             img = obj[i].img;   
                                             old_price = $('#price').val();     
                                         });                                                 
