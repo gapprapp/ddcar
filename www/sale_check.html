@@ -54,17 +54,12 @@
 
     <script>
         $(document).ready(function () { 
-            margin = $("#navs-menu").outerHeight();
-            $("#ctn-btn").css('margin-bottom', margin);
-            $("#ctn-btn").css('padding-bottom', margin+20);
+            margin = $("#navs-menu").outerHeight()*3;
+            $("#ctn-btm").css('padding-bottom', margin);
+            margin = $("#ctn-btm").outerHeight();
+            $("#big-ctn").css('margin-bottom', margin); 
             
             $("style").append('.jconfirm .jconfirm-box{margin-bottom: 60%;}');
-
-            margin = $("#ctn-btn").outerHeight() + $("#navs-menu").outerHeight() -15;
-            $("#navs-net").css('margin-bottom', margin); 
-
-            margin = $("#ctn-btn").outerHeight() + $("#navs-menu").outerHeight() + $("#navs-net").outerHeight() -15;
-            $("#big-ctn").css('margin-bottom', margin);      
         });
 
         function disactive(arg) {
@@ -156,12 +151,25 @@
                     $("#collapse-" + i).slideToggle('collapse');
                 }
             }
-
-            $("#collapse-"+arg).slideToggle('collapse', function(){
-                //var body = $("body, html");
-                //var top = $("#navs-net").offset().top;
-                //body.animate({scrollTop :top}, 1500);
-            });
+            if(arg == 1){
+                $("#collapse-"+arg).slideToggle('collapse', function(){
+                    var body = $("body, html");
+                    var top = $("#ctn-btm").offset().top/7;
+                    body.animate({scrollTop :top}, 300);
+                });
+            }else if(arg == 2){
+                $("#collapse-"+arg).slideToggle('collapse', function(){
+                    var body = $("body, html");
+                    var top = $("#ctn-btm").offset().top/4;
+                    body.animate({scrollTop :top}, 600);
+                });
+            }else if(arg >= 3){
+                $("#collapse-"+arg).slideToggle('collapse', function(){
+                    var body = $("body, html");
+                    var top = $("#ctn-btm").offset().top;
+                    body.animate({scrollTop :top}, 1400);
+                });
+            }
         }
 
         function edit_discount(){
@@ -336,23 +344,21 @@
     </div>
     <!-- End big container -->
 
-    <div id="navs-net" class="row fixed-bottom" style="background: #f3f3f3;" >
-        <div class="col-1"></div>
-        <div class="col-5 text-center" onclick="edit_discount();">
-            <h5 class="h5-title" style="font-size: 130%;">ลด :
-                <span style="color: green;" id="discount">1000</span>
-            </h5>
-        </div>
-        <div class="col-5 text-center">
-            <h5 class="h5-title" style="font-size: 130%;">รวม :
-                <span  style="color: red;"id="net">50000</span>
-            </h5>
-        </div>
-        <div class="col-1"></div>
-    </div>
 
-    <div id="ctn-btn" class="container fixed-bottom" style="background: #f3f3f3;">
+    <div id="ctn-btm" class="container fixed-bottom" style="background: #f3f3f3;">
         <div class="container">
+            <div class="row">
+                <div class="col-5 text-left" onclick="edit_discount();">
+                    <h5 class="h5-title" style="font-size: 130%;">ลด :
+                        <span style="color: green;" id="discount">1000</span>
+                    </h5>
+                </div>
+                <div class="col-7 text-center">
+                    <h5 class="h5-title" style="font-size: 130%;">รวม :
+                        <span  style="color: red;"id="net">500000</span>
+                    </h5>
+                </div>
+            </div>
             <div class="row">
                 <div class="col-4 text-center" style="padding-left: 0; padding-right: 0;">
                     <button class="mbtn-cancle" onclick="clearAll();">ยกเลิก</button>
