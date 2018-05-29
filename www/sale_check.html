@@ -116,7 +116,7 @@
 
             if(localStorage.net && localStorage.dis){               
                 $("#net").text(localStorage.net.toLocaleString());
-                $('#discount').text(localStorage.discount);              
+                $('#discount').text(localStorage.dis);              
             }     
         });
 
@@ -288,6 +288,7 @@
             // เคลียค่าทั้งหมดและกลับไปหน้า sale เพื่อเริ่มบิลใหม่
             localStorage.cus_name = "";
             localStorage.cus_id = "";
+            localStorage.type = "";
             localStorage.arr_sale = "";           
             localStorage.net =  ""; 
             localStorage.dis =  "";          

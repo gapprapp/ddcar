@@ -95,7 +95,7 @@
         $item++;
         $prod_id = $data['prod_id'];
         $price = $data['price'];    
-        $amt = $data['amt'];    
+        $amt = $data['amount'];    
       
         $sql1 = "INSERT INTO sale_order_item (order_id,item_id,prod_id,prod_price,prod_amount)
          VALUE ('$last_id','$item','$prod_id','$price','$amt')"; 

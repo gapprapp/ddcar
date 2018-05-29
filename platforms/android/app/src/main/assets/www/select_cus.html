@@ -41,10 +41,7 @@
       list-style-type: none;
       margin: 0;
       padding: 0;
-    }
-    a { 
-      color: inherit; 
-    } 
+    }    
   </style>
 
   <script>
@@ -55,17 +52,15 @@
             success: function(data){                                   
               var obj = jQuery.parseJSON(data);                    
               $.each(obj, function(i, field){                   
-                  $('#myUL').append("<li>" +
-                  //"<a href='#' onclick = 'select_cus("+field.cus_id+","+field.cus_name+");'>" +
-                  "<div id='cus-"+i+"' class='row' onclick='select_cus("+field.cus_id+",\""+field.cus_name+"\");'>" +         
+                  $('#myUL').append("<li>" +                
+                  "<div id='cus-"+i+"' class='row' onclick='select_cus("+field.cus_id+",\""+field.cus_name+"\",\""+field.cus_type+"\");'>" +         
                     "<div class='col-7 text-center'>" +
                       "<p id='cus_name-"+i+"'>"+field.cus_name+"</p>" +
                     "</div>" +
                     "<div class='col-4 text-center'>" +
                       "<p>"+field.cus_type+"</p>" +
                     "</div>" +
-                  "</div>" +  
-                  //"</a>" +
+                  "</div>" +                   
                   "<hr id='hr-2'>" + 
                   "</li>");
               });                         
@@ -74,9 +69,8 @@
                               
     });
 
-    function select_cus(arg,name){
-      alert(arg+name);
-      goto = 'sale.html?cus='+arg+'&name='+name;
+    function select_cus(arg,name,type){    
+      goto = 'sale.html?cus='+arg+'&name='+name+'&type='+type;
       transition_page_back_flip(goto);
     }
 

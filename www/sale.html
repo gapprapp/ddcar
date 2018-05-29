@@ -68,10 +68,12 @@
             cus_id = url.searchParams.get("cus");
             type = url.searchParams.get("type");
             prod_id = url.searchParams.get("product");
+           
             if(cus){
                 $("#cus").val(cus);
                 localStorage.cus_name = cus;
                 localStorage.cus_id = cus_id;
+                localStorage.type = type;
                 $("#name").removeAttr('readonly');
                 $("#price").removeAttr('readonly');
                 $("#amount").removeAttr('readonly');   
@@ -80,6 +82,7 @@
                 $("#btn-addprod").removeAttr('disabled');
             }
             if(localStorage.cus_name){
+                type = localStorage.type;
                 $("#cus").val(localStorage.cus_name);              
                 $("#name").removeAttr('readonly');
                 $("#price").removeAttr('readonly');
@@ -91,7 +94,7 @@
             if(localStorage.arr_sale){
                 var retrievedObject = localStorage.getItem('arr_sale');
                 var arr_data = JSON.parse(retrievedObject);             
-                $('#check-sale').text("("+arr_data.length+")");       
+                $('#check-sale').text(arr_data.length);       
             }          
 
             if(prod_id){
@@ -105,7 +108,7 @@
                         $.each(obj, function(i, field){
                             if(obj.length == 8){
                                 $('#price').val(obj[i][7]);  
-                            }else{
+                            }else{                                
                                 if(type == "ขายปลีก"){
                                     $('#price').val(obj[i].prod_price);  
                                 }else{
@@ -226,7 +229,7 @@
                 arr_data.push(item); 
                 localStorage.setItem('arr_sale', JSON.stringify(arr_data));         
             
-                $('#check-sale').text("("+arr_data.length+")");       
+                $('#check-sale').text(arr_data.length);       
 
                 $('#barcode').val("");
                 $('#name').val("");
@@ -333,7 +336,7 @@
         <div class="col-9 text-center" style="padding-left: 15%;">
             <h5 id="h5-title">ขาย</h5>
         </div>
-        <div class="col-2 text-right" onclick="check();"><div id="check-sale"class="circle-text">10</div></div>
+        <div class="col-2 text-right" onclick="check();"><div id="check-sale"class="circle-text">0</div></div>
     </div>
     <br>
 
@@ -341,8 +344,8 @@
     <div class="container justify-content-center" style="margin-top: 15%;">
         <div class="container">
             <div class="row" style="margin-bottom: 10%;">
-                <div disabled id="btn-folder" class="col-12 text-center" onclick="selectfolder();">
-                    <button class="select_folder">เลือกหมวดหมู่</button>
+                <div class="col-12 text-center">
+                    <button disabled id="btn-folder" class="select_folder" onclick="selectfolder();">เลือกหมวดหมู่</button>
                 </div>
             </div>
             <div class="row mg-10">
