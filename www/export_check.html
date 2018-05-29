@@ -98,7 +98,7 @@
                 <div class='row' style='margin-bottom: 4%;'>\
                     <div class='col-2'></div>\
                     <div class='col-4 text-center no-pd'>รวม : </div>\
-                    <div class='col-4 text-center no-pd'>"+sum_prod+"</div>\
+                    <div id='sum-"+i+"' class='col-4 text-center no-pd'>"+sum_prod+"</div>\
                     <div class='col-2'></div>\
                 </div>\
                 <!--<div class='row'>\
@@ -159,8 +159,9 @@
                 $("#price-"+i).prop('id', 'price-'+(i-1));
                 $("#amount-"+i).prop('id', 'amount-'+(i-1));
                 $("#i-collapse-"+i).attr('onclick', "collapse("+(i-1)+")");      
-                $("#i-collapse-"+i).prop('id', 'i-collapse-'+(i-1));
+                $("#i-collapse-"+i).prop('id', 'i-collapse-'+(i-1));                
                 $("#collapse-"+i).prop('id', 'collapse-'+(i-1));
+                $("#sum-"+i).prop('id', 'sum-'+(i-1));    
                 $("#hr-"+i).prop('id', 'hr-'+(i-1));      
             } 
             localStorage.setItem('arr_ex', JSON.stringify(arr_data));          
@@ -244,6 +245,7 @@
             var sum = parseFloat(net.replace(/,/g, ''));
             var new_net = (sum-sum_old)+(amt*cost);
             $("#net").text(new_net.toLocaleString());  
+            $("#sum-"+arg).text(cost*amt);
         }
 
         function collapse(arg) {

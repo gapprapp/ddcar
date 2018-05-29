@@ -61,18 +61,109 @@
     </style>
 
     <script>
+        var prod_id,img,cus_id,type,old_price;
         $(document).ready(function () { 
             url = new URL(window.location.href);
-            cus = url.searchParams.get("cus");
+            cus = url.searchParams.get("name");
+            cus_id = url.searchParams.get("cus");
+            type = url.searchParams.get("type");
+            prod_id = url.searchParams.get("product");
+           
             if(cus){
                 $("#cus").val(cus);
+                localStorage.cus_name = cus;
+                localStorage.cus_id = cus_id;
+                localStorage.type = type;
                 $("#name").removeAttr('readonly');
                 $("#price").removeAttr('readonly');
-                $("#amount").removeAttr('readonly');
-                $("#barcode").removeAttr('readonly');
+                $("#amount").removeAttr('readonly');   
+                $("#btn-folder").removeAttr('disabled');           
                 $("#btn-addpic").removeAttr('disabled');
                 $("#btn-addprod").removeAttr('disabled');
             }
+            if(localStorage.cus_name){
+                cus_id = localStorage.cus_id;
+                type = localStorage.type;
+                $("#cus").val(localStorage.cus_name);              
+                $("#name").removeAttr('readonly');
+                $("#price").removeAttr('readonly');
+                $("#amount").removeAttr('readonly');   
+                $("#btn-folder").removeAttr('disabled');           
+                $("#btn-addpic").removeAttr('disabled');
+                $("#btn-addprod").removeAttr('disabled');
+            }
+            if(localStorage.arr_sale){
+                var retrievedObject = localStorage.getItem('arr_sale');
+                var arr_data = JSON.parse(retrievedObject);             
+                $('#check-sale').text(arr_data.length);       
+            }
+          
+            if(prod_id){
+                $.ajax({
+                    type: "POST",
+                    url:"https://omise-webpack.000webhostapp.com/www/php/get_sale.php",    
+                    data:{'prod_id' : prod_id,'cus_id':cus_id},
+                    //async: false,                       
+                    success: function(data){
+                        var obj = jQuery.parseJSON(data);                                                           
+                        $.each(obj, function(i, field){                           
+                            if(obj[i][7]){
+                                $('#price').val(obj[i][7]);  
+                            }else{                                
+                                if(type == "ขายปลีก"){
+                                    $('#price').val(obj[i].prod_price);  
+                                }else{
+                                    $('#price').val(obj[i].prod_pricesend);  
+                                }                                
+                            }  
+                            $('#name').val(obj[i].prod_name);
+                            $('#barcode').val(obj[i].prod_code);                                                       
+                            img = obj[i].img;   
+                            old_price = $('#price').val();                                                 
+                        });                                        
+                    }               
+                }); 
+            }
+
+            /*var options = {
+                url: function(phrase) {
+                    return "https://omise-webpack.000webhostapp.com/www/php/searh_prod.php";
+                },
+                getValue: function(element) {    
+                    //console.log(element);                               
+                    return element.prod_name;
+                },
+                ajaxSettings: {                      
+                method: "POST",
+                data: {}
+                },
+                preparePostData: function(data) {
+                    data.phrase = $("#name").val();                  
+                    return data;
+                },
+                list: {                        
+                    maxNumberOfElements: 5,
+                    showAnimation: {
+                        type: "slide",
+                        time: 200
+                    },
+                    hideAnimation: {
+                        type: "slide",
+                        time: 200
+                    },
+                    onChooseEvent: function() {
+                        var code = $("#name").getSelectedItemData().prod_code;                    
+                        var price = $("#name").getSelectedItemData().prod_price;
+                        prod_id = $("#name").getSelectedItemData().prod_id;
+                        img = $("#name").getSelectedItemData().img; 
+
+                        $('#barcode').val(code);
+                        $('#price').val(price);                                                                                             
+                    }
+                }, 
+                //theme: "blue-light",                   
+                };
+            $("#name").easyAutocomplete(options);*/     
         });
 
         function disactive(arg) {
@@ -117,12 +208,42 @@
             $("#btn-addprod").prop("disabled", true);
         }
 
-        function add_prod(){
-            name = $("#name").val();
-            barcode = $("#barcode").val();
-            amount = $("#amount").val();
+        function add_prod(){           
+            var code = $('#barcode').val();
+            var price = $('#price').val();          
+            if(code != "" && price != ""){             
+                if(localStorage.arr_sale){
+                    var retrievedObject = localStorage.getItem('arr_sale');
+                    var arr_data = JSON.parse(retrievedObject);               
+                }else{
+                    var arr_data = [];              
+                }           
+                item = {}            
+                item ["qr"] =  code;
+                item ["prod_id"] =  prod_id;
+                item ["name"] =  $('#name').val();
+                item ["old_price"] =  old_price; 
+                item ["price"] =  price;               
+                item ["amt"] =  $('#amount').val();
+                item ["img"] =  img;     
 
-            $.confirm({
+                arr_data.push(item); 
+                localStorage.setItem('arr_sale', JSON.stringify(arr_data));         
+            
+                $('#check-sale').text(arr_data.length);       
+
+                $('#barcode').val("");
+                $('#name').val("");
+                $('#price').val("");                
+                $('#amount').val("1");                                     
+            }else{
+                $.alert({
+                    title: 'คำเตือน!',
+                    content: 'กรุณากรอกข้อมูลให้ครบ',
+                });
+            }          
+
+           /* $.confirm({
               title: "ชื่อสินค้า",
               content: '<div class="row" style="margin-top: 2%; margin-bottom: 2%;"><div class="col-12 text-center"><img src="https://i.imgur.com/7LVwcUc.png" id="img" alt="" style="width: 96%; height: 96%;"></div></div><div class="row"><div class="col-2"></div><div class="col-3 nopd text-right">รหัส :</div><div class="col-4 text-right">bnk426816</div><div class="col-2"></div></div><div class="row"><div class="col-2"></div><div class="col-3 nopd text-right">ราคา :</div><div class="col-4 text-center">2500</div><div class="col-2"></div></div><div class="row"><div class="col-2"></div><div class="col-3 nopd text-right">จำนวน :</div><div class="col-4 text-center">12</div><div class="col-2"></div></div>',
               backgroundDismiss: true,
@@ -139,7 +260,7 @@
                   }
                 }
               }
-            }); 
+            }); */
         }
 
         function selectfolder() {
@@ -149,7 +270,55 @@
         }
 
         function scanqr(){
-            alert("qr show");
+            cordova.plugins.barcodeScanner.scan(
+                function (result) {
+                    if(!result.cancelled){
+                        // In this case we only want to process QR Codes
+                        if(result.format == "QR_CODE"){
+                                var value = result.text;
+                                // This is the retrieved content of the qr code
+                                //alert(value);                        
+                                $.ajax({
+                                    type: "POST",
+                                    url: "https://omise-webpack.000webhostapp.com/www/php/get_sale.php",                
+                                    data: {'qr' : value,'cus_id':cus_id},             
+                                    success: function(data){                             
+                                        var obj = jQuery.parseJSON(data); 
+                                        $.each(obj, function(i, field){                                           
+                                            if(obj[i][7]){
+                                                $('#price').val(obj[i][7]);  
+                                            }else{
+                                                if(type == "ขายปลีก"){
+                                                    $('#price').val(obj[i].prod_price);  
+                                                }else{
+                                                    $('#price').val(obj[i].prod_pricesend);  
+                                                }                                
+                                            }  
+                                            $('#name').val(obj[i].prod_name);
+                                            $('#barcode').val(obj[i].prod_code);   
+                                            prod_id = obj[i].prod_id;                                                    
+                                            img = obj[i].img;   
+                                            old_price = $('#price').val();     
+                                        });                                                 
+                                    }               
+                                });         
+                        }else{
+                            //alert("Sorry, only qr codes this time ;)");
+                        }
+                    }else{
+                        //alert("The user has dismissed the scan");
+                    }
+                },
+                function (error) {
+                    $.alert({
+                        title: 'คำเตือน!',
+                        content: error,
+                    });
+                },
+                {
+                    prompt : "วางคิวอาโค้ดภายในสี่เหลี่ยมผืนผ้าที่ช่องมองภาพเพื่อแสกน"
+                }
+            );
         }
 
         function check(){
@@ -169,7 +338,7 @@
         <div class="col-9 text-center" style="padding-left: 15%;">
             <h5 id="h5-title">ขาย</h5>
         </div>
-        <div class="col-2 text-right" onclick="check();"><div class="circle-text">10</div></div>
+        <div class="col-2 text-right" onclick="check();"><div id="check-sale"class="circle-text">0</div></div>
     </div>
     <br>
 
@@ -177,8 +346,8 @@
     <div class="container justify-content-center" style="margin-top: 15%;">
         <div class="container">
             <div class="row" style="margin-bottom: 10%;">
-                <div class="col-12 text-center" onclick="selectfolder();">
-                    <button class="select_folder">เลือกหมวดหมู่</button>
+                <div class="col-12 text-center">
+                    <button disabled id="btn-folder" class="select_folder" onclick="selectfolder();">เลือกหมวดหมู่</button>
                 </div>
             </div>
             <div class="row mg-10">
@@ -205,7 +374,7 @@
                 </div>
                 <div class="col-3 text-center">
                     <label for="amount">จำนวน</label>
-                    <input readonly id="amount" type="number" class="w3-input">
+                    <input readonly id="amount" type="number" min="1" value="1" class="w3-input">
                 </div>
             </div>
             <div class="row mg-10">
