@@ -418,19 +418,29 @@
                   </ul>
               </div>
             </div>
-            <div class="row mg-10">
-                <div class="col-9 text-center">
+            <div class="row">
+                <div class="col-1 text-center no-pd"></div> 
+                <div class="col-8 text-center">
                     <label for="name">ชื่อสินค้า</label>
-                    <input id="name" type="text" class="w3-input">
+                    <!--<input id="name" type="text" class="w3-input">-->
                 </div>
                 <div class="col-3 text-center">
                     <label for="amount">จำนวน</label>
-                    <input id="amount" type="number" class="w3-input">
+                    <!--<input id="amount" type="number" value="1" min="1" class="w3-input">-->
                 </div>
             </div>
-            <div id="ctn-add" class="container" style="margin-top: 5%;">
+            <div id="ctn-add" class="container">
                 
             </div>
+            <div class="row">
+                <div class="col-1 text-center no-pd"></div> 
+                <div class="col-8 text-center">                   
+                    <input id="name" type="text" class="w3-input">
+                </div>
+                <div class="col-3 text-center">                  
+                    <input id="amount" type="number" value="1" min="1" class="w3-input">
+                </div>
+            </div>          
             <div class="row mg-10" style="margin-top: 18%;">
                 <div class="col-12 text-center">
                     <button id="btn-qr" class="mbtn-green" onclick="scanqr();" style="width: 70%;">สแกน</button>
@@ -443,7 +453,7 @@
             </div>
             <div class="row">
                 <div class="col-12 text-center">
-                    <button class="mbtn" onclick="save();" style="width: 100%;">[yom7d</button>
+                    <button class="mbtn" onclick="save();" style="width: 100%;">save</button>
                 </div>
             </div>
         </div>
