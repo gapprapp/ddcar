@@ -217,7 +217,9 @@
           goto = "transfer_in.html?product="+arg;
         }else if(from == "export"){
           goto = "export.html?product="+arg;
-        }    
+        }else if(from == "sale"){
+          goto = "sale.html?product="+arg;
+        }   
       }     
       transition_page_next(goto);
     }

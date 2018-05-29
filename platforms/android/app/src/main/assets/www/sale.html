@@ -63,7 +63,7 @@
     <script>
         $(document).ready(function () { 
             url = new URL(window.location.href);
-            cus = url.searchParams.get("cus");
+            cus = url.searchParams.get("name");
             if(cus){
                 $("#cus").val(cus);
                 $("#name").removeAttr('readonly');

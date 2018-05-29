@@ -37,13 +37,65 @@
     hr{
       margin-top: 0;
     }
+    ul {
+      list-style-type: none;
+      margin: 0;
+      padding: 0;
+    }
+    a { 
+      color: inherit; 
+    } 
   </style>
 
   <script>
-    function select_cus(arg){
-      goto = 'sale.html?cus='+arg;
+    $( document ).ready(function() {    
+        $.ajax({
+            type: "GET",
+            url: "https://omise-webpack.000webhostapp.com/www/php/get_cus.php",                   
+            success: function(data){                                   
+              var obj = jQuery.parseJSON(data);                    
+              $.each(obj, function(i, field){                   
+                  $('#myUL').append("<li>" +
+                  //"<a href='#' onclick = 'select_cus("+field.cus_id+","+field.cus_name+");'>" +
+                  "<div id='cus-"+i+"' class='row' onclick='select_cus("+field.cus_id+",\""+field.cus_name+"\");'>" +         
+                    "<div class='col-7 text-center'>" +
+                      "<p id='cus_name-"+i+"'>"+field.cus_name+"</p>" +
+                    "</div>" +
+                    "<div class='col-4 text-center'>" +
+                      "<p>"+field.cus_type+"</p>" +
+                    "</div>" +
+                  "</div>" +  
+                  //"</a>" +
+                  "<hr id='hr-2'>" + 
+                  "</li>");
+              });                         
+            }               
+        });             
+                              
+    });
+
+    function select_cus(arg,name){
+      alert(arg+name);
+      goto = 'sale.html?cus='+arg+'&name='+name;
       transition_page_back_flip(goto);
     }
+
+    function search() { 
+      var i = 0;                 
+      $('#myUL li').each(function(){
+          $(this).attr('data-search-term', $(this).text().toLowerCase());
+      });      
+
+      var searchTerm = $('#search_cus').val().toLowerCase();
+
+        $('#myUL li').each(function(){
+          if ($(this).filter('[data-search-term *= ' + searchTerm + ']').length > 0 || searchTerm.length < 1) {
+            $(this).show();                                                     
+          } else {
+            $(this).hide();                               
+          }
+        });          
+    }   
   </script>
 </head>
 
@@ -68,7 +120,7 @@
           <div id="imaginary_container">
                 <div class="input-group-prepend">
                   <div class="input-group">
-                    <input id="search_cus" type="text" class="form-control form-control-lg" placeholder="ค้นหาลูกค้า">
+                    <input id="search_cus" type="text" onkeyup="search()" class="form-control form-control-lg" placeholder="ค้นหาลูกค้า">
                   </div>
                 </div> 
             </div>
@@ -82,24 +134,9 @@
           <h5 class="title">ประเภท</h5>
         </div>
       </div><hr>
-      <div id='cus-1' class='row' onclick = "select_cus('สมจริง');">              
-        <div class='col-7 text-center'>
-          <p id='cus_name-1'>สมจริง</p>
-        </div>
-        <div class='col-4 text-center'>
-          <p>4k</p>
-        </div>
-      </div>   
-      <hr id='hr-2'>
-      <div id='cus-2' class='row' onclick = "select_cus('จริงจัง');">              
-        <div class='col-7 text-center'>
-          <p id='cus_name-2'>จริงจัง</p>
-        </div>
-        <div class='col-4 text-center'>
-          <p>2k</p>
-        </div>
-      </div>   
-      <hr id='hr-2'>
+      <ul id="myUL">
+
+      </ul>         
     </div>
   <!-- End big container -->
 </body>
