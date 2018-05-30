@@ -51,7 +51,7 @@
                 $year = "S" . $year_cur . "-";
                 $order_number = $year . str_pad($count, 5, "0",STR_PAD_LEFT);
                 $sql2 = "INSERT INTO sale_order (order_number,customer_id,date_time,sum_price,
-                payment_type,branch_id,type,total_discount,total_price,get_price,change,count) 
+                payment_type,branch_id,type,total_discount,total_price,get_price,chng,count) 
                 VALUE ('$order_number','$cus','$dt','$sum','$pay','$b','$type','$dis','$total','$get','$change','$count')"; 
                 $result2 = mysqli_query($conn, $sql2);
                 if(!$result2){
@@ -64,7 +64,7 @@
                 $year = "S" . $year_cur . "-";
                 $order_number = $year . str_pad(1, 5, "0",STR_PAD_LEFT);
                 $sql3 = "INSERT INTO sale_order (order_number,customer_id,date_time,sum_price,
-                payment_type,branch_id,type,total_discount,total_price,get_price,change,count) 
+                payment_type,branch_id,type,total_discount,total_price,get_price,chng,count) 
                 VALUE ('$order_number','$cus','$dt','$sum','$pay','$b','$type','$dis','$total','$get','$change',1)"; 
                 $result3 = mysqli_query($conn, $sql3);
                 if(!$result3){
@@ -79,7 +79,7 @@
         $year = "S" . date("y") . "-";
         $order_number = $year . str_pad(1, 5, "0",STR_PAD_LEFT);
         $sql1 = "INSERT INTO sale_order (order_number,customer_id,date_time,sum_price,
-        payment_type,branch_id,type,total_discount,total_price,get_price,change,count) 
+        payment_type,branch_id,type,total_discount,total_price,get_price,chng,count) 
         VALUE ('$order_number','$cus','$dt','$sum','$pay','$b','$type','$dis','$total','$get','$change',1)"; 
         $result1 = mysqli_query($conn, $sql1);
         if(!$result1){
