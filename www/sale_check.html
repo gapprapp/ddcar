@@ -114,11 +114,7 @@
                 "</div><hr id='hr-"+i+"' style='margin-top: 5%;'>");                    
             }            
             $("#net").text(sum.toLocaleString()); // 50000 -> 50,000; 
-
-            if(localStorage.net && localStorage.dis){               
-                $("#net").text(localStorage.net.toLocaleString());
-                $('#discount').text(localStorage.dis);              
-            }     
+            
         });
 
         function disactive(arg) {
@@ -266,7 +262,7 @@
             }
         }
 
-        function edit_discount(){
+       /* function edit_discount(){
             $(".jconfirm .jconfirm-box").css('margin-bottom', '50%');
            $.confirm({
                 title: 'ลด',
@@ -290,14 +286,14 @@
                   }
                 }  
             }); 
-        }
+        }*/
 
         function next(){ 
             if(arr_data.length == 0){
                 return 0;
             }         
             localStorage.net =  parseFloat($("#net").html().replace(/,/g, '')); 
-            localStorage.dis =  $('#discount').text();           
+            //localStorage.dis =  $('#discount').text();           
             transition_page_next('sale_info.html');
         }
 
@@ -308,7 +304,7 @@
             localStorage.type = "";
             localStorage.arr_sale = "";           
             localStorage.net =  ""; 
-            localStorage.dis =  "";          
+            //localStorage.dis =  "";          
             transition_page_back('sale.html');
         }
         
