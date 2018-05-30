@@ -156,6 +156,165 @@
             });
         }
 
+        function showware(){
+            $("style").append('.jconfirm .jconfirm-box{margin-top: 30%; max-height: 420px;}');
+            $.confirm({
+              title: 'หน้าร้าน/โกดัง',
+              content: '<hr style="width: 80%; margin-bottom: 0;">',
+              backgroundDismiss: true,
+              buttons: {
+                form1: {
+                  text: 'ใบเสร็จ',
+                  btnClass: 'btn-choice',
+                  action: function () {
+                    $("#bill").val('ใบเสร็จ');
+                    $("style").append('.jconfirm .jconfirm-box{margin-top: 0; max-height: 100%;}');
+                  }
+                },
+                form2: {
+                  text: 'ใบรายงานการขาย (A4)',
+                  btnClass: 'btn-choice',
+                  action: function () {
+                    $("#bill").val('ใบรายงานการขาย(A4)');
+                  }
+                },
+                form3: {
+                  text: 'ไม่พิมพ์',
+                  btnClass: 'btn-choice',
+                  action: function () {
+                    $("#bill").val('ไม่พิมพ์');
+                  }
+                },
+                form4: {
+                  text: 'ไม่พิมพ์',
+                  btnClass: 'btn-choice',
+                  action: function () {
+                    $("#bill").val('ไม่พิมพ์');
+                  }
+                },
+                form5: {
+                  text: 'ไม่พิมพ์',
+                  btnClass: 'btn-choice',
+                  action: function () {
+                    $("#bill").val('ไม่พิมพ์');
+                  }
+                },
+                form6: {
+                  text: 'ไม่พิมพ์',
+                  btnClass: 'btn-choice',
+                  action: function () {
+                    $("#bill").val('ไม่พิมพ์');
+                  }
+                },
+                form7: {
+                  text: 'ไม่พิมพ์',
+                  btnClass: 'btn-choice',
+                  action: function () {
+                    $("#bill").val('ไม่พิมพ์');
+                  }
+                },
+                form8: {
+                  text: 'ไม่พิมพ์',
+                  btnClass: 'btn-choice',
+                  action: function () {
+                    $("#bill").val('ไม่พิมพ์');
+                  }
+                },
+                form9: {
+                  text: 'ไม่พิมพ์',
+                  btnClass: 'btn-choice',
+                  action: function () {
+                    $("#bill").val('ไม่พิมพ์');
+                  }
+                },
+                form10: {
+                  text: 'ไม่พิมพ์',
+                  btnClass: 'btn-choice',
+                  action: function () {
+                    $("#bill").val('ไม่พิมพ์');
+                  }
+                },
+                form11: {
+                  text: 'ไม่พิมพ์',
+                  btnClass: 'btn-choice',
+                  action: function () {
+                    $("#bill").val('ไม่พิมพ์');
+                  }
+                },
+                form12: {
+                  text: 'ไม่พิมพ์',
+                  btnClass: 'btn-choice',
+                  action: function () {
+                    $("#bill").val('ไม่พิมพ์');
+                  }
+                },
+                form13: {
+                  text: 'ไม่พิมพ์',
+                  btnClass: 'btn-choice',
+                  action: function () {
+                    $("#bill").val('ไม่พิมพ์');
+                  }
+                },
+                form14: {
+                  text: 'ไม่พิมพ์',
+                  btnClass: 'btn-choice',
+                  action: function () {
+                    $("#bill").val('ไม่พิมพ์');
+                  }
+                },
+                form15: {
+                  text: 'ไม่พิมพ์',
+                  btnClass: 'btn-choice',
+                  action: function () {
+                    $("#bill").val('ไม่พิมพ์');
+                  }
+                },
+                form16: {
+                  text: 'ไม่พิมพ์',
+                  btnClass: 'btn-choice',
+                  action: function () {
+                    $("#bill").val('ไม่พิมพ์');
+                  }
+                },
+                form17: {
+                  text: 'ไม่พิมพ์',
+                  btnClass: 'btn-choice',
+                  action: function () {
+                    $("#bill").val('ไม่พิมพ์');
+                  }
+                },
+                form18: {
+                  text: 'ไม่พิมพ์',
+                  btnClass: 'btn-choice',
+                  action: function () {
+                    $("#bill").val('ไม่พิมพ์');
+                  }
+                },
+                form19: {
+                  text: 'ไม่พิมพ์',
+                  btnClass: 'btn-choice',
+                  action: function () {
+                    $("#bill").val('ไม่พิมพ์');
+                  }
+                },
+                form20: {
+                  text: 'ไม่พิมพ์',
+                  btnClass: 'btn-choice',
+                  action: function () {
+                    $("#bill").val('ไม่พิมพ์');
+                  }
+                },
+                form21: {
+                  text: 'ไม่พิมพ์',
+                  btnClass: 'btn-choice',
+                  action: function () {
+                    $("#bill").val('ไม่พิมพ์');
+                  }
+                },
+              }
+            });
+        }
+
         function save(){
             if($("#ware").val() == ""){
                 return 0;
@@ -215,27 +374,53 @@
     <br>
 
     <!-- End big container -->
-    <div id="big-ctn" class="container justify-content-center" style="margin-top: 45%;">
+    <div id="big-ctn" class="container justify-content-center" style="margin-top: 20%;">
         <div class="container">
-            <div class="row mg-7">
-                <div class="col-12 text-center">
-                    <input id="ware" type="text" class="w3-input" data-toggle="dropdown" placeholder="เลือกหน้าร้าน/โกดัง" readonly>
-                    <ul id="ul-ware" class="dropdown-menu text-center" aria-labelledby="role" style="width: 80%;"> 
-    
-                    </ul>
-                </div>
-            </div>
             <div class="row mg-15">
-                <div class="col-12 text-center pdlr">
-                    <label for="pay">รูปแบบการชำระเงิน</label>
+                <div class="col-4 text-center">
+                    <label for="ware">ขายจาก</label>
+                    <input id="ware" type="text" class="w3-input" readonly onclick="showware();">
+                </div>
+                <div class="col-4 text-center">
+                    <label for="pay">ชำระเงิน</label>
                     <input id="pay" type="text" class="w3-input" readonly onclick="showpay();" value="เงินสด">
                 </div>
-            </div> 
-            <div class="row" style="margin-bottom: 18%;">
-                <div class="col-12 text-center pdlr">
-                    <label for="bill">รูปแบบการพิมพ์</label>
+                <div class="col-4 text-center">
+                    <label for="bill">พิมพ์</label>
                     <input id="bill" type="text" class="w3-input" readonly onclick="showbill();" value="ใบเสร็จ">
                 </div>
+            </div>
+            <div class="row mg-10">
+                <div class="col-1"></div>
+                <div class="col-10 text-center">
+                    <label for="net">ลด</label>
+                    <input id="net" type="text" class="w3-input">
+                </div>
+                <div class="col-1"></div>
+            </div>
+            <div class="row mg-10">
+                <div class="col-1"></div>
+                <div class="col-10 text-center">
+                    <label for="net">สุทธิ</label>
+                    <input id="net" type="text" class="w3-input">
+                </div>
+                <div class="col-1"></div>
+            </div>
+            <div class="row mg-10">
+                <div class="col-1"></div>
+                <div class="col-10 text-center">
+                    <label for="net">รับ</label>
+                    <input id="net" type="text" class="w3-input">
+                </div>
+                <div class="col-1"></div>
+            </div>
+            <div class="row mg-15">
+                <div class="col-1"></div>
+                <div class="col-10 text-center">
+                    <label for="net">ทอน</label>
+                    <input id="net" type="text" class="w3-input">
+                </div>
+                <div class="col-1"></div>
             </div>
             <div class="row">
                 <div class="col-12">
