@@ -162,6 +162,9 @@
               title: 'หน้าร้าน/โกดัง',
               content: '<hr style="width: 80%; margin-bottom: 0;">',
               backgroundDismiss: true,
+              onOpenBefore: function () {
+                $(".jconfirm-buttons").append('<button type="button" class="btn btn-choice" onclick="setware("ใบตาล");">ใบตาล</button>')
+              },
               buttons: {
                 form1: {
                   text: 'ใบเสร็จ',
@@ -170,147 +173,7 @@
                     $("#bill").val('ใบเสร็จ');
                     $("style").append('.jconfirm .jconfirm-box{margin-top: 0; max-height: 100%;}');
                   }
-                },
-                form2: {
-                  text: 'ใบรายงานการขาย (A4)',
-                  btnClass: 'btn-choice',
-                  action: function () {
-                    $("#bill").val('ใบรายงานการขาย(A4)');
-                  }
-                },
-                form3: {
-                  text: 'ไม่พิมพ์',
-                  btnClass: 'btn-choice',
-                  action: function () {
-                    $("#bill").val('ไม่พิมพ์');
-                  }
-                },
-                form4: {
-                  text: 'ไม่พิมพ์',
-                  btnClass: 'btn-choice',
-                  action: function () {
-                    $("#bill").val('ไม่พิมพ์');
-                  }
-                },
-                form5: {
-                  text: 'ไม่พิมพ์',
-                  btnClass: 'btn-choice',
-                  action: function () {
-                    $("#bill").val('ไม่พิมพ์');
-                  }
-                },
-                form6: {
-                  text: 'ไม่พิมพ์',
-                  btnClass: 'btn-choice',
-                  action: function () {
-                    $("#bill").val('ไม่พิมพ์');
-                  }
-                },
-                form7: {
-                  text: 'ไม่พิมพ์',
-                  btnClass: 'btn-choice',
-                  action: function () {
-                    $("#bill").val('ไม่พิมพ์');
-                  }
-                },
-                form8: {
-                  text: 'ไม่พิมพ์',
-                  btnClass: 'btn-choice',
-                  action: function () {
-                    $("#bill").val('ไม่พิมพ์');
-                  }
-                },
-                form9: {
-                  text: 'ไม่พิมพ์',
-                  btnClass: 'btn-choice',
-                  action: function () {
-                    $("#bill").val('ไม่พิมพ์');
-                  }
-                },
-                form10: {
-                  text: 'ไม่พิมพ์',
-                  btnClass: 'btn-choice',
-                  action: function () {
-                    $("#bill").val('ไม่พิมพ์');
-                  }
-                },
-                form11: {
-                  text: 'ไม่พิมพ์',
-                  btnClass: 'btn-choice',
-                  action: function () {
-                    $("#bill").val('ไม่พิมพ์');
-                  }
-                },
-                form12: {
-                  text: 'ไม่พิมพ์',
-                  btnClass: 'btn-choice',
-                  action: function () {
-                    $("#bill").val('ไม่พิมพ์');
-                  }
-                },
-                form13: {
-                  text: 'ไม่พิมพ์',
-                  btnClass: 'btn-choice',
-                  action: function () {
-                    $("#bill").val('ไม่พิมพ์');
-                  }
-                },
-                form14: {
-                  text: 'ไม่พิมพ์',
-                  btnClass: 'btn-choice',
-                  action: function () {
-                    $("#bill").val('ไม่พิมพ์');
-                  }
-                },
-                form15: {
-                  text: 'ไม่พิมพ์',
-                  btnClass: 'btn-choice',
-                  action: function () {
-                    $("#bill").val('ไม่พิมพ์');
-                  }
-                },
-                form16: {
-                  text: 'ไม่พิมพ์',
-                  btnClass: 'btn-choice',
-                  action: function () {
-                    $("#bill").val('ไม่พิมพ์');
-                  }
-                },
-                form17: {
-                  text: 'ไม่พิมพ์',
-                  btnClass: 'btn-choice',
-                  action: function () {
-                    $("#bill").val('ไม่พิมพ์');
-                  }
-                },
-                form18: {
-                  text: 'ไม่พิมพ์',
-                  btnClass: 'btn-choice',
-                  action: function () {
-                    $("#bill").val('ไม่พิมพ์');
-                  }
-                },
-                form19: {
-                  text: 'ไม่พิมพ์',
-                  btnClass: 'btn-choice',
-                  action: function () {
-                    $("#bill").val('ไม่พิมพ์');
-                  }
-                },
-                form20: {
-                  text: 'ไม่พิมพ์',
-                  btnClass: 'btn-choice',
-                  action: function () {
-                    $("#bill").val('ไม่พิมพ์');
-                  }
-                },
-                form21: {
-                  text: 'ไม่พิมพ์',
-                  btnClass: 'btn-choice',
-                  action: function () {
-                    $("#bill").val('ไม่พิมพ์');
-                  }
-                },
+                }  
               }
             });
         }
