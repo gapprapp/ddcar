@@ -55,9 +55,10 @@
     <script>
         var arr_data;
         $(document).ready(function () { 
-            margin = $("#navs-menu").outerHeight();
-            $("#ctn-btn").css('margin-bottom', margin);
-            $("#ctn-btn").css('padding-bottom', margin+20);
+            margin = $("#navs-menu").outerHeight()*3;
+            $("#ctn-btm").css('padding-bottom', margin);
+            margin = $("#ctn-btm").outerHeight();
+            $("#big-ctn").css('margin-bottom', margin); 
             
             $("style").append('.jconfirm .jconfirm-box{margin-bottom: 60%;}');
 
@@ -113,11 +114,7 @@
                 "</div><hr id='hr-"+i+"' style='margin-top: 5%;'>");                    
             }            
             $("#net").text(sum.toLocaleString()); // 50000 -> 50,000; 
-
-            if(localStorage.net && localStorage.dis){               
-                $("#net").text(localStorage.net.toLocaleString());
-                $('#discount').text(localStorage.dis);              
-            }     
+            
         });
 
         function disactive(arg) {
@@ -244,15 +241,28 @@
                     $("#collapse-" + i).slideToggle('collapse');
                 }
             }
-
-            $("#collapse-"+arg).slideToggle('collapse', function(){
-                //var body = $("body, html");
-                //var top = $("#navs-net").offset().top;
-                //body.animate({scrollTop :top}, 1500);
-            });
+            if(arg == 1){
+                $("#collapse-"+arg).slideToggle('collapse', function(){
+                    var body = $("body, html");
+                    var top = $("#ctn-btm").offset().top/7;
+                    body.animate({scrollTop :top}, 300);
+                });
+            }else if(arg == 2){
+                $("#collapse-"+arg).slideToggle('collapse', function(){
+                    var body = $("body, html");
+                    var top = $("#ctn-btm").offset().top/4;
+                    body.animate({scrollTop :top}, 600);
+                });
+            }else if(arg >= 3){
+                $("#collapse-"+arg).slideToggle('collapse', function(){
+                    var body = $("body, html");
+                    var top = $("#ctn-btm").offset().top;
+                    body.animate({scrollTop :top}, 1400);
+                });
+            }
         }
 
-        function edit_discount(){
+       /* function edit_discount(){
             $(".jconfirm .jconfirm-box").css('margin-bottom', '50%');
            $.confirm({
                 title: 'ลด',
@@ -276,14 +286,14 @@
                   }
                 }  
             }); 
-        }
+        }*/
 
         function next(){ 
             if(arr_data.length == 0){
                 return 0;
             }         
             localStorage.net =  parseFloat($("#net").html().replace(/,/g, '')); 
-            localStorage.dis =  $('#discount').text();           
+            //localStorage.dis =  $('#discount').text();           
             transition_page_next('sale_info.html');
         }
 
@@ -294,7 +304,7 @@
             localStorage.type = "";
             localStorage.arr_sale = "";           
             localStorage.net =  ""; 
-            localStorage.dis =  "";          
+            //localStorage.dis =  "";          
             transition_page_back('sale.html');
         }
         
@@ -326,23 +336,15 @@
     </div>
     <!-- End big container -->
 
-    <div id="navs-net" class="row fixed-bottom" style="background: #f3f3f3;" >
-        <div class="col-1"></div>
-        <div class="col-5 text-center" onclick="edit_discount();">
-            <h5 class="h5-title" style="font-size: 130%;">ลด :
-                <span style="color: green;" id="discount">0</span>
-            </h5>
-        </div>
-        <div class="col-5 text-center">
-            <h5 class="h5-title" style="font-size: 130%;">รวม :
-                <span style="color: red;"id="net"></span>
-            </h5>
-        </div>
-        <div class="col-1"></div>
-    </div>
-
-    <div id="ctn-btn" class="container fixed-bottom" style="background: #f3f3f3;">
+    <div id="ctn-btm" class="container fixed-bottom" style="background: #f3f3f3;">
         <div class="container">
+            <div class="row">
+                <div class="col-12 text-center">
+                    <h5 class="h5-title" style="font-size: 130%;">รวม :
+                        <span  style="color: red;"id="net">500000</span>
+                    </h5>
+                </div>
+            </div>
             <div class="row">
                 <div class="col-4 text-center" style="padding-left: 0; padding-right: 0;">
                     <button class="mbtn-cancle" onclick="clearAll();">ยกเลิก</button>
