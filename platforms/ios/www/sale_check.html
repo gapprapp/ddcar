@@ -241,7 +241,7 @@
                     $("#collapse-" + i).slideToggle('collapse');
                 }
             }
-            if(arg == 1){
+            /*if(arg == 1){
                 $("#collapse-"+arg).slideToggle('collapse', function(){
                     var body = $("body, html");
                     var top = $("#ctn-btm").offset().top/7;
@@ -259,7 +259,8 @@
                     var top = $("#ctn-btm").offset().top;
                     body.animate({scrollTop :top}, 1400);
                 });
-            }
+            }*/
+            $("#collapse-"+arg).slideToggle('collapse');
         }
 
        /* function edit_discount(){
