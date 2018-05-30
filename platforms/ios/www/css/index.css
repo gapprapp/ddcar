@@ -66,6 +66,14 @@ body{
 	margin-bottom: 7%;
 }
 
+.mg-6{
+	margin-bottom: 0.67em;
+}
+
+.mg-18{
+	margin-bottom: 18%;
+}
+
 .mbtn{
 	background-color: #da4646;
 	border: 1px solid #da4646;
