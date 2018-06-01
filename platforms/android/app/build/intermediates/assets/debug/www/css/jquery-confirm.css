@@ -469,6 +469,7 @@ body[class*=jconfirm-no-scroll-] {
   transition: background .2s;
   width: 92% !important;
   margin-bottom: 3%;
+  border-bottom: solid #848484 1px;
 }
 .jconfirm .jconfirm-box .jconfirm-buttons button.btn-default:hover {
   background-color: #bdc3c7;
