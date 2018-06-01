@@ -175,32 +175,20 @@
           formSubmit: {
             text: 'ตกลง',
             btnClass: 'btn-danger',
-<<<<<<< HEAD
-            action: function () {   
-              txt = $("#edt-ware").val();
-              $("#name-ware-"+arg).text(txt);
-=======
             action: function () {              
               var txt = $("#edt-ware").val();             
               if(name == txt){
                 document.elementFromPoint(0, 0).click();
                 return 0;
               }
->>>>>>> e13629ee5fc505285b0efcbe5a5ed1e37a854c0b
               $.ajax({
                 type: "POST",
                 url:"https://omise-webpack.000webhostapp.com/www/php/rename_ware_shop.php",           
                 data: {'id' : id,
                         'type' : type,
                         'name' : txt},               
-<<<<<<< HEAD
-                success: function(data){            
-                    if(data == "success"){
-                      txt = $("#edt_ware").text();
-=======
                 success: function(data){           
                     if(data == "success"){                     
->>>>>>> e13629ee5fc505285b0efcbe5a5ed1e37a854c0b
                       $("#name-ware-"+arg).text(txt); 
                     }         
                 }               
