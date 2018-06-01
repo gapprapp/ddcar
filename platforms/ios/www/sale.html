@@ -95,7 +95,8 @@
             if(localStorage.arr_sale){
                 var retrievedObject = localStorage.getItem('arr_sale');
                 var arr_data = JSON.parse(retrievedObject);             
-                $('#check-sale').text(arr_data.length);       
+                $('#check-sale').text(arr_data.length); 
+                $("#cus").attr("readonly",true);       
             }
           
             if(prod_id){
