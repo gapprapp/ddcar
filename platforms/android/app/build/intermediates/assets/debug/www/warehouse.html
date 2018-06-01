@@ -206,6 +206,8 @@
             text: 'ตกลง',
             btnClass: 'btn-danger',
             action: function () {   
+              txt = $("#edt-ware").val();
+              $("#name-ware-"+arg).text(txt);
               $.ajax({
                 type: "POST",
                 url:"https://omise-webpack.000webhostapp.com/www/php/rename_ware_shop.php",           

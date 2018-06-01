@@ -1,5 +1,5 @@
 #Internal package file, do not edit.
-#Fri Jun 01 17:36:13 ICT 2018
+#Fri Jun 01 18:48:01 ICT 2018
 210.set=ANDROID_RESOURCE
 282.file=/Users/phoenix/Documents/ddcar/platforms/android/app/build/intermediates/res/debug/resources-debug.ap_/AndroidManifest.xml
 14.set=ANDROID_RESOURCE
