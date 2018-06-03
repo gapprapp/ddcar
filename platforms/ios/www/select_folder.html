@@ -13,7 +13,7 @@
   <script type="text/javascript" src="js/transition.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.6/umd/popper.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
-  <script defer src="https://use.fontawesome.com/releases/v5.0.8/js/all.js"></script>
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
   <script src="cordova.js"></script>
 
   <link rel="stylesheet" href="css/index.css">
@@ -25,6 +25,14 @@
     #title {
       color: #666666;
       letter-spacing: 2px;
+    }
+
+    .six{
+      color: #666;
+    }
+
+    .checked{
+      color: #66b266;
     }
   </style>
 
@@ -111,7 +119,7 @@
                 $.each(obj, function(i, field){
                 if(obj.length-1 > i){
                   text_html = "<div id='row-title-"+i+"' class='row'>" +
-                    "<div class='col-2'></div>" +
+                    "<div class='col-2 text-center'><i id='box-"+i+"' class='far fa-check-square six' onclick='check("+i+")'></i></div>" +
                     "<div id='getin-"+i+"' class='col-8 text-center' onclick='getIn(\"" + obj[i].title + "\")'>" +
                     "<h5 id='title-"+i+"'>" + obj[i].title + "</h5>" +
                     "</div>" +
@@ -141,6 +149,24 @@
       });
         // index = i;
     });
+    
+    function check(arg){
+      //console.log('row ' + arg + ' checked');
+      $("#box-"+arg).removeClass('six'); 
+      $("#box-"+arg).removeClass('far'); 
+      $("#box-"+arg).addClass('checked'); 
+      $("#box-"+arg).addClass('fa');
+      $("#box-"+arg).attr('onclick', 'uncheck('+arg+')'); 
+    }
+
+    function uncheck(arg){
+      //console.log('row ' + arg + ' unchecked');
+      $("#box-"+arg).removeClass('checked'); 
+      $("#box-"+arg).removeClass('fa'); 
+      $("#box-"+arg).addClass('six'); 
+      $("#box-"+arg).addClass('far'); 
+      $("#box-"+arg).attr('onclick', 'check('+arg+')'); 
+    }
 
     function disactive(arg) {
       nav_menu = ['home', 'add', 'edit', 'del'];

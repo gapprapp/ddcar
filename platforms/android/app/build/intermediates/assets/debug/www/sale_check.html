@@ -77,10 +77,9 @@
                 sum += parseInt(sum_prod);
                 $('#big-ctn').append("<div id='prod-"+i+"' class='row'>" +
                     "<span id='id-prod-"+i+"' hidden>"+arr_data[i].prod_id+"</span>" +
-                    "<div class='col-1 text-center no-pd'>" +
+                    "<div class='col-1 text-right no-pd'>" +
                         "<i id='i-del-"+i+"' class='fa fa-trash-alt i-del' onclick='del_prod("+i+");' hidden></i>" +
                         "<i id='i-edit-"+i+"' class='fa fa-edit i-edit' onclick='edit_prod("+i+");' hidden></i>" +
-                        "<!--<i id='i-check-1' class='fa fa-check i-check' onclick='update_prod('1');' hidden style='color: green;'></i>-->" +
                     "</div>" +
                     "<div id='name-"+i+"' class='col-6 text-center no-pd' onclick='collapse("+i+");'>"+arr_data[i].name+"</div>" +
                     "<div id='price-"+i+"' class='col-3 text-center no-pd' onclick='collapse("+i+");'>"+arr_data[i].price+"</div>" +
@@ -113,8 +112,7 @@
                     "</div>-->" +
                 "</div><hr id='hr-"+i+"' style='margin-top: 5%;'>");                    
             }            
-            $("#net").text(sum.toLocaleString()); // 50000 -> 50,000; 
-            
+            $("#net").text(sum.toLocaleString()); // 50000 -> 50,000;    
         });
 
         function disactive(arg) {
@@ -129,21 +127,38 @@
         function menu(arg) {
             // Animate
             disactive(arg);
-            $("#i-" + arg).fadeOut(100).fadeIn(100, function () {
-                $("#i-" + arg).addClass('active');
-            });
+            if($("#i-"+arg).hasClass('active')){
+                console.log("i-"+arg+"hasClass('active')");
+                $("#i-"+arg).removeClass('active');
+              }else{
+                $("#i-" + arg).fadeOut(150).fadeIn(100, function() {
+                  $("#i-" + arg).addClass('active');
+                });
+              }
 
             if (arg == "add") {
                 goto = "sale.html";
                 transition_page_back(goto);
-            } else if (arg == "edit") {
+            } else if(arg == "edit"){
                 // show edit all
-                $(".i-edit").attr('hidden', false);
-                $(".i-del").attr('hidden', true);
+                if ($(".i-edit").is(":visible")) {
+                  $(".i-del").attr('hidden', true);
+                  $(".i-edit").attr('hidden', true);
+                  disac("edit");
+                } else {
+                  $(".i-del").attr('hidden', true);
+                  $(".i-edit").attr('hidden', false);
+                }
             } else if (arg == "del") {
                 // show trash all 
-                $(".i-del").attr('hidden', false);
-                $(".i-edit").attr('hidden', true);
+                if($(".i-del").is(":visible")){
+                  $(".i-edit").attr('hidden', true);
+                  $(".i-del").attr('hidden', true);
+                  disac("del");
+                }else{
+                  $(".i-edit").attr('hidden', true);
+                  $(".i-del").attr('hidden', false);
+                }
             }
         }
        

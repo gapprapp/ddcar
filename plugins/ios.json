@@ -7,16 +7,7 @@
     "files": {}
   },
   "installed_plugins": {
-    "cordova-plugin-whitelist": {
-      "PACKAGE_NAME": "com.gitmew.ddcar"
-    },
     "com.telerik.plugins.nativepagetransitions": {
-      "PACKAGE_NAME": "com.gitmew.ddcar"
-    },
-    "phonegap-plugin-barcodescanner": {
-      "PACKAGE_NAME": "com.gitmew.ddcar"
-    },
-    "cordova-plugin-file-transfer": {
       "PACKAGE_NAME": "com.gitmew.ddcar"
     },
     "cordova-plugin-camera": {
@@ -25,7 +16,16 @@
     "cordova-plugin-device": {
       "PACKAGE_NAME": "com.gitmew.ddcar"
     },
+    "cordova-plugin-file-transfer": {
+      "PACKAGE_NAME": "com.gitmew.ddcar"
+    },
     "cordova-plugin-statusbar": {
+      "PACKAGE_NAME": "com.gitmew.ddcar"
+    },
+    "cordova-plugin-whitelist": {
+      "PACKAGE_NAME": "com.gitmew.ddcar"
+    },
+    "phonegap-plugin-barcodescanner": {
       "PACKAGE_NAME": "com.gitmew.ddcar"
     }
   },
