@@ -11,17 +11,17 @@
     <script type="text/javascript" src="js/jquery-ui.min.js"></script>
     <script type="text/javascript" src="js/jquery.easing.1.3.min.js"></script>
     <script type="text/javascript" src="js/transition.js"></script>
+    <script type="text/javascript" src="js/jquery-confirm.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.6/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
     <script defer src="https://use.fontawesome.com/releases/v5.0.8/js/all.js"></script>
     <script src="cordova.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.0/jquery-confirm.min.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.0/jquery-confirm.min.js"></script>
 
     <script src="js/jquery.easy-autocomplete.min.js"></script>   
     <link rel="stylesheet" href="css/easy-autocomplete.themes.min.css">
 
     <link rel="stylesheet" href="css/index.css">
+    <link rel="stylesheet" href="css/jquery-confirm.css">
 
     <!-- Font -->
     <link href="https://fonts.googleapis.com/css?family=Prompt" rel="stylesheet">
@@ -111,7 +111,7 @@
                 }); 
             }
 
-            $.ajax({
+            /*$.ajax({
                 type: "GET",
                 url:"https://omise-webpack.000webhostapp.com/www/php/get_shop.php",                            
                 success: function(data){
@@ -121,7 +121,7 @@
                         "<span id='id-store-"+i+"' hidden>"+field.shop_id+"</span>");
                     });                                        
                 }               
-            });
+            });*/
 
             var options = {
                 url: function(phrase) {
@@ -216,7 +216,7 @@
             $("#amount-" + arg).attr('hidden', true);
             $("#h5-amt-" + arg).attr('hidden', false);        
         }
-
+       
         function setstore(arg) {
             shop = $("#li-store-" + arg).text();
             $("#store").val(shop);
@@ -227,30 +227,52 @@
         function disactive(arg) {
             nav_menu = ['home', 'add', 'edit', 'del'];
             for (i = 0; i < 4; i++) {
-                if (nav_menu[i] != arg) {
-                    if ($("#i-" + nav_menu[i]).hasClass('active')) $("#i-" + nav_menu[i]).removeClass('active');
-                }
+            if (nav_menu[i] != arg) {
+              if ($("#i-" + nav_menu[i]).hasClass('active')) $("#i-" + nav_menu[i]).removeClass('active');
             }
+          }
+        }
+
+        function disac(arg){
+          if ($("#i-" + arg).hasClass('active')) $("#i-" + arg).removeClass('active');
         }
 
         function menu(arg) {
             // Animate             
             disactive(arg);
-            $("#i-" + arg).fadeOut(100).fadeIn(100, function () {
-                $("#i-" + arg).addClass('active');
-            });
+            console.log(arg);
+            if($("#i-"+arg).hasClass('active')){
+                console.log("i-"+arg+"hasClass('active')");
+                $("#i-"+arg).removeClass('active');
+            }else{
+                $("#i-" + arg).fadeOut(150).fadeIn(100, function() {
+                  $("#i-" + arg).addClass('active');
+                });
+            }
 
             if (arg == "add") {
                 /*goto = "sale.html";
                 transition_page_back(goto);*/
             } else if (arg == "edit") {
                 // show edit all
-                $(".i-edit").attr('hidden', false);
-                $(".i-del").attr('hidden', true);
+                if ($(".i-edit").is(":visible")) {
+                  $(".i-del").attr('hidden', true);
+                  $(".i-edit").attr('hidden', true);
+                  disac("edit");
+                } else {
+                  $(".i-del").attr('hidden', true);
+                  $(".i-edit").attr('hidden', false);
+                }
             } else if (arg == "del") {
                 // show trash all 
-                $(".i-del").attr('hidden', false);
-                $(".i-edit").attr('hidden', true);
+                if($(".i-del").is(":visible")){
+                  $(".i-edit").attr('hidden', true);
+                  $(".i-del").attr('hidden', true);
+                  disac("del");
+                }else{
+                  $(".i-edit").attr('hidden', true);
+                  $(".i-del").attr('hidden', false);
+                }
             }
         }
 
@@ -363,30 +385,69 @@
         }
 
         function save(){
-            if(arr_data.length > 0){
-                var json_string = JSON.stringify(arr_data); 
-                var d = new Date($.now());            
-                $('#date').text("วันที่ : " + d.getDate() + "/" + (d.getMonth()+1) + "/" + d.getFullYear()); 
-                var datetime = d.getFullYear() + "-" + (d.getMonth()+1) + "-" + d.getDate() + " " + d.getHours() + ":" + d.getMinutes() + ":" + d.getSeconds();                   
-                var dataString =  "JSON=" + json_string + "&shop_id=" + localStorage.shop_id + "&date=" + datetime;                                    
-
-                $.ajax({
-                    type: "POST",
-                    url:"https://omise-webpack.000webhostapp.com/www/php/transfer_in.php",           
-                    data: dataString,               
-                    success: function(data){                       
-                        if(data == "success"){                                                   
-                            $('#ctn-add').empty();
-                            $("#store").val("");
-                            arr_data = [];                           
-                            index = 0; 
-                            localStorage.arr_tranin = ""; 
-                            localStorage.shop_name = "";
-                            localStorage.shop_id = "";                                         
-                        }
-                    }               
-                });
+            if(arr_data.length == 0 ||  $("#store").val() == ""){
+                return 0;
             }
+            var json_string = JSON.stringify(arr_data); 
+            var d = new Date($.now());            
+            $('#date').text("วันที่ : " + d.getDate() + "/" + (d.getMonth()+1) + "/" + d.getFullYear()); 
+            var datetime = d.getFullYear() + "-" + (d.getMonth()+1) + "-" + d.getDate() + " " + d.getHours() + ":" + d.getMinutes() + ":" + d.getSeconds();                   
+            var dataString =  "JSON=" + json_string + "&shop_id=" + localStorage.shop_id + "&date=" + datetime;                                    
+
+            $.ajax({
+                type: "POST",
+                url:"https://omise-webpack.000webhostapp.com/www/php/transfer_in.php",           
+                data: dataString,               
+                success: function(data){                       
+                    if(data == "success"){                                                   
+                        $('#ctn-add').empty();
+                        $("#store").val("");
+                        arr_data = [];                           
+                        index = 0; 
+                        localStorage.arr_tranin = ""; 
+                        localStorage.shop_name = "";
+                        localStorage.shop_id = "";                                         
+                    }
+                }               
+            });
+            
+        }
+
+        function showstore(){
+            $("style").append('.jconfirm .jconfirm-box{max-height: 420px;}');
+            $.confirm({
+              title: 'หน้าร้าน',
+              content: '<hr style="width: 80%; margin-bottom: 0;">',
+              backgroundDismiss: true,
+              onOpenBefore: function () {
+                $(".jconfirm-buttons .btn-default").remove();
+                //ajax and apeend
+                $.ajax({
+                    type: "GET",
+                    url:"https://omise-webpack.000webhostapp.com/www/php/get_shop.php",                            
+                    success: function(data){
+                    var obj = jQuery.parseJSON(data);                                                      
+                        $.each(obj, function(i, field){                      
+                            $(".jconfirm-buttons").append('<button id="li-store-'+i+'" type="button" onclick="setstore('+i+')" class="btn btn-choice">'+obj[i].shop_name+'</button>' +
+                            '<span id="id-store-'+i+'" hidden>'+obj[i].shop_id+'</span>');                                           
+                        });                                        
+                    }               
+                });               
+              },
+              onDestroy: function () {
+                $("style").append('.jconfirm .jconfirm-box{margin-bottom: 5%;}');
+                $("style").append('.jconfirm .jconfirm-box{max-height: 100%;}');
+              },
+              /*onOpen: function(){
+                $(".btn-choice").click(function(event) {
+                  txt = $(this).text();
+                  $("#ware").val(txt);
+                  b_id = $("#id-ware").text();
+                  type = $("#type").text()
+                  document.elementFromPoint(0, 0).click();
+                });
+              }*/
+            });
         }      
 
     </script>
@@ -413,9 +474,10 @@
                 <button id="slct_folder" class="select_folder">เลือกสินค้า</button>
               </div>
               <div class="col-5 text-center no-pd">
-                  <input id="store" type="text" class="w3-input no-pd" data-toggle="dropdown" placeholder="หน้าร้าน" readonly>
+                  <!--<input id="store" type="text" class="w3-input no-pd" data-toggle="dropdown" placeholder="หน้าร้าน" readonly>
                   <ul id="ul-store" class="dropdown-menu text-center no-pd" aria-labelledby="role" >
-                  </ul>
+                  </ul>-->
+                  <input id="store" type="text" class="w3-input" readonly onclick="showstore();" placeholder="เลือกหน้าร้าน">
               </div>
             </div>
             <div class="row">
@@ -432,12 +494,13 @@
             <div id="ctn-add" class="container">
                 
             </div>
+            <!-- Input --> 
             <div class="row">
-                <div class="col-1 text-center no-pd"></div> 
-                <div class="col-8 text-center">                   
+                <div class="col-1 text-center"></div> 
+                <div class="col-8 text-center" style="padding-left: 2%;">                   
                     <input id="name" type="text" class="w3-input">
                 </div>
-                <div class="col-3 text-center">                  
+                <div class="col-3 text-center" style="padding-left: 0;">                  
                     <input id="amount" type="number" value="1" min="1" class="w3-input">
                 </div>
             </div>          
@@ -447,13 +510,11 @@
                 </div>
             </div>
             <div class="row mg-10">
-                <div class="col-12 text-center">
-                    <button class="mbtn" onclick="add_trans();" style="width: 100%;">เพิ่มสินค้า</button>
+                <div class="col-4 text-center">
+                    <button class="mbtn-save" onclick="save();">บันทึก</button>
                 </div>
-            </div>
-            <div class="row">
-                <div class="col-12 text-center">
-                    <button class="mbtn" onclick="save();" style="width: 100%;">บันทึก</button>
+                <div class="col-8 text-center">
+                    <button class="mbtn" onclick="add_trans();">เพิ่มสินค้า</button>
                 </div>
             </div>
         </div>
@@ -462,16 +523,13 @@
 
     <!-- Nav menu bottom -->
     <div class="row fixed-bottom navs">
-        <div class="col-3 text-center" onclick="window.location='index.html';">
+        <div class="col-4 text-center" onclick="window.location='index.html';">
             <i id="i-home" class="fas fa-home menu"></i>
         </div>
-        <div class="col-3 text-center" onclick="menu('add')">
-            <i id="i-add" class="fas fa-plus menu"></i>
-        </div>
-        <div class="col-3 text-center" onclick="menu('edit')">
+        <div class="col-4 text-center" onclick="menu('edit')">
             <i id="i-edit" class="fas fa-edit menu"></i>
         </div>
-        <div class="col-3 text-center" onclick="menu('del')">
+        <div class="col-4 text-center" onclick="menu('del')">
             <i id="i-del" class="fa fa-trash-alt menu"></i>
         </div>
     </div>
