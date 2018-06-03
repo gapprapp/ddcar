@@ -111,7 +111,7 @@
                 }); 
             }
 
-            $.ajax({
+            /*$.ajax({
                 type: "GET",
                 url:"https://omise-webpack.000webhostapp.com/www/php/get_shop.php",                            
                 success: function(data){
@@ -121,7 +121,7 @@
                         "<span id='id-store-"+i+"' hidden>"+field.shop_id+"</span>");
                     });                                        
                 }               
-            });
+            });*/
 
             var options = {
                 url: function(phrase) {
@@ -216,7 +216,7 @@
             $("#amount-" + arg).attr('hidden', true);
             $("#h5-amt-" + arg).attr('hidden', false);        
         }
-
+       
         function setstore(arg) {
             shop = $("#li-store-" + arg).text();
             $("#store").val(shop);
@@ -386,29 +386,68 @@
         }
 
         function save(){
-            if(arr_data.length > 0){
-                var json_string = JSON.stringify(arr_data); 
-                var d = new Date($.now());            
-                $('#date').text("วันที่ : " + d.getDate() + "/" + (d.getMonth()+1) + "/" + d.getFullYear()); 
-                var datetime = d.getFullYear() + "-" + (d.getMonth()+1) + "-" + d.getDate() + " " + d.getHours() + ":" + d.getMinutes() + ":" + d.getSeconds();                   
-                var dataString =  "JSON=" + json_string + "&shop_id=" + localStorage.shop_id + "&date=" + datetime;                                    
+            if(arr_data.length == 0 ||  $("#store").val() == ""){
+                return 0;
+            }
+            var json_string = JSON.stringify(arr_data); 
+            var d = new Date($.now());            
+            $('#date').text("วันที่ : " + d.getDate() + "/" + (d.getMonth()+1) + "/" + d.getFullYear()); 
+            var datetime = d.getFullYear() + "-" + (d.getMonth()+1) + "-" + d.getDate() + " " + d.getHours() + ":" + d.getMinutes() + ":" + d.getSeconds();                   
+            var dataString =  "JSON=" + json_string + "&shop_id=" + localStorage.shop_id + "&date=" + datetime;                                    
 
+            $.ajax({
+                type: "POST",
+                url:"https://omise-webpack.000webhostapp.com/www/php/transfer_in.php",           
+                data: dataString,               
+                success: function(data){                       
+                    if(data == "success"){                                                   
+                        $('#ctn-add').empty();
+                        $("#store").val("");
+                        arr_data = [];                           
+                        index = 0; 
+                        localStorage.arr_tranin = ""; 
+                        localStorage.shop_name = "";
+                        localStorage.shop_id = "";                                         
+                    }
+                }               
+            });
+            
+        }
+
+        function showstore(){
+            $("style").append('.jconfirm .jconfirm-box{max-height: 420px;}');
+            $.confirm({
+              title: 'หน้าร้าน',
+              content: '<hr style="width: 80%; margin-bottom: 0;">',
+              backgroundDismiss: true,
+              onOpenBefore: function () {
+                $(".jconfirm-buttons .btn-default").remove();
+                //ajax and apeend
                 $.ajax({
-                    type: "POST",
-                    url:"https://omise-webpack.000webhostapp.com/www/php/transfer_in.php",           
-                    data: dataString,               
-                    success: function(data){                       
-                        if(data == "success"){                                                   
-                            $('#ctn-add').empty();
-                            $("#store").val("");
-                            arr_data = [];                           
-                            index = 0; 
-                            localStorage.arr_tranin = ""; 
-                            localStorage.shop_name = "";
-                            localStorage.shop_id = "";                                         
-                        }
+                    type: "GET",
+                    url:"https://omise-webpack.000webhostapp.com/www/php/get_shop.php",                            
+                    success: function(data){
+                    var obj = jQuery.parseJSON(data);                                                      
+                        $.each(obj, function(i, field){                      
+                            $(".jconfirm-buttons").append('<button id="li-store-'+i+'" type="button" onclick="setstore('+i+')" class="btn btn-choice">'+obj[i].shop_name+'</button>' +
+                            '<span id="id-store-'+i+'" hidden>'+obj[i].shop_id+'</span>');                                           
+                        });                                        
                     }               
+                });               
+              },
+              onDestroy: function () {
+                $("style").append('.jconfirm .jconfirm-box{margin-bottom: 5%;}');
+                $("style").append('.jconfirm .jconfirm-box{max-height: 100%;}');
+              },
+              /*onOpen: function(){
+                $(".btn-choice").click(function(event) {
+                  txt = $(this).text();
+                  $("#ware").val(txt);
+                  b_id = $("#id-ware").text();
+                  type = $("#type").text()
+                  document.elementFromPoint(0, 0).click();
                 });
+<<<<<<< HEAD
             }
         }
 
@@ -452,6 +491,8 @@
                   type = $("#type").text()
                   document.elementFromPoint(0, 0).click();
                 });
+=======
+>>>>>>> 1f5d19bc64640968c570eef661021301ae38614d
               }*/
             });
         }      
@@ -479,11 +520,19 @@
               <div class="col-8 no-pd" onclick="selectfolder();">
                 <button id="slct_folder" class="select_folder">เลือกสินค้า</button>
               </div>
+<<<<<<< HEAD
               <div class="col-4 no-pd">
                   <!--<input id="store" type="text" class="w3-input no-pd" data-toggle="dropdown" placeholder="หน้าร้าน" readonly>
                   <ul id="ul-store" class="dropdown-menu text-center no-pd" aria-labelledby="role" >
                   </ul>-->
                   <input id="ware" type="text" class="w3-input" readonly onclick="showware();" placeholder="เลือกหน้าร้าน">
+=======
+              <div class="col-5 text-center no-pd">
+                  <!--<input id="store" type="text" class="w3-input no-pd" data-toggle="dropdown" placeholder="หน้าร้าน" readonly>
+                  <ul id="ul-store" class="dropdown-menu text-center no-pd" aria-labelledby="role" >
+                  </ul>-->
+                  <input id="store" type="text" class="w3-input" readonly onclick="showstore();" placeholder="เลือกหน้าร้าน">
+>>>>>>> 1f5d19bc64640968c570eef661021301ae38614d
               </div>
             </div>
             <div class="row">
@@ -502,8 +551,13 @@
             </div>
             <!-- Input --> 
             <div class="row">
+<<<<<<< HEAD
                 <div class="col-1 text-center" style="padding-right: 0;"></div>
                 <div class="col-8 text-center">                   
+=======
+                <div class="col-1 text-center"></div> 
+                <div class="col-8 text-center" style="padding-left: 2%;">                   
+>>>>>>> 1f5d19bc64640968c570eef661021301ae38614d
                     <input id="name" type="text" class="w3-input">
                 </div>
                 <div class="col-3 text-center" style="padding-left: 0;">                  
@@ -516,10 +570,17 @@
                 </div>
             </div>
             <div class="row mg-10">
+<<<<<<< HEAD
                 <div class="col-5 text-center no-pd">
                     <button class="mbtn-save" onclick="save();">บันทึก</button>
                 </div>
                 <div class="col-7 text-center no-pd">
+=======
+                <div class="col-4 text-center">
+                    <button class="mbtn-save" onclick="save();">บันทึก</button>
+                </div>
+                <div class="col-8 text-center">
+>>>>>>> 1f5d19bc64640968c570eef661021301ae38614d
                     <button class="mbtn" onclick="add_trans();">เพิ่มสินค้า</button>
                 </div>
             </div>

@@ -111,7 +111,7 @@
                 }); 
             }
 
-            $.ajax({
+            /*$.ajax({
                 type: "GET",
                 url:"https://omise-webpack.000webhostapp.com/www/php/get_shop.php",                            
                 success: function(data){
@@ -121,7 +121,7 @@
                         "<span id='id-store-"+i+"' hidden>"+field.shop_id+"</span>");
                     });                                        
                 }               
-            });
+            });*/
 
             var options = {
                 url: function(phrase) {
@@ -216,12 +216,13 @@
             $("#amount-" + arg).attr('hidden', true);
             $("#h5-amt-" + arg).attr('hidden', false);        
         }
-
+       
         function setstore(arg) {
             shop = $("#li-store-" + arg).text();
             $("#store").val(shop);
             localStorage.shop_name = shop;
             localStorage.shop_id = $("#id-store-" + arg).text();
+            document.elementFromPoint(0, 0).click();       
         }
 
         function disactive(arg) {
@@ -236,7 +237,6 @@
         function disac(arg){
           if ($("#i-" + arg).hasClass('active')) $("#i-" + arg).removeClass('active');
         }
-
 
         function menu(arg) {
             // Animate             
@@ -386,33 +386,35 @@
         }
 
         function save(){
-            if(arr_data.length > 0){
-                var json_string = JSON.stringify(arr_data); 
-                var d = new Date($.now());            
-                $('#date').text("วันที่ : " + d.getDate() + "/" + (d.getMonth()+1) + "/" + d.getFullYear()); 
-                var datetime = d.getFullYear() + "-" + (d.getMonth()+1) + "-" + d.getDate() + " " + d.getHours() + ":" + d.getMinutes() + ":" + d.getSeconds();                   
-                var dataString =  "JSON=" + json_string + "&shop_id=" + localStorage.shop_id + "&date=" + datetime;                                    
-
-                $.ajax({
-                    type: "POST",
-                    url:"https://omise-webpack.000webhostapp.com/www/php/transfer_in.php",           
-                    data: dataString,               
-                    success: function(data){                       
-                        if(data == "success"){                                                   
-                            $('#ctn-add').empty();
-                            $("#store").val("");
-                            arr_data = [];                           
-                            index = 0; 
-                            localStorage.arr_tranin = ""; 
-                            localStorage.shop_name = "";
-                            localStorage.shop_id = "";                                         
-                        }
-                    }               
-                });
+            if(arr_data.length == 0 ||  $("#store").val() == ""){
+                return 0;
             }
+            var json_string = JSON.stringify(arr_data); 
+            var d = new Date($.now());            
+            $('#date').text("วันที่ : " + d.getDate() + "/" + (d.getMonth()+1) + "/" + d.getFullYear()); 
+            var datetime = d.getFullYear() + "-" + (d.getMonth()+1) + "-" + d.getDate() + " " + d.getHours() + ":" + d.getMinutes() + ":" + d.getSeconds();                   
+            var dataString =  "JSON=" + json_string + "&shop_id=" + localStorage.shop_id + "&date=" + datetime;                                    
+
+            $.ajax({
+                type: "POST",
+                url:"https://omise-webpack.000webhostapp.com/www/php/transfer_in.php",           
+                data: dataString,               
+                success: function(data){                       
+                    if(data == "success"){                                                   
+                        $('#ctn-add').empty();
+                        $("#store").val("");
+                        arr_data = [];                           
+                        index = 0; 
+                        localStorage.arr_tranin = ""; 
+                        localStorage.shop_name = "";
+                        localStorage.shop_id = "";                                         
+                    }
+                }               
+            });
+            
         }
 
-        function showware(){
+        function showstore(){
             $("style").append('.jconfirm .jconfirm-box{max-height: 420px;}');
             $.confirm({
               title: 'หน้าร้าน',
@@ -423,19 +425,12 @@
                 //ajax and apeend
                 $.ajax({
                     type: "GET",
-                    url:"https://omise-webpack.000webhostapp.com/www/php/get_ware_shop.php",                            
+                    url:"https://omise-webpack.000webhostapp.com/www/php/get_shop.php",                            
                     success: function(data){
                     var obj = jQuery.parseJSON(data);                                                      
-                    $.each(obj, function(i, field){   
-                        if(obj[i][2] == "โกดัง"){  
-                            $(".jconfirm-buttons").append('<button id="li-ware-'+i+'" type="button" onclick="setware('+i+')" class="btn btn-choice">'+obj[i].ware_name+'</button>' +
-                            '<span id="id-ware-'+i+'" hidden>'+obj[i].ware_id+'</span>' +
-                            '<span id="type-'+i+'" hidden>โกดัง</span>');                       
-                        }else if(obj[i][2] == "หน้าร้าน"){ 
-                            $(".jconfirm-buttons").append('<button id="li-ware-'+i+'" type="button" onclick="setware('+i+')" class="btn btn-choice">'+obj[i].shop_name+'</button>' +
-                            '<span id="id-ware-'+i+'" hidden>'+obj[i].shop_id+'</span>' +
-                            '<span id="type-'+i+'" hidden>หน้าร้าน</span>');
-                        }                    
+                        $.each(obj, function(i, field){                      
+                            $(".jconfirm-buttons").append('<button id="li-store-'+i+'" type="button" onclick="setstore('+i+')" class="btn btn-choice">'+obj[i].shop_name+'</button>' +
+                            '<span id="id-store-'+i+'" hidden>'+obj[i].shop_id+'</span>');                                           
                         });                                        
                     }               
                 });               
@@ -483,7 +478,7 @@
                   <!--<input id="store" type="text" class="w3-input no-pd" data-toggle="dropdown" placeholder="หน้าร้าน" readonly>
                   <ul id="ul-store" class="dropdown-menu text-center no-pd" aria-labelledby="role" >
                   </ul>-->
-                  <input id="ware" type="text" class="w3-input" readonly onclick="showware();" placeholder="เลือกหน้าร้าน">
+                  <input id="store" type="text" class="w3-input" readonly onclick="showstore();" placeholder="เลือกหน้าร้าน">
               </div>
             </div>
             <div class="row">
