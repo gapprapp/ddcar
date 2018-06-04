@@ -11,14 +11,14 @@
     <script type="text/javascript" src="js/jquery-ui.min.js"></script>
     <script type="text/javascript" src="js/jquery.easing.1.3.min.js"></script>
     <script type="text/javascript" src="js/transition.js"></script>
+    <script type="text/javascript" src="js/jquery-confirm.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.6/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
     <script defer src="https://use.fontawesome.com/releases/v5.0.8/js/all.js"></script>
     <script src="cordova.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.0/jquery-confirm.min.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.0/jquery-confirm.min.js"></script>
 
     <link rel="stylesheet" href="css/index.css">
+    <link rel="stylesheet" href="css/jquery-confirm.css">
 
     <!-- Font -->
     <link href="https://fonts.googleapis.com/css?family=Prompt" rel="stylesheet">
@@ -44,6 +44,21 @@
         var arr_data;
         var datetime;
         $(document).ready(function () {
+            //navs
+            margin = $("#navs-menu").outerHeight()*3;
+            $("#ctn-btm").css('padding-bottom', margin);
+            margin = $("#ctn-btm").outerHeight();
+            $("#big-ctn").css('margin-bottom', margin); 
+            
+            //$("style").append('.jconfirm .jconfirm-box{margin-bottom: 60%;}');
+
+            margin = $("#ctn-btn").outerHeight() + $("#navs-menu").outerHeight() -15;
+            $("#navs-net").css('margin-bottom', margin); 
+
+            margin = $("#ctn-btn").outerHeight() + $("#navs-menu").outerHeight() + $("#navs-net").outerHeight() -15;
+            $("#big-ctn").css('margin-bottom', margin); 
+            /********************************************/
+
             var d = new Date($.now());            
             $('#date').text(d.getDate() + "/" + (d.getMonth()+1) + "/" + d.getFullYear()); 
             datetime = d.getFullYear() + "-" + (d.getMonth()+1) + "-" + d.getDate() + " " + d.getHours() + ":" + d.getMinutes() + ":" + d.getSeconds(); 
@@ -66,21 +81,16 @@
             for(var i = 0 ; i < arr_data.length ; i ++){                              
                 var sum_prod = arr_data[i].cost*arr_data[i].amt;
                 sum += parseInt(sum_prod);
-                $('#show-export').append("<div id='prod-"+i+"' class='row'>\
+                $('#big-ctn').append("<div id='prod-"+i+"' class='row'>\
                 <span id='id-prod-"+i+"' hidden>"+arr_data[i].prod_id+"</span>\
                 <div class='col-1 text-center no-pd'>\
-                    <i id='i-del-"+i+"' class='fa fa-trash-alt i-del' onclick='remove("+i+");' hidden></i>\
-                    <i id='i-edit-"+i+"' class='fa fa-edit i-edit' onclick='edit_prod("+i+");' hidden></i>\
-                    <i id='i-check-"+i+"' class='fa fa-check i-check' onclick='update_prod("+i+");' hidden style='color: green;'></i>\
+                    <i id='i-del-"+i+"' class='fa fa-trash-alt i-del' onclick='remove("+i+");' style='color: #666;' hidden></i>\
+                    <i id='i-edit-"+i+"' class='fa fa-edit i-edit' onclick='edit_prod("+i+");' style='color: #666;' hidden></i>\
                 </div>\
-                <div id='i-collapse-"+i+"' class='col-6 text-center no-pd' onclick='collapse("+i+");'>"+arr_data[i].name+"</div>\
-                <div class='col-3 text-center'>\
-                    <input id='price-"+i+"' type='number' class='w3-input' value='"+arr_data[i].cost+"' style='border: none; font-size: 120%;' readonly>\
-                </div>\
-                <span style='font-size: 120%;'>x</span>\
-                <div class='col-1 text-center no-pd'>\
-                    <input id='amount-"+i+"' type='number' class='w3-input' value='"+arr_data[i].amt+"' style='border: none;' readonly>\
-                </div>\
+                <div id='name-"+i+"' class='col-6 text-center no-pd' onclick='collapse("+i+");'>"+arr_data[i].name+"</div>\
+                <div id='price-"+i+"' class='col-3 text-center no-pd'>"+arr_data[i].cost+"</div>\
+                <span>x</span>\
+                <div id='amount-"+i+"' class='col-1 text-center no-pd'>"+arr_data[i].amt+"</div>\
             </div>\
             <!-- Collapse-1 -->\
             <div id='collapse-"+i+"' class='container collapse' style='margin-top: 5%;'>\
@@ -133,16 +143,31 @@
         }
 
         function remove(num){
-            var cost = $('#price-'+num).val();   
-            var amt = $('#amount-'+num).val();
+            var cost = $('#price-'+num).text();   
+            var amt = $('#amount-'+num).text();
+            var name = $('#name-'+num).text();
             var net = $("#net").html();           
-            var sum = parseFloat(net.replace(/,/g, ''))-(cost*amt);          
-            $("#net").text(sum.toLocaleString());   
-            $('#prod-'+num).remove();   
-            $('#collapse-'+num).remove();   
-            $('#hr-'+num).remove();   
-            //arr_data[num].qr = 0;
-            arrange(num);
+            var sum = parseFloat(net.replace(/,/g, ''))-(cost*amt);
+            $.confirm({
+                title: 'ลบรายการ',
+                content: 'ต้องการลบ '+name+' หรือไม่',
+                backgroundDismiss: true,
+                buttons: {
+                  ยกเลิก: function () {},  
+                  formSubmit: {
+                    text: 'ตกลง',
+                    btnClass: 'btn-danger',
+                    action: function () {   
+                        $("#net").text(sum.toLocaleString());   
+                        $('#prod-'+num).remove();   
+                        $('#collapse-'+num).remove();   
+                        $('#hr-'+num).remove();   
+                        //arr_data[num].qr = 0;
+                        arrange(num);
+                    }
+                  }
+                }  
+            });
         }
 
         function arrange(arg){
@@ -158,8 +183,8 @@
                 $("#i-check-"+i).prop('id', 'i-check-'+(i-1));
                 $("#price-"+i).prop('id', 'price-'+(i-1));
                 $("#amount-"+i).prop('id', 'amount-'+(i-1));
-                $("#i-collapse-"+i).attr('onclick', "collapse("+(i-1)+")");      
-                $("#i-collapse-"+i).prop('id', 'i-collapse-'+(i-1));                
+                $("#name-"+i).attr('onclick', "collapse("+(i-1)+")");      
+                $("#name-"+i).prop('id', 'name-'+(i-1));                
                 $("#collapse-"+i).prop('id', 'collapse-'+(i-1));
                 $("#sum-"+i).prop('id', 'sum-'+(i-1));    
                 $("#hr-"+i).prop('id', 'hr-'+(i-1));      
@@ -179,54 +204,88 @@
         function menu(arg) {
             // Animate
             disactive(arg);
-            $("#i-" + arg).fadeOut(100).fadeIn(100, function () {
-                $("#i-" + arg).addClass('active');
-            });
+            if($("#i-"+arg).hasClass('active')){
+                console.log("i-"+arg+"hasClass('active')");
+                $("#i-"+arg).removeClass('active');
+              }else{
+                $("#i-" + arg).fadeOut(150).fadeIn(100, function() {
+                  $("#i-" + arg).addClass('active');
+                });
+            }
 
             if (arg == "add") {
                /* goto = "sale.html";
                 transition_page_back(goto);*/
-            } else if (arg == "edit") {
+            } else if(arg == "edit"){
                 // show edit all
-                $(".i-edit").attr('hidden', false);
-                $(".i-del").attr('hidden', true);
-            } else if (arg == "del") {
+                if ($(".i-edit").is(":visible")) {
+                  $(".i-del").attr('hidden', true);
+                  $(".i-edit").attr('hidden', true);
+                  disac("edit");
+                } else {
+                  $(".i-del").attr('hidden', true);
+                  $(".i-edit").attr('hidden', false);
+                }
+            }else if (arg == "del") {
                 // show trash all 
-                $(".i-del").attr('hidden', false);
-                $(".i-edit").attr('hidden', true);
-            }
-        }
-
-        function check_edit(arg) {
-            val = true;
-            // 4 is max prod
-            for (i = 0; i < 4; i++) {
-                if ($("#i-check-" + i).is(":visible") && i != arg) {
-                    val = false;
-                    break;
+                if($(".i-del").is(":visible")){
+                  $(".i-edit").attr('hidden', true);
+                  $(".i-del").attr('hidden', true);
+                  disac("del");
+                }else{
+                  $(".i-edit").attr('hidden', true);
+                  $(".i-del").attr('hidden', false);
                 }
             }
-
-            return val;
         }
 
         var sum_old;
         function edit_prod(arg) {
             //check if some i-check is show then
-            if (check_edit(arg)) {
-                $("#i-edit-" + arg).attr('hidden', true);
-                $("#i-check-" + arg).attr('hidden', false);
-                $("#amount-" + arg).removeAttr('style');
-                //$("#price-" + arg).removeAttr('style');
-                $("#amount-" + arg).attr("readonly", false);
-                //$("#price-" + arg).attr("readonly", false);
-                var amt = $("#amount-" + arg).val();
-                var cost = $('#price-'+arg).val();
-                sum_old = amt*cost;   
-            }
+            $("#i-edit-" + arg).attr('hidden', true);
+            $("#i-check-" + arg).attr('hidden', false);
+            $("#amount-" + arg).removeAttr('style');
+            //$("#price-" + arg).removeAttr('style');
+            $("#amount-" + arg).attr("readonly", false);
+            //$("#price-" + arg).attr("readonly", false);
+
+            var prod_name = $("#name-"+arg).text();
+            var amt = $("#amount-" + arg).text();   
+            var cost = $('#price-'+arg).text();
+            sum_old = amt*cost;
+
+            $("style").append(".jconfirm .jconfirm-box{margin-bottom:60%;}");
+            $.confirm({
+              title: prod_name,
+              content: '<div class="row"><div class="col-2"></div><div class="col-3 text-center" style="font-size: 110%; font-weight: bold;">จำนวน</div><div class="col-5 text-center"><input id="edt-amt" type="number" class="input-cf" placeholder="" value="'+amt+'" autofocus></div><div class="col-2"></div></div>',
+              backgroundDismiss: true,
+              onDestroy: function(){
+                $("style").append('.jconfirm .jconfirm-box{margin-bottom: 5%;}');
+            },
+              buttons: {
+                ยกเลิก: function () {
+                    //$(".jconfirm .jconfirm-box").css('margin-bottom', '5%');
+                  },
+                formSubmit: {
+                  text: 'ตกลง',
+                  btnClass: 'btn-danger',
+                  action: function () {  
+                    var amt = $('#edt-amt').val();
+                    $("#amount-" + arg).text(amt);
+                    arr_data[arg].amt = amt; 
+                    localStorage.setItem('arr_ex', JSON.stringify(arr_data));     
+                    var net = $("#net").html(); 
+                    var sum = parseFloat(net.replace(/,/g, ''));
+                    var new_net = (sum-sum_old)+(amt*cost);
+                    $("#net").text(new_net.toLocaleString());  
+                    $("#sum-"+arg).text(cost*amt); 
+                  }
+                }
+              }
+            });     
         }
 
-        function update_prod(arg) {
+        /*function update_prod(arg) {
             $("#i-edit-" + arg).attr('hidden', false);
             $("#i-check-" + arg).attr('hidden', true);
             $("#amount-" + arg).css('border', 'none');
@@ -236,7 +295,7 @@
             /*$.alert({
                 title: 'สำเร็จ!',
                 content: 'บันทึกการเปลี่ยนแปลง',
-            });*/
+            });
             var cost = $('#price-'+arg).val();   
             var amt = $('#amount-'+arg).val();
             arr_data[arg].amt = amt;  
@@ -246,7 +305,7 @@
             var new_net = (sum-sum_old)+(amt*cost);
             $("#net").text(new_net.toLocaleString());  
             $("#sum-"+arg).text(cost*amt);
-        }
+        }*/
 
         function collapse(arg) {
             // 4 is num of prod
@@ -257,9 +316,9 @@
             }
 
             $("#collapse-" + arg).slideToggle('collapse', function () {
-                $('html, body').animate({
+                /*$('html, body').animate({
                     scrollTop: $("#collapse-" + arg).height()
-                }, 900);
+                }, 900);*/
             });
         }
         
@@ -268,11 +327,56 @@
             ware = $("#li-ware-" + arg).text();
             $("#ware").val(ware);
             ware_id = $("#id-ware-" + arg).text();
+            document.elementFromPoint(0, 0).click();
         }
+
+        function showware(){
+            $("style").append('.jconfirm .jconfirm-box{max-height: 420px;}');
+            $.confirm({
+              title: 'โกดัง',
+              content: '<hr style="width: 80%; margin-bottom: 0;">',
+              backgroundDismiss: true,
+              onOpenBefore: function () {
+                $(".jconfirm-buttons .btn-default").remove();
+                //ajax and apeend
+                $.ajax({
+                    type: "GET",
+                    url:"https://omise-webpack.000webhostapp.com/www/php/get_ware_shop.php",                            
+                    success: function(data){
+                    var obj = jQuery.parseJSON(data);                                                      
+                    $.each(obj, function(i, field){   
+                        if(obj[i][2] == "โกดัง"){  
+                            $(".jconfirm-buttons").append('<button id="li-ware-'+i+'" type="button" onclick="setware('+i+')" class="btn btn-choice">'+obj[i].ware_name+'</button>' +
+                            '<span id="id-ware-'+i+'" hidden>'+obj[i].ware_id+'</span>' +
+                            '<span id="type-'+i+'" hidden>โกดัง</span>');                       
+                        }else if(obj[i][2] == "หน้าร้าน"){ 
+                            $(".jconfirm-buttons").append('<button id="li-ware-'+i+'" type="button" onclick="setware('+i+')" class="btn btn-choice">'+obj[i].shop_name+'</button>' +
+                            '<span id="id-ware-'+i+'" hidden>'+obj[i].shop_id+'</span>' +
+                            '<span id="type-'+i+'" hidden>หน้าร้าน</span>');
+                        }                    
+                        });                                        
+                    }               
+                });               
+              },
+              onDestroy: function () {
+                $("style").append('.jconfirm .jconfirm-box{margin-bottom: 5%;}');
+                $("style").append('.jconfirm .jconfirm-box{max-height: 100%;}');
+              },
+              /*onOpen: function(){
+                $(".btn-choice").click(function(event) {
+                  txt = $(this).text();
+                  $("#ware").val(txt);
+                  b_id = $("#id-ware").text();
+                  type = $("#type").text()
+                  document.elementFromPoint(0, 0).click();
+                });
+              }*/
+            });
+        } 
     </script>
 </head>
 
-<body>
+<body style="overflow: auto;">
     <!-- Nav menu top -->
     <div class="row fixed-top navs">
         <div class="col-1 text-center" onclick="transition_page_back('index.html')">
@@ -287,52 +391,41 @@
     <br>
 
     <!-- End big container -->
-    <div id="big-ctn" class="container justify-content-center" style="margin-top: 15%; margin-bottom: 30%;">
-
-        <div id="show-export" class="container">
-            <div class="row" style="margin-bottom: 5%;">
-                <div class="col-3 text-center no-pd">วันที่ : </div>
-                <div id="date" class="col-2 text-center no-pd"></div>
-                <div class="col-2 text-center no-pd"></div>
-                <div class="col-4 text-center no-pd">เลขที่ใบเสร็จ : </div>
-                <div class="col-1 text-center no-pd">auto</div>
+    <div id="big-ctn" class="container justify-content-center" style="margin-top: 15%;">
+        <div class="row mg-10">
+            <div class="col-3"></div>
+            <div class="col-6 text-center no-pd">
+                <input id="ware" type="text" class="w3-input" placeholder="โกดัง" onclick="showware();" readonly>
             </div>
-            <div class="row" style="margin-bottom: 10%;">
-                <div class="col-3 text-center no-pd">ผู้ใช้ : </div>
-                <div id="user" class="col-3 text-center no-pd">test</div>
-                <div class="col-1 text-center no-pd"></div>
-                <div class="col-5 text-center no-pd">
-                    <input id="ware" type="text" class="w3-input" data-toggle="dropdown" placeholder="โกดัง" readonly>
-                    <ul id="ul-ware" class="dropdown-menu text-center" aria-labelledby="role" style="width: 80%;">                      
-                    </ul>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-1 text-center no-pd"></div>
-                <div class="col-6 text-center no-pd">
-                    <h5 id="title">สินค้า</h5>
-                </div>
-                <div class="col-3 text-center">
-                    <h5 id="title">ราคา</h5>
-                </div>
-            </div>
-            <hr>
-            <!-- Show -->   
+            <div class="col-3"></div>
         </div>
+
     </div>
     <!-- End big container -->
 
-    <div class="row fixed-bottom navs" style="margin-bottom: 15%; border: none !important; background-color: #fdfdfd !important;">
-        <div class="col-6 text-center">
-            <button id="btn-check" class="svbtn" onclick="save()">บันทึก</button>
-        </div>
-        <div class="col-6 text-right">
-            <h5 class="title" style="font-size: 150%; text-decoration: underline;">รวม : <span id="net" style="color: red;"></span></h5>
+    <div id="ctn-btm" class="container fixed-bottom" style="background: #f3f3f3;">
+        <div class="container">
+            <div class="row">
+                <div class="col-12 text-center">
+                    <h5 class="h5-title" style="font-size: 130%;">รวม :
+                        <span  style="color: red;"id="net">500000</span>
+                    </h5>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-4 text-center" style="padding-left: 0; padding-right: 0;">
+                    <button class="mbtn-cancle" onclick="clearAll();">ยกเลิก</button>
+                </div>
+                <div class="col-8 text-center" style="padding-right: 0;">
+                    <button class="mbtn" onclick="save()">บันทึก</button>
+                </div>
+            </div>
         </div>
     </div>
+    
     <!-- Nav menu bottom -->
-    <div class="row fixed-bottom navs">
-        <div class="col-3 text-center" onclick="window.location='index.html';">
+    <div id="navs-menu" class="row fixed-bottom navs">
+        <div class="col-3 text-center" onclick="transition_page_back('index.html');">
             <i id="i-home" class="fas fa-home menu"></i>
         </div>
         <div class="col-3 text-center" onclick="menu('add')">

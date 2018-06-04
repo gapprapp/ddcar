@@ -130,7 +130,7 @@ body{
 	background-color: #fdfdfd;
 	border: 1px solid #e5e5e5;
 	height: 130%;
-	width: 70%;
+	width: 90%;
 	font-weight: bold;
 	font-size: 110%;
 	color: #666666;
@@ -193,6 +193,7 @@ label{
 .w3-input{
 	display:block;
 	border:none;
+	border-radius: 0;
 	border-bottom:1px solid #ccc;
 	width:100%;
 	background-color: #f3f3f3;
@@ -202,6 +203,7 @@ label{
 .input-cf{
 	display:block;
 	border:none;
+	border-radius: 0;
 	border-bottom:1px solid #ccc;
 	width:100%;
 	background-color: white;
@@ -211,6 +213,7 @@ label{
 .w3-input2{
 	display:block;
 	border:none;
+	border-radius: 0;
 	width:100%;
 	background-color: #f3f3f3;
 	text-align: center;

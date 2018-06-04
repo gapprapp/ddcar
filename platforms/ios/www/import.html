@@ -37,6 +37,19 @@
             padding-left: 10%;
             padding-right: 10%;
         }
+        .circle-text {
+            height: 1.7em; /*change this and the width
+            for the size of your initial circle*/
+            width: 1.7em;
+            line-height: 1.8em;
+            text-align: center;
+            vertical-align: middle;
+            border-radius: 50%;
+            /*make it pretty*/
+            background: #fafafa;
+            font-weight: bold;
+            color: #d63232;
+        }
     </style>
 
     <script>      
@@ -303,21 +316,21 @@
     </script>
 </head>
 
-<body style="overflow: auto;">
+<body>
     <!-- Nav menu top -->
     <div class="row fixed-top navs">
         <div class="col-1 text-center" onclick="transition_page_back('index.html')">
             <i id="i-back" class="fas fa-angle-left"></i>
         </div>
-        <div class="col-10 text-center">
+        <div class="col-9 text-center" style="padding-left: 15%;">
             <h5 id="h5-title">สินค้าเข้า</h5>
         </div>
-        <div class="col-1"></div>
+        <div class="col-2 text-right" onclick="report();"><div id="check-import"class="circle-text">0</div></div>
     </div>
     <br>
 
     <!-- End big container -->
-    <div class="container justify-content-center" style="margin-top: 15%; margin-bottom: 30%;">
+    <div class="container justify-content-center" style="margin-top: 20%;">
         <div class="container">
             <div class="row mg-15">
                 <div class="col-12 text-center" onclick="selectfolder();">
@@ -356,17 +369,11 @@
                     <input id="retail" type="number" class="w3-input">
                 </div>
             </div>
-            <div class="row mg-10">
-                <div class="col-12 text-center">
-                    <button class="mbtn" onclick="add_import();" style="width: 70%;">เพิ่มสินค้า</button>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-12 text-center">
-                    <button id="btn-check" class="mbtn-green" onclick="report();">
-                        ตรวจสอบ
-                        <span id="check-import"></span>
-                    </button>
+            <div class="container mg-15">
+                <div class="row mg-10">
+                    <div class="col-12 text-center">
+                        <button class="mbtn" onclick="add_import();" style="width: 70%;">เพิ่มสินค้า</button>
+                    </div>
                 </div>
             </div>
         </div>

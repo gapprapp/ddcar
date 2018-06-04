@@ -32,10 +32,9 @@
             color: #666666;
             letter-spacing: 2px;
         }
-
-        .pdlr {
-            padding-left: 10%;
-            padding-right: 10%;
+        .no-pd{
+            padding-right: 5px;
+            padding-left: 5px;
         }
     </style>
 
@@ -51,7 +50,7 @@
             if(localStorage.arr_prod){
                 var retrievedObject = localStorage.getItem('arr_prod');
                 var arr_data = JSON.parse(retrievedObject);             
-                $('#check-import').text("("+arr_data.length+")");       
+                $('#check-import').text(arr_data.length);       
             }          
 
             if(product != null){
@@ -250,7 +249,7 @@
             arr_data.push(item); 
             localStorage.setItem('arr_prod', JSON.stringify(arr_data));         
            
-            $('#check-import').text("("+arr_data.length+")");       
+            $('#check-import').text(arr_data.length);       
 
             $('#barcode').val("");
             $('#name').val("");
@@ -303,70 +302,66 @@
     </script>
 </head>
 
-<body style="overflow: auto;">
+<body>
     <!-- Nav menu top -->
     <div class="row fixed-top navs">
         <div class="col-1 text-center" onclick="transition_page_back('index.html')">
             <i id="i-back" class="fas fa-angle-left"></i>
         </div>
-        <div class="col-10 text-center">
-            <h5 id="h5-title">สินค้าเข้า</h5>
+        <div class="col-9 text-center" style="padding-left: 15%;">
+            <h5 id="h5-title">เข้าโกดัง</h5>
         </div>
-        <div class="col-1"></div>
+        <div class="col-2 text-right" onclick="report();"><div id="check-import"class="circle-text">0</div></div>
     </div>
     <br>
 
-    <!-- End big container -->
-    <div class="container justify-content-center" style="margin-top: 15%; margin-bottom: 30%;">
+    <!-- big container -->
+    <div class="container justify-content-center" style="margin-top: 15%;">
         <div class="container">
-            <div class="row mg-15">
-                <div class="col-12 text-center" onclick="selectfolder();">
-                    <button class="select_folder">เลือกสินค้า</button>
-                </div>
-            </div>
             <div class="row mg-10">
-                <div class="col-12 text-center pdlr">
+                <div class="col-5 text-center">
+                    <label for="barcode">รหัส</label>
+                    <input id="barcode" type="text" class="w3-input">
+                </div>
+                <div class="col-7 text-center">
                     <label for="name">ชื่อสินค้า</label>
                     <input id="name" type="text" class="w3-input">
                 </div>
             </div>
             <div class="row mg-10">
-                <div class="col-6 text-center">
-                    <label for="barcode">รหัส</label>
-                    <input id="barcode" type="text" class="w3-input">
+                <div class="col-9 text-center">
+                    <label for="prod-addr">ที่อยู่สินค้า</label>
+                    <input id="prod-addr" type="text" class="w3-input">
                 </div>
                 <div class="col-3 text-center">
                     <label for="amount">จำนวน</label>
                     <input id="amount" type="number" min="1" value="1" class="w3-input" onchange="cal_avg('amt')">
                 </div>
-                <div class="col-3 text-center">
+            </div>
+            <div class="row" style="margin-bottom: 20%;">
+                <div class="col-4 text-center">
                     <label for="cost" class="popup">ทุน
                         <span class="popuptext" id="myPopup">เฉลี่ย: <span id="avg-rate"></span></span>
                     </label>
                     <input id="cost" type="number" class="w3-input" onchange="cal_avg('cost')">
                 </div>
-            </div>
-            <div class="row" style="margin-bottom: 18%;">
-                <div class="col-6 text-center">
-                    <label for="wholesale">ราคาส่ง</label>
+                <div class="col-4 text-center">
+                    <label for="wholesale">ขายส่ง</label>
                     <input id="wholesale" type="number" class="w3-input">
                 </div>
-                <div class="col-6 text-center">
-                    <label for="retail">ราคาปลีก</label>
+                <div class="col-4 text-center">
+                    <label for="retail">ขายปลีก</label>
                     <input id="retail" type="number" class="w3-input">
                 </div>
             </div>
             <div class="row mg-10">
-                <div class="col-12 text-center">
-                    <button class="mbtn" onclick="add_import();" style="width: 70%;">เพิ่มสินค้า</button>
+                <div class="col-12 text-center" onclick="selectfolder();">
+                    <button class="select_folder" style="width: 70%;">เลือกสินค้า</button>
                 </div>
             </div>
             <div class="row">
                 <div class="col-12 text-center">
-                    <button id="btn-check" class="mbtn-green" onclick="report();">
-                        ตรวจสอบ
-                        <span id="check-import"></span>
-                    </button>
+                    <button class="mbtn" onclick="add_import();">เพิ่มสินค้า</button>
                 </div>
             </div>
         </div>
