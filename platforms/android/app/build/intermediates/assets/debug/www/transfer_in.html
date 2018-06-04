@@ -222,6 +222,7 @@
             $("#store").val(shop);
             localStorage.shop_name = shop;
             localStorage.shop_id = $("#id-store-" + arg).text();
+            document.elementFromPoint(0, 0).click();       
         }
 
         function disactive(arg) {
