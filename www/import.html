@@ -309,48 +309,54 @@
             <i id="i-back" class="fas fa-angle-left"></i>
         </div>
         <div class="col-9 text-center" style="padding-left: 15%;">
-            <h5 id="h5-title">สินค้าเข้า</h5>
+            <h5 id="h5-title">เข้าโกดัง</h5>
         </div>
         <div class="col-2 text-right" onclick="report();"><div id="check-import"class="circle-text">0</div></div>
     </div>
     <br>
 
-    <!-- End big container -->
-    <div class="container justify-content-center" style="margin-top: 20%;">
+    <!-- big container -->
+    <div class="container justify-content-center" style="margin-top: 15%;">
         <div class="container">
-            <div class="row mg-15">
-                <div class="col-12 text-center" onclick="selectfolder();">
-                    <button class="select_folder">เลือกสินค้า</button>
-                </div>
-            </div>
             <div class="row mg-10">
-                <div class="col-5 text-center" style="padding-left: 0;">
+                <div class="col-5 text-center">
                     <label for="barcode">รหัส</label>
                     <input id="barcode" type="text" class="w3-input">
                 </div>
-                <div class="col-7 text-center" style="padding-right: 0;">
+                <div class="col-7 text-center">
                     <label for="name">ชื่อสินค้า</label>
                     <input id="name" type="text" class="w3-input">
                 </div>
             </div>
-            <div class="row" style="margin-bottom: 18%">
-                <div class="col-3 text-center no-pd">
+            <div class="row mg-10">
+                <div class="col-9 text-center">
+                    <label for="prod-addr">ที่อยู่สินค้า</label>
+                    <input id="prod-addr" type="text" class="w3-input">
+                </div>
+                <div class="col-3 text-center">
                     <label for="amount">จำนวน</label>
                     <input id="amount" type="number" min="1" value="1" class="w3-input" onchange="cal_avg('amt')">
                 </div>
-                <div class="col-3 text-center no-pd">
+            </div>
+            <div class="row" style="margin-bottom: 20%;">
+                <div class="col-4 text-center">
                     <label for="cost" class="popup">ทุน
                         <span class="popuptext" id="myPopup">เฉลี่ย: <span id="avg-rate"></span></span>
                     </label>
                     <input id="cost" type="number" class="w3-input" onchange="cal_avg('cost')">
                 </div>
-                <div class="col-3 text-center no-pd">
-                    <label for="wholesale">ส่ง</label>
+                <div class="col-4 text-center">
+                    <label for="wholesale">ขายส่ง</label>
                     <input id="wholesale" type="number" class="w3-input">
                 </div>
-                <div class="col-3 text-center no-pd">
-                    <label for="retail">ปลีก</label>
+                <div class="col-4 text-center">
+                    <label for="retail">ขายปลีก</label>
                     <input id="retail" type="number" class="w3-input">
+                </div>
+            </div>
+            <div class="row mg-10">
+                <div class="col-12 text-center" onclick="selectfolder();">
+                    <button class="select_folder" style="width: 70%;">เลือกสินค้า</button>
                 </div>
             </div>
             <div class="row">

@@ -222,6 +222,7 @@
             $("#store").val(shop);
             localStorage.shop_name = shop;
             localStorage.shop_id = $("#id-store-" + arg).text();
+            document.elementFromPoint(0, 0).click();       
         }
 
         function disactive(arg) {
@@ -236,7 +237,6 @@
         function disac(arg){
           if ($("#i-" + arg).hasClass('active')) $("#i-" + arg).removeClass('active');
         }
-
 
         function menu(arg) {
             // Animate             
@@ -447,52 +447,6 @@
                   type = $("#type").text()
                   document.elementFromPoint(0, 0).click();
                 });
-<<<<<<< HEAD
-            }
-        }
-
-        function showware(){
-            $("style").append('.jconfirm .jconfirm-box{max-height: 420px;}');
-            $.confirm({
-              title: 'หน้าร้าน',
-              content: '<hr style="width: 80%; margin-bottom: 0;">',
-              backgroundDismiss: true,
-              onOpenBefore: function () {
-                $(".jconfirm-buttons .btn-default").remove();
-                //ajax and apeend
-                $.ajax({
-                    type: "GET",
-                    url:"https://omise-webpack.000webhostapp.com/www/php/get_ware_shop.php",                            
-                    success: function(data){
-                    var obj = jQuery.parseJSON(data);                                                      
-                    $.each(obj, function(i, field){   
-                        if(obj[i][2] == "โกดัง"){  
-                            $(".jconfirm-buttons").append('<button id="li-ware-'+i+'" type="button" onclick="setware('+i+')" class="btn btn-choice">'+obj[i].ware_name+'</button>' +
-                            '<span id="id-ware-'+i+'" hidden>'+obj[i].ware_id+'</span>' +
-                            '<span id="type-'+i+'" hidden>โกดัง</span>');                       
-                        }else if(obj[i][2] == "หน้าร้าน"){ 
-                            $(".jconfirm-buttons").append('<button id="li-ware-'+i+'" type="button" onclick="setware('+i+')" class="btn btn-choice">'+obj[i].shop_name+'</button>' +
-                            '<span id="id-ware-'+i+'" hidden>'+obj[i].shop_id+'</span>' +
-                            '<span id="type-'+i+'" hidden>หน้าร้าน</span>');
-                        }                    
-                        });                                        
-                    }               
-                });               
-              },
-              onDestroy: function () {
-                $("style").append('.jconfirm .jconfirm-box{margin-bottom: 5%;}');
-                $("style").append('.jconfirm .jconfirm-box{max-height: 100%;}');
-              },
-              /*onOpen: function(){
-                $(".btn-choice").click(function(event) {
-                  txt = $(this).text();
-                  $("#ware").val(txt);
-                  b_id = $("#id-ware").text();
-                  type = $("#type").text()
-                  document.elementFromPoint(0, 0).click();
-                });
-=======
->>>>>>> 1f5d19bc64640968c570eef661021301ae38614d
               }*/
             });
         }      
@@ -520,19 +474,11 @@
               <div class="col-8 no-pd" onclick="selectfolder();">
                 <button id="slct_folder" class="select_folder">เลือกสินค้า</button>
               </div>
-<<<<<<< HEAD
               <div class="col-4 no-pd">
                   <!--<input id="store" type="text" class="w3-input no-pd" data-toggle="dropdown" placeholder="หน้าร้าน" readonly>
                   <ul id="ul-store" class="dropdown-menu text-center no-pd" aria-labelledby="role" >
                   </ul>-->
-                  <input id="ware" type="text" class="w3-input" readonly onclick="showware();" placeholder="เลือกหน้าร้าน">
-=======
-              <div class="col-5 text-center no-pd">
-                  <!--<input id="store" type="text" class="w3-input no-pd" data-toggle="dropdown" placeholder="หน้าร้าน" readonly>
-                  <ul id="ul-store" class="dropdown-menu text-center no-pd" aria-labelledby="role" >
-                  </ul>-->
                   <input id="store" type="text" class="w3-input" readonly onclick="showstore();" placeholder="เลือกหน้าร้าน">
->>>>>>> 1f5d19bc64640968c570eef661021301ae38614d
               </div>
             </div>
             <div class="row">
@@ -551,13 +497,8 @@
             </div>
             <!-- Input --> 
             <div class="row">
-<<<<<<< HEAD
                 <div class="col-1 text-center" style="padding-right: 0;"></div>
                 <div class="col-8 text-center">                   
-=======
-                <div class="col-1 text-center"></div> 
-                <div class="col-8 text-center" style="padding-left: 2%;">                   
->>>>>>> 1f5d19bc64640968c570eef661021301ae38614d
                     <input id="name" type="text" class="w3-input">
                 </div>
                 <div class="col-3 text-center" style="padding-left: 0;">                  
@@ -570,17 +511,10 @@
                 </div>
             </div>
             <div class="row mg-10">
-<<<<<<< HEAD
                 <div class="col-5 text-center no-pd">
                     <button class="mbtn-save" onclick="save();">บันทึก</button>
                 </div>
                 <div class="col-7 text-center no-pd">
-=======
-                <div class="col-4 text-center">
-                    <button class="mbtn-save" onclick="save();">บันทึก</button>
-                </div>
-                <div class="col-8 text-center">
->>>>>>> 1f5d19bc64640968c570eef661021301ae38614d
                     <button class="mbtn" onclick="add_trans();">เพิ่มสินค้า</button>
                 </div>
             </div>
