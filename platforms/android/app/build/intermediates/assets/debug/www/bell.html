@@ -33,6 +33,14 @@
       .red{
         color: #d63232;
       }
+      #title{
+        font-size: 118%;
+        color: #666;
+      }
+      .nopd{
+        padding-left: 0;
+        padding-right: 0;
+      }
     </style>
     <script>
       function search(){
@@ -66,26 +74,26 @@
 
     <!-- big container -->
     <div id="big-ctn" class="container justify-content-center" style="margin-top: 15%;">
-        <div class="container">
-          <div class="row">
+        <div class="container-full-width">
+          <div class="row mg-10">
             <div class="col-1"></div>
-            <div class="col-9 text-center">ชื่อสินค้า</div>
-            <div class="col-2" style="padding-left: 0; padding-right: 0;">คงเหลือ</div>
-          </div><hr class="mg-7">
+            <div id="title" class="col-8 text-center">ชื่อสินค้า</div>
+            <div id="title" class="col-3 text-center">คงเหลือ</div>
+          </div>
           <div class="row">
             <div class="col-1">
               <i class="fas fa-circle yellow"></i>
             </div>
-            <div class="col-9 text-center">toyota k311 กระจกหลัง</div>
-            <div class="col-2 text-center">3</div>
-          </div><hr class="mg-7">
+            <div class="col-8 text-center">toyota k311 กระจกหลัง</div>
+            <div class="col-3 text-center">3</div>
+          </div><hr class="mg-5">
           <div class="row">
             <div class="col-1">
               <i class="fas fa-circle red"></i>
             </div>
-            <div class="col-9 text-center">toyota k311 กระจกหลัง</div>
-            <div class="col-2 text-center">3</div>
-          </div><hr class="mg-7">
+            <div class="col-8 text-center">toyota k311 กระจกหลัง</div>
+            <div class="col-3 text-center">4</div>
+          </div><hr class="mg-5">
         </div>
     </div>
     <!-- End big container -->
