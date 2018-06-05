@@ -192,7 +192,8 @@
         function add_trans(){
             var name = $('#name').val();
             var amt = $('#amount').val();
-            if(name != ""){
+            var addr = $('#prod-addr').val();
+            if(name != "" && addr != ""){
                 if(localStorage.arr_tranin){
                     var retrievedObject = localStorage.getItem('arr_tranin');
                     arr_data = JSON.parse(retrievedObject);                                
@@ -205,6 +206,7 @@
                 item ["name"] =  name;                          
                 item ["amt"] =  amt;
                 item ["qr"] = $('#barcode').val();
+                item ["addr"] = addr;
                 arr_data.push(item);
                 localStorage.setItem('arr_tranin', JSON.stringify(arr_data));
                 
@@ -212,10 +214,8 @@
 
                 $('#name').val("");              
                 $('#amount').val("1");
-<<<<<<< HEAD
-                $('#barcode').val("");                                  
-=======
                 $('#barcode').val(""); 
+                $('#prod-addr').val("")
                 if(localStorage.arr_prod_t){
                     var retrievedObject = localStorage.getItem('arr_prod_t');
                     var arr_data2 = JSON.parse(retrievedObject);
@@ -234,7 +234,6 @@
                     $("#btn-folder").removeAttr('disabled');           
                     $("#btn-addpic").removeAttr('disabled');
                 }                                              
->>>>>>> 85e59f0f61df8f2e94f684e246616dc1c3f55ac1
             }    
         }
 

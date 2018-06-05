@@ -63,37 +63,6 @@
                 var arr_data = JSON.parse(retrievedObject);             
                 $('#check-import').text(arr_data.length);       
             }          
-<<<<<<< HEAD
-
-            if(product != null){
-                $.ajax({
-                    type: "POST",
-                    url:"https://omise-webpack.000webhostapp.com/www/php/get_prod.php",    
-                    data:{'prod_id' : product},
-                    //async: false,                       
-                    success: function(data){
-                        var obj = jQuery.parseJSON(data);                                         
-                        $.each(obj, function(i, field){
-                            $('#name').val(obj[i].prod_name);
-                            $('#barcode').val(obj[i].prod_code); 
-                            cost_o = obj[i].prod_cost;
-                            prod_id = obj[i].prod_id;   
-                            img = obj[i].img;   
-                            if(obj[i].prod_cost == 0 && obj[i].prod_price == 0 && obj[i].prod_pricesend == 0){
-                                $('#cost').val("");
-                                $('#wholesale').val("");
-                                $('#retail').val("");  
-                            }else{
-                                $('#cost').val(cost_o);
-                                $('#wholesale').val(obj[i].prod_pricesend);
-                                $('#retail').val(obj[i].prod_price);                     
-                                flag = 1;
-                            }                        
-                        });                                        
-                    }               
-                }); 
-            }
-=======
             if(prod_id){
                 get_prod();
             } 
@@ -105,7 +74,6 @@
                 prod_id = arr_data[0].prod_id;            
                 get_prod();
             }       
->>>>>>> 85e59f0f61df8f2e94f684e246616dc1c3f55ac1
 
             var options = {
                 url: function(phrase) {
@@ -240,7 +208,7 @@
             var cost = $('#cost').val();
             var price_s =$('#wholesale').val();
             var price_w =$('#retail').val(); 
-            if(code != "" && cost != "" && price_s != "" && price_w != ""){      
+            if(code != "" && cost != "" && price_s != "" && price_w != "" && addr != ""){      
                 if(flag == 0){                 
                     $.ajax({
                         type: "POST",
@@ -297,7 +265,8 @@
             item ["name"] =  $('#name').val();
             item ["cost"] =  cost;               
             item ["amt"] =  $('#amount').val();
-            item ["img"] =  img;     
+            item ["img"] =  img; 
+            item ["addr"] = $('#prod-addr').val();    
 
             arr_data.push(item); 
             localStorage.setItem('arr_prod', JSON.stringify(arr_data));         
@@ -310,6 +279,7 @@
             $('#wholesale').val("");
             $('#retail').val("");
             $('#amount').val("1");
+            $('#prod-addr').val("")
             if(is_show == 1){
                 show_avg(); 
                 is_show = 0;
@@ -358,17 +328,9 @@
             transition_page_next_flip(goto);
         }     
 
-<<<<<<< HEAD
-        function check() {     
-            if(localStorage.arr_prod){      
-                goto = "import_check.html";
-                transition_page_next(goto);
-            }            
-=======
         function report() {      
             goto = "import_check.html";
             transition_page_next(goto);                       
->>>>>>> 85e59f0f61df8f2e94f684e246616dc1c3f55ac1
         }
 
         function show_avg(){
@@ -442,7 +404,7 @@
         <div class="col-8 text-right" style="margin-right: 4%;">
             <h5 id="h5-title" class="fade" onclick="showware();">เลือกโกดัง(เข้า)</h5>
         </div>
-        <div class="col-2 text-right" onclick="check();"><div id="check-import"class="circle-text">0</div></div>
+        <div class="col-2 text-right" onclick="report();"><div id="check-import"class="circle-text">0</div></div>
     </div>
     <br>
 

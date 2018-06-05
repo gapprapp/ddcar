@@ -41,11 +41,7 @@
     </style>
 
     <script>
-<<<<<<< HEAD
-        var arr_data;       
-=======
          arr_data = [];   
->>>>>>> 85e59f0f61df8f2e94f684e246616dc1c3f55ac1
         $(document).ready(function () {
             //navs
             margin = $("#navs-menu").outerHeight()*3;
@@ -61,21 +57,6 @@
             margin = $("#ctn-btn").outerHeight() + $("#navs-menu").outerHeight() + $("#navs-net").outerHeight() -15;
             $("#big-ctn").css('margin-bottom', margin); 
             /********************************************/
-<<<<<<< HEAD
-            $.ajax({
-                type: "GET",
-                url:"https://omise-webpack.000webhostapp.com/www/php/get_ware.php",                            
-                success: function(data){
-                    var obj = jQuery.parseJSON(data);                                                      
-                    $.each(obj, function(i, field){                                        
-                        $('#ul-ware').append("<li id='li-ware-"+i+"' onclick='setware("+i+");' style='padding-bottom: 10px;'>"+field.ware_name+"</li>" +
-                        "<span id='id-ware-"+i+"' hidden>"+field.ware_id+"</span>");
-                    });                                        
-                }               
-            });
-
-=======
->>>>>>> 85e59f0f61df8f2e94f684e246616dc1c3f55ac1
             var retrievedObject = localStorage.getItem('arr_ex');
             arr_data = JSON.parse(retrievedObject);
             var sum = 0;
@@ -125,12 +106,9 @@
         });
 
         function save(){
-<<<<<<< HEAD
-=======
             if(arr_data.length == 0 ||  $("#ware").val() == ""){
                 return 0;
             }
->>>>>>> 85e59f0f61df8f2e94f684e246616dc1c3f55ac1
             var d = new Date($.now());           
             var datetime = d.getFullYear() + "-" + (d.getMonth()+1) + "-" + d.getDate() + " " + d.getHours() + ":" + d.getMinutes() + ":" + d.getSeconds(); 
             json_string = JSON.stringify(arr_data); 
@@ -317,16 +295,9 @@
                     url:"https://omise-webpack.000webhostapp.com/www/php/get_ware.php",                            
                     success: function(data){
                     var obj = jQuery.parseJSON(data);                                                      
-<<<<<<< HEAD
-                    $.each(obj, function(i, field){                        
-                            $(".jconfirm-buttons").append('<button id="li-ware-'+i+'" type="button" onclick="setware('+i+')" class="btn btn-choice">'+obj[i].ware_name+'</button>' +
-                            '<span id="id-ware-'+i+'" hidden>'+obj[i].ware_id+'</span>');                       
-                                        
-=======
                         $.each(obj, function(i, field){                        
                             $(".jconfirm-buttons").append('<button id="li-ware-'+i+'" type="button" onclick="setware('+i+')" class="btn btn-choice">'+obj[i].ware_name+'</button>' +
                             '<span id="id-ware-'+i+'" hidden>'+obj[i].ware_id+'</span>');                               
->>>>>>> 85e59f0f61df8f2e94f684e246616dc1c3f55ac1
                         });                                        
                     }               
                 });               
