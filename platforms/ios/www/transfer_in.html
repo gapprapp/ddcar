@@ -46,30 +46,24 @@
         var prod_id;        
         $(document).ready(function () { 
             url = new URL(window.location.href);
-            product = url.searchParams.get("product");
+            prod_id = url.searchParams.get("product");
            
             if(localStorage.arr_tranin){
                 var retrievedObject = localStorage.getItem('arr_tranin');
                 var arr_data = JSON.parse(retrievedObject);
                 $('#check-trans').text(arr_data.length);                                                  
-            }      
-
-            if(product != null){
-                $.ajax({
-                    type: "POST",
-                    url:"https://omise-webpack.000webhostapp.com/www/php/get_prod.php",    
-                    data:{'prod_id' : product},
-                    //async: false,                       
-                    success: function(data){
-                        var obj = jQuery.parseJSON(data);                                         
-                        $.each(obj, function(i, field){
-                            $('#name').val(obj[i].prod_name);
-                            $('#barcode').val(obj[i].prod_code);
-                            prod_id = field.prod_id                           
-                        });                                        
-                    }               
-                }); 
-            }          
+            }
+            if(prod_id){
+                get_prod();
+            } 
+            if(localStorage.arr_prod_t){
+                $("#btn-folder").attr('disabled',true);           
+                $("#btn-addpic").attr('disabled',true);
+                var retrievedObject = localStorage.getItem('arr_prod_t');
+                var arr_data = JSON.parse(retrievedObject); 
+                prod_id = arr_data[0].prod_id;            
+                get_prod();
+            }                 
 
             var options = {
                 url: function(phrase) {
@@ -98,13 +92,30 @@
                         time: 200
                     },
                     onChooseEvent: function() {                     
-                        prod_id = $("#name").getSelectedItemData().prod_id;                                                                           
+                        prod_id = $("#name").getSelectedItemData().prod_id; 
+                        $('#barcode').val($("#name").getSelectedItemData().prod_code);                                                                          
                     }
                 }, 
                 //theme: "blue-light",                   
                 };
             $("#name").easyAutocomplete(options);      
         });
+
+        function get_prod(){
+            $.ajax({
+                type: "POST",
+                url:"https://omise-webpack.000webhostapp.com/www/php/get_prod.php",    
+                data:{'prod_id' : prod_id},
+                //async: false,                       
+                success: function(data){
+                    var obj = jQuery.parseJSON(data);                                         
+                    $.each(obj, function(i, field){
+                        $('#name').val(obj[i].prod_name);
+                        $('#barcode').val(obj[i].prod_code);                                          
+                    });                                        
+                }               
+            }); 
+        }
                           
         function disactive(arg) {
             nav_menu = ['home', 'bell', 'qrcode', 'bars'];
@@ -115,13 +126,6 @@
             }
         }
 
-<<<<<<< HEAD
-        function disac(arg){
-          if ($("#i-" + arg).hasClass('active')) $("#i-" + arg).removeClass('active');
-        }
-
-=======
->>>>>>> daf699871ed944f642ec5471890d10d63f37fd6e
         function menu(arg) {
             // Animate             
             disactive(arg);
@@ -200,7 +204,26 @@
                 $('#check-trans').text(arr_data.length);     
 
                 $('#name').val("");              
-                $('#amount').val("1");                                  
+                $('#amount').val("1");
+                $('#barcode').val(""); 
+                if(localStorage.arr_prod_t){
+                    var retrievedObject = localStorage.getItem('arr_prod_t');
+                    var arr_data2 = JSON.parse(retrievedObject);
+                    arr_data2.splice(0,1); 
+                    localStorage.setItem('arr_prod_t', JSON.stringify(arr_data2));  
+                    if(arr_data2.length == 0){
+                        localStorage.arr_prod_t = "";  
+                    }                                 
+                }  
+                if(localStorage.arr_prod_t){                    
+                    var retrievedObject = localStorage.getItem('arr_prod_t');
+                    var arr_data2 = JSON.parse(retrievedObject);                                   
+                    prod_id = arr_data2[0].prod_id;            
+                    get_prod();            
+                }else{                   
+                    $("#btn-folder").removeAttr('disabled');           
+                    $("#btn-addpic").removeAttr('disabled');
+                }                                              
             }    
         }
 
@@ -209,46 +232,6 @@
             transition_page_next(goto);
         }
 
-<<<<<<< HEAD
-        function showstore(){
-            $("style").append('.jconfirm .jconfirm-box{max-height: 420px;}');
-            $.confirm({
-              title: 'หน้าร้าน',
-              content: '<hr style="width: 80%; margin-bottom: 0;">',
-              backgroundDismiss: true,
-              onOpenBefore: function () {
-                $(".jconfirm-buttons .btn-default").remove();
-                //ajax and apeend
-                $.ajax({
-                    type: "GET",
-                    url:"https://omise-webpack.000webhostapp.com/www/php/get_shop.php",                            
-                    success: function(data){
-                    var obj = jQuery.parseJSON(data);                                                      
-                        $.each(obj, function(i, field){                      
-                            $(".jconfirm-buttons").append('<button id="li-store-'+i+'" type="button" onclick="setstore('+i+')" class="btn btn-choice">'+obj[i].shop_name+'</button>' +
-                            '<span id="id-store-'+i+'" hidden>'+obj[i].shop_id+'</span>');                                           
-                        });                                        
-                    }               
-                });               
-              },
-              onDestroy: function () {
-                $("style").append('.jconfirm .jconfirm-box{margin-bottom: 5%;}');
-                $("style").append('.jconfirm .jconfirm-box{max-height: 100%;}');
-              },
-              /*onOpen: function(){
-                $(".btn-choice").click(function(event) {
-                  txt = $(this).text();
-                  $("#ware").val(txt);
-                  b_id = $("#id-ware").text();
-                  type = $("#type").text()
-                  document.elementFromPoint(0, 0).click();
-                });
-              }*/
-            });
-        }      
-
-=======
->>>>>>> daf699871ed944f642ec5471890d10d63f37fd6e
     </script>
 </head>
 
@@ -266,33 +249,14 @@
     <br>
 
     <!-- End big container -->
-<<<<<<< HEAD
-    <div class="container justify-content-center" style="margin-top: 15%;">
-        <div class="container">
-            <div class="row" style="margin-bottom: 20%;">
-              <div class="col-8 no-pd" onclick="selectfolder();">
-                <button id="slct_folder" class="select_folder">เลือกสินค้า</button>
-              </div>
-              <div class="col-4 no-pd">
-                  <!--<input id="store" type="text" class="w3-input no-pd" data-toggle="dropdown" placeholder="หน้าร้าน" readonly>
-                  <ul id="ul-store" class="dropdown-menu text-center no-pd" aria-labelledby="role" >
-                  </ul>-->
-                  <input id="store" type="text" class="w3-input" readonly onclick="showstore();" placeholder="เลือกหน้าร้าน">
-              </div>
-            </div>
-            <div class="row">
-                <div class="col-1 text-center no-pd"></div> 
-                <div class="col-8 text-center">
-=======
     <div class="container justify-content-center" style="margin-top: 25%;">
         <div class="container">
             <div class="row mg-10">
                 <div class="col-5 text-center">
                     <label for="barcode">รหัส</label>
-                    <input id="barcode" type="text" class="w3-input">
+                    <input readonly id="barcode" type="text" class="w3-input">
                 </div>
                 <div class="col-7 text-center">
->>>>>>> daf699871ed944f642ec5471890d10d63f37fd6e
                     <label for="name">ชื่อสินค้า</label>
                     <input id="name" type="text" class="w3-input">
                 </div>
@@ -307,37 +271,16 @@
                     <input id="amount" type="number" min="1" value="1" class="w3-input" onchange="cal_avg('amt')">
                 </div>
             </div>
-<<<<<<< HEAD
-            <div id="ctn-add" class="container">
-                
-            </div>
-            <!-- Input --> 
-            <div class="row">
-                <div class="col-1 text-center" style="padding-right: 0;"></div>
-                <div class="col-8 text-center">                   
-                    <input id="name" type="text" class="w3-input">
-                </div>
-                <div class="col-3 text-center" style="padding-left: 0;">                  
-                    <input id="amount" type="number" value="1" min="1" class="w3-input">
-=======
             <div class="row mg-10" style="padding-right: 5%; padding-left: 5%;">
                 <div class="col-4 text-center" style="padding-left: 0; padding-right: 0;">
                     <button id="btn-addpic" class="mbtn-green" onclick="scanqr();">สแกน</button>
->>>>>>> daf699871ed944f642ec5471890d10d63f37fd6e
                 </div>
                 <div class="col-8 text-center" style="padding-right: 0;">
                     <button id="btn-folder" class="select_folder" onclick="selectfolder()">เลือกสินค้า</button>
                 </div>
             </div>
             <div class="row mg-10">
-<<<<<<< HEAD
-                <div class="col-5 text-center no-pd">
-                    <button class="mbtn-save" onclick="save();">บันทึก</button>
-                </div>
-                <div class="col-7 text-center no-pd">
-=======
                 <div class="col-12 text-center">
->>>>>>> daf699871ed944f642ec5471890d10d63f37fd6e
                     <button class="mbtn" onclick="add_trans();">เพิ่มสินค้า</button>
                 </div>
             </div>   

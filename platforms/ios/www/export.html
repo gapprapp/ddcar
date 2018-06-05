@@ -19,6 +19,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.0/jquery-confirm.min.js"></script>
 
     <script src="js/jquery.easy-autocomplete.min.js"></script>   
+    <script type="text/javascript" src="js/back.js"></script>   
     <link rel="stylesheet" href="css/easy-autocomplete.themes.min.css">
 
     <link rel="stylesheet" href="css/index.css">
@@ -36,11 +37,6 @@
             padding-left: 10%;
             padding-right: 10%;
         }
-
-        #btn-qr{
-            width: 70%;
-            color: white;
-        }
     </style>
 
     <script>
@@ -48,32 +44,24 @@
         var img;    
         $(document).ready(function () { 
             url = new URL(window.location.href);
-            product = url.searchParams.get("product");  
+            prod_id = url.searchParams.get("product");  
 
             if(localStorage.arr_ex){
                 var retrievedObject = localStorage.getItem('arr_ex');
                 var arr_data = JSON.parse(retrievedObject);             
                 $('#check-export').text(arr_data.length);       
-            }          
-
-            if(product != null){
-                $.ajax({
-                    type: "POST",
-                    url:"https://omise-webpack.000webhostapp.com/www/php/get_prod.php",    
-                    data:{'prod_id' : product},
-                    //async: false,                       
-                    success: function(data){
-                        var obj = jQuery.parseJSON(data);                                         
-                        $.each(obj, function(i, field){
-                            $('#name').val(obj[i].prod_name);
-                            $('#barcode').val(obj[i].prod_code); 
-                            $('#cost').val(obj[i].prod_cost);
-                            prod_id = obj[i].prod_id;   
-                            img = obj[i].img;                           
-                        });                                        
-                    }               
-                }); 
             }
+            if(prod_id){
+                get_prod();
+            } 
+            if(localStorage.arr_prod_e){
+                $("#btn-folder").attr('disabled',true);           
+                $("#btn-addpic").attr('disabled',true);
+                var retrievedObject = localStorage.getItem('arr_prod_e');
+                var arr_data = JSON.parse(retrievedObject); 
+                prod_id = arr_data[0].prod_id;            
+                get_prod();
+            }          
 
             var options = {
                 url: function(phrase) {
@@ -116,6 +104,24 @@
             $("#name").easyAutocomplete(options);      
         });
 
+        function get_prod(){
+            $.ajax({
+                type: "POST",
+                url:"https://omise-webpack.000webhostapp.com/www/php/get_prod.php",    
+                data:{'prod_id' : prod_id},
+                //async: false,                       
+                success: function(data){
+                    var obj = jQuery.parseJSON(data);                                         
+                    $.each(obj, function(i, field){
+                        $('#name').val(obj[i].prod_name);
+                        $('#barcode').val(obj[i].prod_code); 
+                        $('#cost').val(obj[i].prod_cost);                       
+                        img = obj[i].img;                           
+                    });                                        
+                }               
+            }); 
+        }
+
         function add_export(){           
             var code = $('#barcode').val();
             var cost = $('#cost').val();          
@@ -142,7 +148,25 @@
                 $('#barcode').val("");
                 $('#name').val("");
                 $('#cost').val("");                
-                $('#amount').val("1");                                     
+                $('#amount').val("1"); 
+                if(localStorage.arr_prod_e){
+                    var retrievedObject = localStorage.getItem('arr_prod_e');
+                    var arr_data2 = JSON.parse(retrievedObject);
+                    arr_data2.splice(0,1); 
+                    localStorage.setItem('arr_prod_e', JSON.stringify(arr_data2));  
+                    if(arr_data2.length == 0){
+                        localStorage.arr_prod_e = "";  
+                    }                                 
+                }  
+                if(localStorage.arr_prod_e){                    
+                    var retrievedObject = localStorage.getItem('arr_prod_e');
+                    var arr_data2 = JSON.parse(retrievedObject);                                   
+                    prod_id = arr_data2[0].prod_id;            
+                    get_prod();            
+                }else{                   
+                    $("#btn-folder").removeAttr('disabled');           
+                    $("#btn-addpic").removeAttr('disabled');
+                }                                         
             }else{
                 $.alert({
                     title: 'คำเตือน!',
@@ -227,7 +251,7 @@
 
 <body>
     <!-- Nav menu top -->
-    <div class="row fixed-top navs">
+    <div id="navs-back" class="row fixed-top navs">
         <div class="col-1 text-center" onclick="transition_page_back('index.html')">
             <i id="i-back" class="fas fa-angle-left"></i>
         </div>
@@ -239,11 +263,7 @@
     <br>
 
     <!-- End big container -->
-<<<<<<< HEAD
     <div class="container justify-content-center" style="margin-top: 30%;">
-=======
-    <div class="container justify-content-center" style="margin-top: 40%;">
->>>>>>> daf699871ed944f642ec5471890d10d63f37fd6e
         <div class="container">
             <div class="row mg-10">
                 <div class="col-12 text-center pdlr">
@@ -254,7 +274,7 @@
             <div class="row" style="margin-bottom: 20%;">
                 <div class="col-6 text-center">
                     <label for="barcode">รหัส</label>
-                    <input id="barcode" type="text" class="w3-input">
+                    <input readonly id="barcode" type="text" class="w3-input">
                 </div>
                 <div class="col-3 text-center">
                     <label for="amount">จำนวน</label>
@@ -262,14 +282,14 @@
                 </div>
                 <div class="col-3 text-center">
                     <label for="cost">ทุน</label>
-                    <input id="cost" type="number" class="w3-input">
+                    <input readonly id="cost" type="number" class="w3-input">
                 </div>
             </div>
-            <div class="row mg-10" style="padding-right: 5%; padding-left: 5%;">
-                <div class="col-4 text-center" style="padding-left: 0; padding-right: 0;">
+            <div class="row mg-10">
+                <div class="col-4 text-center" style="padding-right: 0;">
                     <button id="btn-addpic" class="mbtn-green" onclick="scanqr();">สแกน</button>
                 </div>
-                <div class="col-8 text-center" style="padding-right: 0;">
+                <div class="col-8 text-center">
                     <button id="btn-folder" class="select_folder" onclick="selectfolder()">เลือกสินค้า</button>
                 </div>
             </div>
@@ -298,6 +318,27 @@
         </div>
     </div>
     <!-- End Nav menu bottom -->
+    <script>
+    //Touch animation
+    $(".mbtn").on("touchstart", function() {
+      $(this).addClass('mbtn-touch');
+    });
+    $(".mbtn").on("touchend", function() {
+      $(this).removeClass('mbtn-touch');
+    });
+    $(".mbtn-green").on("touchstart", function() {
+      $(this).addClass('mbtn-green-touch');
+    });
+    $(".mbtn-green").on("touchend", function() {
+      $(this).removeClass('mbtn-green-touch');
+    });
+    $(".select_folder").on("touchstart", function() {
+      $(this).addClass('select_folder-touch');
+    });
+    $(".select_folder").on("touchend", function() {
+      $(this).removeClass('select_folder-touch');
+    });
+  </script>
 </body>
 
 </html>

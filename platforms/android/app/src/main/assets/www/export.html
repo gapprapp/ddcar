@@ -38,6 +38,7 @@
             padding-left: 10%;
             padding-right: 10%;
         }
+<<<<<<< HEAD
         .fade {
             animation-duration: 1.25s;
             animation-name: fade;
@@ -49,6 +50,8 @@
             from {opacity: 0.55; } 
             to {opacity: 1;}
         }
+=======
+>>>>>>> 85e59f0f61df8f2e94f684e246616dc1c3f55ac1
     </style>
 
     <script>
@@ -56,32 +59,24 @@
         var img;    
         $(document).ready(function () { 
             url = new URL(window.location.href);
-            product = url.searchParams.get("product");  
+            prod_id = url.searchParams.get("product");  
 
             if(localStorage.arr_ex){
                 var retrievedObject = localStorage.getItem('arr_ex');
                 var arr_data = JSON.parse(retrievedObject);             
                 $('#check-export').text(arr_data.length);       
-            }          
-
-            if(product != null){
-                $.ajax({
-                    type: "POST",
-                    url:"https://omise-webpack.000webhostapp.com/www/php/get_prod.php",    
-                    data:{'prod_id' : product},
-                    //async: false,                       
-                    success: function(data){
-                        var obj = jQuery.parseJSON(data);                                         
-                        $.each(obj, function(i, field){
-                            $('#name').val(obj[i].prod_name);
-                            $('#barcode').val(obj[i].prod_code); 
-                            $('#cost').val(obj[i].prod_cost);
-                            prod_id = obj[i].prod_id;   
-                            img = obj[i].img;                           
-                        });                                        
-                    }               
-                }); 
             }
+            if(prod_id){
+                get_prod();
+            } 
+            if(localStorage.arr_prod_e){
+                $("#btn-folder").attr('disabled',true);           
+                $("#btn-addpic").attr('disabled',true);
+                var retrievedObject = localStorage.getItem('arr_prod_e');
+                var arr_data = JSON.parse(retrievedObject); 
+                prod_id = arr_data[0].prod_id;            
+                get_prod();
+            }          
 
             var options = {
                 url: function(phrase) {
@@ -124,6 +119,24 @@
             $("#name").easyAutocomplete(options);      
         });
 
+        function get_prod(){
+            $.ajax({
+                type: "POST",
+                url:"https://omise-webpack.000webhostapp.com/www/php/get_prod.php",    
+                data:{'prod_id' : prod_id},
+                //async: false,                       
+                success: function(data){
+                    var obj = jQuery.parseJSON(data);                                         
+                    $.each(obj, function(i, field){
+                        $('#name').val(obj[i].prod_name);
+                        $('#barcode').val(obj[i].prod_code); 
+                        $('#cost').val(obj[i].prod_cost);                       
+                        img = obj[i].img;                           
+                    });                                        
+                }               
+            }); 
+        }
+
         function add_export(){           
             var code = $('#barcode').val();
             var cost = $('#cost').val();          
@@ -150,7 +163,25 @@
                 $('#barcode').val("");
                 $('#name').val("");
                 $('#cost').val("");                
-                $('#amount').val("1");                                     
+                $('#amount').val("1"); 
+                if(localStorage.arr_prod_e){
+                    var retrievedObject = localStorage.getItem('arr_prod_e');
+                    var arr_data2 = JSON.parse(retrievedObject);
+                    arr_data2.splice(0,1); 
+                    localStorage.setItem('arr_prod_e', JSON.stringify(arr_data2));  
+                    if(arr_data2.length == 0){
+                        localStorage.arr_prod_e = "";  
+                    }                                 
+                }  
+                if(localStorage.arr_prod_e){                    
+                    var retrievedObject = localStorage.getItem('arr_prod_e');
+                    var arr_data2 = JSON.parse(retrievedObject);                                   
+                    prod_id = arr_data2[0].prod_id;            
+                    get_prod();            
+                }else{                   
+                    $("#btn-folder").removeAttr('disabled');           
+                    $("#btn-addpic").removeAttr('disabled');
+                }                                         
             }else{
                 $.alert({
                     title: 'คำเตือน!',
@@ -324,10 +355,17 @@
             </div>
             <div class="row mg-10">
                 <div class="col-4 text-center" style="padding-right: 0;">
+<<<<<<< HEAD
                     <button class="mbtn-green" onclick="scanqr();">สแกน</button>
                 </div>
                 <div class="col-8 text-center">
                     <button class="select_folder" onclick="selectfolder()">เลือกสินค้า</button>
+=======
+                    <button id="btn-addpic" class="mbtn-green" onclick="scanqr();">สแกน</button>
+                </div>
+                <div class="col-8 text-center">
+                    <button id="btn-folder" class="select_folder" onclick="selectfolder()">เลือกสินค้า</button>
+>>>>>>> 85e59f0f61df8f2e94f684e246616dc1c3f55ac1
                 </div>
             </div>
             <div class="row mg-10">

@@ -53,7 +53,7 @@
     </style>
 
     <script>
-        var arr_data;
+        arr_data = [];  
         $(document).ready(function () { 
             margin = $("#navs-menu").outerHeight()*3;
             $("#ctn-btm").css('padding-bottom', margin);
@@ -388,6 +388,21 @@
         </div>
     </div>
     <!-- End Nav menu bottom -->
+    <script>
+        //Touch animation
+        $(".mbtn").on("touchstart", function() {
+          $(this).addClass('mbtn-touch');
+        });
+        $(".mbtn").on("touchend", function() {
+          $(this).removeClass('mbtn-touch');
+        });
+        $(".mbtn-cancle").on("touchstart", function() {
+          $(this).addClass('mbtn-cancle-touch');
+        });
+        $(".mbtn-cancle").on("touchend", function() {
+          $(this).removeClass('mbtn-cancle-touch');
+        });
+    </script>
 </body>
 
 </html>
