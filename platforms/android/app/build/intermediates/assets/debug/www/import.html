@@ -45,42 +45,24 @@
         var img;    
         $(document).ready(function () { 
             url = new URL(window.location.href);
-            product = url.searchParams.get("product");  
+            prod_id = url.searchParams.get("product");  
 
             if(localStorage.arr_prod){
                 var retrievedObject = localStorage.getItem('arr_prod');
                 var arr_data = JSON.parse(retrievedObject);             
                 $('#check-import').text(arr_data.length);       
             }          
-
-            if(product != null){
-                $.ajax({
-                    type: "POST",
-                    url:"https://omise-webpack.000webhostapp.com/www/php/get_prod.php",    
-                    data:{'prod_id' : product},
-                    async: false,                       
-                    success: function(data){
-                        var obj = jQuery.parseJSON(data);                                         
-                        $.each(obj, function(i, field){
-                            $('#name').val(obj[i].prod_name);
-                            $('#barcode').val(obj[i].prod_code); 
-                            cost_o = obj[i].prod_cost;
-                            prod_id = obj[i].prod_id;   
-                            img = obj[i].img;   
-                            if(obj[i].prod_cost == 0 && obj[i].prod_price == 0 && obj[i].prod_pricesend == 0){
-                                $('#cost').val("");
-                                $('#wholesale').val("");
-                                $('#retail').val("");  
-                            }else{
-                                $('#cost').val(cost_o);
-                                $('#wholesale').val(obj[i].prod_pricesend);
-                                $('#retail').val(obj[i].prod_price);                     
-                                flag = 1;
-                            }                        
-                        });                                        
-                    }               
-                }); 
-            }
+            if(prod_id){
+                get_prod();
+            } 
+            if(localStorage.arr_prod_i){
+                $("#btn-folder").attr('disabled',true);           
+                //$("#btn-addpic").attr('disabled',true);
+                var retrievedObject = localStorage.getItem('arr_prod_i');
+                var arr_data = JSON.parse(retrievedObject); 
+                prod_id = arr_data[0].prod_id;            
+                get_prod();
+            }       
 
             var options = {
                 url: function(phrase) {
@@ -133,6 +115,34 @@
                 };
             $("#name").easyAutocomplete(options);      
         });
+
+        function get_prod(){
+            $.ajax({
+                type: "POST",
+                url:"https://omise-webpack.000webhostapp.com/www/php/get_prod.php",    
+                data:{'prod_id' : prod_id},
+                //async: false,                       
+                success: function(data){
+                    var obj = jQuery.parseJSON(data);                                         
+                    $.each(obj, function(i, field){
+                        $('#name').val(obj[i].prod_name);
+                        $('#barcode').val(obj[i].prod_code); 
+                        cost_o = obj[i].prod_cost;                       
+                        img = obj[i].img;   
+                        if(obj[i].prod_cost == 0 && obj[i].prod_price == 0 && obj[i].prod_pricesend == 0){
+                            $('#cost').val("");
+                            $('#wholesale').val("");
+                            $('#retail').val("");  
+                        }else{
+                            $('#cost').val(cost_o);
+                            $('#wholesale').val(obj[i].prod_pricesend);
+                            $('#retail').val(obj[i].prod_price);                     
+                            flag = 1;
+                        }                        
+                    });                                        
+                }               
+            }); 
+        }
 
         var check =  0;
         var is_show = 0;
@@ -261,7 +271,25 @@
                 show_avg(); 
                 is_show = 0;
             }            
-            $('#avg-rate').text("");           
+            $('#avg-rate').text("");
+            if(localStorage.arr_prod_i){
+                var retrievedObject = localStorage.getItem('arr_prod_i');
+                var arr_data2 = JSON.parse(retrievedObject);
+                arr_data2.splice(0,1); 
+                localStorage.setItem('arr_prod_i', JSON.stringify(arr_data2));  
+                if(arr_data2.length == 0){
+                    localStorage.arr_prod_i = "";  
+                }                                 
+            }  
+            if(localStorage.arr_prod_i){                    
+                var retrievedObject = localStorage.getItem('arr_prod_i');
+                var arr_data2 = JSON.parse(retrievedObject);                                   
+                prod_id = arr_data2[0].prod_id;            
+                get_prod();            
+            }else{                   
+                $("#btn-folder").removeAttr('disabled');           
+                //$("#btn-addpic").removeAttr('disabled');
+            }                      
         }  
 
         function disactive(arg) {
@@ -287,7 +315,7 @@
             transition_page_next_flip(goto);
         }     
 
-        function report() {     
+        function check() {     
             if(localStorage.arr_prod){      
                 goto = "import_check.html";
                 transition_page_next(goto);
@@ -311,7 +339,7 @@
         <div class="col-9 text-center" style="padding-left: 15%;">
             <h5 id="h5-title">เข้าโกดัง</h5>
         </div>
-        <div class="col-2 text-right" onclick="report();"><div id="check-import"class="circle-text">0</div></div>
+        <div class="col-2 text-right" onclick="check();"><div id="check-import"class="circle-text">0</div></div>
     </div>
     <br>
 
@@ -321,7 +349,7 @@
             <div class="row mg-10">
                 <div class="col-5 text-center">
                     <label for="barcode">รหัส</label>
-                    <input id="barcode" type="text" class="w3-input">
+                    <input readonly id="barcode" type="text" class="w3-input">
                 </div>
                 <div class="col-7 text-center">
                     <label for="name">ชื่อสินค้า</label>

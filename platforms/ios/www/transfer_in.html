@@ -46,30 +46,24 @@
         var prod_id;        
         $(document).ready(function () { 
             url = new URL(window.location.href);
-            product = url.searchParams.get("product");
+            prod_id = url.searchParams.get("product");
            
             if(localStorage.arr_tranin){
                 var retrievedObject = localStorage.getItem('arr_tranin');
                 var arr_data = JSON.parse(retrievedObject);
                 $('#check-trans').text(arr_data.length);                                                  
-            }      
-
-            if(product != null){
-                $.ajax({
-                    type: "POST",
-                    url:"https://omise-webpack.000webhostapp.com/www/php/get_prod.php",    
-                    data:{'prod_id' : product},
-                    //async: false,                       
-                    success: function(data){
-                        var obj = jQuery.parseJSON(data);                                         
-                        $.each(obj, function(i, field){
-                            $('#name').val(obj[i].prod_name);
-                            $('#barcode').val(obj[i].prod_code);
-                            prod_id = field.prod_id                           
-                        });                                        
-                    }               
-                }); 
-            }          
+            }
+            if(prod_id){
+                get_prod();
+            } 
+            if(localStorage.arr_prod_t){
+                $("#btn-folder").attr('disabled',true);           
+                $("#btn-addpic").attr('disabled',true);
+                var retrievedObject = localStorage.getItem('arr_prod_t');
+                var arr_data = JSON.parse(retrievedObject); 
+                prod_id = arr_data[0].prod_id;            
+                get_prod();
+            }                 
 
             var options = {
                 url: function(phrase) {
@@ -98,13 +92,30 @@
                         time: 200
                     },
                     onChooseEvent: function() {                     
-                        prod_id = $("#name").getSelectedItemData().prod_id;                                                                           
+                        prod_id = $("#name").getSelectedItemData().prod_id; 
+                        $('#barcode').val($("#name").getSelectedItemData().prod_code);                                                                          
                     }
                 }, 
                 //theme: "blue-light",                   
                 };
             $("#name").easyAutocomplete(options);      
         });
+
+        function get_prod(){
+            $.ajax({
+                type: "POST",
+                url:"https://omise-webpack.000webhostapp.com/www/php/get_prod.php",    
+                data:{'prod_id' : prod_id},
+                //async: false,                       
+                success: function(data){
+                    var obj = jQuery.parseJSON(data);                                         
+                    $.each(obj, function(i, field){
+                        $('#name').val(obj[i].prod_name);
+                        $('#barcode').val(obj[i].prod_code);                                          
+                    });                                        
+                }               
+            }); 
+        }
                           
         function disactive(arg) {
             nav_menu = ['home', 'bell', 'qrcode', 'bars'];
@@ -193,7 +204,26 @@
                 $('#check-trans').text(arr_data.length);     
 
                 $('#name').val("");              
-                $('#amount').val("1");                                  
+                $('#amount').val("1");
+                $('#barcode').val(""); 
+                if(localStorage.arr_prod_t){
+                    var retrievedObject = localStorage.getItem('arr_prod_t');
+                    var arr_data2 = JSON.parse(retrievedObject);
+                    arr_data2.splice(0,1); 
+                    localStorage.setItem('arr_prod_t', JSON.stringify(arr_data2));  
+                    if(arr_data2.length == 0){
+                        localStorage.arr_prod_t = "";  
+                    }                                 
+                }  
+                if(localStorage.arr_prod_t){                    
+                    var retrievedObject = localStorage.getItem('arr_prod_t');
+                    var arr_data2 = JSON.parse(retrievedObject);                                   
+                    prod_id = arr_data2[0].prod_id;            
+                    get_prod();            
+                }else{                   
+                    $("#btn-folder").removeAttr('disabled');           
+                    $("#btn-addpic").removeAttr('disabled');
+                }                                              
             }    
         }
 
@@ -224,7 +254,7 @@
             <div class="row mg-10">
                 <div class="col-5 text-center">
                     <label for="barcode">รหัส</label>
-                    <input id="barcode" type="text" class="w3-input">
+                    <input readonly id="barcode" type="text" class="w3-input">
                 </div>
                 <div class="col-7 text-center">
                     <label for="name">ชื่อสินค้า</label>

@@ -45,6 +45,12 @@ body{
 	margin-top: 3px;
 }
 
+#show-box, #show-box-go{
+	font-size: 125%;
+	color: white;
+	margin-top: 3px;
+}
+
 .menu {
   font-size: 130%;
   color: #e57f7f;
@@ -64,6 +70,10 @@ body{
 
 .mg-7{
 	margin-bottom: 7%;
+}
+
+.mg-5{
+	margin-bottom: 5%;
 }
 
 .mg-6{
