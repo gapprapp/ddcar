@@ -66,7 +66,7 @@
                 $("#add-ctn").prop('hidden', false);
                 if(from == "add"){                 
                   $("#row-select").prop('hidden', false);
-                }else if(from == "import" || from == "tran_in" || from == "export"){                 
+                }else if(from == "import" || from == "tran_in" || from == "export" || from == "sale"){                 
                   $("#row-select").prop('hidden', true);
                 }                
               }
@@ -82,13 +82,15 @@
                     $("#row-add").prop('hidden', true);
                     $("#row-input-add").prop('hidden', true);
                     $("#row-select").prop('hidden', false);       
-                  }else if(from == "import" || from == "tran_in" || from == "export"){                    
-                    $("#add-ctn").prop('hidden', true);                                       
+                  }else if(from == "import" || from == "tran_in" || from == "export" || from == "sale"){                    
+                    $("#add-ctn").prop('hidden', true);
+                    $("#show-box").prop('hidden',false);                                       
                   } 
                   $.each(obj, function(i, field){
                     if(obj.length-1 > i){
                       text_html = "<div id='row-title-"+i+"' class='row'>" +
-                        "<div class='col-2'></div>" +
+                        "<span id='span-"+i+"' hidden>" + obj[i].title + "</span>" +
+                        "<div class='col-2 text-center'><i id='box-"+i+"' class='far fa-check-square six seven' onclick='check("+i+")' hidden></i></div>" +
                         "<div id='getin-"+i+"' class='col-8 text-center' onclick='getIn(\"" + obj[i].title + "\")'>" +
                         "<h5 id='title-"+i+"'>" + obj[i][2] + "</h5>" +
                         "</div>" +
@@ -119,7 +121,8 @@
                 $.each(obj, function(i, field){
                 if(obj.length-1 > i){
                   text_html = "<div id='row-title-"+i+"' class='row'>" +
-                    "<div class='col-2 text-center'><i id='box-"+i+"' class='far fa-check-square six' onclick='check("+i+")'></i></div>" +
+                    "<span id='span-"+i+"' hidden>" + obj[i].title + "</span>" +
+                    "<div class='col-2'></div>" +
                     "<div id='getin-"+i+"' class='col-8 text-center' onclick='getIn(\"" + obj[i].title + "\")'>" +
                     "<h5 id='title-"+i+"'>" + obj[i].title + "</h5>" +
                     "</div>" +
@@ -148,8 +151,16 @@
         }               
       });
         // index = i;
-    });
-    
+    });   
+    function show_box(){    
+      if ($(".seven").is(":visible")) {
+          $(".seven").attr('hidden', true);        
+        } else {
+          $(".seven").attr('hidden', false);         
+      }
+    }
+
+    arr_prod = [];
     function check(arg){
       //console.log('row ' + arg + ' checked');
       $("#box-"+arg).removeClass('six'); 
@@ -157,6 +168,23 @@
       $("#box-"+arg).addClass('checked'); 
       $("#box-"+arg).addClass('fa');
       $("#box-"+arg).attr('onclick', 'uncheck('+arg+')'); 
+
+      $("#show-box-go").prop('hidden',false);
+      $("#show-box").prop('hidden',true);
+      var ch = false;
+      for(var i = 0 ; i < arr_prod.length ; i++){
+          if(arr_prod[i].arg == arg){
+            arr_prod[i].prod_id = $('#span-'+arg).text();
+            ch = true;
+            break;
+          }
+      }
+      if(!ch){          
+          item = {};   
+          item ["arg"] = arg;        
+          item ["prod_id"] = $('#span-'+arg).text();         
+          arr_prod.push(item);          
+      }     
     }
 
     function uncheck(arg){
@@ -165,7 +193,52 @@
       $("#box-"+arg).removeClass('fa'); 
       $("#box-"+arg).addClass('six'); 
       $("#box-"+arg).addClass('far'); 
-      $("#box-"+arg).attr('onclick', 'check('+arg+')'); 
+      $("#box-"+arg).attr('onclick', 'check('+arg+')');
+
+      for(var i = 0 ; i < arr_prod.length ; i++){
+        if(arr_prod[i].arg == arg){
+            arr_prod[i].prod_id = 0;
+            break;
+        }
+      } 
+
+      var ch = 0;
+      for(var i=0 ; i <= index;i++){
+        if($('#box-'+i).hasClass('six')){
+          ch++;
+        }
+      }
+      if(ch-1 == index){
+        $("#show-box-go").prop('hidden',true);
+        $("#show-box").prop('hidden',false);
+      }
+    }
+
+    function nextselect(){
+      json = [];
+      for(var i = 0 ; i < arr_prod.length ; i++){
+        if(arr_prod[i].prod_id != 0){
+            item = {}
+            item["prod_id"] = arr_prod[i].prod_id;           
+            json.push(item);               
+        }
+      }       
+      url = new URL(window.location.href);
+      from = url.searchParams.get("from");
+      if(from == "import"){
+          localStorage.setItem('arr_prod_i', JSON.stringify(json)); 
+          goto = "import.html";
+        }else if(from == "tran_in"){
+          localStorage.setItem('arr_prod_t', JSON.stringify(json)); 
+          goto = "transfer_in.html";
+        }else if(from == "export"){
+          localStorage.setItem('arr_prod_e', JSON.stringify(json)); 
+          goto = "export.html";
+        }else if(from == "sale"){
+          localStorage.setItem('arr_prod_s', JSON.stringify(json)); 
+          goto = "sale.html";
+        } 
+      transition_page_next(goto);    
     }
 
     function disactive(arg) {
@@ -429,6 +502,8 @@
       <h5 id="h5-title"></h5>
     </div>
     <div class="col-1">
+        <i id='show-box' class='far fa-check-square' onclick='show_box()' hidden></i>
+        <i id='show-box-go' class='fa fa-check' onclick='nextselect()' hidden></i>
     </div>
   </div><br>
 
@@ -458,6 +533,23 @@
     </div>
   </div> 
   <!-- End big container -->
+
+   <!-- Nav menu bottom -->
+   <div class="row fixed-bottom navs">
+    <div class="col-3 text-center" onclick="menu('home')">
+        <i id="i-home" class="fas fa-home menu"></i>
+    </div>
+    <div class="col-3 text-center" onclick="menu('add')">
+        <i id="i-add" class="fas fa-plus menu"></i>
+    </div>
+    <div class="col-3 text-center" onclick="menu('edit')">
+        <i id="i-edit" class="fas fa-edit menu"></i>
+    </div>
+    <div class="col-3 text-center" onclick="menu('del')">
+        <i id="i-del" class="fa fa-trash-alt menu"></i>
+    </div>
+</div>
+<!-- End Nav menu bottom -->
 </body>
 
 </html>

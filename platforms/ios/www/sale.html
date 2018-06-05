@@ -91,40 +91,25 @@
                 $("#btn-folder").removeAttr('disabled');           
                 $("#btn-addpic").removeAttr('disabled');
                 $("#btn-addprod").removeAttr('disabled');
-            }
+            }            
             if(localStorage.arr_sale){
                 var retrievedObject = localStorage.getItem('arr_sale');
                 var arr_data = JSON.parse(retrievedObject);             
                 $('#check-sale').text(arr_data.length); 
-                $("#cus").attr("readonly",true);       
+                $("#cus").attr('disabled',true);       
             }
-          
             if(prod_id){
-                $.ajax({
-                    type: "POST",
-                    url:"https://omise-webpack.000webhostapp.com/www/php/get_sale.php",    
-                    data:{'prod_id' : prod_id,'cus_id':cus_id},
-                    //async: false,                       
-                    success: function(data){
-                        var obj = jQuery.parseJSON(data);                                                           
-                        $.each(obj, function(i, field){                           
-                            if(obj[i][7]){
-                                $('#price').val(obj[i][7]);  
-                            }else{                                
-                                if(type == "ขายปลีก"){
-                                    $('#price').val(obj[i].prod_price);  
-                                }else{
-                                    $('#price').val(obj[i].prod_pricesend);  
-                                }                                
-                            }  
-                            $('#name').val(obj[i].prod_name);
-                            $('#barcode').val(obj[i].prod_code);                                                       
-                            img = obj[i].img;   
-                            old_price = $('#price').val();                                                 
-                        });                                        
-                    }               
-                }); 
+              get_sale();
             }
+            if(localStorage.arr_prod_s){
+                $("#btn-folder").attr('disabled',true);           
+                $("#btn-addpic").attr('disabled',true);
+                var retrievedObject = localStorage.getItem('arr_prod_s');
+                var arr_data = JSON.parse(retrievedObject); 
+                prod_id = arr_data[0].prod_id;            
+                get_sale();
+            }        
+            
 
             /*var options = {
                 url: function(phrase) {
@@ -166,6 +151,33 @@
                 };
             $("#name").easyAutocomplete(options);*/     
         });
+
+        function get_sale(){
+            $.ajax({
+                type: "POST",
+                url:"https://omise-webpack.000webhostapp.com/www/php/get_sale.php",    
+                data:{'prod_id' : prod_id,'cus_id':cus_id},
+                //async: false,                       
+                success: function(data){
+                    var obj = jQuery.parseJSON(data);                                                           
+                    $.each(obj, function(i, field){                           
+                        if(obj[i][7]){
+                            $('#price').val(obj[i][7]);  
+                        }else{                                
+                            if(type == "ขายปลีก"){
+                                $('#price').val(obj[i].prod_price);  
+                            }else{
+                                $('#price').val(obj[i].prod_pricesend);  
+                            }                                
+                        }  
+                        $('#name').val(obj[i].prod_name);
+                        $('#barcode').val(obj[i].prod_code);                                                       
+                        img = obj[i].img;   
+                        old_price = $('#price').val();                                                 
+                    });                                        
+                }               
+            }); 
+        }
 
         function disactive(arg) {
             nav_menu = ['home', 'bell', 'qrcode', 'bars'];
@@ -231,12 +243,31 @@
                 arr_data.push(item); 
                 localStorage.setItem('arr_sale', JSON.stringify(arr_data));         
             
-                $('#check-sale').text(arr_data.length);       
+                $('#check-sale').text(arr_data.length);
+                $("#cus").attr('disabled',true);           
 
                 $('#barcode').val("");
                 $('#name').val("");
                 $('#price').val("");                
-                $('#amount').val("1");                                     
+                $('#amount').val("1");  
+                if(localStorage.arr_prod_s){
+                    var retrievedObject = localStorage.getItem('arr_prod_s');
+                    var arr_data2 = JSON.parse(retrievedObject);
+                    arr_data2.splice(0,1); 
+                    localStorage.setItem('arr_prod_s', JSON.stringify(arr_data2));  
+                    if(arr_data2.length == 0){
+                        localStorage.arr_prod_s = "";  
+                    }                                 
+                }  
+                if(localStorage.arr_prod_s){                    
+                    var retrievedObject = localStorage.getItem('arr_prod_s');
+                    var arr_data2 = JSON.parse(retrievedObject);                                   
+                    prod_id = arr_data2[0].prod_id;            
+                    get_sale();            
+                }else{                   
+                    $("#btn-folder").removeAttr('disabled');           
+                    $("#btn-addpic").removeAttr('disabled');
+                }                                  
             }else{
                 $.alert({
                     title: 'คำเตือน!',
