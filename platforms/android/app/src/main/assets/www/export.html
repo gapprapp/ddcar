@@ -61,7 +61,7 @@
                     type: "POST",
                     url:"https://omise-webpack.000webhostapp.com/www/php/get_prod.php",    
                     data:{'prod_id' : product},
-                    async: false,                       
+                    //async: false,                       
                     success: function(data){
                         var obj = jQuery.parseJSON(data);                                         
                         $.each(obj, function(i, field){
@@ -239,18 +239,12 @@
     <br>
 
     <!-- End big container -->
-    <div class="container justify-content-center" style="margin-top: 15%;">
+    <div class="container justify-content-center" style="margin-top: 40%;">
         <div class="container">
             <div class="row mg-10">
                 <div class="col-12 text-center pdlr">
                     <label for="name">ชื่อสินค้า</label>
                     <input id="name" type="text" class="w3-input">
-                </div>
-            </div>
-            <div class="row mg-10" >
-                <div class="col-12 text-center pdlr">
-                    <label for="wholesale">ที่อยู่สินค้า</label>
-                    <input id="prod-addr" type="text" class="w3-input">
                 </div>
             </div>
             <div class="row" style="margin-bottom: 20%;">
@@ -267,10 +261,9 @@
                     <input id="cost" type="number" class="w3-input">
                 </div>
             </div>
-
             <div class="row mg-10" style="padding-right: 5%; padding-left: 5%;">
                 <div class="col-4 text-center" style="padding-left: 0; padding-right: 0;">
-                    <button id="btn-addpic" class="mbtn-green" onclick="scanqr();" disabled>สแกน</button>
+                    <button id="btn-addpic" class="mbtn-green" onclick="scanqr();">สแกน</button>
                 </div>
                 <div class="col-8 text-center" style="padding-right: 0;">
                     <button id="btn-folder" class="select_folder" onclick="selectfolder()">เลือกสินค้า</button>

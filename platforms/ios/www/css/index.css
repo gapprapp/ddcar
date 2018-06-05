@@ -129,14 +129,14 @@ body{
 .select_folder{
 	background-color: #fdfdfd;
 	border: 1px solid #e5e5e5;
-	height: 130%;
-	width: 90%;
+	height: 145%;
+	width: 100%;
 	font-weight: bold;
-	font-size: 110%;
+	font-size: 120%;
 	color: #666666;
 	letter-spacing: 2px;
 	border-radius: 5px;
-	box-shadow: 0 1px 1px  #e5e5e5, 0 0px 0px #e5e5e5;
+	box-shadow: 0 1px 2px  #e5e5e5, 0 1px 1px #e5e5e5;
 }
 
 .btn-net{
@@ -230,4 +230,18 @@ label{
 .fixed-bottom{
 	height: 7% !important; 
 	padding-top: 12px !important;
+}
+
+.circle-text {
+	height: 1.7em; /*change this and the width
+	for the size of your initial circle*/
+	width: 1.7em;
+	line-height: 1.8em;
+	text-align: center;
+	vertical-align: middle;
+	border-radius: 50%;
+	/*make it pretty*/
+	background: #fafafa;
+	font-weight: bold;
+	color: #d63232;
 }
