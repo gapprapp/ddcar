@@ -349,7 +349,7 @@
         <div class="col-1 text-center" onclick="transition_page_back('index.html')">
             <i id="i-back" class="fas fa-angle-left"></i>
         </div>
-        <div class="col-9 text-center" style="padding-left: 15%;">
+        <div class="col-8 text-center" style="padding-left: 15%; margin-right: 4%;">
             <h5 id="h5-title">ขาย</h5>
         </div>
         <div class="col-2 text-right" onclick="check();"><div id="check-sale"class="circle-text">0</div></div>
@@ -418,6 +418,27 @@
         </div>
     </div>
     <!-- End Nav menu bottom -->
+    <script>
+        //Touch animation
+    $(".mbtn").on("touchstart", function() {
+      $(this).addClass('mbtn-touch');
+    });
+    $(".mbtn").on("touchend", function() {
+      $(this).removeClass('mbtn-touch');
+    });
+    $(".mbtn-green").on("touchstart", function() {
+      $(this).addClass('mbtn-green-touch');
+    });
+    $(".mbtn-green").on("touchend", function() {
+      $(this).removeClass('mbtn-green-touch');
+    });
+    $(".select_folder").on("touchstart", function() {
+      $(this).addClass('select_folder-touch');
+    });
+    $(".select_folder").on("touchend", function() {
+      $(this).removeClass('select_folder-touch');
+    });
+    </script>
 </body>
 
 </html>

@@ -41,8 +41,7 @@
     </style>
 
     <script>
-        var arr_data;
-        var datetime;
+        var arr_data;       
         $(document).ready(function () {
             //navs
             margin = $("#navs-menu").outerHeight()*3;
@@ -58,11 +57,6 @@
             margin = $("#ctn-btn").outerHeight() + $("#navs-menu").outerHeight() + $("#navs-net").outerHeight() -15;
             $("#big-ctn").css('margin-bottom', margin); 
             /********************************************/
-
-            var d = new Date($.now());            
-            $('#date').text(d.getDate() + "/" + (d.getMonth()+1) + "/" + d.getFullYear()); 
-            datetime = d.getFullYear() + "-" + (d.getMonth()+1) + "-" + d.getDate() + " " + d.getHours() + ":" + d.getMinutes() + ":" + d.getSeconds(); 
-
             $.ajax({
                 type: "GET",
                 url:"https://omise-webpack.000webhostapp.com/www/php/get_ware.php",                            
@@ -124,6 +118,8 @@
         });
 
         function save(){
+            var d = new Date($.now());           
+            var datetime = d.getFullYear() + "-" + (d.getMonth()+1) + "-" + d.getDate() + " " + d.getHours() + ":" + d.getMinutes() + ":" + d.getSeconds(); 
             json_string = JSON.stringify(arr_data); 
             var dataString =  "JSON=" + json_string + "&ware_id=" + ware_id + "&date=" + datetime;                        
 
@@ -134,9 +130,7 @@
                 success: function(data){                             
                     //alert(data);
                     if(data == "success"){
-                        localStorage.arr_ex = "";                                                   
-                        goto = "export.html";
-                        transition_page_back(goto);            
+                       clearAll();          
                     }
                 }               
             });
@@ -161,8 +155,7 @@
                         $("#net").text(sum.toLocaleString());   
                         $('#prod-'+num).remove();   
                         $('#collapse-'+num).remove();   
-                        $('#hr-'+num).remove();   
-                        //arr_data[num].qr = 0;
+                        $('#hr-'+num).remove();                    
                         arrange(num);
                     }
                   }
@@ -176,11 +169,9 @@
                 $("#prod-"+i).prop('id', 'prod-'+(i-1));
                 $("#id-prod-"+i).prop('id', 'id-prod-'+(i-1));
                 $("#i-del-"+i).attr('onclick', "remove("+(i-1)+")");          
-                $("#i-edit-"+i).attr('onclick', "edit_prod("+(i-1)+")");        
-                $("#i-check-"+i).attr('onclick', "update_prod("+(i-1)+")");       
+                $("#i-edit-"+i).attr('onclick', "edit_prod("+(i-1)+")");                   
                 $("#i-del-"+i).prop('id', 'i-del-'+(i-1));
-                $("#i-edit-"+i).prop('id', 'i-edit-'+(i-1));
-                $("#i-check-"+i).prop('id', 'i-check-'+(i-1));
+                $("#i-edit-"+i).prop('id', 'i-edit-'+(i-1));               
                 $("#price-"+i).prop('id', 'price-'+(i-1));
                 $("#amount-"+i).prop('id', 'amount-'+(i-1));
                 $("#name-"+i).attr('onclick', "collapse("+(i-1)+")");      
@@ -238,21 +229,12 @@
                 }
             }
         }
-
-        var sum_old;
+       
         function edit_prod(arg) {
-            //check if some i-check is show then
-            $("#i-edit-" + arg).attr('hidden', true);
-            $("#i-check-" + arg).attr('hidden', false);
-            $("#amount-" + arg).removeAttr('style');
-            //$("#price-" + arg).removeAttr('style');
-            $("#amount-" + arg).attr("readonly", false);
-            //$("#price-" + arg).attr("readonly", false);
-
             var prod_name = $("#name-"+arg).text();
             var amt = $("#amount-" + arg).text();   
             var cost = $('#price-'+arg).text();
-            sum_old = amt*cost;
+            var sum_old = amt*cost;
 
             $("style").append(".jconfirm .jconfirm-box{margin-bottom:60%;}");
             $.confirm({
@@ -284,28 +266,6 @@
               }
             });     
         }
-
-        /*function update_prod(arg) {
-            $("#i-edit-" + arg).attr('hidden', false);
-            $("#i-check-" + arg).attr('hidden', true);
-            $("#amount-" + arg).css('border', 'none');
-            //$("#price-" + arg).css('border', 'none');
-            $("#amount-" + arg).attr("readonly", true);
-            //$("#price-" + arg).attr("readonly", true);
-            /*$.alert({
-                title: 'สำเร็จ!',
-                content: 'บันทึกการเปลี่ยนแปลง',
-            });
-            var cost = $('#price-'+arg).val();   
-            var amt = $('#amount-'+arg).val();
-            arr_data[arg].amt = amt;  
-            localStorage.setItem('arr_ex', JSON.stringify(arr_data));   
-            var net = $("#net").html(); 
-            var sum = parseFloat(net.replace(/,/g, ''));
-            var new_net = (sum-sum_old)+(amt*cost);
-            $("#net").text(new_net.toLocaleString());  
-            $("#sum-"+arg).text(cost*amt);
-        }*/
 
         function collapse(arg) {
             // 4 is num of prod
@@ -341,19 +301,13 @@
                 //ajax and apeend
                 $.ajax({
                     type: "GET",
-                    url:"https://omise-webpack.000webhostapp.com/www/php/get_ware_shop.php",                            
+                    url:"https://omise-webpack.000webhostapp.com/www/php/get_ware.php",                            
                     success: function(data){
                     var obj = jQuery.parseJSON(data);                                                      
-                    $.each(obj, function(i, field){   
-                        if(obj[i][2] == "โกดัง"){  
+                    $.each(obj, function(i, field){                        
                             $(".jconfirm-buttons").append('<button id="li-ware-'+i+'" type="button" onclick="setware('+i+')" class="btn btn-choice">'+obj[i].ware_name+'</button>' +
-                            '<span id="id-ware-'+i+'" hidden>'+obj[i].ware_id+'</span>' +
-                            '<span id="type-'+i+'" hidden>โกดัง</span>');                       
-                        }else if(obj[i][2] == "หน้าร้าน"){ 
-                            $(".jconfirm-buttons").append('<button id="li-ware-'+i+'" type="button" onclick="setware('+i+')" class="btn btn-choice">'+obj[i].shop_name+'</button>' +
-                            '<span id="id-ware-'+i+'" hidden>'+obj[i].shop_id+'</span>' +
-                            '<span id="type-'+i+'" hidden>หน้าร้าน</span>');
-                        }                    
+                            '<span id="id-ware-'+i+'" hidden>'+obj[i].ware_id+'</span>');                       
+                                        
                         });                                        
                     }               
                 });               
@@ -361,18 +315,16 @@
               onDestroy: function () {
                 $("style").append('.jconfirm .jconfirm-box{margin-bottom: 5%;}');
                 $("style").append('.jconfirm .jconfirm-box{max-height: 100%;}');
-              },
-              /*onOpen: function(){
-                $(".btn-choice").click(function(event) {
-                  txt = $(this).text();
-                  $("#ware").val(txt);
-                  b_id = $("#id-ware").text();
-                  type = $("#type").text()
-                  document.elementFromPoint(0, 0).click();
-                });
-              }*/
+              }              
             });
         } 
+
+        function clearAll(){        
+            localStorage.arr_ex = "";          
+            localStorage.arr_prod_e =  "";          
+            transition_page_back('export.html');
+        }
+
     </script>
 </head>
 
@@ -392,14 +344,12 @@
 
     <!-- End big container -->
     <div id="big-ctn" class="container justify-content-center" style="margin-top: 15%;">
-        <div class="row mg-10">
-            <div class="col-3"></div>
-            <div class="col-6 text-center no-pd">
-                <input id="ware" type="text" class="w3-input" placeholder="โกดัง" onclick="showware();" readonly>
+        <div class="row mg-7">
+            <div class="col-12 text-center">
+                <h5 id="ware-title">ชื่อโกดัง</h5>
             </div>
-            <div class="col-3"></div>
         </div>
-
+        
     </div>
     <!-- End big container -->
 
@@ -439,6 +389,21 @@
         </div>
     </div>
     <!-- End Nav menu bottom -->
+    <script>
+        //Touch animation
+        $(".mbtn").on("touchstart", function() {
+          $(this).addClass('mbtn-touch');
+        });
+        $(".mbtn").on("touchend", function() {
+          $(this).removeClass('mbtn-touch');
+        });
+        $(".mbtn-cancle").on("touchstart", function() {
+          $(this).addClass('mbtn-cancle-touch');
+        });
+        $(".mbtn-cancle").on("touchend", function() {
+          $(this).removeClass('mbtn-cancle-touch');
+        });
+    </script>
 </body>
 
 </html>

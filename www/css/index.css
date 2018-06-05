@@ -12,7 +12,7 @@ body{
   height: 8% !important;
   background: #d63232 !important;
   padding-left: 20px !important;
-  padding-right: 20px !important;
+  padding-right: 0 !important;
   padding-top: 20px !important;
 }
 
@@ -31,7 +31,7 @@ body{
 	letter-spacing: 2px;
 	margin-left: 3%;
 }
-#cus-title{
+#cus-title, #ware-title, #store-title{
 	font-weight: bold;
 	font-size: 125% !important;
 	color: #666666;

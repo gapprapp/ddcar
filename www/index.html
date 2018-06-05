@@ -16,13 +16,12 @@
   <script src="http://ajax.googleapis.com/ajax/libs/jquerymobile/1.4.5/jquery.mobile.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
   <script defer src="https://use.fontawesome.com/releases/v5.0.8/js/all.js"></script>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.0/jquery-confirm.min.css">
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.0/jquery-confirm.min.js"></script>
   <script type="text/javascript" src="js/jquery.touchSwipe.min.js"></script>
   <script src="cordova.js"></script>
   <script type="text/javascript" src="js/scanqr.js"></script>
 
   <link rel="stylesheet" href="css/index.css">
+  <link rel="stylesheet" href="css/jquery-confirm.css">
 
   <!-- Font -->
   <link href="https://fonts.googleapis.com/css?family=Prompt" rel="stylesheet">
@@ -120,6 +119,23 @@
       $("#i-" + arg).fadeOut(100).fadeIn(100, function() {
         $("#i-" + arg).addClass('active');
       });
+
+      if(arg == "bars"){
+        $.confirm({
+              title: "ชื่อสินค้า",
+              content: '<div class="row" style="margin-top: 2%; margin-bottom: 2%;"><div class="col-12 text-center"><img src="https://i.imgur.com/7LVwcUc.png" id="img" alt="" style="width: 96%; height: 96%;"></div></div><div class="row"><div class="col-2"></div><div class="col-3 nopd text-right">รหัส :</div><div class="col-4 text-right">bnk426816</div><div class="col-2"></div></div><div class="row"><div class="col-2"></div><div class="col-3 nopd text-right">ราคา :</div><div class="col-4 text-center">2500</div><div class="col-2"></div></div><div class="row"><div class="col-2"></div><div class="col-3 nopd text-right">จำนวน :</div><div class="col-4 text-center">12</div><div class="col-2"></div></div>',
+              backgroundDismiss: true,
+              buttons: {
+                formSubmit: {
+                  text: 'ปิด',
+                  btnClass: 'btn-regis',
+                  action: function () {
+                    document.elementFromPoint(0, 0).click();
+                  }
+                }
+              }
+            }); 
+      }
     }
   </script>
 </head>
@@ -184,7 +200,7 @@
       </div>
       <div class="row mg-10">
         <div class="col-12 text-center nopd">
-          <button class="mbtn" onclick="transition_page_next('transfer_in_copy.html');">สินค้าเข้าหน้าร้าน</button>
+          <button class="mbtn" onclick="transition_page_next('transfer_in.html');">สินค้าเข้าหน้าร้าน</button>
         </div>
       </div>
       <div class="row mg-10">

@@ -327,58 +327,6 @@
                 }, 900);*/
             });
         }
-
-        var ware_id;
-        function setware(arg) {
-            ware = $("#li-ware-" + arg).text();
-            $("#ware").val(ware);
-            ware_id = $("#id-ware-" + arg).text();
-            document.elementFromPoint(0, 0).click();
-        }
-
-        function showware(){
-            $("style").append('.jconfirm .jconfirm-box{max-height: 420px;}');
-            $.confirm({
-              title: 'โกดัง',
-              content: '<hr style="width: 80%; margin-bottom: 0;">',
-              backgroundDismiss: true,
-              onOpenBefore: function () {
-                $(".jconfirm-buttons .btn-default").remove();
-                //ajax and apeend
-                $.ajax({
-                    type: "GET",
-                    url:"https://omise-webpack.000webhostapp.com/www/php/get_ware_shop.php",                            
-                    success: function(data){
-                    var obj = jQuery.parseJSON(data);                                                      
-                    $.each(obj, function(i, field){   
-                        if(obj[i][2] == "โกดัง"){  
-                            $(".jconfirm-buttons").append('<button id="li-ware-'+i+'" type="button" onclick="setware('+i+')" class="btn btn-choice">'+obj[i].ware_name+'</button>' +
-                            '<span id="id-ware-'+i+'" hidden>'+obj[i].ware_id+'</span>' +
-                            '<span id="type-'+i+'" hidden>โกดัง</span>');                       
-                        }else if(obj[i][2] == "หน้าร้าน"){ 
-                            $(".jconfirm-buttons").append('<button id="li-ware-'+i+'" type="button" onclick="setware('+i+')" class="btn btn-choice">'+obj[i].shop_name+'</button>' +
-                            '<span id="id-ware-'+i+'" hidden>'+obj[i].shop_id+'</span>' +
-                            '<span id="type-'+i+'" hidden>หน้าร้าน</span>');
-                        }                    
-                        });                                        
-                    }               
-                });               
-              },
-              onDestroy: function () {
-                $("style").append('.jconfirm .jconfirm-box{margin-bottom: 5%;}');
-                $("style").append('.jconfirm .jconfirm-box{max-height: 100%;}');
-              },
-              /*onOpen: function(){
-                $(".btn-choice").click(function(event) {
-                  txt = $(this).text();
-                  $("#ware").val(txt);
-                  b_id = $("#id-ware").text();
-                  type = $("#type").text()
-                  document.elementFromPoint(0, 0).click();
-                });
-              }*/
-            });
-        } 
     </script>
 </head>
 
@@ -398,15 +346,10 @@
 
     <!-- End big container -->
     <div id="big-ctn" class="container justify-content-center" style="margin-top: 15%;">
-        <div class="row mg-10">
-            <div class="col-3"></div>
-            <div class="col-6 text-center no-pd">
-                <!--<input id="ware" type="text" class="w3-input" data-toggle="dropdown" placeholder="โกดัง" readonly>
-                <ul id="ul-ware" class="dropdown-menu text-center" aria-labelledby="role" style="width: 80%;">                                        
-                </ul>-->
-                <input id="ware" type="text" class="w3-input" placeholder="โกดัง" onclick="showware();" readonly>
+        <div class="row mg-7">
+            <div class="col-12 text-center">
+                <h5 id="ware-title">ชื่อโกดัง</h5>
             </div>
-            <div class="col-3"></div>
         </div>
     </div>
     <!-- End big container -->

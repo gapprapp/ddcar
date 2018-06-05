@@ -36,9 +36,16 @@
             padding-left: 5px;
             padding-right: 5px;
         }
-
-        input{
-            font-size: 110%;
+        .fade {
+            animation-duration: 1.25s;
+            animation-name: fade;
+            animation-direction: alternate-reverse;
+            animation-iteration-count: infinite;
+        }
+    
+        @-webkit-keyframes fade {
+            from {opacity: 0.55;} 
+            to {opacity: 1;}
         }
     </style>
 
@@ -98,7 +105,8 @@
                         time: 200
                     },
                     onChooseEvent: function() {                     
-                        prod_id = $("#name").getSelectedItemData().prod_id;                                                                           
+                        prod_id = $("#name").getSelectedItemData().prod_id; 
+                        $('#barcode').val($("#name").getSelectedItemData().prod_code);                                                                          
                     }
                 }, 
                 //theme: "blue-light",                   
@@ -193,7 +201,8 @@
                 $('#check-trans').text(arr_data.length);     
 
                 $('#name').val("");              
-                $('#amount').val("1");                                  
+                $('#amount').val("1");
+                $('#barcode').val("");                                  
             }    
         }
 
@@ -201,6 +210,60 @@
             goto = "transfer_in_check.html";
             transition_page_next(goto);
         }
+
+        var ware_id;
+        function setware(arg) {
+            $("#h5-title").removeClass('fade');
+            ware = $("#li-ware-" + arg).text();
+            $("#h5-title").text(ware);
+            $("#ware").val(ware);
+            ware_id = $("#id-ware-" + arg).text();
+            document.elementFromPoint(0, 0).click();
+        }
+
+        function showware(){
+            $("style").append('.jconfirm .jconfirm-box{max-height: 420px;}');
+            $.confirm({
+              title: 'หน้าร้าน',
+              content: '<hr style="width: 80%; margin-bottom: 0;">',
+              backgroundDismiss: true,
+              onOpenBefore: function () {
+                $(".jconfirm-buttons .btn-default").remove();
+                //ajax and apeend
+                $.ajax({
+                    type: "GET",
+                    url:"https://omise-webpack.000webhostapp.com/www/php/get_ware_shop.php",                            
+                    success: function(data){
+                    var obj = jQuery.parseJSON(data);                                                      
+                    $.each(obj, function(i, field){   
+                        if(obj[i][2] == "โกดัง"){  
+                            $(".jconfirm-buttons").append('<button id="li-ware-'+i+'" type="button" onclick="setware('+i+')" class="btn btn-choice">'+obj[i].ware_name+'</button>' +
+                            '<span id="id-ware-'+i+'" hidden>'+obj[i].ware_id+'</span>' +
+                            '<span id="type-'+i+'" hidden>โกดัง</span>');                       
+                        }else if(obj[i][2] == "หน้าร้าน"){ 
+                            $(".jconfirm-buttons").append('<button id="li-ware-'+i+'" type="button" onclick="setware('+i+')" class="btn btn-choice">'+obj[i].shop_name+'</button>' +
+                            '<span id="id-ware-'+i+'" hidden>'+obj[i].shop_id+'</span>' +
+                            '<span id="type-'+i+'" hidden>หน้าร้าน</span>');
+                        }                    
+                        });                                        
+                    }               
+                });               
+              },
+              onDestroy: function () {
+                $("style").append('.jconfirm .jconfirm-box{margin-bottom: 5%;}');
+                $("style").append('.jconfirm .jconfirm-box{max-height: 100%;}');
+              },
+              /*onOpen: function(){
+                $(".btn-choice").click(function(event) {
+                  txt = $(this).text();
+                  $("#ware").val(txt);
+                  b_id = $("#id-ware").text();
+                  type = $("#type").text()
+                  document.elementFromPoint(0, 0).click();
+                });
+              }*/
+            });
+        } 
 
     </script>
 </head>
@@ -211,24 +274,21 @@
         <div class="col-1 text-center" onclick="transition_page_back('index.html')">
             <i id="i-back" class="fas fa-angle-left"></i>
         </div>
-        <div class="col-9 text-center" style="padding-left: 15%;">
-            <h5 id="h5-title">เข้าหน้าร้าน</h5>
+
+        <div class="col-8 text-center" style="padding-left: 15%; margin-right: 4%;">
+            <h5 id="h5-title" class="fade" onclick="showware();">เลือกหน้าร้าน</h5>
         </div>
         <div class="col-2 text-right" onclick="check();"><div id="check-trans"class="circle-text">0</div></div>
     </div>
     <br>
 
     <!-- End big container -->
-<<<<<<< HEAD
     <div class="container justify-content-center" style="margin-top: 25%;">
-=======
-    <div class="container justify-content-center" style="margin-top: 15%;">
->>>>>>> 2cca45eb38f4e889c8b86d4be857de208a10012b
         <div class="container">
             <div class="row mg-10">
                 <div class="col-5 text-center">
                     <label for="barcode">รหัส</label>
-                    <input id="barcode" type="text" class="w3-input">
+                    <input readonly id="barcode" type="text" class="w3-input">
                 </div>
                 <div class="col-7 text-center">
                     <label for="name">ชื่อสินค้า</label>
@@ -278,6 +338,27 @@
         </div>
     </div>
     <!-- End Nav menu bottom -->
+    <script>
+        //Touch animation
+        $(".mbtn").on("touchstart", function() {
+          $(this).addClass('mbtn-touch');
+        });
+        $(".mbtn").on("touchend", function() {
+          $(this).removeClass('mbtn-touch');
+        });
+        $(".mbtn-green").on("touchstart", function() {
+          $(this).addClass('mbtn-green-touch');
+        });
+        $(".mbtn-green").on("touchend", function() {
+          $(this).removeClass('mbtn-green-touch');
+        });
+        $(".select_folder").on("touchstart", function() {
+          $(this).addClass('select_folder-touch');
+        });
+        $(".select_folder").on("touchend", function() {
+          $(this).removeClass('select_folder-touch');
+        });
+    </script>
 </body>
 
 </html>
