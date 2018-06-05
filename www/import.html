@@ -197,7 +197,7 @@
             var cost = $('#cost').val();
             var price_s =$('#wholesale').val();
             var price_w =$('#retail').val(); 
-            if(code != "" && cost != "" && price_s != "" && price_w != ""){      
+            if(code != "" && cost != "" && price_s != "" && price_w != "" && addr != ""){      
                 if(flag == 0){                 
                     $.ajax({
                         type: "POST",
@@ -254,7 +254,8 @@
             item ["name"] =  $('#name').val();
             item ["cost"] =  cost;               
             item ["amt"] =  $('#amount').val();
-            item ["img"] =  img;     
+            item ["img"] =  img; 
+            item ["addr"] = $('#prod-addr').val();    
 
             arr_data.push(item); 
             localStorage.setItem('arr_prod', JSON.stringify(arr_data));         
@@ -267,6 +268,7 @@
             $('#wholesale').val("");
             $('#retail').val("");
             $('#amount').val("1");
+            $('#prod-addr').val("")
             if(is_show == 1){
                 show_avg(); 
                 is_show = 0;
