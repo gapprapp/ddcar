@@ -46,7 +46,8 @@ body{
 }
 
 #show-box, #show-box-go{
-	font-size: 145%;
+	font-size: 125%;
+	color: white;
 	margin-top: 3px;
 }
 
