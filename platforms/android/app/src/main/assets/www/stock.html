@@ -121,6 +121,13 @@
       $("#search_prod").focus(function(event) {
         search();
       });
+      //Touch animation
+      $(".mbtn").on("touchstart", function() {
+        $(this).addClass('mbtn-touch');
+      });
+      $(".mbtn").on("touchend", function() {
+        $(this).removeClass('mbtn-touch');
+      });
     </script>
 </body>
 

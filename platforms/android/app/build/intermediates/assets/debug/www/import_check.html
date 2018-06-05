@@ -389,6 +389,21 @@
         </div>
     </div>
     <!-- End Nav menu bottom -->
+    <script>
+        //Touch animation
+        $(".mbtn").on("touchstart", function() {
+          $(this).addClass('mbtn-touch');
+        });
+        $(".mbtn").on("touchend", function() {
+          $(this).removeClass('mbtn-touch');
+        });
+        $(".mbtn-cancle").on("touchstart", function() {
+          $(this).addClass('mbtn-cancle-touch');
+        });
+        $(".mbtn-cancle").on("touchend", function() {
+          $(this).removeClass('mbtn-cancle-touch');
+        });
+    </script>
 </body>
 
 </html>

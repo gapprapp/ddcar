@@ -171,6 +171,12 @@
         }
       });
     });
+    $(".mbtn").on("touchstart", function() {
+      $(this).addClass('mbtn-touch');
+    });
+    $(".mbtn").on("touchend", function() {
+      $(this).removeClass('mbtn-touch');
+    });
   </script>
 </body>
 

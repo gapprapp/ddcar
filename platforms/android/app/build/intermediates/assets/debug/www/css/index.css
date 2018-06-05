@@ -110,9 +110,9 @@ body{
 	box-shadow: 0 1px 2px  #b03838, 0 1px 1px #b03838;
 }
 
-.tab-touch{
-	background: #e57d7d;
-	color: white;
+
+.back-touch{
+	background: #f7dada;
 }
 
 .mbtn-green{
@@ -128,6 +128,19 @@ body{
 	box-shadow: 0 1px 2px  #7fbf7f, 0 1px 1px #7fbf7f;
 }
 
+.mbtn-green-touch{
+	background-color: #659865;
+	border: 1px solid #659865;
+	height: 145%;
+	width: 100%;
+	font-weight: bold;
+	font-size: 120%;
+	color: white;
+	letter-spacing: 2px;
+	border-radius: 5px;
+	box-shadow: 0 1px 2px  #72ab72, 0 1px 1px #72ab72;
+}
+
 .mbtn-cancle{
 	background-color: #bcc0c0;
 	border: 1px solid #bcc0c0;
@@ -141,6 +154,19 @@ body{
 	box-shadow: 0 1px 2px  #c9cccc, 0 1px 1px #c9cccc;
 }
 
+.mbtn-cancle-touch{
+	background-color: #a9acac;
+	border: 1px solid #a9acac;
+	height: 145%;
+	width: 100%;
+	font-weight: bold;
+	font-size: 120%;
+	color: white;
+	letter-spacing: 2px;
+	border-radius: 5px;
+	box-shadow: 0 1px 2px  #c2c6c6, 0 1px 1px #c2c6c6;
+}
+
 .select_folder{
 	background-color: #fdfdfd;
 	border: 1px solid #e5e5e5;
@@ -152,6 +178,19 @@ body{
 	letter-spacing: 2px;
 	border-radius: 5px;
 	box-shadow: 0 1px 2px  #e5e5e5, 0 1px 1px #e5e5e5;
+}
+
+.select_folder-touch{
+	background-color: #fcfcfc;
+	border: 1px solid #fcfcfc;
+	height: 145%;
+	width: 100%;
+	font-weight: bold;
+	font-size: 120%;
+	color: #666666;
+	letter-spacing: 2px;
+	border-radius: 5px;
+	box-shadow: 0 1px 2px  #e3e3e3, 0 1px 1px #e3e3e3;
 }
 
 .func{
