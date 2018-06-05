@@ -61,7 +61,7 @@
                     type: "POST",
                     url:"https://omise-webpack.000webhostapp.com/www/php/get_prod.php",    
                     data:{'prod_id' : product},
-                    async: false,                       
+                    //async: false,                       
                     success: function(data){
                         var obj = jQuery.parseJSON(data);                                         
                         $.each(obj, function(i, field){
@@ -239,7 +239,11 @@
     <br>
 
     <!-- End big container -->
+<<<<<<< HEAD
+    <div class="container justify-content-center" style="margin-top: 40%;">
+=======
     <div class="container justify-content-center" style="margin-top: 30%;">
+>>>>>>> 2cca45eb38f4e889c8b86d4be857de208a10012b
         <div class="container">
             <div class="row mg-10">
                 <div class="col-12 text-center pdlr">

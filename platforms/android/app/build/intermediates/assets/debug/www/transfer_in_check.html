@@ -41,9 +41,13 @@
     </style>
 
     <script>
+<<<<<<< HEAD
+        arr_data = [];      
+=======
         var arr_data;
         var datetime;
         var sum = 0;
+>>>>>>> 2cca45eb38f4e889c8b86d4be857de208a10012b
         $(document).ready(function () {
             //navs
             margin = $("#navs-menu").outerHeight()*3;
@@ -58,6 +62,13 @@
 
             margin = $("#ctn-btn").outerHeight() + $("#navs-menu").outerHeight() + $("#navs-net").outerHeight() -15;
             $("#big-ctn").css('margin-bottom', margin); 
+<<<<<<< HEAD
+            /********************************************/ 
+
+            var retrievedObject = localStorage.getItem('arr_tranin');
+            arr_data = JSON.parse(retrievedObject);          
+            for(var i = 0 ; i < arr_data.length ; i ++){           
+=======
             /********************************************/
 
             var d = new Date($.now());            
@@ -81,12 +92,35 @@
             for(var i = 0 ; i < arr_data.length ; i ++){                              
                 var sum_prod = arr_data[i].cost*arr_data[i].amt;
                 sum += parseInt(sum_prod);
+>>>>>>> 2cca45eb38f4e889c8b86d4be857de208a10012b
                 $('#big-ctn').append("<div id='prod-"+i+"' class='row'>\
                 <span id='id-prod-"+i+"' hidden>"+arr_data[i].prod_id+"</span>\
                 <div class='col-1 text-center no-pd'>\
                     <i id='i-del-"+i+"' class='fa fa-trash-alt i-del' onclick='remove("+i+");' hidden style='color: #666;'></i>\
                     <i id='i-edit-"+i+"' class='fa fa-edit i-edit' onclick='edit_prod("+i+");' hidden style='color: #666;'></i>\
                 </div>\
+<<<<<<< HEAD
+                <div id='name-"+i+"' class='col-6 text-center no-pd'>"+arr_data[i].name+"</div>\
+                <div id='price-"+i+"' class='col-3 text-center no-pd'></div>\
+                <span>x</span>\
+                <div id='amount-"+i+"' class='col-1 text-center no-pd'>"+arr_data[i].amt+"</div>\
+            </div><hr id='hr-"+i+"' style='margin-top: 5%;'>");                    
+            }        
+        });
+
+        function save(){
+            if(arr_data.length == 0 ||  $("#store").val() == ""){
+                return 0;
+            }
+            var d = new Date($.now());          
+            var datetime = d.getFullYear() + "-" + (d.getMonth()+1) + "-" + d.getDate() + " " + d.getHours() + ":" + d.getMinutes() + ":" + d.getSeconds(); 
+            json_string = JSON.stringify(arr_data); 
+            var dataString =  "JSON=" + json_string + "&shop_id=" + localStorage.shop_id + "&date=" + datetime;                                    
+                      
+            $.ajax({
+                type: "POST",
+                url:"https://omise-webpack.000webhostapp.com/www/php/transfer_in.php",           
+=======
                 <div id='name-"+i+"' class='col-6 text-center no-pd' onclick='collapse("+i+");'>"+arr_data[i].name+"</div>\
                 <div id='price-"+i+"' class='col-3 text-center no-pd'>"+arr_data[i].cost+"</div>\
                 <span>x</span>\
@@ -124,6 +158,7 @@
             $.ajax({
                 type: "POST",
                 url:"https://omise-webpack.000webhostapp.com/www/php/stock_in.php",           
+>>>>>>> 2cca45eb38f4e889c8b86d4be857de208a10012b
                 data: dataString,               
                 success: function(data){              
                     if(data == "success"){
@@ -136,26 +171,40 @@
                                 text: 'ตกลง',
                                 btnClass: 'btn-regis',
                                 action: function () {
+<<<<<<< HEAD
+                                    clearAll();
+=======
                                     goto = "import.html";
                                     transition_page_next_flip(goto);
+>>>>>>> 2cca45eb38f4e889c8b86d4be857de208a10012b
                                   }
                               }
                             }
                         }); 
+<<<<<<< HEAD
+                        clearAll();           
+=======
                         localStorage.arr_prod = "";                                                   
                         goto = "import.html";
                         transition_page_back(goto);            
+>>>>>>> 2cca45eb38f4e889c8b86d4be857de208a10012b
                     }
                 }               
             });
         }
 
+<<<<<<< HEAD
+        function remove(num){           
+            var amt = $('#amount-'+num).text();
+            var name = $('#name-'+num).text();           
+=======
         function remove(num){
             var cost = $('#price-'+num).text();   
             var amt = $('#amount-'+num).text();
             var name = $('#name-'+num).text();
             var net = $("#net").html();           
             var sum2 = parseFloat(net.replace(/,/g, ''))-(cost*amt);
+>>>>>>> 2cca45eb38f4e889c8b86d4be857de208a10012b
             $.confirm({
                 title: 'ลบรายการ',
                 content: 'ต้องการลบ '+name+' หรือไม่',
@@ -165,6 +214,11 @@
                   formSubmit: {
                     text: 'ตกลง',
                     btnClass: 'btn-danger',
+<<<<<<< HEAD
+                    action: function () {                       
+                        $('#prod-'+num).remove();                   
+                        $('#hr-'+num).remove();                      
+=======
                     action: function () {
                         sum = sum2;          
                         $("#net").text(sum2.toLocaleString());   
@@ -172,6 +226,7 @@
                         $('#collapse-'+num).remove();   
                         $('#hr-'+num).remove();   
                         //arr_data[num].qr = 0;
+>>>>>>> 2cca45eb38f4e889c8b86d4be857de208a10012b
                         arrange(num);
                     }
                   }
@@ -187,6 +242,15 @@
                 $("#i-del-"+i).attr('onclick', "remove("+(i-1)+")");          
                 $("#i-edit-"+i).attr('onclick', "edit_prod("+(i-1)+")");               
                 $("#i-del-"+i).prop('id', 'i-del-'+(i-1));
+<<<<<<< HEAD
+                $("#i-edit-"+i).prop('id', 'i-edit-'+(i-1));               
+                $("#price-"+i).prop('id', 'price-'+(i-1));
+                $("#amount-"+i).prop('id', 'amount-'+(i-1));                 
+                $("#name-"+i).prop('id', 'name-'+(i-1));               
+                $("#hr-"+i).prop('id', 'hr-'+(i-1));              
+            } 
+            localStorage.setItem('arr_tranin', JSON.stringify(arr_data));          
+=======
                 $("#i-edit-"+i).prop('id', 'i-edit-'+(i-1));
                 $("#i-check-"+i).prop('id', 'i-check-'+(i-1));
                 $("#price-"+i).prop('id', 'price-'+(i-1));
@@ -198,6 +262,7 @@
                 $("#hr-"+i).prop('id', 'hr-'+(i-1));              
             } 
             localStorage.setItem('arr_prod', JSON.stringify(arr_data));          
+>>>>>>> 2cca45eb38f4e889c8b86d4be857de208a10012b
         }
 
         function disactive(arg) {
@@ -247,6 +312,11 @@
             }
         }      
        
+<<<<<<< HEAD
+        function edit_prod(arg) {
+            var prod_name = $("#name-"+arg).text();
+            var amt = $("#amount-" + arg).text();
+=======
         var sum_old;
         function edit_prod(arg) {
             
@@ -264,6 +334,7 @@
             var cost = $('#price-'+arg).text();
             sum_old = amt*cost;
 
+>>>>>>> 2cca45eb38f4e889c8b86d4be857de208a10012b
             $("style").append(".jconfirm .jconfirm-box{margin-bottom:60%;}");
             $.confirm({
               title: prod_name,
@@ -283,14 +354,31 @@
                     var amt = $('#edt-amt').val();
                     $("#amount-" + arg).text(amt);
                     arr_data[arg].amt = amt; 
+<<<<<<< HEAD
+                    localStorage.setItem('arr_tranin', JSON.stringify(arr_data));                 
+=======
                     localStorage.setItem('arr_prod', JSON.stringify(arr_data));     
                     sum = (sum-sum_old)+(amt*cost);
                     $("#net").text(sum.toLocaleString());
                     $("#sum-"+arg).text(cost*amt);  
+>>>>>>> 2cca45eb38f4e889c8b86d4be857de208a10012b
                   }
                 }
               }
             });   
+<<<<<<< HEAD
+        }     
+          
+        var shop_id
+        function setstore(arg) {
+            shop = $("#li-store-" + arg).text();
+            $("#store").val(shop);            
+            shop_id = $("#id-store-" + arg).text();
+            document.elementFromPoint(0, 0).click();       
+        }
+
+        function showstore(){
+=======
         }
 
         /*function update_prod(arg) {
@@ -337,6 +425,7 @@
         }
 
         function showware(){
+>>>>>>> 2cca45eb38f4e889c8b86d4be857de208a10012b
             $("style").append('.jconfirm .jconfirm-box{max-height: 420px;}');
             $.confirm({
               title: 'หน้าร้าน',
@@ -347,6 +436,15 @@
                 //ajax and apeend
                 $.ajax({
                     type: "GET",
+<<<<<<< HEAD
+                    url:"https://omise-webpack.000webhostapp.com/www/php/get_shop.php",                            
+                    success: function(data){
+                    var obj = jQuery.parseJSON(data);                                                      
+                    $.each(obj, function(i, field){   
+                        $(".jconfirm-buttons").append('<button id="li-store-'+i+'" type="button" onclick="setstore('+i+')" class="btn btn-choice">'+obj[i].shop_name+'</button>' +
+                        '<span id="id-store-'+i+'" hidden>'+obj[i].shop_id+'</span>');    
+                    });                                        
+=======
                     url:"https://omise-webpack.000webhostapp.com/www/php/get_ware_shop.php",                            
                     success: function(data){
                     var obj = jQuery.parseJSON(data);                                                      
@@ -361,12 +459,25 @@
                             '<span id="type-'+i+'" hidden>หน้าร้าน</span>');
                         }                    
                         });                                        
+>>>>>>> 2cca45eb38f4e889c8b86d4be857de208a10012b
                     }               
                 });               
               },
               onDestroy: function () {
                 $("style").append('.jconfirm .jconfirm-box{margin-bottom: 5%;}');
                 $("style").append('.jconfirm .jconfirm-box{max-height: 100%;}');
+<<<<<<< HEAD
+              }              
+            });
+        } 
+
+        function clearAll(){        
+            localStorage.arr_tranin = "";          
+            localStorage.arr_prod_t =  "";          
+            transition_page_back('transfer_in.html');
+        }
+
+=======
               },
               /*onOpen: function(){
                 $(".btn-choice").click(function(event) {
@@ -379,6 +490,7 @@
               }*/
             });
         } 
+>>>>>>> 2cca45eb38f4e889c8b86d4be857de208a10012b
     </script>
 </head>
 
@@ -400,11 +512,16 @@
     <div id="big-ctn" class="container justify-content-center" style="margin-top: 15%;">
         <div class="row mg-10">
             <div class="col-3"></div>
+<<<<<<< HEAD
+            <div class="col-6 text-center no-pd">               
+                <input id="store" type="text" class="w3-input" placeholder="หน้าร้าน" onclick="showstore();" readonly>
+=======
             <div class="col-6 text-center no-pd">
                 <!--<input id="ware" type="text" class="w3-input" data-toggle="dropdown" placeholder="โกดัง" readonly>
                 <ul id="ul-ware" class="dropdown-menu text-center" aria-labelledby="role" style="width: 80%;">                                        
                 </ul>-->
                 <input id="ware" type="text" class="w3-input" placeholder="หน้าร้าน" onclick="showware();" readonly>
+>>>>>>> 2cca45eb38f4e889c8b86d4be857de208a10012b
             </div>
             <div class="col-3"></div>
         </div>
@@ -413,13 +530,21 @@
 
     <div id="ctn-btm" class="container fixed-bottom" style="background: #f3f3f3;">
         <div class="container">
+<<<<<<< HEAD
+            <!--<div class="row">
+=======
             <div class="row">
+>>>>>>> 2cca45eb38f4e889c8b86d4be857de208a10012b
                 <div class="col-12 text-center">
                     <h5 class="h5-title" style="font-size: 130%;">รวม :
                         <span  style="color: red;"id="net">500000</span>
                     </h5>
                 </div>
+<<<<<<< HEAD
+            </div>-->
+=======
             </div>
+>>>>>>> 2cca45eb38f4e889c8b86d4be857de208a10012b
             <div class="row">
                 <div class="col-4 text-center" style="padding-left: 0; padding-right: 0;">
                     <button class="mbtn-cancle" onclick="clearAll();">ยกเลิก</button>

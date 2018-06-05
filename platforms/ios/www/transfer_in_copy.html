@@ -460,14 +460,22 @@
         <div class="col-1 text-center" onclick="transition_page_back('index.html')">
             <i id="i-back" class="fas fa-angle-left"></i>
         </div>
+<<<<<<< HEAD
         <div class="col-9 text-center" style="padding-left: 15%;">
             <h5 id="h5-title">เข้าหน้าร้าน</h5>
         </div>
         <div class="col-2 text-right" onclick="report();"><div id="check-import"class="circle-text">0</div></div>
+=======
+        <div class="col-10 text-center">
+            <h5 id="h5-title">เข้าหน้าร้าน</h5>
+        </div>
+        <div class="col-1"></div>
+>>>>>>> daf699871ed944f642ec5471890d10d63f37fd6e
     </div>
     <br>
 
     <!-- End big container -->
+<<<<<<< HEAD
     <div class="container justify-content-center" style="margin-top: 25%;">
         <div class="container">
             <div class="row mg-10">
@@ -500,6 +508,58 @@
                     <button class="mbtn" onclick="add_trans();">เพิ่มสินค้า</button>
                 </div>
             </div>   
+=======
+    <div class="container justify-content-center" style="margin-top: 15%;">
+        <div class="container">
+            <div class="row" style="margin-bottom: 20%;">
+              <div class="col-8 no-pd" onclick="selectfolder();">
+                <button id="slct_folder" class="select_folder">เลือกสินค้า</button>
+              </div>
+              <div class="col-4 no-pd">
+                  <!--<input id="store" type="text" class="w3-input no-pd" data-toggle="dropdown" placeholder="หน้าร้าน" readonly>
+                  <ul id="ul-store" class="dropdown-menu text-center no-pd" aria-labelledby="role" >
+                  </ul>-->
+                  <input id="store" type="text" class="w3-input" readonly onclick="showstore();" placeholder="เลือกหน้าร้าน">
+              </div>
+            </div>
+            <div class="row">
+                <div class="col-1 text-center no-pd"></div> 
+                <div class="col-8 text-center">
+                    <label for="name">ชื่อสินค้า</label>
+                    <!--<input id="name" type="text" class="w3-input">-->
+                </div>
+                <div class="col-3 text-center">
+                    <label for="amount">จำนวน</label>
+                    <!--<input id="amount" type="number" value="1" min="1" class="w3-input">-->
+                </div>
+            </div>
+            <div id="ctn-add" class="container">
+                
+            </div>
+            <!-- Input --> 
+            <div class="row">
+                <div class="col-1 text-center" style="padding-right: 0;"></div>
+                <div class="col-8 text-center">                   
+                    <input id="name" type="text" class="w3-input">
+                </div>
+                <div class="col-3 text-center" style="padding-left: 0;">                  
+                    <input id="amount" type="number" value="1" min="1" class="w3-input">
+                </div>
+            </div>          
+            <div class="row mg-10" style="margin-top: 18%;">
+                <div class="col-12 text-center">
+                    <button id="btn-qr" class="mbtn-green" onclick="scanqr();" style="width: 70%;">สแกน</button>
+                </div>
+            </div>
+            <div class="row mg-10">
+                <div class="col-5 text-center no-pd">
+                    <button class="mbtn-save" onclick="save();">บันทึก</button>
+                </div>
+                <div class="col-7 text-center no-pd">
+                    <button class="mbtn" onclick="add_trans();">เพิ่มสินค้า</button>
+                </div>
+            </div>
+>>>>>>> daf699871ed944f642ec5471890d10d63f37fd6e
         </div>
     </div>
     <!-- End big container -->

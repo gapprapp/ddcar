@@ -57,7 +57,7 @@
                     type: "POST",
                     url:"https://omise-webpack.000webhostapp.com/www/php/get_prod.php",    
                     data:{'prod_id' : product},
-                    async: false,                       
+                    //async: false,                       
                     success: function(data){
                         var obj = jQuery.parseJSON(data);                                         
                         $.each(obj, function(i, field){
@@ -246,7 +246,7 @@
             <div class="row" style="margin-bottom: 20%;">
                 <div class="col-6 text-center">
                     <label for="barcode">รหัส</label>
-                    <input id="barcode" type="text" class="w3-input">
+                    <input readonly id="barcode" type="text" class="w3-input">
                 </div>
                 <div class="col-3 text-center">
                     <label for="amount">จำนวน</label>
@@ -254,7 +254,7 @@
                 </div>
                 <div class="col-3 text-center">
                     <label for="cost">ทุน</label>
-                    <input id="cost" type="number" class="w3-input">
+                    <input readonly id="cost" type="number" class="w3-input">
                 </div>
             </div>
             <div class="row mg-10">

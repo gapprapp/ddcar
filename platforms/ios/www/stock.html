@@ -15,7 +15,12 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
     <script defer src="https://use.fontawesome.com/releases/v5.0.8/js/all.js"></script>
     <script src="cordova.js"></script>
+<<<<<<< HEAD
     <script type="text/javascript" src="js/scanqr.js"></script>
+=======
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.0/jquery-confirm.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.0/jquery-confirm.min.js"></script>
+>>>>>>> daf699871ed944f642ec5471890d10d63f37fd6e
 
     <script src="js/jquery.easy-autocomplete.min.js"></script>   
     <link rel="stylesheet" href="css/easy-autocomplete.themes.min.css">
@@ -27,7 +32,11 @@
     <link href="https://fonts.googleapis.com/css?family=Prompt" rel="stylesheet">
 
     <style>
+<<<<<<< HEAD
       #search_prod:focus, #search_prod:active {
+=======
+      #search_cus:focus, #search_cus:active {
+>>>>>>> daf699871ed944f642ec5471890d10d63f37fd6e
         outline: red !important;
         box-shadow: none;
         border-color: #d63232;
@@ -43,7 +52,11 @@
       .or_line_1 {
           height: 1px;
           width: calc(50% - 38px/2);
+<<<<<<< HEAD
           background: linear-gradient(to left, #c1c1c1 , #ececec);
+=======
+          background: linear-gradient(to left, #c1c1c1 , #e0e0e0);
+>>>>>>> daf699871ed944f642ec5471890d10d63f37fd6e
           position: absolute;
           left: 0px;
           top: 15px;
@@ -51,7 +64,11 @@
       .or_line_2 {
           height: 1px;
           width: calc(50% - 38px/2);
+<<<<<<< HEAD
           background: linear-gradient(to right, #c1c1c1 , #ececec);
+=======
+          background: linear-gradient(to right, #c1c1c1 , #e0e0e0);
+>>>>>>> daf699871ed944f642ec5471890d10d63f37fd6e
           position: absolute;
           right: 0px;
           top: 15px;
@@ -61,6 +78,7 @@
         height: 100%;
         position: relative;
       }
+<<<<<<< HEAD
     </style>
     <script>
       function search(){
@@ -78,12 +96,20 @@
         $("#col-back").attr('onclick', 'transition_page_back("index.html")');
       }
     </script>
+=======
+
+    </style>
+>>>>>>> daf699871ed944f642ec5471890d10d63f37fd6e
 </head>
 
 <body>
     <!-- Nav menu top -->
     <div class="row fixed-top navs">
+<<<<<<< HEAD
         <div id="col-back" class="col-1 text-center" onclick="transition_page_back('index.html')">
+=======
+        <div class="col-1 text-center" onclick="transition_page_back('index.html')">
+>>>>>>> daf699871ed944f642ec5471890d10d63f37fd6e
             <i id="i-back" class="fas fa-angle-left"></i>
         </div>
         <div class="col-10 text-center">
@@ -93,6 +119,7 @@
     <br>
 
     <!-- big container -->
+<<<<<<< HEAD
     <div id="big-ctn" class="container justify-content-center" style="margin-top: 55%;">
         <div class="container">
           <div class="row mg-10">
@@ -122,6 +149,23 @@
         search();
       });
     </script>
+=======
+    <div class="container justify-content-center" style="margin-top: 20%;">
+        <div class="container">
+          <div class="row mg-15">
+            <div class="col-12 text-center">
+              <input id="search_cus" type="text" onkeyup="search()" class="form-control form-control-lg" placeholder="ค้นหาสินค้า">
+             </div>
+          </div>
+          <div class="or_section"><div class="content_box">
+                <div class="or_line_1"></div>
+                <div class="or_txt">หรือ</div>
+                <div class="or_line_2"></div>
+            </div></div>
+        </div>
+    </div>
+    <!-- End big container -->
+>>>>>>> daf699871ed944f642ec5471890d10d63f37fd6e
 </body>
 
 </html>

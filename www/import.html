@@ -58,7 +58,7 @@
                     type: "POST",
                     url:"https://omise-webpack.000webhostapp.com/www/php/get_prod.php",    
                     data:{'prod_id' : product},
-                    async: false,                       
+                    //async: false,                       
                     success: function(data){
                         var obj = jQuery.parseJSON(data);                                         
                         $.each(obj, function(i, field){
@@ -287,7 +287,7 @@
             transition_page_next_flip(goto);
         }     
 
-        function report() {     
+        function check() {     
             if(localStorage.arr_prod){      
                 goto = "import_check.html";
                 transition_page_next(goto);
@@ -311,7 +311,7 @@
         <div class="col-9 text-center" style="padding-left: 15%;">
             <h5 id="h5-title">เข้าโกดัง</h5>
         </div>
-        <div class="col-2 text-right" onclick="report();"><div id="check-import"class="circle-text">0</div></div>
+        <div class="col-2 text-right" onclick="check();"><div id="check-import"class="circle-text">0</div></div>
     </div>
     <br>
 
@@ -321,7 +321,7 @@
             <div class="row mg-10">
                 <div class="col-5 text-center">
                     <label for="barcode">รหัส</label>
-                    <input id="barcode" type="text" class="w3-input">
+                    <input readonly id="barcode" type="text" class="w3-input">
                 </div>
                 <div class="col-7 text-center">
                     <label for="name">ชื่อสินค้า</label>
