@@ -339,7 +339,7 @@
         function showware(){
             $("style").append('.jconfirm .jconfirm-box{max-height: 420px;}');
             $.confirm({
-              title: 'โกดัง',
+              title: 'หน้าร้าน',
               content: '<hr style="width: 80%; margin-bottom: 0;">',
               backgroundDismiss: true,
               onOpenBefore: function () {
@@ -404,7 +404,7 @@
                 <!--<input id="ware" type="text" class="w3-input" data-toggle="dropdown" placeholder="โกดัง" readonly>
                 <ul id="ul-ware" class="dropdown-menu text-center" aria-labelledby="role" style="width: 80%;">                                        
                 </ul>-->
-                <input id="ware" type="text" class="w3-input" placeholder="โกดัง" onclick="showware();" readonly>
+                <input id="ware" type="text" class="w3-input" placeholder="หน้าร้าน" onclick="showware();" readonly>
             </div>
             <div class="col-3"></div>
         </div>
@@ -447,21 +447,6 @@
         </div>
     </div>
     <!-- End Nav menu bottom -->
-    <script>
-        //Touch animation
-        $(".mbtn").on("touchstart", function() {
-          $(this).addClass('mbtn-touch');
-        });
-        $(".mbtn").on("touchend", function() {
-          $(this).removeClass('mbtn-touch');
-        });
-        $(".mbtn-cancle").on("touchstart", function() {
-          $(this).addClass('mbtn-cancle-touch');
-        });
-        $(".mbtn-cancle").on("touchend", function() {
-          $(this).removeClass('mbtn-cancle-touch');
-        });
-    </script>
 </body>
 
 </html>

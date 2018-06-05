@@ -33,27 +33,9 @@
             padding-left: 10%;
             padding-right: 10%;
         }
-
-        .nopd{
-            padding-right: 0;
-            padding-left: 0;
-        }
-
-        .circle-text {
-            height: 1.7em; /*change this and the width
-            for the size of your initial circle*/
-            width: 1.7em;
-            line-height: 1.8em;
-            text-align: center;
-            vertical-align: middle;
-            border-radius: 50%;
-            /*make it pretty*/
-            background: #fafafa;
-            font-weight: bold;
-            color: #d63232;
-        }
+        
         #btn-addpic{
-          width: 70%; 
+          width: 100%; 
           color: white; 
         }
 
@@ -348,7 +330,7 @@
                     });
                 },
                 {
-                    prompt : "วางคิวอาโค้ดภายในสี่เหลี่ยมผืนผ้าที่ช่องมองภาพเพื่อแสกน"
+                    prompt : "วางคิวอาโค้ดภายในสี่เหลี่ยมผืนผ้าที่ช่องมองภาพเพื่อสแกน"
                 }
             );
         }
@@ -375,27 +357,21 @@
     <br>
 
     <!-- End big container -->
-    <div class="container justify-content-center" style="margin-top: 15%;">
+    <div class="container justify-content-center" style="margin-top: 20%;">
         <div class="container">
-            <div class="row" style="margin-bottom: 10%;">
-                <div class="col-12 text-center">
-                    <button disabled id="btn-folder" class="select_folder" onclick="selectfolder();">เลือกหมวดหมู่</button>
-                </div>
-            </div>
             <div class="row mg-10">
                 <div class="col-12 text-center pdlr">
                     <label for="cus">ลูกค้า</label>
                     <input id="cus" type="text" class="w3-input" onclick="transition_page_next_flip('select_cus.html');" placeholder="กรุณาใส่ชื่อลูกค้าก่อนทำการขาย">
                 </div>
             </div>
-
             <div class="row mg-10">
                 <div class="col-12 text-center pdlr">
                     <label for="name">ชื่อสินค้า</label>
                     <input readonly id="name" type="text" class="w3-input">
                 </div>
             </div>
-            <div class="row" style="margin-bottom: 18%;">
+            <div class="row" style="margin-bottom: 20%;">
                 <div class="col-5 text-center">
                     <label for="barcode">รหัส</label>
                     <input readonly id="barcode" type="text" class="w3-input">
@@ -409,10 +385,13 @@
                     <input readonly id="amount" type="number" min="1" value="1" class="w3-input">
                 </div>
             </div>
-            <div class="row mg-10">
-              <div class="col-12 text-center">
-                <button id="btn-addpic" class="mbtn-green" onclick="scanqr();" disabled>สแกน</button>
-              </div>
+            <div class="row mg-10" style="padding-right: 5%; padding-left: 5%;">
+                <div class="col-4 text-center" style="padding-left: 0; padding-right: 0;">
+                    <button id="btn-addpic" class="mbtn-green" onclick="scanqr();" disabled>สแกน</button>
+                </div>
+                <div class="col-8 text-center" style="padding-right: 0;">
+                    <button id="btn-folder" class="select_folder" onclick="selectfolder()">เลือกสินค้า</button>
+                </div>
             </div>
             <div class="row">
               <div class="col-12 text-center">

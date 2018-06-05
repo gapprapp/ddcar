@@ -45,6 +45,12 @@ body{
 	margin-top: 3px;
 }
 
+#show-box, #show-box-go{
+	font-size: 125%;
+	color: white;
+	margin-top: 3px;
+}
+
 .menu {
   font-size: 130%;
   color: #e57f7f;
@@ -66,6 +72,10 @@ body{
 	margin-bottom: 7%;
 }
 
+.mg-5{
+	margin-bottom: 5%;
+}
+
 .mg-6{
 	margin-bottom: 0.67em;
 }
@@ -85,19 +95,6 @@ body{
 	letter-spacing: 2px;
 	border-radius: 5px;
 	box-shadow: 0 1px 2px  #de5a5a, 0 1px 1px #de5a5a;
-}
-
-.mbtn-save{
-	background-color: #428bca;
-	border: 1px solid #428bca;
-	height: 145%;
-	width: 100%;
-	font-weight: bold;
-	font-size: 120%;
-	color: white;
-	letter-spacing: 2px;
-	border-radius: 5px;
-	box-shadow: 0 1px 2px  #5496cf, 0 1px 1px #5496cf;
 }
 
 .mbtn-green{
@@ -129,26 +126,14 @@ body{
 .select_folder{
 	background-color: #fdfdfd;
 	border: 1px solid #e5e5e5;
-	height: 130%;
-	width: 90%;
+	height: 145%;
+	width: 100%;
 	font-weight: bold;
-	font-size: 110%;
+	font-size: 120%;
 	color: #666666;
 	letter-spacing: 2px;
 	border-radius: 5px;
-	box-shadow: 0 1px 1px  #e5e5e5, 0 0px 0px #e5e5e5;
-}
-
-.btn-net{
-	background-color: #f3f3f3;
-	border: 2px solid #e5e5e5;
-	height: 100%;
-	width: 120%;
-	font-weight: bold;
-	font-size: 130%;
-	color: #666666;
-	letter-spacing: 2px;
-	border-radius: 5px;
+	box-shadow: 0 1px 2px  #e5e5e5, 0 1px 1px #e5e5e5;
 }
 
 .svbtn{
@@ -230,4 +215,18 @@ label{
 .fixed-bottom{
 	height: 7% !important; 
 	padding-top: 12px !important;
+}
+
+.circle-text {
+	height: 1.7em; /*change this and the width
+	for the size of your initial circle*/
+	width: 1.7em;
+	line-height: 1.8em;
+	text-align: center;
+	vertical-align: middle;
+	border-radius: 50%;
+	/*make it pretty*/
+	background: #fafafa;
+	font-weight: bold;
+	color: #d63232;
 }

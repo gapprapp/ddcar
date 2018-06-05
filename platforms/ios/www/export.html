@@ -36,6 +36,11 @@
             padding-left: 10%;
             padding-right: 10%;
         }
+
+        #btn-qr{
+            width: 70%;
+            color: white;
+        }
     </style>
 
     <script>
@@ -48,7 +53,7 @@
             if(localStorage.arr_ex){
                 var retrievedObject = localStorage.getItem('arr_ex');
                 var arr_data = JSON.parse(retrievedObject);             
-                $('#check-import').text("("+arr_data.length+")");       
+                $('#check-export').text(arr_data.length);       
             }          
 
             if(product != null){
@@ -132,7 +137,7 @@
                 arr_data.push(item); 
                 localStorage.setItem('arr_ex', JSON.stringify(arr_data));         
             
-                $('#check-import').text("("+arr_data.length+")");       
+                $('#check-export').text(arr_data.length);       
 
                 $('#barcode').val("");
                 $('#name').val("");
@@ -226,28 +231,23 @@
         <div class="col-1 text-center" onclick="transition_page_back('index.html')">
             <i id="i-back" class="fas fa-angle-left"></i>
         </div>
-        <div class="col-10 text-center">
+        <div class="col-9 text-center" style="padding-left: 15%;">
             <h5 id="h5-title">สินค้าออก</h5>
         </div>
-        <div class="col-1"></div>
+        <div class="col-2 text-right" onclick="check();"><div id="check-export"class="circle-text">0</div></div>
     </div>
     <br>
 
     <!-- End big container -->
-    <div class="container justify-content-center" style="margin-top: 15%; margin-bottom: 30%;">
+    <div class="container justify-content-center" style="margin-top: 30%;">
         <div class="container">
-            <div class="row" style="margin-bottom: 15%;">
-                <div class="col-12 text-center" onclick="selectfolder();">
-                    <button class="select_folder">เลือกสินค้า</button>
-                </div>
-            </div>
-            <div class="row" style="margin-bottom: 10%;">
+            <div class="row mg-10">
                 <div class="col-12 text-center pdlr">
                     <label for="name">ชื่อสินค้า</label>
                     <input id="name" type="text" class="w3-input">
                 </div>
             </div>
-            <div class="row" style="margin-bottom: 10%;">
+            <div class="row" style="margin-bottom: 20%;">
                 <div class="col-6 text-center">
                     <label for="barcode">รหัส</label>
                     <input id="barcode" type="text" class="w3-input">
@@ -261,22 +261,17 @@
                     <input id="cost" type="number" class="w3-input">
                 </div>
             </div>
-            <div class="row mg-10">
-                <div class="col-12 text-center">
-                    <button id="btn-qr" class="mbtn-green" onclick="scanqr();">สแกน</button>
+            <div class="row mg-10" style="padding-right: 5%; padding-left: 5%;">
+                <div class="col-4 text-center" style="padding-left: 0; padding-right: 0;">
+                    <button id="btn-addpic" class="mbtn-green" onclick="scanqr();">สแกน</button>
+                </div>
+                <div class="col-8 text-center" style="padding-right: 0;">
+                    <button id="btn-folder" class="select_folder" onclick="selectfolder()">เลือกสินค้า</button>
                 </div>
             </div>
             <div class="row mg-10">
                 <div class="col-12 text-center">
                     <button class="mbtn" onclick="add_export();">เพิ่มสินค้า</button>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-12 text-center">
-                    <button id="btn-check" class="mbtn" onclick="check();">
-                        ตรวจสอบ
-                        <span id="check-import"></span>
-                    </button>
                 </div>
             </div>
         </div>

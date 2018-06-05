@@ -19,6 +19,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.0/jquery-confirm.min.js"></script>
 
     <script src="js/jquery.easy-autocomplete.min.js"></script>   
+    <script type="text/javascript" src="js/back.js"></script>   
     <link rel="stylesheet" href="css/easy-autocomplete.themes.min.css">
 
     <link rel="stylesheet" href="css/index.css">
@@ -35,11 +36,6 @@
         .pdlr {
             padding-left: 10%;
             padding-right: 10%;
-        }
-
-        #btn-qr{
-            width: 70%;
-            color: white;
         }
     </style>
 
@@ -227,7 +223,7 @@
 
 <body>
     <!-- Nav menu top -->
-    <div class="row fixed-top navs">
+    <div id="navs-back" class="row fixed-top navs">
         <div class="col-1 text-center" onclick="transition_page_back('index.html')">
             <i id="i-back" class="fas fa-angle-left"></i>
         </div>
@@ -261,12 +257,12 @@
                     <input id="cost" type="number" class="w3-input">
                 </div>
             </div>
-            <div class="row mg-10" style="padding-right: 5%; padding-left: 5%;">
-                <div class="col-4 text-center" style="padding-left: 0; padding-right: 0;">
-                    <button id="btn-addpic" class="mbtn-green" onclick="scanqr();">สแกน</button>
+            <div class="row mg-10">
+                <div class="col-4 text-center" style="padding-right: 0;">
+                    <button class="mbtn-green" onclick="scanqr();">สแกน</button>
                 </div>
-                <div class="col-8 text-center" style="padding-right: 0;">
-                    <button id="btn-folder" class="select_folder" onclick="selectfolder()">เลือกสินค้า</button>
+                <div class="col-8 text-center">
+                    <button class="select_folder" onclick="selectfolder()">เลือกสินค้า</button>
                 </div>
             </div>
             <div class="row mg-10">
@@ -294,6 +290,27 @@
         </div>
     </div>
     <!-- End Nav menu bottom -->
+    <script>
+    //Touch animation
+    $(".mbtn").on("touchstart", function() {
+      $(this).addClass('mbtn-touch');
+    });
+    $(".mbtn").on("touchend", function() {
+      $(this).removeClass('mbtn-touch');
+    });
+    $(".mbtn-green").on("touchstart", function() {
+      $(this).addClass('mbtn-green-touch');
+    });
+    $(".mbtn-green").on("touchend", function() {
+      $(this).removeClass('mbtn-green-touch');
+    });
+    $(".select_folder").on("touchstart", function() {
+      $(this).addClass('select_folder-touch');
+    });
+    $(".select_folder").on("touchend", function() {
+      $(this).removeClass('select_folder-touch');
+    });
+  </script>
 </body>
 
 </html>
