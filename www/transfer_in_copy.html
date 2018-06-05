@@ -492,8 +492,18 @@
                     <!--<input id="amount" type="number" value="1" min="1" class="w3-input">-->
                 </div>
             </div>
+<<<<<<< HEAD
+            <div class="row mg-10">
+                <div class="col-4 text-center" style="padding-right: 0;">
+                    <button class="mbtn-green" onclick="scanqr();">สแกน</button>
+                </div>
+                <div class="col-8 text-center">
+                    <button class="select_folder" onclick="selectfolder()">เลือกสินค้า</button>
+                </div>
+=======
             <div id="ctn-add" class="container">
                 
+>>>>>>> daf699871ed944f642ec5471890d10d63f37fd6e
             </div>
             <!-- Input --> 
             <div class="row">
@@ -535,6 +545,27 @@
         </div>
     </div>
     <!-- End Nav menu bottom -->
+    <script>
+      //Touch animation
+      $(".mbtn").on("touchstart", function() {
+        $(this).addClass('mbtn-touch');
+      });
+      $(".mbtn").on("touchend", function() {
+        $(this).removeClass('mbtn-touch');
+      });
+      $(".mbtn-green").on("touchstart", function() {
+        $(this).addClass('mbtn-green-touch');
+      });
+      $(".mbtn-green").on("touchend", function() {
+        $(this).removeClass('mbtn-green-touch');
+      });
+      $(".select_folder").on("touchstart", function() {
+        $(this).addClass('select_folder-touch');
+      });
+      $(".select_folder").on("touchend", function() {
+        $(this).removeClass('select_folder-touch');
+      });
+    </script>
 </body>
 
 </html>

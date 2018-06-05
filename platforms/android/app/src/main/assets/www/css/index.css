@@ -97,9 +97,9 @@ body{
 	box-shadow: 0 1px 2px  #de5a5a, 0 1px 1px #de5a5a;
 }
 
-.mbtn-save{
-	background-color: #428bca;
-	border: 1px solid #428bca;
+.mbtn-touch{
+	background-color: #c43f3f;
+	border: 1px solid #c43f3f;
 	height: 145%;
 	width: 100%;
 	font-weight: bold;
@@ -107,7 +107,12 @@ body{
 	color: white;
 	letter-spacing: 2px;
 	border-radius: 5px;
-	box-shadow: 0 1px 2px  #5496cf, 0 1px 1px #5496cf;
+	box-shadow: 0 1px 2px  #b03838, 0 1px 1px #b03838;
+}
+
+.tab-touch{
+	background: #e57d7d;
+	color: white;
 }
 
 .mbtn-green{
@@ -147,43 +152,6 @@ body{
 	letter-spacing: 2px;
 	border-radius: 5px;
 	box-shadow: 0 1px 2px  #e5e5e5, 0 1px 1px #e5e5e5;
-}
-
-.btn-net{
-	background-color: #f3f3f3;
-	border: 2px solid #e5e5e5;
-	height: 100%;
-	width: 120%;
-	font-weight: bold;
-	font-size: 130%;
-	color: #666666;
-	letter-spacing: 2px;
-	border-radius: 5px;
-}
-
-.svbtn{
-	background-color: #f3f3f3;
-	border: 1px solid green;
-	height: 80%;
-	width: 85%;
-	font-weight: bold;
-	font-size: 120%;
-	color: green;
-	letter-spacing: 2px;
-	border-radius: 5px;
-	box-shadow: 0 1px 1px  green, 0 0px 0px green;
-}
-
-.select{
-	background-color: white;
-	border: 2px solid #e5e5e5;
-	height: 100%;
-	width: 60%;
-	font-weight: bold;
-	font-size: 120%;
-	color: #666666;
-	letter-spacing: 2px;
-	border-radius: 5px;
 }
 
 .func{
@@ -227,14 +195,6 @@ label{
 	width:100%;
 	background-color: #f3f3f3;
 	text-align: center;
-}
-
-.badge-notify{
-	background-color: white;
-	border-radius: 50%;
-	border: 1px solid red;
-	font-size: 95%;
-	color: red;
 }
 
 .fixed-bottom{

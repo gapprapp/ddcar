@@ -97,9 +97,9 @@ body{
 	box-shadow: 0 1px 2px  #de5a5a, 0 1px 1px #de5a5a;
 }
 
-.mbtn-save{
-	background-color: #428bca;
-	border: 1px solid #428bca;
+.mbtn-touch{
+	background-color: #c43f3f;
+	border: 1px solid #c43f3f;
 	height: 145%;
 	width: 100%;
 	font-weight: bold;
@@ -107,7 +107,12 @@ body{
 	color: white;
 	letter-spacing: 2px;
 	border-radius: 5px;
-	box-shadow: 0 1px 2px  #5496cf, 0 1px 1px #5496cf;
+	box-shadow: 0 1px 2px  #b03838, 0 1px 1px #b03838;
+}
+
+
+.back-touch{
+	background: #f7dada;
 }
 
 .mbtn-green{
@@ -123,6 +128,19 @@ body{
 	box-shadow: 0 1px 2px  #7fbf7f, 0 1px 1px #7fbf7f;
 }
 
+.mbtn-green-touch{
+	background-color: #659865;
+	border: 1px solid #659865;
+	height: 145%;
+	width: 100%;
+	font-weight: bold;
+	font-size: 120%;
+	color: white;
+	letter-spacing: 2px;
+	border-radius: 5px;
+	box-shadow: 0 1px 2px  #72ab72, 0 1px 1px #72ab72;
+}
+
 .mbtn-cancle{
 	background-color: #bcc0c0;
 	border: 1px solid #bcc0c0;
@@ -134,6 +152,19 @@ body{
 	letter-spacing: 2px;
 	border-radius: 5px;
 	box-shadow: 0 1px 2px  #c9cccc, 0 1px 1px #c9cccc;
+}
+
+.mbtn-cancle-touch{
+	background-color: #a9acac;
+	border: 1px solid #a9acac;
+	height: 145%;
+	width: 100%;
+	font-weight: bold;
+	font-size: 120%;
+	color: white;
+	letter-spacing: 2px;
+	border-radius: 5px;
+	box-shadow: 0 1px 2px  #c2c6c6, 0 1px 1px #c2c6c6;
 }
 
 .select_folder{
@@ -149,41 +180,17 @@ body{
 	box-shadow: 0 1px 2px  #e5e5e5, 0 1px 1px #e5e5e5;
 }
 
-.btn-net{
-	background-color: #f3f3f3;
-	border: 2px solid #e5e5e5;
-	height: 100%;
-	width: 120%;
-	font-weight: bold;
-	font-size: 130%;
-	color: #666666;
-	letter-spacing: 2px;
-	border-radius: 5px;
-}
-
-.svbtn{
-	background-color: #f3f3f3;
-	border: 1px solid green;
-	height: 80%;
-	width: 85%;
-	font-weight: bold;
-	font-size: 120%;
-	color: green;
-	letter-spacing: 2px;
-	border-radius: 5px;
-	box-shadow: 0 1px 1px  green, 0 0px 0px green;
-}
-
-.select{
-	background-color: white;
-	border: 2px solid #e5e5e5;
-	height: 100%;
-	width: 60%;
+.select_folder-touch{
+	background-color: #fcfcfc;
+	border: 1px solid #fcfcfc;
+	height: 145%;
+	width: 100%;
 	font-weight: bold;
 	font-size: 120%;
 	color: #666666;
 	letter-spacing: 2px;
 	border-radius: 5px;
+	box-shadow: 0 1px 2px  #e3e3e3, 0 1px 1px #e3e3e3;
 }
 
 .func{
@@ -227,14 +234,6 @@ label{
 	width:100%;
 	background-color: #f3f3f3;
 	text-align: center;
-}
-
-.badge-notify{
-	background-color: white;
-	border-radius: 50%;
-	border: 1px solid red;
-	font-size: 95%;
-	color: red;
 }
 
 .fixed-bottom{

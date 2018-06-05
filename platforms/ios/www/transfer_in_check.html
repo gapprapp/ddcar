@@ -41,7 +41,13 @@
     </style>
 
     <script>
+<<<<<<< HEAD
+        var arr_data;
+        var datetime;
+        var sum = 0;
+=======
         arr_data = [];      
+>>>>>>> daf699871ed944f642ec5471890d10d63f37fd6e
         $(document).ready(function () {
             //navs
             margin = $("#navs-menu").outerHeight()*3;
@@ -56,17 +62,82 @@
 
             margin = $("#ctn-btn").outerHeight() + $("#navs-menu").outerHeight() + $("#navs-net").outerHeight() -15;
             $("#big-ctn").css('margin-bottom', margin); 
+<<<<<<< HEAD
+            /********************************************/
+
+            var d = new Date($.now());            
+            $('#date').text(d.getDate() + "/" + (d.getMonth()+1) + "/" + d.getFullYear()); 
+            datetime = d.getFullYear() + "-" + (d.getMonth()+1) + "-" + d.getDate() + " " + d.getHours() + ":" + d.getMinutes() + ":" + d.getSeconds(); 
+
+            $.ajax({
+                type: "GET",
+                url:"https://omise-webpack.000webhostapp.com/www/php/get_ware.php",                            
+                success: function(data){
+                    var obj = jQuery.parseJSON(data);                                                      
+                    $.each(obj, function(i, field){                                        
+                        $('#ul-ware').append("<li id='li-ware-"+i+"' onclick='setware("+i+");' style='padding-bottom: 10px;'>"+field.ware_name+"</li>" +
+                        "<span id='id-ware-"+i+"' hidden>"+field.ware_id+"</span>");
+                    });                                        
+                }               
+            });
+
+            var retrievedObject = localStorage.getItem('arr_prod');
+            arr_data = JSON.parse(retrievedObject);          
+            for(var i = 0 ; i < arr_data.length ; i ++){                              
+                var sum_prod = arr_data[i].cost*arr_data[i].amt;
+                sum += parseInt(sum_prod);
+=======
             /********************************************/ 
 
             var retrievedObject = localStorage.getItem('arr_tranin');
             arr_data = JSON.parse(retrievedObject);          
             for(var i = 0 ; i < arr_data.length ; i ++){           
+>>>>>>> daf699871ed944f642ec5471890d10d63f37fd6e
                 $('#big-ctn').append("<div id='prod-"+i+"' class='row'>\
                 <span id='id-prod-"+i+"' hidden>"+arr_data[i].prod_id+"</span>\
                 <div class='col-1 text-center no-pd'>\
                     <i id='i-del-"+i+"' class='fa fa-trash-alt i-del' onclick='remove("+i+");' hidden style='color: #666;'></i>\
                     <i id='i-edit-"+i+"' class='fa fa-edit i-edit' onclick='edit_prod("+i+");' hidden style='color: #666;'></i>\
                 </div>\
+<<<<<<< HEAD
+                <div id='name-"+i+"' class='col-6 text-center no-pd' onclick='collapse("+i+");'>"+arr_data[i].name+"</div>\
+                <div id='price-"+i+"' class='col-3 text-center no-pd'>"+arr_data[i].cost+"</div>\
+                <span>x</span>\
+                <div id='amount-"+i+"' class='col-1 text-center no-pd'>"+arr_data[i].amt+"</div>\
+            </div>\
+            <!-- Collapse-1 -->\
+            <div id='collapse-"+i+"' class='container collapse' style='margin-top: 5%;'>\
+                <div class='row'>\
+                    <div class='col-12 text-center'>\
+                        <img id='img' src='"+arr_data[i].img+"' alt='' style='width: 96%; height: 96%; border-radius: 3px;'>\
+                    </div>\
+                </div>\
+                <div class='row' style='margin-bottom: 4%; margin-top: 4%;'>\
+                    <div class='col-2'></div>\
+                    <div class='col-4 text-center no-pd'>รหัส : </div>\
+                    <div class='col-4 text-center no-pd'>"+arr_data[i].qr+"</div>\
+                    <div class='col-2'></div>\
+                </div>\
+                <div class='row' style='margin-bottom: 4%;'>\
+                    <div class='col-2'></div>\
+                    <div class='col-4 text-center no-pd'>รวม : </div>\
+                    <div id='sum-"+i+"' class='col-4 text-center no-pd'>"+sum_prod+"</div>\
+                    <div class='col-2'></div>\
+                </div>\
+            </div>\
+            <hr id='hr-"+i+"' style='margin-top: 5%;'>");                    
+            }            
+            $("#net").text(sum.toLocaleString()); // 50000 -> 50,000;
+        });
+
+        function save(){
+            json_string = JSON.stringify(arr_data); 
+            var dataString =  "JSON=" + json_string + "&ware_id=" + ware_id + "&date=" + datetime + "&sum=" + sum;                        
+
+            $.ajax({
+                type: "POST",
+                url:"https://omise-webpack.000webhostapp.com/www/php/stock_in.php",           
+=======
                 <div id='name-"+i+"' class='col-6 text-center no-pd'>"+arr_data[i].name+"</div>\
                 <div id='price-"+i+"' class='col-3 text-center no-pd'></div>\
                 <span>x</span>\
@@ -87,6 +158,7 @@
             $.ajax({
                 type: "POST",
                 url:"https://omise-webpack.000webhostapp.com/www/php/transfer_in.php",           
+>>>>>>> daf699871ed944f642ec5471890d10d63f37fd6e
                 data: dataString,               
                 success: function(data){              
                     if(data == "success"){
@@ -99,20 +171,40 @@
                                 text: 'ตกลง',
                                 btnClass: 'btn-regis',
                                 action: function () {
+<<<<<<< HEAD
+                                    goto = "import.html";
+                                    transition_page_next_flip(goto);
+=======
                                     clearAll();
+>>>>>>> daf699871ed944f642ec5471890d10d63f37fd6e
                                   }
                               }
                             }
                         }); 
+<<<<<<< HEAD
+                        localStorage.arr_prod = "";                                                   
+                        goto = "import.html";
+                        transition_page_back(goto);            
+=======
                         clearAll();           
+>>>>>>> daf699871ed944f642ec5471890d10d63f37fd6e
                     }
                 }               
             });
         }
 
+<<<<<<< HEAD
+        function remove(num){
+            var cost = $('#price-'+num).text();   
+            var amt = $('#amount-'+num).text();
+            var name = $('#name-'+num).text();
+            var net = $("#net").html();           
+            var sum2 = parseFloat(net.replace(/,/g, ''))-(cost*amt);
+=======
         function remove(num){           
             var amt = $('#amount-'+num).text();
             var name = $('#name-'+num).text();           
+>>>>>>> daf699871ed944f642ec5471890d10d63f37fd6e
             $.confirm({
                 title: 'ลบรายการ',
                 content: 'ต้องการลบ '+name+' หรือไม่',
@@ -122,9 +214,19 @@
                   formSubmit: {
                     text: 'ตกลง',
                     btnClass: 'btn-danger',
+<<<<<<< HEAD
+                    action: function () {
+                        sum = sum2;          
+                        $("#net").text(sum2.toLocaleString());   
+                        $('#prod-'+num).remove();   
+                        $('#collapse-'+num).remove();   
+                        $('#hr-'+num).remove();   
+                        //arr_data[num].qr = 0;
+=======
                     action: function () {                       
                         $('#prod-'+num).remove();                   
                         $('#hr-'+num).remove();                      
+>>>>>>> daf699871ed944f642ec5471890d10d63f37fd6e
                         arrange(num);
                     }
                   }
@@ -140,6 +242,19 @@
                 $("#i-del-"+i).attr('onclick', "remove("+(i-1)+")");          
                 $("#i-edit-"+i).attr('onclick', "edit_prod("+(i-1)+")");               
                 $("#i-del-"+i).prop('id', 'i-del-'+(i-1));
+<<<<<<< HEAD
+                $("#i-edit-"+i).prop('id', 'i-edit-'+(i-1));
+                $("#i-check-"+i).prop('id', 'i-check-'+(i-1));
+                $("#price-"+i).prop('id', 'price-'+(i-1));
+                $("#amount-"+i).prop('id', 'amount-'+(i-1));
+                $("#name-"+i).attr('onclick', "collapse("+(i-1)+")");     
+                $("#name-"+i).prop('id', 'name-'+(i-1));
+                $("#collapse-"+i).prop('id', 'collapse-'+(i-1));
+                $("#sum-"+i).prop('id', 'sum-'+(i-1));    
+                $("#hr-"+i).prop('id', 'hr-'+(i-1));              
+            } 
+            localStorage.setItem('arr_prod', JSON.stringify(arr_data));          
+=======
                 $("#i-edit-"+i).prop('id', 'i-edit-'+(i-1));               
                 $("#price-"+i).prop('id', 'price-'+(i-1));
                 $("#amount-"+i).prop('id', 'amount-'+(i-1));                 
@@ -147,6 +262,7 @@
                 $("#hr-"+i).prop('id', 'hr-'+(i-1));              
             } 
             localStorage.setItem('arr_tranin', JSON.stringify(arr_data));          
+>>>>>>> daf699871ed944f642ec5471890d10d63f37fd6e
         }
 
         function disactive(arg) {
@@ -196,9 +312,29 @@
             }
         }      
        
+<<<<<<< HEAD
+        var sum_old;
+        function edit_prod(arg) {
+            
+            /*//check if some i-check is show then
+            $("#i-edit-" + arg).attr('hidden', true);
+            $("#i-check-" + arg).attr('hidden', false);
+            $("#amount-" + arg).removeAttr('style');
+            $("#amount-" + arg).attr("readonly", false);
+            var amt = $("#amount-" + arg).val();
+            var cost = $('#price-'+arg).val();
+            sum_old = amt*cost;*/
+
+            var prod_name = $("#name-"+arg).text();
+            var amt = $("#amount-" + arg).text();   
+            var cost = $('#price-'+arg).text();
+            sum_old = amt*cost;
+
+=======
         function edit_prod(arg) {
             var prod_name = $("#name-"+arg).text();
             var amt = $("#amount-" + arg).text();
+>>>>>>> daf699871ed944f642ec5471890d10d63f37fd6e
             $("style").append(".jconfirm .jconfirm-box{margin-bottom:60%;}");
             $.confirm({
               title: prod_name,
@@ -218,11 +354,66 @@
                     var amt = $('#edt-amt').val();
                     $("#amount-" + arg).text(amt);
                     arr_data[arg].amt = amt; 
+<<<<<<< HEAD
+                    localStorage.setItem('arr_prod', JSON.stringify(arr_data));     
+                    sum = (sum-sum_old)+(amt*cost);
+                    $("#net").text(sum.toLocaleString());
+                    $("#sum-"+arg).text(cost*amt);  
+=======
                     localStorage.setItem('arr_tranin', JSON.stringify(arr_data));                 
+>>>>>>> daf699871ed944f642ec5471890d10d63f37fd6e
                   }
                 }
               }
             });   
+<<<<<<< HEAD
+        }
+
+        /*function update_prod(arg) {
+            $("#i-edit-" + arg).attr('hidden', false);
+            $("#i-check-" + arg).attr('hidden', true);
+            $("#amount-" + arg).css('border', 'none');
+            //$("#price-" + arg).css('border', 'none');
+            $("#amount-" + arg).attr("readonly", true);
+            /*$("#price-" + arg).attr("readonly", true);
+            $.alert({
+                title: 'สำเร็จ!',
+                content: 'บันทึกการเปลี่ยนแปลง',
+            });
+            var cost = $('#price-'+arg).val();   
+            var amt = $('#amount-'+arg).val();
+            arr_data[arg].amt = amt; 
+            localStorage.setItem('arr_prod', JSON.stringify(arr_data));     
+            sum = (sum-sum_old)+(amt*cost);
+            $("#net").text(sum.toLocaleString());
+            $("#sum-"+arg).text(cost*amt);  
+        }*/
+
+        function collapse(arg) {
+            // 4 is num of prod
+            for (i = 0; i < 4; i++) {
+                if (i != arg && $("#collapse-" + i).is(":visible")) {
+                    $("#collapse-" + i).slideToggle('collapse');
+                }
+            }
+
+            $("#collapse-" + arg).slideToggle('collapse', function () {
+                /*$('html, body').animate({
+                    scrollTop: $("#collapse-" + arg).height()
+                }, 900);*/
+            });
+        }
+
+        var ware_id;
+        function setware(arg) {
+            ware = $("#li-ware-" + arg).text();
+            $("#ware").val(ware);
+            ware_id = $("#id-ware-" + arg).text();
+            document.elementFromPoint(0, 0).click();
+        }
+
+        function showware(){
+=======
         }     
           
         var shop_id
@@ -234,6 +425,7 @@
         }
 
         function showstore(){
+>>>>>>> daf699871ed944f642ec5471890d10d63f37fd6e
             $("style").append('.jconfirm .jconfirm-box{max-height: 420px;}');
             $.confirm({
               title: 'หน้าร้าน',
@@ -244,6 +436,22 @@
                 //ajax and apeend
                 $.ajax({
                     type: "GET",
+<<<<<<< HEAD
+                    url:"https://omise-webpack.000webhostapp.com/www/php/get_ware_shop.php",                            
+                    success: function(data){
+                    var obj = jQuery.parseJSON(data);                                                      
+                    $.each(obj, function(i, field){   
+                        if(obj[i][2] == "โกดัง"){  
+                            $(".jconfirm-buttons").append('<button id="li-ware-'+i+'" type="button" onclick="setware('+i+')" class="btn btn-choice">'+obj[i].ware_name+'</button>' +
+                            '<span id="id-ware-'+i+'" hidden>'+obj[i].ware_id+'</span>' +
+                            '<span id="type-'+i+'" hidden>โกดัง</span>');                       
+                        }else if(obj[i][2] == "หน้าร้าน"){ 
+                            $(".jconfirm-buttons").append('<button id="li-ware-'+i+'" type="button" onclick="setware('+i+')" class="btn btn-choice">'+obj[i].shop_name+'</button>' +
+                            '<span id="id-ware-'+i+'" hidden>'+obj[i].shop_id+'</span>' +
+                            '<span id="type-'+i+'" hidden>หน้าร้าน</span>');
+                        }                    
+                        });                                        
+=======
                     url:"https://omise-webpack.000webhostapp.com/www/php/get_shop.php",                            
                     success: function(data){
                     var obj = jQuery.parseJSON(data);                                                      
@@ -251,12 +459,27 @@
                         $(".jconfirm-buttons").append('<button id="li-store-'+i+'" type="button" onclick="setstore('+i+')" class="btn btn-choice">'+obj[i].shop_name+'</button>' +
                         '<span id="id-store-'+i+'" hidden>'+obj[i].shop_id+'</span>');    
                     });                                        
+>>>>>>> daf699871ed944f642ec5471890d10d63f37fd6e
                     }               
                 });               
               },
               onDestroy: function () {
                 $("style").append('.jconfirm .jconfirm-box{margin-bottom: 5%;}');
                 $("style").append('.jconfirm .jconfirm-box{max-height: 100%;}');
+<<<<<<< HEAD
+              },
+              /*onOpen: function(){
+                $(".btn-choice").click(function(event) {
+                  txt = $(this).text();
+                  $("#ware").val(txt);
+                  b_id = $("#id-ware").text();
+                  type = $("#type").text()
+                  document.elementFromPoint(0, 0).click();
+                });
+              }*/
+            });
+        } 
+=======
               }              
             });
         } 
@@ -267,6 +490,7 @@
             transition_page_back('transfer_in.html');
         }
 
+>>>>>>> daf699871ed944f642ec5471890d10d63f37fd6e
     </script>
 </head>
 
@@ -288,8 +512,16 @@
     <div id="big-ctn" class="container justify-content-center" style="margin-top: 15%;">
         <div class="row mg-10">
             <div class="col-3"></div>
+<<<<<<< HEAD
+            <div class="col-6 text-center no-pd">
+                <!--<input id="ware" type="text" class="w3-input" data-toggle="dropdown" placeholder="โกดัง" readonly>
+                <ul id="ul-ware" class="dropdown-menu text-center" aria-labelledby="role" style="width: 80%;">                                        
+                </ul>-->
+                <input id="ware" type="text" class="w3-input" placeholder="หน้าร้าน" onclick="showware();" readonly>
+=======
             <div class="col-6 text-center no-pd">               
                 <input id="store" type="text" class="w3-input" placeholder="หน้าร้าน" onclick="showstore();" readonly>
+>>>>>>> daf699871ed944f642ec5471890d10d63f37fd6e
             </div>
             <div class="col-3"></div>
         </div>
@@ -298,13 +530,21 @@
 
     <div id="ctn-btm" class="container fixed-bottom" style="background: #f3f3f3;">
         <div class="container">
+<<<<<<< HEAD
+            <div class="row">
+=======
             <!--<div class="row">
+>>>>>>> daf699871ed944f642ec5471890d10d63f37fd6e
                 <div class="col-12 text-center">
                     <h5 class="h5-title" style="font-size: 130%;">รวม :
                         <span  style="color: red;"id="net">500000</span>
                     </h5>
                 </div>
+<<<<<<< HEAD
+            </div>
+=======
             </div>-->
+>>>>>>> daf699871ed944f642ec5471890d10d63f37fd6e
             <div class="row">
                 <div class="col-4 text-center" style="padding-left: 0; padding-right: 0;">
                     <button class="mbtn-cancle" onclick="clearAll();">ยกเลิก</button>
