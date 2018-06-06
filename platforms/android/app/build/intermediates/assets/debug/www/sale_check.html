@@ -130,11 +130,11 @@
             if($("#i-"+arg).hasClass('active')){
                 console.log("i-"+arg+"hasClass('active')");
                 $("#i-"+arg).removeClass('active');
-              }else{
+            }else{
                 $("#i-" + arg).fadeOut(150).fadeIn(100, function() {
                   $("#i-" + arg).addClass('active');
                 });
-              }
+            }
 
             if (arg == "add") {
                 goto = "sale.html";

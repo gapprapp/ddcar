@@ -24,6 +24,7 @@
 
   <link rel="stylesheet" href="css/index.css">
   <link rel="stylesheet" href="css/jquery-confirm.css">
+  <link rel="stylesheet" href="css/loading.css">
 
   <!-- Font -->
   <link href="https://fonts.googleapis.com/css?family=Prompt" rel="stylesheet">
@@ -72,7 +73,11 @@
                   'pass':strMD5,
                   'phone':phone,
                   'role':role},               
-              success: function(data){                             
+              beforeSend: function(){
+                  $(".overlay").prop('hidden', false);
+              },     
+              success: function(data){    
+                $(".overlay").prop('hidden', true);                               
                   //alert(data);
                   if(data == "success"){                        
                     $.confirm({
@@ -117,6 +122,9 @@
 </head>
 
 <body>
+  <!-- Loading -->
+  <div class="overlay" hidden><div class="loading"></div></div>
+  
   <!-- Nav menu top -->
   <div class="row fixed-top navs">
     <div class="col-1 text-center" onclick="transition_page_back('member.html')">
@@ -129,7 +137,7 @@
   </div><br>
 
   <!-- End big container -->
-  <div class="container justify-content-center" style="margin-top: 25%;">
+  <div class="container justify-content-center" style="margin-top: 20%;">
     <!-- Register -->
     <div class="container">
       <div class="row" style="margin-bottom: 10%;">
