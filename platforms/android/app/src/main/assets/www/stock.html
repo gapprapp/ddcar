@@ -67,16 +67,24 @@
         $("#big-ctn").css('margin-top', '15%');
         $(".or_section").prop('hidden', true);
         $("#row-search").prop('hidden', true);
+        $(".select_folder").prop('hidden', true);
         $("#col-back").attr('onclick', 'show()');
       }
 
       function show(){
-        $("#big-ctn").css('margin-top', '55%');
+        $("#big-ctn").css('margin-top', '35%');
         $("#search_prod").val('');
         $(".or_section").prop('hidden', false);
         $("#row-search").prop('hidden', false);
+        $(".select_folder").prop('hidden', false);
         $("#col-back").attr('onclick', 'transition_page_back("index.html")');
       }
+
+      function selectfolder() {
+            //goto = location.reload();
+            goto = "select_folder.html?from=stock";
+            transition_page_next_flip(goto);
+        }
     </script>
 </head>
 
@@ -93,7 +101,7 @@
     <br>
 
     <!-- big container -->
-    <div id="big-ctn" class="container justify-content-center" style="margin-top: 55%;">
+    <div id="big-ctn" class="container justify-content-center" style="margin-top: 35%;">
         <div class="container">
           <div class="row mg-10">
             <div class="col-12 text-center">
@@ -107,12 +115,24 @@
                 <div class="or_line_2"></div>
             </div>
           </div>
-          <div class="row" id="row-search">
+          <div class="row mg-10" id="row-search">
             <div class="col-1"></div>
             <div class="col-10 text-center" style="padding-left: 0; padding-right: 0;">
               <button class="mbtn" onclick="scan();">สแกน</button>
             </div>
             <div class="col-1"></div>
+          </div>
+          <div class="or_section">
+            <div class="content_box">
+                <div class="or_line_1"></div>
+                <div class="or_txt">หรือ</div>
+                <div class="or_line_2"></div>
+            </div>
+          </div><br>
+          <div class="row mg-10">
+            <div class="col-12 text-center">
+              <button class="select_folder" onclick="selectfolder()">เลือกสินค้า</button>
+            </div>  
           </div>
         </div>
     </div>

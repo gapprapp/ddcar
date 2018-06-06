@@ -60,10 +60,10 @@
         $query = "SELECT prod_id FROM warehouse WHERE ware_id = '$ware_id' AND prod_id = '$prod_id'";
         $result_q = mysqli_query($conn, $query);
         if(mysqli_num_rows($result_q) > 0){ 
-            $sql_up = "UPDATE warehouse SET amount = amount+'$amt' WHERE ware_id = '$ware_id' AND prod_id = '$prod_id'"; 
+            $sql_up = "UPDATE warehouse SET amount = amount+'$amt',place = CONCAT(place,'" .$addr."') WHERE ware_id = '$ware_id' AND prod_id = '$prod_id'"; 
             $result_up = mysqli_query($conn, $sql_up);
         }else{
-            $sql_in = "INSERT INTO warehouse (ware_id,prod_id,amount) VALUE ('$ware_id','$prod_id','$amt')"; 
+            $sql_in = "INSERT INTO warehouse (ware_id,prod_id,amount,place) VALUE ('$ware_id','$prod_id','$amt','$addr')"; 
             $result_in = mysqli_query($conn, $sql_in);
         }
         $sql = "INSERT INTO warehouse_place (ware_id,prod_id,place) VALUE ('$ware_id','$prod_id','$addr')"; 

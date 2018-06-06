@@ -222,6 +222,7 @@
             var name = $('#name').val();
             var amt = $('#amount').val();
             var addr = $('#prod-addr').val();
+<<<<<<< HEAD
             if(!$('#prod-addr').prop('placeholder') && $('#prod-addr').val() == ""){                 
                 return 0;
             }
@@ -232,6 +233,9 @@
                 }
             } */           
             if(name != "" && jQuery.inArray($('#prod-addr').val().toLowerCase(),arr_place) == -1 && $("#h5-title").text() != "เลือกหน้าร้าน"){               
+=======
+            if(name != "" && addr != ""){
+>>>>>>> 0f37eb44c376ffde26c4d34ba2191737a27256c7
                 if(localStorage.arr_tranin){
                     var retrievedObject = localStorage.getItem('arr_tranin');
                     arr_data = JSON.parse(retrievedObject);                                

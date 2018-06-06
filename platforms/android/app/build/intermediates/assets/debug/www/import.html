@@ -234,11 +234,15 @@
             var cost = $('#cost').val();
             var price_s =$('#wholesale').val();
             var price_w =$('#retail').val(); 
+<<<<<<< HEAD
             if(!$('#prod-addr').getAttribute('placeholder') && $('#prod-addr').val() == ""){
                 alert($('#prod-addr').getAttribute('placeholder'));
                 return 0;
             }
             if(code != "" && cost != "" && price_s != "" && price_w != "" && jQuery.inArray($('#prod-addr').val().toLowerCase(),arr_place) == -1){      
+=======
+            if(code != "" && cost != "" && price_s != "" && price_w != "" && addr != ""){      
+>>>>>>> 0f37eb44c376ffde26c4d34ba2191737a27256c7
                 if(flag == 0){                 
                     $.ajax({
                         type: "POST",
