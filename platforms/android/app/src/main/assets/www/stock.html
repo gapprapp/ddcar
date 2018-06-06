@@ -11,16 +11,15 @@
     <script type="text/javascript" src="js/jquery-ui.min.js"></script>
     <script type="text/javascript" src="js/jquery.easing.1.3.min.js"></script>
     <script type="text/javascript" src="js/transition.js"></script>
+    <script type="text/javascript" src="js/jquery-confirm.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.6/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
     <script defer src="https://use.fontawesome.com/releases/v5.0.8/js/all.js"></script>
     <script src="cordova.js"></script>
-    <script type="text/javascript" src="js/scanqr.js"></script>
-
-    <script src="js/jquery.easy-autocomplete.min.js"></script>   
-    <link rel="stylesheet" href="css/easy-autocomplete.themes.min.css">
+    <script type="text/javascript" src="js/scanqr.js"></script>   
 
     <link rel="stylesheet" href="css/index.css">
+    <link rel="stylesheet" href="css/jquery-confirm.css">
     <link rel="stylesheet" href="css/popup.css">
 
     <!-- Font -->
@@ -61,14 +60,96 @@
         height: 100%;
         position: relative;
       }
+      ul {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+      }    
     </style>
-    <script>
+    <script>      
+      $(document).ready(function () {           
+            url = new URL(window.location.href);
+            prod_id = url.searchParams.get("product");       
+            if(prod_id){
+              get_amt(prod_id);
+            }             
+      });
+
+      function get_amt(prod_id){
+        $.ajax({
+          type: "POST",
+          url: "https://omise-webpack.000webhostapp.com/www/php/check_amt_prod.php",                
+          data: {'prod_id': prod_id},             
+          success: function(data){                             
+              var name;
+              var msg = "";                             
+              var obj = jQuery.parseJSON(data);              
+              if(obj != ""){                
+                $.each(obj, function(i, field){ 
+                  name = obj[i].prod_name;    
+                  msg = msg + obj[i][0] + " : " + obj[i].amount + "<br>";
+                }); 
+                $.alert({
+                  title: name,
+                  content: msg,
+                  type: 'blue',
+                }); 
+              }else{                
+                $.alert({ 
+                  title: "ไม่มีสินค้า",                                  
+                  content: "",
+                  type: 'red',
+                }); 
+              }                                                                                                                 
+          }               
+        }); 
+      }
+
+      function get_prod(){        
+        $.ajax({
+          type: "GET",
+          url: "https://omise-webpack.000webhostapp.com/www/php/get_allprod.php",                     
+          success: function(data){                             
+              var obj = jQuery.parseJSON(data);                       
+              $.each(obj, function(i, field){ 
+                $('#myUL').append('<li><div class="row" onclick="get_amt('+field.prod_id+')">' +
+                  '<div class="col-4">'+field.prod_code+'</div>' +
+                  '<div class="col-8">'+field.prod_name+'</div>' +
+                '</div></li>')
+              });                                                                                                                               
+          }               
+        }); 
+      }
+
+      var ch = 0;
       function search(){
-        $("#big-ctn").css('margin-top', '15%');
-        $(".or_section").prop('hidden', true);
-        $("#row-search").prop('hidden', true);
-        $(".select_folder").prop('hidden', true);
-        $("#col-back").attr('onclick', 'show()');
+        ch++;
+        if(ch == 1){
+          get_prod();
+          $("#big-ctn").css('margin-top', '15%');
+          $(".or_section").prop('hidden', true);
+          $("#row-search").prop('hidden', true);
+          $(".select_folder").prop('hidden', true);
+          $("#col-back").attr('onclick', 'show()');    
+        }else{
+          var i = 0;                 
+          $('#myUL li').each(function(){
+              $(this).attr('data-search-term', $(this).text().toLowerCase());
+          });      
+
+          var searchTerm = $('#search_prod').val().toLowerCase();
+
+          $('#myUL li').each(function(){
+            if ($(this).filter('[data-search-term *= ' + searchTerm + ']').length > 0 || searchTerm.length < 1) {
+              $(this).show();                                                     
+            } else {
+              $(this).hide();                               
+            }
+          });   
+        }
+            
+
+             
       }
 
       function show(){
@@ -78,6 +159,8 @@
         $("#row-search").prop('hidden', false);
         $(".select_folder").prop('hidden', false);
         $("#col-back").attr('onclick', 'transition_page_back("index.html")');
+        $('#myUL').empty();
+        ch = 0;
       }
 
       function selectfolder() {
@@ -137,10 +220,9 @@
         </div>
 
         <div id="add_ctn" class="container">
-          <div class="row">
-            <div class="col-4">CoDe12345678</div>
-            <div class="col-8">ProductName NO.1</div>
-          </div>
+          <ul id="myUL">
+
+          </ul>   
         </div>
     </div>
     <!-- End big container -->
