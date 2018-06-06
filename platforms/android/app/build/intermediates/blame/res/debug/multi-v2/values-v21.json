@@ -1,10 +1,10 @@
 {
     "logs": [
         {
-            "outputFile": "D:\\Users\\phoenix\\Documents\\ddcar\\D:\\Users\\phoenix\\Documents\\ddcar\\D:\\Users\\phoenix\\Documents\\ddcar\\D:\\Users\\phoenix\\Documents\\ddcar\\D:\\Users\\phoenix\\Documents\\ddcar\\D:\\GitHub\\ddcar\\platforms\\android\\app\\build\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values-v21\\values-v21.xml",
+            "outputFile": "D:\\Users\\phoenix\\Documents\\ddcar\\D:\\Users\\phoenix\\Documents\\ddcar\\D:\\Users\\phoenix\\Documents\\ddcar\\D:\\Users\\phoenix\\Documents\\ddcar\\D:\\Users\\phoenix\\Documents\\ddcar\\D:\\Users\\phoenix\\Documents\\ddcar\\platforms\\android\\app\\build\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values-v21\\values-v21.xml",
             "map": [
                 {
-                    "source": "D:\\Users\\phoenix\\Documents\\ddcar\\D:\\Users\\phoenix\\Documents\\ddcar\\D:\\Users\\phoenix\\Documents\\ddcar\\D:\\Users\\phoenix\\Documents\\ddcar\\D:\\Users\\phoenix\\Documents\\ddcar\\C:\\Users\\moronz\\.gradle\\caches\\transforms-1\\files-1.1\\support-media-compat-27.1.1.aar\\e1380525cd4519ec31a95797643e2e3f\\res\\values-v21\\values-v21.xml",
+                    "source": "D:\\Users\\phoenix\\Documents\\ddcar\\D:\\Users\\phoenix\\Documents\\ddcar\\D:\\Users\\phoenix\\Documents\\ddcar\\D:\\Users\\phoenix\\Documents\\ddcar\\D:\\Users\\phoenix\\Documents\\ddcar\\D:\\Users\\phoenix\\.gradle\\caches\\transforms-1\\files-1.1\\support-media-compat-27.1.1.aar\\7cdee73053267401ca39dc0cfae4e955\\res\\values-v21\\values-v21.xml",
                     "from": {
                         "startLines": "2,5,8,11",
                         "startColumns": "4,4,4,4",
@@ -23,7 +23,7 @@
                     }
                 },
                 {
-                    "source": "D:\\Users\\phoenix\\Documents\\ddcar\\D:\\Users\\phoenix\\Documents\\ddcar\\D:\\Users\\phoenix\\Documents\\ddcar\\D:\\Users\\phoenix\\Documents\\ddcar\\D:\\Users\\phoenix\\Documents\\ddcar\\C:\\Users\\moronz\\.gradle\\caches\\transforms-1\\files-1.1\\support-compat-27.1.1.aar\\6fbd0ab55dc61ca6c0d5a5e352bd6f0b\\res\\values-v21\\values-v21.xml",
+                    "source": "D:\\Users\\phoenix\\Documents\\ddcar\\D:\\Users\\phoenix\\Documents\\ddcar\\D:\\Users\\phoenix\\Documents\\ddcar\\D:\\Users\\phoenix\\Documents\\ddcar\\D:\\Users\\phoenix\\Documents\\ddcar\\D:\\Users\\phoenix\\.gradle\\caches\\transforms-1\\files-1.1\\support-compat-27.1.1.aar\\50561e229d5364de474e813611b88f65\\res\\values-v21\\values-v21.xml",
                     "from": {
                         "startLines": "2,3,4,5,6,7,8,9,10,13",
                         "startColumns": "4,4,4,4,4,4,4,4,4,4",
@@ -47,25 +47,6 @@
             "outputFile": "D:\\Users\\phoenix\\Documents\\ddcar\\D:\\Users\\phoenix\\Documents\\ddcar\\D:\\Users\\phoenix\\Documents\\ddcar\\D:\\GitHub\\ddcar\\platforms\\android\\app\\build\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values-v21\\values-v21.xml",
             "map": [
                 {
-                    "source": "D:\\Users\\phoenix\\Documents\\ddcar\\D:\\Users\\phoenix\\Documents\\ddcar\\D:\\Users\\phoenix\\Documents\\ddcar\\C:\\Users\\moronz\\.gradle\\caches\\transforms-1\\files-1.1\\support-compat-27.1.1.aar\\6fbd0ab55dc61ca6c0d5a5e352bd6f0b\\res\\values-v21\\values-v21.xml",
-                    "from": {
-                        "startLines": "2,3,4,5,6,7,8,9,10,13",
-                        "startColumns": "4,4,4,4,4,4,4,4,4,4",
-                        "startOffsets": "55,159,223,290,354,470,596,722,850,1022",
-                        "endLines": "2,3,4,5,6,7,8,9,12,17",
-                        "endColumns": "103,63,66,63,115,125,125,127,12,12",
-                        "endOffsets": "154,218,285,349,465,591,717,845,1017,1355"
-                    },
-                    "to": {
-                        "startLines": "2,3,4,5,6,7,14,18,22,25",
-                        "startColumns": "4,4,4,4,4,4,4,4,4,4",
-                        "startOffsets": "55,159,223,290,354,470,927,1221,1516,1688",
-                        "endLines": "2,3,4,5,6,7,14,18,24,29",
-                        "endColumns": "103,63,66,63,115,125,125,127,12,12",
-                        "endOffsets": "154,218,285,349,465,591,1048,1344,1683,2021"
-                    }
-                },
-                {
                     "source": "D:\\Users\\phoenix\\Documents\\ddcar\\D:\\Users\\phoenix\\Documents\\ddcar\\D:\\Users\\phoenix\\Documents\\ddcar\\C:\\Users\\moronz\\.gradle\\caches\\transforms-1\\files-1.1\\support-media-compat-27.1.1.aar\\e1380525cd4519ec31a95797643e2e3f\\res\\values-v21\\values-v21.xml",
                     "from": {
                         "startLines": "2,5,8,11",
@@ -83,14 +64,9 @@
                         "endColumns": "12,12,12,12",
                         "endOffsets": "759,922,1216,1511"
                     }
-                }
-            ]
-        },
-        {
-            "outputFile": "D:\\Users\\phoenix\\Documents\\ddcar\\D:\\Users\\phoenix\\Documents\\ddcar\\D:\\Users\\phoenix\\Documents\\ddcar\\D:\\Users\\phoenix\\Documents\\ddcar\\D:\\Users\\phoenix\\Documents\\ddcar\\platforms\\android\\app\\build\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values-v21\\values-v21.xml",
-            "map": [
+                },
                 {
-                    "source": "D:\\Users\\phoenix\\Documents\\ddcar\\D:\\Users\\phoenix\\Documents\\ddcar\\D:\\Users\\phoenix\\Documents\\ddcar\\D:\\Users\\phoenix\\Documents\\ddcar\\D:\\Users\\phoenix\\.gradle\\caches\\transforms-1\\files-1.1\\support-compat-27.1.1.aar\\50561e229d5364de474e813611b88f65\\res\\values-v21\\values-v21.xml",
+                    "source": "D:\\Users\\phoenix\\Documents\\ddcar\\D:\\Users\\phoenix\\Documents\\ddcar\\D:\\Users\\phoenix\\Documents\\ddcar\\C:\\Users\\moronz\\.gradle\\caches\\transforms-1\\files-1.1\\support-compat-27.1.1.aar\\6fbd0ab55dc61ca6c0d5a5e352bd6f0b\\res\\values-v21\\values-v21.xml",
                     "from": {
                         "startLines": "2,3,4,5,6,7,8,9,10,13",
                         "startColumns": "4,4,4,4,4,4,4,4,4,4",
@@ -106,25 +82,6 @@
                         "endLines": "2,3,4,5,6,7,14,18,24,29",
                         "endColumns": "103,63,66,63,115,125,125,127,12,12",
                         "endOffsets": "154,218,285,349,465,591,1048,1344,1683,2021"
-                    }
-                },
-                {
-                    "source": "D:\\Users\\phoenix\\Documents\\ddcar\\D:\\Users\\phoenix\\Documents\\ddcar\\D:\\Users\\phoenix\\Documents\\ddcar\\D:\\Users\\phoenix\\Documents\\ddcar\\D:\\Users\\phoenix\\.gradle\\caches\\transforms-1\\files-1.1\\support-media-compat-27.1.1.aar\\7cdee73053267401ca39dc0cfae4e955\\res\\values-v21\\values-v21.xml",
-                    "from": {
-                        "startLines": "2,5,8,11",
-                        "startColumns": "4,4,4,4",
-                        "startOffsets": "55,223,386,554",
-                        "endLines": "4,7,10,13",
-                        "endColumns": "12,12,12,12",
-                        "endOffsets": "218,381,549,716"
-                    },
-                    "to": {
-                        "startLines": "8,11,15,19",
-                        "startColumns": "4,4,4,4",
-                        "startOffsets": "596,764,1053,1349",
-                        "endLines": "10,13,17,21",
-                        "endColumns": "12,12,12,12",
-                        "endOffsets": "759,922,1216,1511"
                     }
                 }
             ]
@@ -176,7 +133,50 @@
             "outputFile": "D:\\Users\\phoenix\\Documents\\ddcar\\D:\\Users\\phoenix\\Documents\\ddcar\\D:\\Users\\phoenix\\Documents\\ddcar\\D:\\Users\\phoenix\\Documents\\ddcar\\platforms\\android\\app\\build\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values-v21\\values-v21.xml",
             "map": [
                 {
+                    "source": "D:\\Users\\phoenix\\Documents\\ddcar\\D:\\Users\\phoenix\\Documents\\ddcar\\D:\\Users\\phoenix\\Documents\\ddcar\\D:\\Users\\phoenix\\.gradle\\caches\\transforms-1\\files-1.1\\support-compat-27.1.1.aar\\50561e229d5364de474e813611b88f65\\res\\values-v21\\values-v21.xml",
+                    "from": {
+                        "startLines": "2,3,4,5,6,7,8,9,10,13",
+                        "startColumns": "4,4,4,4,4,4,4,4,4,4",
+                        "startOffsets": "55,159,223,290,354,470,596,722,850,1022",
+                        "endLines": "2,3,4,5,6,7,8,9,12,17",
+                        "endColumns": "103,63,66,63,115,125,125,127,12,12",
+                        "endOffsets": "154,218,285,349,465,591,717,845,1017,1355"
+                    },
+                    "to": {
+                        "startLines": "2,3,4,5,6,7,14,18,22,25",
+                        "startColumns": "4,4,4,4,4,4,4,4,4,4",
+                        "startOffsets": "55,159,223,290,354,470,927,1221,1516,1688",
+                        "endLines": "2,3,4,5,6,7,14,18,24,29",
+                        "endColumns": "103,63,66,63,115,125,125,127,12,12",
+                        "endOffsets": "154,218,285,349,465,591,1048,1344,1683,2021"
+                    }
+                },
+                {
                     "source": "D:\\Users\\phoenix\\Documents\\ddcar\\D:\\Users\\phoenix\\Documents\\ddcar\\D:\\Users\\phoenix\\Documents\\ddcar\\D:\\Users\\phoenix\\.gradle\\caches\\transforms-1\\files-1.1\\support-media-compat-27.1.1.aar\\7cdee73053267401ca39dc0cfae4e955\\res\\values-v21\\values-v21.xml",
+                    "from": {
+                        "startLines": "2,5,8,11",
+                        "startColumns": "4,4,4,4",
+                        "startOffsets": "55,223,386,554",
+                        "endLines": "4,7,10,13",
+                        "endColumns": "12,12,12,12",
+                        "endOffsets": "218,381,549,716"
+                    },
+                    "to": {
+                        "startLines": "8,11,15,19",
+                        "startColumns": "4,4,4,4",
+                        "startOffsets": "596,764,1053,1349",
+                        "endLines": "10,13,17,21",
+                        "endColumns": "12,12,12,12",
+                        "endOffsets": "759,922,1216,1511"
+                    }
+                }
+            ]
+        },
+        {
+            "outputFile": "D:\\Users\\phoenix\\Documents\\ddcar\\D:\\Users\\phoenix\\Documents\\ddcar\\platforms\\android\\app\\build\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values-v21\\values-v21.xml",
+            "map": [
+                {
+                    "source": "D:\\Users\\phoenix\\Documents\\ddcar\\D:\\Users\\phoenix\\.gradle\\caches\\transforms-1\\files-1.1\\support-media-compat-27.1.1.aar\\7cdee73053267401ca39dc0cfae4e955\\res\\values-v21\\values-v21.xml",
                     "from": {
                         "startLines": "2,5,8,11",
                         "startColumns": "4,4,4,4",
@@ -195,7 +195,50 @@
                     }
                 },
                 {
-                    "source": "D:\\Users\\phoenix\\Documents\\ddcar\\D:\\Users\\phoenix\\Documents\\ddcar\\D:\\Users\\phoenix\\Documents\\ddcar\\D:\\Users\\phoenix\\.gradle\\caches\\transforms-1\\files-1.1\\support-compat-27.1.1.aar\\50561e229d5364de474e813611b88f65\\res\\values-v21\\values-v21.xml",
+                    "source": "D:\\Users\\phoenix\\Documents\\ddcar\\D:\\Users\\phoenix\\.gradle\\caches\\transforms-1\\files-1.1\\support-compat-27.1.1.aar\\50561e229d5364de474e813611b88f65\\res\\values-v21\\values-v21.xml",
+                    "from": {
+                        "startLines": "2,3,4,5,6,7,8,9,10,13",
+                        "startColumns": "4,4,4,4,4,4,4,4,4,4",
+                        "startOffsets": "55,159,223,290,354,470,596,722,850,1022",
+                        "endLines": "2,3,4,5,6,7,8,9,12,17",
+                        "endColumns": "103,63,66,63,115,125,125,127,12,12",
+                        "endOffsets": "154,218,285,349,465,591,717,845,1017,1355"
+                    },
+                    "to": {
+                        "startLines": "2,3,4,5,6,7,14,18,22,25",
+                        "startColumns": "4,4,4,4,4,4,4,4,4,4",
+                        "startOffsets": "55,159,223,290,354,470,927,1221,1516,1688",
+                        "endLines": "2,3,4,5,6,7,14,18,24,29",
+                        "endColumns": "103,63,66,63,115,125,125,127,12,12",
+                        "endOffsets": "154,218,285,349,465,591,1048,1344,1683,2021"
+                    }
+                }
+            ]
+        },
+        {
+            "outputFile": "D:\\Users\\phoenix\\Documents\\ddcar\\D:\\Users\\phoenix\\Documents\\ddcar\\D:\\Users\\phoenix\\Documents\\ddcar\\D:\\Users\\phoenix\\Documents\\ddcar\\D:\\Users\\phoenix\\Documents\\ddcar\\D:\\GitHub\\ddcar\\platforms\\android\\app\\build\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values-v21\\values-v21.xml",
+            "map": [
+                {
+                    "source": "D:\\Users\\phoenix\\Documents\\ddcar\\D:\\Users\\phoenix\\Documents\\ddcar\\D:\\Users\\phoenix\\Documents\\ddcar\\D:\\Users\\phoenix\\Documents\\ddcar\\D:\\Users\\phoenix\\Documents\\ddcar\\C:\\Users\\moronz\\.gradle\\caches\\transforms-1\\files-1.1\\support-media-compat-27.1.1.aar\\e1380525cd4519ec31a95797643e2e3f\\res\\values-v21\\values-v21.xml",
+                    "from": {
+                        "startLines": "2,5,8,11",
+                        "startColumns": "4,4,4,4",
+                        "startOffsets": "55,223,386,554",
+                        "endLines": "4,7,10,13",
+                        "endColumns": "12,12,12,12",
+                        "endOffsets": "218,381,549,716"
+                    },
+                    "to": {
+                        "startLines": "8,11,15,19",
+                        "startColumns": "4,4,4,4",
+                        "startOffsets": "596,764,1053,1349",
+                        "endLines": "10,13,17,21",
+                        "endColumns": "12,12,12,12",
+                        "endOffsets": "759,922,1216,1511"
+                    }
+                },
+                {
+                    "source": "D:\\Users\\phoenix\\Documents\\ddcar\\D:\\Users\\phoenix\\Documents\\ddcar\\D:\\Users\\phoenix\\Documents\\ddcar\\D:\\Users\\phoenix\\Documents\\ddcar\\D:\\Users\\phoenix\\Documents\\ddcar\\C:\\Users\\moronz\\.gradle\\caches\\transforms-1\\files-1.1\\support-compat-27.1.1.aar\\6fbd0ab55dc61ca6c0d5a5e352bd6f0b\\res\\values-v21\\values-v21.xml",
                     "from": {
                         "startLines": "2,3,4,5,6,7,8,9,10,13",
                         "startColumns": "4,4,4,4,4,4,4,4,4,4",
@@ -259,10 +302,29 @@
             ]
         },
         {
-            "outputFile": "D:\\Users\\phoenix\\Documents\\ddcar\\platforms\\android\\app\\build\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values-v21\\values-v21.xml",
+            "outputFile": "D:\\Users\\phoenix\\Documents\\ddcar\\D:\\Users\\phoenix\\Documents\\ddcar\\D:\\GitHub\\ddcar\\platforms\\android\\app\\build\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values-v21\\values-v21.xml",
             "map": [
                 {
-                    "source": "D:\\Users\\phoenix\\.gradle\\caches\\transforms-1\\files-1.1\\support-compat-27.1.1.aar\\50561e229d5364de474e813611b88f65\\res\\values-v21\\values-v21.xml",
+                    "source": "D:\\Users\\phoenix\\Documents\\ddcar\\D:\\Users\\phoenix\\Documents\\ddcar\\C:\\Users\\moronz\\.gradle\\caches\\transforms-1\\files-1.1\\support-media-compat-27.1.1.aar\\e1380525cd4519ec31a95797643e2e3f\\res\\values-v21\\values-v21.xml",
+                    "from": {
+                        "startLines": "2,5,8,11",
+                        "startColumns": "4,4,4,4",
+                        "startOffsets": "55,223,386,554",
+                        "endLines": "4,7,10,13",
+                        "endColumns": "12,12,12,12",
+                        "endOffsets": "218,381,549,716"
+                    },
+                    "to": {
+                        "startLines": "8,11,15,19",
+                        "startColumns": "4,4,4,4",
+                        "startOffsets": "596,764,1053,1349",
+                        "endLines": "10,13,17,21",
+                        "endColumns": "12,12,12,12",
+                        "endOffsets": "759,922,1216,1511"
+                    }
+                },
+                {
+                    "source": "D:\\Users\\phoenix\\Documents\\ddcar\\D:\\Users\\phoenix\\Documents\\ddcar\\C:\\Users\\moronz\\.gradle\\caches\\transforms-1\\files-1.1\\support-compat-27.1.1.aar\\6fbd0ab55dc61ca6c0d5a5e352bd6f0b\\res\\values-v21\\values-v21.xml",
                     "from": {
                         "startLines": "2,3,4,5,6,7,8,9,10,13",
                         "startColumns": "4,4,4,4,4,4,4,4,4,4",
@@ -279,33 +341,14 @@
                         "endColumns": "103,63,66,63,115,125,125,127,12,12",
                         "endOffsets": "154,218,285,349,465,591,1048,1344,1683,2021"
                     }
-                },
-                {
-                    "source": "D:\\Users\\phoenix\\.gradle\\caches\\transforms-1\\files-1.1\\support-media-compat-27.1.1.aar\\7cdee73053267401ca39dc0cfae4e955\\res\\values-v21\\values-v21.xml",
-                    "from": {
-                        "startLines": "2,5,8,11",
-                        "startColumns": "4,4,4,4",
-                        "startOffsets": "55,223,386,554",
-                        "endLines": "4,7,10,13",
-                        "endColumns": "12,12,12,12",
-                        "endOffsets": "218,381,549,716"
-                    },
-                    "to": {
-                        "startLines": "8,11,15,19",
-                        "startColumns": "4,4,4,4",
-                        "startOffsets": "596,764,1053,1349",
-                        "endLines": "10,13,17,21",
-                        "endColumns": "12,12,12,12",
-                        "endOffsets": "759,922,1216,1511"
-                    }
                 }
             ]
         },
         {
-            "outputFile": "D:\\Users\\phoenix\\Documents\\ddcar\\D:\\Users\\phoenix\\Documents\\ddcar\\D:\\Users\\phoenix\\Documents\\ddcar\\D:\\Users\\phoenix\\Documents\\ddcar\\D:\\Users\\phoenix\\Documents\\ddcar\\D:\\Users\\phoenix\\Documents\\ddcar\\platforms\\android\\app\\build\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values-v21\\values-v21.xml",
+            "outputFile": "D:\\Users\\phoenix\\Documents\\ddcar\\D:\\Users\\phoenix\\Documents\\ddcar\\D:\\Users\\phoenix\\Documents\\ddcar\\D:\\Users\\phoenix\\Documents\\ddcar\\D:\\Users\\phoenix\\Documents\\ddcar\\platforms\\android\\app\\build\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values-v21\\values-v21.xml",
             "map": [
                 {
-                    "source": "D:\\Users\\phoenix\\Documents\\ddcar\\D:\\Users\\phoenix\\Documents\\ddcar\\D:\\Users\\phoenix\\Documents\\ddcar\\D:\\Users\\phoenix\\Documents\\ddcar\\D:\\Users\\phoenix\\Documents\\ddcar\\D:\\Users\\phoenix\\.gradle\\caches\\transforms-1\\files-1.1\\support-media-compat-27.1.1.aar\\7cdee73053267401ca39dc0cfae4e955\\res\\values-v21\\values-v21.xml",
+                    "source": "D:\\Users\\phoenix\\Documents\\ddcar\\D:\\Users\\phoenix\\Documents\\ddcar\\D:\\Users\\phoenix\\Documents\\ddcar\\D:\\Users\\phoenix\\Documents\\ddcar\\D:\\Users\\phoenix\\.gradle\\caches\\transforms-1\\files-1.1\\support-media-compat-27.1.1.aar\\7cdee73053267401ca39dc0cfae4e955\\res\\values-v21\\values-v21.xml",
                     "from": {
                         "startLines": "2,5,8,11",
                         "startColumns": "4,4,4,4",
@@ -324,7 +367,7 @@
                     }
                 },
                 {
-                    "source": "D:\\Users\\phoenix\\Documents\\ddcar\\D:\\Users\\phoenix\\Documents\\ddcar\\D:\\Users\\phoenix\\Documents\\ddcar\\D:\\Users\\phoenix\\Documents\\ddcar\\D:\\Users\\phoenix\\Documents\\ddcar\\D:\\Users\\phoenix\\.gradle\\caches\\transforms-1\\files-1.1\\support-compat-27.1.1.aar\\50561e229d5364de474e813611b88f65\\res\\values-v21\\values-v21.xml",
+                    "source": "D:\\Users\\phoenix\\Documents\\ddcar\\D:\\Users\\phoenix\\Documents\\ddcar\\D:\\Users\\phoenix\\Documents\\ddcar\\D:\\Users\\phoenix\\Documents\\ddcar\\D:\\Users\\phoenix\\.gradle\\caches\\transforms-1\\files-1.1\\support-compat-27.1.1.aar\\50561e229d5364de474e813611b88f65\\res\\values-v21\\values-v21.xml",
                     "from": {
                         "startLines": "2,3,4,5,6,7,8,9,10,13",
                         "startColumns": "4,4,4,4,4,4,4,4,4,4",
@@ -388,92 +431,6 @@
             ]
         },
         {
-            "outputFile": "D:\\Users\\phoenix\\Documents\\ddcar\\D:\\Users\\phoenix\\Documents\\ddcar\\platforms\\android\\app\\build\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values-v21\\values-v21.xml",
-            "map": [
-                {
-                    "source": "D:\\Users\\phoenix\\Documents\\ddcar\\D:\\Users\\phoenix\\.gradle\\caches\\transforms-1\\files-1.1\\support-compat-27.1.1.aar\\50561e229d5364de474e813611b88f65\\res\\values-v21\\values-v21.xml",
-                    "from": {
-                        "startLines": "2,3,4,5,6,7,8,9,10,13",
-                        "startColumns": "4,4,4,4,4,4,4,4,4,4",
-                        "startOffsets": "55,159,223,290,354,470,596,722,850,1022",
-                        "endLines": "2,3,4,5,6,7,8,9,12,17",
-                        "endColumns": "103,63,66,63,115,125,125,127,12,12",
-                        "endOffsets": "154,218,285,349,465,591,717,845,1017,1355"
-                    },
-                    "to": {
-                        "startLines": "2,3,4,5,6,7,14,18,22,25",
-                        "startColumns": "4,4,4,4,4,4,4,4,4,4",
-                        "startOffsets": "55,159,223,290,354,470,927,1221,1516,1688",
-                        "endLines": "2,3,4,5,6,7,14,18,24,29",
-                        "endColumns": "103,63,66,63,115,125,125,127,12,12",
-                        "endOffsets": "154,218,285,349,465,591,1048,1344,1683,2021"
-                    }
-                },
-                {
-                    "source": "D:\\Users\\phoenix\\Documents\\ddcar\\D:\\Users\\phoenix\\.gradle\\caches\\transforms-1\\files-1.1\\support-media-compat-27.1.1.aar\\7cdee73053267401ca39dc0cfae4e955\\res\\values-v21\\values-v21.xml",
-                    "from": {
-                        "startLines": "2,5,8,11",
-                        "startColumns": "4,4,4,4",
-                        "startOffsets": "55,223,386,554",
-                        "endLines": "4,7,10,13",
-                        "endColumns": "12,12,12,12",
-                        "endOffsets": "218,381,549,716"
-                    },
-                    "to": {
-                        "startLines": "8,11,15,19",
-                        "startColumns": "4,4,4,4",
-                        "startOffsets": "596,764,1053,1349",
-                        "endLines": "10,13,17,21",
-                        "endColumns": "12,12,12,12",
-                        "endOffsets": "759,922,1216,1511"
-                    }
-                }
-            ]
-        },
-        {
-            "outputFile": "D:\\Users\\phoenix\\Documents\\ddcar\\D:\\Users\\phoenix\\Documents\\ddcar\\D:\\GitHub\\ddcar\\platforms\\android\\app\\build\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values-v21\\values-v21.xml",
-            "map": [
-                {
-                    "source": "D:\\Users\\phoenix\\Documents\\ddcar\\D:\\Users\\phoenix\\Documents\\ddcar\\C:\\Users\\moronz\\.gradle\\caches\\transforms-1\\files-1.1\\support-compat-27.1.1.aar\\6fbd0ab55dc61ca6c0d5a5e352bd6f0b\\res\\values-v21\\values-v21.xml",
-                    "from": {
-                        "startLines": "2,3,4,5,6,7,8,9,10,13",
-                        "startColumns": "4,4,4,4,4,4,4,4,4,4",
-                        "startOffsets": "55,159,223,290,354,470,596,722,850,1022",
-                        "endLines": "2,3,4,5,6,7,8,9,12,17",
-                        "endColumns": "103,63,66,63,115,125,125,127,12,12",
-                        "endOffsets": "154,218,285,349,465,591,717,845,1017,1355"
-                    },
-                    "to": {
-                        "startLines": "2,3,4,5,6,7,14,18,22,25",
-                        "startColumns": "4,4,4,4,4,4,4,4,4,4",
-                        "startOffsets": "55,159,223,290,354,470,927,1221,1516,1688",
-                        "endLines": "2,3,4,5,6,7,14,18,24,29",
-                        "endColumns": "103,63,66,63,115,125,125,127,12,12",
-                        "endOffsets": "154,218,285,349,465,591,1048,1344,1683,2021"
-                    }
-                },
-                {
-                    "source": "D:\\Users\\phoenix\\Documents\\ddcar\\D:\\Users\\phoenix\\Documents\\ddcar\\C:\\Users\\moronz\\.gradle\\caches\\transforms-1\\files-1.1\\support-media-compat-27.1.1.aar\\e1380525cd4519ec31a95797643e2e3f\\res\\values-v21\\values-v21.xml",
-                    "from": {
-                        "startLines": "2,5,8,11",
-                        "startColumns": "4,4,4,4",
-                        "startOffsets": "55,223,386,554",
-                        "endLines": "4,7,10,13",
-                        "endColumns": "12,12,12,12",
-                        "endOffsets": "218,381,549,716"
-                    },
-                    "to": {
-                        "startLines": "8,11,15,19",
-                        "startColumns": "4,4,4,4",
-                        "startOffsets": "596,764,1053,1349",
-                        "endLines": "10,13,17,21",
-                        "endColumns": "12,12,12,12",
-                        "endOffsets": "759,922,1216,1511"
-                    }
-                }
-            ]
-        },
-        {
             "outputFile": "D:\\GitHub\\ddcar\\platforms\\android\\app\\build\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values-v21\\values-v21.xml",
             "map": [
                 {
@@ -497,6 +454,49 @@
                 },
                 {
                     "source": "C:\\Users\\moronz\\.gradle\\caches\\transforms-1\\files-1.1\\support-media-compat-27.1.1.aar\\e1380525cd4519ec31a95797643e2e3f\\res\\values-v21\\values-v21.xml",
+                    "from": {
+                        "startLines": "2,5,8,11",
+                        "startColumns": "4,4,4,4",
+                        "startOffsets": "55,223,386,554",
+                        "endLines": "4,7,10,13",
+                        "endColumns": "12,12,12,12",
+                        "endOffsets": "218,381,549,716"
+                    },
+                    "to": {
+                        "startLines": "8,11,15,19",
+                        "startColumns": "4,4,4,4",
+                        "startOffsets": "596,764,1053,1349",
+                        "endLines": "10,13,17,21",
+                        "endColumns": "12,12,12,12",
+                        "endOffsets": "759,922,1216,1511"
+                    }
+                }
+            ]
+        },
+        {
+            "outputFile": "D:\\Users\\phoenix\\Documents\\ddcar\\platforms\\android\\app\\build\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values-v21\\values-v21.xml",
+            "map": [
+                {
+                    "source": "D:\\Users\\phoenix\\.gradle\\caches\\transforms-1\\files-1.1\\support-compat-27.1.1.aar\\50561e229d5364de474e813611b88f65\\res\\values-v21\\values-v21.xml",
+                    "from": {
+                        "startLines": "2,3,4,5,6,7,8,9,10,13",
+                        "startColumns": "4,4,4,4,4,4,4,4,4,4",
+                        "startOffsets": "55,159,223,290,354,470,596,722,850,1022",
+                        "endLines": "2,3,4,5,6,7,8,9,12,17",
+                        "endColumns": "103,63,66,63,115,125,125,127,12,12",
+                        "endOffsets": "154,218,285,349,465,591,717,845,1017,1355"
+                    },
+                    "to": {
+                        "startLines": "2,3,4,5,6,7,14,18,22,25",
+                        "startColumns": "4,4,4,4,4,4,4,4,4,4",
+                        "startOffsets": "55,159,223,290,354,470,927,1221,1516,1688",
+                        "endLines": "2,3,4,5,6,7,14,18,24,29",
+                        "endColumns": "103,63,66,63,115,125,125,127,12,12",
+                        "endOffsets": "154,218,285,349,465,591,1048,1344,1683,2021"
+                    }
+                },
+                {
+                    "source": "D:\\Users\\phoenix\\.gradle\\caches\\transforms-1\\files-1.1\\support-media-compat-27.1.1.aar\\7cdee73053267401ca39dc0cfae4e955\\res\\values-v21\\values-v21.xml",
                     "from": {
                         "startLines": "2,5,8,11",
                         "startColumns": "4,4,4,4",

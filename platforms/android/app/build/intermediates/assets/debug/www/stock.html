@@ -21,11 +21,8 @@
 
     <link rel="stylesheet" href="css/index.css">
     <link rel="stylesheet" href="css/jquery-confirm.css">
-<<<<<<< HEAD
     <link rel="stylesheet" href="css/loading.css">
-=======
     <link rel="stylesheet" href="css/popup.css">
->>>>>>> ca31e347179162e3f727169f2ecbdc58448b39b9
 
     <!-- Font -->
     <link href="https://fonts.googleapis.com/css?family=Prompt" rel="stylesheet">
@@ -65,20 +62,17 @@
         height: 100%;
         position: relative;
       }
-<<<<<<< HEAD
       .p{
         font-size: 100%;
       }
       hr{
         margin-top: 3%;
       }
-=======
       ul {
         list-style-type: none;
         margin: 0;
         padding: 0;
       }    
->>>>>>> ca31e347179162e3f727169f2ecbdc58448b39b9
     </style>
     <script>      
       $(document).ready(function () {           
@@ -96,25 +90,46 @@
           data: {'prod_id': prod_id},             
           success: function(data){                             
               var name;
+              var img;
               var msg = "";                             
               var obj = jQuery.parseJSON(data);              
               if(obj != ""){                
-                $.each(obj, function(i, field){ 
-                  name = obj[i].prod_name;    
-                  msg = msg + obj[i][0] + " : " + obj[i].amount + "<br>";
-                }); 
-                $.alert({
-                  title: name,
-                  content: msg,
-                  type: 'blue',
-                }); 
-              }else{                
-                $.alert({ 
-                  title: "ไม่มีสินค้า",                                  
-                  content: "",
-                  type: 'red',
-                }); 
-              }                                                                                                                 
+                $.each(obj, function(i, field){
+                    img = obj[i].img; 
+                    name = obj[i].prod_name;    
+                    msg = msg + '<div class="row" style="margin-bottom: 3%"><div class="col-6 text-right" style="margin-right: 5%;">'+obj[i][0]+' :'+'</div><div class="col-5 text-left">'+obj[i].amount+'</div></div>';
+                });
+                var top_msg = '<div class="row" style="margin-top: 2%; margin-bottom: 2%;"><div class="col-12 text-center"><img src="'+img+'" id="img" alt="" style="width: 300px; height: 300px;"></div></div><br>'; 
+                $.confirm({
+                    title: name,
+                    content: top_msg + msg,
+                    backgroundDismiss: true,
+                    buttons: {
+                        formSubmit: {
+                        text: 'ปิด',
+                        btnClass: 'btn-regis',
+                        action: function () {
+                            document.elementFromPoint(0, 0).click();
+                        }
+                        }
+                    }
+                });
+            }else{
+                $.confirm({
+                    title: "ไม่มีสินค้าในโกดัง/หน้าร้าน",
+                    content: "",
+                    backgroundDismiss: true,
+                    buttons: {
+                        formSubmit: {
+                        text: 'ปิด',
+                        btnClass: 'btn-regis',
+                        action: function () {
+                            document.elementFromPoint(0, 0).click();
+                        }
+                        }
+                    }
+                });  
+            }                                                                                                                        
           }               
         }); 
       }
@@ -126,10 +141,10 @@
           success: function(data){                             
               var obj = jQuery.parseJSON(data);                       
               $.each(obj, function(i, field){ 
-                $('#myUL').append('<li><div class="row" onclick="get_amt('+field.prod_id+')">' +
-                  '<div class="col-4">'+field.prod_code+'</div>' +
-                  '<div class="col-8">'+field.prod_name+'</div>' +
-                '</div></li>')
+                $('#myUL').append('<li><div id="prod-1" class="row" onclick="get_amt('+field.prod_id+')">' +
+                  '<div class="col-4 text-center p">'+field.prod_code+'</div>' +
+                  '<div class="col-8 text-center p">'+field.prod_name+'</div>' +
+                  '</div><hr></li>');        
               });                                                                                                                               
           }               
         }); 
@@ -137,14 +152,6 @@
 
       var ch = 0;
       function search(){
-<<<<<<< HEAD
-        $("#big-ctn").css('margin-top', '15%');
-        $(".or_section").prop('hidden', true);
-        $("#row-search").prop('hidden', true);
-        $(".select_folder").prop('hidden', true);
-        $("#col-back").attr('onclick', 'show()');
-        $("#add_ctn").prop('hidden', false);
-=======
         ch++;
         if(ch == 1){
           get_prod();
@@ -168,11 +175,7 @@
               $(this).hide();                               
             }
           });   
-        }
-            
-
-             
->>>>>>> ca31e347179162e3f727169f2ecbdc58448b39b9
+        }          
       }
 
       function show(){
@@ -190,11 +193,7 @@
         //goto = location.reload();
         goto = "select_folder.html?from=stock";
         transition_page_next_flip(goto);
-      }
-
-      function stock(arg){
-        // jconfirm เหมือนใน scan.js
-      }
+      }     
     </script>
 </head>
 
@@ -221,11 +220,10 @@
               <input id="search_prod" type="text" onkeyup="search()" class="form-control form-control-lg text-center" placeholder="ค้นหาสินค้า">
              </div>
           </div>
-          <div id="add_ctn" class="container" hidden>
-            <div id="prod-1" class="row" onclick="stock(1);">
-              <div class="col-4 text-center p">kkk101101</div>
-              <div class="col-8 text-center p">ProductName NO.1</div>
-            </div><hr>
+          <div id="add_ctn" class="container">
+            <ul id="myUL">
+
+            </ul>            
           </div>
           <div class="or_section">
             <div class="content_box mg-10">
@@ -253,13 +251,7 @@
               <button class="select_folder" onclick="selectfolder()">เลือกสินค้า</button>
             </div>  
           </div>
-        </div>
-
-        <div id="add_ctn" class="container">
-          <ul id="myUL">
-
-          </ul>   
-        </div>
+        </div>        
     </div>
     <!-- End big container -->
     <script>
