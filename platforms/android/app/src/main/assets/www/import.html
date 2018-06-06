@@ -55,6 +55,9 @@
         var flag = 0; 
         var img;    
         $(document).ready(function () { 
+            $('#h5-title').click(function(){
+                showware();
+            });
             url = new URL(window.location.href);
             prod_id = url.searchParams.get("product");  
 
@@ -67,7 +70,7 @@
                 var retrievedObject = localStorage.getItem('arr_prod');
                 var arr_data = JSON.parse(retrievedObject);             
                 $('#check-import').text(arr_data.length); 
-                $("#h5-title").attr('disabled',true);      
+                $("#h5-title").unbind();      
             }          
             if(prod_id){
                 get_prod();
@@ -148,6 +151,8 @@
                             arr_place.push(field.place.toLowerCase());                                                         
                         });    
                         $('#prod-addr').attr("placeholder",txt);    
+                    }else{
+                        $('#prod-addr').attr("placeholder",""); 
                     }                                                      
                 }               
             });  
@@ -234,15 +239,10 @@
             var cost = $('#cost').val();
             var price_s =$('#wholesale').val();
             var price_w =$('#retail').val(); 
-<<<<<<< HEAD
-            if(!$('#prod-addr').getAttribute('placeholder') && $('#prod-addr').val() == ""){
-                alert($('#prod-addr').getAttribute('placeholder'));
+            if(!$('#prod-addr').prop('placeholder') && $('#prod-addr').val() == ""){                 
                 return 0;
-            }
-            if(code != "" && cost != "" && price_s != "" && price_w != "" && jQuery.inArray($('#prod-addr').val().toLowerCase(),arr_place) == -1){      
-=======
-            if(code != "" && cost != "" && price_s != "" && price_w != "" && addr != ""){      
->>>>>>> 0f37eb44c376ffde26c4d34ba2191737a27256c7
+            }  
+            if(code != "" && cost != "" && price_s != "" && price_w != "" && jQuery.inArray($('#prod-addr').val().toLowerCase(),arr_place) == -1 && $("#h5-title").text() != "เลือกโกดัง(เข้า)"){      
                 if(flag == 0){                 
                     $.ajax({
                         type: "POST",
@@ -306,8 +306,9 @@
             localStorage.setItem('arr_prod', JSON.stringify(arr_data));         
            
             $('#check-import').text(arr_data.length);
-            $("#h5-title").attr('disabled',true);       
+            $("#h5-title").unbind(); 
 
+            $('#prod-addr').attr("placeholder","");
             $('#barcode').val("");
             $('#name').val("");
             $('#cost').val("");
@@ -420,8 +421,8 @@
         <div class="col-1 text-center" onclick="transition_page_back('index.html')">
             <i id="i-back" class="fas fa-angle-left"></i>
         </div>
-        <div class="col-8 text-center" style="margin-right: 4%;">
-            <h5 id="h5-title" class="fade" onclick="showware();">เลือกโกดัง(เข้า)</h5>
+        <div class="col-8 text-center" style="padding-left: 15%; margin-right: 4%;">
+            <h5 id="h5-title" class="fade">เลือกโกดัง(เข้า)</h5>
         </div>
         <div class="col-2 text-right" onclick="report();"><div id="check-import"class="circle-text">0</div></div>
     </div>

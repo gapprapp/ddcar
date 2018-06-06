@@ -57,10 +57,7 @@
             margin = $("#ctn-btn").outerHeight() + $("#navs-menu").outerHeight() + $("#navs-net").outerHeight() -15;
             $("#big-ctn").css('margin-bottom', margin); 
             /********************************************/
-<<<<<<< HEAD
             $('#ware-title').text(localStorage.ware_name_ex);
-=======
->>>>>>> 0f37eb44c376ffde26c4d34ba2191737a27256c7
             var retrievedObject = localStorage.getItem('arr_ex');
             arr_data = JSON.parse(retrievedObject);
             var sum = 0;
@@ -110,11 +107,7 @@
         });
 
         function save(){
-<<<<<<< HEAD
             if(arr_data.length == 0){
-=======
-            if(arr_data.length == 0 ||  $("#ware").val() == ""){
->>>>>>> 0f37eb44c376ffde26c4d34ba2191737a27256c7
                 return 0;
             }
             var d = new Date($.now());           

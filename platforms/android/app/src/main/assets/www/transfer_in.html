@@ -69,7 +69,7 @@
                 $('#check-trans').text(arr_data.length);
                 $("#h5-title").unbind();                                                  
             }
-            if(prod_id != null){
+            if(prod_id){
                 get_prod();
             } 
             if(localStorage.arr_prod_t){
@@ -132,6 +132,8 @@
                             arr_place.push(field.place.toLowerCase());                                                         
                         });    
                         $('#prod-addr').attr("placeholder",txt);    
+                    }else{
+                        $('#prod-addr').attr("placeholder",""); 
                     }                                                      
                 }               
             });  
@@ -222,20 +224,10 @@
             var name = $('#name').val();
             var amt = $('#amount').val();
             var addr = $('#prod-addr').val();
-<<<<<<< HEAD
             if(!$('#prod-addr').prop('placeholder') && $('#prod-addr').val() == ""){                 
                 return 0;
-            }
-            /*if($('#prod-addr').val() != ""){
-                if(){
-                    alert(jQuery.inArray($('#prod-addr').val().toLowerCase(),arr_place));     
-                    return 0;
-                }
-            } */           
+            }                   
             if(name != "" && jQuery.inArray($('#prod-addr').val().toLowerCase(),arr_place) == -1 && $("#h5-title").text() != "เลือกหน้าร้าน"){               
-=======
-            if(name != "" && addr != ""){
->>>>>>> 0f37eb44c376ffde26c4d34ba2191737a27256c7
                 if(localStorage.arr_tranin){
                     var retrievedObject = localStorage.getItem('arr_tranin');
                     arr_data = JSON.parse(retrievedObject);                                
