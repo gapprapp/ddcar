@@ -4,7 +4,7 @@
     $obj = json_decode($input,true);  	
     $shop_id  = $_POST['shop_id'];   
     $dt  = $_POST['date']; 
-    $i = 0;
+    $i = 0;  
 
     mysqli_autocommit($conn,FALSE); 
     $sql = "INSERT INTO transfer_in (date_time,shop_id) VALUE ('$dt','$shop_id')"; 
@@ -16,7 +16,8 @@
         $i++;
         $item = $i;
         $prod_id = $data['prod_id'];         
-        $amt = $data['amt'];  
+        $amt = $data['amt']; 
+        $addr = $data['addr']; 
 
         $sql_item = "INSERT INTO transfer_in_item (tran_id,item_id,prod_id,amount) VALUE ('$last_id','$item','$prod_id','$amt')"; 
         $result_item = mysqli_query($conn, $sql_item);
@@ -29,7 +30,9 @@
         }else{
             $sql_in = "INSERT INTO shop (shop_id,prod_id,amount) VALUE ('$shop_id','$prod_id','$amt')"; 
             $result_in = mysqli_query($conn, $sql_in);
-        }              
+        }
+        $sql = "INSERT INTO shop_place (shop_id,prod_id,place) VALUE ('$shop_id','$prod_id','$addr')"; 
+        $result = mysqli_query($conn, $sql);              
     }
 
     if($result){

@@ -11,18 +11,18 @@
     <script type="text/javascript" src="js/jquery-ui.min.js"></script>
     <script type="text/javascript" src="js/jquery.easing.1.3.min.js"></script>
     <script type="text/javascript" src="js/transition.js"></script>
+    <script type="text/javascript" src="js/jquery-confirm.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.6/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
     <script defer src="https://use.fontawesome.com/releases/v5.0.8/js/all.js"></script>
     <script src="cordova.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.0/jquery-confirm.min.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.0/jquery-confirm.min.js"></script>
 
     <script src="js/jquery.easy-autocomplete.min.js"></script>   
     <link rel="stylesheet" href="css/easy-autocomplete.themes.min.css">
 
     <link rel="stylesheet" href="css/index.css">
     <link rel="stylesheet" href="css/popup.css">
+    <link rel="stylesheet" href="css/jquery-confirm.css">
 
     <!-- Font -->
     <link href="https://fonts.googleapis.com/css?family=Prompt" rel="stylesheet">
@@ -36,6 +36,17 @@
             padding-right: 5px;
             padding-left: 5px;
         }
+        .fade {
+            animation-duration: 1.25s;
+            animation-name: fade;
+            animation-direction: alternate-reverse;
+            animation-iteration-count: infinite;
+        }
+    
+        @-webkit-keyframes fade {
+            from {opacity: 0.55; } 
+            to {opacity: 1;}
+        }
     </style>
 
     <script>      
@@ -47,10 +58,16 @@
             url = new URL(window.location.href);
             prod_id = url.searchParams.get("product");  
 
+            get_place()
+            if(localStorage.ware_id_im){
+                $("#h5-title").removeClass('fade');              
+                $("#h5-title").text(localStorage.ware_name_im);
+            }
             if(localStorage.arr_prod){
                 var retrievedObject = localStorage.getItem('arr_prod');
                 var arr_data = JSON.parse(retrievedObject);             
-                $('#check-import').text(arr_data.length);       
+                $('#check-import').text(arr_data.length); 
+                $("#h5-title").attr('disabled',true);      
             }          
             if(prod_id){
                 get_prod();
@@ -116,6 +133,26 @@
             $("#name").easyAutocomplete(options);      
         });
 
+        arr_place = [];
+        function get_place(){
+            $.ajax({
+                type: "POST",
+                url:"https://omise-webpack.000webhostapp.com/www/php/get_place.php",    
+                data:{'prod_id' : prod_id,"ware_id":localStorage.ware_id_im},                                      
+                success: function(data){                   
+                    var obj = jQuery.parseJSON(data);
+                    if(obj){
+                        var txt = "";                                         
+                        $.each(obj, function(i, field){
+                            txt += field.place + " "; 
+                            arr_place.push(field.place.toLowerCase());                                                         
+                        });    
+                        $('#prod-addr').attr("placeholder",txt);    
+                    }                                                      
+                }               
+            });  
+        }
+
         function get_prod(){
             $.ajax({
                 type: "POST",
@@ -146,7 +183,7 @@
 
         var check =  0;
         var is_show = 0;
-        function cal_avg(type){  
+        function cal_avg(type){
             if(flag == 1){
                 if(type == "cost"){
                     $.ajax({
@@ -192,12 +229,16 @@
             }           
         }  
 
-        function add_import(){           
+        function add_import(){
             var code = $('#barcode').val();
             var cost = $('#cost').val();
             var price_s =$('#wholesale').val();
             var price_w =$('#retail').val(); 
-            if(code != "" && cost != "" && price_s != "" && price_w != ""){      
+            if(!$('#prod-addr').getAttribute('placeholder') && $('#prod-addr').val() == ""){
+                alert($('#prod-addr').getAttribute('placeholder'));
+                return 0;
+            }
+            if(code != "" && cost != "" && price_s != "" && price_w != "" && jQuery.inArray($('#prod-addr').val().toLowerCase(),arr_place) == -1){      
                 if(flag == 0){                 
                     $.ajax({
                         type: "POST",
@@ -254,12 +295,14 @@
             item ["name"] =  $('#name').val();
             item ["cost"] =  cost;               
             item ["amt"] =  $('#amount').val();
-            item ["img"] =  img;     
+            item ["img"] =  img; 
+            item ["addr"] = $('#prod-addr').val();    
 
             arr_data.push(item); 
             localStorage.setItem('arr_prod', JSON.stringify(arr_data));         
            
-            $('#check-import').text(arr_data.length);       
+            $('#check-import').text(arr_data.length);
+            $("#h5-title").attr('disabled',true);       
 
             $('#barcode').val("");
             $('#name').val("");
@@ -267,6 +310,7 @@
             $('#wholesale').val("");
             $('#retail').val("");
             $('#amount').val("1");
+            $('#prod-addr').val("")
             if(is_show == 1){
                 show_avg(); 
                 is_show = 0;
@@ -325,6 +369,44 @@
             popup.classList.toggle("show");
         }
 
+        function setware(arg) {
+            $("#h5-title").removeClass('fade');
+            localStorage.ware_name_im = $("#li-ware-" + arg).text();
+            $("#h5-title").text(localStorage.ware_name_im);
+            //$("#ware").val(ware);
+            localStorage.ware_id_im = $("#id-ware-" + arg).text();
+            document.elementFromPoint(0, 0).click();
+            get_place();
+        }
+
+        function showware(){
+            $("style").append('.jconfirm .jconfirm-box{max-height: 420px;}');
+            $.confirm({
+              title: 'โกดัง',
+              content: '<hr style="width: 80%; margin-bottom: 0;">',
+              backgroundDismiss: true,
+              onOpenBefore: function () {
+                $(".jconfirm-buttons .btn-default").remove();
+                //ajax and apeend
+                $.ajax({
+                    type: "GET",
+                    url:"https://omise-webpack.000webhostapp.com/www/php/get_ware.php",                            
+                    success: function(data){
+                    var obj = jQuery.parseJSON(data);                                                      
+                        $.each(obj, function(i, field){                        
+                            $(".jconfirm-buttons").append('<button id="li-ware-'+i+'" type="button" onclick="setware('+i+')" class="btn btn-choice">'+obj[i].ware_name+'</button>' +
+                            '<span id="id-ware-'+i+'" hidden>'+obj[i].ware_id+'</span>');                               
+                        });                                        
+                    }               
+                });               
+              },
+              onDestroy: function () {
+                $("style").append('.jconfirm .jconfirm-box{margin-bottom: 5%;}');
+                $("style").append('.jconfirm .jconfirm-box{max-height: 100%;}');
+              }              
+            });
+        }
+
     </script>
 </head>
 
@@ -334,8 +416,8 @@
         <div class="col-1 text-center" onclick="transition_page_back('index.html')">
             <i id="i-back" class="fas fa-angle-left"></i>
         </div>
-        <div class="col-9 text-center" style="padding-left: 15%;">
-            <h5 id="h5-title">เข้าโกดัง</h5>
+        <div class="col-8 text-center" style="margin-right: 4%;">
+            <h5 id="h5-title" class="fade" onclick="showware();">เลือกโกดัง(เข้า)</h5>
         </div>
         <div class="col-2 text-right" onclick="report();"><div id="check-import"class="circle-text">0</div></div>
     </div>

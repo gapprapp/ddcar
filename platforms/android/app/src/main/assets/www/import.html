@@ -58,42 +58,17 @@
             url = new URL(window.location.href);
             prod_id = url.searchParams.get("product");  
 
+            get_place()
+            if(localStorage.ware_id_im){
+                $("#h5-title").removeClass('fade');              
+                $("#h5-title").text(localStorage.ware_name_im);
+            }
             if(localStorage.arr_prod){
                 var retrievedObject = localStorage.getItem('arr_prod');
                 var arr_data = JSON.parse(retrievedObject);             
-                $('#check-import').text(arr_data.length);       
+                $('#check-import').text(arr_data.length); 
+                $("#h5-title").attr('disabled',true);      
             }          
-<<<<<<< HEAD
-
-            if(product != null){
-                $.ajax({
-                    type: "POST",
-                    url:"https://omise-webpack.000webhostapp.com/www/php/get_prod.php",    
-                    data:{'prod_id' : product},
-                    //async: false,                       
-                    success: function(data){
-                        var obj = jQuery.parseJSON(data);                                         
-                        $.each(obj, function(i, field){
-                            $('#name').val(obj[i].prod_name);
-                            $('#barcode').val(obj[i].prod_code); 
-                            cost_o = obj[i].prod_cost;
-                            prod_id = obj[i].prod_id;   
-                            img = obj[i].img;   
-                            if(obj[i].prod_cost == 0 && obj[i].prod_price == 0 && obj[i].prod_pricesend == 0){
-                                $('#cost').val("");
-                                $('#wholesale').val("");
-                                $('#retail').val("");  
-                            }else{
-                                $('#cost').val(cost_o);
-                                $('#wholesale').val(obj[i].prod_pricesend);
-                                $('#retail').val(obj[i].prod_price);                     
-                                flag = 1;
-                            }                        
-                        });                                        
-                    }               
-                }); 
-            }
-=======
             if(prod_id){
                 get_prod();
             } 
@@ -105,7 +80,6 @@
                 prod_id = arr_data[0].prod_id;            
                 get_prod();
             }       
->>>>>>> 85e59f0f61df8f2e94f684e246616dc1c3f55ac1
 
             var options = {
                 url: function(phrase) {
@@ -159,6 +133,26 @@
             $("#name").easyAutocomplete(options);      
         });
 
+        arr_place = [];
+        function get_place(){
+            $.ajax({
+                type: "POST",
+                url:"https://omise-webpack.000webhostapp.com/www/php/get_place.php",    
+                data:{'prod_id' : prod_id,"ware_id":localStorage.ware_id_im},                                      
+                success: function(data){                   
+                    var obj = jQuery.parseJSON(data);
+                    if(obj){
+                        var txt = "";                                         
+                        $.each(obj, function(i, field){
+                            txt += field.place + " "; 
+                            arr_place.push(field.place.toLowerCase());                                                         
+                        });    
+                        $('#prod-addr').attr("placeholder",txt);    
+                    }                                                      
+                }               
+            });  
+        }
+
         function get_prod(){
             $.ajax({
                 type: "POST",
@@ -189,7 +183,7 @@
 
         var check =  0;
         var is_show = 0;
-        function cal_avg(type){  
+        function cal_avg(type){
             if(flag == 1){
                 if(type == "cost"){
                     $.ajax({
@@ -235,12 +229,16 @@
             }           
         }  
 
-        function add_import(){           
+        function add_import(){
             var code = $('#barcode').val();
             var cost = $('#cost').val();
             var price_s =$('#wholesale').val();
             var price_w =$('#retail').val(); 
-            if(code != "" && cost != "" && price_s != "" && price_w != ""){      
+            if(!$('#prod-addr').getAttribute('placeholder') && $('#prod-addr').val() == ""){
+                alert($('#prod-addr').getAttribute('placeholder'));
+                return 0;
+            }
+            if(code != "" && cost != "" && price_s != "" && price_w != "" && jQuery.inArray($('#prod-addr').val().toLowerCase(),arr_place) == -1){      
                 if(flag == 0){                 
                     $.ajax({
                         type: "POST",
@@ -297,12 +295,14 @@
             item ["name"] =  $('#name').val();
             item ["cost"] =  cost;               
             item ["amt"] =  $('#amount').val();
-            item ["img"] =  img;     
+            item ["img"] =  img; 
+            item ["addr"] = $('#prod-addr').val();    
 
             arr_data.push(item); 
             localStorage.setItem('arr_prod', JSON.stringify(arr_data));         
            
-            $('#check-import').text(arr_data.length);       
+            $('#check-import').text(arr_data.length);
+            $("#h5-title").attr('disabled',true);       
 
             $('#barcode').val("");
             $('#name').val("");
@@ -310,6 +310,7 @@
             $('#wholesale').val("");
             $('#retail').val("");
             $('#amount').val("1");
+            $('#prod-addr').val("")
             if(is_show == 1){
                 show_avg(); 
                 is_show = 0;
@@ -358,17 +359,9 @@
             transition_page_next_flip(goto);
         }     
 
-<<<<<<< HEAD
-        function check() {     
-            if(localStorage.arr_prod){      
-                goto = "import_check.html";
-                transition_page_next(goto);
-            }            
-=======
         function report() {      
             goto = "import_check.html";
             transition_page_next(goto);                       
->>>>>>> 85e59f0f61df8f2e94f684e246616dc1c3f55ac1
         }
 
         function show_avg(){
@@ -376,14 +369,14 @@
             popup.classList.toggle("show");
         }
 
-        var ware_id;
         function setware(arg) {
             $("#h5-title").removeClass('fade');
-            ware = $("#li-ware-" + arg).text();
-            $("#h5-title").text(ware);
-            $("#ware").val(ware);
-            ware_id = $("#id-ware-" + arg).text();
+            localStorage.ware_name_im = $("#li-ware-" + arg).text();
+            $("#h5-title").text(localStorage.ware_name_im);
+            //$("#ware").val(ware);
+            localStorage.ware_id_im = $("#id-ware-" + arg).text();
             document.elementFromPoint(0, 0).click();
+            get_place();
         }
 
         function showware(){
@@ -397,19 +390,12 @@
                 //ajax and apeend
                 $.ajax({
                     type: "GET",
-                    url:"https://omise-webpack.000webhostapp.com/www/php/get_ware_shop.php",                            
+                    url:"https://omise-webpack.000webhostapp.com/www/php/get_ware.php",                            
                     success: function(data){
                     var obj = jQuery.parseJSON(data);                                                      
-                    $.each(obj, function(i, field){   
-                        if(obj[i][2] == "โกดัง"){  
+                        $.each(obj, function(i, field){                        
                             $(".jconfirm-buttons").append('<button id="li-ware-'+i+'" type="button" onclick="setware('+i+')" class="btn btn-choice">'+obj[i].ware_name+'</button>' +
-                            '<span id="id-ware-'+i+'" hidden>'+obj[i].ware_id+'</span>' +
-                            '<span id="type-'+i+'" hidden>โกดัง</span>');                       
-                        }else if(obj[i][2] == "หน้าร้าน"){ 
-                            $(".jconfirm-buttons").append('<button id="li-ware-'+i+'" type="button" onclick="setware('+i+')" class="btn btn-choice">'+obj[i].shop_name+'</button>' +
-                            '<span id="id-ware-'+i+'" hidden>'+obj[i].shop_id+'</span>' +
-                            '<span id="type-'+i+'" hidden>หน้าร้าน</span>');
-                        }                    
+                            '<span id="id-ware-'+i+'" hidden>'+obj[i].ware_id+'</span>');                               
                         });                                        
                     }               
                 });               
@@ -417,18 +403,9 @@
               onDestroy: function () {
                 $("style").append('.jconfirm .jconfirm-box{margin-bottom: 5%;}');
                 $("style").append('.jconfirm .jconfirm-box{max-height: 100%;}');
-              },
-              /*onOpen: function(){
-                $(".btn-choice").click(function(event) {
-                  txt = $(this).text();
-                  $("#ware").val(txt);
-                  b_id = $("#id-ware").text();
-                  type = $("#type").text()
-                  document.elementFromPoint(0, 0).click();
-                });
-              }*/
+              }              
             });
-        } 
+        }
 
     </script>
 </head>
@@ -439,10 +416,10 @@
         <div class="col-1 text-center" onclick="transition_page_back('index.html')">
             <i id="i-back" class="fas fa-angle-left"></i>
         </div>
-        <div class="col-8 text-right" style="margin-right: 4%;">
+        <div class="col-8 text-center" style="margin-right: 4%;">
             <h5 id="h5-title" class="fade" onclick="showware();">เลือกโกดัง(เข้า)</h5>
         </div>
-        <div class="col-2 text-right" onclick="check();"><div id="check-import"class="circle-text">0</div></div>
+        <div class="col-2 text-right" onclick="report();"><div id="check-import"class="circle-text">0</div></div>
     </div>
     <br>
 

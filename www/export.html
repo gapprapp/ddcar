@@ -58,6 +58,10 @@
             url = new URL(window.location.href);
             prod_id = url.searchParams.get("product");  
 
+            if(localStorage.ware_id_ex){
+                $("#h5-title").removeClass('fade');              
+                $("#h5-title").text(localStorage.ware_name_ex);
+            }
             if(localStorage.arr_ex){
                 var retrievedObject = localStorage.getItem('arr_ex');
                 var arr_data = JSON.parse(retrievedObject);             
@@ -257,14 +261,13 @@
             goto = "export_check.html";
             transition_page_next(goto);
         }
-
-        var ware_id;
+        
         function setware(arg) {
             $("#h5-title").removeClass('fade');
-            ware = $("#li-ware-" + arg).text();
-            $("#h5-title").text(ware);
-            $("#ware").val(ware);
-            ware_id = $("#id-ware-" + arg).text();
+            localStorage.ware_name_ex = $("#li-ware-" + arg).text();
+            $("#h5-title").text(localStorage.ware_name_ex);
+            //$("#ware").val(ware);
+            localStorage.ware_id_ex = $("#id-ware-" + arg).text();
             document.elementFromPoint(0, 0).click();
         }
 
@@ -279,19 +282,12 @@
                 //ajax and apeend
                 $.ajax({
                     type: "GET",
-                    url:"https://omise-webpack.000webhostapp.com/www/php/get_ware_shop.php",                            
+                    url:"https://omise-webpack.000webhostapp.com/www/php/get_ware.php",                            
                     success: function(data){
                     var obj = jQuery.parseJSON(data);                                                      
-                    $.each(obj, function(i, field){   
-                        if(obj[i][2] == "โกดัง"){  
+                        $.each(obj, function(i, field){                        
                             $(".jconfirm-buttons").append('<button id="li-ware-'+i+'" type="button" onclick="setware('+i+')" class="btn btn-choice">'+obj[i].ware_name+'</button>' +
-                            '<span id="id-ware-'+i+'" hidden>'+obj[i].ware_id+'</span>' +
-                            '<span id="type-'+i+'" hidden>โกดัง</span>');                       
-                        }else if(obj[i][2] == "หน้าร้าน"){ 
-                            $(".jconfirm-buttons").append('<button id="li-ware-'+i+'" type="button" onclick="setware('+i+')" class="btn btn-choice">'+obj[i].shop_name+'</button>' +
-                            '<span id="id-ware-'+i+'" hidden>'+obj[i].shop_id+'</span>' +
-                            '<span id="type-'+i+'" hidden>หน้าร้าน</span>');
-                        }                    
+                            '<span id="id-ware-'+i+'" hidden>'+obj[i].ware_id+'</span>');                               
                         });                                        
                     }               
                 });               
@@ -299,18 +295,10 @@
               onDestroy: function () {
                 $("style").append('.jconfirm .jconfirm-box{margin-bottom: 5%;}');
                 $("style").append('.jconfirm .jconfirm-box{max-height: 100%;}');
-              },
-              /*onOpen: function(){
-                $(".btn-choice").click(function(event) {
-                  txt = $(this).text();
-                  $("#ware").val(txt);
-                  b_id = $("#id-ware").text();
-                  type = $("#type").text()
-                  document.elementFromPoint(0, 0).click();
-                });
-              }*/
+              }              
             });
-        }
+        } 
+
     </script>
 </head>
 
@@ -320,7 +308,7 @@
         <div class="col-1 text-center" onclick="transition_page_back('index.html')">
             <i id="i-back" class="fas fa-angle-left"></i>
         </div>
-        <div class="col-8 text-right" style="margin-right: 4%;">
+        <div class="col-8 text-center" style="margin-right: 4%;">
             <h5 id="h5-title" class="fade" onclick="showware();">เลือกโกดัง(ออก)</h5>
         </div>
         <div class="col-2 text-right" onclick="check();"><div id="check-export"class="circle-text">0</div></div>

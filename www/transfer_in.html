@@ -52,13 +52,22 @@
     <script>
         var prod_id;        
         $(document).ready(function () { 
+            $('#h5-title').click(function(){
+                showstore();
+            });
             url = new URL(window.location.href);
             prod_id = url.searchParams.get("product");
-           
+
+            get_place();           
+            if(localStorage.shop_id){
+                $("#h5-title").removeClass('fade');              
+                $("#h5-title").text(localStorage.shop_name);
+            }       
             if(localStorage.arr_tranin){
                 var retrievedObject = localStorage.getItem('arr_tranin');
                 var arr_data = JSON.parse(retrievedObject);
-                $('#check-trans').text(arr_data.length);                                                  
+                $('#check-trans').text(arr_data.length);
+                $("#h5-title").unbind();                                                  
             }
             if(prod_id){
                 get_prod();
@@ -107,6 +116,26 @@
                 };
             $("#name").easyAutocomplete(options);      
         });
+        
+        arr_place = [];
+        function get_place(){
+            $.ajax({
+                type: "POST",
+                url:"https://omise-webpack.000webhostapp.com/www/php/get_place.php",    
+                data:{'prod_id' : prod_id,"shop_id":localStorage.shop_id},                                      
+                success: function(data){                   
+                    var obj = jQuery.parseJSON(data);
+                    if(obj){
+                        var txt = "";                                         
+                        $.each(obj, function(i, field){
+                            txt += field.place + " "; 
+                            arr_place.push(field.place.toLowerCase());                                                         
+                        });    
+                        $('#prod-addr').attr("placeholder",txt);    
+                    }                                                      
+                }               
+            });  
+        }
 
         function get_prod(){
             $.ajax({
@@ -193,7 +222,10 @@
             var name = $('#name').val();
             var amt = $('#amount').val();
             var addr = $('#prod-addr').val();
-            if(name != "" && addr != ""){
+            if(!$('#prod-addr').prop('placeholder') && $('#prod-addr').val() == ""){                 
+                return 0;
+            }                   
+            if(name != "" && jQuery.inArray($('#prod-addr').val().toLowerCase(),arr_place) == -1 && $("#h5-title").text() != "เลือกหน้าร้าน"){               
                 if(localStorage.arr_tranin){
                     var retrievedObject = localStorage.getItem('arr_tranin');
                     arr_data = JSON.parse(retrievedObject);                                
@@ -210,8 +242,10 @@
                 arr_data.push(item);
                 localStorage.setItem('arr_tranin', JSON.stringify(arr_data));
                 
-                $('#check-trans').text(arr_data.length);     
+                $('#check-trans').text(arr_data.length);
+                $("#h5-title").unbind(); 
 
+                $('#prod-addr').attr("placeholder","");
                 $('#name').val("");              
                 $('#amount').val("1");
                 $('#barcode').val(""); 
@@ -241,18 +275,18 @@
             goto = "transfer_in_check.html";
             transition_page_next(goto);
         }
-
-        var ware_id;
-        function setware(arg) {
+        
+        function setstore(arg) {
             $("#h5-title").removeClass('fade');
-            ware = $("#li-ware-" + arg).text();
-            $("#h5-title").text(ware);
-            $("#ware").val(ware);
-            ware_id = $("#id-ware-" + arg).text();
+            localStorage.shop_name = $("#li-store-" + arg).text()
+            $("#h5-title").text(localStorage.shop_name);;
+            //$("#store").val(shop);            
+            localStorage.shop_id = $("#id-store-" + arg).text();
             document.elementFromPoint(0, 0).click();
+            get_place();       
         }
 
-        function showware(){
+        function showstore(){
             $("style").append('.jconfirm .jconfirm-box{max-height: 420px;}');
             $.confirm({
               title: 'หน้าร้าน',
@@ -263,39 +297,23 @@
                 //ajax and apeend
                 $.ajax({
                     type: "GET",
-                    url:"https://omise-webpack.000webhostapp.com/www/php/get_ware_shop.php",                            
+                    url:"https://omise-webpack.000webhostapp.com/www/php/get_shop.php",                            
                     success: function(data){
                     var obj = jQuery.parseJSON(data);                                                      
                     $.each(obj, function(i, field){   
-                        if(obj[i][2] == "โกดัง"){  
-                            $(".jconfirm-buttons").append('<button id="li-ware-'+i+'" type="button" onclick="setware('+i+')" class="btn btn-choice">'+obj[i].ware_name+'</button>' +
-                            '<span id="id-ware-'+i+'" hidden>'+obj[i].ware_id+'</span>' +
-                            '<span id="type-'+i+'" hidden>โกดัง</span>');                       
-                        }else if(obj[i][2] == "หน้าร้าน"){ 
-                            $(".jconfirm-buttons").append('<button id="li-ware-'+i+'" type="button" onclick="setware('+i+')" class="btn btn-choice">'+obj[i].shop_name+'</button>' +
-                            '<span id="id-ware-'+i+'" hidden>'+obj[i].shop_id+'</span>' +
-                            '<span id="type-'+i+'" hidden>หน้าร้าน</span>');
-                        }                    
-                        });                                        
+                        $(".jconfirm-buttons").append('<button id="li-store-'+i+'" type="button" onclick="setstore('+i+')" class="btn btn-choice">'+obj[i].shop_name+'</button>' +
+                        '<span id="id-store-'+i+'" hidden>'+obj[i].shop_id+'</span>');    
+                    });                                        
                     }               
                 });               
               },
               onDestroy: function () {
                 $("style").append('.jconfirm .jconfirm-box{margin-bottom: 5%;}');
                 $("style").append('.jconfirm .jconfirm-box{max-height: 100%;}');
-              },
-              /*onOpen: function(){
-                $(".btn-choice").click(function(event) {
-                  txt = $(this).text();
-                  $("#ware").val(txt);
-                  b_id = $("#id-ware").text();
-                  type = $("#type").text()
-                  document.elementFromPoint(0, 0).click();
-                });
-              }*/
+              }              
             });
         } 
-
+       
     </script>
 </head>
 
@@ -307,7 +325,7 @@
         </div>
 
         <div class="col-8 text-center" style="padding-left: 15%; margin-right: 4%;">
-            <h5 id="h5-title" class="fade" onclick="showware();">เลือกหน้าร้าน</h5>
+            <h5 id="h5-title" class="fade">เลือกหน้าร้าน</h5>
         </div>
         <div class="col-2 text-right" onclick="check();"><div id="check-trans"class="circle-text">0</div></div>
     </div>

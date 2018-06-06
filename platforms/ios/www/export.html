@@ -11,18 +11,19 @@
     <script type="text/javascript" src="js/jquery-ui.min.js"></script>
     <script type="text/javascript" src="js/jquery.easing.1.3.min.js"></script>
     <script type="text/javascript" src="js/transition.js"></script>
+    <script type="text/javascript" src="js/jquery-confirm.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.6/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
     <script defer src="https://use.fontawesome.com/releases/v5.0.8/js/all.js"></script>
     <script src="cordova.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.0/jquery-confirm.min.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.0/jquery-confirm.min.js"></script>
+
 
     <script src="js/jquery.easy-autocomplete.min.js"></script>   
     <script type="text/javascript" src="js/back.js"></script>   
     <link rel="stylesheet" href="css/easy-autocomplete.themes.min.css">
 
     <link rel="stylesheet" href="css/index.css">
+    <link rel="stylesheet" href="css/jquery-confirm.css">
 
     <!-- Font -->
     <link href="https://fonts.googleapis.com/css?family=Prompt" rel="stylesheet">
@@ -37,6 +38,17 @@
             padding-left: 10%;
             padding-right: 10%;
         }
+        .fade {
+            animation-duration: 1.25s;
+            animation-name: fade;
+            animation-direction: alternate-reverse;
+            animation-iteration-count: infinite;
+        }
+    
+        @-webkit-keyframes fade {
+            from {opacity: 0.55; } 
+            to {opacity: 1;}
+        }
     </style>
 
     <script>
@@ -46,6 +58,10 @@
             url = new URL(window.location.href);
             prod_id = url.searchParams.get("product");  
 
+            if(localStorage.ware_id_ex){
+                $("#h5-title").removeClass('fade');              
+                $("#h5-title").text(localStorage.ware_name_ex);
+            }
             if(localStorage.arr_ex){
                 var retrievedObject = localStorage.getItem('arr_ex');
                 var arr_data = JSON.parse(retrievedObject);             
@@ -245,6 +261,43 @@
             goto = "export_check.html";
             transition_page_next(goto);
         }
+        
+        function setware(arg) {
+            $("#h5-title").removeClass('fade');
+            localStorage.ware_name_ex = $("#li-ware-" + arg).text();
+            $("#h5-title").text(localStorage.ware_name_ex);
+            //$("#ware").val(ware);
+            localStorage.ware_id_ex = $("#id-ware-" + arg).text();
+            document.elementFromPoint(0, 0).click();
+        }
+
+        function showware(){
+            $("style").append('.jconfirm .jconfirm-box{max-height: 420px;}');
+            $.confirm({
+              title: 'โกดัง',
+              content: '<hr style="width: 80%; margin-bottom: 0;">',
+              backgroundDismiss: true,
+              onOpenBefore: function () {
+                $(".jconfirm-buttons .btn-default").remove();
+                //ajax and apeend
+                $.ajax({
+                    type: "GET",
+                    url:"https://omise-webpack.000webhostapp.com/www/php/get_ware.php",                            
+                    success: function(data){
+                    var obj = jQuery.parseJSON(data);                                                      
+                        $.each(obj, function(i, field){                        
+                            $(".jconfirm-buttons").append('<button id="li-ware-'+i+'" type="button" onclick="setware('+i+')" class="btn btn-choice">'+obj[i].ware_name+'</button>' +
+                            '<span id="id-ware-'+i+'" hidden>'+obj[i].ware_id+'</span>');                               
+                        });                                        
+                    }               
+                });               
+              },
+              onDestroy: function () {
+                $("style").append('.jconfirm .jconfirm-box{margin-bottom: 5%;}');
+                $("style").append('.jconfirm .jconfirm-box{max-height: 100%;}');
+              }              
+            });
+        } 
 
     </script>
 </head>
@@ -255,8 +308,8 @@
         <div class="col-1 text-center" onclick="transition_page_back('index.html')">
             <i id="i-back" class="fas fa-angle-left"></i>
         </div>
-        <div class="col-9 text-center" style="padding-left: 15%;">
-            <h5 id="h5-title">สินค้าออก</h5>
+        <div class="col-8 text-center" style="margin-right: 4%;">
+            <h5 id="h5-title" class="fade" onclick="showware();">เลือกโกดัง(ออก)</h5>
         </div>
         <div class="col-2 text-right" onclick="check();"><div id="check-export"class="circle-text">0</div></div>
     </div>

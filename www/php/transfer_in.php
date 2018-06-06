@@ -25,12 +25,14 @@
         $query = "SELECT prod_id FROM shop WHERE shop_id = '$shop_id' AND prod_id = '$prod_id'";
         $result_q = mysqli_query($conn, $query);
         if(mysqli_num_rows($result_q) > 0){ 
-            $sql_up = "UPDATE shop SET amount = amount+'$amt',place = CONCAT(place,'" .$addr."') WHERE shop_id = '$shop_id' AND prod_id = '$prod_id'"; 
+            $sql_up = "UPDATE shop SET amount = amount+'$amt' WHERE shop_id = '$shop_id' AND prod_id = '$prod_id'"; 
             $result_up = mysqli_query($conn, $sql_up);
         }else{
-            $sql_in = "INSERT INTO shop (shop_id,prod_id,amount,place) VALUE ('$shop_id','$prod_id','$amt','$addr')"; 
+            $sql_in = "INSERT INTO shop (shop_id,prod_id,amount) VALUE ('$shop_id','$prod_id','$amt')"; 
             $result_in = mysqli_query($conn, $sql_in);
-        }              
+        }
+        $sql = "INSERT INTO shop_place (shop_id,prod_id,place) VALUE ('$shop_id','$prod_id','$addr')"; 
+        $result = mysqli_query($conn, $sql);              
     }
 
     if($result){

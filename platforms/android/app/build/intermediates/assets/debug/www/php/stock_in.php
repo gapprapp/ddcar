@@ -52,6 +52,7 @@
         $prod_id = $data['prod_id'];
         $cost = $data['cost'];    
         $amt = $data['amt'];  
+        $addr = $data['addr']; 
 
         $sql_item = "INSERT INTO stock_in_item (stock_id,item_id,prod_id,stock_cost,amount) VALUE ('$last_id','$item','$prod_id','$cost','$amt')"; 
         $result_item = mysqli_query($conn, $sql_item);
@@ -64,8 +65,9 @@
         }else{
             $sql_in = "INSERT INTO warehouse (ware_id,prod_id,amount) VALUE ('$ware_id','$prod_id','$amt')"; 
             $result_in = mysqli_query($conn, $sql_in);
-        }       
-               
+        }
+        $sql = "INSERT INTO warehouse_place (ware_id,prod_id,place) VALUE ('$ware_id','$prod_id','$addr')"; 
+        $result = mysqli_query($conn, $sql);             
     }
 
     if($result){
