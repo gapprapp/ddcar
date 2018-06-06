@@ -137,21 +137,21 @@
         });
 
         arr_place = [];
-        function get_place(){
+        function get_place(){           
             $.ajax({
                 type: "POST",
                 url:"https://omise-webpack.000webhostapp.com/www/php/get_place.php",    
                 data:{'prod_id' : prod_id,"ware_id":localStorage.ware_id_im},                                      
-                success: function(data){                   
-                    var obj = jQuery.parseJSON(data);
-                    if(obj){
+                success: function(data){                                                     
+                    var obj = jQuery.parseJSON(data);                    
+                    if(obj){                        
                         var txt = "";                                         
                         $.each(obj, function(i, field){
                             txt += field.place + " "; 
                             arr_place.push(field.place.toLowerCase());                                                         
                         });    
-                        $('#prod-addr').attr("placeholder",txt);    
-                    }else{
+                        $('#prod-addr').attr("placeholder",txt);                       
+                    }else{                        
                         $('#prod-addr').attr("placeholder",""); 
                     }                                                      
                 }               
@@ -380,7 +380,7 @@
             $("#h5-title").text(localStorage.ware_name_im);
             //$("#ware").val(ware);
             localStorage.ware_id_im = $("#id-ware-" + arg).text();
-            document.elementFromPoint(0, 0).click();
+            document.elementFromPoint(0, 0).click();           
             get_place();
         }
 

@@ -1,6 +1,7 @@
 <?php
     $conn = mysqli_connect("localhost", "id3340019_dd", "pkl2468GG", "id3340019_dd"); 
     $prod_id = $_POST['prod_id'];
+    $output = array();
 
     if(isset($_POST['shop_id'])){
         $shop_id = $_POST['shop_id'];    
