@@ -14,16 +14,24 @@ function scan(){
                             var name;
                             var msg = "";                             
                             var obj = jQuery.parseJSON(data); 
-                            console.log(obj);
-                            $.each(obj, function(i, field){ 
-                                name = obj[i].prod_name;    
-                                msg = msg + obj[i][0] + " : " + obj[i].amount + "<br>";
-                            }); 
-                            $.alert({
-                                title: name,
-                                content: msg,
-                                type: 'blue',
-                            });                                                                                                     
+                            if(obj != ""){
+                                $.each(obj, function(i, field){ 
+                                    name = obj[i].prod_name;    
+                                    msg = msg + obj[i][0] + " : " + obj[i].amount + "<br>";
+                                }); 
+                                $.alert({
+                                    title: name,
+                                    content: msg,
+                                    type: 'blue',
+                                });  
+                            }else{
+                                $.alert({ 
+                                    title: "ไม่มีสินค้า",                                  
+                                    content: "",
+                                    type: 'red',
+                                  }); 
+                            }
+                                                                                                                                
                         }               
                     });         
                 }else{

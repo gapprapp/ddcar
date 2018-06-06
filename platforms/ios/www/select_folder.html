@@ -66,7 +66,7 @@
                 $("#add-ctn").prop('hidden', false);
                 if(from == "add"){                 
                   $("#row-select").prop('hidden', false);
-                }else if(from == "import" || from == "tran_in" || from == "export" || from == "sale"){                 
+                }else if(from == "import" || from == "tran_in" || from == "export" || from == "sale" || from == "stock"){                 
                   $("#row-select").prop('hidden', true);
                 }                
               }
@@ -82,9 +82,12 @@
                     $("#row-add").prop('hidden', true);
                     $("#row-input-add").prop('hidden', true);
                     $("#row-select").prop('hidden', false);       
-                  }else if(from == "import" || from == "tran_in" || from == "export" || from == "sale"){                    
+                  }else if(from == "import" || from == "tran_in" || from == "export" || from == "sale" || from == "stock"){                    
                     $("#add-ctn").prop('hidden', true);
-                    $("#show-box").prop('hidden',false);                                       
+                    $("#show-box").prop('hidden',false); 
+                    if(from == "stock"){
+                      $("#show-box").prop('hidden',true); 
+                    }                                      
                   } 
                   $.each(obj, function(i, field){
                     if(obj.length-1 > i){
@@ -152,6 +155,7 @@
       });
         // index = i;
     });   
+    
     function show_box(){    
       if ($(".seven").is(":visible")) {
           $(".seven").attr('hidden', true);        
@@ -318,7 +322,9 @@
           goto = "export.html?product="+arg;
         }else if(from == "sale"){
           goto = "sale.html?product="+arg;
-        }   
+        }else if(from == "stock"){
+          goto = "stock.html?product="+arg;
+        }    
       }     
       transition_page_next(goto);
     }
@@ -498,7 +504,7 @@
     <div class="col-1 text-center" onclick="page_back();">
       <i id="i-back" class="fas fa-angle-left"></i>
     </div>
-    <div class="col-9 text-center" style="padding-left: 15%;">
+    <div class="col-8 text-center" style="padding-left: 15%; margin-right: 4%;">
       <h5 id="h5-title"></h5>
     </div>
     <div class="col-2 text-center">

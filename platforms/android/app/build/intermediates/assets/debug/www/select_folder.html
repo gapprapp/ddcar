@@ -73,7 +73,7 @@
                 $("#add-ctn").prop('hidden', false);
                 if(from == "add"){                 
                   $("#row-select").prop('hidden', false);
-                }else if(from == "import" || from == "tran_in" || from == "export" || from == "sale"){                 
+                }else if(from == "import" || from == "tran_in" || from == "export" || from == "sale" || from == "stock"){                 
                   $("#row-select").prop('hidden', true);
                 }                
               }
@@ -91,7 +91,10 @@
                     $("#row-select").prop('hidden', false);       
                   }else if(from == "import" || from == "tran_in" || from == "export" || from == "sale" || from == "stock"){                    
                     $("#add-ctn").prop('hidden', true);
-                    $("#show-box").prop('hidden',false);                                       
+                    $("#show-box").prop('hidden',false); 
+                    if(from == "stock"){
+                      $("#show-box").prop('hidden',true); 
+                    }                                      
                   } 
                   $.each(obj, function(i, field){
                     if(obj.length-1 > i){
@@ -133,6 +136,7 @@
       });
         // index = i;
     });   
+    
     function show_box(){    
       if ($(".box").is(":visible")) {
           $(".box").attr('hidden', true);        
@@ -306,7 +310,9 @@
           goto = "export.html?product="+arg;
         }else if(from == "sale"){
           goto = "sale.html?product="+arg;
-        }   
+        }else if(from == "stock"){
+          goto = "stock.html?product="+arg;
+        }    
       }     
       transition_page_next(goto);
     }

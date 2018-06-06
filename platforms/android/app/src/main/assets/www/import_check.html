@@ -57,7 +57,8 @@
 
             margin = $("#ctn-btn").outerHeight() + $("#navs-menu").outerHeight() + $("#navs-net").outerHeight() -15;
             $("#big-ctn").css('margin-bottom', margin); 
-            /********************************************/           
+            /********************************************/
+            $('#ware-title').text(localStorage.ware_name_im);           
             var retrievedObject = localStorage.getItem('arr_prod');
             arr_data = JSON.parse(retrievedObject);              
             for(var i = 0 ; i < arr_data.length ; i ++){                              
@@ -100,13 +101,13 @@
         });
 
         function save(){
-            if(arr_data.length == 0 ||  $("#ware").val() == ""){
+            if(arr_data.length == 0){
                 return 0;
             }
             var d = new Date($.now());         
             var datetime = d.getFullYear() + "-" + (d.getMonth()+1) + "-" + d.getDate() + " " + d.getHours() + ":" + d.getMinutes() + ":" + d.getSeconds(); 
             json_string = JSON.stringify(arr_data); 
-            var dataString =  "JSON=" + json_string + "&ware_id=" + ware_id + "&date=" + datetime + "&sum=" + sum;                        
+            var dataString =  "JSON=" + json_string + "&ware_id=" + localStorage.ware_id_im + "&date=" + datetime + "&sum=" + sum;                        
 
             $.ajax({
                 type: "POST",
@@ -278,10 +279,8 @@
                 }, 900);*/
             });
         }
-<<<<<<< HEAD
-=======
 
-        var ware_id;
+       /* var ware_id;
         function setware(arg) {
             ware = $("#li-ware-" + arg).text();
             $("#ware").val(ware);
@@ -315,15 +314,16 @@
                 $("style").append('.jconfirm .jconfirm-box{max-height: 100%;}');
               }             
             });
-        } 
+        }*/ 
 
         function clearAll(){        
             localStorage.arr_prod = "";          
-            localStorage.arr_prod_i =  "";          
+            localStorage.arr_prod_i =  "";  
+            localStorage.ware_id_im = "";
+            localStorage.ware_name_im = "";        
             transition_page_back('import.html');
         }
 
->>>>>>> 85e59f0f61df8f2e94f684e246616dc1c3f55ac1
     </script>
 </head>
 
