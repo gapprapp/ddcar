@@ -252,21 +252,36 @@
       }
 
       if(arg == "add"){
-        text_input = "<div id='input-row' class='row'>"+
-          "<div class='col-2 text-right' onclick='add();'>"+
-            "<i class='fa fa-check'></i>"+
-          "</div >"+
-          "<div class='col-8 text-center'>"+
-            "<input id='input-add' type='text' class='w3-input'>"+
-          "</div>"+
-            "<div class='col-2' onclick='input_clear();'>"+
-              "<i class='fa fa-times'></i>"+
-            "</div>"+
-          "</div>";
-        $("#append-ctn").append(text_input);
-        //add();
+        if ($(".i-add").is(":visible")) {
+          $(".i-trash").attr('hidden', true);$(".i-edit").attr('hidden', true);
+          $(".i-edit").attr('hidden', true);
+          disac("edit");
+        } else {
+          $(".i-add").attr('hidden', false);
+          $(".i-trash").attr('hidden', true);
+          $(".i-edit").attr('hidden', true);
+        }
+        $("style").append(".jconfirm .jconfirm-box{margin-bottom:70%;}");
+        $.confirm({
+          title: "เพิ่มหมวดหมู่",
+          content: '<div class="row" style="margin-top: 2%; margin-bottom: 2%;"><div class="col-1"></div><div class="col-10"><input id="edt-name" type="text" class="input-cf" autofocus style="text-transform: uppercase";></div><div class="col-1"></div></div>',
+          backgroundDismiss: true,
+          buttons: {
+            ยกเลิก: function () {
+                //$(".jconfirm .jconfirm-box").css('margin-bottom', '5%');
+              },
+            formSubmit: {
+              text: 'ตกลง',
+              btnClass: 'btn-danger',
+              action: function () {
+                newname = $("#edt-name").val().toUpperCase();
+                add(newname);                   
+              }
+            }
+          }
+        });
       }else if(arg == "home"){
-        window.location = "index.html";
+        transition_page_back('index.html');
       }else if(arg == "edit"){
         if(last_node == 1){ disac("edit"); return 0;}
         if ($(".i-edit").is(":visible")) {
@@ -315,10 +330,10 @@
       transition_page_next(goto);
     }
 
-    function add(){
+    function add(arg){
       // First State
       if(!$("#main-ctn").is(":visible")){
-        input = $("#first-add").val();
+        input = $("#first-add").val().toUpperCase();
         if(input != ""){
           $.ajax({
             type: "POST",
@@ -327,30 +342,21 @@
               'title': input,
               'parent': parent
             },
-            success: function (data) {
+            beforeSend: function(){
+              $(".overlay").prop('hidden', false);
+            },             
+            success: function(data){  
+              $(".overlay").prop('hidden', true);
               if (data == "success") {
                 index++;
-                text_html = "<div id='row-title-" + index + "' class='row'>" +
+                text_html = "<div id='row-title-"+index+"' class='row'>" +
+                  "<span id='span-"+index+"' hidden>" + input + "</span>" +
+                  "<div class='col-2'><i class='fa fa-trash-alt i-trash' onclick='remove("+index+")' style='color: #666;' hidden></i><i class='fa fa-edit i-edit' onclick='edit("+index+")' style='color: #666;' hidden></i></div>" +
+                  "<div id='getin-"+index+"' class='col-8 text-center' onclick='getIn(\"" + input + "\")'>" +
+                  "<h5 id='title-"+index+"'>" + input + "</h5></div>" +
                   "<div class='col-2'></div>" +
-                  "<div id='getin-" + index + "' class='col-8 text-center' onclick='getIn(\"" + input + "\")'>" +
-                  "<h5 id='title-" + index + "'>" + input + "</h5>" +
-                  "</div>" +
-                  "<div class='col-2'>" +
-                  "<i class='fa fa-trash-alt i-trash' onclick='remove(" + index + ")' hidden></i>" +
-                  "<i class='fa fa-edit i-edit' onclick='edit(" + index + ")' hidden></i>" +
-                  "</div>" +
-                  "</div >" +
-                  "<div id='row-edit-" + index + "' class='row' hidden>" +
-                  "<div class='col-2 text-right' onclick='rename(" + index + ");'>" +
-                  "<i class='fa fa-check'></i>" +
-                  "</div >" +
-                  "<div class='col-8 text-center'>" +
-                  "<input id='input-" + index + "' type='text' class='w3-input' value='" + input + "'>" +
-                  "</div>" +
-                  "<div class='col-2' onclick='close_row_edit(" + index + ");'>" +
-                  "<i class='fa fa-times'></i>" +
-                  "</div>" +
-                  "</div>" + "<hr id='hr-" + index + "'>";
+                  "</div ><hr id='hr-"+index+"'>";
+
                 $("#main-ctn").prop('hidden', false);
                 $("#add-ctn").prop('hidden', true);
                 $("#append-ctn").append(text_html);
@@ -363,7 +369,7 @@
           alert("กรอกหมวดหมู่ก่อนเพิ่ม");
         }
       }else{
-        input = $("#input-add").val();
+        input = arg;
         if(input != "") {
           $.ajax({
             type: "POST",
@@ -375,38 +381,22 @@
             success: function (data) {
               if(data == "success"){
                 index++;
-                text_html = "<div id='row-title-" + index + "' class='row'>" +
+                text_html = "<div id='row-title-"+index+"' class='row'>" +
+                  "<span id='span-"+index+"' hidden>" + input + "</span>" +
+                  "<div class='col-2'><i class='fa fa-trash-alt i-trash' onclick='remove("+index+")' style='color: #666;' hidden></i><i class='fa fa-edit i-edit' onclick='edit("+index+")' style='color: #666;' hidden></i></div>" +
+                  "<div id='getin-"+index+"' class='col-8 text-center' onclick='getIn(\"" + input + "\")'>" +
+                  "<h5 id='title-"+index+"'>" + input + "</h5></div>" +
                   "<div class='col-2'></div>" +
-                  "<div id='getin-" + index + "' class='col-8 text-center' onclick='getIn(\"" + input + "\")'>" +
-                  "<h5 id='title-" + index + "'>" + input + "</h5>" +
-                  "</div>" +
-                  "<div class='col-2'>" +
-                  "<i class='fa fa-trash-alt i-trash' onclick='remove(" + index + ")' hidden></i>" +
-                  "<i class='fa fa-edit i-edit' onclick='edit(" + index + ")' hidden></i>" +
-                  "</div>" +
-                  "</div >" +
-                  "<div id='row-edit-" + index + "' class='row' hidden>" +
-                  "<div class='col-2 text-right' onclick='rename(" + index + ");'>" +
-                  "<i class='fa fa-check'></i>" +
-                  "</div >" +
-                  "<div class='col-8 text-center'>" +
-                  "<input id='input-" + index + "' type='text' class='w3-input' value='" + input + "'>" +
-                  "</div>" +
-                  "<div class='col-2' onclick='close_row_edit(" + index + ");'>" +
-                  "<i class='fa fa-times'></i>" +
-                  "</div>" +
-                  "</div>" + "<hr id='hr-" + index + "'>";
-                $("#input-row").remove();
+                  "</div ><hr id='hr-"+index+"'>";
                 $("#append-ctn").append(text_html);
               }else{
-                alert("เซิร์ฟเวอร์มีปัญหา กรุณาเข้าใหม่อีกครั้ง")
+                alert("เซิร์ฟเวอร์มีปัญหา กรุณาเข้าใหม่อีกครั้ง");
               }
             }
           });
         }else{
-          alert("กรอกหมวดหมู่ก่อนเพิ่ม");
+          document.elementFromPoint(0, 0).click();
         }
-        disactive(add);
       }
     }
 
@@ -422,7 +412,7 @@
       $("style").append(".jconfirm .jconfirm-box{margin-bottom:70%;}");
       $.confirm({
         title: "แก้ไข",
-        content: '<div class="row" style="margin-top: 2%; margin-bottom: 2%;"><div class="col-1"></div><div class="col-10"><input id="edt-name" type="text" class="input-cf" autofocus value="'+$("#amount-"+arg).text()+'"></div><div class="col-1"></div></div>',
+        content: '<div class="row" style="margin-top: 2%; margin-bottom: 2%;"><div class="col-1"></div><div class="col-10"><input id="edt-name" type="text" class="input-cf" autofocus placeholder="'+name+'" style="text-transform: uppercase"></div><div class="col-1"></div></div>',
         backgroundDismiss: true,
         buttons: {
           ยกเลิก: function () {
@@ -432,7 +422,7 @@
             text: 'ตกลง',
             btnClass: 'btn-danger',
             action: function () {
-              newname = $("#edt-name").val();
+              newname = $("#edt-name").val().toUpperCase();;
               rename(arg, newname);                   
             }
           }
@@ -480,22 +470,27 @@
                   type: "POST",
                   url:"https://omise-webpack.000webhostapp.com/www/php/delete_folder.php",           
                   data: {'title' : title},               
-                  success: function(data){                             
+                  beforeSend: function(){
+                      $(".overlay").prop('hidden', false);
+                  },             
+                  success: function(data){  
+                      $(".overlay").prop('hidden', true);                             
                       //alert(data);
                       $("#hr-"+arg).remove();
                       $("#row-title-" + arg).remove();
-                      $("#row-edit-" + arg).remove();           
+                      $("#row-edit-" + arg).remove();
+                      if($("#append-ctn").children().length == 0){
+                        // no child
+                        $("#add-ctn").prop('hidden', false);
+                        $("#main-ctn").prop('hidden', true);
+                        disac('del');
+                      }           
                   }               
                 });
               }
             }
           }  
-      });         
-    }
-
-    function input_clear(){
-      $("#input-row").remove();
-      disactive(add);
+      });
     }
 
     function select(){
@@ -520,8 +515,7 @@
 </head>
 
 <body style="overflow: auto;">
-  <!-- Loading -->
-  <div class="overlay" hidden><div class="loading"></div></div>
+  
 
   <!-- Nav menu top -->
   <div class="row fixed-top navs">
@@ -537,15 +531,16 @@
     </div>
   </div><br>
 
-  <!-- End big container -->
+  <!-- start big container -->
+
   <div id="add-ctn" class="container justify-content-center" style="margin-top: 50%;" hidden>
     <div class="container">
-      <div id="row-input-add" class="row" style="margin-bottom: 10%;">
+      <div id="row-input-add" class="row" style="margin-bottom: 15%;">
         <div class="col-12 text-center">
-          <input id="first-add" type="text" class="w3-input" placeholder="เพิ่มหมวดหมู่">
+          <input id="first-add" type="text" class="w3-input" placeholder="เพิ่มหมวดหมู่" style="text-transform:uppercase;">
         </div>
       </div>
-      <div id="row-add" class="row" style="margin-bottom: 15%;">
+      <div id="row-add" class="row" style="margin-bottom: 10%;">
         <div class="col-12 text-center">
           <button class="mbtn" onclick="add();">เพิ่มหมวดหมู่</button>
         </div>
@@ -558,8 +553,18 @@
     </div>
   </div>
 
-  <div id="main-ctn" class="container justify-content-center" style="margin-top: 20%;" hidden>
+  <div id="main-ctn" class="container justify-content-center" style="margin-top: 20%;" >
     <div id="append-ctn" class="container">
+      <div id='row-title' class='row' onclick="$(this).on('touchstart', function(event) {
+        event.preventDefault();
+        $(this).css('background', 'LightGray')
+      });">
+        <div class='col-2 text-center'><i id='box' class='far fa-check-square six box' hidden></i></div>
+        <div class='col-8 text-center'>
+        <h5 id='title'>TITLE</h5>
+        </div>
+        <div class='col-2'></div>
+      </div><hr>
     </div>
   </div> 
   <!-- End big container -->
@@ -580,6 +585,9 @@
     </div>
 </div>
 <!-- End Nav menu bottom -->
+  <script>
+    
+  </script>
 </body>
 
 </html>
