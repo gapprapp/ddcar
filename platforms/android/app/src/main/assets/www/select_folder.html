@@ -252,7 +252,6 @@
       }
 
       if(arg == "add"){
-<<<<<<< HEAD
         if ($(".i-add").is(":visible")) {
           $(".i-trash").attr('hidden', true);$(".i-edit").attr('hidden', true);
           $(".i-edit").attr('hidden', true);
@@ -288,8 +287,6 @@
                     "<h5 id='title-"+i+"'>" + obj[i].title + "</h5></div>" +
                     "<div class='col-2'></div>" +
                     "</div ><hr id='hr-"+i+"'>"; 
-=======
->>>>>>> 770942c7e71ee68c5428489ef7c96d3bc21af59a
         text_input = "<div id='input-row' class='row'>"+
           "<div class='col-2 text-right' onclick='add();'>"+
             "<i class='fa fa-check'></i>"+
@@ -369,10 +366,10 @@
               if (data == "success") {
                 index++;
                 text_html = "<div id='row-title-"+index+"' class='row'>" +
-                  "<span id='span-"+index+"' hidden>" + obj[index].title + "</span>" +
+                  "<span id='span-"+index+"' hidden>" + input + "</span>" +
                   "<div class='col-2'><i class='fa fa-trash-alt i-trash' onclick='remove("+index+")' style='color: #666;' hidden></i><i class='fa fa-edit i-edit' onclick='edit("+index+")' style='color: #666;' hidden></i></div>" +
-                  "<div id='getin-"+index+"' class='col-8 text-center' onclick='getIn(\"" + obj[index].title + "\")'>" +
-                  "<h5 id='title-"+index+"'>" + obj[index].title + "</h5></div>" +
+                  "<div id='getin-"+index+"' class='col-8 text-center' onclick='getIn(\"" + input + "\")'>" +
+                  "<h5 id='title-"+index+"'>" + input + "</h5></div>" +
                   "<div class='col-2'></div>" +
                   "</div ><hr id='hr-"+index+"'>";
 
@@ -503,7 +500,11 @@
               }
             }
           }  
-      });         
+      });
+      if($("#append-ctn").children().length == 0){
+        $("#add-ctn").prop('hidden', false);
+        $("#main-ctn").prop('hidden', true);
+      }         
     }
 
     function select(){
@@ -549,12 +550,12 @@
 
   <div id="add-ctn" class="container justify-content-center" style="margin-top: 50%;" hidden>
     <div class="container">
-      <div id="row-input-add" class="row" style="margin-bottom: 10%;">
+      <div id="row-input-add" class="row" style="margin-bottom: 15%;">
         <div class="col-12 text-center">
           <input id="first-add" type="text" class="w3-input" placeholder="เพิ่มหมวดหมู่" style="text-transform:uppercase;">
         </div>
       </div>
-      <div id="row-add" class="row" style="margin-bottom: 15%;">
+      <div id="row-add" class="row" style="margin-bottom: 10%;">
         <div class="col-12 text-center">
           <button class="mbtn" onclick="add();">เพิ่มหมวดหมู่</button>
         </div>

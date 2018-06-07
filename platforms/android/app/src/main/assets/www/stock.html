@@ -152,6 +152,12 @@
 
       var ch = 0;
       function search(){
+        $("#big-ctn").css('margin-top', '15%');
+        $(".or_section").prop('hidden', true);
+        $("#row-search").prop('hidden', true);
+        $(".select_folder").prop('hidden', true);
+        $("#col-back").attr('onclick', 'show()');
+        $("#add_ctn").prop('hidden', false);
         ch++;
         if(ch == 1){
           get_prod();
@@ -175,6 +181,7 @@
               $(this).hide();                               
             }
           });   
+        }             
         }          
       }
 
@@ -251,20 +258,14 @@
               <button class="select_folder" onclick="selectfolder()">เลือกสินค้า</button>
             </div>  
           </div>
-<<<<<<< HEAD
         </div>
-<<<<<<< HEAD
-=======
 
         <div id="add_ctn" class="container">
           <ul id="myUL">
 
           </ul>   
         </div>
->>>>>>> ca31e347179162e3f727169f2ecbdc58448b39b9
-=======
         </div>        
->>>>>>> 770942c7e71ee68c5428489ef7c96d3bc21af59a
     </div>
     <!-- End big container -->
     <script>
