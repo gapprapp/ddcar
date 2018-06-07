@@ -152,13 +152,6 @@
 
       var ch = 0;
       function search(){
-        $("#big-ctn").css('margin-top', '15%');
-        $(".or_section").prop('hidden', true);
-        $("#row-search").prop('hidden', true);
-        $(".select_folder").prop('hidden', true);
-        $("#col-back").attr('onclick', 'show()');
-        $("#add_ctn").prop('hidden', false);
-
         ch++;
         if(ch == 1){
           get_prod();
@@ -173,17 +166,12 @@
           });      
 
           var searchTerm = $('#search_prod').val().toLowerCase();
-          alert(searchTerm.length);
+          //alert(searchTerm.length);
 
-<<<<<<< HEAD
           $('#myUL li').each(function(){ 
-            alert(searchTerm.length);           
-=======
-          $('#myUL li').each(function(){
-            alert(searchTerm.length);
->>>>>>> bd76810499a2050f62d30d2d65b455dab0cffb72
+            //alert(searchTerm.length);           
             if ($(this).filter('[data-search-term *= ' + searchTerm + ']').length > 0 || searchTerm.length < 1) {
-              alert("show");
+              //alert("show");
               $(this).show();                                                     
             } else {
               $(this).hide();                               
@@ -265,18 +253,7 @@
               <button class="select_folder" onclick="selectfolder()">เลือกสินค้า</button>
             </div>  
           </div>
-<<<<<<< HEAD
-        </div>      
-=======
-        </div>
-
-        <div id="add_ctn" class="container">
-          <ul id="myUL">
-
-          </ul>   
-        </div>
-        </div>        
->>>>>>> bd76810499a2050f62d30d2d65b455dab0cffb72
+        </div>                   
     </div>
     <!-- End big container -->
     <script>
