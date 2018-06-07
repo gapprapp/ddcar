@@ -21,6 +21,7 @@
 
   <link rel="stylesheet" href="css/index.css">
   <link rel="stylesheet" href="css/jquery-confirm.css">
+  <link rel="stylesheet" href="css/loading.css">
 
   <!-- Font -->
   <link href="https://fonts.googleapis.com/css?family=Prompt" rel="stylesheet">
@@ -65,8 +66,12 @@
               type: "POST",
               url:"https://omise-webpack.000webhostapp.com/www/php/add_ware_shop.php",           
               data: {'name':name,
-                  'type':type},               
-              success: function(data){         
+                  'type':type},
+              beforeSend: function(){
+                $(".overlay").prop('hidden', false);
+              },             
+              success: function(data){  
+                $(".overlay").prop('hidden', true);        
                 if(data == "success"){
                   $.confirm({
                       title: 'เสร็จสิ้น',
@@ -112,6 +117,9 @@
 </head>
 
 <body>
+  <!-- Loading -->
+  <div class="overlay" hidden><div class="loading"></div></div>
+
   <!-- Nav menu top -->
   <div class="row fixed-top navs">
     <div class="col-1 text-center" onclick="transition_page_back('warehouse.html')">
