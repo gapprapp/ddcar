@@ -166,12 +166,12 @@
           });      
 
           var searchTerm = $('#search_prod').val().toLowerCase();
-          alert(searchTerm.length);
+          //alert(searchTerm.length);
 
           $('#myUL li').each(function(){ 
-            alert(searchTerm.length);           
+            //alert(searchTerm.length);           
             if ($(this).filter('[data-search-term *= ' + searchTerm + ']').length > 0 || searchTerm.length < 1) {
-              alert("show");
+              //alert("show");
               $(this).show();                                                     
             } else {
               $(this).hide();                               

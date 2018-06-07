@@ -280,29 +280,6 @@
             }
           }
         });
-<<<<<<< HEAD
-        /*"<div id='row-title-"+i+"' class='row'>" +
-                    "<span id='span-"+i+"' hidden>" + obj[i].title + "</span>" +
-                    "<div class='col-2'><i class='fa fa-trash-alt i-trash' onclick='remove("+i+")' style='color: #666;' hidden></i><i class='fa fa-edit i-edit' onclick='edit("+i+")' style='color: #666;' hidden></i></div>" +
-                    "<div id='getin-"+i+"' class='col-8 text-center' onclick='getIn(\"" + obj[i].title + "\")'>" +
-                    "<h5 id='title-"+i+"'>" + obj[i].title + "</h5></div>" +
-                    "<div class='col-2'></div>" +
-                    "</div ><hr id='hr-"+i+"'>"; 
-        text_input = "<div id='input-row' class='row'>"+
-          "<div class='col-2 text-right' onclick='add();'>"+
-            "<i class='fa fa-check'></i>"+
-          "</div >"+
-          "<div class='col-8 text-center'>"+
-            "<input id='input-add' type='text' class='w3-input'>"+
-          "</div>"+
-            "<div class='col-2' onclick='input_clear();'>"+
-              "<i class='fa fa-times'></i>"+
-            "</div>"+
-          "</div>";
-        $("#append-ctn").append(text_input);*/
-        //add();
-=======
->>>>>>> bd76810499a2050f62d30d2d65b455dab0cffb72
       }else if(arg == "home"){
         transition_page_back('index.html');
       }else if(arg == "edit"){
@@ -538,8 +515,7 @@
 </head>
 
 <body style="overflow: auto;">
-  <!-- Loading -->
-  <div class="overlay" hidden><div class="loading"></div></div>
+  
 
   <!-- Nav menu top -->
   <div class="row fixed-top navs">
@@ -577,8 +553,18 @@
     </div>
   </div>
 
-  <div id="main-ctn" class="container justify-content-center" style="margin-top: 20%;" hidden>
+  <div id="main-ctn" class="container justify-content-center" style="margin-top: 20%;" >
     <div id="append-ctn" class="container">
+      <div id='row-title' class='row' onclick="$(this).on('touchstart', function(event) {
+        event.preventDefault();
+        $(this).css('background', 'LightGray')
+      });">
+        <div class='col-2 text-center'><i id='box' class='far fa-check-square six box' hidden></i></div>
+        <div class='col-8 text-center'>
+        <h5 id='title'>TITLE</h5>
+        </div>
+        <div class='col-2'></div>
+      </div><hr>
     </div>
   </div> 
   <!-- End big container -->
@@ -599,6 +585,9 @@
     </div>
 </div>
 <!-- End Nav menu bottom -->
+  <script>
+    
+  </script>
 </body>
 
 </html>
