@@ -252,8 +252,41 @@
       }
 
       if(arg == "add"){
-        if(last_node == 1){ disac("add"); return 0;}
-        if($("#input-row").is(":visible")) return 0;
+        if ($(".i-add").is(":visible")) {
+          $(".i-trash").attr('hidden', true);$(".i-edit").attr('hidden', true);
+          $(".i-edit").attr('hidden', true);
+          disac("edit");
+        } else {
+          $(".i-add").attr('hidden', false);
+          $(".i-trash").attr('hidden', true);
+          $(".i-edit").attr('hidden', true);
+        }
+        $("style").append(".jconfirm .jconfirm-box{margin-bottom:70%;}");
+        $.confirm({
+          title: "เพิ่มหมวดหมู่",
+          content: '<div class="row" style="margin-top: 2%; margin-bottom: 2%;"><div class="col-1"></div><div class="col-10"><input id="edt-name" type="text" class="input-cf" autofocus style="text-transform: uppercase";></div><div class="col-1"></div></div>',
+          backgroundDismiss: true,
+          buttons: {
+            ยกเลิก: function () {
+                //$(".jconfirm .jconfirm-box").css('margin-bottom', '5%');
+              },
+            formSubmit: {
+              text: 'ตกลง',
+              btnClass: 'btn-danger',
+              action: function () {
+                newname = $("#edt-name").val().toUpperCase();
+                add(newname);                   
+              }
+            }
+          }
+        });
+        /*"<div id='row-title-"+i+"' class='row'>" +
+                    "<span id='span-"+i+"' hidden>" + obj[i].title + "</span>" +
+                    "<div class='col-2'><i class='fa fa-trash-alt i-trash' onclick='remove("+i+")' style='color: #666;' hidden></i><i class='fa fa-edit i-edit' onclick='edit("+i+")' style='color: #666;' hidden></i></div>" +
+                    "<div id='getin-"+i+"' class='col-8 text-center' onclick='getIn(\"" + obj[i].title + "\")'>" +
+                    "<h5 id='title-"+i+"'>" + obj[i].title + "</h5></div>" +
+                    "<div class='col-2'></div>" +
+                    "</div ><hr id='hr-"+i+"'>"; 
         text_input = "<div id='input-row' class='row'>"+
           "<div class='col-2 text-right' onclick='add();'>"+
             "<i class='fa fa-check'></i>"+
@@ -265,10 +298,10 @@
               "<i class='fa fa-times'></i>"+
             "</div>"+
           "</div>";
-        $("#append-ctn").append(text_input);
+        $("#append-ctn").append(text_input);*/
         //add();
       }else if(arg == "home"){
-        window.location = "index.html";
+        transition_page_back('index.html');
       }else if(arg == "edit"){
         if(last_node == 1){ disac("edit"); return 0;}
         if ($(".i-edit").is(":visible")) {
@@ -317,10 +350,10 @@
       transition_page_next(goto);
     }
 
-    function add(){
+    function add(arg){
       // First State
       if(!$("#main-ctn").is(":visible")){
-        input = $("#first-add").val();
+        input = $("#first-add").val().toUpperCase();
         if(input != ""){
           $.ajax({
             type: "POST",
@@ -332,27 +365,14 @@
             success: function (data) {
               if (data == "success") {
                 index++;
-                text_html = "<div id='row-title-" + index + "' class='row'>" +
+                text_html = "<div id='row-title-"+index+"' class='row'>" +
+                  "<span id='span-"+index+"' hidden>" + obj[index].title + "</span>" +
+                  "<div class='col-2'><i class='fa fa-trash-alt i-trash' onclick='remove("+index+")' style='color: #666;' hidden></i><i class='fa fa-edit i-edit' onclick='edit("+index+")' style='color: #666;' hidden></i></div>" +
+                  "<div id='getin-"+index+"' class='col-8 text-center' onclick='getIn(\"" + obj[index].title + "\")'>" +
+                  "<h5 id='title-"+index+"'>" + obj[index].title + "</h5></div>" +
                   "<div class='col-2'></div>" +
-                  "<div id='getin-" + index + "' class='col-8 text-center' onclick='getIn(\"" + input + "\")'>" +
-                  "<h5 id='title-" + index + "'>" + input + "</h5>" +
-                  "</div>" +
-                  "<div class='col-2'>" +
-                  "<i class='fa fa-trash-alt i-trash' onclick='remove(" + index + ")' hidden></i>" +
-                  "<i class='fa fa-edit i-edit' onclick='edit(" + index + ")' hidden></i>" +
-                  "</div>" +
-                  "</div >" +
-                  "<div id='row-edit-" + index + "' class='row' hidden>" +
-                  "<div class='col-2 text-right' onclick='rename(" + index + ");'>" +
-                  "<i class='fa fa-check'></i>" +
-                  "</div >" +
-                  "<div class='col-8 text-center'>" +
-                  "<input id='input-" + index + "' type='text' class='w3-input' value='" + input + "'>" +
-                  "</div>" +
-                  "<div class='col-2' onclick='close_row_edit(" + index + ");'>" +
-                  "<i class='fa fa-times'></i>" +
-                  "</div>" +
-                  "</div>" + "<hr id='hr-" + index + "'>";
+                  "</div ><hr id='hr-"+index+"'>";
+
                 $("#main-ctn").prop('hidden', false);
                 $("#add-ctn").prop('hidden', true);
                 $("#append-ctn").append(text_html);
@@ -365,7 +385,7 @@
           alert("กรอกหมวดหมู่ก่อนเพิ่ม");
         }
       }else{
-        input = $("#input-add").val();
+        input = arg;
         if(input != "") {
           $.ajax({
             type: "POST",
@@ -377,38 +397,22 @@
             success: function (data) {
               if(data == "success"){
                 index++;
-                text_html = "<div id='row-title-" + index + "' class='row'>" +
+                text_html = "<div id='row-title-"+index+"' class='row'>" +
+                  "<span id='span-"+index+"' hidden>" + input + "</span>" +
+                  "<div class='col-2'><i class='fa fa-trash-alt i-trash' onclick='remove("+index+")' style='color: #666;' hidden></i><i class='fa fa-edit i-edit' onclick='edit("+index+")' style='color: #666;' hidden></i></div>" +
+                  "<div id='getin-"+index+"' class='col-8 text-center' onclick='getIn(\"" + input + "\")'>" +
+                  "<h5 id='title-"+index+"'>" + input + "</h5></div>" +
                   "<div class='col-2'></div>" +
-                  "<div id='getin-" + index + "' class='col-8 text-center' onclick='getIn(\"" + input + "\")'>" +
-                  "<h5 id='title-" + index + "'>" + input + "</h5>" +
-                  "</div>" +
-                  "<div class='col-2'>" +
-                  "<i class='fa fa-trash-alt i-trash' onclick='remove(" + index + ")' hidden></i>" +
-                  "<i class='fa fa-edit i-edit' onclick='edit(" + index + ")' hidden></i>" +
-                  "</div>" +
-                  "</div >" +
-                  "<div id='row-edit-" + index + "' class='row' hidden>" +
-                  "<div class='col-2 text-right' onclick='rename(" + index + ");'>" +
-                  "<i class='fa fa-check'></i>" +
-                  "</div >" +
-                  "<div class='col-8 text-center'>" +
-                  "<input id='input-" + index + "' type='text' class='w3-input' value='" + input + "'>" +
-                  "</div>" +
-                  "<div class='col-2' onclick='close_row_edit(" + index + ");'>" +
-                  "<i class='fa fa-times'></i>" +
-                  "</div>" +
-                  "</div>" + "<hr id='hr-" + index + "'>";
-                $("#input-row").remove();
+                  "</div ><hr id='hr-"+index+"'>";
                 $("#append-ctn").append(text_html);
               }else{
-                alert("เซิร์ฟเวอร์มีปัญหา กรุณาเข้าใหม่อีกครั้ง")
+                alert("เซิร์ฟเวอร์มีปัญหา กรุณาเข้าใหม่อีกครั้ง");
               }
             }
           });
         }else{
-          alert("กรอกหมวดหมู่ก่อนเพิ่ม");
+          document.elementFromPoint(0, 0).click();
         }
-        disactive(add);
       }
     }
 
@@ -424,7 +428,7 @@
       $("style").append(".jconfirm .jconfirm-box{margin-bottom:70%;}");
       $.confirm({
         title: "แก้ไข",
-        content: '<div class="row" style="margin-top: 2%; margin-bottom: 2%;"><div class="col-1"></div><div class="col-10"><input id="edt-name" type="text" class="input-cf" autofocus value="'+$("#amount-"+arg).text()+'"></div><div class="col-1"></div></div>',
+        content: '<div class="row" style="margin-top: 2%; margin-bottom: 2%;"><div class="col-1"></div><div class="col-10"><input id="edt-name" type="text" class="input-cf" autofocus placeholder="'+name+'" style="text-transform: uppercase"></div><div class="col-1"></div></div>',
         backgroundDismiss: true,
         buttons: {
           ยกเลิก: function () {
@@ -434,7 +438,7 @@
             text: 'ตกลง',
             btnClass: 'btn-danger',
             action: function () {
-              newname = $("#edt-name").val();
+              newname = $("#edt-name").val().toUpperCase();;
               rename(arg, newname);                   
             }
           }
@@ -482,7 +486,11 @@
                   type: "POST",
                   url:"https://omise-webpack.000webhostapp.com/www/php/delete_folder.php",           
                   data: {'title' : title},               
-                  success: function(data){                             
+                  beforeSend: function(){
+                      $(".overlay").prop('hidden', false);
+                  },             
+                  success: function(data){  
+                      $(".overlay").prop('hidden', true);                             
                       //alert(data);
                       $("#hr-"+arg).remove();
                       $("#row-title-" + arg).remove();
@@ -493,11 +501,6 @@
             }
           }  
       });         
-    }
-
-    function input_clear(){
-      $("#input-row").remove();
-      disactive(add);
     }
 
     function select(){
@@ -539,12 +542,13 @@
     </div>
   </div><br>
 
-  <!-- End big container -->
+  <!-- start big container -->
+
   <div id="add-ctn" class="container justify-content-center" style="margin-top: 50%;" hidden>
     <div class="container">
       <div id="row-input-add" class="row" style="margin-bottom: 10%;">
         <div class="col-12 text-center">
-          <input id="first-add" type="text" class="w3-input" placeholder="เพิ่มหมวดหมู่">
+          <input id="first-add" type="text" class="w3-input" placeholder="เพิ่มหมวดหมู่" style="text-transform:uppercase;">
         </div>
       </div>
       <div id="row-add" class="row" style="margin-bottom: 15%;">

@@ -17,7 +17,6 @@ function scan(){
                             $(".overlay").prop('hidden', true);                           
                             var name;                           
                             var obj = jQuery.parseJSON(data); 
-<<<<<<< HEAD
                             var msg = '<div class="row" style="margin-top: 2%; margin-bottom: 2%;"><div class="col-12 text-center"><img src="https://i.imgur.com/7LVwcUc.png" id="img" alt="" style="width: 300px; height: 300px;"></div></div><br>';
                             console.log(obj);
                             $.each(obj, function(i, field){
@@ -38,7 +37,6 @@ function scan(){
                                 }
                               }
                             });                                                                                                     
-=======
                             if(obj != ""){
                                 $.each(obj, function(i, field){ 
                                     name = obj[i].prod_name;    
@@ -57,7 +55,6 @@ function scan(){
                                   }); 
                             }
                                                                                                                                 
->>>>>>> ca31e347179162e3f727169f2ecbdc58448b39b9
                         }               
                     });         
                 }else{
