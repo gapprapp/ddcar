@@ -15,48 +15,6 @@ function scan(){
                         },             
                         success: function(data){  
                             $(".overlay").prop('hidden', true);                           
-<<<<<<< HEAD
-                            var name;                           
-                            var obj = jQuery.parseJSON(data); 
-                            var msg = '<div class="row" style="margin-top: 2%; margin-bottom: 2%;"><div class="col-12 text-center"><img src="https://i.imgur.com/7LVwcUc.png" id="img" alt="" style="width: 300px; height: 300px;"></div></div><br>';
-                            console.log(obj);
-                            $.each(obj, function(i, field){
-                                name = obj[i].prod_name;    
-                                msg = msg + '<div class="row" style="margin-bottom: 3%"><div class="col-6 text-right" style="margin-right: 5%;">'+obj[i][0]+' :'+'</div><div class="col-5 text-left">'+obj[i].amount+'</div></div>';
-                            }); 
-                            $.confirm({
-                              title: name,
-                              content: msg,
-                              backgroundDismiss: true,
-                              buttons: {
-                                formSubmit: {
-                                  text: 'ปิด',
-                                  btnClass: 'btn-regis',
-                                  action: function () {
-                                    document.elementFromPoint(0, 0).click();
-                                  }
-                                }
-                              }
-                            });                                                                                                     
-                            if(obj != ""){
-                                $.each(obj, function(i, field){ 
-                                    name = obj[i].prod_name;    
-                                    msg = msg + obj[i][0] + " : " + obj[i].amount + "<br>";
-                                }); 
-                                $.alert({
-                                    title: name,
-                                    content: msg,
-                                    type: 'blue',
-                                });  
-                            }else{
-                                $.alert({ 
-                                    title: "ไม่มีสินค้า",                                  
-                                    content: "",
-                                    type: 'red',
-                                  }); 
-                            }
-                                                                                                                                
-=======
                             var name;
                             var img;
                             var msg = "";                             
@@ -98,7 +56,6 @@ function scan(){
                                   }
                               });  
                             }                                                                                                                  
->>>>>>> 770942c7e71ee68c5428489ef7c96d3bc21af59a
                         }               
                     });         
                 }else{
