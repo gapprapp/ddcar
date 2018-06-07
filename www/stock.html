@@ -169,6 +169,7 @@
           var searchTerm = $('#search_prod').val().toLowerCase();
 
           $('#myUL li').each(function(){
+            alert(searchTerm.length);
             if ($(this).filter('[data-search-term *= ' + searchTerm + ']').length > 0 || searchTerm.length < 1) {
               $(this).show();                                                     
             } else {
