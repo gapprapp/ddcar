@@ -257,9 +257,18 @@
                     $("#btn-addpic").removeAttr('disabled');
                 }                                  
             }else{
-                $.alert({
-                    title: 'คำเตือน!',
-                    content: 'กรุณากรอกข้อมูลให้ครบ',
+                $.confirm({
+                  title: 'พบข้อผิดพลาด',
+                  content: 'กรุณากรอกข้อมูลให้ครบ',
+                  backgroundDismiss: true,
+                  buttons: {
+                    formSubmit: {
+                      text: 'ตกลง',
+                      btnClass: 'btn-regis',
+                      action: function () {
+                      }
+                    }
+                  }
                 });
             }          
 

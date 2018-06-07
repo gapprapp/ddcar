@@ -23,6 +23,7 @@
     <link rel="stylesheet" href="css/index.css">
     <link rel="stylesheet" href="css/popup.css">
     <link rel="stylesheet" href="css/jquery-confirm.css">
+    <link rel="stylesheet" href="css/loading.css">
 
     <!-- Font -->
     <link href="https://fonts.googleapis.com/css?family=Prompt" rel="stylesheet">
@@ -55,15 +56,15 @@
         var flag = 0; 
         var img;    
         $(document).ready(function () { 
-            $('#h5-title').click(function(){
-                showware();
-            });
             url = new URL(window.location.href);
             prod_id = url.searchParams.get("product");  
 
             get_place()
             if(localStorage.ware_id_im){
-                $("#h5-title").removeClass('fade');              
+                $("#h5-title").removeClass('fade');  
+                $("#h5-title").css('padding-left', '15%');
+                $("#h5-title").removeClass('text-right');
+                $("#h5-title").addClass('text-center');            
                 $("#h5-title").text(localStorage.ware_name_im);
             }
             if(localStorage.arr_prod){
@@ -142,7 +143,7 @@
                 type: "POST",
                 url:"https://omise-webpack.000webhostapp.com/www/php/get_place.php",    
                 data:{'prod_id' : prod_id,"ware_id":localStorage.ware_id_im},                                      
-                success: function(data){                                                     
+                success: function(data){
                     var obj = jQuery.parseJSON(data);                    
                     if(obj){                        
                         var txt = "";                                         
@@ -164,7 +165,11 @@
                 url:"https://omise-webpack.000webhostapp.com/www/php/get_prod.php",    
                 data:{'prod_id' : prod_id},
                 //async: false,                       
-                success: function(data){
+                beforeSend: function(){
+                    $(".overlay").prop('hidden', false);
+                },             
+                success: function(data){  
+                    $(".overlay").prop('hidden', true);
                     var obj = jQuery.parseJSON(data);                                         
                     $.each(obj, function(i, field){
                         $('#name').val(obj[i].prod_name);
@@ -195,7 +200,11 @@
                         type: "POST",
                         url:"https://omise-webpack.000webhostapp.com/www/php/get_amt_prod.php",           
                         data: {prod:prod_id},               
-                        success: function(data){                                                                    
+                        beforeSend: function(){
+                            $(".overlay").prop('hidden', false);
+                        },             
+                        success: function(data){  
+                            $(".overlay").prop('hidden', true);                                                                    
                             var cost_n = $('#cost').val();
                             var amt_n = $('#amount').val();
                             var amt_o = data;
@@ -215,7 +224,11 @@
                         type: "POST",
                         url:"https://omise-webpack.000webhostapp.com/www/php/get_amt_prod.php",           
                         data: {prod:prod_id},               
-                        success: function(data){                                         
+                        beforeSend: function(){
+                            $(".overlay").prop('hidden', false);
+                        },             
+                        success: function(data){  
+                            $(".overlay").prop('hidden', true);                                         
                             var cost_n = $('#cost').val();
                             var amt_n = $('#amount').val();
                             var amt_o = data;
@@ -248,7 +261,11 @@
                         type: "POST",
                         url:"https://omise-webpack.000webhostapp.com/www/php/update_prod.php",           
                         data: {prod:prod_id , cost:cost , price_s:price_s , price_w:price_w},               
-                        success: function(data){                             
+                        beforeSend: function(){
+                            $(".overlay").prop('hidden', false);
+                        },             
+                        success: function(data){  
+                            $(".overlay").prop('hidden', true);                             
                            if(data == "success"){
                                 show(code,cost);
                            }else{
@@ -262,7 +279,11 @@
                         url:"https://omise-webpack.000webhostapp.com/www/php/update_prod.php",           
                         data: {prod:prod_id , cost:cost , price_s:price_s , price_w:price_w},
                         async : false,              
-                        success: function(data){                             
+                        beforeSend: function(){
+                            $(".overlay").prop('hidden', false);
+                        },             
+                        success: function(data){  
+                        $(".overlay").prop('hidden', true);                             
                            if(data == "success"){
                                 flag = 0;
                                 check = 0;
@@ -278,9 +299,18 @@
                     show(code,cost);
                 }               
             }else{
-                $.alert({
-                    title: 'คำเตือน!',
-                    content: 'กรุณากรอกข้อมูลให้ครบ',
+                $.confirm({
+                  title: 'พบข้อผิดพลาด',
+                  content: 'กรุณากรอกข้อมูลให้ครบ',
+                  backgroundDismiss: true,
+                  buttons: {
+                    formSubmit: {
+                      text: 'ตกลง',
+                      btnClass: 'btn-regis',
+                      action: function () {
+                      }
+                    }
+                  }
                 });
             }          
         }     
@@ -376,6 +406,9 @@
 
         function setware(arg) {
             $("#h5-title").removeClass('fade');
+            $("#h5-title").css('padding-left', '15%');
+            $("#h5-title").removeClass('text-right');
+            $("#h5-title").addClass('text-center');
             localStorage.ware_name_im = $("#li-ware-" + arg).text();
             $("#h5-title").text(localStorage.ware_name_im);
             //$("#ware").val(ware);
@@ -386,29 +419,34 @@
 
         function showware(){
             $("style").append('.jconfirm .jconfirm-box{max-height: 420px;}');
-            $.confirm({
-              title: 'โกดัง',
-              content: '<hr style="width: 80%; margin-bottom: 0;">',
-              backgroundDismiss: true,
-              onOpenBefore: function () {
-                $(".jconfirm-buttons .btn-default").remove();
-                //ajax and apeend
-                $.ajax({
-                    type: "GET",
-                    url:"https://omise-webpack.000webhostapp.com/www/php/get_ware.php",                            
-                    success: function(data){
-                    var obj = jQuery.parseJSON(data);                                                      
-                        $.each(obj, function(i, field){                        
-                            $(".jconfirm-buttons").append('<button id="li-ware-'+i+'" type="button" onclick="setware('+i+')" class="btn btn-choice">'+obj[i].ware_name+'</button>' +
-                            '<span id="id-ware-'+i+'" hidden>'+obj[i].ware_id+'</span>');                               
-                        });                                        
-                    }               
-                });               
-              },
-              onDestroy: function () {
-                $("style").append('.jconfirm .jconfirm-box{margin-bottom: 5%;}');
-                $("style").append('.jconfirm .jconfirm-box{max-height: 100%;}');
-              }              
+            var text_html = "";
+            $.ajax({
+                type: "GET",
+                url:"https://omise-webpack.000webhostapp.com/www/php/get_ware.php",                            
+                beforeSend: function(){
+                    $(".overlay").prop('hidden', false);
+                },             
+                success: function(data){  
+                $(".overlay").prop('hidden', true);
+                var obj = jQuery.parseJSON(data);                                                      
+                $.each(obj, function(i, field){
+                    text_html = text_html + '<button id="li-ware-'+i+'" type="button" onclick="setware('+i+')" class="btn btn-choice">'+obj[i].ware_name+'</button>' +
+                    '<span id="id-ware-'+i+'" hidden>'+obj[i].ware_id+'</span>';
+                }); 
+                $.confirm({
+                  title: 'โกดัง',
+                  content: '<hr style="width: 80%; margin-bottom: 0;">',
+                  backgroundDismiss: true,
+                  onOpenBefore: function () {
+                    $(".jconfirm-buttons .btn-default").remove();
+                    $(".jconfirm-buttons").append(text_html);         
+                  },
+                  onDestroy: function () {
+                    $("style").append('.jconfirm .jconfirm-box{margin-bottom: 5%;}');
+                    $("style").append('.jconfirm .jconfirm-box{max-height: 100%;}');
+                  }              
+                });                                       
+                }               
             });
         }
 
@@ -416,13 +454,16 @@
 </head>
 
 <body>
+    <!-- Loading -->
+    <div class="overlay" hidden><div class="loading"></div></div>
+
     <!-- Nav menu top -->
     <div class="row fixed-top navs">
         <div class="col-1 text-center" onclick="transition_page_back('index.html')">
             <i id="i-back" class="fas fa-angle-left"></i>
         </div>
-        <div class="col-8 text-center" style="padding-left: 15%; margin-right: 4%;">
-            <h5 id="h5-title" class="fade">เลือกโกดัง(เข้า)</h5>
+        <div class="col-8 text-right" style="margin-right: 4%;">
+            <h5 id="h5-title" class="fade" onclick="showware();">เลือกโกดัง(เข้า)</h5>
         </div>
         <div class="col-2 text-right" onclick="report();"><div id="check-import"class="circle-text">0</div></div>
     </div>

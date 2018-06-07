@@ -1,5 +1,5 @@
 #Internal package file, do not edit.
-#Thu Jun 07 11:10:20 ICT 2018
+#Thu Jun 07 18:19:35 ICT 2018
 210.set=JAVA_RESOURCE
 282.file=/Users/phoenix/Documents/ddcar/platforms/android/app/build/intermediates/res/debug/resources-debug.ap_/res/layout/notification_template_media_custom.xml
 14.set=ANDROID_RESOURCE

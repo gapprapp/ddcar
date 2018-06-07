@@ -19,6 +19,7 @@
     
     <link rel="stylesheet" href="css/index.css">
     <link rel="stylesheet" href="css/jquery-confirm.css">
+    <link rel="stylesheet" href="css/loading.css">
 
     <!-- Font -->
     <link href="https://fonts.googleapis.com/css?family=Prompt" rel="stylesheet">
@@ -113,7 +114,11 @@
                 type: "POST",
                 url:"https://omise-webpack.000webhostapp.com/www/php/stock_in.php",           
                 data: dataString,               
-                success: function(data){              
+                beforeSend: function(){
+                    $(".overlay").prop('hidden', false);
+                },             
+                success: function(data){  
+                $(".overlay").prop('hidden', true);              
                     if(data == "success"){
                         $.confirm({
                             title: 'นำสินค้าเข้าเสร็จสิ้น',
@@ -328,6 +333,8 @@
 </head>
 
 <body style="overflow: auto;">
+    <!-- Loading -->
+    <div class="overlay" hidden><div class="loading"></div></div>
     <!-- Nav menu top -->
     <div class="row fixed-top navs">
         <div class="col-1 text-center" onclick="transition_page_back('import.html')">

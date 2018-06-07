@@ -66,9 +66,18 @@ function scan(){
             }
         },
         function (error) {
-          $.alert({
-              title: 'คำเตือน!',
-              content: error,
+          $.confirm({
+            title: 'พบข้อผิดพลาด',
+            content: 'กรุณากรอกข้อมูลให้ครบ',
+            backgroundDismiss: true,
+            buttons: {
+              formSubmit: {
+                text: 'ตกลง',
+                btnClass: 'btn-regis',
+                action: function () {
+                }
+              }
+            }
           });
         },
         {
