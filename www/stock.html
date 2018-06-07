@@ -160,17 +160,18 @@
           $("#row-search").prop('hidden', true);
           $(".select_folder").prop('hidden', true);
           $("#col-back").attr('onclick', 'show()');    
-        }else{
-          var i = 0;                 
+        }else{                       
           $('#myUL li').each(function(){
               $(this).attr('data-search-term', $(this).text().toLowerCase());
           });      
 
           var searchTerm = $('#search_prod').val().toLowerCase();
+          alert(searchTerm.length);
 
-          $('#myUL li').each(function(){
-            alert(searchTerm.length);
+          $('#myUL li').each(function(){ 
+            alert(searchTerm.length);           
             if ($(this).filter('[data-search-term *= ' + searchTerm + ']').length > 0 || searchTerm.length < 1) {
+              alert("show");
               $(this).show();                                                     
             } else {
               $(this).hide();                               
@@ -252,17 +253,7 @@
               <button class="select_folder" onclick="selectfolder()">เลือกสินค้า</button>
             </div>  
           </div>
-<<<<<<< HEAD
-        </div>
-
-        <div id="add_ctn" class="container">
-          <ul id="myUL">
-
-          </ul>   
-        </div>
-=======
-        </div>        
->>>>>>> 770942c7e71ee68c5428489ef7c96d3bc21af59a
+        </div>      
     </div>
     <!-- End big container -->
     <script>
