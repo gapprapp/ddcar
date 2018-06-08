@@ -450,6 +450,20 @@
             });
         }
 
+        function search(){
+            $("#search-ctn").prop('hidden', false);
+            $("#big-ctn").prop('hidden', true);
+            $("#navs-bttm").prop('hidden', true);
+            $("#col-back").attr('onclick', 'show()');               
+        }
+
+        function show(){
+            $("#search-ctn").prop('hidden', true);
+            $("#big-ctn").prop('hidden', false);
+            $("#navs-bttm").prop('hidden', false);
+            $("#col-back").attr('onclick', 'transition_page_back("index.html")');
+        }
+
     </script>
 </head>
 
@@ -457,9 +471,23 @@
     <!-- Loading -->
     <div class="overlay" hidden><div class="loading"></div></div>
 
+    <!-- Search ctn -->
+    <div id="search-ctn" class="container justify-content-center" style="margin-top: 20%;" hidden>
+        <div class="row">
+            <div class="col-12 text-center">
+                <input id="search_prod" type="text" onkeyup="search()" class="form-control form-control-lg text-center" placeholder="ค้นหาสินค้า" autofocus>
+            </div>  
+        </div>
+        <div id="add_ctn" class="container">
+            <ul id="myUL">
+
+            </ul>            
+        </div>
+    </div>
+
     <!-- Nav menu top -->
     <div class="row fixed-top navs">
-        <div class="col-1 text-center" onclick="transition_page_back('index.html')">
+        <div id="col-back" class="col-1 text-center" onclick="transition_page_back('index.html')">
             <i id="i-back" class="fas fa-angle-left"></i>
         </div>
         <div class="col-8 text-right" style="margin-right: 4%;">
@@ -470,7 +498,7 @@
     <br>
 
     <!-- big container -->
-    <div class="container justify-content-center" style="margin-top: 15%;">
+    <div id="big-ctn" class="container justify-content-center" style="margin-top: 15%;">
         <div class="container">
             <div class="row mg-10">
                 <div class="col-5 text-center">
@@ -479,7 +507,7 @@
                 </div>
                 <div class="col-7 text-center">
                     <label for="name">ชื่อสินค้า</label>
-                    <input id="name" type="text" class="w3-input">
+                    <input id="name" type="text" class="w3-input" onclick="search();" readonly>
                 </div>
             </div>
             <div class="row mg-10">
@@ -494,17 +522,17 @@
             </div>
             <div class="row" style="margin-bottom: 20%;">
                 <div class="col-4 text-center">
-                    <label for="cost" class="popup">ทุน
+                    <label for="cost" class="popup" style="font-size: 110%;">ทุน
                         <span class="popuptext" id="myPopup">เฉลี่ย: <span id="avg-rate"></span></span>
                     </label>
                     <input id="cost" type="number" class="w3-input" onchange="cal_avg('cost')">
                 </div>
                 <div class="col-4 text-center">
-                    <label for="wholesale">ขายส่ง</label>
+                    <label for="wholesale" style="font-size: 110%;">ขายส่ง</label>
                     <input id="wholesale" type="number" class="w3-input">
                 </div>
                 <div class="col-4 text-center">
-                    <label for="retail">ขายปลีก</label>
+                    <label for="retail" style="font-size: 110%;">ขายปลีก</label>
                     <input id="retail" type="number" class="w3-input">
                 </div>
             </div>
@@ -523,7 +551,7 @@
     <!-- End big container -->
 
     <!-- Nav menu bottom -->
-    <div class="row fixed-bottom navs">
+    <div id="navs-bttm" class="row fixed-bottom navs">
         <div class="col-3 text-center" onclick="window.location='index.html';">
             <i id="i-home" class="fas fa-home menu"></i>
         </div>

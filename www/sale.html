@@ -303,6 +303,19 @@
             transition_page_next(goto);
         }
 
+        function search(){
+            $("#search-ctn").prop('hidden', false);
+            $("#big-ctn").prop('hidden', true);
+            $("#navs-bttm").prop('hidden', true);
+            $("#col-back").attr('onclick', 'show()');               
+        }
+
+        function show(){
+            $("#search-ctn").prop('hidden', true);
+            $("#big-ctn").prop('hidden', false);
+            $("#navs-bttm").prop('hidden', false);
+            $("#col-back").attr('onclick', 'transition_page_back("index.html")');
+        }
     </script>
 </head>
 
@@ -310,9 +323,23 @@
     <!-- Loading -->
     <div class="overlay" hidden><div class="loading"></div></div>
 
+    <!-- Search ctn -->
+    <div id="search-ctn" class="container justify-content-center" style="margin-top: 20%;" hidden>
+        <div class="row">
+            <div class="col-12 text-center">
+                <input id="search_prod" type="text" onkeyup="search()" class="form-control form-control-lg text-center" placeholder="ค้นหาสินค้า" autofocus>
+            </div>  
+        </div>
+        <div id="add_ctn" class="container">
+            <ul id="myUL">
+
+            </ul>            
+        </div>
+    </div>
+
     <!-- Nav menu top -->
     <div class="row fixed-top navs" >
-        <div class="col-1 text-center" onclick="transition_page_back('index.html')">
+        <div id="col-back" class="col-1 text-center" onclick="transition_page_back('index.html')">
             <i id="i-back" class="fas fa-angle-left"></i>
         </div>
         <div class="col-8 text-center" style="padding-left: 15%; margin-right: 4%;">
@@ -322,8 +349,8 @@
     </div>
     <br>
 
-    <!-- End big container -->
-    <div class="container justify-content-center" style="margin-top: 20%;">
+    <!-- Start big container -->
+    <div id="big-ctn" class="container justify-content-center" style="margin-top: 20%;">
         <div class="container">
             <div class="row mg-10">
                 <div class="col-12 text-center pdlr">
@@ -334,7 +361,7 @@
             <div class="row mg-10">
                 <div class="col-12 text-center pdlr">
                     <label for="name">ชื่อสินค้า</label>
-                    <input readonly id="name" type="text" class="w3-input">
+                    <input readonly id="name" type="text" class="w3-input" onclick="search();">
                 </div>
             </div>
             <div class="row" style="margin-bottom: 20%;">
@@ -369,7 +396,7 @@
     <!-- End big container -->
 
     <!-- Nav menu bottom -->
-    <div class="row fixed-bottom navs">
+    <div id="navs-bttm" class="row fixed-bottom navs">
         <div class="col-3 text-center" onclick="transition_page_back('index.html');">
             <i id="i-home" class="fas fa-home menu"></i>
         </div>
@@ -384,8 +411,9 @@
         </div>
     </div>
     <!-- End Nav menu bottom -->
+    
     <script>
-        //Touch animation
+    //Touch animation
     $(".mbtn").on("touchstart", function() {
       $(this).addClass('mbtn-touch');
     });

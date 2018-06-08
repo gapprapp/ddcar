@@ -303,12 +303,44 @@
             transition_page_next(goto);
         }
 
+        var ch = 0;
+        function search(){
+          ch++;
+          if(ch == 1){
+            get_prod();
+            $("#big-ctn").prop('hidden', true);
+            $("#navs_bttm").prop('hidden', true);
+            $("#col-back").attr('onclick', 'show()');    
+          }else{                       
+            $('#myUL li').each(function(){
+                $(this).attr('data-search-term', $(this).text().toLowerCase());
+            });      
+
+            var searchTerm = $('#search_prod').val().toLowerCase();
+            //alert(searchTerm.length);
+
+            $('#myUL li').each(function(){ 
+              //alert(searchTerm.length);           
+              if ($(this).filter('[data-search-term *= ' + searchTerm + ']').length > 0 || searchTerm.length < 1) {
+                //alert("show");
+                $(this).show();                                                     
+              } else {
+                $(this).hide();                               
+              }
+            });   
+          }                       
+        }
     </script>
 </head>
 
 <body>
     <!-- Loading -->
     <div class="overlay" hidden><div class="loading"></div></div>
+
+    <!-- Search ctn -->
+    <div class="container justify-content-center" style="margin-top: 15%;">
+        
+    </div>
 
     <!-- Nav menu top -->
     <div class="row fixed-top navs" >
@@ -322,8 +354,8 @@
     </div>
     <br>
 
-    <!-- End big container -->
-    <div class="container justify-content-center" style="margin-top: 20%;">
+    <!-- Start big container -->
+    <div id="big-ctn" class="container justify-content-center" style="margin-top: 20%;">
         <div class="container">
             <div class="row mg-10">
                 <div class="col-12 text-center pdlr">
@@ -369,7 +401,7 @@
     <!-- End big container -->
 
     <!-- Nav menu bottom -->
-    <div class="row fixed-bottom navs">
+    <div id="navs_bttm" class="row fixed-bottom navs">
         <div class="col-3 text-center" onclick="transition_page_back('index.html');">
             <i id="i-home" class="fas fa-home menu"></i>
         </div>
@@ -384,8 +416,9 @@
         </div>
     </div>
     <!-- End Nav menu bottom -->
+    
     <script>
-        //Touch animation
+    //Touch animation
     $(".mbtn").on("touchstart", function() {
       $(this).addClass('mbtn-touch');
     });
