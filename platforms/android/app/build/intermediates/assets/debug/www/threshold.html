@@ -39,20 +39,36 @@
     }
   </style>
 
-  <script>
-    /*
-      ajax loading..
-      .
-      .
-      beforeSend: function(){
-          $(".overlay").prop('hidden', false);
-      },             
-      success: function(data){  
-          $(".overlay").prop('hidden', true); 
-      .
-      .
-      .    
-    */
+  <script>   
+    $(document).ready(function() {
+      $.ajax({
+        type: "GET",
+        url:"https://omise-webpack.000webhostapp.com/www/php/get_threshold.php",
+        beforeSend: function(){
+            $(".overlay").prop('hidden', false);
+        },
+        success: function(data){  
+          $(".overlay").prop('hidden', true);
+          var obj = jQuery.parseJSON(data);
+          if(obj){
+            $.each(obj, function(i, field){                   
+            $('#show_thre').append( "<div id='prod-"+i+"' class='row mg-5'>" +               
+              "<div class='col-1 text-left'>" +
+                "<i class='fa fa-trash-alt i-del' onclick='remove("+i+","+field.prod_id+");' style='color: #666;' hidden></i>" +
+                "<i class='fa fa-edit i-edit' onclick='edit("+i+","+field.prod_id+","+field.min_amount+","+field.day_transport+",\""+field.prod_code+"\");' style='color: #666;' hidden></i>" +
+              "</div>" +
+              "<div id='name-"+i+"' class='col-5 text-center' style='padding-right: 0;'>"+field.prod_name+"</div>" +        
+              "<div id='deliver-1'  class='col-3 text-center'>"+field.day_transport+"</div>" +
+              "<div id='amount-1' class='col-2 text-center'>"+field.min_amount+"</div>" +
+              "<div class='col-1'></div>" +
+              "</div>   " +
+              "<hr id='hr-"+i+"'>");                                                  
+            });
+          }                                 
+        }               
+      });
+    });
+
     function disactive(arg) {
       nav_menu = ['home', 'add', 'edit', 'del'];
       for (i = 0; i < 4; i++) {
@@ -80,8 +96,7 @@
       }
 
       if(arg == "add"){
-        goto = "customer_add.html";
-        transition_page_back_flip(goto);
+       
       }else if(arg == "edit"){
         // show edit all
         if ($(".i-edit").is(":visible")) {
@@ -105,12 +120,13 @@
       }
     }
 
-    function edit(arg){
-      window.location = "set_threshold.html?prod=1";
+    function edit(arg,prod,amt,trans,barcode){
+      var name = $("#name-"+arg).text();
+      window.location = "set_threshold.html?name="+name+"&prod="+prod+"&amt="+amt+"&deliver="+trans+"&barcode="+barcode;
     }
 
-    function remove(arg){
-      name = $("#name-"+arg).text();
+    function remove(arg,prod_id){
+      var name = $("#name-"+arg).text();
       $.confirm({
           title: 'ลบรายการ',
           content: 'ต้องการลบ '+name+' หรือไม่',
@@ -120,8 +136,21 @@
               text: 'ตกลง',
               btnClass: 'btn-danger',
               action: function () {
-                  $("#prod-"+arg).remove(); 
-                  $("#hr-"+arg).remove();
+                $.ajax({
+                  type: "POST",
+                  url:"https://omise-webpack.000webhostapp.com/www/php/delete_threshold.php",
+                  data:{'prod_id':prod_id},
+                  beforeSend: function(){
+                      $(".overlay").prop('hidden', false);
+                  },
+                  success: function(data){  
+                    $(".overlay").prop('hidden', true);
+                    if(data == "success"){              
+                      $("#prod-"+arg).remove(); 
+                      $("#hr-"+arg).remove(); 
+                    }                                               
+                  }               
+                });                 
               }
             },ยกเลิก: function () {}
           }  
@@ -149,9 +178,10 @@
 
   <!-- End big container -->
   <div id="big-ctn" class="container justify-content-center" style="margin-top: 15%;">
-      <div class="row">
+      <div id="show_thre" class="container">
+      <div class="row mg-5">
         <div class="col-1"></div>
-        <div class="col-6 text-center" style="padding-left: 0;">
+        <div class="col-5 text-center" style="padding-left: 0;">
           <h5 id="title">ชื่อสินค้า</h5>
         </div>
         <div class="col-3 text-center">
@@ -164,19 +194,7 @@
       <hr>
 
       <!-- Show -->
-     <div id='prod-1' class='row mg-5'>              
-       <div class='col-1 text-left'>
-         <i class='fa fa-trash-alt i-del' onclick='remove(1);' style='color: #666;' hidden></i>
-         <i class='fa fa-edit i-edit' onclick='edit(1);' style='color: #666;' hidden></i>
-       </div>
-       <div id="name-1" class="col-6 text-center" style="padding-right: 0;">
-         ชื่อสนิค้าๆๆๆๆาๆาๆา
-       </div>
-       <div id="deliver-1"  class='col-3 text-center' onclick='show_cus("+obj[i].cus_id+");'>20</div>
-       <div id="amount-1" class='col-2 text-center' onclick='show_cus("+obj[i].cus_id+");'>12</div>
-       <div class='col-1'></div>
-     </div>   
-     <hr id='hr-1'>
+    </div>    
   </div>
   <!-- End big container -->
 
@@ -185,7 +203,7 @@
     <div class="col-3 text-center" onclick="transition_page_back('index.html');">
       <i id="i-home" class="fas fa-home menu"></i>
     </div>
-    <div class="col-3 text-center" onclick="transition_page_next('set_treshold.html')">
+    <div class="col-3 text-center" onclick="transition_page_next('set_threshold.html')">
       <i id="i-add" class="fas fa-plus menu"></i>
     </div>
     <div class="col-3 text-center" onclick="menu('edit')">

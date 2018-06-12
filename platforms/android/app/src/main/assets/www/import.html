@@ -43,6 +43,11 @@
             animation-direction: alternate-reverse;
             animation-iteration-count: infinite;
         }
+        ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+        }     
     
         @-webkit-keyframes fade {
             from {opacity: 0.55; } 
@@ -57,9 +62,8 @@
         var img;    
         $(document).ready(function () { 
             url = new URL(window.location.href);
-            prod_id = url.searchParams.get("product");  
+            prod_id = url.searchParams.get("product");
 
-            get_place()
             if(localStorage.ware_id_im){
                 $("#h5-title").removeClass('fade');  
                 $("#h5-title").css('padding-left', '15%');
@@ -74,7 +78,7 @@
                 $("#h5-title").unbind();      
             }          
             if(prod_id){
-                get_prod();
+                get_prod(prod_id);
             } 
             if(localStorage.arr_prod_i){
                 $("#btn-folder").attr('disabled',true);           
@@ -82,59 +86,8 @@
                 var retrievedObject = localStorage.getItem('arr_prod_i');
                 var arr_data = JSON.parse(retrievedObject); 
                 prod_id = arr_data[0].prod_id;            
-                get_prod();
-            }       
-
-            var options = {
-                url: function(phrase) {
-                    return "https://omise-webpack.000webhostapp.com/www/php/searh_prod.php";
-                },
-                getValue: function(element) {    
-                    //console.log(element);                               
-                    return element.prod_name;
-                },
-                ajaxSettings: {                      
-                method: "POST",
-                data: {}
-                },
-                preparePostData: function(data) {
-                    data.phrase = $("#name").val();                  
-                    return data;
-                },
-                list: {                        
-                    maxNumberOfElements: 5,
-                    showAnimation: {
-                        type: "slide",
-                        time: 200
-                    },
-                    hideAnimation: {
-                        type: "slide",
-                        time: 200
-                    },
-                    onChooseEvent: function() {
-                        var code = $("#name").getSelectedItemData().prod_code;
-                        var price_w = $("#name").getSelectedItemData().prod_price;
-                        var price_s = $("#name").getSelectedItemData().prod_pricesend;
-                        cost_o = $("#name").getSelectedItemData().prod_cost;
-                        prod_id = $("#name").getSelectedItemData().prod_id;
-                        img = $("#name").getSelectedItemData().img; 
-
-                        $('#barcode').val(code);
-                        if(cost_o == 0 && price_w == 0 && price_s == 0){
-                            $('#wholesale').val("");      
-                            $('#retail').val("");  
-                            $('#cost').val("");       
-                        }else{
-                            $('#wholesale').val(price_s);      
-                            $('#retail').val(price_w);  
-                            $('#cost').val(cost_o);                         
-                            flag = 1;
-                        }                                                                           
-                    }
-                }, 
-                //theme: "blue-light",                   
-                };
-            $("#name").easyAutocomplete(options);      
+                get_prod(prod_id);
+            }      
         });
 
         arr_place = [];
@@ -159,11 +112,12 @@
             });  
         }
 
-        function get_prod(){
+        function get_prod(id){
+            prod_id = id;
             $.ajax({
                 type: "POST",
                 url:"https://omise-webpack.000webhostapp.com/www/php/get_prod.php",    
-                data:{'prod_id' : prod_id},
+                data:{'prod_id' : id},
                 //async: false,                       
                 beforeSend: function(){
                     $(".overlay").prop('hidden', false);
@@ -186,9 +140,11 @@
                             $('#retail').val(obj[i].prod_price);                     
                             flag = 1;
                         }                        
-                    });                                        
+                    }); 
+                    show_prod();                                       
                 }               
-            }); 
+            });
+            get_place() 
         }
 
         var check =  0;
@@ -364,7 +320,7 @@
                 var retrievedObject = localStorage.getItem('arr_prod_i');
                 var arr_data2 = JSON.parse(retrievedObject);                                   
                 prod_id = arr_data2[0].prod_id;            
-                get_prod();            
+                get_prod(prod_id);            
             }else{                   
                 $("#btn-folder").removeAttr('disabled');           
                 //$("#btn-addpic").removeAttr('disabled');
@@ -450,6 +406,64 @@
             });
         }
 
+        function get_allprod(){
+            $.ajax({
+                type: "GET",
+                url: "https://omise-webpack.000webhostapp.com/www/php/get_allprod.php",                     
+                beforeSend: function(){
+                    $(".overlay").prop('hidden', false);
+                },             
+                success: function(data){  
+                    $(".overlay").prop('hidden', true);                             
+                    var obj = jQuery.parseJSON(data);                       
+                    $.each(obj, function(i, field){ 
+                        $('#myUL').append('<li><div id="prod-1" class="row" onclick="get_prod('+field.prod_id+')">' +
+                        '<div class="col-4 text-center p">'+field.prod_code+'</div>' +
+                        '<div class="col-8 text-center p">'+field.prod_name+'</div>' +
+                        '</div><hr></li>');        
+                    });                                                                                                                               
+                }               
+            }); 
+        }
+
+        var ch = 0;
+        function search(){
+            ch++;
+            if(ch == 1){
+                get_allprod();
+                $("#search-ctn").prop('hidden', false);
+                $("#big-ctn").prop('hidden', true);
+                $("#navs-bttm").prop('hidden', true);
+                $("#col-back").attr('onclick', 'show_prod()');            
+            }else{                       
+                $('#myUL li').each(function(){
+                    $(this).attr('data-search-term', $(this).text().toLowerCase());
+                });      
+
+                var searchTerm = $('#search_prod').val().toLowerCase();
+                //alert(searchTerm.length);
+
+                $('#myUL li').each(function(){ 
+                    //alert(searchTerm.length);           
+                    if ($(this).filter('[data-search-term *= ' + searchTerm + ']').length > 0 || searchTerm.length < 1) {
+                    //alert("show");
+                        $(this).show();                                                     
+                    } else {
+                        $(this).hide();                               
+                    }
+                });   
+            }                 
+        }
+
+        function show_prod(){
+            $("#search-ctn").prop('hidden', true);
+            $("#big-ctn").prop('hidden', false);
+            $("#navs-bttm").prop('hidden', false);
+            $("#col-back").attr('onclick', 'transition_page_back("index.html")');
+            $('#myUL').empty();
+            ch = 0;
+        }
+
     </script>
 </head>
 
@@ -457,9 +471,23 @@
     <!-- Loading -->
     <div class="overlay" hidden><div class="loading"></div></div>
 
+    <!-- Search ctn -->
+    <div id="search-ctn" class="container justify-content-center" style="margin-top: 20%;" hidden>
+        <div class="row mg-10">
+            <div class="col-12 text-center">
+                <input id="search_prod" type="text" onkeyup="search()" class="form-control form-control-lg text-center" placeholder="ค้นหาสินค้า" autofocus>
+            </div>  
+        </div>
+        <div id="add_ctn" class="container">
+            <ul id="myUL">
+
+            </ul>            
+        </div>
+    </div>
+
     <!-- Nav menu top -->
     <div class="row fixed-top navs">
-        <div class="col-1 text-center" onclick="transition_page_back('index.html')">
+        <div id="col-back" class="col-1 text-center" onclick="transition_page_back('index.html')">
             <i id="i-back" class="fas fa-angle-left"></i>
         </div>
         <div class="col-8 text-right" style="margin-right: 4%;">
@@ -470,7 +498,7 @@
     <br>
 
     <!-- big container -->
-    <div class="container justify-content-center" style="margin-top: 15%;">
+    <div id="big-ctn" class="container justify-content-center" style="margin-top: 15%;">
         <div class="container">
             <div class="row mg-10">
                 <div class="col-5 text-center">
@@ -479,7 +507,7 @@
                 </div>
                 <div class="col-7 text-center">
                     <label for="name">ชื่อสินค้า</label>
-                    <input id="name" type="text" class="w3-input">
+                    <input id="name" type="text" class="w3-input" onclick="search();" readonly>
                 </div>
             </div>
             <div class="row mg-10">
@@ -494,17 +522,17 @@
             </div>
             <div class="row" style="margin-bottom: 20%;">
                 <div class="col-4 text-center">
-                    <label for="cost" class="popup">ทุน
+                    <label for="cost" class="popup" style="font-size: 110%;">ทุน
                         <span class="popuptext" id="myPopup">เฉลี่ย: <span id="avg-rate"></span></span>
                     </label>
                     <input id="cost" type="number" class="w3-input" onchange="cal_avg('cost')">
                 </div>
                 <div class="col-4 text-center">
-                    <label for="wholesale">ขายส่ง</label>
+                    <label for="wholesale" style="font-size: 110%;">ขายส่ง</label>
                     <input id="wholesale" type="number" class="w3-input">
                 </div>
                 <div class="col-4 text-center">
-                    <label for="retail">ขายปลีก</label>
+                    <label for="retail" style="font-size: 110%;">ขายปลีก</label>
                     <input id="retail" type="number" class="w3-input">
                 </div>
             </div>
@@ -523,7 +551,7 @@
     <!-- End big container -->
 
     <!-- Nav menu bottom -->
-    <div class="row fixed-bottom navs">
+    <div id="navs-bttm" class="row fixed-bottom navs">
         <div class="col-3 text-center" onclick="window.location='index.html';">
             <i id="i-home" class="fas fa-home menu"></i>
         </div>

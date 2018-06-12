@@ -254,3 +254,9 @@ label{
 	font-weight: bold;
 	color: #d63232;
 }
+
+#search_prod:focus, #search_prod:active {
+        outline: red !important;
+        box-shadow: none;
+        border-color: #d63232;
+      }

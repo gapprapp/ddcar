@@ -46,6 +46,11 @@
             animation-direction: alternate-reverse;
             animation-iteration-count: infinite;
         }
+        ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+        }     
     
         @-webkit-keyframes fade {
             from {opacity: 0.55; } 
@@ -73,7 +78,7 @@
                 $('#check-export').text(arr_data.length);       
             }
             if(prod_id){
-                get_prod();
+                get_prod(prod_id);
             } 
             if(localStorage.arr_prod_e){
                 $("#btn-folder").attr('disabled',true);           
@@ -81,55 +86,16 @@
                 var retrievedObject = localStorage.getItem('arr_prod_e');
                 var arr_data = JSON.parse(retrievedObject); 
                 prod_id = arr_data[0].prod_id;            
-                get_prod();
-            }          
-
-            var options = {
-                url: function(phrase) {
-                    return "https://omise-webpack.000webhostapp.com/www/php/searh_prod.php";
-                },
-                getValue: function(element) {    
-                    //console.log(element);                               
-                    return element.prod_name;
-                },
-                ajaxSettings: {                      
-                method: "POST",
-                data: {}
-                },
-                preparePostData: function(data) {
-                    data.phrase = $("#name").val();                  
-                    return data;
-                },
-                list: {                        
-                    maxNumberOfElements: 5,
-                    showAnimation: {
-                        type: "slide",
-                        time: 200
-                    },
-                    hideAnimation: {
-                        type: "slide",
-                        time: 200
-                    },
-                    onChooseEvent: function() {
-                        var code = $("#name").getSelectedItemData().prod_code;                    
-                        var cost = $("#name").getSelectedItemData().prod_cost;
-                        prod_id = $("#name").getSelectedItemData().prod_id;
-                        img = $("#name").getSelectedItemData().img; 
-
-                        $('#barcode').val(code);
-                        $('#cost').val(cost);                                                                                             
-                    }
-                }, 
-                //theme: "blue-light",                   
-                };
-            $("#name").easyAutocomplete(options);      
+                get_prod(prod_id);
+            }     
         });
 
-        function get_prod(){
+        function get_prod(id){
+            prod_id = id;
             $.ajax({
                 type: "POST",
                 url:"https://omise-webpack.000webhostapp.com/www/php/get_prod.php",    
-                data:{'prod_id' : prod_id},
+                data:{'prod_id' : id},
                 //async: false,                       
                 beforeSend: function(){
                     $(".overlay").prop('hidden', false);
@@ -142,15 +108,73 @@
                         $('#barcode').val(obj[i].prod_code); 
                         $('#cost').val(obj[i].prod_cost);                       
                         img = obj[i].img;                           
-                    });                                        
+                    });
+                    show();                                        
                 }               
             }); 
         }
 
-        function add_export(){           
+        function scanqr(){
+            cordova.plugins.barcodeScanner.scan(
+            function (result) {
+                    if(!result.cancelled){
+                        // In this case we only want to process QR Codes
+                        if(result.format == "QR_CODE"){
+                                var value = result.text;
+                                // This is the retrieved content of the qr code
+                                //alert(value);                        
+                                $.ajax({
+                                    type: "POST",
+                                    url: "https://omise-webpack.000webhostapp.com/www/php/get_prod.php",                
+                                    data: {'qr' : value},             
+                                    beforeSend: function(){
+                                        $(".overlay").prop('hidden', false);
+                                    },             
+                                    success: function(data){  
+                                        $(".overlay").prop('hidden', true);                             
+                                        var obj = jQuery.parseJSON(data); 
+                                        $.each(obj, function(i, field){                                           
+                                            $('#name').val(obj[i].prod_name);
+                                            $('#barcode').val(obj[i].prod_code); 
+                                            $('#cost').val(obj[i].prod_cost);                       
+                                            img = obj[i].img;                                             
+                                            prod_id = obj[i].prod_id;       
+                                        });                                                                                      
+                                    }               
+                                });                                       
+                        }else{
+                            //alert("Sorry, only qr codes this time ;)");
+                        }
+                    }else{
+                        //alert("The user has dismissed the scan");
+                    }
+                },
+                function (error) {
+                    $.confirm({
+                      title: 'พบข้อผิดพลาด',
+                      content: 'กรุณากรอกข้อมูลให้ครบ',
+                      backgroundDismiss: true,
+                      buttons: {
+                        formSubmit: {
+                          text: 'ตกลง',
+                          btnClass: 'btn-regis',
+                          action: function () {
+                          }
+                        }
+                      }
+                    });
+                },
+                {
+                    prompt : "วางคิวอาโค้ดภายในสี่เหลี่ยมผืนผ้าที่ช่องมองภาพเพื่อแสกน"
+                }
+            );
+
+        } 
+
+        function add_export(){
             var code = $('#barcode').val();
             var cost = $('#cost').val();          
-            if(code != "" && cost != ""){             
+            if(code != "" && cost != "" && $("#h5-title").text() != "เลือกโกดัง(ออก)"){             
                 if(localStorage.arr_ex){
                     var retrievedObject = localStorage.getItem('arr_ex');
                     var arr_data = JSON.parse(retrievedObject);               
@@ -187,7 +211,7 @@
                     var retrievedObject = localStorage.getItem('arr_prod_e');
                     var arr_data2 = JSON.parse(retrievedObject);                                   
                     prod_id = arr_data2[0].prod_id;            
-                    get_prod();            
+                    get_prod(prod_id);            
                 }else{                   
                     $("#btn-folder").removeAttr('disabled');           
                     $("#btn-addpic").removeAttr('disabled');
@@ -284,11 +308,53 @@
                 });  
         }
 
+        function get_allprod(){
+            $.ajax({
+                type: "GET",
+                url: "https://omise-webpack.000webhostapp.com/www/php/get_allprod.php",                     
+                beforeSend: function(){
+                    $(".overlay").prop('hidden', false);
+                },             
+                success: function(data){  
+                    $(".overlay").prop('hidden', true);                             
+                    var obj = jQuery.parseJSON(data);                       
+                    $.each(obj, function(i, field){ 
+                        $('#myUL').append('<li><div id="prod-1" class="row" onclick="get_prod('+field.prod_id+')">' +
+                        '<div class="col-4 text-center p">'+field.prod_code+'</div>' +
+                        '<div class="col-8 text-center p">'+field.prod_name+'</div>' +
+                        '</div><hr></li>');        
+                    });                                                                                                                               
+                }               
+            }); 
+        }
+
+        var ch = 0;
         function search(){
-            $("#search-ctn").prop('hidden', false);
-            $("#big-ctn").prop('hidden', true);
-            $("#navs-bttm").prop('hidden', true);
-            $("#col-back").attr('onclick', 'show()');               
+            ch++;
+            if(ch == 1){
+                get_allprod();
+                $("#search-ctn").prop('hidden', false);
+                $("#big-ctn").prop('hidden', true);
+                $("#navs-bttm").prop('hidden', true);
+                $("#col-back").attr('onclick', 'show()');            
+            }else{                       
+                $('#myUL li').each(function(){
+                    $(this).attr('data-search-term', $(this).text().toLowerCase());
+                });      
+
+                var searchTerm = $('#search_prod').val().toLowerCase();
+                //alert(searchTerm.length);
+
+                $('#myUL li').each(function(){ 
+                    //alert(searchTerm.length);           
+                    if ($(this).filter('[data-search-term *= ' + searchTerm + ']').length > 0 || searchTerm.length < 1) {
+                    //alert("show");
+                        $(this).show();                                                     
+                    } else {
+                        $(this).hide();                               
+                    }
+                });   
+            }                 
         }
 
         function show(){
@@ -296,6 +362,8 @@
             $("#big-ctn").prop('hidden', false);
             $("#navs-bttm").prop('hidden', false);
             $("#col-back").attr('onclick', 'transition_page_back("index.html")');
+            $('#myUL').empty();
+            ch = 0;
         } 
 
     </script>
@@ -307,7 +375,7 @@
 
     <!-- Search ctn -->
     <div id="search-ctn" class="container justify-content-center" style="margin-top: 20%;" hidden>
-        <div class="row">
+        <div class="row mg-10">
             <div class="col-12 text-center">
                 <input id="search_prod" type="text" onkeyup="search()" class="form-control form-control-lg text-center" placeholder="ค้นหาสินค้า" autofocus>
             </div>  
@@ -320,8 +388,8 @@
     </div>
 
     <!-- Nav menu top -->
-    <div id="col-back" class="row fixed-top navs">
-        <div class="col-1 text-center" onclick="transition_page_back('index.html')">
+    <div class="row fixed-top navs">
+        <div id="col-back" class="col-1 text-center" onclick="transition_page_back('index.html')">
             <i id="i-back" class="fas fa-angle-left"></i>
         </div>
         <div class="col-8 text-right" style="margin-right: 4%;">
@@ -356,7 +424,7 @@
             </div>
             <div class="row mg-10">
                 <div class="col-4 text-center" style="padding-right: 0;">
-                    <button id="btn-addpic" class="mbtn-green" onclick="scan();">สแกน</button>
+                    <button id="btn-addpic" class="mbtn-green" onclick="scanqr();">สแกน</button>
                 </div>
                 <div class="col-8 text-center">
                     <button id="btn-folder" class="select_folder" onclick="selectfolder()">เลือกสินค้า</button>

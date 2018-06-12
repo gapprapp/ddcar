@@ -25,8 +25,8 @@
   <link href="https://fonts.googleapis.com/css?family=Prompt" rel="stylesheet">
 
   <style>
-    #title {
-      color: #666666;
+    h5 {
+      color: #515151;
       letter-spacing: 2px;
     }
 
@@ -58,7 +58,8 @@
 
       $.ajax({
         type: "POST",
-        url:"https://omise-webpack.000webhostapp.com/www/php/get_folder.php",                         
+        url:"https://omise-webpack.000webhostapp.com/www/php/get_folder.php",
+        crossDomain: true,
         data: {'parent' : parent},  
         beforeSend: function(){
           $(".overlay").prop('hidden', false);
@@ -73,7 +74,7 @@
                 $("#add-ctn").prop('hidden', false);
                 if(from == "add"){                 
                   $("#row-select").prop('hidden', false);
-                }else if(from == "import" || from == "tran_in" || from == "export" || from == "sale" || from == "stock"){                 
+                }else if(from == "import" || from == "tran_in" || from == "export" || from == "sale" || from == "stock" || from == "thre"){                 
                   $("#row-select").prop('hidden', true);
                 }                
               }
@@ -89,10 +90,10 @@
                     $("#row-add").prop('hidden', true);
                     $("#row-input-add").prop('hidden', true);
                     $("#row-select").prop('hidden', false);       
-                  }else if(from == "import" || from == "tran_in" || from == "export" || from == "sale" || from == "stock"){                    
+                  }else if(from == "import" || from == "tran_in" || from == "export" || from == "sale" || from == "stock" || from == "thre"){                    
                     $("#add-ctn").prop('hidden', true);
                     $("#show-box").prop('hidden',false); 
-                    if(from == "stock"){
+                    if(from == "stock" || from == "thre"){
                       $("#show-box").prop('hidden',true); 
                     }                                      
                   } 
@@ -101,7 +102,7 @@
                       text_html = "<div id='row-title-"+i+"' class='row'>" +
                         "<span id='span-"+i+"' hidden>" + obj[i].title + "</span>" +
                         "<div class='col-2 text-center'><i id='box-"+i+"' class='far fa-check-square six box' onclick='check("+i+")' hidden></i></div>" +
-                        "<div id='getin-"+i+"' class='col-8 text-center' onclick='getIn(\"" + obj[i].title + "\", "+i+")'>" +
+                        "<div id='getin-"+i+"' class='col-8 text-center title' onclick='getIn(\"" + obj[i].title + "\", "+i+")'>" +
                         "<h5 id='title-"+i+"'>" + obj[i][2] + "</h5>" +
                         "</div>" +
                         "<div class='col-2'></div>" +
@@ -122,7 +123,7 @@
                   text_html = "<div id='row-title-"+i+"' class='row'>" +
                     "<span id='span-"+i+"' hidden>" + obj[i].title + "</span>" +
                     "<div class='col-2'><i class='fa fa-trash-alt i-trash' onclick='remove("+i+")' style='color: #666;' hidden></i><i class='fa fa-edit i-edit' onclick='edit("+i+")' style='color: #666;' hidden></i></div>" +
-                    "<div id='getin-"+i+"' class='col-8 text-center' onclick='getIn(\"" + obj[i].title + "\")'>" +
+                    "<div id='getin-"+i+"' class='col-8 text-center title' onclick='getIn(\"" + obj[i].title + "\")'>" +
                     "<h5 id='title-"+i+"'>" + obj[i].title + "</h5></div>" +
                     "<div class='col-2'></div>" +
                     "</div ><hr id='hr-"+i+"'>";
@@ -325,7 +326,9 @@
           goto = "sale.html?product="+arg;
         }else if(from == "stock"){
           goto = "stock.html?product="+arg;
-        }    
+        }else if(from == "thre"){
+          goto = "set_threshold.html?product="+arg;
+        }  
       }     
       transition_page_next(goto);
     }
@@ -352,7 +355,7 @@
                 text_html = "<div id='row-title-"+index+"' class='row'>" +
                   "<span id='span-"+index+"' hidden>" + input + "</span>" +
                   "<div class='col-2'><i class='fa fa-trash-alt i-trash' onclick='remove("+index+")' style='color: #666;' hidden></i><i class='fa fa-edit i-edit' onclick='edit("+index+")' style='color: #666;' hidden></i></div>" +
-                  "<div id='getin-"+index+"' class='col-8 text-center' onclick='getIn(\"" + input + "\")'>" +
+                  "<div id='getin-"+index+"' class='col-8 text-center title' onclick='getIn(\"" + input + "\")'>" +
                   "<h5 id='title-"+index+"'>" + input + "</h5></div>" +
                   "<div class='col-2'></div>" +
                   "</div ><hr id='hr-"+index+"'>";
@@ -384,7 +387,7 @@
                 text_html = "<div id='row-title-"+index+"' class='row'>" +
                   "<span id='span-"+index+"' hidden>" + input + "</span>" +
                   "<div class='col-2'><i class='fa fa-trash-alt i-trash' onclick='remove("+index+")' style='color: #666;' hidden></i><i class='fa fa-edit i-edit' onclick='edit("+index+")' style='color: #666;' hidden></i></div>" +
-                  "<div id='getin-"+index+"' class='col-8 text-center' onclick='getIn(\"" + input + "\")'>" +
+                  "<div id='getin-"+index+"' class='col-8 text-center title' onclick='getIn(\"" + input + "\")'>" +
                   "<h5 id='title-"+index+"'>" + input + "</h5></div>" +
                   "<div class='col-2'></div>" +
                   "</div ><hr id='hr-"+index+"'>";
@@ -515,7 +518,8 @@
 </head>
 
 <body style="overflow: auto;">
-  
+  <!-- Loading -->
+  <div class="overlay" hidden><div class="loading"></div></div>
 
   <!-- Nav menu top -->
   <div class="row fixed-top navs">
@@ -553,18 +557,8 @@
     </div>
   </div>
 
-  <div id="main-ctn" class="container justify-content-center" style="margin-top: 20%;" >
+  <div id="main-ctn" class="container justify-content-center" style="margin-top: 20%; margin-bottom: 20%;" >
     <div id="append-ctn" class="container">
-      <div id='row-title' class='row' onclick="$(this).on('touchstart', function(event) {
-        event.preventDefault();
-        $(this).css('background', 'LightGray')
-      });">
-        <div class='col-2 text-center'><i id='box' class='far fa-check-square six box' hidden></i></div>
-        <div class='col-8 text-center'>
-        <h5 id='title'>TITLE</h5>
-        </div>
-        <div class='col-2'></div>
-      </div><hr>
     </div>
   </div> 
   <!-- End big container -->
@@ -585,9 +579,6 @@
     </div>
 </div>
 <!-- End Nav menu bottom -->
-  <script>
-    
-  </script>
 </body>
 
 </html>

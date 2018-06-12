@@ -30,45 +30,217 @@
             padding-left: 0;
             padding-right: 0;
         }
+        ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+        } 
     </style>
-    <script>
-        /*
-          ajax loading..
-          .
-          .
-          beforeSend: function(){
-              $(".overlay").prop('hidden', false);
-          },             
-          success: function(data){  
-              $(".overlay").prop('hidden', true); 
-          .
-          .
-          .    
-        */
+    <script>       
+        var prod_id,product;
+        var amount,deliver;
         $(document).ready(function() {
             url = new URL(window.location.href);
-            prod = url.searchParams.get("prod");
-            if(prod){
+            var name = url.searchParams.get("name");
+            var barcode = url.searchParams.get("barcode");
+            prod_id = url.searchParams.get("prod");
+            amount = url.searchParams.get("amt");
+            deliver = url.searchParams.get("deliver");
+            product = url.searchParams.get("product");
+            if(prod_id){
                 // if prod then get and show for edit
                 $("#h5-title").text("แก้ไขสต๊อกขั้นต่ำ");
                 $(".mbtn-green").prop('hidden', true);
                 $(".select_folder").prop('hidden', true);
-                $("#name").attr('onclick', '');
-                $("#barcode").prop('readonly', true);
+                $("#name").attr('onclick', '');    
+                $("#name").val(name);   
+                $("#barcode").val(barcode);
+                $("#amount").val(amount); 
+                $("#deliver").val(deliver);                    
+            }
+            if(product){
+                get_prod(product);
             }
             
         });
 
+        function get_prod(id){
+            product = id;
+            $.ajax({
+                type: "POST",
+                url:"https://omise-webpack.000webhostapp.com/www/php/get_prod.php",    
+                data:{'prod_id' : id},                                 
+                beforeSend: function(){
+                    $(".overlay").prop('hidden', false);
+                },             
+                success: function(data){  
+                    $(".overlay").prop('hidden', true);
+                    var obj = jQuery.parseJSON(data);                                         
+                    $.each(obj, function(i, field){
+                        $('#name').val(obj[i].prod_name);
+                        $('#barcode').val(obj[i].prod_code); 
+                        $('#amount').val(obj[i].min_amount);  
+                        $('#deliver').val(obj[i].day_transport);                                              
+                    });
+                    show();                                        
+                }               
+            }); 
+        }
+
+        function scanqr(){
+            cordova.plugins.barcodeScanner.scan(
+            function (result) {
+                    if(!result.cancelled){
+                        // In this case we only want to process QR Codes
+                        if(result.format == "QR_CODE"){
+                                var value = result.text;
+                                // This is the retrieved content of the qr code
+                                //alert(value);                        
+                                $.ajax({
+                                    type: "POST",
+                                    url: "https://omise-webpack.000webhostapp.com/www/php/get_prod.php",                
+                                    data: {'qr' : value},             
+                                    beforeSend: function(){
+                                        $(".overlay").prop('hidden', false);
+                                    },             
+                                    success: function(data){  
+                                        $(".overlay").prop('hidden', true);                             
+                                        var obj = jQuery.parseJSON(data); 
+                                        $.each(obj, function(i, field){                                           
+                                            $('#name').val(obj[i].prod_name);
+                                            $('#barcode').val(obj[i].prod_code); 
+                                            $('#amount').val(obj[i].min_amount);  
+                                            $('#deliver').val(obj[i].day_transport);                                     
+                                            product = obj[i].prod_id;       
+                                        });                                                                                      
+                                    }               
+                                });                                       
+                        }else{
+                            //alert("Sorry, only qr codes this time ;)");
+                        }
+                    }else{
+                        //alert("The user has dismissed the scan");
+                    }
+                },
+                function (error) {
+                    $.confirm({
+                      title: 'พบข้อผิดพลาด',
+                      content: 'กรุณากรอกข้อมูลให้ครบ',
+                      backgroundDismiss: true,
+                      buttons: {
+                        formSubmit: {
+                          text: 'ตกลง',
+                          btnClass: 'btn-regis',
+                          action: function () {
+                          }
+                        }
+                      }
+                    });
+                },
+                {
+                    prompt : "วางคิวอาโค้ดภายในสี่เหลี่ยมผืนผ้าที่ช่องมองภาพเพื่อแสกน"
+                }
+            );
+
+        } 
+
+        function selectfolder(){
+            goto = "select_folder.html?from=thre";
+            transition_page_next_flip(goto);
+        }
+
+        function save(){
+            var amt = $('#amount').val();
+            var del = $('#deliver').val();
+            if(amt == amount && del == deliver){
+                transition_page_back('threshold.html');               
+            }
+            if(amt == "" || del == "" || $('#name').val() == ""){
+                return 0;
+            }
+            if(prod_id){
+                save2DB(prod_id);
+            }else if(product){
+                save2DB(product);
+            }           
+        }
+
+        function save2DB(id){
+            var amt = $('#amount').val();
+            var del = $('#deliver').val();
+            $.ajax({
+                type: "POST",
+                url:"https://omise-webpack.000webhostapp.com/www/php/update_threshold.php",
+                data:{'prod_id':id,'amt':amt,'del':del},
+                beforeSend: function(){
+                    $(".overlay").prop('hidden', false);
+                },
+                success: function(data){  
+                $(".overlay").prop('hidden', true);
+                    if(data == "success"){ 
+                        if(prod_id){
+                            transition_page_back('threshold.html'); 
+                        }             
+                        location.reload(true);  
+                    }                                               
+                }               
+            });         
+        }
+
+        function get_allprod(){
+            $.ajax({
+                type: "GET",
+                url: "https://omise-webpack.000webhostapp.com/www/php/get_allprod.php",                     
+                beforeSend: function(){
+                    $(".overlay").prop('hidden', false);
+                },             
+                success: function(data){  
+                    $(".overlay").prop('hidden', true);                             
+                    var obj = jQuery.parseJSON(data);                       
+                    $.each(obj, function(i, field){ 
+                        $('#myUL').append('<li><div id="prod-1" class="row" onclick="get_prod('+field.prod_id+')">' +
+                        '<div class="col-4 text-center p">'+field.prod_code+'</div>' +
+                        '<div class="col-8 text-center p">'+field.prod_name+'</div>' +
+                        '</div><hr></li>');        
+                    });                                                                                                                               
+                }               
+            }); 
+        }
+
+        var ch = 0;
         function search(){
-            $("#search-ctn").prop('hidden', false);
-            $("#big-ctn").prop('hidden', true);
-            $("#col-back").attr('onclick', 'show()');               
+            ch++;
+            if(ch == 1){
+                get_allprod();
+                $("#search-ctn").prop('hidden', false);
+                $("#big-ctn").prop('hidden', true);              
+                $("#col-back").attr('onclick', 'show()');            
+            }else{                       
+                $('#myUL li').each(function(){
+                    $(this).attr('data-search-term', $(this).text().toLowerCase());
+                });      
+
+                var searchTerm = $('#search_prod').val().toLowerCase();
+                //alert(searchTerm.length);
+
+                $('#myUL li').each(function(){ 
+                    //alert(searchTerm.length);           
+                    if ($(this).filter('[data-search-term *= ' + searchTerm + ']').length > 0 || searchTerm.length < 1) {
+                    //alert("show");
+                        $(this).show();                                                     
+                    } else {
+                        $(this).hide();                               
+                    }
+                });   
+            }                 
         }
 
         function show(){
             $("#search-ctn").prop('hidden', true);
             $("#big-ctn").prop('hidden', false);
-            $("#col-back").attr('onclick', 'transition_page_back("index.html")');
+            $("#col-back").attr('onclick', 'transition_page_back("threshold.html")');
+            $('#myUL').empty();
+            ch = 0;
         }
 
     </script>
@@ -80,7 +252,7 @@
 
     <!-- Search ctn -->
     <div id="search-ctn" class="container justify-content-center" style="margin-top: 20%;" hidden>
-        <div class="row">
+        <div class="row mg-10">
             <div class="col-12 text-center">
                 <input id="search_prod" type="text" onkeyup="search()" class="form-control form-control-lg text-center" placeholder="ค้นหาสินค้า" autofocus>
             </div>  
@@ -118,7 +290,7 @@
             <div class="row" style="margin-bottom: 20%;">
                 <div class="col-5 text-center nopd">
                     <label for="barcode">รหัส</label>
-                    <input id="barcode" type="text" class="w3-input">
+                    <input readonly id="barcode" type="text" class="w3-input">
                 </div>
                 <div class="col-4 text-center">
                     <label for="deliver">จัดส่ง</label>
@@ -131,7 +303,7 @@
             </div>
             <div class="row mg-10" style="padding-right: 5%; padding-left: 5%;">
                 <div class="col-4 text-center" style="padding-left: 0; padding-right: 0;">
-                    <button class="mbtn-green" onclick="scan();" disabled>สแกน</button>
+                    <button class="mbtn-green" onclick="scanqr();">สแกน</button>
                 </div>
                 <div class="col-8 text-center" style="padding-right: 0;">
                     <button class="select_folder" onclick="selectfolder()">เลือกสินค้า</button>

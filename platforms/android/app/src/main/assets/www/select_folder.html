@@ -74,7 +74,7 @@
                 $("#add-ctn").prop('hidden', false);
                 if(from == "add"){                 
                   $("#row-select").prop('hidden', false);
-                }else if(from == "import" || from == "tran_in" || from == "export" || from == "sale" || from == "stock"){                 
+                }else if(from == "import" || from == "tran_in" || from == "export" || from == "sale" || from == "stock" || from == "thre"){                 
                   $("#row-select").prop('hidden', true);
                 }                
               }
@@ -90,10 +90,10 @@
                     $("#row-add").prop('hidden', true);
                     $("#row-input-add").prop('hidden', true);
                     $("#row-select").prop('hidden', false);       
-                  }else if(from == "import" || from == "tran_in" || from == "export" || from == "sale" || from == "stock"){                    
+                  }else if(from == "import" || from == "tran_in" || from == "export" || from == "sale" || from == "stock" || from == "thre"){                    
                     $("#add-ctn").prop('hidden', true);
                     $("#show-box").prop('hidden',false); 
-                    if(from == "stock"){
+                    if(from == "stock" || from == "thre"){
                       $("#show-box").prop('hidden',true); 
                     }                                      
                   } 
@@ -326,7 +326,9 @@
           goto = "sale.html?product="+arg;
         }else if(from == "stock"){
           goto = "stock.html?product="+arg;
-        }    
+        }else if(from == "thre"){
+          goto = "set_threshold.html?product="+arg;
+        }  
       }     
       transition_page_next(goto);
     }

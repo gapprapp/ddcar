@@ -28,11 +28,6 @@
     <link href="https://fonts.googleapis.com/css?family=Prompt" rel="stylesheet">
 
     <style>
-      #search_prod:focus, #search_prod:active {
-        outline: red !important;
-        box-shadow: none;
-        border-color: #d63232;
-      }
       .or_txt {
         font-size: 16px;
         color: #666;
@@ -75,7 +70,8 @@
       }    
     </style>
     <script>      
-      $(document).ready(function () {           
+      $(document).ready(function () { 
+        $("style").append('.jconfirm .jconfirm-box{margin-bottom: 20%;}');          
             url = new URL(window.location.href);
             prod_id = url.searchParams.get("product");       
             if(prod_id){
@@ -138,7 +134,11 @@
         $.ajax({
           type: "GET",
           url: "https://omise-webpack.000webhostapp.com/www/php/get_allprod.php",                     
-          success: function(data){                             
+          beforeSend: function(){
+            $(".overlay").prop('hidden', false);
+          },             
+          success: function(data){  
+              $(".overlay").prop('hidden', true);                             
               var obj = jQuery.parseJSON(data);                       
               $.each(obj, function(i, field){ 
                 $('#myUL').append('<li><div id="prod-1" class="row" onclick="get_amt('+field.prod_id+')">' +
@@ -155,11 +155,9 @@
         ch++;
         if(ch == 1){
           get_prod();
-          $("#big-ctn").css('margin-top', '15%');
-          $(".or_section").prop('hidden', true);
-          $("#row-search").prop('hidden', true);
-          $(".select_folder").prop('hidden', true);
-          $("#col-back").attr('onclick', 'show()');    
+          $("#search-ctn").prop('hidden', false);
+          $("#big-ctn").prop('hidden', true);
+          $("#col-back").attr('onclick', 'show()');     
         }else{                       
           $('#myUL li').each(function(){
               $(this).attr('data-search-term', $(this).text().toLowerCase());
@@ -181,11 +179,8 @@
       }
 
       function show(){
-        $("#big-ctn").css('margin-top', '35%');
-        $("#search_prod").val('');
-        $(".or_section").prop('hidden', false);
-        $("#row-search").prop('hidden', false);
-        $(".select_folder").prop('hidden', false);
+        $("#search-ctn").prop('hidden', true);
+        $("#big-ctn").prop('hidden', false);
         $("#col-back").attr('onclick', 'transition_page_back("index.html")');
         $('#myUL').empty();
         ch = 0;
@@ -213,20 +208,29 @@
         </div>
     </div>
     <br>
+
+     <!-- Search ctn -->
+     <div id="search-ctn" class="container justify-content-center" style="margin-top: 15%;" hidden>
+      <div class="row mg-10">
+          <div class="col-12 text-center">
+            <input id="search_prod" type="text" onkeyup="search()" class="form-control form-control-lg text-center" placeholder="ค้นหาสินค้า">
+          </div>  
+      </div>
+      <div id="add_ctn" class="container">
+          <ul id="myUL">
+
+          </ul>            
+      </div>
+    </div>
     
     <!-- big container -->
     <div id="big-ctn" class="container justify-content-center" style="margin-top: 35%;">
         <div class="container">
           <div class="row mg-10">
-            <div class="col-12 text-center">
-              <input id="search_prod" type="text" onkeyup="search()" class="form-control form-control-lg text-center" placeholder="ค้นหาสินค้า">
-             </div>
-          </div>
-          <div id="add_ctn" class="container">
-            <ul id="myUL">
-
-            </ul>            
-          </div>
+            <div class="col-12 text-center">             
+              <input id="name" type="text"  class="form-control form-control-lg text-center" placeholder="ค้นหาสินค้า" onclick="search();">
+            </div>
+          </div>         
           <div class="or_section">
             <div class="content_box mg-10">
                 <div class="or_line_1"></div>
@@ -266,6 +270,12 @@
       });
       $(".mbtn").on("touchend", function() {
         $(this).removeClass('mbtn-touch');
+      });
+
+      $(document).keypress(function(e) {
+       if(e.which == 13) {
+          $("#search_prod").blur();
+       }
       });
     </script>
 </body>
