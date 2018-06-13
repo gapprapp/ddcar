@@ -43,6 +43,7 @@
     var parent;
     var index;
     var last_node = 0;
+    var from;
     $(document).ready(function() {
       url = new URL(window.location.href);
       folder = url.searchParams.get("folder");  
@@ -51,9 +52,11 @@
       if(folder){
         $("#h5-title").text(folder);
         parent = folder;
-      }else{
-        $("#h5-title").text("หมวดหมู่");
+      }else{        
         parent = "car";
+      }
+      if(parent == "car"){
+        $("#h5-title").text("หมวดหมู่");
       }
 
       $.ajax({
@@ -203,9 +206,7 @@
             item["prod_id"] = arr_prod[i].prod_id;           
             json.push(item);               
         }
-      }       
-      url = new URL(window.location.href);
-      from = url.searchParams.get("from");
+      }
       if(from == "import"){
           localStorage.setItem('arr_prod_i', JSON.stringify(json)); 
           goto = "import.html";
@@ -302,9 +303,7 @@
       }
     }
 
-    function getIn(arg, arg2){
-      url = new URL(window.location.href);
-      from = url.searchParams.get("from");
+    function getIn(arg, arg2){     
       if(last_node == 0){
         goto = "select_folder.html?from="+ from+ "&folder=" +arg;
       }else if(last_node == 1){ 
@@ -552,8 +551,39 @@
     }
 
     function page_back(){
-      goto = window.history.back();
-      transition_page_back(goto);
+      if(parent == "car"){
+        if(from == "add"){
+          goto = "index.html";
+        }else if(from == "import"){
+          goto = "import.html";
+        }else if(from == "tran_in"){
+          goto = "transfer_in.html";
+        }else if(from == "export"){
+          goto = "export.html";
+        }else if(from == "sale"){
+          goto = "sale.html";
+        }else if(from == "stock"){
+          goto = "stock.html";
+        }else if(from == "thre"){
+          goto = "set_threshold.html";
+        }
+        transition_page_back(goto);  
+      }
+      $.ajax({
+        type: "POST",
+        url:"https://omise-webpack.000webhostapp.com/www/php/back_folder.php",           
+        data: {'title' : parent},               
+        beforeSend: function(){
+            //$(".overlay").prop('hidden', false);
+        },             
+        success: function(data){  
+          //$(".overlay").prop('hidden', true);                             
+          if(data != "fail"){           
+            goto = "select_folder.html?from="+ from+ "&folder=" +data;
+            transition_page_back(goto);       
+          }                               
+        }               
+      });      
     }   
   </script>
 </head>
