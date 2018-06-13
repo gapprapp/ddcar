@@ -43,14 +43,11 @@
   </style>
 
   <script>
+    var folder;
     $(document).ready(function() {
       url = new URL(window.location.href);
-      folder = url.searchParams.get("folder");
-      if(folder != null){
-        $("#slct_folder").text(folder);
-      }else{
-        $("#slct_folder").text("เลือกหมวดหมู่");
-      }
+      folder = url.searchParams.get("folder");     
+      $("#folder-title").text(folder);      
     });
 
     function disactive(arg) {
@@ -92,10 +89,7 @@
 
     function add_prod(){
       var name = $('#name').val();
-      var code = $('#barcode').val();
-      url = new URL(window.location.href);
-      folder = url.searchParams.get("folder");
-      var parent = folder;
+      var code = $('#barcode').val();      
               
       if(name != "" && code != ""){
         $('#img').each(function () {
@@ -110,7 +104,7 @@
                 $(".overlay").prop('hidden', true);                           
                   $.confirm({
                     title: 'เสร็จสิ้น',
-                    content: 'เพิ่มสินค้า ' +name+ ' ในหมวดหมู่ ' +parent+ ' เสร็จสิ้น',
+                    content: 'เพิ่มสินค้า ' +name+ ' ในหมวดหมู่ ' +folder+ ' เสร็จสิ้น',
                     backgroundDismiss: true,
                     buttons: {
                       formSubmit: {
@@ -135,20 +129,19 @@
             options.mimeType = "image/jpeg";       
             //options.chunkedMode = false;        
             
-            var ft = new FileTransfer();                   
-            ft.upload(fileURL, "https://omise-webpack.000webhostapp.com/www/php/add_prod.php?name_prod="+name+"&code="+code+"&parent="+parent+"", success, fail, options);
-
+            var ft = new FileTransfer();
             ft.onprogress = function(progressEvent) { 
               $(".overlay").prop('hidden', false);
-            };
-
+            };                   
+            ft.upload(fileURL, "https://omise-webpack.000webhostapp.com/www/php/add_prod.php?name_prod="+name+"&code="+code+"&parent="+folder+"", success, fail, options);
+           
           }else{
             $.ajax({
               type: "POST",
               url:"https://omise-webpack.000webhostapp.com/www/php/add_prod_noimg.php",           
               data: {'name_prod' : name,
                     'code' : code,
-                    'parent' : parent},               
+                    'parent' : folder},               
                 beforeSend: function(){
                   $(".overlay").prop('hidden', false);
                 },             
@@ -157,7 +150,7 @@
                 if(data == "success"){
                   $.confirm({
                       title: 'เสร็จสิ้น',
-                      content: 'เพิ่มสินค้า ' +name+ ' ในหมวดหมู่ ' +parent+ ' เสร็จสิ้น',
+                      content: 'เพิ่มสินค้า ' +name+ ' ในหมวดหมู่ ' +folder+ ' เสร็จสิ้น',
                       backgroundDismiss: true,
                       buttons: {
                         formSubmit: {
@@ -203,10 +196,10 @@
       image.src =  "";   
     }  
 
-    function selectfolder(){
+    function page_back(){
       //goto = location.reload();
-      goto = "select_folder.html?from=add";
-      transition_page_next_flip(goto);
+      goto = "select_folder.html?from=add&folder="+folder;
+      transition_page_back(goto);
     }
 
   </script>
@@ -218,7 +211,7 @@
 
   <!-- Nav menu top -->
   <div class="row fixed-top navs">
-    <div class="col-1 text-center" onclick="transition_page_back('index.html')">
+    <div class="col-1 text-center" onclick="page_back()">
       <i id="i-back" class="fas fa-angle-left"></i>
     </div>
     <div class="col-10 text-center">
@@ -232,8 +225,8 @@
   <div class="container justify-content-center" style="margin-top: 20%; margin-bottom: 25%;">
     <div class="container">
       <div class="row" style="margin-bottom: 20%;">
-        <div class="col-12 text-center" onclick="selectfolder();">
-          <button id="slct_folder" class="select_folder">เลือกหมวดหมู่</button>
+        <div class="col-12 text-center">
+          <h5 id="folder-title"></h5>
         </div>
       </div>
       <div class="row mg-10">
