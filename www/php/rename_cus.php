@@ -12,7 +12,7 @@
     if($result){
         echo "success";       
     }else{
-        echo "connection fail or name is not unique!";   
+        echo "fail";   
     }	
 	mysqli_close($conn);
 ?>

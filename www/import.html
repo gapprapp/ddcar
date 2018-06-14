@@ -15,10 +15,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.6/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
     <script defer src="https://use.fontawesome.com/releases/v5.0.8/js/all.js"></script>
-    <script src="cordova.js"></script>
-
-    <script src="js/jquery.easy-autocomplete.min.js"></script>   
-    <link rel="stylesheet" href="css/easy-autocomplete.themes.min.css">
+    <script src="cordova.js"></script>    
 
     <link rel="stylesheet" href="css/index.css">
     <link rel="stylesheet" href="css/popup.css">
@@ -95,8 +92,12 @@
             $.ajax({
                 type: "POST",
                 url:"https://omise-webpack.000webhostapp.com/www/php/get_place.php",    
-                data:{'prod_id' : prod_id,"ware_id":localStorage.ware_id_im},                                      
+                data:{'prod_id' : prod_id,"ware_id":localStorage.ware_id_im},  
+                beforeSend: function(){
+                    $(".overlay").prop('hidden', false);
+                },                                     
                 success: function(data){
+                    $(".overlay").prop('hidden', true);    
                     var obj = jQuery.parseJSON(data);                    
                     if(obj){                        
                         var txt = "";                                         
@@ -208,10 +209,25 @@
             var cost = $('#cost').val();
             var price_s =$('#wholesale').val();
             var price_w =$('#retail').val(); 
-            if(!$('#prod-addr').prop('placeholder') && $('#prod-addr').val() == ""){                 
+            var name =$('#name').val(); 
+            var amt =$('#amount').val(); 
+            if(!$('#prod-addr').prop('placeholder') && $('#prod-addr').val() == ""){ 
+                $.confirm({
+                  title: 'พบข้อผิดพลาด',
+                  content: 'กรุณากรอกข้อมูลให้ครบ',
+                  backgroundDismiss: true,
+                  buttons: {
+                    formSubmit: {
+                      text: 'ตกลง',
+                      btnClass: 'btn-regis',
+                      action: function () {
+                      }
+                    }
+                  }
+                });                
                 return 0;
             }  
-            if(code != "" && cost != "" && price_s != "" && price_w != "" && jQuery.inArray($('#prod-addr').val().toLowerCase(),arr_place) == -1 && $("#h5-title").text() != "เลือกโกดัง(เข้า)"){      
+            if(name != "" && amt != "" && code != "" && cost != "" && price_s != "" && price_w != "" && jQuery.inArray($('#prod-addr').val().toLowerCase(),arr_place) == -1 && $("#h5-title").text() != "เลือกโกดัง(เข้า)"){      
                 if(flag == 0){                 
                     $.ajax({
                         type: "POST",
@@ -225,7 +241,19 @@
                            if(data == "success"){
                                 show(code,cost);
                            }else{
-                               //alert("ลองอีกครั้ง");
+                            $.confirm({
+                                title: 'พบข้อผิดพลาด',
+                                content: 'ลองอีกครั้ง',
+                                backgroundDismiss: true,
+                                buttons: {
+                                    formSubmit: {
+                                    text: 'ตกลง',
+                                    btnClass: 'btn-regis',
+                                    action: function () {
+                                    }
+                                    }
+                                }
+                            });
                            }
                         }               
                     });                   
@@ -245,11 +273,22 @@
                                 check = 0;
                                 show(code,cost);
                            }else{
-                               //alert("ลองอีกครั้ง");
+                            $.confirm({
+                                title: 'พบข้อผิดพลาด',
+                                content: 'ลองอีกครั้ง',
+                                backgroundDismiss: true,
+                                buttons: {
+                                    formSubmit: {
+                                    text: 'ตกลง',
+                                    btnClass: 'btn-regis',
+                                    action: function () {
+                                    }
+                                    }
+                                }
+                            });
                            }
                         }               
-                    });                   
-                                       
+                    });                                      
                 }else{
                     flag = 0;
                     show(code,cost);
@@ -384,11 +423,15 @@
                 },             
                 success: function(data){  
                 $(".overlay").prop('hidden', true);
-                var obj = jQuery.parseJSON(data);                                                      
-                $.each(obj, function(i, field){
-                    text_html = text_html + '<button id="li-ware-'+i+'" type="button" onclick="setware('+i+')" class="btn btn-choice">'+obj[i].ware_name+'</button>' +
-                    '<span id="id-ware-'+i+'" hidden>'+obj[i].ware_id+'</span>';
-                }); 
+                var obj = jQuery.parseJSON(data); 
+                if(obj){
+                    $.each(obj, function(i, field){
+                        text_html = text_html + '<button id="li-ware-'+i+'" type="button" onclick="setware('+i+')" class="btn btn-choice">'+obj[i].ware_name+'</button>' +
+                        '<span id="id-ware-'+i+'" hidden>'+obj[i].ware_id+'</span>';
+                    }); 
+                }else{
+                    text_html = "กรุณาเพิ่มโกดังก่อนทำรายการ";  
+                }                
                 $.confirm({
                   title: 'โกดัง',
                   content: '<hr style="width: 80%; margin-bottom: 0;">',
@@ -416,12 +459,16 @@
                 success: function(data){  
                     $(".overlay").prop('hidden', true);                             
                     var obj = jQuery.parseJSON(data);                       
-                    $.each(obj, function(i, field){ 
-                        $('#myUL').append('<li><div id="prod-1" class="row" onclick="get_prod('+field.prod_id+')">' +
-                        '<div class="col-4 text-center p">'+field.prod_code+'</div>' +
-                        '<div class="col-8 text-center p">'+field.prod_name+'</div>' +
-                        '</div><hr></li>');        
-                    });                                                                                                                               
+                    if(obj){
+                        $.each(obj, function(i, field){ 
+                            $('#myUL').append('<li><div id="prod-1" class="row" onclick="get_prod('+field.prod_id+')">' +
+                            '<div class="col-4 text-center p">'+field.prod_code+'</div>' +
+                            '<div class="col-8 text-center p">'+field.prod_name+'</div>' +
+                            '</div><hr></li>');        
+                        });   
+                    }else{
+                        $('#myUL').append('<li><div class="col-12 text-center p">กรุณาเพิ่มสินค้าก่อนทำรายการ</div><hr></li>');                   
+                    }                                                                                                                                   
                 }               
             }); 
         }

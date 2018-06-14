@@ -16,12 +16,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.6/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
     <script defer src="https://use.fontawesome.com/releases/v5.0.8/js/all.js"></script>
-    <script src="cordova.js"></script>
-
-
-    <script src="js/jquery.easy-autocomplete.min.js"></script>   
-    <script type="text/javascript" src="js/back.js"></script>   
-    <link rel="stylesheet" href="css/easy-autocomplete.themes.min.css">
+    <script src="cordova.js"></script>   
+    <!--<script type="text/javascript" src="js/back.js"></script>-->  
 
     <link rel="stylesheet" href="css/index.css">
     <link rel="stylesheet" href="css/jquery-confirm.css">
@@ -173,50 +169,10 @@
 
         function add_export(){
             var code = $('#barcode').val();
-            var cost = $('#cost').val();          
-            if(code != "" && cost != "" && $("#h5-title").text() != "เลือกโกดัง(ออก)"){             
-                if(localStorage.arr_ex){
-                    var retrievedObject = localStorage.getItem('arr_ex');
-                    var arr_data = JSON.parse(retrievedObject);               
-                }else{
-                    var arr_data = [];              
-                }           
-                item = {}            
-                item ["qr"] =  code;
-                item ["prod_id"] =  prod_id;
-                item ["name"] =  $('#name').val();
-                item ["cost"] =  cost;               
-                item ["amt"] =  $('#amount').val();
-                item ["img"] =  img;     
-
-                arr_data.push(item); 
-                localStorage.setItem('arr_ex', JSON.stringify(arr_data));         
-            
-                $('#check-export').text(arr_data.length);       
-
-                $('#barcode').val("");
-                $('#name').val("");
-                $('#cost').val("");                
-                $('#amount').val("1"); 
-                if(localStorage.arr_prod_e){
-                    var retrievedObject = localStorage.getItem('arr_prod_e');
-                    var arr_data2 = JSON.parse(retrievedObject);
-                    arr_data2.splice(0,1); 
-                    localStorage.setItem('arr_prod_e', JSON.stringify(arr_data2));  
-                    if(arr_data2.length == 0){
-                        localStorage.arr_prod_e = "";  
-                    }                                 
-                }  
-                if(localStorage.arr_prod_e){                    
-                    var retrievedObject = localStorage.getItem('arr_prod_e');
-                    var arr_data2 = JSON.parse(retrievedObject);                                   
-                    prod_id = arr_data2[0].prod_id;            
-                    get_prod(prod_id);            
-                }else{                   
-                    $("#btn-folder").removeAttr('disabled');           
-                    $("#btn-addpic").removeAttr('disabled');
-                }                                         
-            }else{
+            var cost = $('#cost').val(); 
+            var name  = $('#name').val();
+            var amt = $('#amount').val();         
+            if(name == "" || amt == "" || code == "" || cost == "" || $("#h5-title").text() == "เลือกโกดัง(ออก)"){
                 $.confirm({
                   title: 'พบข้อผิดพลาด',
                   content: 'กรุณากรอกข้อมูลให้ครบ',
@@ -230,7 +186,49 @@
                     }
                   }
                 });
-            }          
+                return 0;
+            }                 
+            if(localStorage.arr_ex){
+                var retrievedObject = localStorage.getItem('arr_ex');
+                var arr_data = JSON.parse(retrievedObject);               
+            }else{
+                var arr_data = [];              
+            }           
+            item = {}            
+            item ["qr"] =  code;
+            item ["prod_id"] =  prod_id;
+            item ["name"] =  name;
+            item ["cost"] =  cost;               
+            item ["amt"] =  amt;
+            item ["img"] =  img;     
+
+            arr_data.push(item); 
+            localStorage.setItem('arr_ex', JSON.stringify(arr_data));         
+        
+            $('#check-export').text(arr_data.length);       
+
+            $('#barcode').val("");
+            $('#name').val("");
+            $('#cost').val("");                
+            $('#amount').val("1"); 
+            if(localStorage.arr_prod_e){
+                var retrievedObject = localStorage.getItem('arr_prod_e');
+                var arr_data2 = JSON.parse(retrievedObject);
+                arr_data2.splice(0,1); 
+                localStorage.setItem('arr_prod_e', JSON.stringify(arr_data2));  
+                if(arr_data2.length == 0){
+                    localStorage.arr_prod_e = "";  
+                }                                 
+            }  
+            if(localStorage.arr_prod_e){                    
+                var retrievedObject = localStorage.getItem('arr_prod_e');
+                var arr_data2 = JSON.parse(retrievedObject);                                   
+                prod_id = arr_data2[0].prod_id;            
+                get_prod(prod_id);            
+            }else{                   
+                $("#btn-folder").removeAttr('disabled');           
+                $("#btn-addpic").removeAttr('disabled');
+            }                
         }     
 
         function disactive(arg) {
@@ -277,35 +275,39 @@
             $("style").append('.jconfirm .jconfirm-box{max-height: 420px;}');
             var text_html = "";
             $.ajax({
-                    type: "GET",
-                    url:"https://omise-webpack.000webhostapp.com/www/php/get_ware.php",                            
-                    beforeSend: function(){
-                        $(".overlay").prop('hidden', false);
-                    },             
-                    success: function(data){  
-                    $(".overlay").prop('hidden', true);
-                    var obj = jQuery.parseJSON(data);                                                      
+                type: "GET",
+                url:"https://omise-webpack.000webhostapp.com/www/php/get_ware.php",                            
+                beforeSend: function(){
+                    $(".overlay").prop('hidden', false);
+                },             
+                success: function(data){  
+                $(".overlay").prop('hidden', true);
+                var obj = jQuery.parseJSON(data);  
+                if(obj){
                     $.each(obj, function(i, field){
                         text_html = text_html + '<button id="li-ware-'+i+'" type="button" onclick="setware('+i+')" class="btn btn-choice">'+obj[i].ware_name+'</button>' +
                         '<span id="id-ware-'+i+'" hidden>'+obj[i].ware_id+'</span>';                             
                     }); 
-                    $.confirm({
-                      title: 'โกดัง',
-                      content: '<hr style="width: 80%; margin-bottom: 0;">',
-                      backgroundDismiss: true,
-                      onOpenBefore: function () {
-                        $(".jconfirm-buttons .btn-default").remove();
-                        $(".jconfirm-buttons").append(text_html);
-                        //ajax and apeend
-                                     
-                      },
-                      onDestroy: function () {
-                        $("style").append('.jconfirm .jconfirm-box{margin-bottom: 5%;}');
-                        $("style").append('.jconfirm .jconfirm-box{max-height: 100%;}');
-                      }              
-                    });                                       
-                    }               
-                });  
+                }else{
+                    text_html = "กรุณาเพิ่มโกดังก่อนทำรายการ";  
+                }     
+                $.confirm({
+                    title: 'โกดัง',
+                    content: '<hr style="width: 80%; margin-bottom: 0;">',
+                    backgroundDismiss: true,
+                    onOpenBefore: function () {
+                    $(".jconfirm-buttons .btn-default").remove();
+                    $(".jconfirm-buttons").append(text_html);
+                    //ajax and apeend
+                                    
+                    },
+                    onDestroy: function () {
+                    $("style").append('.jconfirm .jconfirm-box{margin-bottom: 5%;}');
+                    $("style").append('.jconfirm .jconfirm-box{max-height: 100%;}');
+                    }              
+                });                                       
+                }               
+            });  
         }
 
         function get_allprod(){
@@ -317,13 +319,17 @@
                 },             
                 success: function(data){  
                     $(".overlay").prop('hidden', true);                             
-                    var obj = jQuery.parseJSON(data);                       
-                    $.each(obj, function(i, field){ 
-                        $('#myUL').append('<li><div id="prod-1" class="row" onclick="get_prod('+field.prod_id+')">' +
-                        '<div class="col-4 text-center p">'+field.prod_code+'</div>' +
-                        '<div class="col-8 text-center p">'+field.prod_name+'</div>' +
-                        '</div><hr></li>');        
-                    });                                                                                                                               
+                    var obj = jQuery.parseJSON(data);
+                    if(obj){
+                        $.each(obj, function(i, field){ 
+                            $('#myUL').append('<li><div id="prod-1" class="row" onclick="get_prod('+field.prod_id+')">' +
+                            '<div class="col-4 text-center p">'+field.prod_code+'</div>' +
+                            '<div class="col-8 text-center p">'+field.prod_name+'</div>' +
+                            '</div><hr></li>');        
+                        });   
+                    }else{
+                        $('#myUL').append('<li><div class="col-12 text-center p">กรุณาเพิ่มสินค้าก่อนทำรายการ</div><hr></li>');                   
+                    }                                                                                                                                            
                 }               
             }); 
         }

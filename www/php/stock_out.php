@@ -7,7 +7,7 @@
     $last_id = "";
     $i = 0;
 
-    mysqli_autocommit($conn,FALSE);
+    mysqli_begin_transaction($conn);
     $sql = "SELECT stock_out_number,count FROM stock_out ORDER BY stock_out_id DESC LIMIT 1"; 
     $result = mysqli_query($conn, $sql);   
   
@@ -24,7 +24,11 @@
                 VALUES ('$stock_number','$dt','$ware_id','$count')"; 
                 $result2 = mysqli_query($conn, $sql2);
                 $last_id = mysqli_insert_id($conn);	
-                //echo "normal"; 
+                if(!$result2){
+                    mysqli_rollback($conn);
+                    echo "fail";
+                    exit;
+                } 
             }else{
                 $year = "EXP" . $year_cur . "-";
                 $stock_number = $year . str_pad(1, 5, "0",STR_PAD_LEFT);
@@ -32,7 +36,11 @@
                 VALUES ('$stock_number','$dt','$ware_id',1)"; 
                 $result3 = mysqli_query($conn, $sql3);
                 $last_id = mysqli_insert_id($conn);	
-                //echo "year dif"; 
+                if(!$result3){
+                    mysqli_rollback($conn);
+                    echo "fail";
+                    exit;
+                } 
             }           
         }
     }else{
@@ -42,7 +50,11 @@
         VALUES ('$stock_number','$dt','$ware_id',1)"; 
         $result1 = mysqli_query($conn, $sql1);
         $last_id = mysqli_insert_id($conn);	
-        //echo "empty"; 
+        if(!$result1){
+            mysqli_rollback($conn);
+            echo "fail";
+            exit;
+        } 
     }   
     foreach ($obj as $data)
     {
@@ -53,19 +65,22 @@
         $amt = $data['amt'];  
 
         $sql_item = "INSERT INTO stock_out_item (stock_out_id,item_id,prod_id,stock_out_cost,amount) VALUE ('$last_id','$item','$prod_id','$cost','$amt')"; 
-        $result_item = mysqli_query($conn, $sql_item);       
+        $result_item = mysqli_query($conn, $sql_item); 
+        if(!$result_item){
+            mysqli_rollback($conn);
+            echo "fail";
+            exit;
+        }       
        
         $sql_up = "UPDATE warehouse SET amount = amount-'$amt' WHERE ware_id = '$ware_id' AND prod_id = '$prod_id'"; 
-        $result_up = mysqli_query($conn, $sql_up);            
+        $result_up = mysqli_query($conn, $sql_up);
+        if(!$result_up){
+            mysqli_rollback($conn);
+            echo "fail";
+            exit;
+        }             
     }
-
-    if($result){
-        echo "success";
-        mysqli_commit($conn);          
-    }else{
-        echo "fail";
-        mysqli_rollback($conn);
-    }
-
+    mysqli_commit($conn); 
+    echo "success";
     mysqli_close($conn);
 ?>

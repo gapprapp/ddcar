@@ -49,22 +49,24 @@
         success: function(data){    
           $(".overlay").prop('hidden', true);           
           var obj = jQuery.parseJSON(data);
-          $.each(obj, function(i, field){
-            $('#show_user').append(" <div id='cus-"+i+"' class='row'>" +
-              "<span id='user-"+i+"' hidden>"+obj[i].user_id+"</span>" +
-              "<div class='col-1 text-left'>" + 
-                "<i class='fa fa-trash-alt i-del' onclick='edit_del("+i+");' style='color: #666666;' hidden></i>" +
-                "<i class='fa fa-edit i-edit' onclick='edit_mem("+i+");' style='color: #666666;' hidden></i>" +
-              "</div>" +
-              "<div class='col-6 text-center no-pd'>" +
-                "<p id='name-"+i+"'>"+obj[i].user_name+"</p>" +
-              "</div>" +
-              "<div class='col-4 text-center no-pd'>" +
-                "<p id='role-"+i+"'>"+obj[i].user_role+"</p>" +
-              "</div>" +
-              "<div class='col-1'></div>" +
-              "</div> <hr id='hr-"+i+"'>");                  
-          }); 
+          if(obj){
+              $.each(obj, function(i, field){
+              $('#show_user').append(" <div id='cus-"+i+"' class='row'>" +
+                "<span id='user-"+i+"' hidden>"+obj[i].user_id+"</span>" +
+                "<div class='col-1 text-left'>" + 
+                  "<i class='fa fa-trash-alt i-del' onclick='edit_del("+i+");' style='color: #666666;' hidden></i>" +
+                  "<i class='fa fa-edit i-edit' onclick='edit_mem("+i+");' style='color: #666666;' hidden></i>" +
+                "</div>" +
+                "<div class='col-6 text-center no-pd'>" +
+                  "<p id='name-"+i+"'>"+obj[i].user_name+"</p>" +
+                "</div>" +
+                "<div class='col-4 text-center no-pd'>" +
+                  "<p id='role-"+i+"'>"+obj[i].user_role+"</p>" +
+                "</div>" +
+                "<div class='col-1'></div>" +
+                "</div> <hr id='hr-"+i+"'>");                  
+            }); 
+          }        
         }                    
       });
     });
@@ -135,12 +137,30 @@
                   $.ajax({
                     type: "POST",
                     url:"https://omise-webpack.000webhostapp.com/www/php/delete_user.php",           
-                    data: {'name' : name},               
-                    success: function(data){  
-                        if(data == "success"){
-                          $("#cus-"+arg).remove(); 
-                          $("#hr-"+arg).remove();
-                        }          
+                    data: {'name' : name},  
+                    beforeSend: function(){
+                      $(".overlay").prop('hidden', false);
+                    },              
+                    success: function(data){ 
+                      $(".overlay").prop('hidden', true); 
+                      if(data == "success"){
+                        $("#cus-"+arg).remove(); 
+                        $("#hr-"+arg).remove();
+                      }else{
+                        $.confirm({
+                          title: 'พบข้อผิดพลาด',
+                          content: 'ลองอีกครั้ง',
+                          backgroundDismiss: true,
+                          buttons: {
+                            formSubmit: {
+                              text: 'ตกลง',
+                              btnClass: 'btn-regis',
+                              action: function () {
+                              }
+                            }
+                          }
+                        });
+                      }        
                     }               
                   });   
                 }
@@ -186,11 +206,29 @@
         type: "POST",
         url:"https://omise-webpack.000webhostapp.com/www/php/rename_user.php",           
         data: {'user_id' : user_id,
-                'role' : role},               
+                'role' : role},  
+        beforeSend: function(){
+          $(".overlay").prop('hidden', false);
+        },              
         success: function(data){  
-            if(data == "success"){
-              $("#role-"+arg).text(role);
-            }          
+          $(".overlay").prop('hidden', true);    
+          if(data == "success"){
+            $("#role-"+arg).text(role);
+          }else{
+            $.confirm({
+              title: 'พบข้อผิดพลาด',
+              content: 'ลองอีกครั้ง',
+              backgroundDismiss: true,
+              buttons: {
+                formSubmit: {
+                  text: 'ตกลง',
+                  btnClass: 'btn-regis',
+                  action: function () {
+                  }
+                }
+              }
+            });
+          }         
         }               
       });   
     }
