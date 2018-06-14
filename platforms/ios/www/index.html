@@ -36,6 +36,8 @@
       url = new URL(window.location.href);
       u = url.searchParams.get("u");
 
+      localStorage.stack_folder = "";
+
       if(u == "owner"){
         //loging in?? else login.html
         $("#row-admin").prop('hidden', true);
