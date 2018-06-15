@@ -1,5 +1,6 @@
 <?php
     $conn = mysqli_connect("localhost", "id3340019_dd", "pkl2468GG", "id3340019_dd");
+    $output = array(); 
    
     $query = "SELECT * FROM product ORDER BY prod_name ASC";     
     $result = mysqli_query($conn, $query);

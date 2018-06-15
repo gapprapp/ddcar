@@ -19,6 +19,7 @@
 
   <link rel="stylesheet" href="css/index.css">
   <link rel="stylesheet" href="css/jquery-confirm.css">
+  <link rel="stylesheet" href="css/loading.css">
 
   <!-- Font -->
   <link href="https://fonts.googleapis.com/css?family=Prompt" rel="stylesheet">
@@ -41,10 +42,13 @@
     $(document).ready(function () { 
       $.ajax({
         type: "GET",
-        url:"https://omise-webpack.000webhostapp.com/www/php/get_ware_shop.php",                         
+        url:"https://omise-webpack.000webhostapp.com/www/php/get_ware_shop.php",   
+        beforeSend: function(){
+            $(".overlay").prop('hidden', false);
+        },                           
         success: function(data){  
-          var obj = jQuery.parseJSON(data); 
-          console.log(obj);                   
+          $(".overlay").prop('hidden', true); 
+          var obj = jQuery.parseJSON(data);                      
           $.each(obj, function(i, field){     
             if(obj[i][2] == "โกดัง"){
               $('#show').append( "<div id='cus-"+i+"' class='row'>" +
@@ -78,8 +82,7 @@
               "<div class='col-1'></div>" +
               "</div>" +   
               "<hr id='hr-"+i+"'>");  
-            }              
-                                                           
+            }                                                    
           });                        
         }               
       });
@@ -139,23 +142,6 @@
       }
     } 
 
-    /*function update_ware(arg,type){
-      var id = $("#id-ware-"+arg).text();     
-      $.ajax({
-        type: "POST",
-        url:"https://omise-webpack.000webhostapp.com/www/php/rename_ware_shop.php",           
-        data: {'id' : id,
-                'type' : type,
-                'name' : ""},               
-        success: function(data){            
-            if(data == "success"){
-              $("#type-ware-"+arg).text(type);
-              $("style").append('.jconfirm .jconfirm-box{margin-bottom: 5%;}');
-            }          
-        }               
-      });  
-    }*/
-
     function edit_ware(arg) {
       $("style").append('.jconfirm .jconfirm-box{margin-bottom: 55%;}');
       var name = $("#name-ware-"+arg).text();
@@ -186,11 +172,29 @@
                 url:"https://omise-webpack.000webhostapp.com/www/php/rename_ware_shop.php",           
                 data: {'id' : id,
                         'type' : type,
-                        'name' : txt},               
-                success: function(data){           
-                    if(data == "success"){                     
-                      $("#name-ware-"+arg).text(txt); 
-                    }         
+                        'name' : txt}, 
+                beforeSend: function(){
+                  $(".overlay").prop('hidden', false);
+                },                          
+                success: function(data){  
+                  $(".overlay").prop('hidden', true);           
+                  if(data == "success"){                     
+                    $("#name-ware-"+arg).text(txt); 
+                  }else{
+                    $.confirm({
+                      title: 'พบข้อผิดพลาด',
+                      content: 'ลองอีกครั้ง',
+                      backgroundDismiss: true,
+                      buttons: {
+                        formSubmit: {
+                          text: 'ตกลง',
+                          btnClass: 'btn-regis',
+                          action: function () {
+                          }
+                        }
+                      }
+                    });
+                  }         
                 }               
               });            
             }
@@ -216,12 +220,30 @@
                 type: "POST",
                 url:"https://omise-webpack.000webhostapp.com/www/php/delete_ware_shop.php",           
                 data: {'id' : id,
-                       'type' : type},               
-                success: function(data){                             
-                    if(data == "success"){
-                      $("#cus-"+arg).remove(); 
-                      $("#hr-"+arg).remove(); 
-                    }          
+                       'type' : type},
+                beforeSend: function(){
+                  $(".overlay").prop('hidden', false);
+                },                         
+                success: function(data){   
+                  $(".overlay").prop('hidden', true);                           
+                  if(data == "success"){
+                    $("#cus-"+arg).remove(); 
+                    $("#hr-"+arg).remove(); 
+                  }else{
+                    $.confirm({
+                      title: 'พบข้อผิดพลาด',
+                      content: 'ลองอีกครั้ง',
+                      backgroundDismiss: true,
+                      buttons: {
+                        formSubmit: {
+                          text: 'ตกลง',
+                          btnClass: 'btn-regis',
+                          action: function () {
+                          }
+                        }
+                      }
+                    });
+                  }          
                 }               
               });
             }
@@ -233,6 +255,9 @@
 </head>
 
 <body>
+  <!-- Loading -->
+  <div class="overlay" hidden><div class="loading"></div></div>    
+
   <!-- Nav menu top -->
   <div class="row fixed-top navs">
     <div class="col-1 text-center" onclick="transition_page_back('index.html')">

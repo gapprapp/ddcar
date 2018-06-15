@@ -125,10 +125,9 @@
           var fileURL = image.src;
           var filename = fileURL.substr(fileURL.lastIndexOf('/') + 1).split("?");
           
-          var success = function (r) {                
-              //alert(r.response);  
-            if(r.response == "success"){
-              $(".overlay").prop('hidden', true);                           
+          var success = function (r) { 
+            $(".overlay").prop('hidden', true);            
+            if(r.response == "success"){                                       
                 $.confirm({
                   title: 'เสร็จสิ้น',
                   content: 'เพิ่มสินค้า ' +name+ ' ในหมวดหมู่ ' +folder+ ' เสร็จสิ้น',
@@ -142,6 +141,21 @@
                         }
                     }
                   }
+              });
+              out();
+            }else{
+              $.confirm({
+                title: 'พบข้อผิดพลาด',
+                content: 'ลองอีกครั้ง',
+                backgroundDismiss: true,
+                buttons: {
+                  formSubmit: {
+                    text: 'ตกลง',
+                    btnClass: 'btn-regis',
+                    action: function () {
+                    }
+                  }
+                }
               });
             }                                                   
           };
@@ -172,7 +186,7 @@
           ft.onprogress = function(progressEvent) { 
             $(".overlay").prop('hidden', false);
           };                   
-          ft.upload(fileURL, "https://omise-webpack.000webhostapp.com/www/php/add_prod.php?name_prod="+name+"&code="+code+"&parent="+folder+"", success, fail, options);
+          ft.upload(fileURL, "https://omise-webpack.000webhostapp.com/www/php/add_prod.php?name_prod="+name+"&code="+code+"&parent="+folder, success, fail, options);
           
         }else{
           $.ajax({
@@ -200,7 +214,8 @@
                           }
                       }
                     }
-                }); 
+                });
+                out(); 
               }else{
                 $.confirm({
                   title: 'พบข้อผิดพลาด',

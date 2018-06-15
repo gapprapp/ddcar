@@ -94,22 +94,22 @@
                 },             
                 success: function(data){  
                     $(".overlay").prop('hidden', true);              
-                    if(data == "success"){
+                    if(data == "success"){                    
+                        clearAll();           
+                    }else{
                         $.confirm({
-                            title: 'นำสินค้าเข้าเสร็จสิ้น',
-                            content: 'ทำการบันทึกสินค้าเข้าใน' + ' ชื่อโกดัง ',
+                            title: 'พบข้อผิดพลาด',
+                            content: 'ลองอีกครั้ง',
                             backgroundDismiss: true,
                             buttons: {
-                              formSubmit: {
+                                formSubmit: {
                                 text: 'ตกลง',
                                 btnClass: 'btn-regis',
                                 action: function () {
-                                    clearAll();
-                                  }
-                              }
+                                }
+                                }
                             }
-                        }); 
-                        clearAll();           
+                        });
                     }
                 }               
             });

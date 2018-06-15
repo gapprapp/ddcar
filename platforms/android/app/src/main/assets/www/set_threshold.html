@@ -156,6 +156,19 @@
                 transition_page_back('threshold.html');               
             }
             if(amt == "" || del == "" || $('#name').val() == ""){
+                $.confirm({
+                    title: 'พบข้อผิดพลาด',
+                    content: 'กรุณากรอกข้อมูลให้ครบ',
+                    backgroundDismiss: true,
+                    buttons: {
+                    formSubmit: {
+                        text: 'ตกลง',
+                        btnClass: 'btn-regis',
+                        action: function () {
+                        }
+                    }
+                    }
+                });
                 return 0;
             }
             if(prod_id){
@@ -182,7 +195,21 @@
                             transition_page_back('threshold.html'); 
                         }             
                         location.reload(true);  
-                    }                                               
+                    }else{
+                        $.confirm({
+                            title: 'พบข้อผิดพลาด',
+                            content: 'ลองอีกครั้ง',
+                            backgroundDismiss: true,
+                            buttons: {
+                                formSubmit: {
+                                text: 'ตกลง',
+                                btnClass: 'btn-regis',
+                                action: function () {
+                                }
+                                }
+                            }
+                        });
+                    }                                              
                 }               
             });         
         }
@@ -196,13 +223,17 @@
                 },             
                 success: function(data){  
                     $(".overlay").prop('hidden', true);                             
-                    var obj = jQuery.parseJSON(data);                       
-                    $.each(obj, function(i, field){ 
-                        $('#myUL').append('<li><div id="prod-1" class="row" onclick="get_prod('+field.prod_id+')">' +
-                        '<div class="col-4 text-center p">'+field.prod_code+'</div>' +
-                        '<div class="col-8 text-center p">'+field.prod_name+'</div>' +
-                        '</div><hr></li>');        
-                    });                                                                                                                               
+                    var obj = jQuery.parseJSON(data); 
+                    if(obj){
+                        $.each(obj, function(i, field){ 
+                            $('#myUL').append('<li><div id="prod-1" class="row" onclick="get_prod('+field.prod_id+')">' +
+                            '<div class="col-4 text-center p">'+field.prod_code+'</div>' +
+                            '<div class="col-8 text-center p">'+field.prod_name+'</div>' +
+                            '</div><hr></li>');        
+                        });
+                    }else{
+                        $('#myUL').append('<li><div class="col-12 text-center p">กรุณาเพิ่มสินค้าก่อนทำรายการ</div><hr></li>');
+                    }                                                                                                                                           
                 }               
             }); 
         }

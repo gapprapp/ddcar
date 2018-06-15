@@ -83,33 +83,37 @@
         $.ajax({
           type: "POST",
           url: "https://omise-webpack.000webhostapp.com/www/php/check_amt_prod.php",                
-          data: {'prod_id': prod_id},             
-          success: function(data){                             
-              var name;
-              var img;
-              var msg = "";                             
-              var obj = jQuery.parseJSON(data);              
-              if(obj != ""){                
-                $.each(obj, function(i, field){
-                    img = obj[i].img; 
-                    name = obj[i].prod_name;    
-                    msg = msg + '<div class="row" style="margin-bottom: 3%"><div class="col-6 text-right" style="margin-right: 5%;">'+obj[i][0]+' :'+'</div><div class="col-5 text-left">'+obj[i].amount+'</div></div>';
-                });
-                var top_msg = '<div class="row" style="margin-top: 2%; margin-bottom: 2%;"><div class="col-12 text-center"><img src="'+img+'" id="img" alt="" style="width: 300px; height: 300px;"></div></div><br>'; 
-                $.confirm({
-                    title: name,
-                    content: top_msg + msg,
-                    backgroundDismiss: true,
-                    buttons: {
-                        formSubmit: {
-                        text: 'ปิด',
-                        btnClass: 'btn-regis',
-                        action: function () {
-                            document.elementFromPoint(0, 0).click();
-                        }
-                        }
-                    }
-                });
+          data: {'prod_id': prod_id},    
+          beforeSend: function(){
+            $(".overlay").prop('hidden', false);
+          },                   
+          success: function(data){  
+            $(".overlay").prop('hidden', true);                             
+            var name;
+            var img;
+            var msg = "";                             
+            var obj = jQuery.parseJSON(data);              
+            if(obj != ""){                
+              $.each(obj, function(i, field){
+                  img = obj[i].img; 
+                  name = obj[i].prod_name;    
+                  msg = msg + '<div class="row" style="margin-bottom: 3%"><div class="col-6 text-right" style="margin-right: 5%;">'+obj[i][0]+' :'+'</div><div class="col-5 text-left">'+obj[i].amount+'</div></div>';
+              });
+              var top_msg = '<div class="row" style="margin-top: 2%; margin-bottom: 2%;"><div class="col-12 text-center"><img src="'+img+'" id="img" alt="" style="width: 300px; height: 300px;"></div></div><br>'; 
+              $.confirm({
+                  title: name,
+                  content: top_msg + msg,
+                  backgroundDismiss: true,
+                  buttons: {
+                      formSubmit: {
+                      text: 'ปิด',
+                      btnClass: 'btn-regis',
+                      action: function () {
+                          document.elementFromPoint(0, 0).click();
+                      }
+                      }
+                  }
+              });
             }else{
                 $.confirm({
                     title: "ไม่มีสินค้าในโกดัง/หน้าร้าน",
@@ -138,14 +142,18 @@
             $(".overlay").prop('hidden', false);
           },             
           success: function(data){  
-              $(".overlay").prop('hidden', true);                             
-              var obj = jQuery.parseJSON(data);                       
+            $(".overlay").prop('hidden', true);                             
+            var obj = jQuery.parseJSON(data);
+            if(obj){
               $.each(obj, function(i, field){ 
                 $('#myUL').append('<li><div id="prod-1" class="row" onclick="get_amt('+field.prod_id+')">' +
                   '<div class="col-4 text-center p">'+field.prod_code+'</div>' +
                   '<div class="col-8 text-center p">'+field.prod_name+'</div>' +
                   '</div><hr></li>');        
-              });                                                                                                                               
+              }); 
+            }else{
+              $('#myUL').append('<li><div class="col-12 text-center p">กรุณาเพิ่มสินค้าก่อนทำรายการ</div><hr></li>');
+            }                                                                                                                                          
           }               
         }); 
       }

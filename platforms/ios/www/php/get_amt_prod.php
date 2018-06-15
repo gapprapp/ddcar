@@ -26,7 +26,7 @@
         $sum = $sum_w + $sum_s;
         echo $sum;		   
     }else{
-        echo "connection fail!";
+        echo "fail";
     }
-	mysqli_close($conn);
+	  mysqli_close($conn);
 ?>

@@ -6,10 +6,15 @@
     $sql = "SELECT title FROM tree";
     $result = mysqli_query($conn, $sql);  
 
-    mysqli_autocommit($conn,FALSE);   
+    mysqli_begin_transaction($conn);
     if(mysqli_num_rows($result) == 0){    
         $sql = "INSERT INTO tree(title,lft,rgt) VALUES ('car','1','2')";
-        $result = mysqli_query($conn, $sql);          
+        $result = mysqli_query($conn, $sql);
+        if(!$result){
+            mysqli_rollback($conn);
+            echo "fail";
+            exit;
+        }            
     }
 
     $sql = "SELECT lft,rgt FROM tree WHERE title = '$parent'";
@@ -21,22 +26,28 @@
               
               $sql = "UPDATE tree SET rgt = rgt + 2 WHERE rgt > '$last_child'";
               $result = mysqli_query($conn, $sql);  
+              if(!$result){
+                mysqli_rollback($conn);
+                echo "fail";
+                exit;
+              }  
               $sql = "UPDATE tree SET lft = lft + 2 WHERE lft > '$last_child'";
               $result = mysqli_query($conn, $sql);  
-
+              if(!$result){
+                mysqli_rollback($conn);
+                echo "fail";
+                exit;
+              }  
               $sql = "INSERT INTO tree(title,lft,rgt) VALUES ('$title','$rgt','$rgt'+1)";
               $result = mysqli_query($conn, $sql);  
+              if(!$result){
+                mysqli_rollback($conn);
+                echo "fail";
+                exit;
+              }  
             }   
-        }  
-        
-    if($result){
-        echo "success";
-        mysqli_commit($conn);
-    }else{
-        echo "fail";
-        mysqli_rollback($conn);
-    }
-
-    
+        }       
+    mysqli_commit($conn); 
+    echo "success";    
     mysqli_close($conn);
 ?>

@@ -61,37 +61,7 @@
       var name = $('#name').val();          
       var type = $('#type').val();          
 
-      if(name != "" && type != ""){
-          $.ajax({
-              type: "POST",
-              url:"https://omise-webpack.000webhostapp.com/www/php/add_ware_shop.php",           
-              data: {'name':name,
-                  'type':type},
-              beforeSend: function(){
-                $(".overlay").prop('hidden', false);
-              },             
-              success: function(data){  
-                $(".overlay").prop('hidden', true);        
-                if(data == "success"){
-                  $.confirm({
-                      title: 'เสร็จสิ้น',
-                      content: 'เพิ่มสินค้า ' +type+ ' ' +name+ ' เสร็จสิ้น',
-                      backgroundDismiss: true,
-                      buttons: {
-                        formSubmit: {
-                          text: 'ตกลง',
-                          btnClass: 'btn-regis',
-                          action: function () {
-                              goto = "warehouse.html";
-                              transition_page_back_flip(goto);
-                          }
-                        }
-                      }
-                  });                        
-                }
-              }               
-          });
-      }else{
+      if(name == "" || type == ""){
         $.confirm({
           title: 'พบข้อผิดพลาด',
           content: 'กรุณากรอกข้อมูลให้ครบ',
@@ -105,8 +75,51 @@
             }
           }
         });
+        return 0;
       }
-      
+      $.ajax({
+          type: "POST",
+          url:"https://omise-webpack.000webhostapp.com/www/php/add_ware_shop.php",           
+          data: {'name':name,
+              'type':type},
+          beforeSend: function(){
+            $(".overlay").prop('hidden', false);
+          },             
+          success: function(data){  
+            $(".overlay").prop('hidden', true);        
+            if(data == "success"){
+              $.confirm({
+                  title: 'เสร็จสิ้น',
+                  content: 'เพิ่มสินค้า ' +type+ ' ' +name+ ' เสร็จสิ้น',
+                  backgroundDismiss: true,
+                  buttons: {
+                    formSubmit: {
+                      text: 'ตกลง',
+                      btnClass: 'btn-regis',
+                      action: function () {
+                          goto = "warehouse.html";
+                          transition_page_back_flip(goto);
+                      }
+                    }
+                  }
+              });                        
+            }else{
+              $.confirm({
+                title: 'พบข้อผิดพลาด',
+                content: 'ลองอีกครั้ง',
+                backgroundDismiss: true,
+                buttons: {
+                  formSubmit: {
+                    text: 'ตกลง',
+                    btnClass: 'btn-regis',
+                    action: function () {
+                    }
+                  }
+                }
+              });
+            }
+          }               
+          });
     }
 
     function setrole(arg){

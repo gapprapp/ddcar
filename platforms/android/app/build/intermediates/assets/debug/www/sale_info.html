@@ -19,6 +19,7 @@
 
     <link rel="stylesheet" href="css/index.css">
     <link rel="stylesheet" href="css/jquery-confirm.css">
+    <link rel="stylesheet" href="css/loading.css">
 
     <!-- Font -->
     <link href="https://fonts.googleapis.com/css?family=Prompt" rel="stylesheet">
@@ -57,26 +58,7 @@
 
     <script>
         var arr_detail = [];
-        $(document).ready(function () {          
-            /*$.ajax({
-                type: "GET",
-                url:"https://omise-webpack.000webhostapp.com/www/php/get_ware_shop.php",                            
-                success: function(data){
-                    var obj = jQuery.parseJSON(data);                                                      
-                    $.each(obj, function(i, field){   
-                        if(obj[i][2] == "โกดัง"){  
-                            $('#ul-ware').append("<li id='li-ware-"+i+"' onclick='setware("+i+");' style='padding-bottom: 10px;'>"+obj[i].ware_name+"</li>" +
-                            "<span id='id-ware-"+i+"' hidden>"+obj[i].ware_id+"</span>" +
-                            "<span id='type-"+i+"' hidden>โกดัง</span>");
-                        }else if(obj[i][2] == "หน้าร้าน"){   
-                            $('#ul-ware').append("<li id='li-ware-"+i+"' onclick='setware("+i+");' style='padding-bottom: 10px;'>"+obj[i].shop_name+"</li>" +
-                            "<span id='id-ware-"+i+"' hidden>"+obj[i].shop_id+"</span>" +
-                            "<span id='type-"+i+"' hidden>หน้าร้าน</span>");
-                        }                    
-                    });                                        
-                }               
-            });*/
-
+        $(document).ready(function () {
             var retrievedObject = localStorage.getItem('arr_sale');
             var arr_data = JSON.parse(retrievedObject);
             for(var i = 0 ; i < arr_data.length ; i ++){                
@@ -170,36 +152,35 @@
                 //ajax and apeend
                 $.ajax({
                     type: "GET",
-                    url:"https://omise-webpack.000webhostapp.com/www/php/get_ware_shop.php",                            
+                    url:"https://omise-webpack.000webhostapp.com/www/php/get_ware_shop.php",     
+                    beforeSend: function(){
+                        $(".overlay").prop('hidden', false);
+                    },                        
                     success: function(data){
-                    var obj = jQuery.parseJSON(data);                                                      
-                    $.each(obj, function(i, field){   
-                        if(obj[i][2] == "โกดัง"){  
-                            $(".jconfirm-buttons").append('<button id="li-ware-'+i+'" type="button" onclick="setware('+i+')" class="btn btn-choice">'+obj[i].ware_name+'</button>' +
-                            '<span id="id-ware-'+i+'" hidden>'+obj[i].ware_id+'</span>' +
-                            '<span id="type-'+i+'" hidden>โกดัง</span>');                       
-                        }else if(obj[i][2] == "หน้าร้าน"){ 
-                            $(".jconfirm-buttons").append('<button id="li-ware-'+i+'" type="button" onclick="setware('+i+')" class="btn btn-choice">'+obj[i].shop_name+'</button>' +
-                            '<span id="id-ware-'+i+'" hidden>'+obj[i].shop_id+'</span>' +
-                            '<span id="type-'+i+'" hidden>หน้าร้าน</span>');
-                        }                    
-                        });                                        
+                    $(".overlay").prop('hidden', true);  
+                        var obj = jQuery.parseJSON(data);
+                        if(obj){
+                            $.each(obj, function(i, field){   
+                                if(obj[i][2] == "โกดัง"){  
+                                    $(".jconfirm-buttons").append('<button id="li-ware-'+i+'" type="button" onclick="setware('+i+')" class="btn btn-choice">'+obj[i].ware_name+'</button>' +
+                                    '<span id="id-ware-'+i+'" hidden>'+obj[i].ware_id+'</span>' +
+                                    '<span id="type-'+i+'" hidden>โกดัง</span>');                       
+                                }else if(obj[i][2] == "หน้าร้าน"){ 
+                                    $(".jconfirm-buttons").append('<button id="li-ware-'+i+'" type="button" onclick="setware('+i+')" class="btn btn-choice">'+obj[i].shop_name+'</button>' +
+                                    '<span id="id-ware-'+i+'" hidden>'+obj[i].shop_id+'</span>' +
+                                    '<span id="type-'+i+'" hidden>หน้าร้าน</span>');
+                                }                    
+                            });   
+                        }else{
+                            $(".jconfirm-buttons").append("กรุณาเพิ่มหน้าร้าน/โกดังก่อนทำรายการ");     
+                        }                                                      
                     }               
                 });               
               },
               onDestroy: function () {
                 $("style").append('.jconfirm .jconfirm-box{margin-bottom: 5%;}');
                 $("style").append('.jconfirm .jconfirm-box{max-height: 100%;}');
-              },
-              /*onOpen: function(){
-                $(".btn-choice").click(function(event) {
-                  txt = $(this).text();
-                  $("#ware").val(txt);
-                  b_id = $("#id-ware").text();
-                  type = $("#type").text()
-                  document.elementFromPoint(0, 0).click();
-                });
-              }*/
+              }             
             });
         }
 
@@ -228,6 +209,19 @@
 
         function save(){          
             if($("#ware").val() != ""){
+                $.confirm({
+                    title: 'พบข้อผิดพลาด',
+                    content: 'กรุณากรอกข้อมูลให้ครบ',
+                    backgroundDismiss: true,
+                    buttons: {
+                    formSubmit: {
+                        text: 'ตกลง',
+                        btnClass: 'btn-regis',
+                        action: function () {
+                        }
+                    }
+                    }
+                });
                 return 0;
             }           
             $("style").append('.jconfirm .jconfirm-box{margin-bottom: 50%;}');
@@ -245,7 +239,7 @@
                     text: 'ตกลง',
                     btnClass: 'btn-danger',
                     action: function () {
-                        if($("#chng").val() == ""){
+                        if($("#chng").val() == "" || $("#get").val() == ""){
                             return 0;
                         }
                         save2db();
@@ -271,13 +265,17 @@
             var dataString =  "JSON=" + json_string + "&JSOND=" + json_detail + "&ware_id=" + b_id + "&date=" + datetime + "&type=" + type
             + "&cus_id=" + localStorage.cus_id + "&pay=" + $("#pay").val() + "&net=" + localStorage.net + "&dis=" + dis
             + "&total=" + $('#total').val() + "&get_price=" + $('#get').val() + "&chng=" + $('#chng').val();                        
-            alert(dataString);
+            //alert(dataString);
             $.ajax({
                 type: "POST",
                 url:"https://omise-webpack.000webhostapp.com/www/php/save_order.php",           
-                data: dataString,               
-                success: function(data){                             
-                    alert(data);
+                data: dataString,
+                beforeSend: function(){
+                    $(".overlay").prop('hidden', false);
+                },               
+                success: function(data){  
+                    $(".overlay").prop('hidden', true);                           
+                    //alert(data);
                     if(data != "fail"){
                         localStorage.arr_ex = "";
                         localStorage.cus_name = "";
@@ -288,6 +286,20 @@
                         localStorage.arr_prod_s =  "";                                                                               
                         goto = "sale.html";
                         transition_page_back(goto);            
+                    }else{
+                        $.confirm({
+                            title: 'พบข้อผิดพลาด',
+                            content: 'ลองอีกครั้ง',
+                            backgroundDismiss: true,
+                            buttons: {
+                                formSubmit: {
+                                text: 'ตกลง',
+                                btnClass: 'btn-regis',
+                                action: function () {
+                                }
+                                }
+                            }
+                        });
                     }
                 }               
             });
@@ -305,6 +317,9 @@
 </head>
 
 <body style="overflow: auto;">
+    <!-- Loading -->
+    <div class="overlay" hidden><div class="loading"></div></div>    
+
     <!-- Nav menu top -->
     <div class="row fixed-top navs">
         <div class="col-1 text-center" onclick="transition_page_back('sale_check.html')">

@@ -48,23 +48,25 @@
         },
         success: function(data){  
           $(".overlay").prop('hidden', true);
-          var obj = jQuery.parseJSON(data);                    
-          $.each(obj, function(i, field){                   
-            $('#show_cus').append( "<div id='cus-"+i+"' class='row'>" +              
-              "<div class='col-1 text-left'>" +
-                "<i class='fa fa-trash-alt i-del' onclick='edit_del("+obj[i].cus_id+","+i+");' style='color: #666666;' hidden></i>" +
-                "<i class='fa fa-edit i-edit' onclick='edit_cus("+obj[i].cus_id+");' style='color: #666666;' hidden></i>" +
-              "</div>" +
-              "<div class='col-6 text-center no-pd' onclick='show_cus("+obj[i].cus_id+");'>" +
-                "<p id='cus_name-"+i+"'>"+obj[i].cus_name+"</p>" +
-              "</div>" +
-              "<div class='col-4 text-center no-pd' onclick='show_cus("+obj[i].cus_id+");'>" +
-                "<p>"+obj[i].cus_tel+"</p>" +
-              "</div>" +
-              "<div class='col-1'></div>" +
-              "</div>" +   
-              "<hr id='hr-"+i+"'>");                                                  
-          });                          
+          var obj = jQuery.parseJSON(data);
+          if(obj){
+            $.each(obj, function(i, field){                   
+              $('#show_cus').append( "<div id='cus-"+i+"' class='row'>" +              
+                "<div class='col-1 text-left'>" +
+                  "<i class='fa fa-trash-alt i-del' onclick='edit_del("+obj[i].cus_id+","+i+");' style='color: #666666;' hidden></i>" +
+                  "<i class='fa fa-edit i-edit' onclick='edit_cus("+obj[i].cus_id+");' style='color: #666666;' hidden></i>" +
+                "</div>" +
+                "<div class='col-6 text-center no-pd' onclick='show_cus("+obj[i].cus_id+");'>" +
+                  "<p id='cus_name-"+i+"'>"+obj[i].cus_name+"</p>" +
+                "</div>" +
+                "<div class='col-4 text-center no-pd' onclick='show_cus("+obj[i].cus_id+");'>" +
+                  "<p>"+obj[i].cus_tel+"</p>" +
+                "</div>" +
+                "<div class='col-1'></div>" +
+                "</div>" +   
+                "<hr id='hr-"+i+"'>");                                                  
+            });   
+          }                                
         }               
       });
     });
@@ -144,12 +146,30 @@
                   $.ajax({
                     type: "POST",
                     url:"https://omise-webpack.000webhostapp.com/www/php/delete_cus.php",           
-                    data: {'cus_id' : arg},               
+                    data: {'cus_id' : arg},     
+                    beforeSend: function(){
+                      $(".overlay").prop('hidden', false);
+                    },           
                     success: function(data){  
-                        if(data == "success"){
-                          $("#cus-"+i).remove(); 
-                          $("#hr-"+i).remove();
-                        }          
+                      $(".overlay").prop('hidden', true);  
+                      if(data == "success"){
+                        $("#cus-"+i).remove(); 
+                        $("#hr-"+i).remove();
+                      }else{
+                        $.confirm({
+                          title: 'พบข้อผิดพลาด',
+                          content: 'ลองอีกครั้ง',
+                          backgroundDismiss: true,
+                          buttons: {
+                            formSubmit: {
+                              text: 'ตกลง',
+                              btnClass: 'btn-regis',
+                              action: function () {
+                              }
+                            }
+                          }
+                        });
+                      }          
                     }               
                   });
               }

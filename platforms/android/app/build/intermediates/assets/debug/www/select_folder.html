@@ -369,12 +369,36 @@
                 $("#navs-bttm").prop("hidden", false);
                 $("#append-ctn").append(text_html);
               } else {
-                alert("เซิร์ฟเวอร์มีปัญหา กรุณาเข้าใหม่อีกครั้ง");
+                $.confirm({
+                  title: 'พบข้อผิดพลาด',
+                  content: 'ลองอีกครั้ง',
+                  backgroundDismiss: true,
+                  buttons: {
+                    formSubmit: {
+                      text: 'ตกลง',
+                      btnClass: 'btn-regis',
+                      action: function () {
+                      }
+                    }
+                  }
+                });
               }
             }
           });
         }else{
-          alert("กรอกหมวดหมู่ก่อนเพิ่ม");
+          $.confirm({
+            title: 'พบข้อผิดพลาด',
+            content: 'กรอกหมวดหมู่ก่อนเพิ่ม',
+            backgroundDismiss: true,
+            buttons: {
+              formSubmit: {
+                text: 'ตกลง',
+                btnClass: 'btn-regis',
+                action: function () {
+                }
+              }
+            }
+          });         
         }
       }else{
         input = arg;
@@ -398,7 +422,19 @@
                   "</div ><hr id='hr-"+index+"'>";
                 $("#append-ctn").append(text_html);
               }else{
-                alert("เซิร์ฟเวอร์มีปัญหา กรุณาเข้าใหม่อีกครั้ง");
+                $.confirm({
+                  title: 'พบข้อผิดพลาด',
+                  content: 'ลองอีกครั้ง',
+                  backgroundDismiss: true,
+                  buttons: {
+                    formSubmit: {
+                      text: 'ตกลง',
+                      btnClass: 'btn-regis',
+                      action: function () {
+                      }
+                    }
+                  }
+                });
               }
             }
           });
@@ -461,10 +497,26 @@
         beforeSend: function(){
           $(".overlay").prop('hidden', false);
         },             
-        success: function(data){  
-            $(".overlay").prop('hidden', true);                             
-            $("#title-" + arg).text(name); 
-            $("#getin-"+arg).attr("onclick", "getIn(\"" + name + "\")");
+        success: function(data){ 
+            if(data == "success"){
+              $(".overlay").prop('hidden', true);                             
+              $("#title-" + arg).text(name); 
+              $("#getin-"+arg).attr("onclick", "getIn(\"" + name + "\")");
+            }else{
+              $.confirm({
+                title: 'พบข้อผิดพลาด',
+                content: 'ลองอีกครั้ง',
+                backgroundDismiss: true,
+                buttons: {
+                  formSubmit: {
+                    text: 'ตกลง',
+                    btnClass: 'btn-regis',
+                    action: function () {
+                    }
+                  }
+                }
+              });
+            }             
             //$("#row-title-" + arg).prop('hidden', false);
             //$("#row-edit-" + arg).prop('hidden', true);          
         }               
@@ -508,6 +560,20 @@
                         } 
                         disac('del');
                       }           
+                    }else{
+                      $.confirm({
+                        title: 'พบข้อผิดพลาด',
+                        content: 'ลองอีกครั้ง',
+                        backgroundDismiss: true,
+                        buttons: {
+                          formSubmit: {
+                            text: 'ตกลง',
+                            btnClass: 'btn-regis',
+                            action: function () {
+                            }
+                          }
+                        }
+                      });
                     }                               
                   }               
                 });
@@ -548,7 +614,21 @@
                         $("#navs-bttm").prop("hidden", true);
                         disac('del');
                       }           
-                    }            
+                    }else{
+                      $.confirm({
+                        title: 'พบข้อผิดพลาด',
+                        content: 'ลองอีกครั้ง',
+                        backgroundDismiss: true,
+                        buttons: {
+                          formSubmit: {
+                            text: 'ตกลง',
+                            btnClass: 'btn-regis',
+                            action: function () {
+                            }
+                          }
+                        }
+                      });
+                    }           
                   }               
                 });
               }

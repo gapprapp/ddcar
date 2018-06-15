@@ -83,7 +83,19 @@
       }
 
       function onFail(message) {
-          alert('Failed because: ' + message);
+        $.confirm({
+          title: 'พบข้อผิดพลาด',
+          content: message,
+          backgroundDismiss: true,
+          buttons: {
+            formSubmit: {
+              text: 'ตกลง',
+              btnClass: 'btn-regis',
+              action: function () {
+              }
+            }
+          }
+        });
       }
     }
 
@@ -91,18 +103,105 @@
       var name = $('#name').val();
       var code = $('#barcode').val();      
               
-      if(name != "" && code != ""){
-        $('#img').each(function () {
-          if(this.src.length > 0){  
-            var image = document.getElementById('img');       
-            var fileURL = image.src;
-            var filename = fileURL.substr(fileURL.lastIndexOf('/') + 1).split("?");
-            
-            var success = function (r) {                
-                //alert(r.response);  
-              if(r.response == "success"){
-                $(".overlay").prop('hidden', true);                           
-                  $.confirm({
+      if(name == "" || code == ""){
+        $.confirm({
+          title: 'พบข้อผิดพลาด',
+          content: 'กรุณากรอกข้อมูลให้ครบ',
+          backgroundDismiss: true,
+          buttons: {
+            formSubmit: {
+              text: 'ตกลง',
+              btnClass: 'btn-regis',
+              action: function () {
+              }
+            }
+          }
+        });
+        return 0; 
+      }
+      $('#img').each(function () {
+        if(this.src.length > 0){  
+          var image = document.getElementById('img');       
+          var fileURL = image.src;
+          var filename = fileURL.substr(fileURL.lastIndexOf('/') + 1).split("?");
+          
+          var success = function (r) { 
+            $(".overlay").prop('hidden', true);            
+            if(r.response == "success"){                                       
+                $.confirm({
+                  title: 'เสร็จสิ้น',
+                  content: 'เพิ่มสินค้า ' +name+ ' ในหมวดหมู่ ' +folder+ ' เสร็จสิ้น',
+                  backgroundDismiss: true,
+                  buttons: {
+                    formSubmit: {
+                      text: 'ตกลง',
+                      btnClass: 'btn-regis',
+                      action: function () {
+                          out();
+                        }
+                    }
+                  }
+              });
+              out();
+            }else{
+              $.confirm({
+                title: 'พบข้อผิดพลาด',
+                content: 'ลองอีกครั้ง',
+                backgroundDismiss: true,
+                buttons: {
+                  formSubmit: {
+                    text: 'ตกลง',
+                    btnClass: 'btn-regis',
+                    action: function () {
+                    }
+                  }
+                }
+              });
+            }                                                   
+          };
+
+          var fail = function (error) {
+            $.confirm({
+              title: 'พบข้อผิดพลาด',
+              content: error,
+              backgroundDismiss: true,
+              buttons: {
+                formSubmit: {
+                  text: 'ตกลง',
+                  btnClass: 'btn-regis',
+                  action: function () {
+                  }
+                }
+              }
+            });
+          };
+
+          var options = new FileUploadOptions();
+          options.fileKey = "file";
+          options.fileName = filename[0];
+          options.mimeType = "image/jpeg";       
+          //options.chunkedMode = false;        
+          
+          var ft = new FileTransfer();
+          ft.onprogress = function(progressEvent) { 
+            $(".overlay").prop('hidden', false);
+          };                   
+          ft.upload(fileURL, "https://omise-webpack.000webhostapp.com/www/php/add_prod.php?name_prod="+name+"&code="+code+"&parent="+folder, success, fail, options);
+          
+        }else{
+          $.ajax({
+            type: "POST",
+            url:"https://omise-webpack.000webhostapp.com/www/php/add_prod_noimg.php",           
+            data: {'name_prod' : name,
+                  'code' : code,
+                  'parent' : folder},               
+              beforeSend: function(){
+                $(".overlay").prop('hidden', false);
+              },             
+              success: function(data){
+              $(".overlay").prop('hidden', true);                               
+              if(data == "success"){
+                $.confirm({
                     title: 'เสร็จสิ้น',
                     content: 'เพิ่มสินค้า ' +name+ ' ในหมวดหมู่ ' +folder+ ' เสร็จสิ้น',
                     backgroundDismiss: true,
@@ -116,75 +215,26 @@
                       }
                     }
                 });
-              }                                                   
-            };
-
-            var fail = function (error) {
-              alert("An error has occurred: Code = " + error);
-            };
-
-            var options = new FileUploadOptions();
-            options.fileKey = "file";
-            options.fileName = filename[0];
-            options.mimeType = "image/jpeg";       
-            //options.chunkedMode = false;        
-            
-            var ft = new FileTransfer();
-            ft.onprogress = function(progressEvent) { 
-              $(".overlay").prop('hidden', false);
-            };                   
-            ft.upload(fileURL, "https://omise-webpack.000webhostapp.com/www/php/add_prod.php?name_prod="+name+"&code="+code+"&parent="+folder+"", success, fail, options);
-           
-          }else{
-            $.ajax({
-              type: "POST",
-              url:"https://omise-webpack.000webhostapp.com/www/php/add_prod_noimg.php",           
-              data: {'name_prod' : name,
-                    'code' : code,
-                    'parent' : folder},               
-                beforeSend: function(){
-                  $(".overlay").prop('hidden', false);
-                },             
-                success: function(data){
-                $(".overlay").prop('hidden', true);                               
-                if(data == "success"){
-                  $.confirm({
-                      title: 'เสร็จสิ้น',
-                      content: 'เพิ่มสินค้า ' +name+ ' ในหมวดหมู่ ' +folder+ ' เสร็จสิ้น',
-                      backgroundDismiss: true,
-                      buttons: {
-                        formSubmit: {
-                          text: 'ตกลง',
-                          btnClass: 'btn-regis',
-                          action: function () {
-                              out();
-                            }
-                        }
+                out(); 
+              }else{
+                $.confirm({
+                  title: 'พบข้อผิดพลาด',
+                  content: 'ลองอีกครั้ง',
+                  backgroundDismiss: true,
+                  buttons: {
+                    formSubmit: {
+                      text: 'ตกลง',
+                      btnClass: 'btn-regis',
+                      action: function () {
                       }
-                  }); 
-                }
-              }               
-            });
-          }              
-        });   
-      
-      }else{
-        $.confirm({
-          title: 'พบข้อผิดพลาด',
-          content: 'กรุณากรอกข้อมูลให้ครบ',
-          backgroundDismiss: true,
-          buttons: {
-            formSubmit: {
-              text: 'ตกลง',
-              btnClass: 'btn-regis',
-              action: function () {
+                    }
+                  }
+                });
               }
-            }
-          }
-        }); 
-      }
-                  
-        
+            }               
+          });
+        }              
+      });   
     }
 
     function out(){  

@@ -15,10 +15,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.6/umd/popper.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
   <script defer src="https://use.fontawesome.com/releases/v5.0.8/js/all.js"></script>
-  <script src="cordova.js"></script>
-
-  <script type="text/javascript" src="js/jquery.md5.min.js"></script> 
-  <script type="text/javascript" src="js/jquery.alphanumeric.js"></script>
+  <script src="cordova.js"></script> 
 
   <link rel="stylesheet" href="css/index.css">
   <link rel="stylesheet" href="css/jquery-confirm.css">
@@ -35,10 +32,6 @@
   </style>
 
   <script>
-    $(document).ready(function() {
-      $('#phone').numeric();
-    });
-
     function disactive(arg) {
       nav_menu = ['home', 'bell', 'qrcode', 'bars'];
       for (i = 0; i < 4; i++) {
@@ -60,43 +53,9 @@
       var name = $('#name').val();
       var pass = $('#pass').val();    
       var phone = $('#phone').val();  
-      var role = $("#role").val();          
-      var strMD5 = $.md5(pass);
+      var role = $("#role").val();   
 
-      if(name != "" && pass != "" && phone != "" && role != ""){
-          $.ajax({
-              type: "POST",
-              url:"https://omise-webpack.000webhostapp.com/www/php/register.php",           
-              data: {'user':name,
-                  'pass':strMD5,
-                  'phone':phone,
-                  'role':role},               
-              beforeSend: function(){
-                  $(".overlay").prop('hidden', false);
-              },     
-              success: function(data){    
-                $(".overlay").prop('hidden', true);                               
-                  //alert(data);
-                  if(data == "success"){                        
-                    $.confirm({
-                        title: 'เสร็จสิ้น',
-                        content: 'เพิ่มสมาชิก '+name+' บทบาท '+role+ ' เสร็จสิ้น',
-                        backgroundDismiss: true,
-                        buttons: {
-                          formSubmit: {
-                            text: 'ตกลง',
-                            btnClass: 'btn-regis',
-                            action: function () {
-                                goto = "member.html";
-                                transition_page_next_flip(goto);
-                              }
-                          }
-                        }
-                    }); 
-                  }
-              }               
-          });
-      }else{
+      if(name == "" || pass == "" || phone == "" || role == ""){    
         $.confirm({
           title: 'พบข้อผิดพลาด',
           content: 'กรุณากรอกข้อมูลให้ครบ',
@@ -110,7 +69,40 @@
             }
           }
         }); 
+        return 0;
       }
+      $.ajax({
+          type: "POST",
+          url:"https://omise-webpack.000webhostapp.com/www/php/register.php",           
+          data: {'user':name,
+              'pass':pass,
+              'phone':phone,
+              'role':role},               
+          beforeSend: function(){
+              $(".overlay").prop('hidden', false);
+          },     
+          success: function(data){    
+            $(".overlay").prop('hidden', true);                               
+              //alert(data);
+              if(data == "success"){                        
+                $.confirm({
+                    title: 'เสร็จสิ้น',
+                    content: 'เพิ่มสมาชิก '+name+' บทบาท '+role+ ' เสร็จสิ้น',
+                    backgroundDismiss: true,
+                    buttons: {
+                      formSubmit: {
+                        text: 'ตกลง',
+                        btnClass: 'btn-regis',
+                        action: function () {
+                            goto = "member.html";
+                            transition_page_next_flip(goto);
+                          }
+                      }
+                    }
+                }); 
+              }
+          }               
+      });     
     }
 
     function setrole(arg){

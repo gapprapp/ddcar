@@ -214,7 +214,7 @@
             });
         }
 
-        function sleep(milliseconds) {
+        /*function sleep(milliseconds) {
           var start = new Date().getTime();
           for (var i = 0; i < 1e7; i++) {
             if ((new Date().getTime() - start) > milliseconds){
@@ -237,56 +237,14 @@
             $("#price").attr("readonly");
             $("#btn-addpic").prop("disabled", true);
             $("#btn-addprod").prop("disabled", true);
-        }
+        }*/
 
         function add_prod(){           
             var code = $('#barcode').val();
-            var price = $('#price').val();          
-            if(code != "" && price != ""){             
-                if(localStorage.arr_sale){
-                    var retrievedObject = localStorage.getItem('arr_sale');
-                    var arr_data = JSON.parse(retrievedObject);               
-                }else{
-                    var arr_data = [];              
-                }           
-                item = {}            
-                item ["qr"] =  code;
-                item ["prod_id"] =  prod_id;
-                item ["name"] =  $('#name').val();
-                item ["old_price"] =  old_price; 
-                item ["price"] =  price;               
-                item ["amt"] =  $('#amount').val();
-                item ["img"] =  img;     
-
-                arr_data.push(item); 
-                localStorage.setItem('arr_sale', JSON.stringify(arr_data));         
-            
-                $('#check-sale').text(arr_data.length);
-                $("#cus").attr('disabled',true);           
-
-                $('#barcode').val("");
-                $('#name').val("");
-                $('#price').val("");                
-                $('#amount').val("1");  
-                if(localStorage.arr_prod_s){
-                    var retrievedObject = localStorage.getItem('arr_prod_s');
-                    var arr_data2 = JSON.parse(retrievedObject);
-                    arr_data2.splice(0,1); 
-                    localStorage.setItem('arr_prod_s', JSON.stringify(arr_data2));  
-                    if(arr_data2.length == 0){
-                        localStorage.arr_prod_s = "";  
-                    }                                 
-                }  
-                if(localStorage.arr_prod_s){                    
-                    var retrievedObject = localStorage.getItem('arr_prod_s');
-                    var arr_data2 = JSON.parse(retrievedObject);                                   
-                    prod_id = arr_data2[0].prod_id;            
-                    get_sale(prod_id);            
-                }else{                   
-                    $("#btn-folder").removeAttr('disabled');           
-                    $("#btn-addpic").removeAttr('disabled');
-                }                                  
-            }else{
+            var price = $('#price').val();   
+            var name = $('#name').val();    
+            var amt = $('#amount').val();            
+            if(name == "" || amt == "" || code == "" || price == ""){ 
                 $.confirm({
                   title: 'พบข้อผิดพลาด',
                   content: 'กรุณากรอกข้อมูลให้ครบ',
@@ -300,7 +258,51 @@
                     }
                   }
                 });
-            }          
+                return 0;
+            }                   
+            if(localStorage.arr_sale){
+                var retrievedObject = localStorage.getItem('arr_sale');
+                var arr_data = JSON.parse(retrievedObject);               
+            }else{
+                var arr_data = [];              
+            }           
+            item = {}            
+            item ["qr"] =  code;
+            item ["prod_id"] =  prod_id;
+            item ["name"] =  name;
+            item ["old_price"] =  old_price; 
+            item ["price"] =  price;               
+            item ["amt"] =  amt;
+            item ["img"] =  img;     
+
+            arr_data.push(item); 
+            localStorage.setItem('arr_sale', JSON.stringify(arr_data));         
+        
+            $('#check-sale').text(arr_data.length);
+            $("#cus").attr('disabled',true);           
+
+            $('#barcode').val("");
+            $('#name').val("");
+            $('#price').val("");                
+            $('#amount').val("1");  
+            if(localStorage.arr_prod_s){
+                var retrievedObject = localStorage.getItem('arr_prod_s');
+                var arr_data2 = JSON.parse(retrievedObject);
+                arr_data2.splice(0,1); 
+                localStorage.setItem('arr_prod_s', JSON.stringify(arr_data2));  
+                if(arr_data2.length == 0){
+                    localStorage.arr_prod_s = "";  
+                }                                 
+            }  
+            if(localStorage.arr_prod_s){                    
+                var retrievedObject = localStorage.getItem('arr_prod_s');
+                var arr_data2 = JSON.parse(retrievedObject);                                   
+                prod_id = arr_data2[0].prod_id;            
+                get_sale(prod_id);            
+            }else{                   
+                $("#btn-folder").removeAttr('disabled');           
+                $("#btn-addpic").removeAttr('disabled');
+            }         
 
            /* $.confirm({
               title: "ชื่อสินค้า",
@@ -342,13 +344,17 @@
                 },             
                 success: function(data){  
                     $(".overlay").prop('hidden', true);                             
-                    var obj = jQuery.parseJSON(data);                       
-                    $.each(obj, function(i, field){ 
-                        $('#myUL').append('<li><div id="prod-1" class="row" onclick="get_sale('+field.prod_id+')">' +
-                        '<div class="col-4 text-center p">'+field.prod_code+'</div>' +
-                        '<div class="col-8 text-center p">'+field.prod_name+'</div>' +
-                        '</div><hr></li>');        
-                    });                                                                                                                               
+                    var obj = jQuery.parseJSON(data);  
+                    if(obj){
+                         $.each(obj, function(i, field){ 
+                            $('#myUL').append('<li><div id="prod-1" class="row" onclick="get_sale('+field.prod_id+')">' +
+                            '<div class="col-4 text-center p">'+field.prod_code+'</div>' +
+                            '<div class="col-8 text-center p">'+field.prod_name+'</div>' +
+                            '</div><hr></li>');        
+                        }); 
+                    }else{
+                        $('#myUL').append('<li><div class="col-12 text-center p">กรุณาเพิ่มสินค้าก่อนทำรายการ</div><hr></li>');
+                    }                                                                                                                                              
                 }               
             }); 
         }

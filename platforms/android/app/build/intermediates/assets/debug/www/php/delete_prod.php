@@ -2,7 +2,7 @@
     $conn = mysqli_connect("localhost", "id3340019_dd", "pkl2468GG", "id3340019_dd");  
     $title  = $_POST['title'];
 
-    mysqli_autocommit($conn,FALSE);
+    mysqli_begin_transaction($conn);
     $sql = "SELECT lft,rgt FROM tree WHERE title = '$title'";
     $result1 = mysqli_query($conn, $sql);  
         if(mysqli_num_rows($result1) > 0){    
@@ -12,22 +12,36 @@
                 $width = $rgt - $lft + 1;       
                 $sql = "DELETE FROM tree WHERE lft BETWEEN '$lft' AND '$rgt'";
                 $result = mysqli_query($conn, $sql);  
+                if(!$result){
+                    mysqli_rollback($conn);
+                    echo "fail";
+                    exit;
+                }  
               
                 $sql = "UPDATE tree SET rgt = rgt - $width WHERE rgt > '$rgt'";
                 $result = mysqli_query($conn, $sql);  
+                if(!$result){
+                    mysqli_rollback($conn);
+                    echo "fail";
+                    exit;
+                }  
                 $sql = "UPDATE tree SET lft = lft - $width WHERE lft > '$rgt'";
-                $result = mysqli_query($conn, $sql);               
+                $result = mysqli_query($conn, $sql);  
+                if(!$result){
+                    mysqli_rollback($conn);
+                    echo "fail";
+                    exit;
+                }               
             } 
             $sql = "DELETE FROM product WHERE prod_id = '$title'";
-            $result = mysqli_query($conn, $sql);    
+            $result = mysqli_query($conn, $sql); 
+            if(!$result){
+                mysqli_rollback($conn);
+                echo "fail";
+                exit;
+            }     
         }  
-        
-    if($result){
-        echo "success";
-        mysqli_commit($conn);
-    }else{
-        echo "fail";
-        mysqli_rollback($conn);
-    }    
+    mysqli_commit($conn); 
+    echo "success";
     mysqli_close($conn);
 ?>

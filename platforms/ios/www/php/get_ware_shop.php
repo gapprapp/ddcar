@@ -1,5 +1,6 @@
 <?php
-    $conn = mysqli_connect("localhost", "id3340019_dd", "pkl2468GG", "id3340019_dd");    
+    $conn = mysqli_connect("localhost", "id3340019_dd", "pkl2468GG", "id3340019_dd");
+    $output = array();    
 
     $query = "SELECT ware_id,ware_name FROM warehouse_detail ORDER BY ware_id ASC";
     $result = mysqli_query($conn, $query);
@@ -22,7 +23,7 @@
     if($result){
         echo json_encode($output);		   
     }else{
-        echo "connection fail!";
+        echo "fail";
     }
 	mysqli_close($conn);
 ?>

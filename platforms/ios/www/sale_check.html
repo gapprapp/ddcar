@@ -277,33 +277,7 @@
             }*/
             $("#collapse-"+arg).slideToggle('collapse');
         }
-
-       /* function edit_discount(){
-            $(".jconfirm .jconfirm-box").css('margin-bottom', '50%');
-           $.confirm({
-                title: 'ลด',
-                content: '<input id="edt-discount" type="number" class="input-cf" style="width: 75%; margin-left: 12.5%; margin-top: 2%;" placeholder="" value="'+$("#discount").text()+'" autofocus>',
-                backgroundDismiss: true,
-                buttons: {
-                  ยกเลิก: function () {
-                    $(".jconfirm .jconfirm-box").css('margin-bottom', '5%');
-                  },
-                  formSubmit: {
-                    text: 'ตกลง',
-                    btnClass: 'btn-danger',
-                    action: function () {
-                        var net = $("#net").html(); 
-                        var sum = parseFloat(net.replace(/,/g, ''));
-                        var new_net = sum-$("#edt-discount").val();
-                        $("#net").text(new_net.toLocaleString());       
-                        $("#discount").text($("#edt-discount").val());
-                        $(".jconfirm .jconfirm-box").css('margin-bottom', '5%');
-                    }
-                  }
-                }  
-            }); 
-        }*/
-
+      
         function next(){ 
             if(arr_data.length == 0){
                 return 0;

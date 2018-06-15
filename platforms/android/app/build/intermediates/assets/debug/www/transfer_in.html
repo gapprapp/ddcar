@@ -219,10 +219,24 @@
             var name = $('#name').val();
             var amt = $('#amount').val();
             var addr = $('#prod-addr').val();
-            if(!$('#prod-addr').prop('placeholder') && $('#prod-addr').val() == ""){                 
+            var code = $('#barcode').val();
+            if(!$('#prod-addr').prop('placeholder') && $('#prod-addr').val() == ""){  
+                $.confirm({
+                  title: 'พบข้อผิดพลาด',
+                  content: 'กรุณากรอกข้อมูลให้ครบ',
+                  backgroundDismiss: true,
+                  buttons: {
+                    formSubmit: {
+                      text: 'ตกลง',
+                      btnClass: 'btn-regis',
+                      action: function () {
+                      }
+                    }
+                  }
+                });                         
                 return 0;
             }                   
-            if(name != "" && jQuery.inArray($('#prod-addr').val().toLowerCase(),arr_place) == -1 && $("#h5-title").text() != "เลือกหน้าร้าน"){               
+            if(code != "" && amt != "" && name != "" && jQuery.inArray($('#prod-addr').val().toLowerCase(),arr_place) == -1 && $("#h5-title").text() != "เลือกหน้าร้าน"){               
                 if(localStorage.arr_tranin){
                     var retrievedObject = localStorage.getItem('arr_tranin');
                     arr_data = JSON.parse(retrievedObject);                                
@@ -234,7 +248,7 @@
                 item ["prod_id"] =  prod_id; 
                 item ["name"] =  name;                          
                 item ["amt"] =  amt;
-                item ["qr"] = $('#barcode').val();
+                item ["qr"] =  code;
                 item ["addr"] = addr;
                 arr_data.push(item);
                 localStorage.setItem('arr_tranin', JSON.stringify(arr_data));
@@ -265,7 +279,21 @@
                     $("#btn-folder").removeAttr('disabled');           
                     $("#btn-addpic").removeAttr('disabled');
                 }                                              
-            }    
+            }else{
+                $.confirm({
+                  title: 'พบข้อผิดพลาด',
+                  content: 'กรุณากรอกข้อมูลให้ครบ',
+                  backgroundDismiss: true,
+                  buttons: {
+                    formSubmit: {
+                      text: 'ตกลง',
+                      btnClass: 'btn-regis',
+                      action: function () {
+                      }
+                    }
+                  }
+                });
+            }       
         }
 
         function check() {
@@ -299,12 +327,16 @@
                         $(".overlay").prop('hidden', false);
                     },             
                     success: function(data){  
-                    $(".overlay").prop('hidden', true);
-                    var obj = jQuery.parseJSON(data);                                                      
-                    $.each(obj, function(i, field){   
-                        $(".jconfirm-buttons").append('<button id="li-store-'+i+'" type="button" onclick="setstore('+i+')" class="btn btn-choice">'+obj[i].shop_name+'</button>' +
-                        '<span id="id-store-'+i+'" hidden>'+obj[i].shop_id+'</span>');    
-                    });                                        
+                        $(".overlay").prop('hidden', true);
+                        var obj = jQuery.parseJSON(data);
+                        if(obj){
+                            $.each(obj, function(i, field){   
+                                $(".jconfirm-buttons").append('<button id="li-store-'+i+'" type="button" onclick="setstore('+i+')" class="btn btn-choice">'+obj[i].shop_name+'</button>' +
+                                '<span id="id-store-'+i+'" hidden>'+obj[i].shop_id+'</span>');    
+                            });
+                        }else{
+                            $(".jconfirm-buttons").append("กรุณาเพิ่มหน้าร้านก่อนทำรายการ");    
+                        } 
                     }               
                 });               
               },
@@ -324,13 +356,17 @@
                 },             
                 success: function(data){  
                     $(".overlay").prop('hidden', true);                             
-                    var obj = jQuery.parseJSON(data);                       
-                    $.each(obj, function(i, field){ 
-                        $('#myUL').append('<li><div id="prod-1" class="row" onclick="get_prod('+field.prod_id+')">' +
-                        '<div class="col-4 text-center p">'+field.prod_code+'</div>' +
-                        '<div class="col-8 text-center p">'+field.prod_name+'</div>' +
-                        '</div><hr></li>');        
-                    });                                                                                                                               
+                    var obj = jQuery.parseJSON(data); 
+                    if(obj){
+                        $.each(obj, function(i, field){ 
+                            $('#myUL').append('<li><div id="prod-1" class="row" onclick="get_prod('+field.prod_id+')">' +
+                            '<div class="col-4 text-center p">'+field.prod_code+'</div>' +
+                            '<div class="col-8 text-center p">'+field.prod_name+'</div>' +
+                            '</div><hr></li>');        
+                        });   
+                    }else{
+                        $('#myUL').append('<li><div class="col-12 text-center p">กรุณาเพิ่มสินค้าก่อนทำรายการ</div><hr></li>');
+                    }                                                                                                                                       
                 }               
             }); 
         }

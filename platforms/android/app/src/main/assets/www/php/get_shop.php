@@ -1,15 +1,15 @@
 <?php
-    $conn = mysqli_connect("localhost", "id3340019_dd", "pkl2468GG", "id3340019_dd"); 
+    $conn = mysqli_connect("localhost", "id3340019_dd", "pkl2468GG", "id3340019_dd");  
     $output = array();   
 
-    $query = "SELECT ware_id,ware_name FROM warehouse_detail ORDER BY ware_id ASC";
+    $query = "SELECT shop_id,shop_name FROM shop_detail ORDER BY shop_id ASC";
     $result = mysqli_query($conn, $query);
 
     if(mysqli_num_rows($result) > 0){    
       while($row = mysqli_fetch_array($result)){
-        $ware_id = $row['ware_id'];    
+        $shop_id = $row['shop_id'];    
       
-        $query = "SELECT amount FROM warehouse WHERE ware_id = '$ware_id'";
+        $query = "SELECT amount FROM shop WHERE shop_id = '$shop_id'";
         $result1 = mysqli_query($conn, $query);
 
         $sum = 0;

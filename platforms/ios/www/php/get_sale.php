@@ -29,7 +29,7 @@
     if($result){
         echo json_encode($output);		   
     }else{
-        echo "connection fail!";
+        echo "fail";
     }
 	mysqli_close($conn);
 ?>

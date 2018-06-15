@@ -119,22 +119,22 @@
                 },             
                 success: function(data){  
                 $(".overlay").prop('hidden', true);              
-                    if(data == "success"){
+                    if(data == "success"){                       
+                        clearAll();         
+                    }else{
                         $.confirm({
-                            title: 'นำสินค้าเข้าเสร็จสิ้น',
-                            content: 'ทำการบันทึกสินค้าเข้าใน' + ' ชื่อโกดัง ',
+                            title: 'พบข้อผิดพลาด',
+                            content: 'ลองอีกครั้ง',
                             backgroundDismiss: true,
                             buttons: {
-                              formSubmit: {
+                                formSubmit: {
                                 text: 'ตกลง',
                                 btnClass: 'btn-regis',
                                 action: function () {
-                                    clearAll();
-                                  }
-                              }
+                                }
+                                }
                             }
-                        }); 
-                        clearAll();         
+                        });
                     }
                 }               
             });
@@ -284,42 +284,6 @@
                 }, 900);*/
             });
         }
-
-       /* var ware_id;
-        function setware(arg) {
-            ware = $("#li-ware-" + arg).text();
-            $("#ware").val(ware);
-            ware_id = $("#id-ware-" + arg).text();
-            document.elementFromPoint(0, 0).click();
-        }
-
-        function showware(){
-            $("style").append('.jconfirm .jconfirm-box{max-height: 420px;}');
-            $.confirm({
-              title: 'โกดัง',
-              content: '<hr style="width: 80%; margin-bottom: 0;">',
-              backgroundDismiss: true,
-              onOpenBefore: function () {
-                $(".jconfirm-buttons .btn-default").remove();
-                //ajax and apeend
-                $.ajax({
-                    type: "GET",
-                    url:"https://omise-webpack.000webhostapp.com/www/php/get_ware.php",                            
-                    success: function(data){
-                    var obj = jQuery.parseJSON(data);                                                      
-                        $.each(obj, function(i, field){   
-                            $(".jconfirm-buttons").append('<button id="li-ware-'+i+'" type="button" onclick="setware('+i+')" class="btn btn-choice">'+obj[i].ware_name+'</button>' +
-                            '<span id="id-ware-'+i+'" hidden>'+obj[i].ware_id+'</span>');                       
-                        });                                        
-                    }               
-                });               
-              },
-              onDestroy: function () {
-                $("style").append('.jconfirm .jconfirm-box{margin-bottom: 5%;}');
-                $("style").append('.jconfirm .jconfirm-box{max-height: 100%;}');
-              }             
-            });
-        }*/ 
 
         function clearAll(){        
             localStorage.arr_prod = "";          

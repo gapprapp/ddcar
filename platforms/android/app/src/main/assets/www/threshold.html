@@ -148,7 +148,21 @@
                     if(data == "success"){              
                       $("#prod-"+arg).remove(); 
                       $("#hr-"+arg).remove(); 
-                    }                                               
+                    }else{
+                      $.confirm({
+                        title: 'พบข้อผิดพลาด',
+                        content: 'ลองอีกครั้ง',
+                        backgroundDismiss: true,
+                        buttons: {
+                          formSubmit: {
+                            text: 'ตกลง',
+                            btnClass: 'btn-regis',
+                            action: function () {
+                            }
+                          }
+                        }
+                      });
+                    }                                             
                   }               
                 });                 
               }

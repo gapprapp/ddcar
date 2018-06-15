@@ -17,6 +17,7 @@
   <script src="cordova.js"></script>
 
   <link rel="stylesheet" href="css/index.css">
+  <link rel="stylesheet" href="css/loading.css">
 
   <!-- Font -->
   <link href="https://fonts.googleapis.com/css?family=Prompt" rel="stylesheet">
@@ -49,9 +50,14 @@
         $.ajax({
             type: "GET",
             url: "https://omise-webpack.000webhostapp.com/www/php/get_cus.php",                   
-            success: function(data){                                   
-              var obj = jQuery.parseJSON(data);                    
-              $.each(obj, function(i, field){                   
+            beforeSend: function(){
+              $(".overlay").prop('hidden', false);
+            }, 
+            success: function(data){  
+              $(".overlay").prop('hidden', true);                                 
+              var obj = jQuery.parseJSON(data);
+              if(obj){
+                $.each(obj, function(i, field){                   
                   $('#myUL').append("<li>" +                
                   "<div id='cus-"+i+"' class='row' onclick='select_cus("+field.cus_id+",\""+field.cus_name+"\",\""+field.cus_type+"\");'>" +         
                     "<div class='col-7 text-center'>" +
@@ -63,7 +69,10 @@
                   "</div>" +                   
                   "<hr id='hr-2'>" + 
                   "</li>");
-              });                         
+               }); 
+              }else{
+                $('#myUL').append('<li><div class="col-12 text-center p">กรุณาเพิ่มลูกค้าก่อนทำรายการ</div><hr></li>');
+              }                            
             }               
         });             
                               
@@ -93,6 +102,9 @@
 </head>
 
 <body>
+  <!-- Loading -->
+  <div class="overlay" hidden><div class="loading"></div></div>               
+
   <!-- Nav menu top -->
   <div class="row fixed-top navs">
     <div class="col-1 text-center" onclick="transition_page_back('sale.html');">

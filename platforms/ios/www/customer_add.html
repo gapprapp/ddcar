@@ -13,8 +13,7 @@
     <script type="text/javascript" src="js/transition.js"></script>
     <script type="text/javascript" src="js/jquery-confirm.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.6/umd/popper.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
-    <script type="text/javascript" src="js/jquery.alphanumeric.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>    
     <script defer src="https://use.fontawesome.com/releases/v5.0.8/js/all.js"></script>
     <script src="cordova.js"></script> 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.0/jquery-confirm.min.css">
@@ -39,10 +38,6 @@
   </style>
 
   <script>
-    $(document).ready(function() {
-      $('#phone').numeric();
-    });
-
     function disactive(arg) {
       nav_menu = ['home', 'bell', 'qrcode', 'bars'];
       for (i = 0; i < 4; i++) {
@@ -66,39 +61,7 @@
       var addr = $('#addr').val();          
       var type = $('#type').val();          
 
-      if(name != "" && phone != "" && addr != "" && type != ""){
-          $.ajax({
-              type: "POST",
-              url:"https://omise-webpack.000webhostapp.com/www/php/add_cus.php",           
-              data: {'cus_name':name,
-                  'phone':phone,
-                  'addr':addr,
-                  'type' : type},               
-              beforeSend: function(){
-                  $(".overlay").prop('hidden', false);
-              },     
-              success: function(data){    
-                $(".overlay").prop('hidden', true);         
-                if(data == "success"){                        
-                  $.confirm({
-                        title: 'เสร็จสิ้น',
-                        content: 'เพิ่มลูกค้า '+name+' เสร็จสิ้น',
-                        backgroundDismiss: true,
-                        buttons: {
-                          formSubmit: {
-                            text: 'ตกลง',
-                            btnClass: 'btn-regis',
-                            action: function () {
-                                goto = "customer.html";
-                                transition_page_next_flip(goto);
-                              }
-                          }
-                        }
-                    });
-                }
-              }               
-          });
-      }else{
+      if(name == "" || type == ""){ 
         $.confirm({
           title: 'พบข้อผิดพลาด',
           content: 'กรุณากรอกข้อมูลให้ครบ',
@@ -112,8 +75,53 @@
             }
           }
         }); 
+        return 0;
       }
-     
+      $.ajax({
+          type: "POST",
+          url:"https://omise-webpack.000webhostapp.com/www/php/add_cus.php",           
+          data: {'cus_name':name,
+              'phone':phone,
+              'addr':addr,
+              'type' : type},               
+          beforeSend: function(){
+              $(".overlay").prop('hidden', false);
+          },     
+          success: function(data){    
+            $(".overlay").prop('hidden', true);         
+            if(data == "success"){                        
+              $.confirm({
+                    title: 'เสร็จสิ้น',
+                    content: 'เพิ่มลูกค้า '+name+' เสร็จสิ้น',
+                    backgroundDismiss: true,
+                    buttons: {
+                      formSubmit: {
+                        text: 'ตกลง',
+                        btnClass: 'btn-regis',
+                        action: function () { 
+                          location.reload(true);                           
+                        }
+                      }
+                    }
+                });
+                location.reload(true);
+            }else{
+              $.confirm({
+                title: 'พบข้อผิดพลาด',
+                content: 'ลองอีกครั้ง',
+                backgroundDismiss: true,
+                buttons: {
+                  formSubmit: {
+                    text: 'ตกลง',
+                    btnClass: 'btn-regis',
+                    action: function () {
+                    }
+                  }
+                }
+              });
+            }
+          }               
+      });    
     }
 
     function setrole(arg){
