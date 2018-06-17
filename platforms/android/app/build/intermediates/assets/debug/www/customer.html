@@ -42,7 +42,7 @@
     $(document).ready(function () { 
       $.ajax({
         type: "GET",
-        url:"https://omise-webpack.000webhostapp.com/www/php/get_cus.php",
+        url:"http://migky.myqnapcloud.com:8083/dd-shop/php/get_cus.php",
         beforeSend: function(){
             $(".overlay").prop('hidden', false);
         },
@@ -145,7 +145,7 @@
               action: function () {
                   $.ajax({
                     type: "POST",
-                    url:"https://omise-webpack.000webhostapp.com/www/php/delete_cus.php",           
+                    url:"http://migky.myqnapcloud.com:8083/dd-shop/php/delete_cus.php",           
                     data: {'cus_id' : arg},     
                     beforeSend: function(){
                       $(".overlay").prop('hidden', false);

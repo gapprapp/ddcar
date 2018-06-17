@@ -1,5 +1,5 @@
 <?php
-    $conn = mysqli_connect("localhost", "id3340019_dd", "pkl2468GG", "id3340019_dd");  
+    include "db.php";
     $prod_id  = $_POST['prod'];   
     $cost  = $_POST['cost']; 
     $price_s  = $_POST['price_s'];   

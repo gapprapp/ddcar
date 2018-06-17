@@ -1,5 +1,5 @@
 <?php
-    $conn = mysqli_connect("localhost", "id3340019_dd", "pkl2468GG", "id3340019_dd"); 
+    include "db.php";
     $output = array();   
 
     $query = "SELECT prod_name,prod_id,min_amount,day_transport,prod_code FROM product 

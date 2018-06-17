@@ -8,7 +8,7 @@ function scan(){
                             
                     $.ajax({
                         type: "POST",
-                        url: "https://omise-webpack.000webhostapp.com/www/php/check_amt_prod.php",                
+                        url: "http://migky.myqnapcloud.com:8083/dd-shop/php/check_amt_prod.php",                
                         data: {'qr': value},
                         beforeSend: function(){
                             $(".overlay").prop('hidden', false);

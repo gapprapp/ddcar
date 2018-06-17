@@ -152,7 +152,7 @@
                 //ajax and apeend
                 $.ajax({
                     type: "GET",
-                    url:"https://omise-webpack.000webhostapp.com/www/php/get_ware_shop.php",     
+                    url:"http://migky.myqnapcloud.com:8083/dd-shop/php/get_ware_shop.php",     
                     beforeSend: function(){
                         $(".overlay").prop('hidden', false);
                     },                        
@@ -268,7 +268,7 @@
             //alert(dataString);
             $.ajax({
                 type: "POST",
-                url:"https://omise-webpack.000webhostapp.com/www/php/save_order.php",           
+                url:"http://migky.myqnapcloud.com:8083/dd-shop/php/save_order.php",           
                 data: dataString,
                 beforeSend: function(){
                     $(".overlay").prop('hidden', false);

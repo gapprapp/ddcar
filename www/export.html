@@ -90,7 +90,7 @@
             prod_id = id;
             $.ajax({
                 type: "POST",
-                url:"https://omise-webpack.000webhostapp.com/www/php/get_prod.php",    
+                url:"http://migky.myqnapcloud.com:8083/dd-shop/php/get_prod.php",    
                 data:{'prod_id' : id},
                 //async: false,                       
                 beforeSend: function(){
@@ -121,7 +121,7 @@
                                 //alert(value);                        
                                 $.ajax({
                                     type: "POST",
-                                    url: "https://omise-webpack.000webhostapp.com/www/php/get_prod.php",                
+                                    url: "http://migky.myqnapcloud.com:8083/dd-shop/php/get_prod.php",                
                                     data: {'qr' : value},             
                                     beforeSend: function(){
                                         $(".overlay").prop('hidden', false);
@@ -276,7 +276,7 @@
             var text_html = "";
             $.ajax({
                 type: "GET",
-                url:"https://omise-webpack.000webhostapp.com/www/php/get_ware.php",                            
+                url:"http://migky.myqnapcloud.com:8083/dd-shop/php/get_ware.php",                            
                 beforeSend: function(){
                     $(".overlay").prop('hidden', false);
                 },             
@@ -313,7 +313,7 @@
         function get_allprod(){
             $.ajax({
                 type: "GET",
-                url: "https://omise-webpack.000webhostapp.com/www/php/get_allprod.php",                     
+                url: "http://migky.myqnapcloud.com:8083/dd-shop/php/get_allprod.php",                     
                 beforeSend: function(){
                     $(".overlay").prop('hidden', false);
                 },             
