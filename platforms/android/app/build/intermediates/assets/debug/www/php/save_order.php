@@ -1,5 +1,5 @@
 <?php
-    $conn = mysqli_connect("localhost", "id3340019_dd", "pkl2468GG", "id3340019_dd"); 
+    include "db.php";
     $input  = $_POST['JSON'];
     $obj = json_decode($input,true); 
     $input_d  = $_POST['JSOND'];

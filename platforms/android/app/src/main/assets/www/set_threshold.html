@@ -68,7 +68,7 @@
             product = id;
             $.ajax({
                 type: "POST",
-                url:"https://omise-webpack.000webhostapp.com/www/php/get_prod.php",    
+                url:"http://migky.myqnapcloud.com:8083/dd-shop/php/get_prod.php",    
                 data:{'prod_id' : id},                                 
                 beforeSend: function(){
                     $(".overlay").prop('hidden', false);
@@ -98,7 +98,7 @@
                                 //alert(value);                        
                                 $.ajax({
                                     type: "POST",
-                                    url: "https://omise-webpack.000webhostapp.com/www/php/get_prod.php",                
+                                    url: "http://migky.myqnapcloud.com:8083/dd-shop/php/get_prod.php",                
                                     data: {'qr' : value},             
                                     beforeSend: function(){
                                         $(".overlay").prop('hidden', false);
@@ -183,7 +183,7 @@
             var del = $('#deliver').val();
             $.ajax({
                 type: "POST",
-                url:"https://omise-webpack.000webhostapp.com/www/php/update_threshold.php",
+                url:"http://migky.myqnapcloud.com:8083/dd-shop/php/update_threshold.php",
                 data:{'prod_id':id,'amt':amt,'del':del},
                 beforeSend: function(){
                     $(".overlay").prop('hidden', false);
@@ -217,7 +217,7 @@
         function get_allprod(){
             $.ajax({
                 type: "GET",
-                url: "https://omise-webpack.000webhostapp.com/www/php/get_allprod.php",                     
+                url: "http://migky.myqnapcloud.com:8083/dd-shop/php/get_allprod.php",                     
                 beforeSend: function(){
                     $(".overlay").prop('hidden', false);
                 },             

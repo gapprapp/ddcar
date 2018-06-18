@@ -1,5 +1,5 @@
 <?php
-    $conn = mysqli_connect("localhost", "id3340019_dd", "pkl2468GG", "id3340019_dd");
+    include "db.php";    
     $name  = $_POST['cus_name'];   
     $phone  = $_POST['phone'];   
     $addr  = $_POST['addr'];  

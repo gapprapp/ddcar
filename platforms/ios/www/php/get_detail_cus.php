@@ -1,5 +1,5 @@
 <?php
-    $conn = mysqli_connect("localhost", "id3340019_dd", "pkl2468GG", "id3340019_dd"); 
+    include "db.php";
     $cus_id = $_POST['cus_id'];  
 
     $query = "SELECT cus_name,cus_tel,cus_addr,cus_type FROM customer WHERE cus_id = '$cus_id'";

@@ -42,7 +42,7 @@
     $(document).ready(function () { 
       $.ajax({
         type: "GET",
-        url:"https://omise-webpack.000webhostapp.com/www/php/get_ware_shop.php",   
+        url:"http://migky.myqnapcloud.com:8083/dd-shop/php/get_ware_shop.php",   
         beforeSend: function(){
             $(".overlay").prop('hidden', false);
         },                           
@@ -169,7 +169,7 @@
               }
               $.ajax({
                 type: "POST",
-                url:"https://omise-webpack.000webhostapp.com/www/php/rename_ware_shop.php",           
+                url:"http://migky.myqnapcloud.com:8083/dd-shop/php/rename_ware_shop.php",           
                 data: {'id' : id,
                         'type' : type,
                         'name' : txt}, 
@@ -218,7 +218,7 @@
             action: function () {
               $.ajax({
                 type: "POST",
-                url:"https://omise-webpack.000webhostapp.com/www/php/delete_ware_shop.php",           
+                url:"http://migky.myqnapcloud.com:8083/dd-shop/php/delete_ware_shop.php",           
                 data: {'id' : id,
                        'type' : type},
                 beforeSend: function(){

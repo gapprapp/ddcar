@@ -82,7 +82,7 @@
       function get_amt(prod_id){
         $.ajax({
           type: "POST",
-          url: "https://omise-webpack.000webhostapp.com/www/php/check_amt_prod.php",                
+          url: "http://migky.myqnapcloud.com:8083/dd-shop/php/check_amt_prod.php",                
           data: {'prod_id': prod_id},    
           beforeSend: function(){
             $(".overlay").prop('hidden', false);
@@ -137,7 +137,7 @@
       function get_prod(){        
         $.ajax({
           type: "GET",
-          url: "https://omise-webpack.000webhostapp.com/www/php/get_allprod.php",                     
+          url: "http://migky.myqnapcloud.com:8083/dd-shop/php/get_allprod.php",                     
           beforeSend: function(){
             $(".overlay").prop('hidden', false);
           },             
