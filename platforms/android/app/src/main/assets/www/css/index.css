@@ -8,6 +8,11 @@ body{
 	overflow: hidden;
 }
 
+img{
+	width: 300px;
+	height: 200px;
+}
+
 .navs {
   height: 8% !important;
   background: #d63232 !important;
