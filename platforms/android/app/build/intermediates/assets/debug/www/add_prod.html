@@ -19,7 +19,9 @@
   <script type="text/javascript" src="js/scanqr.js"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.0/jquery-confirm.min.css">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.0/jquery-confirm.min.js"></script>
+  <script src="js/imageviewer.js"></script>
 
+  <link href="css/imageviewer.css"  rel="stylesheet" type="text/css" />
   <link rel="stylesheet" href="css/index.css">
   <link rel="stylesheet" href="css/jquery-confirm.css">
   <link rel="stylesheet" href="css/loading.css">
@@ -44,7 +46,7 @@
     #folder-title {
       color: #515151;
       letter-spacing: 2px;
-    }
+    }    
   </style>
 
   <script>
@@ -73,10 +75,34 @@
     }
 
     function addpic(){
+      $.confirm({
+        title: 'รูปภาพ',
+        content: '<hr style="width: 80%; margin-bottom: 0;">',
+        backgroundDismiss: true,
+        buttons: {
+          form1: {
+            text: 'ถ่ายรูป',
+            btnClass: 'btn-choice',
+            action: function () {
+              take_photo();
+            }
+          },
+          form2: {
+            text: 'อัลบั้ม',
+            btnClass: 'btn-choice',
+            action: function () {
+              upload_photo();
+            }
+          }
+        }
+      });
+    }
+
+    function take_photo(){
       $("#row-img").prop('hidden', false);
 
       navigator.camera.getPicture(onSuccess, onFail, { quality: 100,
-        destinationType: Camera.DestinationType.FILE_URI,
+        destinationType: Camera.DestinationType.DATA_URL,
         targetWidth:200,
         targetHeight:300,
         correctOrientation: true
@@ -84,7 +110,40 @@
 
       function onSuccess(imageData) {                
           var image = document.getElementById('img');
-          image.src =  imageData;                        
+          image.src =  "data:image/jpeg;base64," + imageData;                           
+      }
+
+      function onFail(message) {
+        $.confirm({
+          title: 'พบข้อผิดพลาด',
+          content: message,
+          backgroundDismiss: true,
+          buttons: {
+            formSubmit: {
+              text: 'ตกลง',
+              btnClass: 'btn-regis',
+              action: function () {
+              }
+            }
+          }
+        });
+      }
+    }
+   
+    function upload_photo(){
+      $("#row-img").prop('hidden', false);
+
+      navigator.camera.getPicture(onSuccess, onFail, { quality: 100,
+        destinationType: Camera.DestinationType.DATA_URL,
+        sourceType: Camera.PictureSourceType.PHOTOLIBRARY,
+        targetWidth:200,
+        targetHeight:300,
+        correctOrientation: true
+      });
+
+      function onSuccess(imageData) {                
+          var image = document.getElementById('img');
+          image.src =  "data:image/jpeg;base64," + imageData;                    
       }
 
       function onFail(message) {
@@ -123,52 +182,43 @@
           }
         });
         return 0; 
-      }
-      $('#img').each(function () {
-        if(this.src.length > 0){  
-          var image = document.getElementById('img');       
-          var fileURL = image.src;
-          var filename = fileURL.substr(fileURL.lastIndexOf('/') + 1).split("?");
-          
-          var success = function (r) { 
-            $(".overlay").prop('hidden', true);            
-            if(r.response == "success"){                                       
-                $.confirm({
-                  title: 'เสร็จสิ้น',
-                  content: 'เพิ่มสินค้า ' +name+ ' ในหมวดหมู่ ' +folder+ ' เสร็จสิ้น',
-                  backgroundDismiss: true,
-                  buttons: {
-                    formSubmit: {
-                      text: 'ตกลง',
-                      btnClass: 'btn-regis',
-                      action: function () {
-                          out();
-                        }
-                    }
-                  }
-              });
-              out();
-            }else{
-              $.confirm({
-                title: 'พบข้อผิดพลาด',
-                content: 'ลองอีกครั้ง',
+      } 
+      var fileURL = "";      
+      var image = document.getElementById('img');       
+      fileURL = image.src;
+        
+      $.ajax({
+        type: "POST",
+        url:"http://migky.myqnapcloud.com:8083/dd-shop/php/add_prod.php",           
+        data: {'name_prod' : name,
+              'code' : code,
+              'parent' : folder,
+              'img' : fileURL},               
+          beforeSend: function(){
+            $(".overlay").prop('hidden', false);
+          },             
+          success: function(data){
+          $(".overlay").prop('hidden', true);                               
+          if(data == "success"){
+            $.confirm({
+                title: 'เสร็จสิ้น',
+                content: 'เพิ่มสินค้า ' +name+ ' ในหมวดหมู่ ' +folder+ ' เสร็จสิ้น',
                 backgroundDismiss: true,
                 buttons: {
                   formSubmit: {
                     text: 'ตกลง',
                     btnClass: 'btn-regis',
                     action: function () {
-                    }
+                        out();
+                      }
                   }
                 }
-              });
-            }                                                   
-          };
-
-          var fail = function (error) {
+            });
+            out(); 
+          }else{
             $.confirm({
               title: 'พบข้อผิดพลาด',
-              content: error,
+              content: 'ลองอีกครั้ง',
               backgroundDismiss: true,
               buttons: {
                 formSubmit: {
@@ -179,67 +229,9 @@
                 }
               }
             });
-          };
-
-          var options = new FileUploadOptions();
-          options.fileKey = "file";
-          options.fileName = filename[0];
-          options.mimeType = "image/jpeg";       
-          //options.chunkedMode = false;        
-          
-          var ft = new FileTransfer();
-          ft.onprogress = function(progressEvent) { 
-            $(".overlay").prop('hidden', false);
-          };                   
-          ft.upload(fileURL, "http://migky.myqnapcloud.com:8083/dd-shop/php/add_prod.php?name_prod="+name+"&code="+code+"&parent="+folder, success, fail, options);
-          
-        }else{
-          $.ajax({
-            type: "POST",
-            url:"http://migky.myqnapcloud.com:8083/dd-shop/php/add_prod_noimg.php",           
-            data: {'name_prod' : name,
-                  'code' : code,
-                  'parent' : folder},               
-              beforeSend: function(){
-                $(".overlay").prop('hidden', false);
-              },             
-              success: function(data){
-              $(".overlay").prop('hidden', true);                               
-              if(data == "success"){
-                $.confirm({
-                    title: 'เสร็จสิ้น',
-                    content: 'เพิ่มสินค้า ' +name+ ' ในหมวดหมู่ ' +folder+ ' เสร็จสิ้น',
-                    backgroundDismiss: true,
-                    buttons: {
-                      formSubmit: {
-                        text: 'ตกลง',
-                        btnClass: 'btn-regis',
-                        action: function () {
-                            out();
-                          }
-                      }
-                    }
-                });
-                out(); 
-              }else{
-                $.confirm({
-                  title: 'พบข้อผิดพลาด',
-                  content: 'ลองอีกครั้ง',
-                  backgroundDismiss: true,
-                  buttons: {
-                    formSubmit: {
-                      text: 'ตกลง',
-                      btnClass: 'btn-regis',
-                      action: function () {
-                      }
-                    }
-                  }
-                });
-              }
-            }               
-          });
-        }              
-      });   
+          }
+        }               
+      });     
     }
 
     function out(){  
@@ -296,7 +288,7 @@
       </div>
       <div id="row-img" class="row" style="margin-bottom: 5%;" hidden>
         <div class="col-12 text-center">
-         <img id='img' alt="" style="width: 96%; height: 96%;">
+        <img id='img' alt="" style="width: 96%; height: 96%;">
         </div>
       </div>
       <div class="row mg-10">
@@ -348,6 +340,15 @@
     $(".select_folder").on("touchend", function() {
       $(this).removeClass('select_folder-touch');
     });
+
+    /*$(function () {
+      var viewer = ImageViewer();
+      $('#img').click(function () {
+          alert("click");
+          var imgSrc = this.src;
+          viewer.show(imgSrc);
+      });
+    });*/
   </script>
 </body>
 

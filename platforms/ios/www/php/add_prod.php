@@ -1,15 +1,12 @@
 <?php
     include "db.php";
-    $name  = $_GET['name_prod'];    
-    $code  = $_GET['code'];   
-    $parent  = $_GET['parent'];
+    $name  = $_POST['name_prod'];    
+    $code  = $_POST['code'];   
+    $parent  = $_POST['parent'];
+    $img  = $_POST['img'];
 
-    mysqli_begin_transaction($conn);
-    // Convert to base64 
-    $image_base64 = base64_encode(file_get_contents($_FILES['file']['tmp_name']) );
-    $image = 'data:image/jpeg;base64,'.$image_base64;
-
-    $sql = "INSERT INTO product(prod_name,prod_code,img) VALUE ('$name','$code','".$image."')";
+    mysqli_begin_transaction($conn);    
+    $sql = "INSERT INTO product(prod_name,prod_code,img) VALUE ('$name','$code','$img')";
     $result = mysqli_query($conn, $sql);    
     $title = mysqli_insert_id($conn);
     if(!$result){

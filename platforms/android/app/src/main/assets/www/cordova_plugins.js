@@ -252,6 +252,14 @@ module.exports = [
     "clobbers": [
       "cordova.plugins.barcodeScanner"
     ]
+  },
+  {
+    "id": "es.keensoft.fullscreenimage.FullScreenImage",
+    "file": "plugins/es.keensoft.fullscreenimage/www/fullscreenimage.js",
+    "pluginId": "es.keensoft.fullscreenimage",
+    "clobbers": [
+      "window.FullScreenImage"
+    ]
   }
 ];
 module.exports.metadata = 
@@ -264,7 +272,8 @@ module.exports.metadata =
   "cordova-plugin-file-transfer": "1.7.1",
   "cordova-plugin-statusbar": "2.4.2",
   "cordova-plugin-whitelist": "1.3.3",
-  "phonegap-plugin-barcodescanner": "7.1.0"
+  "phonegap-plugin-barcodescanner": "7.1.0",
+  "es.keensoft.fullscreenimage": "1.0.1"
 };
 // BOTTOM OF METADATA
 });
