@@ -110,8 +110,8 @@
 
             navigator.camera.getPicture(onSuccess, onFail, { quality: 100,
                 destinationType: Camera.DestinationType.DATA_URL,
-                /*targetWidth:200,
-                targetHeight:300,*/
+                targetWidth:200,
+                targetHeight:300,
                 correctOrientation: true
             });
 
@@ -212,7 +212,7 @@
                 },             
                 success: function(data){
                 $(".overlay").prop('hidden', true); 
-                alert(data);                              
+                //alert(data);                              
                 if(data == "success"){
                     $.confirm({
                         title: 'เสร็จสิ้น',
