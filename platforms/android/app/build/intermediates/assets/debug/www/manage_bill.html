@@ -36,7 +36,6 @@
   <style>
     hr{
       margin-top: 0;
-      hieght: 90%;
     }    
   </style>
 
@@ -114,6 +113,17 @@
       <div class="col-5 text-center no-pd">
         <p>นาย A เค้าห่อหมก</p>
       </div>
+    </div><hr>
+    <div class="row" onclick="window.location = 'bill_info.html?id=1'">
+      <div class="col-4 text-center no-pd">
+        <p>S18-00001</p>
+      </div>
+      <div class="col-3 text-center no-pd">
+        <p>12/01/18</p>
+      </div>
+      <div class="col-5 text-center no-pd">
+        <p>นาย A เค้าห่อหมก</p>
+      </div>
     </div>
   <!-- End big container -->
 
@@ -141,19 +151,6 @@
     $(".mbtn").on("touchend", function() {
       $(this).removeClass('mbtn-touch');
     });
-    $(".mbtn-green").on("touchstart", function() {
-      $(this).addClass('mbtn-green-touch');
-    });
-    $(".mbtn-green").on("touchend", function() {
-      $(this).removeClass('mbtn-green-touch');
-    });
-    $(".select_folder").on("touchstart", function() {
-      $(this).addClass('select_folder-touch');
-    });
-    $(".select_folder").on("touchend", function() {
-      $(this).removeClass('select_folder-touch');
-    });
-
     /*$(function () {
       var viewer = ImageViewer();
       $('#img').click(function () {
