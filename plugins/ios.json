@@ -27,6 +27,9 @@
     },
     "phonegap-plugin-barcodescanner": {
       "PACKAGE_NAME": "com.gitmew.ddcar"
+    },
+    "cordova-plugin-datepicker": {
+      "PACKAGE_NAME": "com.gitmew.ddcar"
     }
   },
   "dependent_plugins": {

@@ -40,6 +40,8 @@
 		B2924F940B5C4D9CA5B77CBF /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E106E308D2C94DAEBA82DD8B /* QuartzCore.framework */; };
 		0F2551B0C27344D1A5435DE6 /* CoreImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DA95614F7ED4142BA3EB6CE /* CoreImage.framework */; };
 		5A72348B4BCA479DA25E6324 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 39E770702EEF44D08BABBC11 /* AudioToolbox.framework */; };
+		79B3E27319474ED7A209DFA5 /* DatePicker.m in Sources */ = {isa = PBXBuildFile; fileRef = 2136F9B33E9B411498A4651E /* DatePicker.m */; };
+		0BD90C721F0F478F92B2D278 /* DatePicker.xib in Resources */ = {isa = PBXBuildFile; fileRef = D421D04B5A7241FDAD6A6DA7 /* DatePicker.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -117,6 +119,9 @@
 		E106E308D2C94DAEBA82DD8B /* QuartzCore.framework */ = {isa = PBXFileReference; name = "QuartzCore.framework"; path = "System/Library/Frameworks/QuartzCore.framework"; sourceTree = SDKROOT; fileEncoding = undefined; lastKnownFileType = wrapper.framework; explicitFileType = undefined; includeInIndex = 0; };
 		1DA95614F7ED4142BA3EB6CE /* CoreImage.framework */ = {isa = PBXFileReference; name = "CoreImage.framework"; path = "System/Library/Frameworks/CoreImage.framework"; sourceTree = SDKROOT; fileEncoding = undefined; lastKnownFileType = wrapper.framework; explicitFileType = undefined; includeInIndex = 0; };
 		39E770702EEF44D08BABBC11 /* AudioToolbox.framework */ = {isa = PBXFileReference; name = "AudioToolbox.framework"; path = "System/Library/Frameworks/AudioToolbox.framework"; sourceTree = SDKROOT; fileEncoding = undefined; lastKnownFileType = wrapper.framework; explicitFileType = undefined; includeInIndex = 0; };
+		2136F9B33E9B411498A4651E /* DatePicker.m */ = {isa = PBXFileReference; name = "DatePicker.m"; path = "cordova-plugin-datepicker/DatePicker.m"; sourceTree = "<group>"; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; explicitFileType = undefined; includeInIndex = 0; };
+		50AB8CBE70024C20BF6701F2 /* DatePicker.h */ = {isa = PBXFileReference; name = "DatePicker.h"; path = "cordova-plugin-datepicker/DatePicker.h"; sourceTree = "<group>"; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; explicitFileType = undefined; includeInIndex = 0; };
+		D421D04B5A7241FDAD6A6DA7 /* DatePicker.xib */ = {isa = PBXFileReference; name = "DatePicker.xib"; path = "DatePicker.xib"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = file.xib; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -198,6 +203,7 @@
 				6AFF5BF81D6E424B00AB3073 /* CDVLaunchScreen.storyboard */,
 				593354B0807143F48D292745 /* scannerOverlay.xib */,
 				E2739D28E0B44A70B3E2BB34 /* CDVBarcodeScanner.bundle */,
+				D421D04B5A7241FDAD6A6DA7 /* DatePicker.xib */,
 			);
 			name = Resources;
 			path = "ddcar/Resources";
@@ -266,6 +272,8 @@
 				A6A79D052E6A4348B6FFD1FE /* CDVBarcodeScanner.mm */,
 				1D6B6F8A86F24BF09AAD508C /* zxing-all-in-one.cpp */,
 				DA294B55E1D24E3F9D3FF602 /* zxing-all-in-one.h */,
+				2136F9B33E9B411498A4651E /* DatePicker.m */,
+				50AB8CBE70024C20BF6701F2 /* DatePicker.h */,
 			);
 			name = Plugins;
 			path = "ddcar/Plugins";
@@ -349,6 +357,7 @@
 				6AFF5BF91D6E424B00AB3073 /* CDVLaunchScreen.storyboard in Resources */,
 				343197447B044AAAA7488A7E /* scannerOverlay.xib in Resources */,
 				A960C9CF8FA84190B0B034B8 /* CDVBarcodeScanner.bundle in Resources */,
+				0BD90C721F0F478F92B2D278 /* DatePicker.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -393,6 +402,7 @@
 				F2E39643AD334F62AFDC8ED0 /* CDVStatusBar.m in Sources */,
 				A51FA2525BF9428CA3620DF9 /* CDVBarcodeScanner.mm in Resources */,
 				334AAED0BD5342B2B2F12D4C /* zxing-all-in-one.cpp in Resources */,
+				79B3E27319474ED7A209DFA5 /* DatePicker.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
