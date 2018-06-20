@@ -42,6 +42,9 @@
     <feature name="BarcodeScanner">
         <param name="ios-package" value="CDVBarcodeScanner" />
     </feature>
+    <feature name="DatePicker">
+        <param name="ios-package" value="DatePicker" />
+    </feature>
     <name>ddcar</name>
     <description>
         A sample Apache Cordova application that responds to the deviceready event.

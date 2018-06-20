@@ -62,5 +62,13 @@
     },
     "is_top_level": true,
     "variables": {}
+  },
+  "cordova-plugin-datepicker": {
+    "source": {
+      "type": "registry",
+      "id": "Cordova-plugin-DatePicker"
+    },
+    "is_top_level": true,
+    "variables": {}
   }
 }
