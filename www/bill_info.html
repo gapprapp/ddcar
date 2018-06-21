@@ -118,19 +118,19 @@
             }
         } else if (arg == "del") {
             // show trash all 
+            $("style").append(".jconfirm .jconfirm-box{margin-bottom: 5%;}");
             $.confirm({
                 title: 'ลบรายการ',
                 content: 'ต้องการลบบิล '+$("#h5-title").text()+' หรือไม่',
                 backgroundDismiss: true,
-                buttons: {
-                  ยกเลิก: function () {},  
+                buttons: { 
                   formSubmit: {
                     text: 'ตกลง',
                     btnClass: 'btn-danger',
                     action: function () {
                         // delete bill
                     }
-                  }
+                  },ยกเลิก: function () {}, 
                 }  
             });
         }
@@ -143,16 +143,15 @@
               content: '<div class="row" style="margin-top: 2%; margin-bottom: 2%;"><div class="col-12 text-center" style="font-size: 110%; font-weight: bold;">จำนวน</div></div><div class="row"><div class="col-3"></div><div class="col-6 text-center"><input id="edt-amt" type="number" class="input-cf" value="'+$("#amt-"+arg).text()+'"></div><div class="col-3"></div></div>',
               backgroundDismiss: true,
               buttons: {
-                ยกเลิก: function () {
-                    //$(".jconfirm .jconfirm-box").css('margin-bottom', '5%');
-                  },
                 formSubmit: {
                   text: 'ตกลง',
                   btnClass: 'btn-danger',
                   action: function () {
 
                   }
-                }
+                },ยกเลิก: function () {
+                    //$(".jconfirm .jconfirm-box").css('margin-bottom', '5%');
+                  }
               }
             });
     }
@@ -164,14 +163,13 @@
               content: '<div class="row"><div class="col-3"></div><div class="col-6 text-center"><input id="edt-disc" type="number" class="input-cf" value="'+$("#discount").text()+'"></div><div class="col-3"></div></div>',
               backgroundDismiss: true,
               buttons: {
-                ยกเลิก: function () {
-                    //$(".jconfirm .jconfirm-box").css('margin-bottom', '5%');
-                  },
                 formSubmit: {
                   text: 'ตกลง',
                   btnClass: 'btn-danger',
                   action: function () {
 
+                  },ยกเลิก: function () {
+                    //$(".jconfirm .jconfirm-box").css('margin-bottom', '5%');
                   }
                 }
               }
@@ -185,16 +183,15 @@
               content: '<div class="row"><div class="col-3"></div><div class="col-6 text-center"><input id="edt-get" type="number" class="input-cf" value="'+$("#get").text()+'"></div><div class="col-3"></div></div>',
               backgroundDismiss: true,
               buttons: {
-                ยกเลิก: function () {
-                    //$(".jconfirm .jconfirm-box").css('margin-bottom', '5%');
-                  },
                 formSubmit: {
                   text: 'ตกลง',
                   btnClass: 'btn-danger',
                   action: function () {
 
                   }
-                }
+                },ยกเลิก: function () {
+                    //$(".jconfirm .jconfirm-box").css('margin-bottom', '5%');
+                  }
               }
             });
     }

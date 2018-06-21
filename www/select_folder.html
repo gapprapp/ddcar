@@ -532,8 +532,7 @@
           title: 'ลบรายการ',
           content: 'ต้องการลบ '+title+' หรือไม่',
           backgroundDismiss: true,
-          buttons: {
-            ยกเลิก: function () {},  
+          buttons: { 
             formSubmit: {
               text: 'ตกลง',
               btnClass: 'btn-danger',
@@ -579,7 +578,7 @@
                   }               
                 });
               }
-            }
+            },ยกเลิก: function () {}
           }  
         });
       }else if(last_node == 1){
@@ -589,8 +588,7 @@
           title: 'ลบรายการ',
           content: 'ต้องการลบ '+title+' หรือไม่',
           backgroundDismiss: true,
-          buttons: {
-            ยกเลิก: function () {},  
+          buttons: {  
             formSubmit: {
               text: 'ตกลง',
               btnClass: 'btn-danger',
@@ -633,7 +631,7 @@
                   }               
                 });
               }
-            }
+            },ยกเลิก: function () {}
           }  
         });
       }      

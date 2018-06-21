@@ -16,15 +16,9 @@
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
   <script defer src="https://use.fontawesome.com/releases/v5.0.8/js/all.js"></script>
   <script src="cordova.js"></script>
-  <script type="text/javascript" src="js/scanqr.js"></script>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.0/jquery-confirm.min.css">
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.0/jquery-confirm.min.js"></script>
-  <script src="js/imageviewer.js"></script>
 
-  <link href="css/imageviewer.css"  rel="stylesheet" type="text/css" />
   <link rel="stylesheet" href="css/index.css">
   <link rel="stylesheet" href="css/jquery-confirm.css">
-  <link rel="stylesheet" href="css/loading.css">
 
   <!-- Font -->
   <link href="https://fonts.googleapis.com/css?family=Prompt" rel="stylesheet">
@@ -104,7 +98,11 @@
               $(".i-del").attr('hidden', true);
               $(".amount").removeClass('underline');
               $("#discount").removeClass('underline');
+              $("#type").removeClass('underline');
               $("#get").removeClass('underline');
+              $("#discount").attr('onclick', '');
+              $("#type").attr('onclick', '');
+              $("#get").attr('onclick', '');
               // if has 3 prod then index = 3
               for(i = 1; i <= 3; i++){ $("#amt-"+i).attr('onclick', ''); }
             } else {
@@ -112,17 +110,29 @@
               $(".amount").addClass('underline');
               $("#discount").addClass('underline');
               $("#get").addClass('underline');
+              $("#type").addClass('underline');
+              $("#discount").attr('onclick', 'edit_discount()');
+              $("#type").attr('onclick', 'edit_type()');
+              $("#get").attr('onclick', 'edit_get()');
               for(i = 1; i <= 3; i++){ $("#amt-"+i).attr('onclick', 'edit_amount('+i+')'); }
             }
         } else if (arg == "del") {
             // show trash all 
-            if($(".i-del").is(":visible")){
-              $(".i-edit").attr('hidden', true);
-              $(".i-del").attr('hidden', true);
-            }else{
-              $(".i-edit").attr('hidden', true);
-              $(".i-del").attr('hidden', false);
-            }
+            $("style").append(".jconfirm .jconfirm-box{margin-bottom: 5%;}");
+            $.confirm({
+                title: 'ลบรายการ',
+                content: 'ต้องการลบบิล '+$("#h5-title").text()+' หรือไม่',
+                backgroundDismiss: true,
+                buttons: { 
+                  formSubmit: {
+                    text: 'ตกลง',
+                    btnClass: 'btn-danger',
+                    action: function () {
+                        // delete bill
+                    }
+                  },ยกเลิก: function () {}, 
+                }  
+            });
         }
     } 
 
@@ -133,26 +143,95 @@
               content: '<div class="row" style="margin-top: 2%; margin-bottom: 2%;"><div class="col-12 text-center" style="font-size: 110%; font-weight: bold;">จำนวน</div></div><div class="row"><div class="col-3"></div><div class="col-6 text-center"><input id="edt-amt" type="number" class="input-cf" value="'+$("#amt-"+arg).text()+'"></div><div class="col-3"></div></div>',
               backgroundDismiss: true,
               buttons: {
-                ยกเลิก: function () {
-                    //$(".jconfirm .jconfirm-box").css('margin-bottom', '5%');
-                  },
                 formSubmit: {
                   text: 'ตกลง',
                   btnClass: 'btn-danger',
                   action: function () {
 
                   }
-                }
+                },ยกเลิก: function () {
+                    //$(".jconfirm .jconfirm-box").css('margin-bottom', '5%');
+                  }
               }
             });
     }
 
     function edit_discount(){
+      $("style").append(".jconfirm .jconfirm-box{margin-bottom:60%;}");
+      $.confirm({
+              title: "ลด",
+              content: '<div class="row"><div class="col-3"></div><div class="col-6 text-center"><input id="edt-disc" type="number" class="input-cf" value="'+$("#discount").text()+'"></div><div class="col-3"></div></div>',
+              backgroundDismiss: true,
+              buttons: {
+                formSubmit: {
+                  text: 'ตกลง',
+                  btnClass: 'btn-danger',
+                  action: function () {
 
+                  },ยกเลิก: function () {
+                    //$(".jconfirm .jconfirm-box").css('margin-bottom', '5%');
+                  }
+                }
+              }
+            });
     }
 
     function edit_get(){
+      $("style").append(".jconfirm .jconfirm-box{margin-bottom:60%;}");
+      $.confirm({
+              title: "รับ",
+              content: '<div class="row"><div class="col-3"></div><div class="col-6 text-center"><input id="edt-get" type="number" class="input-cf" value="'+$("#get").text()+'"></div><div class="col-3"></div></div>',
+              backgroundDismiss: true,
+              buttons: {
+                formSubmit: {
+                  text: 'ตกลง',
+                  btnClass: 'btn-danger',
+                  action: function () {
 
+                  }
+                },ยกเลิก: function () {
+                    //$(".jconfirm .jconfirm-box").css('margin-bottom', '5%');
+                  }
+              }
+            });
+    }
+
+    function edit_type(){
+      $.confirm({
+        title: 'การชำระเงิน',
+        content: '<hr style="width: 80%; margin-bottom: 0;">',
+        backgroundDismiss: true,
+        buttons: {
+          form1: {
+            text: 'เงินสด',
+            btnClass: 'btn-choice',
+            action: function () {
+              $("#pay").val('เงินสด');
+            }
+          },
+          form2: {
+            text: 'เครดิต (30)',
+            btnClass: 'btn-choice',
+            action: function () {
+              $("#pay").val('เครดิต (30)');
+            }
+          },
+          form3: {
+            text: 'เครดิต (60)',
+            btnClass: 'btn-choice',
+            action: function () {
+              $("#pay").val('เครดิต (60)');
+            }
+          },
+          form4: {
+            text: 'เครดิต (90)',
+            btnClass: 'btn-choice',
+            action: function () {
+              $("#pay").val('เครดิต (90)');
+            }
+          }
+        }
+      });
     }
   </script>
 </head>
@@ -174,7 +253,7 @@
   <!-- End big container -->
   <div class="container justify-content-center" style="margin-top: 15%; margin-bottom: 15%;">
   	<div class="row">
-  		<div class="col-12 text-center pdl pdr"><h5>สมพงศ์ สะอาด (เครดิต 30)</h5></div>
+  		<div class="col-12 text-center pdl pdr"><h5>สมพงศ์ สะอาด <span id="type" onclick="edit_type();">(เครดิต 30)</span></h5></div>
   	</div>
   	<div class="row">
   		<div class="col-12 text-center pdl pdr"><h5 id="title">12/01/18 15:00</h5></div>
@@ -235,7 +314,7 @@
     		</div>
     		<div class="row">
     			<div class="col-4" style="padding-left: 10%;"><h5>ลด</h5></div>
-    			<div class="col-7 text-right"><h5 id="discount" onclick="edit_discount();">150</h5></div>
+    			<div class="col-7 text-right"><h5 id="discount">150</h5></div>
     		</div>
     		<div class="row">
     			<div class="col-4" style="padding-left: 10%;"><h5>สุทธิ  </h5></div>
@@ -243,7 +322,7 @@
     		</div>
     		<div class="row">
     			<div class="col-4 nopd" style="padding-left: 10%;"><h5>รับ / ทอน</h5></div>
-    			<div class="col-4 text-center"><h5 id="get" onclick="edit_get();">150000</h5></div>
+    			<div class="col-4 text-center"><h5 id="get">150000</h5></div>
     			<div class="col-3 text-right"><h5>1000</h5></div>
     		</div>
     		<div class="row" style="margin-top: 10%;">
