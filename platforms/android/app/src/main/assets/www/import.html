@@ -227,6 +227,7 @@
                 });                
                 return 0;
             }  
+            alert(jQuery.inArray($('#prod-addr').val().toLowerCase(),arr_place));
             if(name != "" && amt != "" && code != "" && cost != "" && price_s != "" && price_w != "" && jQuery.inArray($('#prod-addr').val().toLowerCase(),arr_place) == -1 && $("#h5-title").text() != "เลือกโกดัง(เข้า)"){      
                 if(flag == 0){                 
                     $.ajax({
@@ -383,8 +384,7 @@
             });
         }       
 
-        function selectfolder() {
-            //goto = location.reload();
+        function selectfolder() {           
             goto = "select_folder.html?from=import";
             transition_page_next_flip(goto);
         }     
