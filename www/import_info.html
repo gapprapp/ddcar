@@ -49,10 +49,9 @@
     	padding-left: 0;
     	padding-right: 0;
     }
-
     .underline{
-    	text-decoration: underline #666;
-    }    
+      text-decoration: underline #666;
+    }      
   </style>
 
   <script>
@@ -85,7 +84,7 @@
 
 
     function menu(arg) {
-    	// Animate
+      // Animate
         disactive(arg);
         if($("#i-"+arg).hasClass('active')){
             //console.log("i-"+arg+"hasClass('active')");
@@ -105,30 +104,41 @@
               $(".amount").removeClass('underline');
               $("#discount").removeClass('underline');
               $("#get").removeClass('underline');
-              // if has 3 prod then index = 3
-              for(i = 1; i <= 3; i++){ $("#amt-"+i).attr('onclick', ''); }
+              $("#discount").attr('onclick', '');
+              $("#get").attr('onclick', '');
+              // if has 4 prod then index = 4
+              for(i = 1; i <= 4; i++){ $("#amt-"+i).attr('onclick', ''); }
             } else {
               $(".i-del").attr('hidden', true);
               $(".amount").addClass('underline');
               $("#discount").addClass('underline');
               $("#get").addClass('underline');
-              for(i = 1; i <= 3; i++){ $("#amt-"+i).attr('onclick', 'edit_amount('+i+')'); }
+              $("#discount").attr('onclick', 'edit_discount()');
+              $("#get").attr('onclick', 'edit_get()');
+              for(i = 1; i <= 4; i++){ $("#amt-"+i).attr('onclick', 'edit_amount('+i+')'); }
             }
         } else if (arg == "del") {
             // show trash all 
-            if($(".i-del").is(":visible")){
-              $(".i-edit").attr('hidden', true);
-              $(".i-del").attr('hidden', true);
-            }else{
-              $(".i-edit").attr('hidden', true);
-              $(".i-del").attr('hidden', false);
-            }
+            $.confirm({
+                title: 'ลบรายการ',
+                content: 'ต้องการลบบิล '+$("#h5-title").text()+' หรือไม่',
+                backgroundDismiss: true,
+                buttons: {
+                  ยกเลิก: function () {},  
+                  formSubmit: {
+                    text: 'ตกลง',
+                    btnClass: 'btn-danger',
+                    action: function () {
+                        // delete bill
+                    }
+                  }
+                }  
+            });
         }
-    } 
-
+    }
     function edit_amount(arg){
-    	$("style").append(".jconfirm .jconfirm-box{margin-bottom:60%;}");
-    	$.confirm({
+      $("style").append(".jconfirm .jconfirm-box{margin-bottom:60%;}");
+      $.confirm({
               title: $("#name-"+arg).text(),
               content: '<div class="row" style="margin-top: 2%; margin-bottom: 2%;"><div class="col-12 text-center" style="font-size: 110%; font-weight: bold;">จำนวน</div></div><div class="row"><div class="col-3"></div><div class="col-6 text-center"><input id="edt-amt" type="number" class="input-cf" value="'+$("#amt-"+arg).text()+'"></div><div class="col-3"></div></div>',
               backgroundDismiss: true,
@@ -145,14 +155,6 @@
                 }
               }
             });
-    }
-
-    function edit_discount(){
-
-    }
-
-    function edit_get(){
-
     }
   </script>
 </head>
@@ -174,7 +176,7 @@
   <!-- End big container -->
   <div class="container justify-content-center" style="margin-top: 15%; margin-bottom: 15%;">
   	<div class="row">
-  		<div class="col-12 text-center pdl pdr"><h5>สมพงศ์ สะอาด (เครดิต 30)</h5></div>
+  		<div class="col-12 text-center pdl pdr"><h5>โกดัง B4</h5></div>
   	</div>
   	<div class="row">
   		<div class="col-12 text-center pdl pdr"><h5 id="title">12/01/18 15:00</h5></div>
@@ -185,29 +187,29 @@
     		<h5>รายการ</h5>
     	</div>
     </div>
-    <div id="ctn-show" class="container-fullwidth">
+    <div id="ctn-show" class="container">
     	<div id="prod-1" class="row">
-      		<div class="col-1 text-center" ">
-        		<p id="amt-1" class="amount">10</p>
+      		<div class="col-1 text-center">
+        		<p id="amt-1" class="amount">4</p>
       		</div>
 			<div class="col-7 text-center no-pd">
 				<p id="name-1">โช๊คคู่หลังโตโยต้าวิช KYB</p>
 		  	</div>
-		  	<div class="col-1 col-@">
-		  		<p>@10k</p>
+		  	<div class="col-1">
+		  		<p id="cost">@25k</p>
 		  	</div>
 	        <div class="col-3 text-right no-pd">
 	        	<p id="price">100k</p>
 	      	</div>
     	</div>
     	<div id="prod-2" class="row">
-      		<div class="col-1 text-center" >
-        		<p id="amt-2" class="amount">4</p>
+      		<div class="col-1 text-center">
+        		<p id="amt-2" class="amount">8</p>
       		</div>
 			<div class="col-7 text-center no-pd">
 				<p id="name-2">โช๊คคู่หลังโตโยต้าวิช KYB</p>
 		  	</div>
-		  	<div class="col-1 col-@">
+		  	<div class="col-1">
 		  		<p>@1k</p>
 		  	</div>
 	        <div class="col-3 text-right no-pd">
@@ -215,36 +217,37 @@
 	      	</div>
     	</div>
     	<div id="prod-3" class="row">
-      		<div class="col-1 text-center" >
+      		<div class="col-1 text-center">
         		<p id="amt-3" class="amount">3</p>
       		</div>
 			<div class="col-7 text-center no-pd">
 				<p id="name-3">โช๊คคู่หลังโตโยต้าวิช KYB</p>
 		  	</div>
-		  	<div class="col-1 col-@">
+		  	<div class="col-1">
 		  		<p>@5k</p>
 		  	</div>
 	        <div class="col-3 text-right no-pd">
 	        	<p id="price">15000</p>
 	      	</div>
     	</div>
+    	<div id="prod-4" class="row">
+      		<div class="col-1 text-center">
+        		<p id="amt-4" class="amount">5</p>
+      		</div>
+			<div class="col-7 text-center no-pd">
+				<p id="name-4">โช๊คคู่หลังโตโยต้าวิช KYB</p>
+		  	</div>
+		  	<div class="col-1">
+		  		<p>@1k</p>
+		  	</div>
+	        <div class="col-3 text-right no-pd">
+	        	<p id="price">4000</p>
+	      	</div>
+    	</div>
     	<div id="bill-bttm" class="container" style="margin-top: 5%;">
     		<div class="row">
-    			<div class="col-4" style="padding-left: 10%;"><h5>รวม</h5></div>
-    			<div class="col-7 text-right"><h5>150</h5></div>
-    		</div>
-    		<div class="row">
-    			<div class="col-4" style="padding-left: 10%;"><h5>ลด</h5></div>
-    			<div class="col-7 text-right"><h5 id="discount" onclick="edit_discount();">150</h5></div>
-    		</div>
-    		<div class="row">
-    			<div class="col-4" style="padding-left: 10%;"><h5>สุทธิ  </h5></div>
-    			<div class="col-7 text-right"><h5>100000</h5></div>
-    		</div>
-    		<div class="row">
-    			<div class="col-4 nopd" style="padding-left: 10%;"><h5>รับ / ทอน</h5></div>
-    			<div class="col-4 text-center"><h5 id="get" onclick="edit_get();">150000</h5></div>
-    			<div class="col-3 text-right"><h5>1000</h5></div>
+    			<div class="col-4"><h5>รวม</h5></div>
+    			<div class="col-8 text-right"><h5>150</h5></div>
     		</div>
     		<div class="row" style="margin-top: 10%;">
     			<div class="col-12 text-center">

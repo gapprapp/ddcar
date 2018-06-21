@@ -69,10 +69,10 @@
     <div class="col-1 text-center" onclick="page_back()">
       <i id="i-back" class="fas fa-angle-left"></i>
     </div>
-    <div class="col-8 text-center" style="padding-left: 15%; margin-right: 4%;">
-      <h5 id="h5-title">รายการบิล</h5>
+    <div class="col-9 text-center" style="">
+      <h5 id="h5-title">รายการของเข้า</h5>
     </div>
-    <div class="col-2 text-right" onclick="show_search();">
+    <div class="col-1 text-right" onclick="show_search();">
       <i class="fas fa-search" style="color: white; font-size: 120%; margin-top: 3px;"></i>
     </div>
   </div><br>
@@ -81,7 +81,7 @@
   <div class="container justify-content-center" style="margin-top: 15%; margin-bottom: 25%;">
     <div id="search_row" class="row mg-10" hidden>
       <div class="col-9">
-        <input id="search_prod" type="text" onkeyup="search()" class="form-control form-control-lg text-center" placeholder="เลขที่ / ลูกค้า">
+        <input id="search_prod" type="text" onkeyup="search()" class="form-control form-control-lg text-center" placeholder="เลขที่ / โกดัง">
       </div> 
       <div class="col-3">
         <button id="datepicker-from" class="mbtn" style="height: 90%; margin-top: 2px;">
@@ -99,11 +99,11 @@
         <h5 id="title">วันที่</h5>
       </div>
       <div class="col-5 text-center no-pd">
-        <h5 id="title">ลูกค้า</h5>
+        <h5 id="title">โกดัง</h5>
       </div>
     </div>
     <hr>
-    <div class="row" onclick="window.location = 'bill_info.html?id=1'">
+    <div class="row" onclick="window.location = 'import_info.html?id=1'">
       <div class="col-4 text-center no-pd">
         <p>S18-00001</p>
       </div>
@@ -111,10 +111,10 @@
         <p>12/01/18</p>
       </div>
       <div class="col-5 text-center no-pd">
-        <p>นาย A เค้าห่อหมก</p>
+        <p>โกดัง A1</p>
       </div>
     </div><hr>
-    <div class="row" onclick="window.location = 'bill_info.html?id=1'">
+    <div class="row" onclick="window.location = 'import_info.html?id=1'">
       <div class="col-4 text-center no-pd">
         <p>S18-00001</p>
       </div>
@@ -122,7 +122,7 @@
         <p>12/01/18</p>
       </div>
       <div class="col-5 text-center no-pd">
-        <p>นาย A เค้าห่อหมก</p>
+        <p>โกดัง ฺ4</p>
       </div>
     </div>
   <!-- End big container -->
