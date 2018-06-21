@@ -1,5 +1,5 @@
 <?php
-    include "db.php";
+    include "db.php";   
     $prod_id  = $_POST['prod_id'];
     $name  = $_POST['name_prod'];
     $code  = $_POST['code'];   
