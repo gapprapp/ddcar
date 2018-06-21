@@ -99,12 +99,12 @@
                         text: 'ตกลง',
                         btnClass: 'btn-regis',
                         action: function () { 
-                          location.reload(true);                           
+                          clear();
                         }
                       }
                     }
                 });
-                location.reload(true);
+                clear();
             }else{
               $.confirm({
                 title: 'พบข้อผิดพลาด',
@@ -126,6 +126,13 @@
 
     function setrole(arg){
       $("#type").val(arg);
+    }
+
+    function clear(){
+      $('#name').val("");  
+      $('#phone').val("");  
+      $('#addr').val("");          
+      $('#type').val("");        
     }
 
   </script>

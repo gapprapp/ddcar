@@ -194,7 +194,7 @@
                         if(prod_id){
                             transition_page_back('threshold.html'); 
                         }             
-                        location.reload(true);  
+                        clear();
                     }else{
                         $.confirm({
                             title: 'พบข้อผิดพลาด',
@@ -272,6 +272,13 @@
             $("#col-back").attr('onclick', 'transition_page_back("threshold.html")');
             $('#myUL').empty();
             ch = 0;
+        }
+
+        function clear(){
+            $('#name').val("");  
+            $('#barcode').val("");  
+            $('#deliver').val("");          
+            $('#amount').val("1");        
         }
 
     </script>
