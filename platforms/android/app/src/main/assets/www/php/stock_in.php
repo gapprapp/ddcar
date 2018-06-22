@@ -86,14 +86,16 @@
             mysqli_rollback($conn);
             echo "fail";
             exit;
-        } 
-        $sql = "INSERT INTO warehouse_place (ware_id,prod_id,place) VALUE ('$ware_id','$prod_id','$addr')"; 
-        $result = mysqli_query($conn, $sql); 
-        if(!$result){
-            mysqli_rollback($conn);
-            echo "fail";
-            exit;
-        }            
+        }
+        if($addr != ""){
+            $sql = "INSERT INTO warehouse_place (ware_id,prod_id,place) VALUE ('$ware_id','$prod_id','$addr')"; 
+            $result = mysqli_query($conn, $sql); 
+            if(!$result){
+                mysqli_rollback($conn);
+                echo "fail";
+                exit;
+            }            
+        }       
     }
     mysqli_commit($conn); 
     echo "success"; 

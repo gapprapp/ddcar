@@ -118,31 +118,19 @@
             }
         } else if (arg == "del") {
             // show trash all 
-<<<<<<< HEAD
-=======
             $("style").append(".jconfirm .jconfirm-box{margin-bottom: 5%;}");
->>>>>>> ca4527d3e391875f046e314ff495ab6fb1fd4451
             $.confirm({
                 title: 'ลบรายการ',
                 content: 'ต้องการลบบิล '+$("#h5-title").text()+' หรือไม่',
                 backgroundDismiss: true,
-<<<<<<< HEAD
-                buttons: {
-                  ยกเลิก: function () {},  
-=======
                 buttons: { 
->>>>>>> ca4527d3e391875f046e314ff495ab6fb1fd4451
                   formSubmit: {
                     text: 'ตกลง',
                     btnClass: 'btn-danger',
                     action: function () {
                         // delete bill
                     }
-<<<<<<< HEAD
-                  }
-=======
                   },ยกเลิก: function () {}, 
->>>>>>> ca4527d3e391875f046e314ff495ab6fb1fd4451
                 }  
             });
         }
@@ -175,22 +163,13 @@
               content: '<div class="row"><div class="col-3"></div><div class="col-6 text-center"><input id="edt-disc" type="number" class="input-cf" value="'+$("#discount").text()+'"></div><div class="col-3"></div></div>',
               backgroundDismiss: true,
               buttons: {
-<<<<<<< HEAD
-                ยกเลิก: function () {
-                    //$(".jconfirm .jconfirm-box").css('margin-bottom', '5%');
-                  },
-=======
->>>>>>> ca4527d3e391875f046e314ff495ab6fb1fd4451
                 formSubmit: {
                   text: 'ตกลง',
                   btnClass: 'btn-danger',
                   action: function () {
 
-<<<<<<< HEAD
-=======
                   },ยกเลิก: function () {
                     //$(".jconfirm .jconfirm-box").css('margin-bottom', '5%');
->>>>>>> ca4527d3e391875f046e314ff495ab6fb1fd4451
                   }
                 }
               }
@@ -204,25 +183,10 @@
               content: '<div class="row"><div class="col-3"></div><div class="col-6 text-center"><input id="edt-get" type="number" class="input-cf" value="'+$("#get").text()+'"></div><div class="col-3"></div></div>',
               backgroundDismiss: true,
               buttons: {
-<<<<<<< HEAD
-                ยกเลิก: function () {
-                    //$(".jconfirm .jconfirm-box").css('margin-bottom', '5%');
-                  },
-=======
->>>>>>> ca4527d3e391875f046e314ff495ab6fb1fd4451
                 formSubmit: {
                   text: 'ตกลง',
                   btnClass: 'btn-danger',
                   action: function () {
-<<<<<<< HEAD
-
-                  }
-                }
-              }
-            });
-    }
-
-=======
 
                   }
                 },ยกเลิก: function () {
@@ -232,7 +196,6 @@
             });
     }
 
->>>>>>> ca4527d3e391875f046e314ff495ab6fb1fd4451
     function edit_type(){
       $.confirm({
         title: 'การชำระเงิน',

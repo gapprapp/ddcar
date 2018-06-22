@@ -12,6 +12,7 @@
     <script type="text/javascript" src="js/jquery.easing.1.3.min.js"></script>
     <script type="text/javascript" src="js/transition.js"></script>
     <script type="text/javascript" src="js/jquery-confirm.js"></script>
+    <script type="text/javascript" src="js/scanqr.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.6/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
     <script defer src="https://use.fontawesome.com/releases/v5.0.8/js/all.js"></script>
@@ -226,8 +227,7 @@
                   }
                 });                
                 return 0;
-            }  
-            alert(jQuery.inArray($('#prod-addr').val().toLowerCase(),arr_place));
+            }            
             if(name != "" && amt != "" && code != "" && cost != "" && price_s != "" && price_w != "" && jQuery.inArray($('#prod-addr').val().toLowerCase(),arr_place) == -1 && $("#h5-title").text() != "เลือกโกดัง(เข้า)"){      
                 if(flag == 0){                 
                     $.ajax({
@@ -599,13 +599,13 @@
 
     <!-- Nav menu bottom -->
     <div id="navs-bttm" class="row fixed-bottom navs">
-        <div class="col-3 text-center" onclick="window.location='index.html';">
+        <div class="col-3 text-center" onclick="transition_page_back('index.html')">
             <i id="i-home" class="fas fa-home menu"></i>
         </div>
-        <div class="col-3 text-center" onclick="menu('bell')">
+        <div class="col-3 text-center" onclick="transition_page_next('bell.html')">
             <i id="i-bell" class="fas fa-bell menu"></i>
         </div>
-        <div class="col-3 text-center" onclick="menu('qrcode')">
+        <div class="col-3 text-center" onclick="scan();">
             <i id="i-qrcode" class="fas fa-qrcode menu"></i>
         </div>
         <div class="col-3 text-center" onclick="menu('bars')">
