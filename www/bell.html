@@ -16,6 +16,7 @@
     <script defer src="https://use.fontawesome.com/releases/v5.0.8/js/all.js"></script>
     <script src="cordova.js"></script>
     <script type="text/javascript" src="js/scanqr.js"></script>
+    <script type="text/javascript" src="js/jquery.touchSwipe.min.js"></script>
 
     <script src="js/jquery.easy-autocomplete.min.js"></script>   
     <link rel="stylesheet" href="css/easy-autocomplete.themes.min.css">
@@ -34,7 +35,7 @@
         color: #d63232;
       }
       #title{
-        font-size: 120%;
+        font-size: 115%;
         color: #666;
         letter-spacing: 1px;
       }
@@ -75,15 +76,15 @@
           if(arr[i] != arg){
             $("#tabs-"+arr[i]).removeClass('tabs');
             $("#tabs-"+arr[i]).addClass('non');
-            $("div #"+arr[i]).prop('hidden', true);
+            $("#ctn-"+arr[i]).prop('hidden', true);
           }
-        }$("#tabs-"+arg).addClass('tabs'); $("#tabs-"+arg).removeClass('non'); $("div #"+arg).prop('hidden', false);
+        }$("#tabs-"+arg).addClass('tabs'); $("#tabs-"+arg).removeClass('non'); $("#ctn-"+arg).prop('hidden', false);
       }
     }
     </script>
 </head>
 
-<body>
+<body style="overflow-y: auto;">
     <!-- Nav menu top -->
     <div class="row fixed-top navs">
         <div class="col-1 text-center" onclick="transition_page_back('index.html')">
@@ -96,12 +97,13 @@
     <br>
 
     <!-- big container -->
-    <div id="big-ctn" class="container justify-content-center" style="margin-top: 7%;">
+    <div id="big-ctn" class="container justify-content-center" style="margin-top: 7%; min-height: 100%;
+    height: 300%;">
       <div class="row navs" style="background: #fafafa !important;">
       <div id="tabs-prod" class="col-6 text-center tabs" onclick="tabs('prod');">สินค้า</div>
       <div id="tabs-credit" class="col-6 text-center non" onclick="tabs('credit');">เครดิต</div>
     </div><br>
-        <div class="container-full-width">
+        <div id="ctn-prod" class="container-full-width" style="height: 100%;">
           <div class="row mg-10">
             <div class="col-1"></div>
             <div id="title" class="col-8 text-center">ชื่อสินค้า</div>
@@ -120,6 +122,33 @@
             </div>
             <div class="col-8 text-center">toyota k311 กระจกหลัง</div>
             <div class="col-3 text-center">4</div>
+          </div><hr class="mg-5">
+        </div>
+        <div id="ctn-credit" class="container-full-width" hidden>
+          <div class="row mg-10">
+            <div class="col-1"></div>
+            <div id="title" class="col-5 text-center">ลูกค้า</div>
+            <div id="title" class="col-2 text-center nopd">เครดิต</div>
+            <div id="title" class="col-2 text-center nopd">วางบิล</div>
+            <div id="title" class="col-2 text-center nopd">รวม</div>
+          </div>
+          <div class="row">
+            <div class="col-1">
+              <i class="fas fa-circle yellow"></i>
+            </div>
+            <div class="col-5 text-center nopd">ลูกค้า A</div>
+            <div class="col-2 text-center nopd">30</div>
+            <div class="col-2 text-center nopd">5 วัน</div>
+            <div class="col-2 text-center nopd">50000</div>
+          </div><hr class="mg-5">
+          <div class="row">
+            <div class="col-1">
+              <i class="fas fa-circle red"></i>
+            </div>
+            <div class="col-5 text-center nopd">ลูกค้า B</div>
+            <div class="col-2 text-center nopd">60</div>
+            <div class="col-2 text-center nopd">30 วัน</div>
+            <div class="col-2 text-center nopd">1</div>
           </div><hr class="mg-5">
         </div>
     </div>
@@ -141,6 +170,22 @@
       </div>
     </div>
   <!-- End Nav menu bottom -->
+  <script>
+    $("html").swipe( {swipe:function(event, direction, distance, duration, fingerCount, fingerData) {
+        if(direction == "right"){ 
+          $("#tabs-credit").removeClass('tabs'); $("#tabs-credit").addClass('non'); 
+          $("#tabs-prod").removeClass('non'); $("#tabs-prod").addClass('tabs');
+          $("#ctn-credit").prop('hidden', true);
+          $("#ctn-prod").prop('hidden', false);
+        }else if(direction == "left"){ 
+          $("#tabs-prod").removeClass('tabs'); $("#tabs-prod").addClass('non'); 
+          $("#tabs-credit").removeClass('non'); $("#tabs-credit").addClass('tabs');
+          $("#ctn-prod").prop('hidden', true);
+          $("#ctn-credit").prop('hidden', false);
+        }
+        },threshold:75
+      }); 
+  </script>
 </body>
 
 </html>
