@@ -58,6 +58,28 @@
         $("#row-search").prop('hidden', false);
         $("#i-back").attr('onclick', 'transition_page_back("index.html")');
       }
+
+      function tabs(arg){
+      arr = ['prod', 'credit'];
+      if($("#tabs-"+arg).hasClass('tabs')){
+        return 0;
+      }else{
+        // Get from
+        for(var j = 0; j < 2; j++){
+          if($("#tabs-"+arr[j]).hasClass('tabs')){
+            from = arr[j];
+          }
+        }
+        // Clear old tabs , Add class, Remove class
+        for(var i = 0; i < 2; i++){
+          if(arr[i] != arg){
+            $("#tabs-"+arr[i]).removeClass('tabs');
+            $("#tabs-"+arr[i]).addClass('non');
+            $("div #"+arr[i]).prop('hidden', true);
+          }
+        }$("#tabs-"+arg).addClass('tabs'); $("#tabs-"+arg).removeClass('non'); $("div #"+arg).prop('hidden', false);
+      }
+    }
     </script>
 </head>
 
@@ -74,7 +96,11 @@
     <br>
 
     <!-- big container -->
-    <div id="big-ctn" class="container justify-content-center" style="margin-top: 15%;">
+    <div id="big-ctn" class="container justify-content-center" style="margin-top: 7%;">
+      <div class="row navs" style="background: #fafafa !important;">
+      <div id="tabs-prod" class="col-6 text-center tabs" onclick="tabs('prod');">สินค้า</div>
+      <div id="tabs-credit" class="col-6 text-center non" onclick="tabs('credit');">เครดิต</div>
+    </div><br>
         <div class="container-full-width">
           <div class="row mg-10">
             <div class="col-1"></div>

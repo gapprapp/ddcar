@@ -227,8 +227,7 @@
                   }
                 });                
                 return 0;
-            }  
-            alert(jQuery.inArray($('#prod-addr').val().toLowerCase(),arr_place));
+            }            
             if(name != "" && amt != "" && code != "" && cost != "" && price_s != "" && price_w != "" && jQuery.inArray($('#prod-addr').val().toLowerCase(),arr_place) == -1 && $("#h5-title").text() != "เลือกโกดัง(เข้า)"){      
                 if(flag == 0){                 
                     $.ajax({
@@ -535,7 +534,7 @@
 
     <!-- Nav menu top -->
     <div class="row fixed-top navs">
-        <div id="col-back" class="col-1 text-center" onclick="transition_page_back('index.html')">
+        <div id="col-back" class="col-1 text-center" onclick="transition_page_back('index.html?menu=2')">
             <i id="i-back" class="fas fa-angle-left"></i>
         </div>
         <div class="col-8 text-right" style="margin-right: 4%;">

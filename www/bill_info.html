@@ -140,7 +140,7 @@
     	$("style").append(".jconfirm .jconfirm-box{margin-bottom:60%;}");
     	$.confirm({
               title: $("#name-"+arg).text(),
-              content: '<div class="row" style="margin-top: 2%; margin-bottom: 2%;"><div class="col-12 text-center" style="font-size: 110%; font-weight: bold;">จำนวน</div></div><div class="row"><div class="col-3"></div><div class="col-6 text-center"><input id="edt-amt" type="number" class="input-cf" value="'+$("#amt-"+arg).text()+'"></div><div class="col-3"></div></div>',
+              content: '<div class="row" style="margin-top: 2%; margin-bottom: 2%;"><div class="col-12 text-center" style="font-size: 110%; font-weight: bold;">จำนวน</div></div><div class="row"><div class="col-3"></div><div class="col-6 text-center"><input autofocus id="edt-amt" type="number" class="input-cf" value="'+$("#amt-"+arg).text()+'"></div><div class="col-3"></div></div>',
               backgroundDismiss: true,
               buttons: {
                 formSubmit: {
@@ -160,7 +160,7 @@
       $("style").append(".jconfirm .jconfirm-box{margin-bottom:60%;}");
       $.confirm({
               title: "ลด",
-              content: '<div class="row"><div class="col-3"></div><div class="col-6 text-center"><input id="edt-disc" type="number" class="input-cf" value="'+$("#discount").text()+'"></div><div class="col-3"></div></div>',
+              content: '<div class="row"><div class="col-3"></div><div class="col-6 text-center"><input autofocus id="edt-disc" type="number" class="input-cf" value="'+$("#discount").text()+'"></div><div class="col-3"></div></div>',
               backgroundDismiss: true,
               buttons: {
                 formSubmit: {
@@ -180,7 +180,7 @@
       $("style").append(".jconfirm .jconfirm-box{margin-bottom:60%;}");
       $.confirm({
               title: "รับ",
-              content: '<div class="row"><div class="col-3"></div><div class="col-6 text-center"><input id="edt-get" type="number" class="input-cf" value="'+$("#get").text()+'"></div><div class="col-3"></div></div>',
+              content: '<div class="row"><div class="col-3"></div><div class="col-6 text-center"><input autofocus id="edt-get" type="number" class="input-cf" value="'+$("#get").text()+'"></div><div class="col-3"></div></div>',
               backgroundDismiss: true,
               buttons: {
                 formSubmit: {
@@ -242,7 +242,7 @@
 
   <!-- Nav menu top -->
   <div class="row fixed-top navs">
-    <div class="col-1 text-center" onclick="page_back()">
+    <div class="col-1 text-center" onclick="transition_page_back('manage_bill.html')">
       <i id="i-back" class="fas fa-angle-left"></i>
     </div>
     <div class="col-10 text-center" style="padding-left: 0;">
@@ -251,7 +251,7 @@
   </div><br>
 
   <!-- End big container -->
-  <div class="container justify-content-center" style="margin-top: 15%; margin-bottom: 15%;">
+  <div class="container justify-content-center" style="margin-top: 15%;">
   	<div class="row">
   		<div class="col-12 text-center pdl pdr"><h5>สมพงศ์ สะอาด <span id="type" onclick="edit_type();">(เครดิต 30)</span></h5></div>
   	</div>

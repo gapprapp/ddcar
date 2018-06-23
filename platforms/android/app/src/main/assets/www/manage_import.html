@@ -66,11 +66,11 @@
 
   <!-- Nav menu top -->
   <div class="row fixed-top navs">
-    <div class="col-1 text-center" onclick="page_back()">
+    <div class="col-1 text-center" onclick="transition_page_back('index.html?menu=3')">
       <i id="i-back" class="fas fa-angle-left"></i>
     </div>
     <div class="col-9 text-center" style="">
-      <h5 id="h5-title">รายการของเข้า</h5>
+      <h5 id="h5-title">รายการสินค้าเข้า</h5>
     </div>
     <div class="col-1 text-right" onclick="show_search();">
       <i class="fas fa-search" style="color: white; font-size: 120%; margin-top: 3px;"></i>
@@ -78,7 +78,7 @@
   </div><br>
 
   <!-- End big container -->
-  <div class="container justify-content-center" style="margin-top: 15%; margin-bottom: 25%;">
+  <div class="container justify-content-center" style="margin-top: 15%;">
     <div id="search_row" class="row mg-10" hidden>
       <div class="col-9">
         <input id="search_prod" type="text" onkeyup="search()" class="form-control form-control-lg text-center" placeholder="เลขที่ / โกดัง">
