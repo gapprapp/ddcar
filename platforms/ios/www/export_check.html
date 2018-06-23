@@ -156,8 +156,7 @@
                 title: 'ลบรายการ',
                 content: 'ต้องการลบ '+name+' หรือไม่',
                 backgroundDismiss: true,
-                buttons: {
-                  ยกเลิก: function () {},  
+                buttons: { 
                   formSubmit: {
                     text: 'ตกลง',
                     btnClass: 'btn-danger',
@@ -168,7 +167,7 @@
                         $('#hr-'+num).remove();                    
                         arrange(num);
                     }
-                  }
+                  },ยกเลิก: function () {}
                 }  
             });
         }
@@ -255,9 +254,6 @@
                 $("style").append('.jconfirm .jconfirm-box{margin-bottom: 5%;}');
             },
               buttons: {
-                ยกเลิก: function () {
-                    //$(".jconfirm .jconfirm-box").css('margin-bottom', '5%');
-                  },
                 formSubmit: {
                   text: 'ตกลง',
                   btnClass: 'btn-danger',
@@ -272,7 +268,9 @@
                     $("#net").text(new_net.toLocaleString());  
                     $("#sum-"+arg).text(cost*amt); 
                   }
-                }
+                },ยกเลิก: function () {
+                    //$(".jconfirm .jconfirm-box").css('margin-bottom', '5%');
+                  }
               }
             });     
         }

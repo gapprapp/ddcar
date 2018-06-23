@@ -173,9 +173,6 @@
               content: '<div class="row" style="margin-top: 2%; margin-bottom: 2%;"><div class="col-1"></div><div class="col-5 text-center" style="font-size: 110%; font-weight: bold;">ราคา</div><div class="col-1"></div><div class="col-4 text-center" style="font-size: 110%; font-weight: bold;">จำนวน</div><div class="col-1"></div></div><div class="row"><div class="col-1"></div><div class="col-5 text-center"><input id="edt-price" type="number" class="input-cf" placeholder="" value="'+$("#price-"+arg).text()+'" autofocus></div><div class="col-1">x</div><div class="col-4 text-center"><input id="edt-amt" type="number" class="input-cf" placeholder="" value="'+$("#amount-"+arg).text()+'"></div><div class="col-1"></div></div>',
               backgroundDismiss: true,
               buttons: {
-                ยกเลิก: function () {
-                    //$(".jconfirm .jconfirm-box").css('margin-bottom', '5%');
-                  },
                 formSubmit: {
                   text: 'ตกลง',
                   btnClass: 'btn-danger',
@@ -193,7 +190,10 @@
                     $("#amount-"+arg).text(amt);
                     $("#sum-"+arg).text(price*amt);                   
                   }
-                }
+                },
+                ยกเลิก: function () {
+                    //$(".jconfirm .jconfirm-box").css('margin-bottom', '5%');
+                },
               }
             }); 
         }
@@ -205,8 +205,7 @@
                 title: 'ลบรายการ',
                 content: 'ต้องการลบ '+name+' หรือไม่',
                 backgroundDismiss: true,
-                buttons: {
-                  ยกเลิก: function () {},  
+                buttons: {  
                   formSubmit: {
                     text: 'ตกลง',
                     btnClass: 'btn-danger',
@@ -221,7 +220,7 @@
                         $('#hr-'+arg).remove();                     
                         arrange(arg);
                     }
-                  }
+                  },ยกเลิก: function () {}
                 }  
             });          
         }
