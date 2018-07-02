@@ -43,11 +43,15 @@
     $(document).ready(function(){
       $('#datepicker-from').duDatepicker(({rangeTo: '#datepicker-to',format: 'dd/mm/yy', theme: 'red', cancelBtn: true,})).on('datechanged', function(e){
         console.log(e.date);
+        $("#date").text(e.date);
         $("#datepicker-to").trigger('click');
       });
 
       $('#datepicker-to').duDatepicker(({rangeFrom: '#datepicker-from', format: 'dd/mm/yy', theme: 'red', cancelBtn: true,})).on('datechanged', function(e){
         console.log(e.date);
+        $("#date-to").text(e.date);
+        $("#date_row").prop('hidden', false);
+        $("#search_row").prop('hidden', true);
       });
     });
     function show_search(){
@@ -66,11 +70,11 @@
 
   <!-- Nav menu top -->
   <div class="row fixed-top navs">
-    <div class="col-1 text-center" onclick="page_back()">
+    <div class="col-1 text-center" onclick="transition_page_back('index.html?menu=3')">
       <i id="i-back" class="fas fa-angle-left"></i>
     </div>
-    <div class="col-9 text-center" style="">
-      <h5 id="h5-title">รายการของเข้า</h5>
+    <div class="col-9 text-center" style="padding-left: 10%; margin-right: 3%;">
+      <h5 id="h5-title">รายการสินค้าเข้า</h5>
     </div>
     <div class="col-1 text-right" onclick="show_search();">
       <i class="fas fa-search" style="color: white; font-size: 120%; margin-top: 3px;"></i>
@@ -78,7 +82,17 @@
   </div><br>
 
   <!-- End big container -->
-  <div class="container justify-content-center" style="margin-top: 15%; margin-bottom: 25%;">
+  <div class="container justify-content-center" style="margin-top: 15%;">
+    <div id="date_row" class="row mg-5" style="margin-left: 5%;" hidden>
+      <div class="col-1"></div>
+      <div class="col-3 text-center">
+        <h5 id="date" style="color: #666;"></h5>
+      </div>
+      <div class="col-2 text-right" style="color: #666;"><h5>-</h5></div>
+      <div class="col-3 text-center">
+        <h5 id="date-to" style="color: #666;"></h5>
+      </div>
+    </div>
     <div id="search_row" class="row mg-10" hidden>
       <div class="col-9">
         <input id="search_prod" type="text" onkeyup="search()" class="form-control form-control-lg text-center" placeholder="เลขที่ / โกดัง">

@@ -36,26 +36,130 @@
   <style>
     hr{
       margin-top: 0;
-    }    
+    }  
+    ul {
+      list-style-type: none;
+      margin: 0;
+      padding: 0;
+    }      
   </style>
 
   <script>
     $(document).ready(function(){
       $('#datepicker-from').duDatepicker(({rangeTo: '#datepicker-to',format: 'dd/mm/yy', theme: 'red', cancelBtn: true,})).on('datechanged', function(e){
         console.log(e.date);
+        $("#date").text(e.date);
         $("#datepicker-to").trigger('click');
       });
 
       $('#datepicker-to').duDatepicker(({rangeFrom: '#datepicker-from', format: 'dd/mm/yy', theme: 'red', cancelBtn: true,})).on('datechanged', function(e){
         console.log(e.date);
+        $("#date-to").text(e.date);
+        $("#date_row").prop('hidden', false);
+        $("#search_row").prop('hidden', true);
+        search_date();
+      });
+
+      $.ajax({
+        type: "GET",
+        url:"http://migky.myqnapcloud.com:8083/dd-shop/php/get_bill.php",          
+        beforeSend: function(){
+            $(".overlay").prop('hidden', false);
+        },                       
+        success: function(data){ 
+          $(".overlay").prop('hidden', true);  
+          var obj = jQuery.parseJSON(data);
+          if(obj){                           
+            $.each(obj, function(i, field){
+              var txt = field.date_time.split(" ");
+              var txt2 = txt[0].split("-");
+              var date = txt2[2] + "/" + txt2[1] + "/" + txt2[0].substr(2);
+              $('#myUL').append('<li><div class="row" onclick="bill_info('+field.order_id+')">' +
+                  '<div class="col-4 text-center no-pd">' +
+                    '<p>'+field.order_number+'</p>' +
+                  '</div>' +
+                  '<div class="col-3 text-center no-pd">' +
+                    '<p>'+date+'</p>' +
+                  '</div>' +
+                  '<div class="col-5 text-center no-pd">' +
+                    '<p>'+field.cus_name+'</p>' +
+                  '</div>' +
+                '</div><hr></li>');                                       
+            });   
+          }                                
+        }               
       });
     });
+
+    function bill_info(arg){
+      transition_page_next('bill_info.html?id='+arg);
+    }
+
     function show_search(){
+      $("#myUL").prop('hidden', false);
+      $("#myD").prop('hidden', true);
       if($("#search_row").is(':visible')){
         $("#search_row").prop('hidden', true);
       }else{
         $("#search_row").prop('hidden', false);
+        $("#date_row").prop('hidden', true);
       }
+    }
+   
+    function search(){                      
+      $('#myUL li').each(function(){
+          $(this).attr('data-search-term', $(this).text().toLowerCase());
+      });      
+
+      var searchTerm = $('#search_bill').val().toLowerCase();    
+
+      $('#myUL li').each(function(){                 
+        if ($(this).filter('[data-search-term *= ' + searchTerm + ']').length > 0 || searchTerm.length < 1) {        
+            $(this).show();                                                     
+        } else {
+            $(this).hide();                               
+        }
+      });                  
+    }
+
+    function search_date(){
+      $("#myUL").prop('hidden', true);
+      $("#myD").prop('hidden', false);
+      var txt = $('#date').text().split("/");
+      var date = "20" + txt[2] + "-" + txt[1] + "-" + txt[0] + " 23:59:59";
+      var txt2 = $('#date-to').text();
+      var date_to = "20" + txt2[2] + "-" + txt2[1] + "-" + txt2[0] + " 23:59:59";      
+
+      $.ajax({
+        type: "POST",
+        url:"http://migky.myqnapcloud.com:8083/dd-shop/php/get_bill.php",         
+        data:{'date' : date, 'date_to' : date_to},
+        beforeSend: function(){
+          $(".overlay").prop('hidden', false);
+        },                       
+        success: function(data){ 
+          $(".overlay").prop('hidden', true);  
+          var obj = jQuery.parseJSON(data);
+          if(obj){                           
+            $.each(obj, function(i, field){
+              var txt = field.date_time.split(" ");
+              var txt2 = txt[0].split("-");
+              var date = txt2[2] + "/" + txt2[1] + "/" + txt2[0].substr(2);
+              $('#myD').append('<li><div class="row" onclick="bill_info('+field.order_id+')">' +
+                  '<div class="col-4 text-center no-pd">' +
+                    '<p>'+field.order_number+'</p>' +
+                  '</div>' +
+                  '<div class="col-3 text-center no-pd">' +
+                    '<p>'+date+'</p>' +
+                  '</div>' +
+                  '<div class="col-5 text-center no-pd">' +
+                    '<p>'+field.cus_name+'</p>' +
+                  '</div>' +
+                '</div><hr></li>');                                       
+            });   
+          }                                
+        }               
+      });            
     }
   </script>
 </head>
@@ -66,22 +170,32 @@
 
   <!-- Nav menu top -->
   <div class="row fixed-top navs">
-    <div class="col-1 text-center" onclick="page_back()">
+    <div class="col-1 text-center" onclick="transition_page_back('index.html?menu=3')">
       <i id="i-back" class="fas fa-angle-left"></i>
     </div>
-    <div class="col-8 text-center" style="padding-left: 15%; margin-right: 4%;">
+    <div class="col-9 text-center" style="padding-left: 10%; margin-right: 3%;">
       <h5 id="h5-title">รายการบิล</h5>
     </div>
-    <div class="col-2 text-right" onclick="show_search();">
+    <div class="col-1 text-right" onclick="show_search();">
       <i class="fas fa-search" style="color: white; font-size: 120%; margin-top: 3px;"></i>
     </div>
   </div><br>
 
   <!-- End big container -->
-  <div class="container justify-content-center" style="margin-top: 15%; margin-bottom: 25%;">
+  <div class="container justify-content-center" style="margin-top: 15%;">
+    <div id="date_row" class="row mg-5" style="margin-left: 5%;" hidden>
+      <div class="col-1"></div>
+      <div class="col-3 text-center">
+        <h5 id="date" style="color: #666;"></h5>
+      </div>
+      <div class="col-2 text-right" style="color: #666;"><h5>-</h5></div>
+      <div class="col-3 text-center">
+        <h5 id="date-to" style="color: #666;"></h5>
+      </div>
+    </div>
     <div id="search_row" class="row mg-10" hidden>
       <div class="col-9">
-        <input id="search_prod" type="text" onkeyup="search()" class="form-control form-control-lg text-center" placeholder="เลขที่ / ลูกค้า">
+        <input id="search_bill" type="text" onkeyup="search()" class="form-control form-control-lg text-center" placeholder="เลขที่ / ลูกค้า">
       </div> 
       <div class="col-3">
         <button id="datepicker-from" class="mbtn" style="height: 90%; margin-top: 2px;">
@@ -102,29 +216,13 @@
         <h5 id="title">ลูกค้า</h5>
       </div>
     </div>
-    <hr>
-    <div class="row" onclick="window.location = 'bill_info.html?id=1'">
-      <div class="col-4 text-center no-pd">
-        <p>S18-00001</p>
-      </div>
-      <div class="col-3 text-center no-pd">
-        <p>12/01/18</p>
-      </div>
-      <div class="col-5 text-center no-pd">
-        <p>นาย A เค้าห่อหมก</p>
-      </div>
-    </div><hr>
-    <div class="row" onclick="window.location = 'bill_info.html?id=1'">
-      <div class="col-4 text-center no-pd">
-        <p>S18-00001</p>
-      </div>
-      <div class="col-3 text-center no-pd">
-        <p>12/01/18</p>
-      </div>
-      <div class="col-5 text-center no-pd">
-        <p>นาย A เค้าห่อหมก</p>
-      </div>
-    </div>
+    <hr> 
+    <ul id="myUL">
+
+    </ul>  
+    <ul id="myD">
+
+    </ul>        
   <!-- End big container -->
 
   <!-- Nav menu bottom -->

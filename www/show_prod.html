@@ -58,8 +58,9 @@
                     $.each(obj, function(i, field){
                         //$('#name').val(obj[i].prod_name);
                         $('#name').text(obj[i].prod_name);
-                        $('#barcode').val(obj[i].prod_code); 
-                        $('#img').attr('src',obj[i].img);                      
+                        $('#barcode').val(obj[i].prod_code);
+                        $('#img').attr('src',obj[i].img);
+                        $('#min').val(obj[i].min_amount);
                         if(obj[i].prod_cost == 0 && obj[i].prod_price == 0 && obj[i].prod_pricesend == 0){
                             $('#cost').val("");
                             $('#wholesale').val("");
@@ -112,11 +113,11 @@
             </div>
             <div class="col-4 text-center">
                 <label for="cost" style="font-size: 110%;">ทุน</label>
-                <input id="cost" type="number" class="w3-input">
+                <input readonly id="cost" type="number" class="w3-input">
             </div>
             <div class="col-3 text-center">
                 <label for="min">ขั้นต่ำ</label>
-                <input id="min" type="text" class="w3-input">
+                <input readonly id="min" type="text" class="w3-input">
             </div>
         </div>
        <div class="row mg-15">

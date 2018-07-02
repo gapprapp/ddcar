@@ -25,8 +25,8 @@
     <link href="https://fonts.googleapis.com/css?family=Prompt" rel="stylesheet">
 
     <style>
-        #title {
-            color: #666666;
+        .title {
+            color: #515151;
             letter-spacing: 2px;
         }
         .no-pd{
@@ -62,10 +62,11 @@
                     $(".overlay").prop('hidden', true);
                     var obj = jQuery.parseJSON(data);                                         
                     $.each(obj, function(i, field){
-                        $('#name').val(obj[i].prod_name);
+                        $('#name').val(obj[i].prod_name);                        
                         $('#barcode').val(obj[i].prod_code);
-                        img_o = obj[i].img; 
-                        $('#img').attr('src',img_o);                      
+                        img_o = obj[i].img;
+                        $('#img').attr('src',img_o);
+                        $('#min').val(obj[i].min_amount);
                         if(obj[i].prod_cost == 0 && obj[i].prod_price == 0 && obj[i].prod_pricesend == 0){
                             $('#cost').val("");
                             $('#wholesale').val("");
@@ -174,9 +175,11 @@
             var code = $('#barcode').val();
             var cost = $('#cost').val();
             var price_s =$('#wholesale').val();
-            var price_w =$('#retail').val(); 
-            var name =$('#name').val();              
-            if(name == "" || code == ""){      
+            var price_w =$('#retail').val();
+            var name =$('#name').val();
+            var min = $('#min').val();  
+
+            if(name == "" || code == "" || min == ""){      
                 $.confirm({
                   title: 'พบข้อผิดพลาด',
                   content: 'กรุณากรอกข้อมูลให้ครบ',
@@ -206,7 +209,8 @@
                     'cost' : cost,
                     'price_w' : price_w,
                     'price_s' : price_s,
-                    'img' : fileURL},               
+                    'img' : fileURL,
+                    'min' : min},               
                 beforeSend: function(){
                     $(".overlay").prop('hidden', false);
                 },             
@@ -256,7 +260,7 @@
     </script>
 </head>
 
-<body>
+<body style="overflow-y: auto;">
     <!-- Loading -->
     <div class="overlay" hidden><div class="loading"></div></div>
 
@@ -272,37 +276,45 @@
     <br>
 
     <!-- big container -->
-    <div id="big-ctn" class="container justify-content-center" style="margin-top: 15%;">
-        <div class="row mg-10">
+    <div id="big-ctn" class="container justify-content-center" style="margin-top: 12%;">
+        <div class="row mg-5">
+          <div class="col-12 text-center">
+            <!--<h5 id="name" class="title">ชื่อสินค้า</h5>-->
+            <input id="name" type="text" class="w3-input">
+          </div>
+        </div>
+        <div class="row mg-7">
             <div class="col-5 text-center">
                 <label for="barcode">รหัส</label>
                 <input id="barcode" type="text" class="w3-input">
             </div>
-            <div class="col-7 text-center">
-                <label for="name">ชื่อสินค้า</label>
-                <input id="name" type="text" class="w3-input">
-            </div>
-        </div>
-        <div class="row mg-10">
             <div class="col-4 text-center">
                 <label for="cost" style="font-size: 110%;">ทุน</label>
                 <input id="cost" type="number" class="w3-input">
             </div>
-            <div class="col-4 text-center">
+            <div class="col-3 text-center">
+                <label for="min">ขั้นต่ำ</label>
+                <input id="min" type="text" class="w3-input">
+            </div>
+        </div>
+        <div class="row mg-7">
+            <div class="col-1"> </div>
+            <div class="col-5 text-center">
                 <label for="wholesale" style="font-size: 110%;">ขายส่ง</label>
                 <input id="wholesale" type="number" class="w3-input">
             </div>
-            <div class="col-4 text-center">
+            <div class="col-5 text-center">
                 <label for="retail" style="font-size: 110%;">ขายปลีก</label>
                 <input id="retail" type="number" class="w3-input">
             </div>
+            <div class="col-1"> </div>
         </div>
-        <div id="row-img" class="row mg-10">
+        <div id="row-img" class="row mg-7">
             <div class="col-12 text-center">
              <img id='img' alt="" src="https://www.bzh.be/img.php?src=https://www.sortir-en-bretagne.fr/images/no-image.png&w=330&h=200&zc=1">
             </div>
         </div>
-        <div class="row mg-10">
+        <div class="row mg-7">
           <div class="col-12 text-center">
             <button id="btn-addpic" class="mbtn-green" onclick="addpic();">เพิ่มรูปภาพ</button>
           </div>

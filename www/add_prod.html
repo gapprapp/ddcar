@@ -165,9 +165,10 @@
 
     function add_prod(){
       var name = $('#name').val();
-      var code = $('#barcode').val();      
+      var code = $('#barcode').val();
+      var min = $('#min').val();
               
-      if(name == "" || code == ""){
+      if(name == "" || code == "" || min == ""){
         $.confirm({
           title: 'พบข้อผิดพลาด',
           content: 'กรุณากรอกข้อมูลให้ครบ',
@@ -193,7 +194,8 @@
         data: {'name_prod' : name,
               'code' : code,
               'parent' : folder,
-              'img' : fileURL},               
+              'img' : fileURL,
+              'min' : min},               
           beforeSend: function(){
             $(".overlay").prop('hidden', false);
           },             

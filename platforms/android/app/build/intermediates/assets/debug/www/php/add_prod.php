@@ -4,9 +4,10 @@
     $code  = $_POST['code'];   
     $parent  = $_POST['parent'];
     $img  = $_POST['img'];
+    $min = $_POST['min'];
 
     mysqli_begin_transaction($conn);    
-    $sql = "INSERT INTO product(prod_name,prod_code,img) VALUE ('$name','$code','$img')";
+    $sql = "INSERT INTO product(prod_name,prod_code,img,min_amount) VALUE ('$name','$code','$img','$min')";
     $result = mysqli_query($conn, $sql);    
     $title = mysqli_insert_id($conn);
     if(!$result){
