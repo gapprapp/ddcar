@@ -36,6 +36,11 @@
   <style>
     hr{
       margin-top: 0;
+    }  
+    ul {
+      list-style-type: none;
+      margin: 0;
+      padding: 0;
     }    
   </style>
 
@@ -52,15 +57,111 @@
         $("#date-to").text(e.date);
         $("#date_row").prop('hidden', false);
         $("#search_row").prop('hidden', true);
+        search_date();
+      });
+
+      $.ajax({
+        type: "GET",
+        url:"http://migky.myqnapcloud.com:8083/dd-shop/php/get_import.php",          
+        beforeSend: function(){
+            $(".overlay").prop('hidden', false);
+        },                       
+        success: function(data){ 
+          $(".overlay").prop('hidden', true);  
+          var obj = jQuery.parseJSON(data);
+          if(obj){                           
+            $.each(obj, function(i, field){
+              var txt = field.date_time.split(" ");
+              var txt2 = txt[0].split("-");
+              var date = txt2[2] + "/" + txt2[1] + "/" + txt2[0].substr(2);
+              $('#myUL').append('<li> <div class="row" onclick="import_info('+field.stock_id+')">'+
+                '<div class="col-4 text-center no-pd">' +
+                  '<p>'+field.stock_number+'</p>' +
+                '</div>' +
+                '<div class="col-3 text-center no-pd">' +
+                  '<p>'+date+'</p>' +
+                '</div>' +
+                '<div class="col-5 text-center no-pd">' +
+                  '<p>'+field.ware_name+'</p>' +
+                '</div>' +
+              '</div><hr></li>');                                       
+            });   
+          }                                
+        }               
       });
     });
+
+    function import_info(arg){
+      transition_page_next('import_info.html?id='+arg);
+    }
+
     function show_search(){
+      $("#myUL").prop('hidden', false);
+      $("#myD").prop('hidden', true);
       if($("#search_row").is(':visible')){
         $("#search_row").prop('hidden', true);
       }else{
         $("#search_row").prop('hidden', false);
+        $("#date_row").prop('hidden', true);
       }
     }
+
+    function search(){                      
+      $('#myUL li').each(function(){
+          $(this).attr('data-search-term', $(this).text().toLowerCase());
+      });      
+
+      var searchTerm = $('#search_import').val().toLowerCase();    
+
+      $('#myUL li').each(function(){                 
+        if ($(this).filter('[data-search-term *= ' + searchTerm + ']').length > 0 || searchTerm.length < 1) {        
+            $(this).show();                                                     
+        } else {
+            $(this).hide();                               
+        }
+      });                  
+    }
+
+    function search_date(){
+      $("#myUL").prop('hidden', true);
+      $("#myD").prop('hidden', false);
+      var txt = $('#date').text().split("/");
+      var date = "20" + txt[2] + "-" + txt[1] + "-" + txt[0] + " 23:59:59";
+      var txt2 = $('#date-to').text();
+      var date_to = "20" + txt2[2] + "-" + txt2[1] + "-" + txt2[0] + " 23:59:59";      
+
+      $.ajax({
+        type: "POST",
+        url:"http://migky.myqnapcloud.com:8083/dd-shop/php/get_import.php",         
+        data:{'date' : date, 'date_to' : date_to},
+        beforeSend: function(){
+          $(".overlay").prop('hidden', false);
+        },                       
+        success: function(data){ 
+          $(".overlay").prop('hidden', true);  
+          var obj = jQuery.parseJSON(data);
+          if(obj){                           
+            $.each(obj, function(i, field){
+              var txt = field.date_time.split(" ");
+              var txt2 = txt[0].split("-");
+              var date = txt2[2] + "/" + txt2[1] + "/" + txt2[0].substr(2);
+              $('#myD').append('<li> <div class="row" onclick="import_info('+field.stock_id+')">'+
+                '<div class="col-4 text-center no-pd">' +
+                  '<p>'+field.stock_number+'</p>' +
+                '</div>' +
+                '<div class="col-3 text-center no-pd">' +
+                  '<p>'+date+'</p>' +
+                '</div>' +
+                '<div class="col-5 text-center no-pd">' +
+                  '<p>'+field.ware_name+'</p>' +
+                '</div>' +
+              '</div><hr></li>');                                       
+            });   
+          }                                
+        }               
+      });            
+    }
+
   </script>
 </head>
 
@@ -95,7 +196,7 @@
     </div>
     <div id="search_row" class="row mg-10" hidden>
       <div class="col-9">
-        <input id="search_prod" type="text" onkeyup="search()" class="form-control form-control-lg text-center" placeholder="เลขที่ / โกดัง">
+        <input id="search_import" type="text" onkeyup="search()" class="form-control form-control-lg text-center" placeholder="เลขที่ / โกดัง">
       </div> 
       <div class="col-3">
         <button id="datepicker-from" class="mbtn" style="height: 90%; margin-top: 2px;">
@@ -116,29 +217,14 @@
         <h5 id="title">โกดัง</h5>
       </div>
     </div>
-    <hr>
-    <div class="row" onclick="window.location = 'import_info.html?id=1'">
-      <div class="col-4 text-center no-pd">
-        <p>S18-00001</p>
-      </div>
-      <div class="col-3 text-center no-pd">
-        <p>12/01/18</p>
-      </div>
-      <div class="col-5 text-center no-pd">
-        <p>โกดัง A1</p>
-      </div>
-    </div><hr>
-    <div class="row" onclick="window.location = 'import_info.html?id=1'">
-      <div class="col-4 text-center no-pd">
-        <p>S18-00001</p>
-      </div>
-      <div class="col-3 text-center no-pd">
-        <p>12/01/18</p>
-      </div>
-      <div class="col-5 text-center no-pd">
-        <p>โกดัง ฺ4</p>
-      </div>
-    </div>
+    <hr> 
+    <ul id="myUL">
+
+    </ul>  
+    <ul id="myD">
+
+    </ul>     
+  
   <!-- End big container -->
 
   <!-- Nav menu bottom -->

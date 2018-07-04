@@ -51,7 +51,7 @@
   </style>
 
   <script>
-    var bill_id,pay,dis,get;
+    var bill_id,pay,dis,get,ware_id_o,type_o;
     arr = [];
     $(document).ready(function(){
       url = new URL(window.location.href);
@@ -68,6 +68,11 @@
           $(".overlay").prop('hidden', true);
           var obj = jQuery.parseJSON(data); 
           $('#h5-title').text(obj[0].order_number);
+          if(obj[0].type == "โกดัง"){
+            $('#warehouse').text(obj[0][16].ware_name);           
+          }else if(obj[0].type == "หน้าร้าน"){
+            $('#warehouse').text(obj[0][16].shop_name);           
+          }          
           $('#cus').text(obj[0].cus_name);
           $('#type').text(obj[0].payment_type);
           var txt = obj[0].date_time.split(" ");
@@ -79,6 +84,10 @@
           $('#total').text(obj[0].total_price);
           $('#get').text(obj[0].get_price);
           $('#chng').text(obj[0].chng);
+          type_o = obj[0].type;
+          type = obj[0].type;
+          ware_id_o = obj[0].branch_id;
+          ware_id = obj[0].branch_id;
           pay = obj[0].payment_type;
           dis = obj[0].total_discount;
           get = obj[0].get_price;
@@ -134,6 +143,8 @@
               $("#discount").removeClass('underline');
               $("#type").removeClass('underline');
               $("#get").removeClass('underline');
+              $("#warehouse").removeClass('underline');
+              $("#warehouse").attr('onclick', '');
               $("#discount").attr('onclick', '');
               $("#type").attr('onclick', '');
               $("#get").attr('onclick', '');
@@ -146,6 +157,8 @@
               $("#discount").addClass('underline');
               $("#get").addClass('underline');
               $("#type").addClass('underline');
+              $("#warehouse").addClass('underline');           
+              $("#warehouse").attr('onclick', 'edit_warehouse()');    
               $("#discount").attr('onclick', 'edit_discount()');
               $("#type").attr('onclick', 'edit_type()');
               $("#get").attr('onclick', 'edit_get()');
@@ -168,7 +181,7 @@
                       $.ajax({
                         type: "POST",
                         url:"http://migky.myqnapcloud.com:8083/dd-shop/php/delete_bill.php",         
-                        data:{'bill_id' : bill_id},
+                        data:{'bill_id' : bill_id,'b_id' : ware_id_o,'type' : type_o},
                         beforeSend: function(){
                           $(".overlay").prop('hidden', false);
                         },                       
@@ -178,17 +191,17 @@
                             transition_page_back('manage_bill.html');
                           }else{
                             $.confirm({
-                                title: 'พบข้อผิดพลาด',
-                                content: 'ลองอีกครั้ง',
-                                backgroundDismiss: true,
-                                buttons: {
-                                    formSubmit: {
-                                    text: 'ตกลง',
-                                    btnClass: 'btn-regis',
-                                    action: function () {
-                                    }
-                                    }
+                              title: 'พบข้อผิดพลาด',
+                              content: 'ลองอีกครั้ง',
+                              backgroundDismiss: true,
+                              buttons: {
+                                formSubmit: {
+                                text: 'ตกลง',
+                                btnClass: 'btn-regis',
+                                action: function () {
                                 }
+                                }
+                              }
                             });
                           }                         
                         }               
@@ -356,22 +369,81 @@
       });
     }
 
+    function edit_warehouse(){
+      $("style").append('.jconfirm .jconfirm-box{max-height: 420px;}');
+        $.confirm({
+          title: 'หน้าร้าน/โกดัง',
+          content: '<hr style="width: 80%; margin-bottom: 0;">',
+          backgroundDismiss: true,
+          onOpenBefore: function () {
+            $(".jconfirm-buttons .btn-default").remove();
+            //ajax and apeend
+            $.ajax({
+              type: "GET",
+              url:"http://migky.myqnapcloud.com:8083/dd-shop/php/get_ware_shop.php",     
+              beforeSend: function(){
+                  $(".overlay").prop('hidden', false);
+              },                        
+              success: function(data){
+              $(".overlay").prop('hidden', true);  
+                  var obj = jQuery.parseJSON(data);
+                  if(obj){
+                      $.each(obj, function(i, field){   
+                          if(obj[i][2] == "โกดัง"){  
+                              $(".jconfirm-buttons").append('<button id="li-ware-'+i+'" type="button" onclick="setware('+i+')" class="btn btn-choice">'+obj[i].ware_name+'</button>' +
+                              '<span id="id-ware-'+i+'" hidden>'+obj[i].ware_id+'</span>' +
+                              '<span id="type-'+i+'" hidden>โกดัง</span>');                       
+                          }else if(obj[i][2] == "หน้าร้าน"){ 
+                              $(".jconfirm-buttons").append('<button id="li-ware-'+i+'" type="button" onclick="setware('+i+')" class="btn btn-choice">'+obj[i].shop_name+'</button>' +
+                              '<span id="id-ware-'+i+'" hidden>'+obj[i].shop_id+'</span>' +
+                              '<span id="type-'+i+'" hidden>หน้าร้าน</span>');
+                          }                    
+                      });   
+                  }else{
+                      $(".jconfirm-buttons").append("กรุณาเพิ่มหน้าร้าน/โกดังก่อนทำรายการ");     
+                  }                                                      
+              }               
+            });                    
+          },
+          onDestroy: function () {
+            $("style").append('.jconfirm .jconfirm-box{margin-bottom: 5%;}');
+            $("style").append('.jconfirm .jconfirm-box{max-height: 100%;}');
+          }             
+        });
+    }
+
+    var ware_id,type;
+    function setware(arg) {            
+      ware = $("#li-ware-" + arg).text();
+      type = $("#type-" + arg).text();
+      $("#warehouse").text(ware);
+      ware_id = $("#id-ware-" + arg).text();  
+      document.elementFromPoint(0, 0).click();        
+    }
+
     function save(){
       arr_data = [];
       var f = false;
-      if(pay == $('#type').text() && dis == $('#discount').text() && get == $('#get').text()){
+      if(pay == $('#type').text() && dis == $('#discount').text() && get == $('#get').text() && 
+      ware_id == ware_id_o && type == type_o){
         f = true;       
       }
       var ch = 0;
       for(var i = 0;i < arr.length;i++){       
         if($("#amt-"+(i+1)).text() == arr[i]){
           ch++;
+          item = {}            
+          item ["item_id"] = i+1;
+          item ["amt"] =  $("#amt-"+(i+1)).text();
+          item ["ch"] = 0;
+          arr_data.push(item);
         }else{
           item = {}            
           item ["item_id"] = i+1;
           item ["amt"] =  $("#amt-"+(i+1)).text();
-          arr_data.push(item); 
-        }         
+          item ["ch"] = 1;
+          arr_data.push(item);
+        }        
       }        
       if(ch == arr.length && f){
         return 0;
@@ -394,7 +466,8 @@
       }
       var json_string = JSON.stringify(arr_data); 
       var dataString =  "JSON=" + json_string + "&bill_id=" + bill_id + "&pay=" + $('#type').text() + "&sum=" + $('#sum').text()
-      + "&dis=" + $('#discount').text() + "&total=" + $('#total').text() + "&get=" + $('#get').text() + "&chng=" + $('#chng').text();
+      + "&dis=" + $('#discount').text() + "&total=" + $('#total').text() + "&get=" + $('#get').text() + "&chng=" + $('#chng').text()
+      + "&b_id=" + ware_id + "&type=" + type;
       //alert(dataString);
       $.ajax({
         type: "POST",
@@ -448,6 +521,9 @@
 
   <!-- End big container -->
   <div class="container justify-content-center" style="margin-top: 15%;">
+    <div class="row">
+      <div class="col-12 text-center pdl pdr"><h5 id="warehouse">โกดัง A</h5></div>
+    </div>
   	<div class="row">
       <div class="col-8 text-center pdl pdr"><h5 id="cus">สมพงศ์ สะอาด</h5></div>
       <div><span id="type" onclick="edit_type();">(เครดิต 30)</span></div>

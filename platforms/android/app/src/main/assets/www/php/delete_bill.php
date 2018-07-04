@@ -1,16 +1,9 @@
 <?php  
     include "db.php"; 
     $bill_id  = $_POST['bill_id'];
-    $txt = "(cancel)";
-
-    $query = "SELECT branch_id,type FROM sale_order WHERE order_id = '$bill_id'";  
-    $result = mysqli_query($conn, $query);
-    if(mysqli_num_rows($result) > 0){    
-        while($row = mysqli_fetch_array($result)){
-            $branch_id = $row['branch_id'];
-            $type = $row['type'];
-        }   
-    } 
+    $branch_id  = $_POST['b_id'];
+    $type  = $_POST['type'];
+    $txt = "(cancel)";  
 
     mysqli_begin_transaction($conn);
     $query = "SELECT prod_amount,prod_id FROM sale_order_item WHERE order_id = '$bill_id'";  
