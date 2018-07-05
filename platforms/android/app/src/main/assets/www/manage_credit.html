@@ -56,23 +56,104 @@
       padding-right: 0;
       padding-left: 0;
     } 
+    ul {
+      list-style-type: none;
+      margin: 0;
+      padding: 0;
+    }    
   </style>
 
   <script>
     $(document).ready(function(){
-      $('#datepicker-from').duDatepicker(({rangeTo: '#datepicker-to',format: 'dd/mm/yy', theme: 'red', cancelBtn: true,})).on('datechanged', function(e){
-        console.log(e.date);
-        $("#date").text(e.date);
-        $("#datepicker-to").trigger('click');
-      });
+      $.ajax({
+        type: "GET",
+        url:"http://migky.myqnapcloud.com:8083/dd-shop/php/get_credit.php",          
+        beforeSend: function(){
+            $(".overlay").prop('hidden', false);
+        },                       
+        success: function(data){ 
+          $(".overlay").prop('hidden', true);  
+          var obj = jQuery.parseJSON(data);
+          if(obj){
+            arr = [];
+            var d = new Date($.now());                                         
+            $.each(obj, function(i, field){
+              var txt = field.date_time.split(" ");
+              var date = txt[0].split("-");                       
 
-      $('#datepicker-to').duDatepicker(({rangeFrom: '#datepicker-from', format: 'dd/mm/yy', theme: 'red', cancelBtn: true,})).on('datechanged', function(e){
-        console.log(e.date);
-        $("#date-to").text(e.date);
-        $("#date_row").prop('hidden', false);
-        $("#search_row").prop('hidden', true);
+              var cus = field.cus_name;
+              var pay = field.payment_type;
+              var total = field.total_price;
+              var id = field.order_id;
+              var cd = 0;
+              if(pay == "เครดิต (30)"){
+                var last_d = new Date(date[0],date[1], 0);
+                var day = d.getDate();
+                cd = last_d.getDate() - day;
+              }else if(pay == "เครดิต (60)"){
+                var month = (d.getMonth()+1);                            
+                var day1 = new Date(date[0],date[1], 0);
+                var day2 = new Date(date[0],parseInt(date[1])+1, 0);
+                var last_d = (day1.getDate()+day2.getDate());
+                var day = d.getDate();
+                if(month - date[1] == 1){
+                  cd = last_d - (day+day1.getDate());          
+                }else if(month - date[1] == 0){
+                  cd = last_d - day;
+                }             
+              }else if(pay == "เครดิต (90)"){
+                var month = (d.getMonth()+1);               
+                var day1 = new Date(date[0],date[1], 0);               
+                var day2 = new Date(date[0],parseInt(date[1])+1, 0);              
+                var day3 = new Date(date[0],parseInt(date[1])+2, 0);
+                var last_d = (day1.getDate()+day2.getDate()+day3.getDate());
+                var day = d.getDate();                
+                if(month - date[1] == 2){                  
+                  cd = last_d - (day+day1.getDate()+day2.getDate());                 
+                }else if(month - date[1] == 1){
+                  cd = last_d - (day+day1.getDate());                 
+                }else if(month - date[1] == 0){
+                  cd = last_d - day;
+                }            
+              }
+              item = {}
+              item ["order_id"] = id;
+              item ["cus"] =  cus;
+              item ["pay"] = pay;
+              item ["total"] = total;
+              item ["cd"] = cd;
+              if(i == 0){                
+                arr.push(item);
+              }else{
+                var bool = false;
+                for(var j = 0; j < arr.length ;j++){
+                  if(cus == arr[j].cus && pay == arr[j].pay){
+                    bool = true;
+                    arr[j].order_id += "/" + id;
+                    arr[j].total = parseFloat(arr[j].total) + parseFloat(total);
+                    break;
+                  }
+                }                 
+                if(!bool){
+                  arr.push(item);
+                }
+              }                              
+            });
+            for(var k = 0; k < arr.length;k++){
+              var p = arr[k].pay.split(" ");
+              //var p2 = p[1].substr(1,2);
+              $('#myUL').append('<li><div class="row" onclick="bill_all(\''+arr[k].order_id+'\')">'+
+              '<div class="col-5 text-center nopd">'+arr[k].cus+'</div>'+
+              '<div class="col-2 text-center nopd">'+p[1]+'</div>'+
+              '<div class="col-2 text-center nopd">'+arr[k].cd+' วัน</div>'+
+              '<div class="col-3 text-center nopd">'+arr[k].total+'</div>'+
+              '</div><hr></li>');   
+            }           
+          }                                
+        }               
       });
     });
+
     function show_search(){
       if($("#search_row").is(':visible')){
         $("#search_row").prop('hidden', true);
@@ -80,6 +161,22 @@
         $("#search_row").prop('hidden', false);
       }
     }
+
+    function search(arg){
+      $('#myUL li').each(function(){       
+        $(this).attr('data-search-term', $(this).text());
+      });
+      var searchTerm = arg;      
+
+      $('#myUL li').each(function(){           
+        if ($(this).filter('[data-search-term *= ' + searchTerm + ']').length > 0 || searchTerm == -1) {        
+          $(this).show();                                                     
+        } else {
+          $(this).hide();                               
+        }
+      });                  
+    }
+
   </script>
 </head>
 
@@ -113,14 +210,17 @@
       </div>
     </div>
     <div id="search_row" class="row mg-10" hidden>
-      <div class="col-4 text-center">
-        <button id="search-30" class="mbtn-credit">30</button>
+      <div class="col-3 text-center">
+        <button id="search-30" class="mbtn-credit" onclick="search('(30)')">30</button>
       </div> 
-      <div class="col-4 text-center">
-        <button id="search-60" class="mbtn-credit">60</button>
+      <div class="col-3 text-center">
+        <button id="search-60" class="mbtn-credit" onclick="search('(60)')">60</button>
       </div> 
-      <div class="col-4 text-center">
-        <button id="search-90" class="mbtn-credit">90</button>
+      <div class="col-3 text-center">
+        <button id="search-90" class="mbtn-credit" onclick="search('(90)')">90</button>
+      </div> 
+      <div class="col-3 text-center">
+        <button class="mbtn-credit" onclick="search(-1)">All</button>
       </div> 
     </div>
 
@@ -139,18 +239,9 @@
       </div>
     </div>
     <hr>
-    <div class="row" onclick="window.location = 'bill_info.html?id=1'">
-      <div class="col-5 text-center nopd">ลูกค้า A</div>
-      <div class="col-2 text-center nopd">30</div>
-      <div class="col-2 text-center nopd">5 วัน</div>
-      <div class="col-3 text-center nopd">50,000</div>
-    </div><hr>
-    <div class="row" onclick="window.location = 'bill_info.html?id=1'">
-      <div class="col-5 text-center nopd">ลูกค้า A</div>
-      <div class="col-2 text-center nopd">30</div>
-      <div class="col-2 text-center nopd">15 วัน</div>
-      <div class="col-3 text-center nopd">50,000</div>
-    </div>
+    <ul id="myUL">
+
+    </ul>   
   <!-- End big container -->
 
   <!-- Nav menu bottom -->

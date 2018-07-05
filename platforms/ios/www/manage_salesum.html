@@ -36,7 +36,12 @@
   <style>
     hr{
       margin-top: 0;
-    }    
+    } 
+    ul {
+      list-style-type: none;
+      margin: 0;
+      padding: 0;
+    }       
   </style>
 
   <script>
@@ -46,20 +51,64 @@
         $("#date").text(e.date);
         $("#search_row").prop('hidden', true);
         $("#date_row").prop('hidden', false);
+        var txt = e.date.split("/");
+        var date = "20" + txt[2] + "-" + txt[1] + "-" + txt[0];
+        search_date(date);
       });
 
       margin = $("#navs-menu").outerHeight()*2;
       $("#ctn-btm").css('padding-bottom', margin);
       margin = $("#ctn-btm").outerHeight();
-      $("#big-ctn").css('margin-bottom', margin); 
+      $("#big-ctn").css('margin-bottom', margin);
+
+      var d = new Date($.now());
+      var datetime = d.getFullYear() + "-" + (d.getMonth()+1) + "-" + d.getDate(); 
+      search_date(datetime);
     });
+
+    function search_date(datetime){
+      $('#myUL').empty();
+      $.ajax({
+        type: "POST",
+        url:"http://migky.myqnapcloud.com:8083/dd-shop/php/get_shift_bill.php",
+        data:{'date':datetime},
+        beforeSend: function(){
+            $(".overlay").prop('hidden', false);
+        },                       
+        success: function(data){ 
+          $(".overlay").prop('hidden', true);  
+          var obj = jQuery.parseJSON(data);
+          if(obj){
+            var net = 0;                           
+            $.each(obj, function(i, field){             
+              $('#myUL').append('<li><div class="row">'+
+                '<div class="col-4 text-center no-pd">'+
+                  '<p>'+field.order_number+'</p>'+
+                '</div>'+
+                '<div class="col-5 text-center no-pd">'+
+                  '<p>'+field.user_name+'</p>'+
+                '</div>'+
+                '<div class="col-3 text-center no-pd">'+
+                  '<p>'+field.total_price+'</p>'+
+                '</div>'+
+                '</div></li>');
+                net += parseFloat(field.total_price);
+            }); 
+            $('#net').text(net);  
+          }                                
+        }               
+      });
+    }
+
     function show_search(){
       if($("#search_row").is(':visible')){
         $("#search_row").prop('hidden', true);
       }else{
         $("#search_row").prop('hidden', false);
+        $("#date_row").prop('hidden', true);
       }
     }
+
   </script>
 </head>
 
@@ -88,9 +137,9 @@
       </div>
     </div>
     <div id="search_row" class="row mg-10" hidden>
-      <div class="col-9">
+      <!--<div class="col-9">
         <input id="search_prod" type="text" onkeyup="search()" class="form-control form-control-lg text-center" placeholder="เลขที่ / ลูกค้า">
-      </div> 
+      </div>-->
       <div class="col-3">
         <button id="datepicker-from" class="mbtn" style="height: 90%; margin-top: 2px;">
           <i class="far fa-calendar-alt"></i>
@@ -111,28 +160,9 @@
       </div>
     </div>
     <hr>
-    <div class="row">
-      <div class="col-4 text-center no-pd">
-        <p>S18-00001</p>
-      </div>
-      <div class="col-5 text-center no-pd">
-        <p>สมปองน้องสมชาย</p>
-      </div>
-      <div class="col-3 text-center no-pd">
-        <p>100,000</p>
-      </div>
-    </div><hr>
-    <div class="row">
-      <div class="col-4 text-center no-pd">
-        <p>S18-00001</p>
-      </div>
-      <div class="col-5 text-center no-pd">
-        <p>สมชายพี่สมปอง</p>
-      </div>
-      <div class="col-3 text-center no-pd">
-        <p>55000</p>
-      </div>
-    </div>
+    <ul id="myUL">
+
+    </ul>   
   <!-- End big container -->
 
   <div id="ctn-btm" class="container fixed-bottom" style="background: #f3f3f3;">
