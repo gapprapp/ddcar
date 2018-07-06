@@ -83,7 +83,8 @@
             var d = new Date($.now());          
             var datetime = d.getFullYear() + "-" + (d.getMonth()+1) + "-" + d.getDate() + " " + d.getHours() + ":" + d.getMinutes() + ":" + d.getSeconds(); 
             json_string = JSON.stringify(arr_data); 
-            var dataString =  "JSON=" + json_string + "&shop_id=" + localStorage.shop_id + "&date=" + datetime;                                    
+            var dataString =  "JSON=" + json_string + "&shop_id=" + localStorage.shop_id + "&date=" + datetime
+            + "&user_id=" + localStorage.user_id;
                       
             $.ajax({
                 type: "POST",

@@ -69,9 +69,9 @@
           var obj = jQuery.parseJSON(data); 
           $('#h5-title').text(obj[0].order_number);
           if(obj[0].type == "โกดัง"){
-            $('#warehouse').text(obj[0][16].ware_name);           
+            $('#warehouse').text(obj[0][17].ware_name);           
           }else if(obj[0].type == "หน้าร้าน"){
-            $('#warehouse').text(obj[0][16].shop_name);           
+            $('#warehouse').text(obj[0][17].shop_name);           
           }          
           $('#cus').text(obj[0].cus_name);
           $('#type').text(obj[0].payment_type);
@@ -84,6 +84,7 @@
           $('#total').text(obj[0].total_price);
           $('#get').text(obj[0].get_price);
           $('#chng').text(obj[0].chng);
+          $('#user').text("ผู้ทำรายการ: " + obj[0].user_name);
           type_o = obj[0].type;
           type = obj[0].type;
           ware_id_o = obj[0].branch_id;
@@ -561,7 +562,7 @@
     		</div>
     		<div class="row" style="margin-top: 10%;">
     			<div class="col-12 text-center">
-    				<h5>ชื่อผู้บันทึก</h5>
+    				<h5 id="user">ชื่อผู้บันทึก</h5>
     			</div>
     		</div>
     	</div>

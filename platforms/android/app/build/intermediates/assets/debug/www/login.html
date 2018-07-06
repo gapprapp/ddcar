@@ -11,15 +11,15 @@
     <script type="text/javascript" src="js/jquery-ui.min.js"></script>
     <script type="text/javascript" src="js/jquery.easing.1.3.min.js"></script>
     <script type="text/javascript" src="js/transition.js"></script>
+    <script type="text/javascript" src="js/jquery-confirm.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.6/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
     <script defer src="https://use.fontawesome.com/releases/v5.0.8/js/all.js"></script>
-    <script src="cordova.js"></script>
-
-    <script type="text/javascript" src="js/jquery.md5.min.js"></script>
-    <script type="text/javascript" src="js/jquery.alphanumeric.js"></script>
+    <script src="cordova.js"></script>  
 
     <link rel="stylesheet" href="css/index.css">
+    <link rel="stylesheet" href="css/jquery-confirm.css">
+    <link rel="stylesheet" href="css/loading.css">
 
     <!-- Font -->
     <link href="https://fonts.googleapis.com/css?family=Prompt" rel="stylesheet">
@@ -32,41 +32,67 @@
     </style>
 
     <script>
-        $(document).ready(function () {
-            $('#phone').numeric();
-        });
+        $(document).ready(function () {            
+            
+        });  
 
-        function disactive(arg) {
-            nav_menu = ['home', 'bell', 'qrcode', 'bars'];
-            for (i = 0; i < 4; i++) {
-                if (nav_menu[i] != arg) {
-                    if ($("#i-" + nav_menu[i]).hasClass('active')) $("#i-" + nav_menu[i]).removeClass('active');
-                }
-            }
+        function login(){
+            var name = $('#name').val();
+            var pass = $('#pass').val();
+            if(name && pass){
+                $.ajax({
+                    type: "POST",
+                    url: "http://migky.myqnapcloud.com:8083/dd-shop/php/login.php",
+                    data: {'name': name,
+                        'pass' : pass},    
+                    beforeSend: function(){
+                        $(".overlay").prop('hidden', false);
+                    },                         
+                    success: function(data){
+                    $(".overlay").prop('hidden', true);
+                    if(data == "fail"){
+                        $.confirm({
+                            title: 'พบข้อผิดพลาด',
+                            content: 'ชื่อหรือรหัสผ่านไม่ถูกต้อง',
+                            backgroundDismiss: true,
+                            buttons: {
+                                formSubmit: {
+                                text: 'ตกลง',
+                                btnClass: 'btn-regis',
+                                action: function () {
+                                }
+                                }
+                            }
+                        });
+                    }else{
+                        var obj = jQuery.parseJSON(data);
+                        $.each(obj, function(i, field){
+                            localStorage.user_name = name
+                            localStorage.user_id = field.user_id;
+                            localStorage.user_role = field.user_role;
+                            transition_page_next('index.html');
+                        });                      
+                    }
+                    }                            
+                });  
+            }           
         }
 
-        function menu(arg) {
-            // Animate
-            disactive(arg);
-            $("#i-" + arg).fadeOut(100).fadeIn(100, function () {
-                $("#i-" + arg).addClass('active');
-            });
-        }
-
-        
     </script>
 </head>
 
 <body>
+     <!-- Loading -->
+    <div class="overlay" hidden><div class="loading"></div></div>
+
     <!-- Nav menu top -->
     <div class="row fixed-top navs">
-        <div class="col-1 text-center" onclick="transition_page_next('member.html')">
+        <!--<div class="col-1 text-center" onclick="transition_page_next('member.html')">
             <i id="i-back" class="fas fa-angle-left"></i>
-        </div>
-        <div class="col-10 text-center" style="padding-left: 0;">
+        </div>-->
+        <div class="col-12 text-center" style="padding-left: 0;">
             <h5 id="h5-title">เข้าระบบ</h5>
-        </div>
-        <div class="col-1"></div>
+        </div>       
     </div>
     <br>
 
@@ -88,7 +114,7 @@
             </div>
             <div class="row" style="margin-bottom: 15%;">
                 <div class="col-12 text-center">
-                    <button class="mbtn" onclick="login();">สมัคร</button>
+                    <button class="mbtn" onclick="login();">เข้าสู่ระบบ</button>
                 </div>
             </div>
         </div>

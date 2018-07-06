@@ -264,7 +264,7 @@
             json_detail = JSON.stringify(arr_detail);           
             var dataString =  "JSON=" + json_string + "&JSOND=" + json_detail + "&ware_id=" + b_id + "&date=" + datetime + "&type=" + type
             + "&cus_id=" + localStorage.cus_id + "&pay=" + $("#pay").val() + "&net=" + localStorage.net + "&dis=" + dis
-            + "&total=" + $('#total').val() + "&get_price=" + $('#get').val() + "&chng=" + $('#chng').val();                        
+            + "&total=" + $('#total').val() + "&get_price=" + $('#get').val() + "&chng=" + $('#chng').val() + "&user_id=" + localStorage.user_id;
             //alert(dataString);
             $.ajax({
                 type: "POST",

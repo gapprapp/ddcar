@@ -1,13 +1,14 @@
 <?php 
     include "db.php"; 
     $input  = $_POST['JSON'];
-    $obj = json_decode($input,true);  	
-    $shop_id  = $_POST['shop_id'];   
-    $dt  = $_POST['date']; 
+    $obj = json_decode($input,true);
+    $shop_id  = $_POST['shop_id'];
+    $dt  = $_POST['date'];
+    $user_id = $_POST['user_id'];
     $i = 0;  
 
     mysqli_begin_transaction($conn);
-    $sql = "INSERT INTO transfer_in (date_time,shop_id) VALUE ('$dt','$shop_id')"; 
+    $sql = "INSERT INTO transfer_in (date_time,shop_id,user_id) VALUE ('$dt','$shop_id','$user_id')"; 
     $result = mysqli_query($conn, $sql); 
     $last_id = mysqli_insert_id($conn);
     if(!$result){
