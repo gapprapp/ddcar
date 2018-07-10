@@ -47,7 +47,24 @@
 
     .underline{
     	text-decoration: underline #666;
-    }    
+    }
+
+    .bold{
+      font-weight: bold;
+    }
+    
+    p[id*="price-"] {
+      font-size: 95%;
+      margin-top: 2px;
+      letter-spacing: -1px;
+    }
+    
+    p[id*="total-"] {
+      font-size: 95%;
+      margin-top: 2px;
+      letter-spacing: -1px;
+    }
+
   </style>
 
   <script>
@@ -57,7 +74,7 @@
       url = new URL(window.location.href);
       bill_id = url.searchParams.get("id"); 
 
-      /*$.ajax({
+      $.ajax({
         type: "POST",
         url:"http://migky.myqnapcloud.com:8083/dd-shop/php/get_bill_info.php",    
         data:{'bill_id' : bill_id},                            
@@ -97,20 +114,20 @@
               '<div class="col-1 text-center" ">' +
                 '<p id="amt-'+field.item_id+'" class="amount">'+field.prod_amount+'</p>' +
               '</div>' +
-              '<div class="col-7 text-center no-pd">' +
+              '<div class="col-7 text-center nopd">' +
                 '<p id="name-'+field.item_id+'">'+field.prod_name+'</p>' +
                 '</div>' +
-                '<div class="col-1 col-@">' +
+                '<div class="col-1 text-center">' +
                   '<p id="price-'+field.item_id+'">'+field.prod_price+'</p>' +
                 '</div>' +
-                  '<div class="col-3 text-right no-pd">' +
+                  '<div class="col-3 text-center nopd">' +
                     '<p id="total-'+field.item_id+'">'+field.prod_price*field.prod_amount+'</p>' +
                   '</div>' +
               '</div>');
             arr.push(field.prod_amount);
           });                                             
         }               
-      });*/ 
+      });
     });   
 
     function disactive(arg) {
@@ -526,7 +543,7 @@
       <div class="col-12 text-center pdl pdr"><h5 id="warehouse">โกดัง A</h5></div>
     </div>
   	<div class="row">
-      <div class="col-12 text-center pdl pdr"><h5 id="cus">สมพงศ์ สะอาด<span>(เครดิต 30)</span></h5></div>
+      <div class="col-12 text-center pdl pdr"><h5 id="cus">สมพงศ์ สะอาด<span> (เครดิต 30)</span></h5></div>
   	</div>
   	<div class="row">
   		<div class="col-12 text-center pdl pdr"><h5 id="date">12/01/18 15:00</h5></div>
@@ -539,25 +556,25 @@
     </div>
     <div class="container-fullwidth">    
       <div id="ctn-show">
-
       </div>
+      <hr style="width: 75%; margin-top: 5%">
     	<div id="bill-bttm" class="container" style="margin-top: 5%;">
     		<div class="row">
-    			<div class="col-4" style="padding-left: 10%;"><h5>รวม</h5></div>
-    			<div class="col-7 text-right"><h5 id="sum">150</h5></div>
+    			<div class="col-6 text-center"><h5 class="bold">รวม</h5></div>
+    			<div class="col-3 text-right nopd"><h5 class="bold" id="sum">150</h5></div>
     		</div>
     		<div class="row">
-    			<div class="col-4" style="padding-left: 10%;"><h5>ลด</h5></div>
-    			<div class="col-7 text-right"><h5 id="discount">150</h5></div>
+    			<div class="col-6 text-center"><h5 class="bold">ลด</h5></div>
+    			<div class="col-3 text-right nopd"><h5 class="bold" id="discount">150</h5></div>
     		</div>
     		<div class="row">
-    			<div class="col-4" style="padding-left: 10%;"><h5>สุทธิ  </h5></div>
-    			<div class="col-7 text-right"><h5 id="total">100000</h5></div>
+    			<div class="col-6 text-center"><h5 class="bold">สุทธิ  </h5></div>
+    			<div class="col-3 text-right nopd"><h5 class="bold" id="total">100000</h5></div>
     		</div>
     		<div class="row">
-    			<div class="col-4 nopd" style="padding-left: 10%;"><h5>รับ / ทอน</h5></div>
-    			<div class="col-4 text-center"><h5 id="get">150000</h5></div>
-    			<div class="col-3 text-right"><h5 id="chng">1000</h5></div>
+    			<div class="col-6 text-center nopd"><h5 class="bold">รับ / ทอน</h5></div>
+    			<div class="col-3 text-right nopd"><h5 class="bold" id="get">150000</h5></div>
+    			<div class="col-3 text-right nopd"><h5 class="bold" id="chng">1000</h5></div>
     		</div>
     		<div class="row" style="margin-top: 10%;">
     			<div class="col-12 text-center">

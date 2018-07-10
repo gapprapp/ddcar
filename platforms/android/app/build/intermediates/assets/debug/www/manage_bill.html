@@ -44,7 +44,7 @@
 
   <script>
     $(document).ready(function(){
-      $('#datepicker-from').duDatepicker(({format: 'dd/mm/yy', theme: 'red', cancelBtn: true, clearBtn: true, maxDate: "today"})).on('datechanged', function(e){
+      $('#datepicker-from').duDatepicker(({format: 'dd/mm/yy', theme: 'red', cancelBtn: true, maxDate: "today"})).on('datechanged', function(e){
         console.log(e.date);
         $("#date").text(e.date);
         if(e.date != null){
@@ -53,7 +53,7 @@
         $("#datepicker-to").trigger('click');
       });
 
-      $('#datepicker-to').duDatepicker(({format: 'dd/mm/yy', theme: 'red', cancelBtn: true, clearBtn: true, maxDate: "today"})).on('datechanged', function(e){
+      $('#datepicker-to').duDatepicker(({format: 'dd/mm/yy', theme: 'red', cancelBtn: true, maxDate: "today"})).on('datechanged', function(e){
         console.log(e.date);
         $("#date").append(" - " + e.date);
         $("#date_row").prop('hidden', false);
