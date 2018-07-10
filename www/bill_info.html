@@ -57,7 +57,7 @@
       url = new URL(window.location.href);
       bill_id = url.searchParams.get("id"); 
 
-      $.ajax({
+      /*$.ajax({
         type: "POST",
         url:"http://migky.myqnapcloud.com:8083/dd-shop/php/get_bill_info.php",    
         data:{'bill_id' : bill_id},                            
@@ -110,7 +110,7 @@
             arr.push(field.prod_amount);
           });                                             
         }               
-      }); 
+      });*/ 
     });   
 
     function disactive(arg) {
@@ -526,8 +526,7 @@
       <div class="col-12 text-center pdl pdr"><h5 id="warehouse">โกดัง A</h5></div>
     </div>
   	<div class="row">
-      <div class="col-8 text-center pdl pdr"><h5 id="cus">สมพงศ์ สะอาด</h5></div>
-      <div><span id="type">(เครดิต 30)</span></div>
+      <div class="col-12 text-center pdl pdr"><h5 id="cus">สมพงศ์ สะอาด<span>(เครดิต 30)</span></h5></div>
   	</div>
   	<div class="row">
   		<div class="col-12 text-center pdl pdr"><h5 id="date">12/01/18 15:00</h5></div>
@@ -602,6 +601,13 @@
     $(".select_folder").on("touchend", function() {
       $(this).removeClass('select_folder-touch');
     });
+
+    /* ---- แก้ไข ชื่อและเครดิตไม่ชิดกัน ---- */
+    //console.log($("#cus span").text()); // (เครดิต 30)
+    //$("#cus").text("สมชาย");
+    //console.log($("#cus span").text()); // empty
+    //$("#cus").append('<span> (เครดิต 65)</span>');
+    //console.log($("#cus").text()); // สมชาย (เครดิต 65)
 
     /*$(function () {
       var viewer = ImageViewer();
