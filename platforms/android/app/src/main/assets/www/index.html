@@ -34,7 +34,7 @@
   <script>
     $(document).ready(function() {
       if(!localStorage.user_id){                      
-        window.location = 'login.html';
+        transition_page_back('login.html');
       }
 
       url = new URL(window.location.href);

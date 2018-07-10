@@ -110,7 +110,7 @@
             arr.push(field.prod_amount);
           });                                             
         }               
-      });  
+      }); 
     });   
 
     function disactive(arg) {
@@ -138,7 +138,7 @@
             transition_page_back(goto);*/
         } else if(arg == "edit"){
             // show edit all
-            if ($(".amount").hasClass('underline')) {
+            if ($("#warehouse").hasClass('underline')) {
               $(".i-del").attr('hidden', true);
               $(".amount").removeClass('underline');
               $("#discount").removeClass('underline');
@@ -149,7 +149,7 @@
               $("#discount").attr('onclick', '');
               $("#type").attr('onclick', '');
               $("#get").attr('onclick', '');
-              $("#i-save").prop('hidden', true);
+              $("#i-save").css('color', "#e57f7f");
               // if has 3 prod then index = 3
               for(i = 1; i <= 3; i++){ $("#amt-"+i).attr('onclick', ''); }
             } else {
@@ -163,7 +163,7 @@
               $("#discount").attr('onclick', 'edit_discount()');
               $("#type").attr('onclick', 'edit_type()');
               $("#get").attr('onclick', 'edit_get()');
-              $("#i-save").prop('hidden', false);
+              $("#i-save").css('color', "#fff");
               for(i = 1; i <= 3; i++){ $("#amt-"+i).attr('onclick', 'edit_amount('+i+')'); }
             }
         } else if (arg == "del") {
@@ -512,11 +512,11 @@
     <div class="col-1 text-center" onclick="transition_page_back('manage_bill.html')">
       <i id="i-back" class="fa fa-angle-left"></i>
     </div>
-    <div class="col-10 text-center" style="padding-left: 0;">
+    <div class="col-9 text-center" style="margin-left: 3%;">
       <h5 id="h5-title">S18-00001</h5>
     </div>
-    <div id="i-save" class="col-1 text-right" onclick="save()" hidden>
-      <i class="far fa-save"></i>
+    <div class="col-1 text-center" onclick="save()">
+      <i id="i-save" class="fa fa-save" style="font-size: 135%; color: #e57f7f; margin-top: 3px;"></i>
     </div>
   </div><br>
 

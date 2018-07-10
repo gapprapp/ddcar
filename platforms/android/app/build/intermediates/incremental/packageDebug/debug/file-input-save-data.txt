@@ -1,5 +1,5 @@
 #Internal package file, do not edit.
-#Mon Jul 09 14:00:31 ICT 2018
+#Mon Jul 09 22:23:53 ICT 2018
 210.set=ASSET
 282.file=/Users/phoenix/Documents/ddcar/platforms/android/app/build/intermediates/res/debug/resources-debug.ap_/res/drawable-land-hdpi-v4/screen.png
 14.set=ANDROID_RESOURCE

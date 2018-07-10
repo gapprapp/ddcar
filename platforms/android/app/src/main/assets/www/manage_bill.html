@@ -44,15 +44,18 @@
 
   <script>
     $(document).ready(function(){
-      $('#datepicker-from').duDatepicker(({rangeTo: '#datepicker-to',format: 'dd/mm/yy', theme: 'red', cancelBtn: true,})).on('datechanged', function(e){
+      $('#datepicker-from').duDatepicker(({format: 'dd/mm/yy', theme: 'red', cancelBtn: true, clearBtn: true, maxDate: "today"})).on('datechanged', function(e){
         console.log(e.date);
         $("#date").text(e.date);
+        if(e.date != null){
+          e.date = new Date();
+        }
         $("#datepicker-to").trigger('click');
       });
 
-      $('#datepicker-to').duDatepicker(({rangeFrom: '#datepicker-from', format: 'dd/mm/yy', theme: 'red', cancelBtn: true,})).on('datechanged', function(e){
+      $('#datepicker-to').duDatepicker(({format: 'dd/mm/yy', theme: 'red', cancelBtn: true, clearBtn: true, maxDate: "today"})).on('datechanged', function(e){
         console.log(e.date);
-        $("#date-to").text(e.date);
+        $("#date").append(" - " + e.date);
         $("#date_row").prop('hidden', false);
         $("#search_row").prop('hidden', true);
         search_date();
@@ -98,6 +101,9 @@
       $("#myD").prop('hidden', true);
       if($("#search_row").is(':visible')){
         $("#search_row").prop('hidden', true);
+        if($("#date").text() != ""){
+          $("#date_row").prop('hidden', false);
+        }
       }else{
         $("#search_row").prop('hidden', false);
         $("#date_row").prop('hidden', true);
@@ -123,10 +129,25 @@
     function search_date(){
       $("#myUL").prop('hidden', true);
       $("#myD").prop('hidden', false);
-      var txt = $('#date').text().split("/");
-      var date = "20" + txt[2] + "-" + txt[1] + "-" + txt[0] + " 00:00:00";
-      var txt2 = $('#date-to').text().split("/");
-      var date_to = "20" + txt2[2] + "-" + txt2[1] + "-" + txt2[0] + " 23:59:59";      
+      //var txt = $('#date').text().split("/");
+      //var date = "20" + txt[2] + "-" + txt[1] + "-" + txt[0] + " 00:00:00";
+      //var txt2 = $('#date-to').text().split("/");
+      //var date_to = "20" + txt2[2] + "-" + txt2[1] + "-" + txt2[0] + " 23:59:59";
+      //console.log(txt + " " + txt2);   
+      //console.log(date + " " + date_to);   
+      txt = $("#date").text().split("-");
+      temp = txt[0].split("/");
+      date =  "20" + temp[2] + "-" + temp[1] + "-" + temp[0];
+      date = date.replace(/\s+/g, '');
+      date = date + " 00:00:00";
+
+      txt = $("#date").text().split("-");
+      temp = txt[0].split("/");
+      date_to =  "20" + temp[2] + "-" + temp[1] + "-" + temp[0];
+      date_to = date_to.replace(/\s+/g, '');
+      date_to = date_to + " 23:59:59";
+
+      //console.log(date + " " + date_to);
 
       $.ajax({
         type: "POST",
@@ -157,7 +178,7 @@
             });   
           }                                
         }               
-      });            
+      });
     }
   </script>
 </head>
@@ -182,13 +203,8 @@
   <!-- End big container -->
   <div class="container justify-content-center" style="margin-top: 15%;">
     <div id="date_row" class="row mg-5" style="margin-left: 5%;" hidden>
-      <div class="col-1"></div>
-      <div class="col-3 text-center">
-        <h5 id="date" style="color: #666;"></h5>
-      </div>
-      <div class="col-2 text-right" style="color: #666;"><h5>-</h5></div>
-      <div class="col-3 text-center">
-        <h5 id="date-to" style="color: #666;"></h5>
+      <div class="col-11 text-center">
+        <h5 id="date"></h5>
       </div>
     </div>
     <div id="search_row" class="row mg-10" hidden>

@@ -44,14 +44,13 @@
 
   <script>
     $(document).ready(function(){
-      $('#datepicker-from').duDatepicker(({format: 'dd/mm/yy', theme: 'red', cancelBtn: true,})).on('datechanged', function(e){
+      $('#datepicker').duDatepicker(({format: 'dd/mm/yy', theme: 'red', cancelBtn: true, maxDate: "today"})).on('datechanged', function(e){
         console.log(e.date);
         $("#date").text(e.date);
-        $("#search_row").prop('hidden', true);
         $("#date_row").prop('hidden', false);
         var txt = e.date.split("/");
         var date = "20" + txt[2] + "-" + txt[1] + "-" + txt[0];
-        search_date(date);
+        //search_date(date);
       });
 
       margin = $("#navs-menu").outerHeight()*2;
@@ -61,7 +60,7 @@
 
       var d = new Date($.now());
       var datetime = d.getFullYear() + "-" + (d.getMonth()+1) + "-" + d.getDate(); 
-      search_date(datetime);
+      //search_date(datetime);
     });
 
     function search_date(datetime){
@@ -98,15 +97,6 @@
       });
     }
 
-    function show_search(){
-      if($("#search_row").is(':visible')){
-        $("#search_row").prop('hidden', true);
-      }else{
-        $("#search_row").prop('hidden', false);
-        $("#date_row").prop('hidden', true);
-      }
-    }
-
   </script>
 </head>
 
@@ -122,28 +112,18 @@
     <div class="col-9 text-center" style="padding-left: 10%; margin-right: 3%;">
       <h5 id="h5-title">สรุปรายการขาย</h5>
     </div>
-    <div class="col-1 text-right" onclick="show_search();">
-      <i class="fas fa-search" style="color: white; font-size: 120%; margin-top: 3px;"></i>
+    <div class="col-1 text-right" onclick="$('#datepicker').trigger('click');">
+      <i class="far fa-calendar-alt" style="color: white; font-size: 120%; margin-top: 3px;"></i>
     </div>
   </div><br>
 
   <!-- End big container -->
   <div class="container justify-content-center" style="margin-top: 15%;">
     <div id="date_row" class="row mg-5" hidden>
+      <button id="datepicker" hidden></button>
       <div class="col-12 text-center">
-        <h5 id="date" style="color: #666;"></h5>
+        <h5 id="date"></h5>
       </div>
-    </div>
-    <div id="search_row" class="row mg-10" hidden>
-      <!--<div class="col-9">
-        <input id="search_prod" type="text" onkeyup="search()" class="form-control form-control-lg text-center" placeholder="เลขที่ / ลูกค้า">
-      </div>-->
-      <div class="col-3">
-        <button id="datepicker-from" class="mbtn" style="height: 90%; margin-top: 2px;">
-          <i class="far fa-calendar-alt"></i>
-        </button>
-        <button id="datepicker-to" hidden></button>
-      </div> 
     </div>
 
     <div class="row">
