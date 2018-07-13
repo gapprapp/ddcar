@@ -137,22 +137,9 @@
         $("#i-" + arg).addClass('active');
       });
 
-      if(arg == "bars"){
-        $.confirm({
-          title: "ชื่อสินค้า",
-          content: '<div class="row" style="margin-top: 2%; margin-bottom: 2%;"><div class="col-12 text-center"><img src="https://i.imgur.com/7LVwcUc.png" id="img" alt="" style="width: 96%; height: 96%;"></div></div><div class="row"><div class="col-2"></div><div class="col-3 nopd text-right">รหัส :</div><div class="col-4 text-right">bnk426816</div><div class="col-2"></div></div><div class="row"><div class="col-2"></div><div class="col-3 nopd text-right">ราคา :</div><div class="col-4 text-center">2500</div><div class="col-2"></div></div><div class="row"><div class="col-2"></div><div class="col-3 nopd text-right">จำนวน :</div><div class="col-4 text-center">12</div><div class="col-2"></div></div>',
-          backgroundDismiss: true,
-          buttons: {
-            formSubmit: {
-              text: 'ปิด',
-              btnClass: 'btn-regis',
-              action: function () {
-                document.elementFromPoint(0, 0).click();
-              }
-            }
-          }
-        }); 
-      }
+      /*if(arg == "bars"){
+        window.location = "show_prod.html";
+      }*/
     }
   </script>
 </head>

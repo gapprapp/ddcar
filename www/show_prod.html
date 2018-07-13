@@ -41,7 +41,8 @@
             url = new URL(window.location.href);
             folder = url.searchParams.get("folder");
             prod_id = url.searchParams.get("prod_id");
-            get_prod(prod_id);                       
+            //$("#img").attr("src", img);
+            //get_prod(prod_id);                   
         });
         
         function get_prod(id){
@@ -80,13 +81,18 @@
             goto = "select_folder.html?from=add&folder="+folder;
             transition_page_back(goto);
         }
-
     </script>
 </head>
 
 <body>
     <!-- Loading -->
     <div class="overlay" hidden><div class="loading"></div></div>
+    <!-- Pic -->
+    <div class="overlay" hidden style="background-color: rgba(0,0,0,0.60);">
+        <div class="pictrue">
+            <img id="img" src="" alt="" style="width: 85%; margin-left: 7.5%; margin-top: 2.5%;">
+        </div>
+    </div>
 
     <!-- Nav menu top -->
     <div class="row fixed-top navs">
@@ -134,7 +140,7 @@
         </div>
         <div id="row-img" class="row">
             <div class="col-12 text-center">
-             <img id='img' alt="" src="https://www.bzh.be/img.php?src=https://www.sortir-en-bretagne.fr/images/no-image.png&w=330&h=200&zc=1">
+             <img id='simg' alt="" src="https://www.bzh.be/img.php?src=https://www.sortir-en-bretagne.fr/images/no-image.png&w=330&h=200&zc=1" onclick="window.location = 'show_pic.html';">
             </div>
         </div>
     </div>
