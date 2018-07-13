@@ -128,13 +128,7 @@
 
     function search_date(){
       $("#myUL").prop('hidden', true);
-      $("#myD").prop('hidden', false);
-      //var txt = $('#date').text().split("/");
-      //var date = "20" + txt[2] + "-" + txt[1] + "-" + txt[0] + " 00:00:00";
-      //var txt2 = $('#date-to').text().split("/");
-      //var date_to = "20" + txt2[2] + "-" + txt2[1] + "-" + txt2[0] + " 23:59:59";
-      //console.log(txt + " " + txt2);   
-      //console.log(date + " " + date_to);   
+      $("#myD").prop('hidden', false);     
       txt = $("#date").text().split("-");
       temp = txt[0].split("/");
       date =  "20" + temp[2] + "-" + temp[1] + "-" + temp[0];

@@ -45,6 +45,10 @@
       padding-right: 0;
     }
 
+    .bold{
+      font-weight: bold;
+    }
+
     .underline{
       text-decoration: underline #666;
     }    
@@ -128,7 +132,8 @@
               $(".amount").removeClass('underline');            
               $("#warehouse").removeClass('underline');            
               $("#warehouse").attr('onclick', '');            
-              $("#i-save").prop('hidden', true);
+              $("#i-save").attr('onclick', '');
+              $("#i-save").css('color', "#e57f7f");
               // if has 3 prod then index = 3
               for(i = 1; i <= 3; i++){ $("#amt-"+i).attr('onclick', ''); }
             } else {
@@ -136,7 +141,8 @@
               $(".amount").addClass('underline');
               $("#warehouse").addClass('underline');
               $("#warehouse").attr('onclick', 'edit_warehouse()');
-              $("#i-save").prop('hidden', false);
+              $("#i-save").attr('onclick', 'save()');
+              $("#i-save").css('color', "#fff");
               for(i = 1; i <= 3; i++){ $("#amt-"+i).attr('onclick', 'edit_amount('+i+')'); }
             }
         } else if (arg == "del") {
@@ -331,11 +337,11 @@
     <div class="col-1 text-center" onclick="transition_page_back('manage_import.html')">
       <i id="i-back" class="fas fa-angle-left"></i>
     </div>
-    <div class="col-10 text-center" style="padding-left: 0;">
+    <div class="col-9 text-center" style="padding-left: 0;">
       <h5 id="h5-title">S18-00001</h5>
     </div>
-    <div id="i-save" class="col-1 text-right" onclick="save()" hidden>
-        <i class="far fa-save"></i>
+    <div class="col-1 text-center">
+      <i id="i-save" class="fa fa-save" style="font-size: 135%; color: #e57f7f; margin-top: 3px;"></i>
     </div>
   </div><br>
 
@@ -356,13 +362,14 @@
     <div class="container-fullwidth">     
       <div id="ctn-show" style="margin-bottom: 5%;">
 
-      </div>     
+      </div>  
+      <hr style="width: 75%; margin-top: 5%">   
       <div id="bill-bttm" class="container" style="margin-top: 5%;">
         <div class="row">
-          <div class="col-4" style="padding-left: 10%;"><h5>รวม</h5></div>
-          <div class="col-7 text-right"><h5 id="sum">150</h5></div>
-        </div>
-        <div class="row" style="margin-top: 10%;">
+          <div class="col-4" style="padding-left: 10%;"><h5 class="bold">รวม</h5></div>
+          <div class="col-7 text-right"><h5 id="sum" class="bold">150</h5></div>
+        </div><hr style="width: 75%; margin-top: 5%">
+        <div class="row" style="margin-top: 5%;">
           <div class="col-12 text-center">
             <h5 id="user">ชื่อผู้บันทึก</h5>
           </div>
