@@ -47,7 +47,24 @@
 
     .underline{
     	text-decoration: underline #666;
-    }    
+    }
+
+    .bold{
+      font-weight: bold;
+    }
+    
+    p[id*="price-"] {
+      font-size: 95%;
+      margin-top: 2px;
+      letter-spacing: -1px;
+    }
+    
+    p[id*="total-"] {
+      font-size: 95%;
+      margin-top: 2px;
+      letter-spacing: -1px;
+    }
+
   </style>
 
   <script>
@@ -73,8 +90,9 @@
           }else if(obj[0].type == "หน้าร้าน"){
             $('#warehouse').text(obj[0][17].shop_name);           
           }          
-          $('#cus').text(obj[0].cus_name);
-          $('#type').text(obj[0].payment_type);
+          $('#cus').text(obj[0].cus_name + " ");
+          $("#cus").append('<span id="type">'+obj[0].payment_type+'</span>');
+          //$("#type").text(obj[0].payment_type);
           var txt = obj[0].date_time.split(" ");
           var txt2 = txt[0].split("-");
           var date = txt2[2] + "/" + txt2[1] + "/" + txt2[0].substr(2) + " " + txt[1].substr(0,5);
@@ -97,20 +115,20 @@
               '<div class="col-1 text-center" ">' +
                 '<p id="amt-'+field.item_id+'" class="amount">'+field.prod_amount+'</p>' +
               '</div>' +
-              '<div class="col-7 text-center no-pd">' +
+              '<div class="col-7 text-center nopd">' +
                 '<p id="name-'+field.item_id+'">'+field.prod_name+'</p>' +
                 '</div>' +
-                '<div class="col-1 col-@">' +
+                '<div class="col-1 text-center">' +
                   '<p id="price-'+field.item_id+'">'+field.prod_price+'</p>' +
                 '</div>' +
-                  '<div class="col-3 text-right no-pd">' +
+                  '<div class="col-3 text-center nopd">' +
                     '<p id="total-'+field.item_id+'">'+field.prod_price*field.prod_amount+'</p>' +
                   '</div>' +
               '</div>');
             arr.push(field.prod_amount);
           });                                             
         }               
-      });  
+      });
     });   
 
     function disactive(arg) {
@@ -138,7 +156,7 @@
             transition_page_back(goto);*/
         } else if(arg == "edit"){
             // show edit all
-            if ($(".amount").hasClass('underline')) {
+            if ($("#warehouse").hasClass('underline')) {
               $(".i-del").attr('hidden', true);
               $(".amount").removeClass('underline');
               $("#discount").removeClass('underline');
@@ -149,7 +167,8 @@
               $("#discount").attr('onclick', '');
               $("#type").attr('onclick', '');
               $("#get").attr('onclick', '');
-              $("#i-save").prop('hidden', true);
+              $("#i-save").attr('onclick', '');
+              $("#i-save").css('color', "#e57f7f");
               // if has 3 prod then index = 3
               for(i = 1; i <= 3; i++){ $("#amt-"+i).attr('onclick', ''); }
             } else {
@@ -163,7 +182,8 @@
               $("#discount").attr('onclick', 'edit_discount()');
               $("#type").attr('onclick', 'edit_type()');
               $("#get").attr('onclick', 'edit_get()');
-              $("#i-save").prop('hidden', false);
+              $("#i-save").attr('onclick', 'save()');
+              $("#i-save").css('color', "#fff");
               for(i = 1; i <= 3; i++){ $("#amt-"+i).attr('onclick', 'edit_amount('+i+')'); }
             }
         } else if (arg == "del") {
@@ -424,7 +444,7 @@
 
     function save(){
       arr_data = [];
-      var f = false;
+      var f = false;      
       if(pay == $('#type').text() && dis == $('#discount').text() && get == $('#get').text() && 
       ware_id == ware_id_o && type == type_o){
         f = true;       
@@ -512,11 +532,11 @@
     <div class="col-1 text-center" onclick="transition_page_back('manage_bill.html')">
       <i id="i-back" class="fa fa-angle-left"></i>
     </div>
-    <div class="col-10 text-center" style="padding-left: 0;">
+    <div class="col-9 text-center" style="margin-left: 3%;">
       <h5 id="h5-title">S18-00001</h5>
     </div>
-    <div id="i-save" class="col-1 text-right" onclick="save()" hidden>
-      <i class="far fa-save"></i>
+    <div class="col-1 text-center">
+      <i id="i-save" class="fa fa-save" style="font-size: 135%; color: #e57f7f; margin-top: 3px;"></i>
     </div>
   </div><br>
 
@@ -526,8 +546,7 @@
       <div class="col-12 text-center pdl pdr"><h5 id="warehouse">โกดัง A</h5></div>
     </div>
   	<div class="row">
-      <div class="col-8 text-center pdl pdr"><h5 id="cus">สมพงศ์ สะอาด</h5></div>
-      <div><span id="type">(เครดิต 30)</span></div>
+      <div class="col-12 text-center pdl pdr"><h5 id="cus">สมพงศ์ สะอาด<span> (เครดิต 30)</span></h5></div>
   	</div>
   	<div class="row">
   		<div class="col-12 text-center pdl pdr"><h5 id="date">12/01/18 15:00</h5></div>
@@ -540,27 +559,27 @@
     </div>
     <div class="container-fullwidth">    
       <div id="ctn-show">
-
       </div>
+      <hr style="width: 75%; margin-top: 5%">
     	<div id="bill-bttm" class="container" style="margin-top: 5%;">
     		<div class="row">
-    			<div class="col-4" style="padding-left: 10%;"><h5>รวม</h5></div>
-    			<div class="col-7 text-right"><h5 id="sum">150</h5></div>
+    			<div class="col-6 text-center"><h5 class="bold">รวม</h5></div>
+    			<div class="col-3 text-right nopd"><h5 class="bold" id="sum">150</h5></div>
     		</div>
     		<div class="row">
-    			<div class="col-4" style="padding-left: 10%;"><h5>ลด</h5></div>
-    			<div class="col-7 text-right"><h5 id="discount">150</h5></div>
+    			<div class="col-6 text-center"><h5 class="bold">ลด</h5></div>
+    			<div class="col-3 text-right nopd"><h5 class="bold" id="discount">150</h5></div>
     		</div>
     		<div class="row">
-    			<div class="col-4" style="padding-left: 10%;"><h5>สุทธิ  </h5></div>
-    			<div class="col-7 text-right"><h5 id="total">100000</h5></div>
+    			<div class="col-6 text-center"><h5 class="bold">สุทธิ  </h5></div>
+    			<div class="col-3 text-right nopd"><h5 class="bold" id="total">100000</h5></div>
     		</div>
     		<div class="row">
-    			<div class="col-4 nopd" style="padding-left: 10%;"><h5>รับ / ทอน</h5></div>
-    			<div class="col-4 text-center"><h5 id="get">150000</h5></div>
-    			<div class="col-3 text-right"><h5 id="chng">1000</h5></div>
-    		</div>
-    		<div class="row" style="margin-top: 10%;">
+    			<div class="col-6 text-center nopd"><h5 class="bold">รับ / ทอน</h5></div>
+    			<div class="col-3 text-right nopd"><h5 class="bold" id="get">150000</h5></div>
+    			<div class="col-3 text-right nopd"><h5 class="bold" id="chng">1000</h5></div>
+    		</div><hr style="width: 75%; margin-top: 5%">
+    		<div class="row" style="margin-top: 5%;">
     			<div class="col-12 text-center">
     				<h5 id="user">ชื่อผู้บันทึก</h5>
     			</div>
@@ -602,6 +621,13 @@
     $(".select_folder").on("touchend", function() {
       $(this).removeClass('select_folder-touch');
     });
+
+    /* ---- แก้ไข ชื่อและเครดิตไม่ชิดกัน ---- */
+    //console.log($("#cus span").text()); // (เครดิต 30)
+    //$("#cus").text("สมชาย");
+    //console.log($("#cus span").text()); // empty
+    //$("#cus").append('<span> (เครดิต 65)</span>');
+    //console.log($("#cus").text()); // สมชาย (เครดิต 65)
 
     /*$(function () {
       var viewer = ImageViewer();

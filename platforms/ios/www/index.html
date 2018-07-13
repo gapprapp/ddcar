@@ -33,10 +33,6 @@
   </style>
   <script>
     $(document).ready(function() {
-      if(!localStorage.user_id){                      
-        window.location = 'login.html';
-      }
-
       url = new URL(window.location.href);
       u = url.searchParams.get("u");
       m = url.searchParams.get("menu");
@@ -97,6 +93,12 @@
       }); 
     });
 
+    function onLoad(){
+      if(!localStorage.user_id){                      
+        transition_page_back('login.html');
+      }
+    }
+
     function tabs(arg){
       arr = ['admin', 'main', 'log'];
       if($("#tabs-"+arg).hasClass('tabs')){
@@ -155,7 +157,7 @@
   </script>
 </head>
 
-<body style="overflow: hidden;">
+<body onload="onLoad();" style="overflow: hidden;">
   <!-- Nav menu top -->
   <div class="row fixed-top navs">
     <div class="col-1 text-center" onclick="">
