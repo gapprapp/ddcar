@@ -330,8 +330,12 @@
         }
 
         function check(){
-            goto = "sale_check.html";
-            transition_page_next(goto);
+            if($("#check-sale").text() != "0"){
+                goto = "sale_check.html";
+                transition_page_next(goto);
+            }else{
+                return 0;
+            }
         }
 
         function get_allprod(){
@@ -356,6 +360,11 @@
                     }                                                                                                                                              
                 }               
             }); 
+        }
+
+        function select_cus(){
+            //alert("select_cus");
+            transition_page_next_flip('select_cus.html');
         }
 
         var ch = 0;
@@ -399,7 +408,7 @@
     </script>
 </head>
 
-<body>
+<body style="overflow-y: auto;">
     <!-- Loading -->
     <div class="overlay" hidden><div class="loading"></div></div>
 
@@ -407,7 +416,7 @@
     <div id="search-ctn" class="container justify-content-center" style="margin-top: 20%;" hidden>
         <div class="row mg-10">
             <div class="col-12 text-center">
-                <input id="search_prod" type="text" onkeyup="search()" class="form-control form-control-lg text-center" placeholder="ค้นหาสินค้า" autofocus>
+                <input id="search_prod" type="text" onkeyup="search()" class="form-control form-control-lg text-center" placeholder="ค้นหาสินค้า">
             </div>  
         </div>
         <div id="add_ctn" class="container">
@@ -422,10 +431,10 @@
         <div id="col-back" class="col-1 text-center" onclick="transition_page_back('index.html?menu=2')">
             <i id="i-back" class="fas fa-angle-left"></i>
         </div>
-        <div class="col-8 text-center" style="padding-left: 15%; margin-right: 4%;">
+        <div class="col-9 text-center" style="padding-left: 12%; margin-right: 2%;">
             <h5 id="h5-title">ขาย</h5>
         </div>
-        <div class="col-2 text-right" onclick="check();"><div id="check-sale"class="circle-text">0</div></div>
+        <div class="col-1" onclick="check();"><div id="check-sale"class="circle-text">0</div></div>
     </div>
     <br>
 
@@ -435,7 +444,7 @@
             <div class="row mg-10">
                 <div class="col-12 text-center pdlr">
                     <label for="cus">ลูกค้า</label>
-                    <input id="cus" type="text" class="w3-input" onclick="transition_page_next_flip('select_cus.html');" placeholder="กรุณาใส่ชื่อลูกค้าก่อนทำการขาย">
+                    <input id="cus" type="text" class="w3-input" onclick="select_cus();" placeholder="กรุณาใส่ชื่อลูกค้าก่อนทำการขาย" readonly>
                 </div>
             </div>
             <div class="row mg-10">

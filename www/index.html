@@ -141,6 +141,12 @@
         window.location = "show_prod.html";
       }*/
     }
+
+    document.addEventListener("deviceready", onDeviceReady, false);
+
+    function onDeviceReady(){
+        AndroidFullScreen.immersiveMode();
+    }
   </script>
 </head>
 
@@ -254,8 +260,8 @@
     <div class="col-3 text-center" onclick="scan();">
       <i id="i-qrcode" class="fas fa-qrcode menu"></i>
     </div>
-    <div class="col-3 text-center" onclick="menu('bars')">
-      <i id="i-bars" class="fa fa-bars menu"></i>
+    <div class="col-3 text-center" onclick="window.location = 'a4.html'">
+      <i class="fa fa-bars menu"></i>
     </div>
   </div>
   <!-- End Nav menu bottom -->

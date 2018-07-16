@@ -268,6 +268,14 @@ module.exports = [
     "clobbers": [
       "cordova.plugins.screenorientation"
     ]
+  },
+  {
+    "id": "cordova-plugin-fullscreen.AndroidFullScreen",
+    "file": "plugins/cordova-plugin-fullscreen/www/AndroidFullScreen.js",
+    "pluginId": "cordova-plugin-fullscreen",
+    "clobbers": [
+      "AndroidFullScreen"
+    ]
   }
 ];
 module.exports.metadata = 
@@ -282,7 +290,8 @@ module.exports.metadata =
   "cordova-plugin-statusbar": "2.4.2",
   "cordova-plugin-whitelist": "1.3.3",
   "phonegap-plugin-barcodescanner": "7.1.0",
-  "cordova-plugin-screen-orientation": "3.0.1"
+  "cordova-plugin-screen-orientation": "3.0.1",
+  "cordova-plugin-fullscreen": "1.1.0"
 };
 // BOTTOM OF METADATA
 });

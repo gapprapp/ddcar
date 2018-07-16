@@ -3,7 +3,7 @@
 
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, minimum-scale=1, maximum-scale=2 initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <title>Home</title>
   <!-- Bootstrap Import -->
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
@@ -19,7 +19,6 @@
   <script type="text/javascript" src="js/jquery.touchSwipe.min.js"></script>
   <script src="cordova.js"></script>
   <script type="text/javascript" src="js/scanqr.js"></script>
-  <script type="text/javascript" src="js/touchy.js"></script>
 
   <link rel="stylesheet" href="css/index.css">
   <link rel="stylesheet" href="css/pic.css">
@@ -29,9 +28,17 @@
   <link href="https://fonts.googleapis.com/css?family=Prompt" rel="stylesheet">
 
   <script>
+  	$(document).ready(function () { 
+        url = new URL(window.location.href);
+        folder = url.searchParams.get("folder");
+        prod_id = url.searchParams.get("prod_id");
+        //$("#img").attr("src", img);
+        //get_prod(prod_id);                   
+    });
+
   	function back(){
   		screen.orientation.lock('portrait');
-  		transition_page_back("show_prod.html");
+  		transition_page_back("show_prod.html?from=add&folder="+folder);
   	}
 
   	function onload(){
@@ -80,13 +87,6 @@
 				}
 			}
 		};
-		
-		var handleTouchyPinch = function (e, $target, data) {
-			alert("hi");
-		    $target.css({'webkitTransform':'scale(' + data.scale + ',' + data.scale + ')'});
-		};
-
-		$('.overlay').bind('touchy-pinch', handleTouchyPinch);
 	</script>
 </body>
 

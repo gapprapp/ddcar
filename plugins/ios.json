@@ -33,6 +33,9 @@
     },
     "cordova-plugin-screen-orientation": {
       "PACKAGE_NAME": "com.gitmew.ddcar"
+    },
+    "cordova-plugin-fullscreen": {
+      "PACKAGE_NAME": "com.gitmew.ddcar"
     }
   },
   "dependent_plugins": {

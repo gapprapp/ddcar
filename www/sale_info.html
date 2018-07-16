@@ -208,7 +208,7 @@
         }
 
         function save(){
-            if($("#ware").val() == ""){
+            /*if($("#ware").val() == ""){
                 $.confirm({
                     title: 'พบข้อผิดพลาด',
                     content: 'กรุณากรอกข้อมูลให้ครบ',
@@ -223,11 +223,11 @@
                     }
                 });
                 return 0;
-            }           
-            $("style").append('.jconfirm .jconfirm-box{margin-bottom: 50%;}');
+            }*/           
+            $("style").append('.jconfirm .jconfirm-box{margin-bottom: 100%;}');
             $.confirm({
-                title: 'คิดเงิน',
-                content: '<hr style="margin-top: 0; width: 85%;"><div class="row mg-6"><div class="col-2"></div><div class="col-8 text-center"><label for="net">รวม</label><input id="net" type="number" class="input-cf" value="'+localStorage.net+'" readonly></div><div class="col-2"></div></div><div class="row mg-6"><div class="col-2"></div><div class="col-8 text-center"><label for="dis">ลด</label><input autofocus id="dis" type="number" class="input-cf" oninput="edit_discount()"></div><div class="col-2"></div></div><div class="row mg-6"><div class="col-2"></div><div class="col-8 text-center"><label for="total">สุทธิ</label><input id="total" type="number" class="input-cf" value="'+localStorage.net+'" readonly></div><div class="col-2"></div></div><div class="row mg-6"><div class="col-2"></div><div class="col-8 text-center"><label for="get">รับ</label><input id="get" type="number" class="input-cf" oninput="get_money()"></div><div class="col-2"></div></div><div class="row mg-6"><div class="col-2"></div><div class="col-8 text-center"><label for="chng">ทอน</label><input id="chng" type="number" class="input-cf" readonly></div><div class="col-2"></div></div>',
+                title: '',
+                content: '<div class="row mg-6"><div class="col-2"></div><div class="col-8 text-center"><label for="net">รวม</label><input id="net" type="number" class="input-cf" value="'+localStorage.net+'" readonly></div><div class="col-2"></div></div><div class="row mg-6"><div class="col-2"></div><div class="col-8 text-center"><label for="dis">ลด</label><input autofocus id="dis" type="number" class="input-cf" oninput="edit_discount()"></div><div class="col-2"></div></div><div class="row mg-6"><div class="col-2"></div><div class="col-8 text-center"><label for="total">สุทธิ</label><input id="total" type="number" class="input-cf" value="'+localStorage.net+'" readonly></div><div class="col-2"></div></div><div class="row mg-6"><div class="col-1"></div><div class="col-5 text-center"><label for="get">รับ</label><input id="get" type="number" class="input-cf" oninput="get_money()"></div><div class="col-5 text-center"><label for="chng">ทอน</label><input id="get" type="number" class="input-cf"></div><div class="col-1"></div></div>',
                 backgroundDismiss: true,
                 onDestroy: function () {
                     $("style").append('.jconfirm .jconfirm-box{margin-bottom: 5%;}');
