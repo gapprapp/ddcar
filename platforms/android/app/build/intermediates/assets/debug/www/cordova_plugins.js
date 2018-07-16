@@ -246,6 +246,20 @@ module.exports = [
     ]
   },
   {
+    "id": "es6-promise-plugin.Promise",
+    "file": "plugins/es6-promise-plugin/www/promise.js",
+    "pluginId": "es6-promise-plugin",
+    "runs": true
+  },
+  {
+    "id": "cordova-plugin-screen-orientation.screenorientation",
+    "file": "plugins/cordova-plugin-screen-orientation/www/screenorientation.js",
+    "pluginId": "cordova-plugin-screen-orientation",
+    "clobbers": [
+      "cordova.plugins.screenorientation"
+    ]
+  },
+  {
     "id": "cordova-plugin-statusbar.statusbar",
     "file": "plugins/cordova-plugin-statusbar/www/statusbar.js",
     "pluginId": "cordova-plugin-statusbar",
@@ -260,6 +274,14 @@ module.exports = [
     "clobbers": [
       "cordova.plugins.barcodeScanner"
     ]
+  },
+  {
+    "id": "cordova-plugin-fullscreen.AndroidFullScreen",
+    "file": "plugins/cordova-plugin-fullscreen/www/AndroidFullScreen.js",
+    "pluginId": "cordova-plugin-fullscreen",
+    "clobbers": [
+      "AndroidFullScreen"
+    ]
   }
 ];
 module.exports.metadata = 
@@ -271,9 +293,12 @@ module.exports.metadata =
   "cordova-plugin-device": "2.0.1",
   "cordova-plugin-file": "6.0.1",
   "cordova-plugin-file-transfer": "1.7.1",
+  "es6-promise-plugin": "4.2.2",
+  "cordova-plugin-screen-orientation": "3.0.1",
   "cordova-plugin-statusbar": "2.4.2",
   "cordova-plugin-whitelist": "1.3.3",
-  "phonegap-plugin-barcodescanner": "7.1.0"
+  "phonegap-plugin-barcodescanner": "7.1.0",
+  "cordova-plugin-fullscreen": "1.1.0"
 };
 // BOTTOM OF METADATA
 });

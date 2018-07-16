@@ -41,6 +41,14 @@ module.exports = [
     ]
   },
   {
+    "id": "cordova-plugin-datepicker.DatePicker",
+    "file": "plugins/cordova-plugin-datepicker/www/ios/DatePicker.js",
+    "pluginId": "cordova-plugin-datepicker",
+    "clobbers": [
+      "datePicker"
+    ]
+  },
+  {
     "id": "cordova-plugin-device.device",
     "file": "plugins/cordova-plugin-device/www/device.js",
     "pluginId": "cordova-plugin-device",
@@ -254,11 +262,19 @@ module.exports = [
     ]
   },
   {
-    "id": "cordova-plugin-datepicker.DatePicker",
-    "file": "plugins/cordova-plugin-datepicker/www/ios/DatePicker.js",
-    "pluginId": "cordova-plugin-datepicker",
+    "id": "cordova-plugin-screen-orientation.screenorientation",
+    "file": "plugins/cordova-plugin-screen-orientation/www/screenorientation.js",
+    "pluginId": "cordova-plugin-screen-orientation",
     "clobbers": [
-      "datePicker"
+      "cordova.plugins.screenorientation"
+    ]
+  },
+  {
+    "id": "cordova-plugin-fullscreen.AndroidFullScreen",
+    "file": "plugins/cordova-plugin-fullscreen/www/AndroidFullScreen.js",
+    "pluginId": "cordova-plugin-fullscreen",
+    "clobbers": [
+      "AndroidFullScreen"
     ]
   }
 ];
@@ -267,13 +283,15 @@ module.exports.metadata =
 {
   "com.telerik.plugins.nativepagetransitions": "0.6.5",
   "cordova-plugin-camera": "4.0.2",
+  "cordova-plugin-datepicker": "0.9.3",
   "cordova-plugin-device": "2.0.1",
   "cordova-plugin-file": "6.0.1",
   "cordova-plugin-file-transfer": "1.7.1",
   "cordova-plugin-statusbar": "2.4.2",
   "cordova-plugin-whitelist": "1.3.3",
   "phonegap-plugin-barcodescanner": "7.1.0",
-  "cordova-plugin-datepicker": "0.9.3"
+  "cordova-plugin-screen-orientation": "3.0.1",
+  "cordova-plugin-fullscreen": "1.1.0"
 };
 // BOTTOM OF METADATA
 });

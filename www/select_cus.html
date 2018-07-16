@@ -97,7 +97,13 @@
             $(this).hide();                               
           }
         });          
-    }   
+    } 
+
+    document.addEventListener("deviceready", onDeviceReady, false);
+
+    function onDeviceReady(){
+        AndroidFullScreen.immersiveMode();
+    } 
   </script>
 </head>
 

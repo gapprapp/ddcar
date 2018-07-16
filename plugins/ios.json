@@ -13,6 +13,9 @@
     "cordova-plugin-camera": {
       "PACKAGE_NAME": "com.gitmew.ddcar"
     },
+    "cordova-plugin-datepicker": {
+      "PACKAGE_NAME": "com.gitmew.ddcar"
+    },
     "cordova-plugin-device": {
       "PACKAGE_NAME": "com.gitmew.ddcar"
     },
@@ -28,7 +31,10 @@
     "phonegap-plugin-barcodescanner": {
       "PACKAGE_NAME": "com.gitmew.ddcar"
     },
-    "cordova-plugin-datepicker": {
+    "cordova-plugin-screen-orientation": {
+      "PACKAGE_NAME": "com.gitmew.ddcar"
+    },
+    "cordova-plugin-fullscreen": {
       "PACKAGE_NAME": "com.gitmew.ddcar"
     }
   },
