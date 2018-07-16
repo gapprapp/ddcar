@@ -1,5 +1,6 @@
 <?php
     include "db.php";
+    $start = $_POST['start'];
     $output = array();
     $txt = "(cancel)";
 
@@ -7,17 +8,27 @@
         $date = $_POST['date'];
         $date_to = $_POST['date_to'];
         $query = "SELECT s.order_id,s.order_number,c.cus_name,s.date_time FROM sale_order s INNER JOIN customer c
-        ON s.customer_id = c.cus_id WHERE date_time BETWEEN '$date' AND '$date_to' AND s.order_number NOT LIKE '%$txt%'";
+        ON s.customer_id = c.cus_id WHERE date_time BETWEEN '$date' AND '$date_to' AND s.order_number NOT LIKE '%$txt%' LIMIT $start,8";
+    }elseif(isset($_POST['value'])){
+        $val = $_POST['value'];     
+        $query = "SELECT s.order_id,s.order_number,c.cus_name,s.date_time FROM sale_order s INNER JOIN customer c
+        ON s.customer_id = c.cus_id WHERE s.order_number LIKE '%$val%' OR c.cus_name LIKE '%$val%' 
+        AND s.order_number NOT LIKE '%$txt%' ORDER BY s.order_id DESC LIMIT $start,8";
     }else{
         $query = "SELECT s.order_id,s.order_number,c.cus_name,s.date_time FROM sale_order s INNER JOIN customer c
-        ON s.customer_id = c.cus_id WHERE s.order_number NOT LIKE '%$txt%' ORDER BY s.order_id DESC";
+        ON s.customer_id = c.cus_id WHERE s.order_number NOT LIKE '%$txt%' ORDER BY s.order_id DESC LIMIT $start,8";
     }    
     $result = mysqli_query($conn, $query);
 
-    if(mysqli_num_rows($result) > 0){    
-      while($row = mysqli_fetch_array($result)){      
-        $output[] = $row;  
-      }   
+    if(mysqli_num_rows($result) > 0){
+        if(mysqli_num_rows($result) < 8){           
+            $output[] = 'last';
+        }else{
+            $output[] = 'not last';
+        }
+        while($row = mysqli_fetch_array($result)){      
+            $output[] = $row;  
+        }   
     }
     if($result){
         echo json_encode($output);		   
