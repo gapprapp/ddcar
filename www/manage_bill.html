@@ -39,7 +39,11 @@
       list-style-type: none;
       margin: 0;
       padding: 0;
-    }      
+    }
+    .btn-default{
+      outline: none !important;
+      box-shadow: none !important;
+    }  
   </style>
 
   <script>
@@ -69,7 +73,7 @@
         $("#i-back").attr("onclick","showUL()");
         search_date();
       });  
-      get_bill();
+      //get_bill();
       
       //scroll to bottom
       $(window).on("scroll", function() {
@@ -150,7 +154,7 @@
       if($("#search_row").is(':visible')){
         $("#search_row").prop('hidden', true);
         if(!$("#myD").prop('hidden')){
-          $("#date_row").prop('hidden', false);
+          //$("#date_row").prop('hidden', false);
         }
       }else{
         $("#search_row").prop('hidden', false);
@@ -286,16 +290,16 @@
       </div>
     </div>
     <div id="search_row" class="row mg-10" hidden>
-      <div class="col-7">
-        <input id="search_bill" type="text" class="form-control form-control-lg text-center" placeholder="เลขที่ / ลูกค้า">       
+      <div class="col-9 input-group">
+        <input id="search_bill" type="text" class="form-control form-control-lg text-center" placeholder="เลขที่ / ลูกค้า" style="border-right-color: #d63232;">
+        <div class="input-group-prepend">
+          <button class="btn btn-default" style="border-top-right-radius: 5px; border-bottom-right-radius: 5px; background-color: #d63232; border-color: #d63232;">
+            <i class="fas fa-search" onclick="search()" style="color: white; "></i>
+          </button>    
+        </div> 
       </div> 
-      <div class="col-2">
-        <button class="mbtn" style="height: 90%; width: 110%;">
-          <i class="fas fa-search" onclick="search()"></i>
-        </button>        
-      </div> 
-      <div class="col-3">
-        <button id="datepicker-from" class="mbtn" style="height: 90%; margin-top: 2px;">
+      <div class="col-3 text-center">
+        <button id="datepicker-from" class="mbtn" style="height: 100%; width: 90%;">
           <i class="far fa-calendar-alt"></i>
         </button>
         <button id="datepicker-to" hidden></button>
@@ -349,6 +353,14 @@
     });
     $(".mbtn").on("touchend", function() {
       $(this).removeClass('mbtn-touch');
+    });
+    $(".btn-default").on("touchstart", function() {
+      $(this).css('background-color', '#c43f3f');
+      $(this).css('border-color:', '#c43f3f');
+    });
+    $(".btn-default").on("touchend", function() {
+      $(this).css('background-color', '#da4646');
+      $(this).css('border-color:', '#d63232');
     });
   </script>
 </body>
