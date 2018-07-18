@@ -86,6 +86,19 @@
             }     
         });
 
+        $(document).keydown(function(objEvent) {
+            if (objEvent.keyCode == 13) {  //enter pressed
+                objEvent.preventDefault();
+                var $this = $(objEvent.target);
+                var i_enter = parseFloat($this.attr('data-index'));                      
+                if(i_enter == 1){
+                    search_prod();
+                }else if(i_enter == 2){
+                    add_export();
+                }                        
+            }         
+        })
+
         function get_prod(id){
             prod_id = id;
             $.ajax({
@@ -107,7 +120,7 @@
                     });
                     show();                                        
                 }               
-            }); 
+            });                       
         }
 
         function scanqr(){
@@ -137,7 +150,9 @@
                                             prod_id = obj[i].prod_id;       
                                         });                                                                                      
                                     }               
-                                });                                       
+                                });
+                                var temp = $('#amount').val();           
+                                $("#amount").focus().val("").val(temp);
                         }else{
                             //alert("Sorry, only qr codes this time ;)");
                         }
@@ -248,7 +263,7 @@
             });
         }
        
-        function selectfolder() {            
+        function selectfolder() {
             goto = "select_folder.html?from=export";
             transition_page_next_flip(goto);
         }
@@ -309,10 +324,17 @@
             });  
         }
 
-        function get_allprod(){
+        function search_prod(){
+            var val = $('#search_prod').val();
+            if(val == ""){
+                return 0;
+            }       
+            $('#search_prod').blur();
+            $('#myUL').empty();
             $.ajax({
-                type: "GET",
-                url: "http://migky.myqnapcloud.com:8083/dd-shop/php/get_allprod.php",                     
+                type: "POST",
+                url: "http://migky.myqnapcloud.com:8083/dd-shop/php/search_prod.php",
+                data: {'phrase' : val},
                 beforeSend: function(){
                     $(".overlay").prop('hidden', false);
                 },             
@@ -325,41 +347,17 @@
                             '<div class="col-4 text-center p">'+field.prod_code+'</div>' +
                             '<div class="col-8 text-center p">'+field.prod_name+'</div>' +
                             '</div><hr></li>');        
-                        });   
-                    }else{
-                        $('#myUL').append('<li><div class="col-12 text-center p">กรุณาเพิ่มสินค้าก่อนทำรายการ</div><hr></li>');                   
-                    }                                                                                                                                            
+                        }); 
+                    }                                                                                                                                        
                 }               
             }); 
         }
-
-        var ch = 0;
+     
         function search(){
-            ch++;
-            if(ch == 1){
-                get_allprod();
-                $("#search-ctn").prop('hidden', false);
-                $("#big-ctn").prop('hidden', true);
-                $("#navs-bttm").prop('hidden', true);
-                $("#col-back").attr('onclick', 'show()');            
-            }else{                       
-                $('#myUL li').each(function(){
-                    $(this).attr('data-search-term', $(this).text().toLowerCase());
-                });      
-
-                var searchTerm = $('#search_prod').val().toLowerCase();
-                //alert(searchTerm.length);
-
-                $('#myUL li').each(function(){ 
-                    //alert(searchTerm.length);           
-                    if ($(this).filter('[data-search-term *= ' + searchTerm + ']').length > 0 || searchTerm.length < 1) {
-                    //alert("show");
-                        $(this).show();                                                     
-                    } else {
-                        $(this).hide();                               
-                    }
-                });   
-            }                 
+            $("#search-ctn").prop('hidden', false);
+            $("#big-ctn").prop('hidden', true);
+            $("#navs-bttm").prop('hidden', true);
+            $("#col-back").attr('onclick', 'show()');            
         }
 
         function show(){
@@ -368,7 +366,9 @@
             $("#navs-bttm").prop('hidden', false);
             $("#col-back").attr('onclick', 'transition_page_back("index.html")');
             $('#myUL').empty();
-            ch = 0;
+            $('#search_prod').val("");
+            var temp = $('#amount').val();           
+            $("#amount").focus().val("").val(temp);
         } 
 
     </script>
@@ -382,7 +382,7 @@
     <div id="search-ctn" class="container justify-content-center" style="margin-top: 20%;" hidden>
         <div class="row mg-10">
             <div class="col-12 text-center">
-                <input id="search_prod" type="text" onkeyup="search()" class="form-control form-control-lg text-center" placeholder="ค้นหาสินค้า" autofocus>
+                <input id="search_prod" type="search" class="form-control form-control-lg text-center" placeholder="ค้นหาสินค้า" autofocus data-index="1">
             </div>  
         </div>
         <div id="add_ctn" class="container">
@@ -420,7 +420,7 @@
                 </div>
                 <div class="col-3 text-center">
                     <label for="amount">จำนวน</label>
-                    <input id="amount" type="number" min="1" value="1" class="w3-input">
+                    <input id="amount" type="number" min="1" value="1" class="w3-input" data-index="2">
                 </div>
                 <div class="col-3 text-center">
                     <label for="cost">ทุน</label>

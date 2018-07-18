@@ -82,11 +82,27 @@
                 $('#addr').prop('disabled', false);
                 $('#tel').prop('disabled', false);
                 $('#type').prop('disabled', false);
+                var temp = $('#name').val();
+                $('#name').focus().val("").val(temp);
             }else{
                  $('#h5-title').text('ข้อมูล');
                  $('#btn-update').prop('hidden', true);
             }
         });
+
+        $(document).keydown(function(objEvent) {
+            if (objEvent.keyCode == 13) {  //enter pressed
+                objEvent.preventDefault();
+                var $this = $(objEvent.target);
+                var i_enter = parseFloat($this.attr('data-index'));                      
+                if(i_enter == 3){
+                    $this.blur();
+                }else{
+                    var temp = $('[data-index="' + (i_enter+1).toString() + '"]').val();                  
+                    $('[data-index="' + (i_enter+1).toString() + '"]').focus().val("").val(temp);
+                }                       
+            }         
+        })
 
         function disactive(arg) {
             nav_menu = ['home', 'bell', 'qrcode', 'bars'];
@@ -207,19 +223,19 @@
             <div class="row mg-10">
                 <div class="col-12 text-center pdlr">
                     <label for="name">ชื่อ</label>
-                    <input id="name" type="text" class="w3-input" disabled>
+                    <input id="name" type="text" class="w3-input" disabled data-index="1">
                 </div>
             </div>
             <div class="row mg-10">
                 <div class="col-12 text-center pdlr">
                     <label for="addr">ที่อยู่</label>
-                    <input id="addr" type="text" class="w3-input" disabled>
+                    <input id="addr" type="text" class="w3-input" disabled data-index="2">
                 </div>
             </div>
             <div class="row mg-10">
                 <div class="col-12 text-center pdlr">
                     <label for="tel">เบอร์โทร</label>
-                    <input id="tel" type="tel" class="w3-input" disabled>
+                    <input id="tel" type="tel" class="w3-input" disabled data-index="3">
                 </div>
             </div>
             <div class="row" style="margin-bottom: 16%;">

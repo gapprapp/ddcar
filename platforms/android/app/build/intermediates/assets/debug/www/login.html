@@ -32,9 +32,18 @@
     </style>
 
     <script>
-        $(document).ready(function () {            
-            
-        });  
+       $(document).keydown(function(objEvent) {
+            if (objEvent.keyCode == 13) {  //enter pressed
+                objEvent.preventDefault();
+                var $this = $(objEvent.target);
+                var i_enter = parseFloat($this.attr('data-index'));                      
+                if(i_enter == 2){
+                    login();
+                }else{          
+                    $('[data-index="' + (i_enter+1).toString() + '"]').focus();
+                }                       
+            }         
+        })
 
         function login(){
             var name = $('#name').val();
@@ -86,10 +95,7 @@
     <div class="overlay" hidden><div class="loading"></div></div>
 
     <!-- Nav menu top -->
-    <div class="row fixed-top navs">
-        <!--<div class="col-1 text-center" onclick="transition_page_next('member.html')">
-            <i id="i-back" class="fas fa-angle-left"></i>
-        </div>-->
+    <div class="row fixed-top navs">       
         <div class="col-12 text-center" style="padding-left: 0;">
             <h5 id="h5-title">เข้าระบบ</h5>
         </div>       
@@ -103,13 +109,13 @@
             <div class="row" style="margin-bottom: 10%;">
                 <div class="col-12 text-center pdlr">
                     <label>ชื่อ</label>
-                    <input id="name" type="text" class="w3-input">
+                    <input id="name" type="text" class="w3-input" autofocus data-index="1">
                 </div>
             </div>
             <div class="row" style="margin-bottom: 18%;">
                 <div class="col-12 text-center pdlr">
                     <label>พาสเวิร์ด</label>
-                    <input id="pass" type="password" class="w3-input">
+                    <input id="pass" type="password" class="w3-input" data-index="2">
                 </div>
             </div>
             <div class="row" style="margin-bottom: 15%;">

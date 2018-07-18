@@ -95,6 +95,13 @@
         }
       });      
     });
+    
+    $(document).keydown(function(objEvent) {
+      if (objEvent.keyCode == 13) {  //enter pressed
+        objEvent.preventDefault();           
+        search();        
+      }         
+    })
 
     function showUL(){
       $("#myS").prop('hidden', true);
@@ -163,6 +170,7 @@
       if($('#search_import').val() == ""){
         return 0;
       }
+      $('#search_import').blur();
       val = $('#search_import').val();
       start_s = 0;
       bool_s = false;
@@ -283,18 +291,13 @@
   <div class="container justify-content-center" style="margin-top: 15%;">
     <div id="date_row" class="row mg-5" style="margin-left: 5%;" hidden>
       <div class="col-11 text-center">
-        <h5 id="date"></h5>
+        <h5 id="date">date</h5>
       </div>
     </div>
     <div id="search_row" class="row mg-10" hidden>
-      <div class="col-7">
-        <input id="search_import" type="text" class="form-control form-control-lg text-center" placeholder="เลขที่ / โกดัง">
-      </div> 
-      <div class="col-2">
-        <button class="mbtn" style="height: 90%; width: 110%;">
-          <i class="fas fa-search" onclick="search()"></i>
-        </button>        
-      </div> 
+      <div class="col-9">
+        <input id="search_import" type="search" class="form-control form-control-lg text-center" placeholder="เลขที่ / โกดัง">
+      </div>      
       <div class="col-3">
         <button id="datepicker-from" class="mbtn" style="height: 90%; margin-top: 2px;">
           <i class="far fa-calendar-alt"></i>
@@ -318,10 +321,10 @@
     <ul id="myUL">
 
     </ul>
-    <ul id="myD">
+    <ul id="myD" hidden>
 
     </ul>
-    <ul id="myS">
+    <ul id="myS" hidden>
 
     </ul>
     </div>

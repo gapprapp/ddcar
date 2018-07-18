@@ -248,8 +248,12 @@
             $("style").append(".jconfirm .jconfirm-box{margin-bottom:60%;}");
             $.confirm({
               title: prod_name,
-              content: '<div class="row"><div class="col-2"></div><div class="col-3 text-center" style="font-size: 110%; font-weight: bold;">จำนวน</div><div class="col-5 text-center"><input id="edt-amt" type="number" class="input-cf" placeholder="" value="'+amt+'" autofocus></div><div class="col-2"></div></div>',
+              content: '<div class="row"><div class="col-2"></div><div class="col-3 text-center" style="font-size: 110%; font-weight: bold;">จำนวน</div><div class="col-5 text-center"><input id="edt-amt" type="number" class="input-cf" placeholder="" value="'+amt+'"></div><div class="col-2"></div></div>',
               backgroundDismiss: true,
+              onContentReady: function () {
+                var temp = $('#edt-amt').val();
+                $("#edt-amt").focus().val("").val(temp);
+            },
               onDestroy: function(){
                 $("style").append('.jconfirm .jconfirm-box{margin-bottom: 5%;}');
             },
@@ -290,7 +294,7 @@
             });
         }
         
-        function clearAll(){        
+        function clearAll(){
             localStorage.arr_ex = "";          
             localStorage.arr_prod_e =  "";  
             localStorage.ware_id_ex = "";

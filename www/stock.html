@@ -79,11 +79,10 @@
             }             
       });
 
-      $(document).keydown(function(objEvent) {         
+      $(document).keydown(function(objEvent) {
         if (objEvent.keyCode == 13) {  //enter pressed
           objEvent.preventDefault();           
-          search_prod();
-          $('#search_prod').blur();
+          search_prod();          
         }         
       })
 
@@ -146,7 +145,8 @@
         var val = $('#search_prod').val();
         if(val == ""){
           return 0;
-        }         
+        }       
+        $('#search_prod').blur();  
         $('#myUL').empty();
         $.ajax({
           type: "POST",
@@ -165,9 +165,7 @@
                   '<div class="col-8 text-center p">'+field.prod_name+'</div>' +
                   '</div><hr></li>');        
               }); 
-            }else{
-              $('#myUL').append('<li><div class="col-12 text-center p">ไม่มีสินค้าที่ต้องการค้นหา</div><hr></li>');
-            }                                                                                                                                          
+            }                                                                                                                                        
           }               
         }); 
       }
@@ -184,8 +182,7 @@
         $("#big-ctn").prop('hidden', false);
         $("#col-back").attr('onclick', 'transition_page_back("index.html")');
         $('#myUL').empty();
-        $('#search_prod').val("")
-        ch = 0;
+        $('#search_prod').val("");
       }
 
       function selectfolder() {

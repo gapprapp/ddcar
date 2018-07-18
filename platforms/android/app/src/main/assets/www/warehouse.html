@@ -150,7 +150,11 @@
       //name = "โกดัง C";
       $.confirm({
         title: name+" (แก้ไข)",
-        content: '<input id="edt-ware" value="'+name+'" type="text" class="input-cf" style="width: 75%; margin-left: 12.5%; margin-top: 2%;" placeholder="ใส่ชื่อที่ต้องการแก้ไข" autofocus>',
+        content: '<input id="edt-ware" value="'+name+'" type="text" class="input-cf" style="width: 75%; margin-left: 12.5%; margin-top: 2%;" placeholder="ใส่ชื่อที่ต้องการแก้ไข">',
+        onContentReady: function () {
+          var temp = $('#edt-ware').val();
+          $("#edt-ware").focus().val("").val(temp);
+        },
         onDestroy: function(){
           $("style").append('.jconfirm .jconfirm-box{margin-bottom: 5%;}');
         },

@@ -79,11 +79,10 @@
             }             
       });
 
-      $(document).keydown(function(objEvent) {         
+      $(document).keydown(function(objEvent) {
         if (objEvent.keyCode == 13) {  //enter pressed
           objEvent.preventDefault();           
-          search_prod();
-          $('#search_prod').blur();
+          search_prod();          
         }         
       })
 
@@ -146,7 +145,8 @@
         var val = $('#search_prod').val();
         if(val == ""){
           return 0;
-        }         
+        }       
+        $('#search_prod').blur();  
         $('#myUL').empty();
         $.ajax({
           type: "POST",
@@ -165,9 +165,7 @@
                   '<div class="col-8 text-center p">'+field.prod_name+'</div>' +
                   '</div><hr></li>');        
               }); 
-            }else{
-              $('#myUL').append('<li><div class="col-12 text-center p">ไม่มีสินค้าที่ต้องการค้นหา</div><hr></li>');
-            }                                                                                                                                          
+            }                                                                                                                                        
           }               
         }); 
       }
@@ -175,7 +173,8 @@
       function search(){
           $("#search-ctn").prop('hidden', false);
           $("#big-ctn").prop('hidden', true);
-          $("#col-back").attr('onclick', 'show()');                       
+          $("#col-back").attr('onclick', 'show()');
+          $('#search_prod').focus();
       }
 
       function show(){
@@ -183,8 +182,7 @@
         $("#big-ctn").prop('hidden', false);
         $("#col-back").attr('onclick', 'transition_page_back("index.html")');
         $('#myUL').empty();
-        $('#search_prod').val("")
-        ch = 0;
+        $('#search_prod').val("");
       }
 
       function selectfolder() {
@@ -212,14 +210,9 @@
      <!-- Search ctn -->
      <div id="search-ctn" class="container justify-content-center" style="margin-top: 15%;" hidden>
       <div class="row mg-10">
-          <div class="col-10 text-center">          
+          <div class="col-12 text-center">          
               <input id="search_prod" type="search" class="form-control form-control-lg text-center" placeholder="ค้นหาสินค้า">          
-          </div>  
-          <div class="col-2 text-right">
-            <button class="mbtn" style="height: 100%; width: 110%;">
-              <i class="fas fa-search" onclick="search_prod()"></i>
-            </button>        
-          </div> 
+          </div>        
       </div>
       <div id="add_ctn" class="container">
           <ul id="myUL">

@@ -115,6 +115,20 @@
             $("#net").text(sum.toLocaleString()); // 50000 -> 50,000;    
         });
 
+        $(document).keydown(function(objEvent) {
+            if (objEvent.keyCode == 13) {  //enter pressed
+                objEvent.preventDefault();
+                var $this = $(objEvent.target);
+                var i_enter = parseFloat($this.attr('data-index'));                      
+                if(i_enter == 2){
+                    
+                }else{
+                    var temp = $('[data-index="' + (i_enter+1).toString() + '"]').val();                  
+                    $('[data-index="' + (i_enter+1).toString() + '"]').focus().val("").val(temp);
+                }                       
+            }         
+        })
+
         function disactive(arg) {
             nav_menu = ['home', 'add', 'edit', 'del'];
             for (i = 0; i < 4; i++) {
@@ -170,8 +184,12 @@
             $("style").append(".jconfirm .jconfirm-box{margin-bottom:60%;}");
             $.confirm({
               title: name,
-              content: '<div class="row" style="margin-top: 2%; margin-bottom: 2%;"><div class="col-1"></div><div class="col-5 text-center" style="font-size: 110%; font-weight: bold;">ราคา</div><div class="col-1"></div><div class="col-4 text-center" style="font-size: 110%; font-weight: bold;">จำนวน</div><div class="col-1"></div></div><div class="row"><div class="col-1"></div><div class="col-5 text-center"><input id="edt-price" type="number" class="input-cf" placeholder="" value="'+$("#price-"+arg).text()+'" autofocus></div><div class="col-1">x</div><div class="col-4 text-center"><input id="edt-amt" type="number" class="input-cf" placeholder="" value="'+$("#amount-"+arg).text()+'"></div><div class="col-1"></div></div>',
+              content: '<div class="row" style="margin-top: 2%; margin-bottom: 2%;"><div class="col-1"></div><div class="col-5 text-center" style="font-size: 110%; font-weight: bold;">ราคา</div><div class="col-1"></div><div class="col-4 text-center" style="font-size: 110%; font-weight: bold;">จำนวน</div><div class="col-1"></div></div><div class="row"><div class="col-1"></div><div class="col-5 text-center"><input id="edt-price" type="number" class="input-cf" placeholder="" value="'+$("#price-"+arg).text()+'" data-index="1"></div><div class="col-1">x</div><div class="col-4 text-center"><input id="edt-amt" type="number" class="input-cf" placeholder="" value="'+$("#amount-"+arg).text()+'" data-index="2"></div><div class="col-1"></div></div>',
               backgroundDismiss: true,
+              onContentReady: function () {
+                var temp = $('#edt-price').val();
+                $("#edt-price").focus().val("").val(temp);
+            },
               buttons: {
                 formSubmit: {
                   text: 'ตกลง',
@@ -277,7 +295,7 @@
             $("#collapse-"+arg).slideToggle('collapse');
         }
       
-        function next(){ 
+        function next(){
             if(arr_data.length == 0){
                 return 0;
             }         
