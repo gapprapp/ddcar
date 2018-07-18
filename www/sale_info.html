@@ -392,7 +392,7 @@
                     <input id="bill" type="text" class="w3-input" readonly onclick="showbill();" value="ใบเสร็จ">
                 </div>
             </div>
-            <div class="row" style="margin-bottom: 18%;">
+            <div class="row" style="margin-bottom: 18%;" id="showvat">
                 <div class="col-8 text-center">
                     <label for="ware">ขายจาก</label>
                     <input id="ware" type="text" class="w3-input" readonly onclick="showware();" placeholder="เลือกหน้าร้าน/โกดัง">                   
@@ -401,6 +401,14 @@
                     <label for="vat">vat</label>
                     <input id="vat" type="text" class="w3-input" readonly onclick="showvat();">
                 </div>
+            </div>
+            <div class="row" style="margin-bottom: 18%;" id="novat" hidden>
+              <div class="col-1"></div>
+                <div class="col-10 text-center">
+                    <label for="ware">ขายจาก</label>
+                    <input id="ware" type="text" class="w3-input" readonly onclick="showware();" placeholder="เลือกหน้าร้าน/โกดัง">                   
+                </div>
+                <div class="col-1"></div>
             </div>
             <div class="row">
                 <div class="col-12">
