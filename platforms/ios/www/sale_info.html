@@ -72,6 +72,19 @@
             }            
         });
 
+        $(document).keydown(function(objEvent) {
+            if (objEvent.keyCode == 13) {  //enter pressed
+                objEvent.preventDefault();
+                var $this = $(objEvent.target);
+                var i_enter = parseFloat($this.attr('data-index'));                      
+                if(i_enter == 2){                    
+                    save2db();                    
+                }else{
+                    $('[data-index="' + (i_enter+1).toString() + '"]').focus();
+                }                       
+            }         
+        })
+
         function showpay(){
             $.confirm({
               title: 'การชำระเงิน',
@@ -190,7 +203,7 @@
           $('#total').val(net - dis);
           var get = $('#get').val();
           var total = $('#total').val();        
-          if(get - total < 0){
+          if(get - total < 0){           
             $('#chng').val("");
           }else{
             $('#chng').val(get - total);
@@ -211,7 +224,7 @@
             if($("#ware").val() == ""){
                 $.confirm({
                     title: 'พบข้อผิดพลาด',
-                    content: 'กรุณากรอกข้อมูลให้ครบ',
+                    content: 'กรุณาเลือกโกดัง',
                     backgroundDismiss: true,
                     buttons: {
                     formSubmit: {
@@ -223,11 +236,11 @@
                     }
                 });
                 return 0;
-            }           
-            $("style").append('.jconfirm .jconfirm-box{margin-bottom: 50%;}');
+            }          
+            $("style").append('.jconfirm .jconfirm-box{margin-bottom: 100%;}');
             $.confirm({
-                title: 'คิดเงิน',
-                content: '<hr style="margin-top: 0; width: 85%;"><div class="row mg-6"><div class="col-2"></div><div class="col-8 text-center"><label for="net">รวม</label><input id="net" type="number" class="input-cf" value="'+localStorage.net+'" readonly></div><div class="col-2"></div></div><div class="row mg-6"><div class="col-2"></div><div class="col-8 text-center"><label for="dis">ลด</label><input autofocus id="dis" type="number" class="input-cf" oninput="edit_discount()"></div><div class="col-2"></div></div><div class="row mg-6"><div class="col-2"></div><div class="col-8 text-center"><label for="total">สุทธิ</label><input id="total" type="number" class="input-cf" value="'+localStorage.net+'" readonly></div><div class="col-2"></div></div><div class="row mg-6"><div class="col-2"></div><div class="col-8 text-center"><label for="get">รับ</label><input id="get" type="number" class="input-cf" oninput="get_money()"></div><div class="col-2"></div></div><div class="row mg-6"><div class="col-2"></div><div class="col-8 text-center"><label for="chng">ทอน</label><input id="chng" type="number" class="input-cf" readonly></div><div class="col-2"></div></div>',
+                title: '',
+                content: '<div class="row mg-6"><div class="col-2"></div><div class="col-8 text-center"><label for="net">รวม</label><input id="net" type="number" class="input-cf" value="'+localStorage.net+'" readonly></div><div class="col-2"></div></div><div class="row mg-6"><div class="col-2"></div><div class="col-8 text-center"><label for="dis">ลด</label><input data-index="1" autofocus id="dis" type="number" class="input-cf" oninput="edit_discount()"></div><div class="col-2"></div></div><div class="row mg-6"><div class="col-2"></div><div class="col-8 text-center"><label for="total">สุทธิ</label><input id="total" type="number" class="input-cf" value="'+localStorage.net+'" readonly></div><div class="col-2"></div></div><div class="row mg-6"><div class="col-1"></div><div class="col-5 text-center"><label for="get">รับ</label><input data-index="2" id="get" type="number" class="input-cf" oninput="get_money()"></div><div class="col-5 text-center"><label for="chng">ทอน</label><input id="chng" type="number" class="input-cf" readonly></div><div class="col-1"></div></div>',
                 backgroundDismiss: true,
                 onDestroy: function () {
                     $("style").append('.jconfirm .jconfirm-box{margin-bottom: 5%;}');
@@ -238,10 +251,10 @@
                     formSubmit: {
                     text: 'ตกลง',
                     btnClass: 'btn-danger',
-                    action: function () {
+                    action: function () {   
                         if($("#chng").val() == "" || $("#get").val() == ""){
                             return 0;
-                        }
+                        }                    
                         save2db();
                     }
                     }
@@ -252,6 +265,10 @@
         }
 
         function save2db(){
+            if($("#chng").val() == "" || $("#get").val() == ""){
+                return 0;
+            }
+            document.elementFromPoint(0, 0).click();
             var dis = $('#dis').val();
             if(dis == ""){
               dis = 0;
@@ -306,12 +323,12 @@
         }
 
         var b_id,type;
-        function setware(arg) {            
+        function setware(arg) {
             ware = $("#li-ware-" + arg).text();
             type = $("#type-" + arg).text();
             $("#ware").val(ware);
             b_id = $("#id-ware-" + arg).text();  
-            document.elementFromPoint(0, 0).click();        
+            document.elementFromPoint(0, 0).click();
         }
     </script>    
 </head>
@@ -350,10 +367,7 @@
               <div class="col-1"></div>
               <div class="col-10 text-center">
                     <label for="ware">ขายจาก</label>
-                    <input id="ware" type="text" class="w3-input" readonly onclick="showware();" placeholder="เลือกหน้าร้าน/โกดัง">
-                    <!--<input id="ware" type="text" class="w3-input" data-toggle="dropdown" placeholder="เลือกโกดัง/หน้าร้าน" readonly>
-                    <ul id="ul-ware" class="dropdown-menu text-center" aria-labelledby="role" style="width: 80%;">                      
-                    </ul>-->
+                    <input id="ware" type="text" class="w3-input" readonly onclick="showware();" placeholder="เลือกหน้าร้าน/โกดัง">                   
                 </div>
                 <div class="col-1"></div>
             </div>

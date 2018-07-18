@@ -8,7 +8,7 @@ body{
 	overflow: hidden;
 }
 
-#simg{
+#img{
 	width: 300px;
 	height: 200px;
 }
@@ -261,7 +261,13 @@ label{
 }
 
 #search_prod:focus, #search_prod:active {
-        outline: red !important;
-        box-shadow: none;
-        border-color: #d63232;
-      }
+    outline: red !important;
+    box-shadow: none;
+    border-color: #d63232;
+ }
+
+ #search_bill:focus, #search_bill:active {
+    outline: red !important;
+    box-shadow: none;
+    border-color: #d63232;
+ }

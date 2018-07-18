@@ -39,7 +39,11 @@
       list-style-type: none;
       margin: 0;
       padding: 0;
-    }      
+    }
+    .btn-default{
+      outline: none !important;
+      box-shadow: none !important;
+    }  
   </style>
 
   <script>
@@ -95,6 +99,13 @@
         }
       });
     });
+
+    $(document).keydown(function(objEvent) {
+      if (objEvent.keyCode == 13) {  //enter pressed
+        objEvent.preventDefault();           
+        search();        
+      }         
+    })
 
     function showUL(){
       $("#myS").prop('hidden', true);
@@ -163,6 +174,7 @@
       if($('#search_bill').val() == ""){
         return 0;
       }
+      $('#search_bill').blur();
       val = $('#search_bill').val();
       start_s = 0;
       bool_s = false;
@@ -174,7 +186,7 @@
       get_bill_s();
     }
 
-    function get_bill_s(){      
+    function get_bill_s(){
       $.ajax({
         type: "POST",
         url:"http://migky.myqnapcloud.com:8083/dd-shop/php/get_bill.php",
@@ -282,17 +294,12 @@
   <div class="container justify-content-center" style="margin-top: 15%;">
     <div id="date_row" class="row mg-5" style="margin-left: 5%;" hidden>
       <div class="col-11 text-center">
-        <h5 id="date"></h5>
+        <h5 id="date">date</h5>
       </div>
     </div>
     <div id="search_row" class="row mg-10" hidden>
-      <div class="col-7">
-        <input id="search_bill" type="text" class="form-control form-control-lg text-center" placeholder="เลขที่ / ลูกค้า">       
-      </div> 
-      <div class="col-2">
-        <button class="mbtn" style="height: 90%; width: 110%;">
-          <i class="fas fa-search" onclick="search()"></i>
-        </button>        
+      <div class="col-9">
+        <input id="search_bill" type="search" class="form-control form-control-lg text-center" placeholder="เลขที่ / ลูกค้า">
       </div> 
       <div class="col-3">
         <button id="datepicker-from" class="mbtn" style="height: 90%; margin-top: 2px;">
@@ -317,10 +324,10 @@
     <ul id="myUL">
 
     </ul>
-    <ul id="myD">
+    <ul id="myD" hidden>
 
     </ul>
-    <ul id="myS">
+    <ul id="myS" hidden>
 
     </ul>
     </div>     
@@ -349,6 +356,14 @@
     });
     $(".mbtn").on("touchend", function() {
       $(this).removeClass('mbtn-touch');
+    });
+    $(".btn-default").on("touchstart", function() {
+      $(this).css('background-color', '#c43f3f');
+      $(this).css('border-color:', '#c43f3f');
+    });
+    $(".btn-default").on("touchend", function() {
+      $(this).css('background-color', '#da4646');
+      $(this).css('border-color:', '#d63232');
     });
   </script>
 </body>

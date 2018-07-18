@@ -32,6 +32,19 @@
   </style>
 
   <script>
+    $(document).keydown(function(objEvent) {
+      if (objEvent.keyCode == 13) {  //enter pressed
+        objEvent.preventDefault();
+        var $this = $(objEvent.target);
+        var i_enter = parseFloat($this.attr('data-index'));                      
+        if(i_enter == 3){
+          $this.blur();
+        }else{          
+          $('[data-index="' + (i_enter+1).toString() + '"]').focus();
+        }                       
+      }         
+    })
+
     function disactive(arg) {
       nav_menu = ['home', 'bell', 'qrcode', 'bars'];
       for (i = 0; i < 4; i++) {
@@ -133,19 +146,19 @@
       <div class="row" style="margin-bottom: 10%;">
         <div class="col-12 text-center pdlr">
           <label for="name">ชื่อ</label>
-          <input id="name" type="text" class="w3-input">
+          <input id="name" type="text" class="w3-input" autofocus data-index="1">
         </div>
       </div>
       <div class="row" style="margin-bottom: 10%;">
         <div class="col-12 text-center pdlr">
           <label for="email">พาสเวิร์ด</label>
-          <input id="pass" type="password" class="w3-input">
+          <input id="pass" type="password" class="w3-input" data-index="2">
         </div>
       </div>
       <div class="row" style="margin-bottom: 10%;">
         <div class="col-12 text-center pdlr">
           <label for="phone">เบอร์โทรศัพท์</label>
-          <input id="phone" type="tel" class="w3-input">
+          <input id="phone" type="tel" class="w3-input" data-index="3">
         </div>
       </div>
       <div class="row" style="margin-bottom: 18%;">

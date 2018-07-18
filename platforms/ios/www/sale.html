@@ -98,6 +98,22 @@
             }        
         });
 
+        $(document).keydown(function(objEvent) {
+            if (objEvent.keyCode == 13) {  //enter pressed
+                objEvent.preventDefault();
+                var $this = $(objEvent.target);
+                var i_enter = parseFloat($this.attr('data-index'));                      
+                if(i_enter == 1){
+                    search_prod();
+                }else if(i_enter == 3){
+                    add_prod();
+                }else{
+                    var temp = $('[data-index="' + (i_enter+1).toString() + '"]').val();
+                    $('[data-index="' + (i_enter+1).toString() + '"]').focus().val("").val(temp);
+                }                       
+            }         
+        })
+
         function get_sale(id){
             prod_id = id;
             $.ajax({
@@ -128,7 +144,7 @@
                     });
                     show();                                             
                 }               
-            }); 
+            });            
         }
 
         function scanqr(){
@@ -167,7 +183,9 @@
                                             prod_id = obj[i].prod_id;  
                                         });                                                                                        
                                     }               
-                                });                                       
+                                });
+                                var temp = $('#price').val();
+                                $("#price").focus().val("").val(temp);                                      
                         }else{
                             //alert("Sorry, only qr codes this time ;)");
                         }
@@ -239,7 +257,7 @@
             $("#btn-addprod").prop("disabled", true);
         }*/
 
-        function add_prod(){           
+        function add_prod(){
             var code = $('#barcode').val();
             var price = $('#price').val();   
             var name = $('#name').val();    
@@ -324,67 +342,59 @@
             }); */
         }
 
-        function selectfolder() {            
+        function selectfolder() {
             goto = "select_folder.html?from=sale";
             transition_page_next_flip(goto);
         }
 
         function check(){
-            goto = "sale_check.html";
-            transition_page_next(goto);
+            if($("#check-sale").text() != "0"){
+                goto = "sale_check.html";
+                transition_page_next(goto);
+            }else{
+                return 0;
+            }
         }
 
-        function get_allprod(){
+        function search_prod(){
+            var val = $('#search_prod').val();
+            if(val == ""){
+                return 0;
+            }       
+            $('#search_prod').blur();  
+            $('#myUL').empty();
             $.ajax({
-                type: "GET",
-                url: "http://migky.myqnapcloud.com:8083/dd-shop/php/get_allprod.php",                     
+                type: "POST",
+                url: "http://migky.myqnapcloud.com:8083/dd-shop/php/search_prod.php",
+                data: {'phrase' : val},
                 beforeSend: function(){
                     $(".overlay").prop('hidden', false);
                 },             
                 success: function(data){  
                     $(".overlay").prop('hidden', true);                             
-                    var obj = jQuery.parseJSON(data);  
+                    var obj = jQuery.parseJSON(data);
                     if(obj){
-                         $.each(obj, function(i, field){ 
+                        $.each(obj, function(i, field){ 
                             $('#myUL').append('<li><div id="prod-1" class="row" onclick="get_sale('+field.prod_id+')">' +
                             '<div class="col-4 text-center p">'+field.prod_code+'</div>' +
                             '<div class="col-8 text-center p">'+field.prod_name+'</div>' +
                             '</div><hr></li>');        
                         }); 
-                    }else{
-                        $('#myUL').append('<li><div class="col-12 text-center p">กรุณาเพิ่มสินค้าก่อนทำรายการ</div><hr></li>');
-                    }                                                                                                                                              
+                    }                                                                                                                                        
                 }               
             }); 
         }
 
-        var ch = 0;
+        function select_cus(){
+            //alert("select_cus");
+            transition_page_next_flip('select_cus.html');
+        }
+       
         function search(){
-            ch++;
-            if(ch == 1){
-                get_allprod();
-                $("#search-ctn").prop('hidden', false);
-                $("#big-ctn").prop('hidden', true);
-                $("#navs-bttm").prop('hidden', true);
-                $("#col-back").attr('onclick', 'show()');            
-            }else{                       
-                $('#myUL li').each(function(){
-                    $(this).attr('data-search-term', $(this).text().toLowerCase());
-                });      
-
-                var searchTerm = $('#search_prod').val().toLowerCase();
-                //alert(searchTerm.length);
-
-                $('#myUL li').each(function(){ 
-                    //alert(searchTerm.length);           
-                    if ($(this).filter('[data-search-term *= ' + searchTerm + ']').length > 0 || searchTerm.length < 1) {
-                    //alert("show");
-                        $(this).show();                                                     
-                    } else {
-                        $(this).hide();                               
-                    }
-                });   
-            }                 
+            $("#search-ctn").prop('hidden', false);
+            $("#big-ctn").prop('hidden', true);
+            $("#navs-bttm").prop('hidden', true);
+            $("#col-back").attr('onclick', 'show()');    
         }
 
         function show(){
@@ -392,14 +402,15 @@
             $("#big-ctn").prop('hidden', false);
             $("#navs-bttm").prop('hidden', false);
             $("#col-back").attr('onclick', 'transition_page_back("index.html")');
-            $('#myUL').empty();
-            ch = 0;
+            $('#myUL').empty();   
+            var temp = $('#price').val();
+            $("#price").focus().val("").val(temp);         
         } 
 
     </script>
 </head>
 
-<body>
+<body style="overflow-y: auto;">
     <!-- Loading -->
     <div class="overlay" hidden><div class="loading"></div></div>
 
@@ -407,7 +418,7 @@
     <div id="search-ctn" class="container justify-content-center" style="margin-top: 20%;" hidden>
         <div class="row mg-10">
             <div class="col-12 text-center">
-                <input id="search_prod" type="text" onkeyup="search()" class="form-control form-control-lg text-center" placeholder="ค้นหาสินค้า" autofocus>
+                <input data-index="1" id="search_prod" type="search" class="form-control form-control-lg text-center" placeholder="ค้นหาสินค้า" autofocus>
             </div>  
         </div>
         <div id="add_ctn" class="container">
@@ -422,10 +433,10 @@
         <div id="col-back" class="col-1 text-center" onclick="transition_page_back('index.html?menu=2')">
             <i id="i-back" class="fas fa-angle-left"></i>
         </div>
-        <div class="col-8 text-center" style="padding-left: 15%; margin-right: 4%;">
+        <div class="col-9 text-center" style="padding-left: 12%; margin-right: 2%;">
             <h5 id="h5-title">ขาย</h5>
         </div>
-        <div class="col-2 text-right" onclick="check();"><div id="check-sale"class="circle-text">0</div></div>
+        <div class="col-1" onclick="check();"><div id="check-sale"class="circle-text">0</div></div>
     </div>
     <br>
 
@@ -435,7 +446,7 @@
             <div class="row mg-10">
                 <div class="col-12 text-center pdlr">
                     <label for="cus">ลูกค้า</label>
-                    <input id="cus" type="text" class="w3-input" onclick="transition_page_next_flip('select_cus.html');" placeholder="กรุณาใส่ชื่อลูกค้าก่อนทำการขาย">
+                    <input id="cus" type="text" class="w3-input" onclick="select_cus();" placeholder="กรุณาใส่ชื่อลูกค้าก่อนทำการขาย" readonly>
                 </div>
             </div>
             <div class="row mg-10">
@@ -451,11 +462,11 @@
                 </div>
                 <div class="col-4 text-center">
                     <label for="price">ราคา</label>
-                    <input readonly id="price" type="number" class="w3-input">
+                    <input readonly id="price" type="number" class="w3-input" data-index="2">
                 </div>
                 <div class="col-3 text-center">
                     <label for="amount">จำนวน</label>
-                    <input readonly id="amount" type="number" min="1" value="1" class="w3-input">
+                    <input readonly id="amount" type="number" min="1" value="1" class="w3-input" data-index="3">
                 </div>
             </div>
             <div class="row mg-10" style="padding-right: 5%; padding-left: 5%;">

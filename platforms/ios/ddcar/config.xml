@@ -45,6 +45,9 @@
     <feature name="BarcodeScanner">
         <param name="ios-package" value="CDVBarcodeScanner" />
     </feature>
+    <feature name="CDVOrientation">
+        <param name="ios-package" value="CDVOrientation" />
+    </feature>
     <name>ddcar</name>
     <description>
         A sample Apache Cordova application that responds to the deviceready event.
@@ -79,7 +82,6 @@
     <preference name="StatusBarOverlaysWebView" value="true" />
     <preference name="StatusBarStyle" value="lightcontent" />
     <preference name="StatusBarBackgroundColor" value="#952323" />
-    <feature name="CDVOrientation">
-        <param name="ios-package" value="CDVOrientation" />
-    </feature>
+    <preference name="Orientation" value="portrait" />
+    <preference name="Fullscreen" value="true" />
 </widget>

@@ -50,6 +50,20 @@
             get_prod(prod_id);                       
         });
         
+        $(document).keydown(function(objEvent) {
+            if (objEvent.keyCode == 13) {  //enter pressed
+                objEvent.preventDefault();
+                var $this = $(objEvent.target);
+                var i_enter = parseFloat($this.attr('data-index'));                      
+                if(i_enter == 5){
+                    $this.blur();
+                }else{
+                    var temp = $('[data-index="' + (i_enter+1).toString() + '"]').val();                  
+                    $('[data-index="' + (i_enter+1).toString() + '"]').focus().val("").val(temp);
+                }                       
+            }         
+        })
+
         function get_prod(id){
             $.ajax({
                 type: "POST",
@@ -286,26 +300,26 @@
         <div class="row mg-7">
             <div class="col-5 text-center">
                 <label for="barcode">รหัส</label>
-                <input id="barcode" type="text" class="w3-input">
+                <input id="barcode" type="text" class="w3-input" autofocus data-index="1">
             </div>
             <div class="col-4 text-center">
                 <label for="cost" style="font-size: 110%;">ทุน</label>
-                <input id="cost" type="number" class="w3-input">
+                <input id="cost" type="number" class="w3-input" data-index="2">
             </div>
             <div class="col-3 text-center">
                 <label for="min">ขั้นต่ำ</label>
-                <input id="min" type="text" class="w3-input">
+                <input id="min" type="text" class="w3-input" data-index="3">
             </div>
         </div>
         <div class="row mg-7">
             <div class="col-1"> </div>
             <div class="col-5 text-center">
                 <label for="wholesale" style="font-size: 110%;">ขายส่ง</label>
-                <input id="wholesale" type="number" class="w3-input">
+                <input id="wholesale" type="number" class="w3-input" data-index="4">
             </div>
             <div class="col-5 text-center">
                 <label for="retail" style="font-size: 110%;">ขายปลีก</label>
-                <input id="retail" type="number" class="w3-input">
+                <input id="retail" type="number" class="w3-input" data-index="5">
             </div>
             <div class="col-1"> </div>
         </div>

@@ -73,7 +73,7 @@
         $("#i-back").attr("onclick","showUL()");
         search_date();
       });  
-      //get_bill();
+      get_bill();
       
       //scroll to bottom
       $(window).on("scroll", function() {
@@ -99,6 +99,13 @@
         }
       });
     });
+
+    $(document).keydown(function(objEvent) {
+      if (objEvent.keyCode == 13) {  //enter pressed
+        objEvent.preventDefault();           
+        search();        
+      }         
+    })
 
     function showUL(){
       $("#myS").prop('hidden', true);
@@ -154,7 +161,7 @@
       if($("#search_row").is(':visible')){
         $("#search_row").prop('hidden', true);
         if(!$("#myD").prop('hidden')){
-          //$("#date_row").prop('hidden', false);
+          $("#date_row").prop('hidden', false);
         }
       }else{
         $("#search_row").prop('hidden', false);
@@ -167,6 +174,7 @@
       if($('#search_bill').val() == ""){
         return 0;
       }
+      $('#search_bill').blur();
       val = $('#search_bill').val();
       start_s = 0;
       bool_s = false;
@@ -178,7 +186,7 @@
       get_bill_s();
     }
 
-    function get_bill_s(){      
+    function get_bill_s(){
       $.ajax({
         type: "POST",
         url:"http://migky.myqnapcloud.com:8083/dd-shop/php/get_bill.php",
@@ -286,20 +294,15 @@
   <div class="container justify-content-center" style="margin-top: 15%;">
     <div id="date_row" class="row mg-5" style="margin-left: 5%;" hidden>
       <div class="col-11 text-center">
-        <h5 id="date"></h5>
+        <h5 id="date">date</h5>
       </div>
     </div>
     <div id="search_row" class="row mg-10" hidden>
-      <div class="col-9 input-group">
-        <input id="search_bill" type="text" class="form-control form-control-lg text-center" placeholder="เลขที่ / ลูกค้า" style="border-right-color: #d63232;">
-        <div class="input-group-prepend">
-          <button class="btn btn-default" style="border-top-right-radius: 5px; border-bottom-right-radius: 5px; background-color: #d63232; border-color: #d63232;">
-            <i class="fas fa-search" onclick="search()" style="color: white; "></i>
-          </button>    
-        </div> 
+      <div class="col-9">
+        <input id="search_bill" type="search" class="form-control form-control-lg text-center" placeholder="เลขที่ / ลูกค้า">
       </div> 
-      <div class="col-3 text-center">
-        <button id="datepicker-from" class="mbtn" style="height: 100%; width: 90%;">
+      <div class="col-3">
+        <button id="datepicker-from" class="mbtn" style="height: 90%; margin-top: 2px;">
           <i class="far fa-calendar-alt"></i>
         </button>
         <button id="datepicker-to" hidden></button>
@@ -321,10 +324,10 @@
     <ul id="myUL">
 
     </ul>
-    <ul id="myD">
+    <ul id="myD" hidden>
 
     </ul>
-    <ul id="myS">
+    <ul id="myS" hidden>
 
     </ul>
     </div>     

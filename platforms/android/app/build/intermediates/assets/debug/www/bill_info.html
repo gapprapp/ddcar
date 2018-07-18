@@ -238,8 +238,12 @@
     	$("style").append(".jconfirm .jconfirm-box{margin-bottom:60%;}");
     	$.confirm({
         title: $("#name-"+arg).text(),
-        content: '<div class="row" style="margin-top: 2%; margin-bottom: 2%;"><div class="col-12 text-center" style="font-size: 110%; font-weight: bold;">จำนวน</div></div><div class="row"><div class="col-3"></div><div class="col-6 text-center"><input autofocus id="edt-amt" type="number" class="input-cf" value="'+$("#amt-"+arg).text()+'"></div><div class="col-3"></div></div>',
+        content: '<div class="row" style="margin-top: 2%; margin-bottom: 2%;"><div class="col-12 text-center" style="font-size: 110%; font-weight: bold;">จำนวน</div></div><div class="row"><div class="col-3"></div><div class="col-6 text-center"><input id="edt-amt" type="number" class="input-cf" value="'+$("#amt-"+arg).text()+'"></div><div class="col-3"></div></div>',
         backgroundDismiss: true,
+        onContentReady: function () {
+          var temp = $('#edt-amt').val();
+          $("#edt-amt").focus().val("").val(temp);
+        },
         buttons: {
           formSubmit: {
             text: 'ตกลง',
@@ -271,8 +275,12 @@
       $("style").append(".jconfirm .jconfirm-box{margin-bottom:60%;}");
       $.confirm({
         title: "ลด",
-        content: '<div class="row"><div class="col-3"></div><div class="col-6 text-center"><input autofocus id="edt-disc" type="number" class="input-cf" value="'+$("#discount").text()+'"></div><div class="col-3"></div></div>',
+        content: '<div class="row"><div class="col-3"></div><div class="col-6 text-center"><input id="edt-disc" type="number" class="input-cf" value="'+$("#discount").text()+'"></div><div class="col-3"></div></div>',
         backgroundDismiss: true,
+        onContentReady: function () {
+          var temp = $('#edt-disc').val();
+          $("#edt-disc").focus().val("").val(temp);
+        },
         buttons: {
           formSubmit: {
             text: 'ตกลง',
@@ -314,8 +322,12 @@
       $("style").append(".jconfirm .jconfirm-box{margin-bottom:60%;}");
       $.confirm({
         title: "รับ",
-        content: '<div class="row"><div class="col-3"></div><div class="col-6 text-center"><input autofocus id="edt-get" type="number" class="input-cf" value="'+$("#get").text()+'"></div><div class="col-3"></div></div>',
+        content: '<div class="row"><div class="col-3"></div><div class="col-6 text-center"><input id="edt-get" type="number" class="input-cf" value="'+$("#get").text()+'"></div><div class="col-3"></div></div>',
         backgroundDismiss: true,
+        onContentReady: function () {
+          var temp = $('#edt-get').val();
+          $("#edt-get").focus().val("").val(temp);
+        },
         buttons: {
           formSubmit: {
             text: 'ตกลง',
@@ -434,7 +446,7 @@
     }
 
     var ware_id,type;
-    function setware(arg) {            
+    function setware(arg) {
       ware = $("#li-ware-" + arg).text();
       type = $("#type-" + arg).text();
       $("#warehouse").text(ware);
