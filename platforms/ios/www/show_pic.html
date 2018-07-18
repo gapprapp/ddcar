@@ -3,7 +3,7 @@
 
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=100%, heigth=100%, initial-scale=1, shrink-to-fit=no">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <title>Home</title>
   <!-- Bootstrap Import -->
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
@@ -28,36 +28,64 @@
   <link href="https://fonts.googleapis.com/css?family=Prompt" rel="stylesheet">
 
   <script>
+  	$(document).ready(function () { 
+        url = new URL(window.location.href);
+        folder = url.searchParams.get("folder");
+        prod_id = url.searchParams.get("prod_id");
+        //$("#img").attr("src", img);
+        //get_prod(prod_id);                   
+    });
+
   	function back(){
-  		window.location = "show_prod.html";
+  		screen.orientation.lock('portrait');
+  		transition_page_back("show_prod.html?from=add&folder="+folder);
   	}
 
-  	function rotate(){
-
+  	function onload(){
+  		screen.orientation.unlock();
+  		onDeviceReady();
   	}
+
+  	function onDeviceReady() {
+    	StatusBar.hide();
+
+	}
+  	
   </script>
 </head>
 
-<body>
+<body onload="onload();">
 	<div class="overlay" style="background-color: black;"> <img id="img"> </div>
 	<div class="row fixed-bottom" style="margin-bottom: 4%;">
 	<div class="col-12 text-center">
 		<i class="far fa-times-circle" style="color: #f9f9f9; font-size: 180%; margin-right: 2%;" onclick="back();"></i>
-		<i id="i-rotate"  class="fas fa-redo" style="color: #f9f9f9; font-size: 160%;" onclick="rotate();"></i>
 	</div>
 	</div>
 	<script>
 		var image = new Image();
-		img = "https://c2.staticflickr.com/4/3891/14354989289_2eec0ba724_b.jpg";
-		image.src = img;
+		var h;
+		image.src = "https://c2.staticflickr.com/4/3891/14354989289_2eec0ba724_b.jpg";
+		$("#img").attr('src', image.src);
 		image.onload = function() {
-		  if(image.width > image.height){
-		  	//horizontal
-		  	$("#i-rotate").prop('hidden', false);
-		  }else{
-		  	//vertical
-		  	$("#i-rotate").prop('hidden', true);
-		  }$("#img").attr('src', img);
+		    if(image.width > image.height) {
+		    	var percent = (screen.width / image.width) * 100;
+		    	h = (percent / 100) * image.height;
+		    	$("#img").height(h);
+		    	$("#img").addClass('horizontal');
+		    	screen.orientation.unlock();
+		    }
+		};
+
+		screen.orientation.onchange = function(){
+			oren = screen.orientation.type;
+			oren = oren.split("-");
+			if($("#img").hasClass('horizontal')){
+				if(oren[0] == "landscape"){
+				$("#img").height("100%");
+				}else if(oren[0] == "portrait"){
+					$("#img").height(h);
+				}
+			}
 		};
 	</script>
 </body>

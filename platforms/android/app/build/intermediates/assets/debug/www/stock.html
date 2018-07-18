@@ -69,8 +69,8 @@
         padding: 0;
       }    
     </style>
-    <script>      
-      $(document).ready(function () { 
+    <script>
+      $(document).ready(function () {
         $("style").append('.jconfirm .jconfirm-box{margin-bottom: 20%;}');          
             url = new URL(window.location.href);
             prod_id = url.searchParams.get("product");       
@@ -78,6 +78,14 @@
               get_amt(prod_id);
             }             
       });
+
+      $(document).keydown(function(objEvent) {         
+        if (objEvent.keyCode == 13) {  //enter pressed
+          objEvent.preventDefault();           
+          search_prod();
+          $('#search_prod').blur();
+        }         
+      })
 
       function get_amt(prod_id){
         $.ajax({
@@ -134,10 +142,16 @@
         }); 
       }
 
-      function get_prod(){        
+      function search_prod(){
+        var val = $('#search_prod').val();
+        if(val == ""){
+          return 0;
+        }         
+        $('#myUL').empty();
         $.ajax({
-          type: "GET",
-          url: "http://migky.myqnapcloud.com:8083/dd-shop/php/get_allprod.php",                     
+          type: "POST",
+          url: "http://migky.myqnapcloud.com:8083/dd-shop/php/search_prod.php",
+          data: {'phrase' : val},
           beforeSend: function(){
             $(".overlay").prop('hidden', false);
           },             
@@ -152,38 +166,16 @@
                   '</div><hr></li>');        
               }); 
             }else{
-              $('#myUL').append('<li><div class="col-12 text-center p">กรุณาเพิ่มสินค้าก่อนทำรายการ</div><hr></li>');
+              $('#myUL').append('<li><div class="col-12 text-center p">ไม่มีสินค้าที่ต้องการค้นหา</div><hr></li>');
             }                                                                                                                                          
           }               
         }); 
       }
-
-      var ch = 0;
+     
       function search(){
-        ch++;
-        if(ch == 1){
-          get_prod();
           $("#search-ctn").prop('hidden', false);
           $("#big-ctn").prop('hidden', true);
-          $("#col-back").attr('onclick', 'show()');     
-        }else{                       
-          $('#myUL li').each(function(){
-              $(this).attr('data-search-term', $(this).text().toLowerCase());
-          });      
-
-          var searchTerm = $('#search_prod').val().toLowerCase();
-          //alert(searchTerm.length);
-
-          $('#myUL li').each(function(){ 
-            //alert(searchTerm.length);           
-            if ($(this).filter('[data-search-term *= ' + searchTerm + ']').length > 0 || searchTerm.length < 1) {
-              //alert("show");
-              $(this).show();                                                     
-            } else {
-              $(this).hide();                               
-            }
-          });   
-        }                       
+          $("#col-back").attr('onclick', 'show()');                       
       }
 
       function show(){
@@ -191,17 +183,18 @@
         $("#big-ctn").prop('hidden', false);
         $("#col-back").attr('onclick', 'transition_page_back("index.html")');
         $('#myUL').empty();
+        $('#search_prod').val("")
         ch = 0;
       }
 
-      function selectfolder() {        
+      function selectfolder() {
         goto = "select_folder.html?from=stock";
         transition_page_next_flip(goto);
       }     
     </script>
 </head>
 
-<body style="overflow-y: auto;">
+<body onload="onLoad()" style="overflow-y: auto;">
   <!-- Loading -->
   <div class="overlay" hidden><div class="loading"></div></div>
 
@@ -219,9 +212,14 @@
      <!-- Search ctn -->
      <div id="search-ctn" class="container justify-content-center" style="margin-top: 15%;" hidden>
       <div class="row mg-10">
-          <div class="col-12 text-center">
-            <input id="search_prod" type="text" onkeyup="search()" class="form-control form-control-lg text-center" placeholder="ค้นหาสินค้า">
+          <div class="col-10 text-center">          
+              <input id="search_prod" type="search" class="form-control form-control-lg text-center" placeholder="ค้นหาสินค้า">          
           </div>  
+          <div class="col-2 text-right">
+            <button class="mbtn" style="height: 100%; width: 110%;">
+              <i class="fas fa-search" onclick="search_prod()"></i>
+            </button>        
+          </div> 
       </div>
       <div id="add_ctn" class="container">
           <ul id="myUL">
