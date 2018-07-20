@@ -45,42 +45,27 @@
       }
     </style>
     <script>
-      function search(){
-        $("#big-ctn").css('margin-top', '15%');
-        $(".or_section").prop('hidden', true);
-        $("#row-search").prop('hidden', true);
-        $("#i-back").attr('onclick', 'show()');
-      }
-
-      function show(){
-        $("#big-ctn").css('margin-top', '55%');
-        $("#search_prod").val('');
-        $(".or_section").prop('hidden', false);
-        $("#row-search").prop('hidden', false);
-        $("#i-back").attr('onclick', 'transition_page_back("index.html")');
-      }
-
       function tabs(arg){
-      arr = ['prod', 'credit'];
-      if($("#tabs-"+arg).hasClass('tabs')){
-        return 0;
-      }else{
-        // Get from
-        for(var j = 0; j < 2; j++){
-          if($("#tabs-"+arr[j]).hasClass('tabs')){
-            from = arr[j];
+        arr = ['prod', 'credit'];
+        if($("#tabs-"+arg).hasClass('tabs')){
+          return 0;
+        }else{
+          // Get from
+          for(var j = 0; j < 2; j++){
+            if($("#tabs-"+arr[j]).hasClass('tabs')){
+              from = arr[j];
+            }
           }
+          // Clear old tabs , Add class, Remove class
+          for(var i = 0; i < 2; i++){
+            if(arr[i] != arg){
+              $("#tabs-"+arr[i]).removeClass('tabs');
+              $("#tabs-"+arr[i]).addClass('non');
+              $("#ctn-"+arr[i]).prop('hidden', true);
+            }
+          }$("#tabs-"+arg).addClass('tabs'); $("#tabs-"+arg).removeClass('non'); $("#ctn-"+arg).prop('hidden', false);
         }
-        // Clear old tabs , Add class, Remove class
-        for(var i = 0; i < 2; i++){
-          if(arr[i] != arg){
-            $("#tabs-"+arr[i]).removeClass('tabs');
-            $("#tabs-"+arr[i]).addClass('non');
-            $("#ctn-"+arr[i]).prop('hidden', true);
-          }
-        }$("#tabs-"+arg).addClass('tabs'); $("#tabs-"+arg).removeClass('non'); $("#ctn-"+arg).prop('hidden', false);
       }
-    }
     </script>
 </head>
 
