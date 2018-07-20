@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>Home</title>
+  <!-- Bootstrap Import -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+  <script type="text/javascript" src="js/jquery-3.3.1.min.js"></script>
+  <script type="text/javascript" src="js/jquery-ui.min.js"></script>
+  <script type="text/javascript" src="js/jquery.easing.1.3.min.js"></script>
+  <script type="text/javascript" src="js/transition.js"></script>
+  <script type="text/javascript" src="js/jquery-confirm.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.4/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+  <script defer src="https://use.fontawesome.com/releases/v5.0.8/js/all.js"></script>
+  <script src="cordova.js"></script>
+  <script type="text/javascript" src="js/scanqr.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.0/jquery-confirm.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.0/jquery-confirm.min.js"></script>
+ 
+  <link rel="stylesheet" href="css/index.css">
+  <link rel="stylesheet" href="css/jquery-confirm.css">
+  <link rel="stylesheet" href="css/loading.css">
+
+  <!-- Font -->
+  <link href="https://fonts.googleapis.com/css?family=Prompt" rel="stylesheet">
+
+  <!-- DatePicker -->
+  <link rel="stylesheet" href="css/duDatepicker.css">
+  <script src="js/duDatepicker.js"></script>
+
+  <style>
+    hr{
+      margin-top: 0;
+    }
+    .mbtn-credit{
+      background-color: #da4446;
+      border: 1px solid #da4646;
+      height: 95%;
+      width: 85%;
+      font-weight: bold;
+      font-size: 120%;
+      color: white;
+      letter-spacing: 2px;
+      border-radius: 5px;
+      box-shadow: 0 1px 2px  #de5a5a, 0 1px 1px #de5a5a;
+    } 
+    #title{
+      color: #666;
+    } 
+    .nopd{
+      padding-right: 0;
+      padding-left: 0;
+    } 
+    ul {
+      list-style-type: none;
+      margin: 0;
+      padding: 0;
+    }    
+  </style>
+
+  <script>
+    $(document).ready(function(){
+      /*$.ajax({
+        type: "GET",
+        url:"http://migky.myqnapcloud.com:8083/dd-shop/php/get_credit.php",          
+        beforeSend: function(){
+            $(".overlay").prop('hidden', false);
+        },                       
+        success: function(data){ 
+          $(".overlay").prop('hidden', true);  
+          var obj = jQuery.parseJSON(data);
+          if(obj){
+            arr = [];
+            var d = new Date($.now());                                         
+            $.each(obj, function(i, field){
+              var txt = field.date_time.split(" ");
+              var date = txt[0].split("-");                       
+
+              var cus = field.cus_name;
+              var pay = field.payment_type;
+              var total = field.total_price;
+              var id = field.order_id;
+              var cd = 0;
+              if(pay == "เครดิต (30)"){
+                var last_d = new Date(date[0],date[1], 0);
+                var day = d.getDate();
+                cd = last_d.getDate() - day;
+              }else if(pay == "เครดิต (60)"){
+                var month = (d.getMonth()+1);                            
+                var day1 = new Date(date[0],date[1], 0);
+                var day2 = new Date(date[0],parseInt(date[1])+1, 0);
+                var last_d = (day1.getDate()+day2.getDate());
+                var day = d.getDate();
+                if(month - date[1] == 1){
+                  cd = last_d - (day+day1.getDate());          
+                }else if(month - date[1] == 0){
+                  cd = last_d - day;
+                }             
+              }else if(pay == "เครดิต (90)"){
+                var month = (d.getMonth()+1);               
+                var day1 = new Date(date[0],date[1], 0);               
+                var day2 = new Date(date[0],parseInt(date[1])+1, 0);              
+                var day3 = new Date(date[0],parseInt(date[1])+2, 0);
+                var last_d = (day1.getDate()+day2.getDate()+day3.getDate());
+                var day = d.getDate();                
+                if(month - date[1] == 2){                  
+                  cd = last_d - (day+day1.getDate()+day2.getDate());                 
+                }else if(month - date[1] == 1){
+                  cd = last_d - (day+day1.getDate());                 
+                }else if(month - date[1] == 0){
+                  cd = last_d - day;
+                }            
+              }
+              item = {}
+              item ["order_id"] = id;
+              item ["cus"] =  cus;
+              item ["pay"] = pay;
+              item ["total"] = total;
+              item ["cd"] = cd;
+              if(i == 0){                
+                arr.push(item);
+              }else{
+                var bool = false;
+                for(var j = 0; j < arr.length ;j++){
+                  if(cus == arr[j].cus && pay == arr[j].pay){
+                    bool = true;
+                    arr[j].order_id += "/" + id;
+                    arr[j].total = parseFloat(arr[j].total) + parseFloat(total);
+                    break;
+                  }
+                }                 
+                if(!bool){
+                  arr.push(item);
+                }
+              }                              
+            });
+            for(var k = 0; k < arr.length;k++){
+              var p = arr[k].pay.split(" ");
+              //var p2 = p[1].substr(1,2);
+              $('#myUL').append('<li><div class="row" onclick="bill_all(\''+arr[k].order_id+'\')">'+
+              '<div class="col-5 text-center nopd">'+arr[k].cus+'</div>'+
+              '<div class="col-2 text-center nopd">'+p[1]+'</div>'+
+              '<div class="col-2 text-center nopd">'+arr[k].cd+' วัน</div>'+
+              '<div class="col-3 text-center nopd">'+arr[k].total+'</div>'+
+              '</div><hr></li>');   
+            }           
+          }                                
+        }               
+      });*/
+    });
+
+    function show_search(){
+      if($("#search_row").is(':visible')){
+        $("#search_row").prop('hidden', true);
+      }else{
+        $("#search_row").prop('hidden', false);
+      }
+    }
+
+    function search(arg){
+      $('#myUL li').each(function(){       
+        $(this).attr('data-search-term', $(this).text());
+      });
+      var searchTerm = arg;      
+
+      $('#myUL li').each(function(){           
+        if ($(this).filter('[data-search-term *= ' + searchTerm + ']').length > 0 || searchTerm == -1) {        
+          $(this).show();                                                     
+        } else {
+          $(this).hide();                               
+        }
+      });                  
+    }
+
+  </script>
+</head>
+
+<body style="overflow: auto;">
+  <!-- Loading -->
+  <div class="overlay" hidden><div class="loading"></div></div>
+
+  <!-- Nav menu top -->
+  <div class="row fixed-top navs">
+    <div class="col-1 text-center" onclick="transition_page_back('index.html?menu=3')">
+      <i id="i-back" class="fas fa-angle-left"></i>
+    </div>
+    <div class="col-9 text-center" style="padding-left: 10%; margin-right: 3%;">
+      <h5 id="h5-title">สมพงษ์ สะอาด</h5>
+    </div>
+    <div class="col-1 text-right" onclick="show_search();">
+    </div>
+  </div><br>
+
+  <!-- End big container -->
+  <div class="container justify-content-center" style="margin-top: 15%;">
+    <div id="date_row" class="row mg-5" style="margin-left: 5%;" hidden>
+      <div class="col-1"></div>
+      <div class="col-3 text-center">
+        <h5 id="date" style="color: #666;"></h5>
+      </div>
+      <div class="col-2 text-right" style="color: #666;"><h5>-</h5></div>
+      <div class="col-3 text-center">
+        <h5 id="date-to" style="color: #666;"></h5>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-4 text-center nopd">
+        <h5 id="title">เลขที่</h5>
+      </div>
+      <div id="title" class="col-4 text-center nopd">
+        <h5 id="title">ครบกำหนด</h5>
+      </div>
+      <div class="col-4 text-center nopd">
+        <h5 id="title">รวม</h5>
+      </div>
+    </div>
+    <hr>
+    <ul id="myUL">
+      <li><div id="cus-1" class="row" onclick="window.location = 'bill_info.html'">
+        <div class="col-4 text-center">S18-1005268</div>
+        <div class="col-4 text-center">25/05/18</div>
+        <div class="col-4 text-center">470,800</div>
+      </div></li>
+    </ul>   
+  <!-- End big container -->
+
+  <!-- Nav menu bottom -->
+  <div class="row fixed-bottom navs">
+    <div class="col-3 text-center" onclick="transition_page_back('index.html');">
+      <i id="i-home" class="fas fa-home menu"></i>
+    </div>
+    <div class="col-3 text-center" onclick="transition_page_next('bell.html')">
+      <i id="i-bell" class="fas fa-bell menu"></i>
+    </div>
+    <div class="col-3 text-center" onclick="scan();">
+      <i id="i-qrcode" class="fas fa-qrcode menu"></i>
+    </div>
+    <div class="col-3 text-center" onclick="return 0;">
+      <i id="i-bars" class="fa fa-bars menu"></i>
+    </div>
+  </div>
+  <!-- End Nav menu bottom -->
+  <script>
+    //Touch animation
+    $(".mbtn").on("touchstart", function() {
+      $(this).addClass('mbtn-touch');
+    });
+    $(".mbtn").on("touchend", function() {
+      $(this).removeClass('mbtn-touch');
+    });
+  </script>
+</body>
+
+</html>

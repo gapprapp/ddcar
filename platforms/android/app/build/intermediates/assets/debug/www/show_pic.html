@@ -48,8 +48,19 @@
 
   	function onDeviceReady() {
     	StatusBar.hide();
+	 }
 
-	}
+   function rotate(){
+    if($("#img").hasClass('horizontal')){
+      if($("#img").hasClass('landscape')){
+        $("#img").removeClass('landscape');
+        screen.orientation.lock('portrait');
+      }else{
+        $("#img").addClass('landscape');
+        screen.orientation.lock('landscape');
+      }
+    }
+   }
   	
   </script>
 </head>
@@ -59,6 +70,7 @@
 	<div class="row fixed-bottom" style="margin-bottom: 4%;">
 	<div class="col-12 text-center">
 		<i class="far fa-times-circle" style="color: #f9f9f9; font-size: 180%; margin-right: 2%;" onclick="back();"></i>
+    <i class="fas fa-sync-alt" style="color: #f9f9f9; font-size: 180%; margin-right: 2%;" onclick="rotate();"></i>
 	</div>
 	</div>
 	<script>
@@ -81,7 +93,7 @@
 			oren = oren.split("-");
 			if($("#img").hasClass('horizontal')){
 				if(oren[0] == "landscape"){
-				$("#img").height("100%");
+				  $("#img").height("100%");
 				}else if(oren[0] == "portrait"){
 					$("#img").height(h);
 				}
