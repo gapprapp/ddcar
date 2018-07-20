@@ -236,8 +236,13 @@
                     }
                 });
                 return 0;
+<<<<<<< HEAD
             }           
             $("style").append('.jconfirm .jconfirm-box{margin-bottom: 60%;}');
+=======
+            }          
+            $("style").append('.jconfirm .jconfirm-box{margin-bottom: 100%;}');
+>>>>>>> 1b2b5368e9bc2c070ba54ad2ebf566dce5f84788
             $.confirm({
                 title: '',
                 content: '<div class="row mg-6"><div class="col-2"></div><div class="col-8 text-center"><label for="net">รวม</label><input id="net" type="number" class="input-cf" value="'+localStorage.net+'" readonly></div><div class="col-2"></div></div><div class="row mg-6"><div class="col-2"></div><div class="col-8 text-center"><label for="dis">ลด</label><input data-index="1" autofocus id="dis" type="number" class="input-cf" oninput="edit_discount()"></div><div class="col-2"></div></div><div class="row mg-6"><div class="col-2"></div><div class="col-8 text-center"><label for="total">สุทธิ</label><input id="total" type="number" class="input-cf" value="'+localStorage.net+'" readonly></div><div class="col-2"></div></div><div class="row mg-6"><div class="col-1"></div><div class="col-5 text-center"><label for="get">รับ</label><input data-index="2" id="get" type="number" class="input-cf" oninput="get_money()"></div><div class="col-5 text-center"><label for="chng">ทอน</label><input id="chng" type="number" class="input-cf" readonly></div><div class="col-1"></div></div>',
@@ -294,6 +299,9 @@
                     $(".overlay").prop('hidden', true);                           
                     //alert(data);
                     if(data != "fail"){
+                        var temp = data.split(" ");
+                        var order_num = temp[0];
+                        var ch = temp[1];
                         localStorage.arr_ex = "";
                         localStorage.cus_name = "";
                         localStorage.cus_id = "";
@@ -301,7 +309,7 @@
                         localStorage.arr_sale = "";                    
                         localStorage.net =  "";    
                         localStorage.arr_prod_s =  "";                                                                               
-                        goto = "sale.html";
+                        goto = "sale.html?ch="+ch;
                         transition_page_back(goto);            
                     }else{
                         $.confirm({
