@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <title>ขายสินค้า</title>
+
+  <!-- Bootstrap Import -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.6/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js"></script>
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.1/css/all.css" integrity="sha384-O8whS3fhG2OnA5Kas0Y9l3cfpmYjapjI0E4theH4iuMD+pLhbf6JI0jIMfYcK3yZ" crossorigin="anonymous">
+
+  <!-- Super cool dialog-->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.0/jquery-confirm.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.0/jquery-confirm.min.js"></script>
+
+  <!-- Font -->
+  <link href="https://fonts.googleapis.com/css?family=Prompt" rel="stylesheet">
+  <!-- Main -->
+  <link href="css/untitled.css" rel="stylesheet">
+
+  <script>
+  	function add(){
+  		var bottom = $(window).height() - $("#cnt-add").offset().top - $("#cnt-add").height();
+  		// Always scroll to the bottom
+  		if(bottom < 200){
+  		  $("#cnt-add").css('max-height', $("#cnt-add").height());
+  		  $("#cnt-add").animate({scrollTop: $('#cnt-add').prop('scrollHeight')});
+  		}   
+
+  		$("#cnt-add").append('<div class="row mgb-5">'+
+          '<div class="col-2">'+
+            '<div class="input-group-prepend">'+
+              '<span id="span-no" class="input-group-text">1</span>'+
+              '<input id="barcode" type="text" class="form-control text-center">'+
+            '</div>'+
+          '</div>'+
+          '<div class="col-1 nopd-8">'+
+            '<input id="at" type="number" class="form-control text-center">'+
+          '</div>'+
+          '<div class="col-3 nopd-8">'+
+            '<input id="name" class="form-control text-center"></input>'+
+          '</div>'+
+          '<div class="col-1 nopd-8">'+
+            '<input id="amount" type="number" class="form-control text-center">'+
+          '</div>'+
+          '<div class="col-1 nopd-8">'+
+            '<input id="fund" type="number" class="form-control text-center no-spin" min="0">'+
+          '</div>'+
+          '<div class="col-1 nopd-8">'+
+            '<input id="avg-fund" type="number" class="form-control text-center no-spin" min="0">'+
+          '</div>'+
+          '<div class="col-1 nopd-8">'+
+            '<input id="whole" type="number" class="form-control text-center no-spin" min="0">'+
+          '</div>'+
+          '<div class="col-1 nopd-8">'+
+            '<input id="retail" type="number" class="form-control text-center no-spin" min="0">'+
+          '</div>'+
+          '<div class="col-1 nopd text-center">'+
+          '<button id="btn-edit" class="btn btn-sm btn-primary mgr-5" onclick="edit();"> <i class="fas fa-pencil-alt"></i></button>'+
+          '<button id="btn-save" class="btn btn-sm btn-success mgr-5" onclick="save();" hidden> <i class="fa fa-check"></i></button>'+
+          '<button id="btn-trash" class="btn btn-sm btn-danger"> <i class="fa fa-trash"></i></button>'+
+          '</div>'+
+        '</div>');
+  	}
+
+  	function edit(){
+  		$("#btn-edit").prop('hidden', true);
+  		$("#btn-trash").prop('hidden', true);
+  		$("#btn-save").prop('hidden', false);
+  	}
+
+  	function save(){
+  		$("#btn-edit").prop('hidden', false);
+  		$("#btn-trash").prop('hidden', false);
+  		$("#btn-save").prop('hidden', true);
+  	}
+  </script>
+
+  <style>
+  	label{
+  		color: #666;
+  		margin-right: 15px; margin-top: 5px;
+  	}
+  	#from{
+  		width: 50%; background-color: #666; border-color: #666; color: white;
+  	}
+  	#from:focus{
+  		outline: 0;
+  	}
+  	a{
+  		color: #999;
+  	}
+  	a:hover{
+  		color: #666;
+  	}
+	.active{
+		color: #666;
+	}
+  </style>
+</head>
+<body>
+	<div class="container-fullwidth justify-content-center">
+		<nav class="navbar navbar-expand-md navbar-dark">
+        	<div class="collapse navbar-collapse justify-content-md-center" id="navbarCollapse">
+          	<h3 id="nav-title">นำสินค้าเข้าโกดัง</h3>
+        	</div>
+      	</nav>
+      	<div class="container">
+      		<div class="row" style="margin-top: 2px;">
+      			<div class="col-12 text-center">
+      				<a href="web_sale.html" class="mgr-20">ขายสินค้า</a>
+      				<a href="web_import.html" class="mgr-20 active">นำสินค้าเข้าโกดัง</a>
+      				<a href="" class="mgr-20">เช็คสต๊อก</a>
+      				<a href="" class="mgr-20">รายการย้อนหลัง</a>
+      			</div>
+      		</div>
+      	</div><br><br>
+
+      	<div class="container-fullwidth">
+      		<div id="head" class="row mgb-5" style="padding-left: 5%; padding-right: 5%;">
+      		  <div class="col-4"></div>
+      		  <div class="col-2 text-center" style="color: #666;">วันที่</div>
+      		  <div class="col-2 text-center" style="color: #666;">ผู้ทำรายการ</div>
+      		  <div class="col-4"></div>
+      		</div>
+      	</div>
+
+      	<div class="container-fullwidth">
+      		<div class="row" style="padding-left: 5%; padding-right: 5%;">
+      			<div class="col-4"></div>
+      			<div class="col-2 text-center" style="margin-top: 5px; color: #666;">12/5/2018</div>
+      			<div class="col-2 text-center nopd" style="margin-top: 5px; color: #666;">ชายเมืองสิงค์</div>
+      			<div class="col-4"></div>
+      		</div>
+      	</div><hr style="width: 85%;">
+      	
+      	<div class="container-fullwidth nopd">
+      		<div id="head" class="row mgb-5">
+      		  <div class="col-2 text-center nopd">บาร์โค้ด</div>
+      		  <div class="col-1 text-center nopd-8">ที่อยู่สินค้า</div>
+      		  <div class="col-3 text-center nopd">ชื่อสินค้า</div>
+      		  <div class="col-1 text-center nopd-8">จำนวน</div>
+      		  <div class="col-1 text-center nopd-8">ทุน</div>
+      		  <div class="col-1 text-center nopd-8">ทุนเฉลี่ย</div>
+      		  <div class="col-1 text-center nopd-8">ราคาส่ง</div>
+      		  <div class="col-1 text-center nopd-8">ราคาปลีก</div>
+      		</div>
+      	</div>
+	
+		<div id="cnt-add" class="container-fullwidth nopd" style="overflow-y: auto;">
+			<!-- Append Here!! -->
+		</div>
+
+		<div class="container-fullwidth nopd">
+			<!-- Input -->
+			<div class="row" >
+			  <div class="col-2">
+			    <div class='input-group-prepend'>
+			      <span id="span-no" class='input-group-text'>#</span>
+			      <input id='barcode' type='text' class='form-control text-center'>
+			    </div>
+			  </div>
+			  <div class='col-1 nopd-8'>
+			    <input id='at' type='number' class='form-control text-center'>
+			  </div>
+			  <div class='col-3 nopd-8'>
+			    <input id="name" class="form-control text-center"></input>
+			  </div>
+			  <div class='col-1 nopd-8'>
+			    <input id='amount' type='number' class='form-control text-center no-spin' min='0'>
+			  </div>
+			  <div class='col-1 nopd-8'>
+			    <input id='fund' type='number' class='form-control text-center no-spin' min='0'>
+			  </div>
+			  <div class='col-1 nopd-8'>
+			    <input id='avg-fund' type='number' class='form-control text-center no-spin' min='0'>
+			  </div>
+			  <div class='col-1 nopd-8'>
+			    <input id='whole' type='number' class='form-control text-center no-spin' min='0'>
+			  </div>
+			  <div class='col-1 nopd-8'>
+			    <input id='retail' type='number' class='form-control text-center no-spin' min='0'>
+			  </div>
+			  <div class="col-1 nopd text-center">
+			  	<button class="btn btn-sm btn-primary" disabled> <i class="fas fa-pencil-alt"></i></button>
+			  	<button class="btn btn-sm btn-danger" disabled> <i class="fa fa-trash"></i></button>
+			  	<button class="btn btn-sm btn-success" hidden disabled> <i class="fa fa-check"></i></button>
+			  </div>
+			</div><br>
+			<div class="row">
+				<div class="col-12 text-right">
+					<button class="btn btn-md btn-success" style="margin-right: 5px;" onclick="add();">เพิ่มสินค้า</button>
+					<button class="btn btn-md btn-danger">ค่าเริ่มต้น</button>
+				</div>
+			</div>
+		</div>
+
+		<div id="ctn-bttm" class="container-fullwidth fixed-bottom" style="margin-bottom: 15px; z-index: 0;">
+		  <div class="row">
+		    <div class="col-12 text-center">
+		        <button id="btn_checkbill" class="btn btn-success" onclick="">บันทึก</button>
+		    </div>
+		</div>
+	</div>
+
+	<!-- The Modal -->
+	<div class="modal fade" id="myModal" tabindex='-1'>
+	  <div class="modal-dialog modal-md modal-dialog-centered">
+	    <div class="modal-content">
+	      <!-- Modal Header -->
+	      <div class="col-12 text-center" style="margin-top: 15px;">
+	        <h4 class="modal-title">คิดเงิน</h4>
+	        <hr style="width: 70%;">
+	      </div>
+
+	      <!-- Modal body -->
+	      <div class="modal-body">
+	        <div class="container">
+	          <div class="row">
+	            <div class="col-2"></div>
+	            <div class="col-3 text-center" style="border: solid #767676; padding-top: 5px;">
+	              <h3>รวม : </h3>
+	            </div>
+	            <div class="col-5 text-center" style="border: solid #767676; background: #767676;">
+	              <input id="net-price" type="number" class="form-control form-control-lg text-center no-spin no-border check-bill-input" style="background: #767676; color: #5dbe5d;"
+	                readonly>
+	            </div>
+	            <div class="col-2"></div>
+	          </div><br>
+
+	          <div class="row">
+	            <div class="col-2"></div>
+	            <div class="col-3 text-center" style="border: solid #767676; padding-top: 5px;"><h3>ลด : </h3></div>
+	            <div class="col-5 text-center" style="border: solid #767676; background: #767676;">
+	              <input id="discount-money" onchange="chng_discount()"  data-index="5" type="number" class="form-control form-control-lg text-center no-spin no-border check-bill-input" style="background: #767676; color: #fd8b5e;">
+	            </div>
+	            <div class="col-2"></div>
+	          </div> <br>
+
+	          <div class="row">
+	            <div class="col-2"></div>
+	            <div class="col-3 text-center" style="border: solid #767676; padding-top: 5px;"><h3>สุทธิ : </h3></div>
+	            <div class="col-5 text-center" style="border: solid #767676; background: #767676;">
+	              <input id="final-price" type="number" class="form-control form-control-lg text-center no-spin no-border check-bill-input" style="background: #767676; color: #ffffff;"
+	              readonly>
+	            </div>
+	            <div class="col-2"></div>
+	          </div>
+	          <br>
+
+	          <div class="row">
+	            <div class="col-2"></div>
+	            <div class="col-3 text-center" style="border: solid #767676; padding-top: 5px;"><h3>รับ : </h3></div>
+	            <div class="col-5 text-center" style="border: solid #767676; background: #767676;">
+	              <input id="get-money" type="number" data-index="6" class="form-control form-control-lg text-center no-spin no-border check-bill-input" style=" background: #767676;  color: #DBBD5B;">
+	            </div>
+	            <div class="col-2"></div>
+	          </div> <br>
+
+	          <div class="row">
+	            <div class="col-2"></div>
+	            <div class="col-3 text-center" style="border: solid #767676; padding-top: 5px;"><h3>ทอน : </h3></div>
+	            <div class="col-5 text-center" style="border: solid #767676; background: #767676;">
+	              <input id="change-money" type="number" class="form-control form-control-lg text-center no-spin no-border check-bill-input" style="background: #767676; color: #A5FAE9"
+	              readonly>
+	            </div>
+	            <div class="col-2"></div>
+	          </div> <br>
+	      </div> <br>
+
+	      <!-- Modal footer -->
+	      <div class="col-12 text-center">
+	        <button id="btn_save" type="button" class="btn btn-success" data-dismiss="modal" onclick="save()" style="margin-right: 15px;">บันทึก</button>
+	        <button type="button" class="btn btn-secondary" data-dismiss="modal">ปิด</button>
+	      </div><br>
+	    </div>
+	  </div>
+	</div>
+	</div>
+
+	<!-- Print Modal -->
+	<div class="modal fade" id="printModal" tabindex='-1'>
+	  <div class="modal-dialog modal-md modal-dialog-centered">
+	    <div class="modal-content">
+	      <!-- Modal Header -->
+	      <div class="col-12 text-center" style="margin-top: 15px;">
+	        <h4 class="modal-title">ตั้งค่าการพิมพ์</h4>
+	        <hr style="width: 70%;">
+	      </div>
+
+	      <!-- Modal body -->
+	      <div class="modal-body">
+	        <div class="col-12 text-center">
+	          <label class="radio-inline" style="font-size: 120%;">
+	            <input type="radio" name="print-radio" value="print" checked>พิมพ์</label>
+	          <label class="radio-inline" style="font-size: 120%;">
+	            <input type="radio" name="print-radio" value="no">ไม่พิมพ์</label>
+	        </div>
+	        <div id="print-option-title" class="col-12 text-center">
+	          <h5 style="text-decoration: underline;">ตัวเลือก</h5>
+	        </div>
+	        <div id="print-option" class="col-12 text-center">
+	          <label class="radio-inline" style="font-size: 120%;">
+	            <input id="bill" type="radio" name="print-option" value="bill" checked>ใบเสร็จ</label>
+	          <label class="radio-inline" style="font-size: 120%;">
+	            <input id="a4" type="radio" name="print-option" value="a4">ใบรายการขาย(A4)</label>
+	        </div><br>
+	        <!-- Modal footer -->
+	        <div class="col-12 text-center">
+	          <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="set_print_title();">บันทึก</button>
+	        </div>
+	        <br>
+	      </div>
+	    </div>
+	  </div>
+	</div>
+
+	<!-- Pay Modal -->
+	<div class="modal fade" id="payModal" tabindex='-1'>
+	  <div class="modal-dialog modal-md modal-dialog-centered">
+	    <div class="modal-content">
+	      <!-- Modal Header -->
+	      <div class="col-12 text-center" style="margin-top: 15px;">
+	        <h4 class="modal-title">เงื่อนไขการชำระเงิน</h4>
+	        <hr style="width: 70%;">
+	      </div>
+
+	      <!-- Pay body -->
+	      <div class="modal-body">
+	        <div class="col-12 text-center">
+	          <label class="radio-inline">
+	            <input type="radio" name="pay-radio" value="เงินสด" checked>เงินสด</label>
+	          <label class="radio-inline">
+	            <input type="radio" name="pay-radio" value="เงินโอน">เงินโอน</label>
+	          <label class="radio-inline">
+	            <input type="radio" name="pay-radio" value="ลูกหนี้">ลูกหนี้</label>
+	        </div>
+	        <div class="col-12">
+	          <div class="form-group">
+	            <label for="comment">หมายเหตุ:</label>
+	            <textarea class="form-control" rows="5" id="comment" disabled></textarea>
+	          </div>
+	        </div>
+	        <br>
+	        <!-- Modal footer -->
+	        <div class="col-12 text-center">
+	          <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="set_pay_title();">บันทึก</button>
+	        </div>
+	        <br>
+	      </div>
+	    </div>
+	  </div>
+	</div>
+
+	<script>
+		$('input:radio[name="pay-radio"]').change(
+		    function () {
+		      text_html = "<span><i class='fa fa-print'></i></span>";
+		      if ($(this).is(':checked') && $(this).val() == "เงินโอน") {
+		        $('textarea').prop('disabled', false);
+		        $("#bill").prop("checked", true);
+		      }else if ($(this).is(':checked') && $(this).val() == "ลูกหนี้") {
+		        $('textarea').prop('disabled', false);
+		        $("#bill").prop("checked", false);
+		        $("#a4").prop("checked", true);
+		      }else if ($(this).is(':checked') && $(this).val() == "เงินสด") {
+		        $('textarea').prop('disabled', true);
+		        $("#bill").prop("checked", true);
+		        $('textarea').val("");
+		      }
+		});
+
+
+	</script>
+</body>
+</html>
