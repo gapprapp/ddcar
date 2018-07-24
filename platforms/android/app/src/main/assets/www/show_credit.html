@@ -54,6 +54,9 @@
       padding-right: 0;
       padding-left: 0;
     } 
+    .bold{
+      font-weight: bold;
+    }    
     ul {
       list-style-type: none;
       margin: 0;
@@ -63,118 +66,47 @@
 
   <script>
     $(document).ready(function(){
-      /*$.ajax({
-        type: "GET",
-        url:"http://migky.myqnapcloud.com:8083/dd-shop/php/get_credit.php",          
+      url = new URL(window.location.href);      
+      var cus_id = url.searchParams.get("cus");
+      var cd = url.searchParams.get("cd");
+
+      $.ajax({
+        type: "POST",
+        url:"http://migky.myqnapcloud.com:8083/dd-shop/php/get_credit_info.php", 
+        data: {'cus_id':cus_id, 'cd':cd},         
         beforeSend: function(){
             $(".overlay").prop('hidden', false);
         },                       
         success: function(data){ 
           $(".overlay").prop('hidden', true);  
-          var obj = jQuery.parseJSON(data);
-          if(obj){
-            arr = [];
-            var d = new Date($.now());                                         
-            $.each(obj, function(i, field){
-              var txt = field.date_time.split(" ");
-              var date = txt[0].split("-");                       
-
-              var cus = field.cus_name;
-              var pay = field.payment_type;
-              var total = field.total_price;
-              var id = field.order_id;
-              var cd = 0;
-              if(pay == "เครดิต (30)"){
-                var last_d = new Date(date[0],date[1], 0);
-                var day = d.getDate();
-                cd = last_d.getDate() - day;
-              }else if(pay == "เครดิต (60)"){
-                var month = (d.getMonth()+1);                            
-                var day1 = new Date(date[0],date[1], 0);
-                var day2 = new Date(date[0],parseInt(date[1])+1, 0);
-                var last_d = (day1.getDate()+day2.getDate());
-                var day = d.getDate();
-                if(month - date[1] == 1){
-                  cd = last_d - (day+day1.getDate());          
-                }else if(month - date[1] == 0){
-                  cd = last_d - day;
-                }             
-              }else if(pay == "เครดิต (90)"){
-                var month = (d.getMonth()+1);               
-                var day1 = new Date(date[0],date[1], 0);               
-                var day2 = new Date(date[0],parseInt(date[1])+1, 0);              
-                var day3 = new Date(date[0],parseInt(date[1])+2, 0);
-                var last_d = (day1.getDate()+day2.getDate()+day3.getDate());
-                var day = d.getDate();                
-                if(month - date[1] == 2){                  
-                  cd = last_d - (day+day1.getDate()+day2.getDate());                 
-                }else if(month - date[1] == 1){
-                  cd = last_d - (day+day1.getDate());                 
-                }else if(month - date[1] == 0){
-                  cd = last_d - day;
-                }            
-              }
-              item = {}
-              item ["order_id"] = id;
-              item ["cus"] =  cus;
-              item ["pay"] = pay;
-              item ["total"] = total;
-              item ["cd"] = cd;
-              if(i == 0){                
-                arr.push(item);
-              }else{
-                var bool = false;
-                for(var j = 0; j < arr.length ;j++){
-                  if(cus == arr[j].cus && pay == arr[j].pay){
-                    bool = true;
-                    arr[j].order_id += "/" + id;
-                    arr[j].total = parseFloat(arr[j].total) + parseFloat(total);
-                    break;
-                  }
-                }                 
-                if(!bool){
-                  arr.push(item);
-                }
-              }                              
-            });
-            for(var k = 0; k < arr.length;k++){
-              var p = arr[k].pay.split(" ");
-              //var p2 = p[1].substr(1,2);
-              $('#myUL').append('<li><div class="row" onclick="bill_all(\''+arr[k].order_id+'\')">'+
-              '<div class="col-5 text-center nopd">'+arr[k].cus+'</div>'+
-              '<div class="col-2 text-center nopd">'+p[1]+'</div>'+
-              '<div class="col-2 text-center nopd">'+arr[k].cd+' วัน</div>'+
-              '<div class="col-3 text-center nopd">'+arr[k].total+'</div>'+
-              '</div><hr></li>');   
-            }           
-          }                                
+          var obj = jQuery.parseJSON(data); 
+          $('#h5-title').text(obj[0].cus_name);
+          var sum = 0;
+          $.each(obj, function(i, field){
+            var txt = field.date_time.split(" ");
+            var date = txt[0].split("-");            
+            if(field.payment_type == "เครดิต (30)"){
+              date[1] = parseInt(date[1]) + parseInt(1);
+            }else if(field.payment_type == "เครดิต (60)"){
+              date[1] = parseInt(date[1]) + parseInt(2);
+            }else if(field.payment_type == "เครดิต (90)"){
+              date[1] = parseInt(date[1]) + parseInt(3);
+            }
+            $('#myUL').append('<li><div class="row" onclick="bill_info('+field.order_id+')">'+
+            '<div class="col-5 text-center">'+field.order_number+'</div>'+
+            '<div class="col-4 text-center">'+date[2]+'/'+date[1]+'/'+date[0]+'</div>'+
+            '<div class="col-3 text-center">'+field.total_price+'</div>'+
+            '</div><hr style="margin-top: 4%"></li>');
+            sum += parseFloat(field.total_price); 
+          });
+          $('#net').text("รวมทั้งสิ้น : " +sum);          
         }               
-      });*/
+      });
     });
 
-    function show_search(){
-      if($("#search_row").is(':visible')){
-        $("#search_row").prop('hidden', true);
-      }else{
-        $("#search_row").prop('hidden', false);
-      }
+    function bill_info(arg){
+      transition_page_next('bill_info.html?id='+arg);
     }
-
-    function search(arg){
-      $('#myUL li').each(function(){       
-        $(this).attr('data-search-term', $(this).text());
-      });
-      var searchTerm = arg;      
-
-      $('#myUL li').each(function(){           
-        if ($(this).filter('[data-search-term *= ' + searchTerm + ']').length > 0 || searchTerm == -1) {        
-          $(this).show();                                                     
-        } else {
-          $(this).hide();                               
-        }
-      });                  
-    }
-
   </script>
 </head>
 
@@ -184,49 +116,45 @@
 
   <!-- Nav menu top -->
   <div class="row fixed-top navs">
-    <div class="col-1 text-center" onclick="transition_page_back('index.html?menu=3')">
+    <div class="col-1 text-center" onclick="transition_page_back('manage_credit.html')">
       <i id="i-back" class="fas fa-angle-left"></i>
     </div>
     <div class="col-9 text-center" style="padding-left: 10%; margin-right: 3%;">
-      <h5 id="h5-title">สมพงษ์ สะอาด</h5>
+      <h5 id="h5-title"></h5>
     </div>
-    <div class="col-1 text-right" onclick="show_search();">
+    <div class="col-1 text-right">
     </div>
   </div><br>
 
   <!-- End big container -->
   <div class="container justify-content-center" style="margin-top: 15%;">
-    <div id="date_row" class="row mg-5" style="margin-left: 5%;" hidden>
-      <div class="col-1"></div>
-      <div class="col-3 text-center">
-        <h5 id="date" style="color: #666;"></h5>
-      </div>
-      <div class="col-2 text-right" style="color: #666;"><h5>-</h5></div>
-      <div class="col-3 text-center">
-        <h5 id="date-to" style="color: #666;"></h5>
-      </div>
-    </div>
-
     <div class="row">
-      <div class="col-4 text-center nopd">
+      <div class="col-5 text-center nopd">
         <h5 id="title">เลขที่</h5>
       </div>
-      <div id="title" class="col-4 text-center nopd">
+      <div class="col-4 text-center nopd">
         <h5 id="title">ครบกำหนด</h5>
       </div>
-      <div class="col-4 text-center nopd">
+      <div class="col-3 text-center nopd">
         <h5 id="title">รวม</h5>
       </div>
     </div>
     <hr>
     <ul id="myUL">
-      <li><div id="cus-1" class="row" onclick="window.location = 'bill_info.html'">
-        <div class="col-4 text-center">S18-1005268</div>
-        <div class="col-4 text-center">25/05/18</div>
-        <div class="col-4 text-center">470,800</div>
-      </div></li>
-    </ul>   
+     
+    </ul>  
+    <div class="container" style="margin-top: 10%;">
+      <div class="row">
+        <div class="col-12 text-center">           
+            <h5 class="bold" id="net"></h5>
+        </div>
+       
+      </div>
+    </div>
+  </div> 
   <!-- End big container -->
+
+ 
 
   <!-- Nav menu bottom -->
   <div class="row fixed-bottom navs">

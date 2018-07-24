@@ -55,6 +55,7 @@
             cus_id = url.searchParams.get("cus");
             type = url.searchParams.get("type");
             prod_id = url.searchParams.get("product");
+            var ch = url.searchParams.get("ch");
            
             if(cus){
                 $("#cus").val(cus);
@@ -95,6 +96,11 @@
                 var arr_data = JSON.parse(retrievedObject); 
                 prod_id = arr_data[0].prod_id;            
                 get_sale(prod_id);
+            }
+            if(ch){
+                if(ch == "true"){
+                    alert('bell');
+                }
             }        
         });
 

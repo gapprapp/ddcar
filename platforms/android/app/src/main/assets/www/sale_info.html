@@ -236,7 +236,7 @@
                     }
                 });
                 return 0;
-            }           
+            }          
             $("style").append('.jconfirm .jconfirm-box{margin-bottom: 60%;}');
             $.confirm({
                 title: '',
@@ -294,6 +294,9 @@
                     $(".overlay").prop('hidden', true);                           
                     //alert(data);
                     if(data != "fail"){
+                        var temp = data.split(" ");
+                        var order_num = temp[0];
+                        var ch = temp[1];
                         localStorage.arr_ex = "";
                         localStorage.cus_name = "";
                         localStorage.cus_id = "";
@@ -301,7 +304,7 @@
                         localStorage.arr_sale = "";                    
                         localStorage.net =  "";    
                         localStorage.arr_prod_s =  "";                                                                               
-                        goto = "sale.html";
+                        goto = "sale.html?ch="+ch;
                         transition_page_back(goto);            
                     }else{
                         $.confirm({

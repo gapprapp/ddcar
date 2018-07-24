@@ -89,13 +89,15 @@
         }
         $last_id = mysqli_insert_id($conn);	
     }  
-    $item = 0; 
+    $item = 0;
+    $ch = 'false'; 
     foreach ($obj as $data)
     {
         $item++;
         $prod_id = $data['prod_id'];
         $price = $data['price'];    
         $amt = $data['amt'];    
+        $amount = 0;
       
         $sql1 = "INSERT INTO sale_order_item (order_id,item_id,prod_id,prod_price,prod_amount)
          VALUE ('$last_id','$item','$prod_id','$price','$amt')"; 
@@ -104,7 +106,63 @@
             mysqli_rollback($conn);
             echo "fail";
             exit;
-        }     
+        } 
+
+        $sql = "SELECT min_amount,status FROM product WHERE prod_id = '$prod_id' AND status != 'danger'"; 
+        $result = mysqli_query($conn, $sql);
+        if(mysqli_num_rows($result) > 0){    
+            while($row = mysqli_fetch_array($result)){  
+                $min = $row['min_amount'];
+                $status = $row['status'];
+            }
+        }
+        
+        $sql = "SELECT amount FROM warehouse WHERE prod_id = '$prod_id'"; 
+        $result = mysqli_query($conn, $sql); 
+        if(mysqli_num_rows($result) > 0){    
+            while($row = mysqli_fetch_array($result)){  
+                $amount += $row['amount'];                    
+            }
+        } 
+        $sql = "SELECT amount FROM shop WHERE prod_id = '$prod_id'"; 
+        $result = mysqli_query($conn, $sql); 
+        if(mysqli_num_rows($result) > 0){    
+            while($row = mysqli_fetch_array($result)){  
+                $amount += $row['amount'];                    
+            }
+        } 
+        if($status == 'normal'){
+            if($amount - $amt <= $min){
+                $sql = "UPDATE product SET status = 'warning' WHERE prod_id = '$prod_id'";
+                $result = mysqli_query($conn, $sql); 
+                $ch = 'true';    
+                if(!$result){
+                    mysqli_rollback($conn);
+                    echo "fail";
+                    exit;
+                } 
+            }else if($amount - $amt <= 10){
+                $sql = "UPDATE product SET status = 'danger' WHERE prod_id = '$prod_id'";
+                $result = mysqli_query($conn, $sql);
+                $ch = 'true';    
+                if(!$result){
+                    mysqli_rollback($conn);
+                    echo "fail";
+                    exit;
+                }    
+            }
+        }else if($status == 'warning'){
+            if($amount - $amt <= 10){
+                $sql = "UPDATE product SET status = 'danger' WHERE prod_id = '$prod_id'";
+                $result = mysqli_query($conn, $sql);
+                $ch = 'true';    
+                if(!$result){
+                    mysqli_rollback($conn);
+                    echo "fail";
+                    exit;
+                }    
+            }
+        }
        
         if($type == "โกดัง"){
             $sql_up = "UPDATE warehouse SET amount = amount-'$amt' WHERE ware_id = '$b' AND prod_id = '$prod_id'"; 
@@ -119,6 +177,6 @@
         }    
     }
     mysqli_commit($conn); 
-    echo $order_number;
+    echo $order_number." ".$ch;
     mysqli_close($conn);
 ?>

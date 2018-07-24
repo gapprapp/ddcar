@@ -22,6 +22,7 @@
 
   <link rel="stylesheet" href="css/index.css">
   <link rel="stylesheet" href="css/jquery-confirm.css">
+  <link rel="stylesheet" href="css/loading.css">
 
   <!-- Font -->
   <link href="https://fonts.googleapis.com/css?family=Prompt" rel="stylesheet">
@@ -97,6 +98,35 @@
       if(!localStorage.user_id){                      
         transition_page_back('login.html');
       }
+      // update credit auto when late
+      /*$.ajax({ 
+        type: "GET",
+        url:"http://migky.myqnapcloud.com:8083/dd-shop/php/get_credit2.php",
+        beforeSend: function(){
+            $(".overlay").prop('hidden', false);
+        },                       
+        success: function(data){ 
+          $(".overlay").prop('hidden', true);                 
+        }               
+      });*/      
+      var d = new Date($.now());
+      var last_d = new Date(d.getFullYear(),d.getMonth()+1, 0).getDate();
+      var cd = last_d - d.getDate();
+      if(cd == 0){
+        $.confirm({
+          title: 'แจ้งเตือน',
+          content: 'สิ้นเดือนแล้ว กรุณาเข้าไปจัดการรายการเครดิต รายการ->รายการเครดิต',
+          backgroundDismiss: true,
+          buttons: {
+              formSubmit: {
+              text: 'ตกลง',
+              btnClass: 'btn-regis',
+              action: function () {
+              }
+              }
+          }
+        });
+      }
     }
 
     function tabs(arg){
@@ -151,6 +181,9 @@
 </head>
 
 <body onload="onLoad();" style="overflow: hidden;">
+   <!-- Loading -->
+   <div class="overlay" hidden><div class="loading"></div></div>
+
   <!-- Nav menu top -->
   <div class="row fixed-top navs">
     <div class="col-1 text-center" onclick="">

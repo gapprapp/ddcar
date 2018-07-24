@@ -132,7 +132,7 @@
             }
         } 
         if($status == 'normal'){
-            if($amount - $amt < $min){
+            if($amount - $amt <= $min){
                 $sql = "UPDATE product SET status = 'warning' WHERE prod_id = '$prod_id'";
                 $result = mysqli_query($conn, $sql); 
                 $ch = 'true';    
@@ -141,7 +141,7 @@
                     echo "fail";
                     exit;
                 } 
-            }else if($amount - $amt < 10){
+            }else if($amount - $amt <= 10){
                 $sql = "UPDATE product SET status = 'danger' WHERE prod_id = '$prod_id'";
                 $result = mysqli_query($conn, $sql);
                 $ch = 'true';    
@@ -152,7 +152,7 @@
                 }    
             }
         }else if($status == 'warning'){
-            if($amount - $amt < 10){
+            if($amount - $amt <= 10){
                 $sql = "UPDATE product SET status = 'danger' WHERE prod_id = '$prod_id'";
                 $result = mysqli_query($conn, $sql);
                 $ch = 'true';    

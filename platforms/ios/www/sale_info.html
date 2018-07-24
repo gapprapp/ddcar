@@ -237,7 +237,7 @@
                 });
                 return 0;
             }          
-            $("style").append('.jconfirm .jconfirm-box{margin-bottom: 100%;}');
+            $("style").append('.jconfirm .jconfirm-box{margin-bottom: 60%;}');
             $.confirm({
                 title: '',
                 content: '<div class="row mg-6"><div class="col-2"></div><div class="col-8 text-center"><label for="net">รวม</label><input id="net" type="number" class="input-cf" value="'+localStorage.net+'" readonly></div><div class="col-2"></div></div><div class="row mg-6"><div class="col-2"></div><div class="col-8 text-center"><label for="dis">ลด</label><input data-index="1" autofocus id="dis" type="number" class="input-cf" oninput="edit_discount()"></div><div class="col-2"></div></div><div class="row mg-6"><div class="col-2"></div><div class="col-8 text-center"><label for="total">สุทธิ</label><input id="total" type="number" class="input-cf" value="'+localStorage.net+'" readonly></div><div class="col-2"></div></div><div class="row mg-6"><div class="col-1"></div><div class="col-5 text-center"><label for="get">รับ</label><input data-index="2" id="get" type="number" class="input-cf" oninput="get_money()"></div><div class="col-5 text-center"><label for="chng">ทอน</label><input id="chng" type="number" class="input-cf" readonly></div><div class="col-1"></div></div>',
@@ -294,6 +294,9 @@
                     $(".overlay").prop('hidden', true);                           
                     //alert(data);
                     if(data != "fail"){
+                        var temp = data.split(" ");
+                        var order_num = temp[0];
+                        var ch = temp[1];
                         localStorage.arr_ex = "";
                         localStorage.cus_name = "";
                         localStorage.cus_id = "";
@@ -301,7 +304,7 @@
                         localStorage.arr_sale = "";                    
                         localStorage.net =  "";    
                         localStorage.arr_prod_s =  "";                                                                               
-                        goto = "sale.html";
+                        goto = "sale.html?ch="+ch;
                         transition_page_back(goto);            
                     }else{
                         $.confirm({
@@ -330,6 +333,30 @@
             b_id = $("#id-ware-" + arg).text();  
             document.elementFromPoint(0, 0).click();
         }
+
+        function showvat(){
+            $.confirm({
+              title: 'VAT 7%',
+              content: '<hr style="width: 80%; margin-bottom: 0;">',
+              backgroundDismiss: true,
+              buttons: {
+                form1: {
+                  text: 'รวม vat',
+                  btnClass: 'btn-choice',
+                  action: function () {
+                    $("#vat").val('รวม vat');
+                  }
+                },
+                form2: {
+                  text: 'ไม่รวม vat',
+                  btnClass: 'btn-choice',
+                  action: function () {
+                    $("#vat").val('ไม่รวม vat');
+                  }
+                }
+              }
+            });
+        }
     </script>    
 </head>
 
@@ -354,18 +381,28 @@
     <div id="big-ctn" class="container justify-content-center" style="margin-top: 45%;">
         <div class="container">
             <div class="row mg-10">
-                <div class="col-7 text-center">
+                <div class="col-6 text-center">
                     <label for="pay">ชำระเงิน</label>
                     <input id="pay" type="text" class="w3-input" readonly onclick="showpay();" value="เงินสด">
                 </div>
-                <div class="col-5 text-center">
+                <div class="col-6 text-center">
                     <label for="bill">พิมพ์</label>
                     <input id="bill" type="text" class="w3-input" readonly onclick="showbill();" value="ใบเสร็จ">
                 </div>
             </div>
-            <div class="row" style="margin-bottom: 18%;">
+            <div class="row" style="margin-bottom: 18%;" id="showvat">
+                <div class="col-8 text-center">
+                    <label for="ware">ขายจาก</label>
+                    <input id="ware" type="text" class="w3-input" readonly onclick="showware();" placeholder="เลือกหน้าร้าน/โกดัง">                   
+                </div>
+                <div class="col-4 text-center">
+                    <label for="vat">vat</label>
+                    <input id="vat" type="text" class="w3-input" readonly onclick="showvat();">
+                </div>
+            </div>
+            <div class="row" style="margin-bottom: 18%;" id="novat" hidden>
               <div class="col-1"></div>
-              <div class="col-10 text-center">
+                <div class="col-10 text-center">
                     <label for="ware">ขายจาก</label>
                     <input id="ware" type="text" class="w3-input" readonly onclick="showware();" placeholder="เลือกหน้าร้าน/โกดัง">                   
                 </div>

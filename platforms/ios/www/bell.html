@@ -16,13 +16,11 @@
     <script defer src="https://use.fontawesome.com/releases/v5.0.8/js/all.js"></script>
     <script src="cordova.js"></script>
     <script type="text/javascript" src="js/scanqr.js"></script>
-    <script type="text/javascript" src="js/jquery.touchSwipe.min.js"></script>
-
-    <script src="js/jquery.easy-autocomplete.min.js"></script>   
-    <link rel="stylesheet" href="css/easy-autocomplete.themes.min.css">
+    <script type="text/javascript" src="js/jquery.touchSwipe.min.js"></script>    
 
     <link rel="stylesheet" href="css/index.css">
-    <link rel="stylesheet" href="css/popup.css">
+    <link rel="stylesheet" href="css/jquery-confirm.css">   
+    <link rel="stylesheet" href="css/loading.css">
 
     <!-- Font -->
     <link href="https://fonts.googleapis.com/css?family=Prompt" rel="stylesheet">
@@ -45,49 +43,72 @@
       }
     </style>
     <script>
-      function search(){
-        $("#big-ctn").css('margin-top', '15%');
-        $(".or_section").prop('hidden', true);
-        $("#row-search").prop('hidden', true);
-        $("#i-back").attr('onclick', 'show()');
-      }
+      $(document).ready(function () {
+        $.ajax({
+          type: "GET",
+          url:"http://migky.myqnapcloud.com:8083/dd-shop/php/get_status_prod.php",          
+          beforeSend: function(){
+            $(".overlay").prop('hidden', false);
+          },             
+          success: function(data){  
+            $(".overlay").prop('hidden', true); 
+            var obj = jQuery.parseJSON(data); 
+            if(obj){
+              $.each(obj, function(i, field){ 
+                if(field.status == "warning"){
+                  $('#ctn-prod').append('<div class="row">' +
+                      '<div class="col-1">' +
+                        '<i class="fas fa-circle yellow"></i>' +
+                      '</div>' +
+                      '<div class="col-8 text-center">'+field.prod_name+'</div>' +
+                      '<div class="col-3 text-center">'+obj[i][3]+'</div>' +
+                    '</div><hr class="mg-5">');
+                }else if(field.status == "danger"){
+                  $('#ctn-prod').append('<div class="row">' +
+                      '<div class="col-1">' +
+                        '<i class="fas fa-circle red"></i>' +
+                      '</div>' +
+                      '<div class="col-8 text-center">'+field.prod_name+'</div>' +
+                      '<div class="col-3 text-center">'+obj[i][3]+'</div>' +
+                    '</div><hr class="mg-5">');
+                }                                                                                 
+              });
+            }
+          }               
+        });               
+      });
 
-      function show(){
-        $("#big-ctn").css('margin-top', '55%');
-        $("#search_prod").val('');
-        $(".or_section").prop('hidden', false);
-        $("#row-search").prop('hidden', false);
-        $("#i-back").attr('onclick', 'transition_page_back("index.html")');
-      }
-
-      function tabs(arg){
-      arr = ['prod', 'credit'];
-      if($("#tabs-"+arg).hasClass('tabs')){
-        return 0;
-      }else{
-        // Get from
-        for(var j = 0; j < 2; j++){
-          if($("#tabs-"+arr[j]).hasClass('tabs')){
-            from = arr[j];
+      /*function tabs(arg){
+        arr = ['prod', 'credit'];
+        if($("#tabs-"+arg).hasClass('tabs')){
+          return 0;
+        }else{
+          // Get from
+          for(var j = 0; j < 2; j++){
+            if($("#tabs-"+arr[j]).hasClass('tabs')){
+              from = arr[j];
+            }
           }
+          // Clear old tabs , Add class, Remove class
+          for(var i = 0; i < 2; i++){
+            if(arr[i] != arg){
+              $("#tabs-"+arr[i]).removeClass('tabs');
+              $("#tabs-"+arr[i]).addClass('non');
+              $("#ctn-"+arr[i]).prop('hidden', true);
+            }
+          }$("#tabs-"+arg).addClass('tabs'); $("#tabs-"+arg).removeClass('non'); $("#ctn-"+arg).prop('hidden', false);
         }
-        // Clear old tabs , Add class, Remove class
-        for(var i = 0; i < 2; i++){
-          if(arr[i] != arg){
-            $("#tabs-"+arr[i]).removeClass('tabs');
-            $("#tabs-"+arr[i]).addClass('non');
-            $("#ctn-"+arr[i]).prop('hidden', true);
-          }
-        }$("#tabs-"+arg).addClass('tabs'); $("#tabs-"+arg).removeClass('non'); $("#ctn-"+arg).prop('hidden', false);
-      }
-    }
+      }*/
     </script>
 </head>
 
 <body style="overflow-y: auto;">
+    <!-- Loading -->
+    <div class="overlay" hidden><div class="loading"></div></div>    
+
     <!-- Nav menu top -->
     <div class="row fixed-top navs">
-        <div class="col-1 text-center" onclick="transition_page_back('index.html')">
+        <div class="col-1 text-center" onclick="transition_page_back(window.history.back())">
             <i id="i-back" class="fas fa-angle-left"></i>
         </div>
         <div class="col-10 text-center" style="padding-left: 0;">
@@ -97,34 +118,20 @@
     <br>
 
     <!-- big container -->
-    <div id="big-ctn" class="container justify-content-center" style="margin-top: 7%; min-height: 100%;
-    height: 300%;">
-      <div class="row navs" style="background: #fafafa !important;">
+    <div id="big-ctn" class="container justify-content-center" style="margin-top: 15%;">
+      <!--<div class="row navs" style="background: #fafafa !important;">
       <div id="tabs-prod" class="col-6 text-center tabs" onclick="tabs('prod');">สินค้า</div>
       <div id="tabs-credit" class="col-6 text-center non" onclick="tabs('credit');">เครดิต</div>
-    </div><br>
-        <div id="ctn-prod" class="container-full-width" style="height: 100%;">
-          <div class="row mg-10">
+    </div><br>-->
+        <div id="ctn-prod">
+          <div class="row">
             <div class="col-1"></div>
             <div id="title" class="col-8 text-center">ชื่อสินค้า</div>
             <div id="title" class="col-3 text-center" style="padding-left: 0; padding-right: 0;">คงเหลือ</div>
-          </div>
-          <div class="row">
-            <div class="col-1">
-              <i class="fas fa-circle yellow"></i>
-            </div>
-            <div class="col-8 text-center">toyota k311 กระจกหลัง</div>
-            <div class="col-3 text-center">3</div>
-          </div><hr class="mg-5">
-          <div class="row">
-            <div class="col-1">
-              <i class="fas fa-circle red"></i>
-            </div>
-            <div class="col-8 text-center">toyota k311 กระจกหลัง</div>
-            <div class="col-3 text-center">4</div>
-          </div><hr class="mg-5">
+          </div><hr>        
         </div>
-        <div id="ctn-credit" class="container-full-width" hidden>
+        
+        <!--<div id="ctn-credit" class="container-full-width" hidden>
           <div class="row mg-10">
             <div class="col-1"></div>
             <div id="title" class="col-5 text-center">ลูกค้า</div>
@@ -150,7 +157,7 @@
             <div class="col-2 text-center nopd">30 วัน</div>
             <div class="col-2 text-center nopd">1</div>
           </div><hr class="mg-5">
-        </div>
+        </div>-->
     </div>
     <!-- End big container -->
 
@@ -171,7 +178,7 @@
     </div>
   <!-- End Nav menu bottom -->
   <script>
-    $("html").swipe( {swipe:function(event, direction, distance, duration, fingerCount, fingerData) {
+    /*$("html").swipe( {swipe:function(event, direction, distance, duration, fingerCount, fingerData) {
         if(direction == "right"){ 
           $("#tabs-credit").removeClass('tabs'); $("#tabs-credit").addClass('non'); 
           $("#tabs-prod").removeClass('non'); $("#tabs-prod").addClass('tabs');
@@ -184,7 +191,7 @@
           $("#ctn-credit").prop('hidden', false);
         }
         },threshold:75
-      }); 
+      }); */
   </script>
 </body>
 
