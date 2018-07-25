@@ -116,8 +116,8 @@
 
       navigator.camera.getPicture(onSuccess, onFail, { quality: 100,
         destinationType: Camera.DestinationType.DATA_URL,
-        targetWidth:200,
-        targetHeight:300,
+        //targetWidth:200,
+        //targetHeight:300,
         correctOrientation: true
       });
 
@@ -149,8 +149,8 @@
       navigator.camera.getPicture(onSuccess, onFail, { quality: 100,
         destinationType: Camera.DestinationType.DATA_URL,
         sourceType: Camera.PictureSourceType.PHOTOLIBRARY,
-        targetWidth:200,
-        targetHeight:300,
+        //targetWidth:200,
+        //targetHeight:300,
         correctOrientation: true
       });
 
@@ -252,6 +252,7 @@
     function out(){
       $('#name').val("");
       $('#barcode').val(""); 
+      $('#min').val("");
       $("#row-img").prop('hidden', true);        
 
       var image = document.getElementById('img');
@@ -306,7 +307,7 @@
       </div>
       <div id="row-img" class="row" style="margin-bottom: 5%;" hidden>
         <div class="col-12 text-center">
-        <img id='img' alt="" style="width: 96%; height: 96%;">
+        <img id='img' alt="" style="width: 70%; height: 70%;">
         </div>
       </div>
       <div class="row mg-10">
