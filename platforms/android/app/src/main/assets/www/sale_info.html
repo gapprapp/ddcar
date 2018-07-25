@@ -69,19 +69,28 @@
 
                     arr_detail.push(item); 
                 }
-            }            
+            } 
+            if(localStorage.type == "ขายปลีก"){
+                $("#bill").val('ใบเสร็จ');
+                $('#vat').attr('disabled',true);
+            }           
         });
 
         $(document).keydown(function(objEvent) {
             if (objEvent.keyCode == 13) {  //enter pressed
                 objEvent.preventDefault();
                 var $this = $(objEvent.target);
-                var i_enter = parseFloat($this.attr('data-index'));                      
-                if(i_enter == 2){                    
-                    save2db();                    
+                var i_enter = parseFloat($this.attr('data-index'));   
+                if($('#pay').val() != "เงินสด"){
+                    save2db();
                 }else{
-                    $('[data-index="' + (i_enter+1).toString() + '"]').focus();
-                }                       
+                     if(i_enter == 2){                    
+                        save2db();                    
+                    }else{
+                        $('[data-index="' + (i_enter+1).toString() + '"]').focus();
+                    }   
+                }                   
+                                   
             }         
         })
 
@@ -134,13 +143,15 @@
                   btnClass: 'btn-choice',
                   action: function () {
                     $("#bill").val('ใบเสร็จ');
+                    $('#vat').attr('disabled',true);
                   }
                 },
                 form2: {
                   text: 'ใบรายงานการขาย (A4)',
                   btnClass: 'btn-choice',
                   action: function () {
-                    $("#bill").val('ใบรายงานการขาย(A4)');
+                    $("#bill").val('ใบรายงานการขาย (A4)');
+                    $('#vat').attr('disabled',false);
                   }
                 },
                 form3: {
@@ -148,6 +159,7 @@
                   btnClass: 'btn-choice',
                   action: function () {
                     $("#bill").val('ไม่พิมพ์');
+                    $('#vat').attr('disabled',true);
                   }
                 }
               }
@@ -242,6 +254,14 @@
                 title: '',
                 content: '<div class="row mg-6"><div class="col-2"></div><div class="col-8 text-center"><label for="net">รวม</label><input id="net" type="number" class="input-cf" value="'+localStorage.net+'" readonly></div><div class="col-2"></div></div><div class="row mg-6"><div class="col-2"></div><div class="col-8 text-center"><label for="dis">ลด</label><input data-index="1" autofocus id="dis" type="number" class="input-cf" oninput="edit_discount()"></div><div class="col-2"></div></div><div class="row mg-6"><div class="col-2"></div><div class="col-8 text-center"><label for="total">สุทธิ</label><input id="total" type="number" class="input-cf" value="'+localStorage.net+'" readonly></div><div class="col-2"></div></div><div class="row mg-6"><div class="col-1"></div><div class="col-5 text-center"><label for="get">รับ</label><input data-index="2" id="get" type="number" class="input-cf" oninput="get_money()"></div><div class="col-5 text-center"><label for="chng">ทอน</label><input id="chng" type="number" class="input-cf" readonly></div><div class="col-1"></div></div>',
                 backgroundDismiss: true,
+                onContentReady: function () {
+                    var pay = $('#pay').val();
+                    if(pay != "เงินสด"){
+                        $('#get').val("0");
+                        $('#chng').val("0");
+                        $('#get').attr("readonly",true);
+                    }
+                },
                 onDestroy: function () {
                     $("style").append('.jconfirm .jconfirm-box{margin-bottom: 5%;}');
                 },
@@ -387,7 +407,7 @@
                 </div>
                 <div class="col-6 text-center">
                     <label for="bill">พิมพ์</label>
-                    <input id="bill" type="text" class="w3-input" readonly onclick="showbill();" value="ใบเสร็จ">
+                    <input id="bill" type="text" class="w3-input" readonly onclick="showbill();" value="ใบรายงานการขาย (A4)">
                 </div>
             </div>
             <div class="row" style="margin-bottom: 18%;" id="showvat">
@@ -397,7 +417,7 @@
                 </div>
                 <div class="col-4 text-center">
                     <label for="vat">vat</label>
-                    <input id="vat" type="text" class="w3-input" readonly onclick="showvat();">
+                    <input id="vat" type="text" class="w3-input" readonly onclick="showvat();" value="ไม่รวม vat">
                 </div>
             </div>
             <div class="row" style="margin-bottom: 18%;" id="novat" hidden>

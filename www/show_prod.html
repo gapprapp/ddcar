@@ -39,10 +39,9 @@
         $(document).ready(function () { 
             url = new URL(window.location.href);
             folder = url.searchParams.get("folder");
-            prod_id = url.searchParams.get("prod_id");
-            $("#img").attr("src", img);
+            prod_id = url.searchParams.get("prod_id");           
             get_prod(prod_id);                   
-        });
+        });        
         
         function get_prod(id){
             $.ajax({
@@ -55,8 +54,7 @@
                 success: function(data){  
                     $(".overlay").prop('hidden', true);
                     var obj = jQuery.parseJSON(data);                                         
-                    $.each(obj, function(i, field){
-                        //$('#name').val(obj[i].prod_name);
+                    $.each(obj, function(i, field){                       
                         $('#name').text(obj[i].prod_name);
                         $('#barcode').val(obj[i].prod_code);
                         $('#img').attr('src',obj[i].img);
@@ -81,8 +79,9 @@
             transition_page_back(goto);
         }
 
-        function show_pic(){
-            goto = "show_pic.html?from=add&folder="+folder;
+        function show_pic(){      
+            localStorage.img = $('#img').attr('src');           
+            goto = "show_pic.html";
             transition_page_next(goto);
         }
     </script>
@@ -138,7 +137,7 @@
         </div>
         <div id="row-img" class="row">
             <div class="col-12 text-center">
-             <img id='img' alt="" src="" onclick="show_pic();">
+             <img id='img' alt="" src="" onclick="show_pic();" style="width: 70%; height: 70%;">
             </div>
         </div>
     </div>

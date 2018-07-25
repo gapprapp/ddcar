@@ -28,17 +28,15 @@
   <link href="https://fonts.googleapis.com/css?family=Prompt" rel="stylesheet">
 
   <script>
-  	$(document).ready(function () { 
-        url = new URL(window.location.href);
-        folder = url.searchParams.get("folder");
-        prod_id = url.searchParams.get("prod_id");
-        //$("#img").attr("src", img);
-        //get_prod(prod_id);                   
+		$(document).ready(function () { 
+			//url = new URL(window.location.href);
+			//img = url.searchParams.get("img");				
+			//$("#img").attr("src", localStorage.img);
     });
 
   	function back(){
   		screen.orientation.lock('portrait');
-  		transition_page_back("show_prod.html?from=add&folder="+folder);
+  		transition_page_back(window.history.back());
   	}
 
   	function onload(){
@@ -66,7 +64,7 @@
 </head>
 
 <body onload="onload();">
-	<div class="overlay" style="background-color: black;"> <img id="img"> </div>
+	<div class="overlay" style="background-color: black;"> <img id="img"> </div>	
 	<div class="row fixed-bottom" style="margin-bottom: 4%;">
 	<div class="col-12 text-center">
 		<i class="far fa-times-circle" style="color: #f9f9f9; font-size: 180%; margin-right: 2%;" onclick="back();"></i>
@@ -76,7 +74,8 @@
 	<script>
 		var image = new Image();
 		var h;
-		image.src = "https://c2.staticflickr.com/4/3891/14354989289_2eec0ba724_b.jpg";
+		//image.src = "https://c2.staticflickr.com/4/3891/14354989289_2eec0ba724_b.jpg";
+		image.src = localStorage.img;
 		$("#img").attr('src', image.src);
 		image.onload = function() {
 		    if(image.width > image.height) {
