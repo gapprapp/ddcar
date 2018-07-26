@@ -1,180 +1,180 @@
 -- Merging decision tree log ---
 provider#android.support.v4.content.FileProvider
-INJECTED from D:\GitHub\ddcar\platforms\android\app\src\main\AndroidManifest.xml:12:9-14:20
+INJECTED from /Users/phoenix/Documents/ddcar/platforms/android/app/src/main/AndroidManifest.xml:12:9-14:20
 	android:grantUriPermissions
-		ADDED from D:\GitHub\ddcar\platforms\android\app\src\main\AndroidManifest.xml:12:92-126
+		ADDED from /Users/phoenix/Documents/ddcar/platforms/android/app/src/main/AndroidManifest.xml:12:92-126
 	android:authorities
-		INJECTED from D:\GitHub\ddcar\platforms\android\app\src\main\AndroidManifest.xml
-		ADDED from D:\GitHub\ddcar\platforms\android\app\src\main\AndroidManifest.xml:12:19-66
+		INJECTED from /Users/phoenix/Documents/ddcar/platforms/android/app/src/main/AndroidManifest.xml
+		ADDED from /Users/phoenix/Documents/ddcar/platforms/android/app/src/main/AndroidManifest.xml:12:19-66
 	android:exported
-		ADDED from D:\GitHub\ddcar\platforms\android\app\src\main\AndroidManifest.xml:12:67-91
+		ADDED from /Users/phoenix/Documents/ddcar/platforms/android/app/src/main/AndroidManifest.xml:12:67-91
 	android:name
-		ADDED from D:\GitHub\ddcar\platforms\android\app\src\main\AndroidManifest.xml:12:127-181
+		ADDED from /Users/phoenix/Documents/ddcar/platforms/android/app/src/main/AndroidManifest.xml:12:127-181
 manifest
-ADDED from D:\GitHub\ddcar\platforms\android\app\src\main\AndroidManifest.xml:2:1-23:12
-INJECTED from D:\GitHub\ddcar\platforms\android\app\src\main\AndroidManifest.xml:2:1-23:12
-INJECTED from D:\GitHub\ddcar\platforms\android\app\src\main\AndroidManifest.xml:2:1-23:12
-INJECTED from D:\GitHub\ddcar\platforms\android\app\src\main\AndroidManifest.xml:2:1-23:12
-MERGED from [:barcodescanner-release-2.1.5:] C:\Users\moronz\.gradle\caches\transforms-1\files-1.1\barcodescanner-release-2.1.5.aar\b07811c53a299101782b556223467be9\AndroidManifest.xml:2:1-14:12
-MERGED from [com.android.support:support-v4:27.1.1] C:\Users\moronz\.gradle\caches\transforms-1\files-1.1\support-v4-27.1.1.aar\adaeba44539453a8ce949a2d206f2d7a\AndroidManifest.xml:17:1-22:12
-MERGED from [:CordovaLib] D:\GitHub\ddcar\platforms\android\CordovaLib\build\intermediates\manifests\full\debug\AndroidManifest.xml:20:1-27:12
-MERGED from [com.android.support:support-media-compat:27.1.1] C:\Users\moronz\.gradle\caches\transforms-1\files-1.1\support-media-compat-27.1.1.aar\e1380525cd4519ec31a95797643e2e3f\AndroidManifest.xml:17:1-22:12
-MERGED from [com.android.support:support-fragment:27.1.1] C:\Users\moronz\.gradle\caches\transforms-1\files-1.1\support-fragment-27.1.1.aar\fe6d8d0cb54278acd9d0ff47b47d20e6\AndroidManifest.xml:17:1-22:12
-MERGED from [com.android.support:support-core-ui:27.1.1] C:\Users\moronz\.gradle\caches\transforms-1\files-1.1\support-core-ui-27.1.1.aar\51c414ec587cc2615dd83a9e12f4e478\AndroidManifest.xml:17:1-22:12
-MERGED from [com.android.support:support-core-utils:27.1.1] C:\Users\moronz\.gradle\caches\transforms-1\files-1.1\support-core-utils-27.1.1.aar\8e76c6a649ca3d15126c396f670aa9fd\AndroidManifest.xml:17:1-22:12
-MERGED from [com.android.support:support-compat:27.1.1] C:\Users\moronz\.gradle\caches\transforms-1\files-1.1\support-compat-27.1.1.aar\6fbd0ab55dc61ca6c0d5a5e352bd6f0b\AndroidManifest.xml:17:1-22:12
-MERGED from [android.arch.lifecycle:runtime:1.1.0] C:\Users\moronz\.gradle\caches\transforms-1\files-1.1\runtime-1.1.0.aar\81febef5653550b9ee2658aab55d3893\AndroidManifest.xml:17:1-22:12
-MERGED from [android.arch.lifecycle:livedata-core:1.1.0] C:\Users\moronz\.gradle\caches\transforms-1\files-1.1\livedata-core-1.1.0.aar\296f9096139fdad2347a7ac22b4e3778\AndroidManifest.xml:17:1-22:12
-MERGED from [android.arch.lifecycle:viewmodel:1.1.0] C:\Users\moronz\.gradle\caches\transforms-1\files-1.1\viewmodel-1.1.0.aar\88003d8762f4df31390323a666a81d9c\AndroidManifest.xml:17:1-22:12
-MERGED from [android.arch.core:runtime:1.1.0] C:\Users\moronz\.gradle\caches\transforms-1\files-1.1\runtime-1.1.0.aar\64228bccb36eef23908c11d0ca40cc76\AndroidManifest.xml:17:1-22:12
-INJECTED from D:\GitHub\ddcar\platforms\android\app\src\main\AndroidManifest.xml:2:1-23:12
-INJECTED from D:\GitHub\ddcar\platforms\android\app\src\main\AndroidManifest.xml:2:1-23:12
-INJECTED from D:\GitHub\ddcar\platforms\android\app\src\main\AndroidManifest.xml:2:1-23:12
+ADDED from /Users/phoenix/Documents/ddcar/platforms/android/app/src/main/AndroidManifest.xml:2:1-23:12
+INJECTED from /Users/phoenix/Documents/ddcar/platforms/android/app/src/main/AndroidManifest.xml:2:1-23:12
+INJECTED from /Users/phoenix/Documents/ddcar/platforms/android/app/src/main/AndroidManifest.xml:2:1-23:12
+INJECTED from /Users/phoenix/Documents/ddcar/platforms/android/app/src/main/AndroidManifest.xml:2:1-23:12
+MERGED from [:barcodescanner-release-2.1.5:] /Users/phoenix/.gradle/caches/transforms-1/files-1.1/barcodescanner-release-2.1.5.aar/cac649330a5d3b102e3f8f15c3dd0a86/AndroidManifest.xml:2:1-14:12
+MERGED from [com.android.support:support-v4:27.1.1] /Users/phoenix/.gradle/caches/transforms-1/files-1.1/support-v4-27.1.1.aar/1da86fa00039b7059e9f922a9570aa0d/AndroidManifest.xml:17:1-22:12
+MERGED from [:CordovaLib] /Users/phoenix/Documents/ddcar/platforms/android/CordovaLib/build/intermediates/manifests/full/debug/AndroidManifest.xml:20:1-27:12
+MERGED from [com.android.support:support-media-compat:27.1.1] /Users/phoenix/.gradle/caches/transforms-1/files-1.1/support-media-compat-27.1.1.aar/7cdee73053267401ca39dc0cfae4e955/AndroidManifest.xml:17:1-22:12
+MERGED from [com.android.support:support-fragment:27.1.1] /Users/phoenix/.gradle/caches/transforms-1/files-1.1/support-fragment-27.1.1.aar/6eefbe980d25c421b55908037c2331ba/AndroidManifest.xml:17:1-22:12
+MERGED from [com.android.support:support-core-ui:27.1.1] /Users/phoenix/.gradle/caches/transforms-1/files-1.1/support-core-ui-27.1.1.aar/e63b6071b8c9c2feeaa8d335c4b892af/AndroidManifest.xml:17:1-22:12
+MERGED from [com.android.support:support-core-utils:27.1.1] /Users/phoenix/.gradle/caches/transforms-1/files-1.1/support-core-utils-27.1.1.aar/fd1fcf225b7378a8f222a30071b77363/AndroidManifest.xml:17:1-22:12
+MERGED from [com.android.support:support-compat:27.1.1] /Users/phoenix/.gradle/caches/transforms-1/files-1.1/support-compat-27.1.1.aar/50561e229d5364de474e813611b88f65/AndroidManifest.xml:17:1-22:12
+MERGED from [android.arch.lifecycle:runtime:1.1.0] /Users/phoenix/.gradle/caches/transforms-1/files-1.1/runtime-1.1.0.aar/a9c50b29198d1c0c131d4a6292de6412/AndroidManifest.xml:17:1-22:12
+MERGED from [android.arch.lifecycle:livedata-core:1.1.0] /Users/phoenix/.gradle/caches/transforms-1/files-1.1/livedata-core-1.1.0.aar/0be7586c80e4c49caa8c43c90788054d/AndroidManifest.xml:17:1-22:12
+MERGED from [android.arch.lifecycle:viewmodel:1.1.0] /Users/phoenix/.gradle/caches/transforms-1/files-1.1/viewmodel-1.1.0.aar/d24e1ff4c85ed83acb3108772a18ab28/AndroidManifest.xml:17:1-22:12
+MERGED from [android.arch.core:runtime:1.1.0] /Users/phoenix/.gradle/caches/transforms-1/files-1.1/runtime-1.1.0.aar/f0dfba6dcb263391883e015915bbd535/AndroidManifest.xml:17:1-22:12
+INJECTED from /Users/phoenix/Documents/ddcar/platforms/android/app/src/main/AndroidManifest.xml:2:1-23:12
+INJECTED from /Users/phoenix/Documents/ddcar/platforms/android/app/src/main/AndroidManifest.xml:2:1-23:12
+INJECTED from /Users/phoenix/Documents/ddcar/platforms/android/app/src/main/AndroidManifest.xml:2:1-23:12
 	package
-		ADDED from D:\GitHub\ddcar\platforms\android\app\src\main\AndroidManifest.xml:2:102-128
-		INJECTED from D:\GitHub\ddcar\platforms\android\app\src\main\AndroidManifest.xml
-		INJECTED from D:\GitHub\ddcar\platforms\android\app\src\main\AndroidManifest.xml
+		ADDED from /Users/phoenix/Documents/ddcar/platforms/android/app/src/main/AndroidManifest.xml:2:102-128
+		INJECTED from /Users/phoenix/Documents/ddcar/platforms/android/app/src/main/AndroidManifest.xml
+		INJECTED from /Users/phoenix/Documents/ddcar/platforms/android/app/src/main/AndroidManifest.xml
 	android:versionName
-		ADDED from D:\GitHub\ddcar\platforms\android\app\src\main\AndroidManifest.xml:2:74-101
-		INJECTED from D:\GitHub\ddcar\platforms\android\app\src\main\AndroidManifest.xml
-		INJECTED from D:\GitHub\ddcar\platforms\android\app\src\main\AndroidManifest.xml
+		ADDED from /Users/phoenix/Documents/ddcar/platforms/android/app/src/main/AndroidManifest.xml:2:74-101
+		INJECTED from /Users/phoenix/Documents/ddcar/platforms/android/app/src/main/AndroidManifest.xml
+		INJECTED from /Users/phoenix/Documents/ddcar/platforms/android/app/src/main/AndroidManifest.xml
 	android:hardwareAccelerated
-		ADDED from D:\GitHub\ddcar\platforms\android\app\src\main\AndroidManifest.xml:2:11-45
+		ADDED from /Users/phoenix/Documents/ddcar/platforms/android/app/src/main/AndroidManifest.xml:2:11-45
 	xmlns:android
-		ADDED from D:\GitHub\ddcar\platforms\android\app\src\main\AndroidManifest.xml:2:129-187
+		ADDED from /Users/phoenix/Documents/ddcar/platforms/android/app/src/main/AndroidManifest.xml:2:129-187
 	android:versionCode
-		ADDED from D:\GitHub\ddcar\platforms\android\app\src\main\AndroidManifest.xml:2:46-73
-		INJECTED from D:\GitHub\ddcar\platforms\android\app\src\main\AndroidManifest.xml
-		INJECTED from D:\GitHub\ddcar\platforms\android\app\src\main\AndroidManifest.xml
+		ADDED from /Users/phoenix/Documents/ddcar/platforms/android/app/src/main/AndroidManifest.xml:2:46-73
+		INJECTED from /Users/phoenix/Documents/ddcar/platforms/android/app/src/main/AndroidManifest.xml
+		INJECTED from /Users/phoenix/Documents/ddcar/platforms/android/app/src/main/AndroidManifest.xml
 supports-screens
-ADDED from D:\GitHub\ddcar\platforms\android\app\src\main\AndroidManifest.xml:3:5-191
+ADDED from /Users/phoenix/Documents/ddcar/platforms/android/app/src/main/AndroidManifest.xml:3:5-191
 	android:largeScreens
-		ADDED from D:\GitHub\ddcar\platforms\android\app\src\main\AndroidManifest.xml:3:49-76
+		ADDED from /Users/phoenix/Documents/ddcar/platforms/android/app/src/main/AndroidManifest.xml:3:49-76
 	android:smallScreens
-		ADDED from D:\GitHub\ddcar\platforms\android\app\src\main\AndroidManifest.xml:3:132-159
+		ADDED from /Users/phoenix/Documents/ddcar/platforms/android/app/src/main/AndroidManifest.xml:3:132-159
 	android:normalScreens
-		ADDED from D:\GitHub\ddcar\platforms\android\app\src\main\AndroidManifest.xml:3:77-105
+		ADDED from /Users/phoenix/Documents/ddcar/platforms/android/app/src/main/AndroidManifest.xml:3:77-105
 	android:xlargeScreens
-		ADDED from D:\GitHub\ddcar\platforms\android\app\src\main\AndroidManifest.xml:3:160-188
+		ADDED from /Users/phoenix/Documents/ddcar/platforms/android/app/src/main/AndroidManifest.xml:3:160-188
 	android:resizeable
-		ADDED from D:\GitHub\ddcar\platforms\android\app\src\main\AndroidManifest.xml:3:106-131
+		ADDED from /Users/phoenix/Documents/ddcar/platforms/android/app/src/main/AndroidManifest.xml:3:106-131
 	android:anyDensity
-		ADDED from D:\GitHub\ddcar\platforms\android\app\src\main\AndroidManifest.xml:3:23-48
+		ADDED from /Users/phoenix/Documents/ddcar/platforms/android/app/src/main/AndroidManifest.xml:3:23-48
 uses-permission#android.permission.INTERNET
-ADDED from D:\GitHub\ddcar\platforms\android\app\src\main\AndroidManifest.xml:4:5-67
+ADDED from /Users/phoenix/Documents/ddcar/platforms/android/app/src/main/AndroidManifest.xml:4:5-67
 	android:name
-		ADDED from D:\GitHub\ddcar\platforms\android\app\src\main\AndroidManifest.xml:4:22-64
+		ADDED from /Users/phoenix/Documents/ddcar/platforms/android/app/src/main/AndroidManifest.xml:4:22-64
 application
-ADDED from D:\GitHub\ddcar\platforms\android\app\src\main\AndroidManifest.xml:5:5-17:19
-MERGED from [:barcodescanner-release-2.1.5:] C:\Users\moronz\.gradle\caches\transforms-1\files-1.1\barcodescanner-release-2.1.5.aar\b07811c53a299101782b556223467be9\AndroidManifest.xml:11:5-12:19
-MERGED from [:barcodescanner-release-2.1.5:] C:\Users\moronz\.gradle\caches\transforms-1\files-1.1\barcodescanner-release-2.1.5.aar\b07811c53a299101782b556223467be9\AndroidManifest.xml:11:5-12:19
+ADDED from /Users/phoenix/Documents/ddcar/platforms/android/app/src/main/AndroidManifest.xml:5:5-17:19
+MERGED from [:barcodescanner-release-2.1.5:] /Users/phoenix/.gradle/caches/transforms-1/files-1.1/barcodescanner-release-2.1.5.aar/cac649330a5d3b102e3f8f15c3dd0a86/AndroidManifest.xml:11:5-12:19
+MERGED from [:barcodescanner-release-2.1.5:] /Users/phoenix/.gradle/caches/transforms-1/files-1.1/barcodescanner-release-2.1.5.aar/cac649330a5d3b102e3f8f15c3dd0a86/AndroidManifest.xml:11:5-12:19
 	android:supportsRtl
-		ADDED from D:\GitHub\ddcar\platforms\android\app\src\main\AndroidManifest.xml:5:114-140
+		ADDED from /Users/phoenix/Documents/ddcar/platforms/android/app/src/main/AndroidManifest.xml:5:114-140
 	android:label
-		ADDED from D:\GitHub\ddcar\platforms\android\app\src\main\AndroidManifest.xml:5:81-113
+		ADDED from /Users/phoenix/Documents/ddcar/platforms/android/app/src/main/AndroidManifest.xml:5:81-113
 	android:hardwareAccelerated
-		ADDED from D:\GitHub\ddcar\platforms\android\app\src\main\AndroidManifest.xml:5:18-52
+		ADDED from /Users/phoenix/Documents/ddcar/platforms/android/app/src/main/AndroidManifest.xml:5:18-52
 	android:icon
-		ADDED from D:\GitHub\ddcar\platforms\android\app\src\main\AndroidManifest.xml:5:53-80
+		ADDED from /Users/phoenix/Documents/ddcar/platforms/android/app/src/main/AndroidManifest.xml:5:53-80
 activity#com.gitmew.ddcar.MainActivity
-ADDED from D:\GitHub\ddcar\platforms\android\app\src\main\AndroidManifest.xml:6:9-11:20
+ADDED from /Users/phoenix/Documents/ddcar/platforms/android/app/src/main/AndroidManifest.xml:6:9-11:20
 	android:screenOrientation
-		ADDED from D:\GitHub\ddcar\platforms\android\app\src\main\AndroidManifest.xml:6:194-230
+		ADDED from /Users/phoenix/Documents/ddcar/platforms/android/app/src/main/AndroidManifest.xml:6:194-230
 	android:label
-		ADDED from D:\GitHub\ddcar\platforms\android\app\src\main\AndroidManifest.xml:6:97-134
+		ADDED from /Users/phoenix/Documents/ddcar/platforms/android/app/src/main/AndroidManifest.xml:6:97-134
 	android:launchMode
-		ADDED from D:\GitHub\ddcar\platforms\android\app\src\main\AndroidManifest.xml:6:135-165
+		ADDED from /Users/phoenix/Documents/ddcar/platforms/android/app/src/main/AndroidManifest.xml:6:135-165
 	android:windowSoftInputMode
-		ADDED from D:\GitHub\ddcar\platforms\android\app\src\main\AndroidManifest.xml:6:294-336
+		ADDED from /Users/phoenix/Documents/ddcar/platforms/android/app/src/main/AndroidManifest.xml:6:294-336
 	android:configChanges
-		ADDED from D:\GitHub\ddcar\platforms\android\app\src\main\AndroidManifest.xml:6:19-96
+		ADDED from /Users/phoenix/Documents/ddcar/platforms/android/app/src/main/AndroidManifest.xml:6:19-96
 	android:theme
-		ADDED from D:\GitHub\ddcar\platforms\android\app\src\main\AndroidManifest.xml:6:231-293
+		ADDED from /Users/phoenix/Documents/ddcar/platforms/android/app/src/main/AndroidManifest.xml:6:231-293
 	android:name
-		ADDED from D:\GitHub\ddcar\platforms\android\app\src\main\AndroidManifest.xml:6:166-193
+		ADDED from /Users/phoenix/Documents/ddcar/platforms/android/app/src/main/AndroidManifest.xml:6:166-193
 intent-filter#android.intent.action.MAIN+android.intent.category.LAUNCHER
-ADDED from D:\GitHub\ddcar\platforms\android\app\src\main\AndroidManifest.xml:7:13-10:29
+ADDED from /Users/phoenix/Documents/ddcar/platforms/android/app/src/main/AndroidManifest.xml:7:13-10:29
 	android:label
-		ADDED from D:\GitHub\ddcar\platforms\android\app\src\main\AndroidManifest.xml:7:28-65
+		ADDED from /Users/phoenix/Documents/ddcar/platforms/android/app/src/main/AndroidManifest.xml:7:28-65
 action#android.intent.action.MAIN
-ADDED from D:\GitHub\ddcar\platforms\android\app\src\main\AndroidManifest.xml:8:17-69
+ADDED from /Users/phoenix/Documents/ddcar/platforms/android/app/src/main/AndroidManifest.xml:8:17-69
 	android:name
-		ADDED from D:\GitHub\ddcar\platforms\android\app\src\main\AndroidManifest.xml:8:25-66
+		ADDED from /Users/phoenix/Documents/ddcar/platforms/android/app/src/main/AndroidManifest.xml:8:25-66
 category#android.intent.category.LAUNCHER
-ADDED from D:\GitHub\ddcar\platforms\android\app\src\main\AndroidManifest.xml:9:17-77
+ADDED from /Users/phoenix/Documents/ddcar/platforms/android/app/src/main/AndroidManifest.xml:9:17-77
 	android:name
-		ADDED from D:\GitHub\ddcar\platforms\android\app\src\main\AndroidManifest.xml:9:27-74
+		ADDED from /Users/phoenix/Documents/ddcar/platforms/android/app/src/main/AndroidManifest.xml:9:27-74
 activity#com.google.zxing.client.android.CaptureActivity
-ADDED from D:\GitHub\ddcar\platforms\android\app\src\main\AndroidManifest.xml:15:9-311
+ADDED from /Users/phoenix/Documents/ddcar/platforms/android/app/src/main/AndroidManifest.xml:15:9-311
 	android:clearTaskOnLaunch
-		ADDED from D:\GitHub\ddcar\platforms\android\app\src\main\AndroidManifest.xml:15:19-51
+		ADDED from /Users/phoenix/Documents/ddcar/platforms/android/app/src/main/AndroidManifest.xml:15:19-51
 	android:windowSoftInputMode
-		ADDED from D:\GitHub\ddcar\platforms\android\app\src\main\AndroidManifest.xml:15:261-308
+		ADDED from /Users/phoenix/Documents/ddcar/platforms/android/app/src/main/AndroidManifest.xml:15:261-308
 	android:exported
-		ADDED from D:\GitHub\ddcar\platforms\android\app\src\main\AndroidManifest.xml:15:114-138
+		ADDED from /Users/phoenix/Documents/ddcar/platforms/android/app/src/main/AndroidManifest.xml:15:114-138
 	android:configChanges
-		ADDED from D:\GitHub\ddcar\platforms\android\app\src\main\AndroidManifest.xml:15:52-113
+		ADDED from /Users/phoenix/Documents/ddcar/platforms/android/app/src/main/AndroidManifest.xml:15:52-113
 	android:theme
-		ADDED from D:\GitHub\ddcar\platforms\android\app\src\main\AndroidManifest.xml:15:202-260
+		ADDED from /Users/phoenix/Documents/ddcar/platforms/android/app/src/main/AndroidManifest.xml:15:202-260
 	android:name
-		ADDED from D:\GitHub\ddcar\platforms\android\app\src\main\AndroidManifest.xml:15:139-201
+		ADDED from /Users/phoenix/Documents/ddcar/platforms/android/app/src/main/AndroidManifest.xml:15:139-201
 activity#com.google.zxing.client.android.encode.EncodeActivity
-ADDED from D:\GitHub\ddcar\platforms\android\app\src\main\AndroidManifest.xml:16:9-112
+ADDED from /Users/phoenix/Documents/ddcar/platforms/android/app/src/main/AndroidManifest.xml:16:9-112
 	android:label
-		ADDED from D:\GitHub\ddcar\platforms\android\app\src\main\AndroidManifest.xml:16:19-40
+		ADDED from /Users/phoenix/Documents/ddcar/platforms/android/app/src/main/AndroidManifest.xml:16:19-40
 	android:name
-		ADDED from D:\GitHub\ddcar\platforms\android\app\src\main\AndroidManifest.xml:16:41-109
+		ADDED from /Users/phoenix/Documents/ddcar/platforms/android/app/src/main/AndroidManifest.xml:16:41-109
 uses-sdk
-ADDED from D:\GitHub\ddcar\platforms\android\app\src\main\AndroidManifest.xml:18:5-74
-MERGED from [:barcodescanner-release-2.1.5:] C:\Users\moronz\.gradle\caches\transforms-1\files-1.1\barcodescanner-release-2.1.5.aar\b07811c53a299101782b556223467be9\AndroidManifest.xml:7:5-9:41
-MERGED from [:barcodescanner-release-2.1.5:] C:\Users\moronz\.gradle\caches\transforms-1\files-1.1\barcodescanner-release-2.1.5.aar\b07811c53a299101782b556223467be9\AndroidManifest.xml:7:5-9:41
-MERGED from [com.android.support:support-v4:27.1.1] C:\Users\moronz\.gradle\caches\transforms-1\files-1.1\support-v4-27.1.1.aar\adaeba44539453a8ce949a2d206f2d7a\AndroidManifest.xml:20:5-44
-MERGED from [com.android.support:support-v4:27.1.1] C:\Users\moronz\.gradle\caches\transforms-1\files-1.1\support-v4-27.1.1.aar\adaeba44539453a8ce949a2d206f2d7a\AndroidManifest.xml:20:5-44
-MERGED from [:CordovaLib] D:\GitHub\ddcar\platforms\android\CordovaLib\build\intermediates\manifests\full\debug\AndroidManifest.xml:25:5-44
-MERGED from [:CordovaLib] D:\GitHub\ddcar\platforms\android\CordovaLib\build\intermediates\manifests\full\debug\AndroidManifest.xml:25:5-44
-MERGED from [com.android.support:support-media-compat:27.1.1] C:\Users\moronz\.gradle\caches\transforms-1\files-1.1\support-media-compat-27.1.1.aar\e1380525cd4519ec31a95797643e2e3f\AndroidManifest.xml:20:5-44
-MERGED from [com.android.support:support-media-compat:27.1.1] C:\Users\moronz\.gradle\caches\transforms-1\files-1.1\support-media-compat-27.1.1.aar\e1380525cd4519ec31a95797643e2e3f\AndroidManifest.xml:20:5-44
-MERGED from [com.android.support:support-fragment:27.1.1] C:\Users\moronz\.gradle\caches\transforms-1\files-1.1\support-fragment-27.1.1.aar\fe6d8d0cb54278acd9d0ff47b47d20e6\AndroidManifest.xml:20:5-44
-MERGED from [com.android.support:support-fragment:27.1.1] C:\Users\moronz\.gradle\caches\transforms-1\files-1.1\support-fragment-27.1.1.aar\fe6d8d0cb54278acd9d0ff47b47d20e6\AndroidManifest.xml:20:5-44
-MERGED from [com.android.support:support-core-ui:27.1.1] C:\Users\moronz\.gradle\caches\transforms-1\files-1.1\support-core-ui-27.1.1.aar\51c414ec587cc2615dd83a9e12f4e478\AndroidManifest.xml:20:5-44
-MERGED from [com.android.support:support-core-ui:27.1.1] C:\Users\moronz\.gradle\caches\transforms-1\files-1.1\support-core-ui-27.1.1.aar\51c414ec587cc2615dd83a9e12f4e478\AndroidManifest.xml:20:5-44
-MERGED from [com.android.support:support-core-utils:27.1.1] C:\Users\moronz\.gradle\caches\transforms-1\files-1.1\support-core-utils-27.1.1.aar\8e76c6a649ca3d15126c396f670aa9fd\AndroidManifest.xml:20:5-44
-MERGED from [com.android.support:support-core-utils:27.1.1] C:\Users\moronz\.gradle\caches\transforms-1\files-1.1\support-core-utils-27.1.1.aar\8e76c6a649ca3d15126c396f670aa9fd\AndroidManifest.xml:20:5-44
-MERGED from [com.android.support:support-compat:27.1.1] C:\Users\moronz\.gradle\caches\transforms-1\files-1.1\support-compat-27.1.1.aar\6fbd0ab55dc61ca6c0d5a5e352bd6f0b\AndroidManifest.xml:20:5-44
-MERGED from [com.android.support:support-compat:27.1.1] C:\Users\moronz\.gradle\caches\transforms-1\files-1.1\support-compat-27.1.1.aar\6fbd0ab55dc61ca6c0d5a5e352bd6f0b\AndroidManifest.xml:20:5-44
-MERGED from [android.arch.lifecycle:runtime:1.1.0] C:\Users\moronz\.gradle\caches\transforms-1\files-1.1\runtime-1.1.0.aar\81febef5653550b9ee2658aab55d3893\AndroidManifest.xml:20:5-44
-MERGED from [android.arch.lifecycle:runtime:1.1.0] C:\Users\moronz\.gradle\caches\transforms-1\files-1.1\runtime-1.1.0.aar\81febef5653550b9ee2658aab55d3893\AndroidManifest.xml:20:5-44
-MERGED from [android.arch.lifecycle:livedata-core:1.1.0] C:\Users\moronz\.gradle\caches\transforms-1\files-1.1\livedata-core-1.1.0.aar\296f9096139fdad2347a7ac22b4e3778\AndroidManifest.xml:20:5-44
-MERGED from [android.arch.lifecycle:livedata-core:1.1.0] C:\Users\moronz\.gradle\caches\transforms-1\files-1.1\livedata-core-1.1.0.aar\296f9096139fdad2347a7ac22b4e3778\AndroidManifest.xml:20:5-44
-MERGED from [android.arch.lifecycle:viewmodel:1.1.0] C:\Users\moronz\.gradle\caches\transforms-1\files-1.1\viewmodel-1.1.0.aar\88003d8762f4df31390323a666a81d9c\AndroidManifest.xml:20:5-44
-MERGED from [android.arch.lifecycle:viewmodel:1.1.0] C:\Users\moronz\.gradle\caches\transforms-1\files-1.1\viewmodel-1.1.0.aar\88003d8762f4df31390323a666a81d9c\AndroidManifest.xml:20:5-44
-MERGED from [android.arch.core:runtime:1.1.0] C:\Users\moronz\.gradle\caches\transforms-1\files-1.1\runtime-1.1.0.aar\64228bccb36eef23908c11d0ca40cc76\AndroidManifest.xml:20:5-44
-MERGED from [android.arch.core:runtime:1.1.0] C:\Users\moronz\.gradle\caches\transforms-1\files-1.1\runtime-1.1.0.aar\64228bccb36eef23908c11d0ca40cc76\AndroidManifest.xml:20:5-44
+ADDED from /Users/phoenix/Documents/ddcar/platforms/android/app/src/main/AndroidManifest.xml:18:5-74
+MERGED from [:barcodescanner-release-2.1.5:] /Users/phoenix/.gradle/caches/transforms-1/files-1.1/barcodescanner-release-2.1.5.aar/cac649330a5d3b102e3f8f15c3dd0a86/AndroidManifest.xml:7:5-9:41
+MERGED from [:barcodescanner-release-2.1.5:] /Users/phoenix/.gradle/caches/transforms-1/files-1.1/barcodescanner-release-2.1.5.aar/cac649330a5d3b102e3f8f15c3dd0a86/AndroidManifest.xml:7:5-9:41
+MERGED from [com.android.support:support-v4:27.1.1] /Users/phoenix/.gradle/caches/transforms-1/files-1.1/support-v4-27.1.1.aar/1da86fa00039b7059e9f922a9570aa0d/AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:support-v4:27.1.1] /Users/phoenix/.gradle/caches/transforms-1/files-1.1/support-v4-27.1.1.aar/1da86fa00039b7059e9f922a9570aa0d/AndroidManifest.xml:20:5-44
+MERGED from [:CordovaLib] /Users/phoenix/Documents/ddcar/platforms/android/CordovaLib/build/intermediates/manifests/full/debug/AndroidManifest.xml:25:5-44
+MERGED from [:CordovaLib] /Users/phoenix/Documents/ddcar/platforms/android/CordovaLib/build/intermediates/manifests/full/debug/AndroidManifest.xml:25:5-44
+MERGED from [com.android.support:support-media-compat:27.1.1] /Users/phoenix/.gradle/caches/transforms-1/files-1.1/support-media-compat-27.1.1.aar/7cdee73053267401ca39dc0cfae4e955/AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:support-media-compat:27.1.1] /Users/phoenix/.gradle/caches/transforms-1/files-1.1/support-media-compat-27.1.1.aar/7cdee73053267401ca39dc0cfae4e955/AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:support-fragment:27.1.1] /Users/phoenix/.gradle/caches/transforms-1/files-1.1/support-fragment-27.1.1.aar/6eefbe980d25c421b55908037c2331ba/AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:support-fragment:27.1.1] /Users/phoenix/.gradle/caches/transforms-1/files-1.1/support-fragment-27.1.1.aar/6eefbe980d25c421b55908037c2331ba/AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:support-core-ui:27.1.1] /Users/phoenix/.gradle/caches/transforms-1/files-1.1/support-core-ui-27.1.1.aar/e63b6071b8c9c2feeaa8d335c4b892af/AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:support-core-ui:27.1.1] /Users/phoenix/.gradle/caches/transforms-1/files-1.1/support-core-ui-27.1.1.aar/e63b6071b8c9c2feeaa8d335c4b892af/AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:support-core-utils:27.1.1] /Users/phoenix/.gradle/caches/transforms-1/files-1.1/support-core-utils-27.1.1.aar/fd1fcf225b7378a8f222a30071b77363/AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:support-core-utils:27.1.1] /Users/phoenix/.gradle/caches/transforms-1/files-1.1/support-core-utils-27.1.1.aar/fd1fcf225b7378a8f222a30071b77363/AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:support-compat:27.1.1] /Users/phoenix/.gradle/caches/transforms-1/files-1.1/support-compat-27.1.1.aar/50561e229d5364de474e813611b88f65/AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:support-compat:27.1.1] /Users/phoenix/.gradle/caches/transforms-1/files-1.1/support-compat-27.1.1.aar/50561e229d5364de474e813611b88f65/AndroidManifest.xml:20:5-44
+MERGED from [android.arch.lifecycle:runtime:1.1.0] /Users/phoenix/.gradle/caches/transforms-1/files-1.1/runtime-1.1.0.aar/a9c50b29198d1c0c131d4a6292de6412/AndroidManifest.xml:20:5-44
+MERGED from [android.arch.lifecycle:runtime:1.1.0] /Users/phoenix/.gradle/caches/transforms-1/files-1.1/runtime-1.1.0.aar/a9c50b29198d1c0c131d4a6292de6412/AndroidManifest.xml:20:5-44
+MERGED from [android.arch.lifecycle:livedata-core:1.1.0] /Users/phoenix/.gradle/caches/transforms-1/files-1.1/livedata-core-1.1.0.aar/0be7586c80e4c49caa8c43c90788054d/AndroidManifest.xml:20:5-44
+MERGED from [android.arch.lifecycle:livedata-core:1.1.0] /Users/phoenix/.gradle/caches/transforms-1/files-1.1/livedata-core-1.1.0.aar/0be7586c80e4c49caa8c43c90788054d/AndroidManifest.xml:20:5-44
+MERGED from [android.arch.lifecycle:viewmodel:1.1.0] /Users/phoenix/.gradle/caches/transforms-1/files-1.1/viewmodel-1.1.0.aar/d24e1ff4c85ed83acb3108772a18ab28/AndroidManifest.xml:20:5-44
+MERGED from [android.arch.lifecycle:viewmodel:1.1.0] /Users/phoenix/.gradle/caches/transforms-1/files-1.1/viewmodel-1.1.0.aar/d24e1ff4c85ed83acb3108772a18ab28/AndroidManifest.xml:20:5-44
+MERGED from [android.arch.core:runtime:1.1.0] /Users/phoenix/.gradle/caches/transforms-1/files-1.1/runtime-1.1.0.aar/f0dfba6dcb263391883e015915bbd535/AndroidManifest.xml:20:5-44
+MERGED from [android.arch.core:runtime:1.1.0] /Users/phoenix/.gradle/caches/transforms-1/files-1.1/runtime-1.1.0.aar/f0dfba6dcb263391883e015915bbd535/AndroidManifest.xml:20:5-44
 	android:targetSdkVersion
-		ADDED from D:\GitHub\ddcar\platforms\android\app\src\main\AndroidManifest.xml:18:42-71
+		ADDED from /Users/phoenix/Documents/ddcar/platforms/android/app/src/main/AndroidManifest.xml:18:42-71
 	android:minSdkVersion
-		ADDED from D:\GitHub\ddcar\platforms\android\app\src\main\AndroidManifest.xml:18:15-41
+		ADDED from /Users/phoenix/Documents/ddcar/platforms/android/app/src/main/AndroidManifest.xml:18:15-41
 uses-permission#android.permission.WRITE_EXTERNAL_STORAGE
-ADDED from D:\GitHub\ddcar\platforms\android\app\src\main\AndroidManifest.xml:19:5-81
+ADDED from /Users/phoenix/Documents/ddcar/platforms/android/app/src/main/AndroidManifest.xml:19:5-81
 	android:name
-		ADDED from D:\GitHub\ddcar\platforms\android\app\src\main\AndroidManifest.xml:19:22-78
+		ADDED from /Users/phoenix/Documents/ddcar/platforms/android/app/src/main/AndroidManifest.xml:19:22-78
 uses-permission#android.permission.CAMERA
-ADDED from D:\GitHub\ddcar\platforms\android\app\src\main\AndroidManifest.xml:20:5-65
+ADDED from /Users/phoenix/Documents/ddcar/platforms/android/app/src/main/AndroidManifest.xml:20:5-65
 	android:name
-		ADDED from D:\GitHub\ddcar\platforms\android\app\src\main\AndroidManifest.xml:20:22-62
+		ADDED from /Users/phoenix/Documents/ddcar/platforms/android/app/src/main/AndroidManifest.xml:20:22-62
 uses-permission#android.permission.FLASHLIGHT
-ADDED from D:\GitHub\ddcar\platforms\android\app\src\main\AndroidManifest.xml:21:5-69
+ADDED from /Users/phoenix/Documents/ddcar/platforms/android/app/src/main/AndroidManifest.xml:21:5-69
 	android:name
-		ADDED from D:\GitHub\ddcar\platforms\android\app\src\main\AndroidManifest.xml:21:22-66
+		ADDED from /Users/phoenix/Documents/ddcar/platforms/android/app/src/main/AndroidManifest.xml:21:22-66
 uses-feature#android.hardware.camera
-ADDED from D:\GitHub\ddcar\platforms\android\app\src\main\AndroidManifest.xml:22:5-84
+ADDED from /Users/phoenix/Documents/ddcar/platforms/android/app/src/main/AndroidManifest.xml:22:5-84
 	android:required
-		ADDED from D:\GitHub\ddcar\platforms\android\app\src\main\AndroidManifest.xml:22:58-81
+		ADDED from /Users/phoenix/Documents/ddcar/platforms/android/app/src/main/AndroidManifest.xml:22:58-81
 	android:name
-		ADDED from D:\GitHub\ddcar\platforms\android\app\src\main\AndroidManifest.xml:22:19-57
+		ADDED from /Users/phoenix/Documents/ddcar/platforms/android/app/src/main/AndroidManifest.xml:22:19-57
 meta-data#android.support.FILE_PROVIDER_PATHS
-ADDED from D:\GitHub\ddcar\platforms\android\app\src\main\AndroidManifest.xml:13:13-116
+ADDED from /Users/phoenix/Documents/ddcar/platforms/android/app/src/main/AndroidManifest.xml:13:13-116
 	android:resource
-		ADDED from D:\GitHub\ddcar\platforms\android\app\src\main\AndroidManifest.xml:13:75-113
+		ADDED from /Users/phoenix/Documents/ddcar/platforms/android/app/src/main/AndroidManifest.xml:13:75-113
 	android:name
-		ADDED from D:\GitHub\ddcar\platforms\android\app\src\main\AndroidManifest.xml:13:24-74
+		ADDED from /Users/phoenix/Documents/ddcar/platforms/android/app/src/main/AndroidManifest.xml:13:24-74
