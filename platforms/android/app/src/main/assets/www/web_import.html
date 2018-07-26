@@ -103,14 +103,14 @@
 								flag = 1;
 							}   						
 
-							$("#name").attr('data-img',img);
+							/*$("#name").attr('data-img',img);
 							$('#name[rel=popover]').popover({
 								html: true, 
 								trigger: 'hover',
 								placement: 'left',
 								content: function(){
 								return '<img src='+$(this).data('img')+'>';}
-							}); 						
+							});*/ 						
 							$('#barcode').val(barcode);							
 							$('#amount').val("1");						
 							get_place();                   
@@ -340,12 +340,8 @@
   		  $("#cnt-add").animate({scrollTop: $('#cnt-add').prop('scrollHeight')});
   		}   
 
-<<<<<<< HEAD
-  		$("#cnt-add").append('<div class="row mgb-5">'+
-  		  '<div class="col-1"></div>'+
-=======
-  		$("#cnt-add").append('<div id="add-'+count+'" class="row mgb-5">'+
->>>>>>> 28f20414f32d0bf2ea6feef0c534703836242ff0
+			$("#cnt-add").append('<div id="add-'+count+'" class="row mgb-5">'+
+					'<div class="col-1"></div>'+
           '<div class="col-2">'+
             '<div class="input-group-prepend">'+
               '<span id="span-no" class="input-group-text">'+(count+1)+'</span>'+
@@ -359,23 +355,16 @@
             '<input id="name-'+count+'" value="'+$('#name').val()+'" class="form-control text-center" rel="popover" data-img="'+img+'" readonly>'+
           '</div>'+
           '<div class="col-1 nopd-8">'+
-            '<input id="amount-'+count+'" value="'+$('#amount').val()+'" type="number" class="form-control text-center" min="1" readonly>'+
+            '<input id="amount-'+count+'" value="'+$('#amount').val()+'" type="number" class="form-control text-center no-spin" min="1" readonly>'+
           '</div>'+
           '<div class="col-1 nopd-8">'+
             '<input id="fundd" type="number" value="'+$('#fund').val()+'" class="form-control text-center no-spin" min="0" readonly>'+
           '</div>'+          
           '<div class="col-1 nopd-8">'+
-<<<<<<< HEAD
-            '<input id="whole" type="number" class="form-control text-center no-spin" min="0">'+
-          '</div>'+
-          '<div class="col-1 nopd-8">'+
-            '<input id="retail" type="number" class="form-control text-center no-spin" min="0">'+
-=======
             '<input id="wholee" type="number" value="'+$('#whole').val()+'" class="form-control text-center no-spin" min="0" readonly>'+
           '</div>'+
           '<div class="col-1 nopd-8">'+
             '<input id="retaill" type="number" value="'+$('#retail').val()+'" class="form-control text-center no-spin" min="0" readonly>'+
->>>>>>> 28f20414f32d0bf2ea6feef0c534703836242ff0
           '</div>'+
           '<div class="col-1 nopd text-center">'+
           '<button id="btn-edit-'+count+'" class="btn btn-sm btn-primary mgr-5" onclick="edit('+count+');"> <i class="fas fa-pencil-alt"></i></button>'+
@@ -407,14 +396,14 @@
 				$('#at').attr("placeholder","");
 				$('#barcode').val("");
 				$('#name').val("");
-				$("#name").attr('data-img',"");
+				/*$("#name").attr('data-img',"");
 				$('#name[rel=popover]').popover({
 					html: true, 
 					trigger: 'hover',
 					placement: 'left',
 					content: function(){
 					return '<img src='+$(this).data('img')+'>';}
-				}); 		
+				});*/ 		
 				$('#fund').val("");
 				$('#whole').val("");
 				$('#retail').val("");
@@ -431,14 +420,14 @@
 			$('#at').attr("placeholder","");
 			$('#barcode').val("");
 			$('#name').val("");
-			$("#name").attr('data-img',"");
-			$('#name[rel=popover]').popover({
+			//$("#name").attr('data-img',"");
+			/*$('#name[rel=popover]').popover({
 				html: true, 
 				trigger: 'hover',
 				placement: 'left',
 				content: function(){
 				return '<img src='+$(this).data('img')+'>';}
-			}); 		
+			});*/ 		
 			$('#fund').val("");
 			$('#whole').val("");
 			$('#retail').val("");
@@ -769,14 +758,14 @@
 				$('#at').attr("placeholder","");
 				$('#barcode').val("");
 				$('#name').val("");
-				$("#name").attr('data-img',"");
+				/*$("#name").attr('data-img',"");
 				$('#name[rel=popover]').popover({
 					html: true, 
 					trigger: 'hover',
 					placement: 'left',
 					content: function(){
 					return '<img src='+$(this).data('img')+'>';}
-				}); 		
+				}); */		
 				$('#fund').val("");
 				$('#whole').val("");
 				$('#retail').val("");

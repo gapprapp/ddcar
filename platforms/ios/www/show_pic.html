@@ -39,15 +39,6 @@
   		transition_page_back(window.history.back());
   	}
 
-  	function onload(){
-  		screen.orientation.unlock();
-  		onDeviceReady();
-  	}
-
-  	function onDeviceReady() {
-    	StatusBar.hide();
-	 }
-
    function rotate(){
     if($("#img").hasClass('horizontal')){
       if($("#img").hasClass('landscape')){
@@ -84,7 +75,9 @@
 		    	$("#img").height(h);
 		    	$("#img").addClass('horizontal');
 		    	screen.orientation.unlock();
-		    }
+		    }else{
+          $(".fa-sync-alt").prop("hidden", true);
+        }
 		};
 
 		screen.orientation.onchange = function(){
