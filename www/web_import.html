@@ -17,14 +17,117 @@
 
   <!-- Super cool dialog-->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.0/jquery-confirm.min.css">
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.0/jquery-confirm.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.0/jquery-confirm.min.js"></script>
+
+	<!-- Easy-autocomplete -->
+	<script src="js/jquery.easy-autocomplete.js"></script>
+	<link rel="stylesheet" href="css/easy-autocomplete.min.css">
+	<link rel="stylesheet" href="css/easy-autocomplete.themes.min.css">
+	
+	<!-- Loading -->
+	<link rel="stylesheet" href="css/easy-loading.css">
+  <script src="js/easy-loading.js"></script>
 
   <!-- Font -->
   <link href="https://fonts.googleapis.com/css?family=Prompt" rel="stylesheet">
   <!-- Main -->
   <link href="css/untitled.css" rel="stylesheet">
 
-  <script>
+  <script>		
+		var prod_id,img;
+		$(document).ready(function () {			
+			get_header();
+
+			var options = {
+				url: function(phrase) {
+					return "php/search_prod.php";
+				},
+				getValue: function(element) {
+					//console.log(element);
+					return element.prod_name;
+				},
+				ajaxSettings: {
+					method: "POST",
+					data: {}
+				},
+				preparePostData: function(data) {     
+					prod_id = 0;     
+					data.phrase = $("#name").val();
+					return data;
+				},
+				minCharNumber: 3,
+				list: {
+						maxNumberOfElements: 1000,
+
+						showAnimation: {
+								type: "slide",
+								time: 100
+						},
+						hideAnimation: {
+								type: "slide",
+								time: 100
+						},
+
+						onChooseEvent: function() {
+							for(var b = 0; b < count; b++){
+								if($("#name").val() == $("#name-"+b).val()){
+									$.alert({
+										icon: 'fa fa-warning',
+										title: 'เตือน',
+										content: "มีการเพิ่มสินค้า " + $("#name").val() + "กรุณาแก้ไขที่จำนวนของสินค้าที่ได้เพิ่มแล้ว",
+									});
+									$("#name").val("");
+									$('#barcode').val("");
+									$('#price').val("");
+									$('#fund').val("");                 
+									return 0;                
+								}
+							}
+							var barcode = $("#name").getSelectedItemData().prod_code;
+							var price = $("#name").getSelectedItemData().prod_price;
+							var price_s = $("#name").getSelectedItemData().prod_pricesend;
+							var cost = $("#name").getSelectedItemData().prod_cost;
+							prod_id = $("#name").getSelectedItemData().prod_id;
+							img = $("#name").getSelectedItemData().img;
+
+							$('#barcode').val(barcode);
+							$('#price').val(price);
+							$('#fund').val(cost);     
+							$('#amount').val("1");
+							$('#net').val(cost);	                    
+						}
+				},
+				requestDelay: 300,
+				theme: "blue-light",
+				};
+			$("#name").easyAutocomplete(options);
+    });
+
+		function get_header(){
+			var d = new Date($.now());			
+      var date = d.getDate() + "/" + (d.getMonth()+1) + "/" + d.getFullYear();
+			$('#date').text(date);
+
+			$.ajax({
+				type: "GET",
+				url:"php/get_ware.php",                            
+				beforeSend: function(){
+					EasyLoading.show({                           
+						text: "กำลังโหลด"                            
+					});
+				},             
+				success: function(data){  
+					EasyLoading.hide();
+					var obj = jQuery.parseJSON(data); 
+					if(obj){
+						$.each(obj, function(i, field){
+							$('#branch').append("<option class='dropdown-item' style='color: #666' value='"+field.ware_id+"'>"+field.ware_name+"</option>");
+						}); 
+					}
+				}               
+			}); 
+		}
+
   	function add(){
   		var bottom = $(window).height() - $("#cnt-add").offset().top - $("#cnt-add").height();
   		// Always scroll to the bottom
@@ -124,19 +227,27 @@
 
       	<div class="container-fullwidth">
       		<div id="head" class="row mgb-5" style="padding-left: 5%; padding-right: 5%;">
-      		  <div class="col-4"></div>
-      		  <div class="col-2 text-center" style="color: #666;">วันที่</div>
+      		  <div class="col-2"></div>
+						<div class="col-2 text-center" style="color: #666;">วันที่</div>
+						<div class="col-3 text-center" style="color: #666;">นำของเข้า</div>
       		  <div class="col-2 text-center" style="color: #666;">ผู้ทำรายการ</div>
-      		  <div class="col-4"></div>
+      		  <div class="col-2"></div>
       		</div>
       	</div>
 
       	<div class="container-fullwidth">
       		<div class="row" style="padding-left: 5%; padding-right: 5%;">
-      			<div class="col-4"></div>
-      			<div class="col-2 text-center" style="margin-top: 5px; color: #666;">12/5/2018</div>
-      			<div class="col-2 text-center nopd" style="margin-top: 5px; color: #666;">ชายเมืองสิงค์</div>
-      			<div class="col-4"></div>
+      			<div class="col-2"></div>
+						<div id="date" class="col-2 text-center" style="margin-top: 5px; color: #666;">12/5/2018</div>
+							
+      			<div class="col-3 text-center">
+      				<select id="branch" type="button" class="btn dropdown-toggle text-right" style='color: #666' aria-haspopup="true" aria-expanded="false">
+								
+							</select>      			
+						</div>
+						
+      			<div id="user" class="col-2 text-center nopd" style="margin-top: 5px; color: #666;">ชายเมืองสิงค์</div>
+      			<div class="col-2"></div>
       		</div>
       	</div><hr style="width: 85%;">
       	
@@ -163,17 +274,17 @@
 			  <div class="col-2">
 			    <div class='input-group-prepend'>
 			      <span id="span-no" class='input-group-text'>#</span>
-			      <input id='barcode' type='text' class='form-control text-center'>
+			      <input id='barcode' type='text' class='form-control text-center' readonly>
 			    </div>
 			  </div>
 			  <div class='col-1 nopd-8'>
-			    <input id='at' type='number' class='form-control text-center'>
+			    <input id='at' type='text' class='form-control text-center'>
 			  </div>
 			  <div class='col-3 nopd-8'>
 			    <input id="name" class="form-control text-center"></input>
 			  </div>
 			  <div class='col-1 nopd-8'>
-			    <input id='amount' type='number' class='form-control text-center no-spin' min='0'>
+			    <input id='amount' type='number' class='form-control text-center no-spin' min='1' value="1">
 			  </div>
 			  <div class='col-1 nopd-8'>
 			    <input id='fund' type='number' class='form-control text-center no-spin' min='0'>
