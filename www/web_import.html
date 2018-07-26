@@ -6,7 +6,7 @@
   <meta name="description" content="">
   <meta name="author" content="">
 
-  <title>ขายสินค้า</title>
+  <title>นำสินค้าเข้าโกดัง</title>
 
   <!-- Bootstrap Import -->
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
@@ -32,7 +32,9 @@
   <link href="https://fonts.googleapis.com/css?family=Prompt" rel="stylesheet">
   <!-- Main -->
   <link href="css/untitled.css" rel="stylesheet">
+  <link rel="stylesheet" href="css/popup.css">
 
+<<<<<<< HEAD
   <script>		
 		var prod_id,img;
 		$(document).ready(function () {			
@@ -128,6 +130,13 @@
 			}); 
 		}
 
+=======
+  <script>
+  	$(document).ready(function() {
+  		var popup = document.getElementById("myPopup");
+        popup.classList.toggle("show");
+  	});
+>>>>>>> e996c66a67782f8279466cdce675339c2488ca18
   	function add(){
   		var bottom = $(window).height() - $("#cnt-add").offset().top - $("#cnt-add").height();
   		// Always scroll to the bottom
@@ -227,16 +236,25 @@
 
       	<div class="container-fullwidth">
       		<div id="head" class="row mgb-5" style="padding-left: 5%; padding-right: 5%;">
+<<<<<<< HEAD
       		  <div class="col-2"></div>
 						<div class="col-2 text-center" style="color: #666;">วันที่</div>
 						<div class="col-3 text-center" style="color: #666;">นำของเข้า</div>
       		  <div class="col-2 text-center" style="color: #666;">ผู้ทำรายการ</div>
       		  <div class="col-2"></div>
+=======
+      		  <div class="col-3"></div>
+      		  <div class="col-2 text-center" style="color: #666;">เลือกโกดัง</div>
+      		  <div class="col-2 text-center" style="color: #666;">วันที่</div>
+      		  <div class="col-2 text-center" style="color: #666;">ผู้ทำรายการ</div>
+      		  <div class="col-3"></div>
+>>>>>>> e996c66a67782f8279466cdce675339c2488ca18
       		</div>
       	</div>
 
       	<div class="container-fullwidth">
       		<div class="row" style="padding-left: 5%; padding-right: 5%;">
+<<<<<<< HEAD
       			<div class="col-2"></div>
 						<div id="date" class="col-2 text-center" style="margin-top: 5px; color: #666;">12/5/2018</div>
 							
@@ -248,17 +266,34 @@
 						
       			<div id="user" class="col-2 text-center nopd" style="margin-top: 5px; color: #666;">ชายเมืองสิงค์</div>
       			<div class="col-2"></div>
+=======
+      			<div class="col-3"></div>
+      			<div class="col-2 text-center">
+      				<div id="select-ware" class="dropdown">
+      				  <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="background-color: #666; width: 103.33px;">โกดัง A
+      				  </button>
+      				  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" style="min-width: 0px !important; width: 103.33px;">
+      				    <a class="dropdown-item text-center" href="#" onclick="something(1)">โกดัง A</a>
+      				    <a class="dropdown-item text-center" href="#">โกดัง B</a>
+      				    <a class="dropdown-item text-center" href="#">โกดัง C</a>
+      				  </div>
+      				</div>
+      			</div>
+      			<div class="col-2 text-center" style="margin-top: 5px; color: #666;">12/5/2018</div>
+      			<div class="col-2 text-center nopd" style="margin-top: 5px; color: #666;">ชายเมืองสิงค์</div>
+      			<div class="col-3"></div>
+>>>>>>> e996c66a67782f8279466cdce675339c2488ca18
       		</div>
       	</div><hr style="width: 85%;">
       	
       	<div class="container-fullwidth nopd">
       		<div id="head" class="row mgb-5">
+      		  <div class="col-1"></div>
       		  <div class="col-2 text-center nopd">บาร์โค้ด</div>
       		  <div class="col-1 text-center nopd-8">ที่อยู่สินค้า</div>
       		  <div class="col-3 text-center nopd">ชื่อสินค้า</div>
       		  <div class="col-1 text-center nopd-8">จำนวน</div>
       		  <div class="col-1 text-center nopd-8">ทุน</div>
-      		  <div class="col-1 text-center nopd-8">ทุนเฉลี่ย</div>
       		  <div class="col-1 text-center nopd-8">ราคาส่ง</div>
       		  <div class="col-1 text-center nopd-8">ราคาปลีก</div>
       		</div>
@@ -271,6 +306,7 @@
 		<div class="container-fullwidth nopd">
 			<!-- Input -->
 			<div class="row" >
+			  <div class="col-1"></div>
 			  <div class="col-2">
 			    <div class='input-group-prepend'>
 			      <span id="span-no" class='input-group-text'>#</span>
@@ -286,11 +322,9 @@
 			  <div class='col-1 nopd-8'>
 			    <input id='amount' type='number' class='form-control text-center no-spin' min='1' value="1">
 			  </div>
-			  <div class='col-1 nopd-8'>
+			  <div class='col-1 nopd-8 popup'>
+			  	<span class="popuptext" id="myPopup">เฉลี่ย : <span id="avg-rate"></span></span>
 			    <input id='fund' type='number' class='form-control text-center no-spin' min='0'>
-			  </div>
-			  <div class='col-1 nopd-8'>
-			    <input id='avg-fund' type='number' class='form-control text-center no-spin' min='0'>
 			  </div>
 			  <div class='col-1 nopd-8'>
 			    <input id='whole' type='number' class='form-control text-center no-spin' min='0'>
@@ -305,10 +339,11 @@
 			  </div>
 			</div><br>
 			<div class="row">
-				<div class="col-12 text-right">
+				<div class="col-11 text-right nopd-8">
 					<button class="btn btn-md btn-success" style="margin-right: 5px;" onclick="add();">เพิ่มสินค้า</button>
 					<button class="btn btn-md btn-danger">ค่าเริ่มต้น</button>
 				</div>
+				<div class="col-1"></div>
 			</div>
 		</div>
 
@@ -486,8 +521,6 @@
 		        $('textarea').val("");
 		      }
 		});
-
-
 	</script>
 </body>
 </html>
