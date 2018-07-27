@@ -332,7 +332,7 @@
 
 		arr_data = []
 		var count = 0;
-  	function show(){
+  		function show(){
   		var bottom = $(window).height() - $("#cnt-add").offset().top - $("#cnt-add").height();
   		// Always scroll to the bottom
   		if(bottom < 200){
@@ -437,7 +437,7 @@
 			$('#at').val("")
 		}
 
-  	function edit(arg){
+  		function edit(arg){
 			stop = false;
 			for(i = 0; i < count; i++){
 				if($("#btn-save-" + i).is(":visible")){
@@ -459,7 +459,7 @@
 				//total_old = $("#net-" + arg).val();  		
   	}
 
-  	function save(arg){
+  		function save(arg){
 			arr_data[arg].amt = $("#amount-"+arg).val();
 			arr_data[arg].addr = $("#at-"+arg).val();       
 
@@ -518,9 +518,8 @@
 			var index_qr = 1;
 			$.each(arr_data, function(i, field){				
 				for(var j = 0 ; j < arr_data[i].amt; j++){
-					//txt += "<div class='text-center'>"+arr_data[i].name+"</div><div id='qrcode"+index_qr+"'></div><div class='text-center'>"+arr_data[i].price+"</div><br>";					
-					$('#show_qr').append("<div>"+arr_data[i].name+"</div><div id='qrcode"+index_qr+"'></div><br>");
-					qrcode = new QRCode("qrcode"+index_qr, {width : 128,height : 128});
+					$('#show_qr').append("<div>"+arr_data[i].name+"</div><div id='qrcode"+index_qr+"'></div><div>"+arr_data[i].price+"</div><br>");					
+					qrcode = new QRCode("qrcode"+index_qr, {width : 70,height : 70});
 					qrcode.makeCode(arr_data[i].qr);
 					index_qr++;
 				}
@@ -533,48 +532,46 @@
 			var dataString =  "JSON=" + json_string + "&ware_id=" + ware_id + "&date=" + datetime
 			+ "&sum=" + sum + "&user_id=" + "20";
 			//alert(dataString);
-			//print();
+			print();
 
 		/*$.ajax({
-					type: "POST",
-					url:"php/stock_in.php",           
-					data: dataString,               
-					beforeSend: function(){
-						EasyLoading.show({                           
-							text: "กำลังโหลด"                            
-						});
-					},             
-					success: function(data){  
-						EasyLoading.hide();    
-						if(data == "success"){                       
-							location.reload(true);         
-						}else{
-							$.confirm({
-									title: 'พบข้อผิดพลาด',
-									content: 'ลองอีกครั้ง',
-									backgroundDismiss: true,
-									buttons: {
-											formSubmit: {
-											text: 'ตกลง',
-											btnClass: 'btn-regis',
-											action: function () {
-											}
-											}
+			type: "POST",
+			url:"php/stock_in.php",           
+			data: dataString,               
+			beforeSend: function(){
+				EasyLoading.show({                           
+					text: "กำลังโหลด"                            
+				});
+			},             
+			success: function(data){  
+				EasyLoading.hide();    
+				if(data == "success"){                       
+					location.reload(true);         
+				}else{
+					$.confirm({
+							title: 'พบข้อผิดพลาด',
+							content: 'ลองอีกครั้ง',
+							backgroundDismiss: true,
+							buttons: {
+									formSubmit: {
+									text: 'ตกลง',
+									btnClass: 'btn-regis',
+									action: function () {
 									}
-							});
-						}
-					}               
+									}
+							}
+					});
+				}
+			}               
 			});*/
 		}
 
 		function print(){
-      var WinPrint  = window.open();				
-			var date = datetime.split(" ");
-			var time = date[1];
-			var date = date[0];                    
+			var divElements = document.getElementById("show_qr").innerHTML;
+      		var WinPrint  = window.open();	           
 			WinPrint.document.write("<style>@page {size: auto; margin: 0mm;} .txt-right{ margin-right: 0.5cm; font-size: 1em; text-align:right; float: right; } .txt-left{ font-size: 1em; margin-left: 0.5cm; float: left; width: 50%; }.txt-left-100{ font-size: 1em; margin-left: 0.5cm; float: left; width: 100%; } .txt-ct{ float: center; font-size: 1em; text-align: center; margin-bottom: 0.2em} .left{margin-left: 0.5cm; float: left; width: 3.5cm; text-align: left;} .mid{float: left; width: 0.5cm; text-align: right;} .right{margin-right: 0.5cm; float: left; width: 2.5cm; text-align: right;}</style>"+
 				"<div style='width: 7.5cm;'>"+
-					txt +
+					divElements +
 				"</div>");
 			WinPrint.document.close();
 			WinPrint.focus();
