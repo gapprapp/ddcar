@@ -17,7 +17,7 @@
 
   <!-- Super cool dialog-->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.0/jquery-confirm.min.css">
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.0/jquery-confirm.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.0/jquery-confirm.min.js"></script>
 
 	<!-- Easy-autocomplete -->
 	<script src="js/jquery.easy-autocomplete.js"></script>
@@ -30,6 +30,7 @@
 	
 	<!-- QRcode -->
 	<script type="text/javascript" src="js/qrcode.min.js"></script>
+	<script type="text/javascript" src="js/jQuery.print.js"></script>
 
   <!-- Font -->
   <link href="https://fonts.googleapis.com/css?family=Prompt" rel="stylesheet">
@@ -124,7 +125,7 @@
 
 		function get_header(){
 			var d = new Date($.now());			
-      var date = d.getDate() + "/" + (d.getMonth()+1) + "/" + d.getFullYear();
+      		var date = d.getDate() + "/" + (d.getMonth()+1) + "/" + d.getFullYear();
 			$('#date').text(date);
 
 			$.ajax({
@@ -508,7 +509,6 @@
 			});
     }
 
-		var txt = "";
 		var qrcode;
 		function save2db(){
 			if(arr_data.length == 0){
@@ -518,8 +518,23 @@
 			var index_qr = 1;
 			$.each(arr_data, function(i, field){				
 				for(var j = 0 ; j < arr_data[i].amt; j++){
-					$('#show_qr').append("<div>"+arr_data[i].name+"</div><div id='qrcode"+index_qr+"'></div><div>"+arr_data[i].price+"</div><br>");					
-					qrcode = new QRCode("qrcode"+index_qr, {width : 70,height : 70});
+					//$('#show_qr').append("<div>"+arr_data[i].name+"</div><div id='qrcode"+index_qr+"'></div><div>"+arr_data[i].price+"</div><br>");	
+					if(index_qr % 2 != 0){						
+						$('#show_qr').append('<div id="ctn'+index_qr+'" class="ctn">' +
+						'<div class="left">' +
+							'<div>'+arr_data[i].name+'</div>' +
+							'<div class="qr" id="qrcode'+index_qr+'"></div>' +
+							'<div>'+arr_data[i].price+'</div>' +
+						'</div>' +						
+						'</div>');		
+					}else{						
+						$('#ctn'+(index_qr-1)).append('<div class="right">' +
+							'<div>'+arr_data[i].name+'</div>' +
+							'<div class="qr" id="qrcode'+index_qr+'"></div>' +
+							'<div>'+arr_data[i].price+'</div>' +
+						'</div>');
+					}											
+					qrcode = new QRCode("qrcode"+index_qr,{width: 125, height: 102});
 					qrcode.makeCode(arr_data[i].qr);
 					index_qr++;
 				}
@@ -567,16 +582,15 @@
 		}
 
 		function print(){
-			var divElements = document.getElementById("show_qr").innerHTML;
-      		var WinPrint  = window.open();	           
-			WinPrint.document.write("<style>@page {size: auto; margin: 0mm;} .txt-right{ margin-right: 0.5cm; font-size: 1em; text-align:right; float: right; } .txt-left{ font-size: 1em; margin-left: 0.5cm; float: left; width: 50%; }.txt-left-100{ font-size: 1em; margin-left: 0.5cm; float: left; width: 100%; } .txt-ct{ float: center; font-size: 1em; text-align: center; margin-bottom: 0.2em} .left{margin-left: 0.5cm; float: left; width: 3.5cm; text-align: left;} .mid{float: left; width: 0.5cm; text-align: right;} .right{margin-right: 0.5cm; float: left; width: 2.5cm; text-align: right;}</style>"+
-				"<div style='width: 7.5cm;'>"+
-					divElements +
-				"</div>");
-			WinPrint.document.close();
-			WinPrint.focus();
-			WinPrint.print();
-			WinPrint.close();
+			$("#show_qr").print({
+                addGlobalStyles : true,
+                stylesheet : null,
+                rejectWindow : true,
+                noPrintSelector : ".no-print",
+                iframe : true,
+                append : null,
+                prepend : null
+            });           
     }
 
   </script>
@@ -601,6 +615,7 @@
 	.active{
 		color: #666;
 	}
+	@media print {body {-webkit-print-color-adjust: exact;}} @page {size: auto; margin: 0mm;} body{font-family: "Prompt"; line-height: 1.5; font-size: 1em;}.ctn{width: 10.1cm; height: 4cm; margin-bottom: 2mm;} .left{float: left; width: 5.05cm; height: 4cm; text-align: center;} .right{float: left; width: 5.05cm; height: 4cm; text-align: center;} .qr{width: 33mm; height: 27mm; margin-left: 18%;}
   </style>
 </head>
 <body>
@@ -725,22 +740,7 @@
 		$('#name').on('input', function() {
 			var name = $('#name').val();           
 			if(name == ""){
-				$('#at').attr("placeholder","");
-				$('#barcode').val("");
-				$('#name').val("");
-				/*$("#name").attr('data-img',"");
-				$('#name[rel=popover]').popover({
-					html: true, 
-					trigger: 'hover',
-					placement: 'left',
-					content: function(){
-					return '<img src='+$(this).data('img')+'>';}
-				}); */		
-				$('#fund').val("");
-				$('#whole').val("");
-				$('#retail').val("");
-				$('#amount').val("1");
-				$('#at').val("")
+				set_default();
 			}            
 		});      
 	</script>
