@@ -42,7 +42,7 @@
 
   <script>
 		var prod_id,img,cus_id,cus_type,old_price,cus_addr,cus_tel;
-		$(document).ready(function () {
+		//$(document).ready(function () {
 			get_header();
 
 			var options = {
@@ -184,7 +184,7 @@
 				theme: "blue-light",          
 				};
 			$("#cus").easyAutocomplete(options_cus);
-		});	
+		//});	
 
 		function get_header(){
 			var d = new Date($.now());			
@@ -643,7 +643,7 @@
       	</div><br><br>
 
       	<div class="container-fullwidth">
-      		<div id="head" class="row mgb-5" style="padding-left: 5%; padding-right: 5%;">
+      		<div id="head" class="row mgb-5" style="padding-left: 2%; padding-right: 2%;">
       		  <div class="col-2 text-center" style="color: #666;">วันที่</div>
       		  <div class="col-2 text-center" style="color: #666;">ลูกค้า</div>
       		  <div class="col-3 text-center" style="color: #666;">ขายจาก</div>
@@ -653,27 +653,27 @@
       	</div>
 
       	<div class="container-fullwidth">
-      		<div class="row" style="padding-left: 5%; padding-right: 5%;">
+      		<div class="row" style="padding-left: 2%; padding-right: 2%;">
       			<div id="date" class="col-2 text-center" style="margin-top: 5px; color: #666;">12/5/2018</div>
       			<div class="col-2 text-center nopd">
       				<input id='cus' type='text' class='form-control text-center'>
       			</div>
       			
       			<div class="col-3 text-center nopd">
-      				<button id="btn-b" type="button" class="btn dropdown-toggle text-right" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="background-color: #666; width: 103.33px;"></button>
+      				<button id="btn-b" type="button" class="btn dropdown-toggle text-right" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="background-color: #666;"></button>
 
-      				<div id="b" class="dropdown-menu" aria-labelledby="dropdownMenuButton" style="min-width: 0px !important; width: 103.33px;">
+      				<div id="b" class="dropdown-menu" aria-labelledby="dropdownMenuButton">
 
       				</div>
       			</div>
-      			<div class="col-3 text-center nopd">
-      				<button id="btn-p" type="button" class="btn dropdown-toggle text-right" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="background-color: #666; width: 103.33px;">เงินสด</button>
+      			<div class="col-3 text-center">
+      				<button id="btn-p" type="button" class="btn dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="background-color: #666;">เงินสด</button>
 
-      				<div class="dropdown-menu" aria-labelledby="dropdownMenuButton" style="min-width: 0px !important; width: 103.33px;">
-									<a class="dropdown-item text-center" href="#" onclick="setpay('เงินสด')">เงินสด</a>
-									<a class="dropdown-item text-center" href="#" onclick="setpay('เครดิต (30)')">เครดิต (30)</a>
-									<a class="dropdown-item text-center" href="#" onclick="setpay('เครดิต (60)')">เครดิต (60)</a>
-									<a class="dropdown-item text-center" href="#" onclick="setpay('เครดิต (90)')">เครดิต (30)</a>
+      				<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+						<a class="dropdown-item text-center" href="#" onclick="setpay('เงินสด')">เงินสด</a>
+						<a class="dropdown-item text-center" href="#" onclick="setpay('เครดิต (30)')">เครดิต (30)</a>
+						<a class="dropdown-item text-center" href="#" onclick="setpay('เครดิต (60)')">เครดิต (60)</a>
+						<a class="dropdown-item text-center" href="#" onclick="setpay('เครดิต (90)')">เครดิต (30)</a>
       				</div>
       			</div>
       			<div class="col-2 text-center nopd" style="margin-top: 5px; color: #666;">
