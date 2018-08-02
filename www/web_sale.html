@@ -35,7 +35,7 @@
 
   <style>
   	img{
-		height: 150px;
+		height: 200px;
 		width: 200px;
 	}
   </style>
@@ -318,7 +318,8 @@
 				item ["name"] =  name;
 				item ["old_price"] =  old_price; 
 				item ["price"] =  price;               
-				item ["amt"] =  amt;			
+				item ["amt"] =  amt;		
+				item ["total"] =  $('#total').val();	
 
 				arr_data.push(item); 
 				$("#cus").attr('disabled',true);
@@ -439,6 +440,7 @@
 			}   
     }   
 
+		arr_a4 = [];
 		function save2db(){
 			if(arr_data.length == 0 || cus_id == -1){
 					return 0;
@@ -453,6 +455,7 @@
 			arr_detail = [];
 			var text = "";
       var texta4 = "";
+			var c = 1;
 			for(var i = 0 ; i < arr_data.length ; i ++){                
 				if(arr_data[i].old_price != arr_data[i].price){
 					item = {};                 
@@ -460,6 +463,34 @@
 					item ["price"] =  arr_data[i].price;          
 
 					arr_detail.push(item); 
+				}
+				texta4 = texta4 + '<div>'+
+						'<div class="fl-spc tb-st no-bdt">'+(i+1)+'</div>' +
+						'<div class="fl-15 tb no-bdt">'+arr_data[i].qr+'</div>' +
+						'<div class="fl-45 tb no-bdt">'+arr_data[i].name+'</div>' +
+						'<div class="fl-spc tb no-bdt">'+arr_data[i].amt+'</div>' +
+						'<div class="fl-13 tb no-bdt">'+parseFloat(arr_data[i].price).toFixed(2)+'</div>' +
+						'<div class="fl-13 tb no-bdt">'+parseFloat(arr_data[i].total).toFixed(2)+'</div>' +
+					'</div>';		
+				if(c < 7){								
+					if(i == arr_data.length-1){
+						for(var j = 0 ; j < 7-c;j++){
+							texta4 = texta4 + '<div>'+
+								'<div class="fl-spc tb-st no-bdt">&emsp;</div>' +
+								'<div class="fl-15 tb no-bdt">&emsp;</div>' +
+								'<div class="fl-45 tb no-bdt">&emsp;</div>' +
+								'<div class="fl-spc tb no-bdt">&emsp;</div>' +
+								'<div class="fl-13 tb no-bdt">&emsp;</div>' +
+								'<div class="fl-13 tb no-bdt">&emsp;</div>' +
+							'</div>';	
+						}						
+						arr_a4.push(texta4);
+					}
+					c++;
+				}else if(c == 7){				
+					arr_a4.push(texta4);
+					c = 1;
+					texta4 = "";
 				}
 				text = text + " <div class='left'>"+arr_data[i].amt+"</div> <div class='mid'>"+arr_data[i].name+"</div> <div class='right'>"+arr_data[i].price+"</div>";
 			} 	
@@ -511,6 +542,220 @@
 						"<div class='txt-ct' style='margin-bottom: 0.5em;'>ขอบคุณที่ใช้บริการ</div>"+
 						"<div class='txt-ct'>พนักงานขาย : localStorage.user_name</div>"+
 					"</div>");
+				WinPrint.document.write('</body></html>');
+				//WinPrint.document.close();
+				WinPrint.focus();
+				//WinPrint.print();
+				//WinPrint.close();   
+				//location.reload(true);
+			}
+			if(print_type == "a4"){
+				var dt = datetime.split(" ");
+				var time = dt[1];
+				var d = dt[0].split("-");
+				var date = d[2] + "/" + d[1] + "/" + d[0];
+				if($('#btn-p').text() == "เครดิต (30)"){
+					var date_ex = d[2] + "/" + (parseInt(d[1])+parseInt(1)) + "/" + d[0];
+				}else if($('#btn-p').text() == "เครดิต (60)"){
+					var date_ex = d[2] + "/" + (parseInt(d[1])+parseInt(2)) + "/" + d[0];
+				}else if($('#btn-p').text() == "เครดิต (90)"){
+					var date_ex = d[2] + "/" + (parseInt(d[1])+parseInt(3)) + "/" + d[0];
+				}
+				WinPrint.document.write("<html><head><link href='https://fonts.googleapis.com/css?family=Maitree' rel='stylesheet'></head><body>");
+				WinPrint.document.write(" <style>@media print {body {-webkit-print-color-adjust: exact;}} @page {size: auto; margin: 0;}.fl-spc{float: left; width: 5%;}.fl-9{float: left; width: 9%;}.fl-12{float: left; width: 12.752%;}.fl-13{float: left; width: 13.05%;}.fl-14{float: left; width: 13.88%;}.fl-15{float: left; width: 15%;}.fl-20{float: left; width: 20%; text-align: center;}.fl-25{float: left; width: 25%; text-align: center;}.fl-35{float: left; width: 35%; text-align: center;}.fl-45{float: left; width: 45%; text-align: center;}.fl-80{float: left; width: 80%; text-align: center;}.ctn{position: relative; width: 297mm; height: 210mm; padding: 10mm 15mm 5mm 10mm; font-family: 'Maitree';}.tb-st{border: 1px solid black; text-align: center; padding: 3px;}.tb{border: 1px solid black; text-align: center; padding: 3px; border-left: none;}.no-bdt{border-top: none;}.no-bdbtm{border-bottom: none;}.bold{font-weight: bold;}.ccc{background-color: #ccc;}.pd-15{padding-top: 15px;}.pd-16{padding-top: 16px;}.mg-5{margin-top: 5px;}</style>");
+				for(var m = 0;m < arr_a4.length;m++){
+					WinPrint.document.write("<div class='ctn' style='margin-top: -8mm;'>" +
+						"<div class='fl-35'>" +
+							"<img style='width: 250px; height: 150px;' src='img/logo.jpg'>" +
+						"</div>" +
+						'<div class="fl-spc">&emsp;</div>' +
+						"<div class='fl-25' style='margin-top: 30px;'>" +
+						'<h1 style="border: 1px solid #555; border-radius: 10px; padding-top: 10px; padding-bottom: 10px; background-color: #555 !important; color: white; font-size: 210%;">ใบรายการขาย</h1>' +
+						'</div>' +
+						'<div class="fl-20">&emsp;</div>' +
+						"<div class='fl-15' style='text-align: center; margin-bottom: 30px;'>" +
+							'<h4 style="border: 1px solid black; background-color: #cccccc; padding-top: 5px; padding-bottom: 5px; width: 90%;">ต้นฉบับ</h4>' +
+						'</div>' +
+
+						'<div style=" text-align: right;">' +
+							'<p style="width: 99%;"><span class="bold">เลขที่  : </span><span>&emsp;order_num</span></p>' +
+							'<p style="width: 99%; margin-top: -15px;"><span class="bold">วันที่  : </span>&emsp;&emsp; <span>'+date+'</span></p>' +
+							'<p style="width: 99%; margin-top: -15px;"><span class="bold">เครดิต : </span><span style="margin-left: 98px;">'+$('#btn-p').text().substr(8,2)+'</span></p>' +
+						'</div>'+
+						
+						'<div style=" text-align: left; margin-top: -41px;">'+
+							'&emsp; <span class="bold">สถานที่ส่งสินค้า : </span><span>&emsp;รถบริษัท DD MOTOR SPORT B-24, B-28 อาคารศรีวรจักร ถ.หลวงป้อมปราบศัตรูพ่าย</span>'+
+						'</div>' +
+
+						'<div style="margin-top: 5px;">' +
+							'<div class="fl-80 tb-st no-bdbtm" style="text-align: left;">&emsp; <span class="bold">ชื่อลูกค้า : </span><span>&emsp;'+$('#cus').val()+'</span> &emsp;&emsp;&emsp; <span class="bold">โทร : </span><span>&emsp;'+cus_tel+'</span></div>' +
+							'<div class="fl-9 tb no-bdbtm ccc bold">วันครบกำหนด</div>' +
+							'<div class="fl-9 tb no-bdbtm ccc bold">ทำรายการโดย</div>' +
+						'</div>'+
+
+						'<div style="margin-top: 5px;">' +
+							'<div class="fl-80 tb-st no-bdt" style="text-align: left;">&emsp; <span class="bold">ที่อยู่ : </span><span>&emsp;'+cus_addr+'</span></div>'+
+							'<div class="fl-9 tb" style="margin-top: -1px;">'+date_ex+'</div>'+
+							'<div class="fl-9 tb" style="margin-top: -1px;">local.user_name</div>'+
+						'</div>' +
+
+						'<div>'+
+							'<div class="fl-spc tb-st no-bdt ccc bold">ที่</div>'+
+							'<div class="fl-15 tb no-bdt ccc bold">รหัสสินค้า</div>'+
+							'<div class="fl-45 tb no-bdt ccc bold">รายการ</div>'+
+							'<div class="fl-spc tb no-bdt ccc bold">จำนวน</div>'+
+							'<div class="fl-13 tb no-bdt ccc bold">ราคา / หน่วย</div>'+
+							'<div class="fl-13 tb no-bdt ccc bold">จำนวนเงิน</div>' +
+						'</div>' +
+							arr_a4[m] +
+						'<div>' +
+							'<div class="fl-spc tb-st no-bdt pd-15">จำนวน</div>' +
+							'<div class="fl-12 tb no-bdt pd-15">................ กล่อง</div>' +
+							'<div class="fl-12 tb no-bdt pd-15">................... ลัง</div>' +
+							'<div class="fl-12 tb no-bdt pd-15">................... มัด</div>' +
+							'<div class="fl-12 tb no-bdt pd-15">................ ม้วน</div>' +
+							'<div class="fl-12 tb no-bdt pd-15">................... ชิ้น</div>' +
+							'<div class="fl-13 tb no-bdt pd-15">รวม / Total</div>' +
+							'<div class="fl-13 tb no-bdt pd-15">'+parseFloat($('#net-price').val()).toFixed(2)+'</div>' +
+						'</div>' +
+
+						'<div>' +
+							'<div class="fl-14 tb-st no-bdt no-bdbtm pd-16">&emsp;</div>' +
+							'<div class="fl-14 tb no-bdt no-bdbtm pd-16">&emsp;</div>' +
+							'<div class="fl-14 tb no-bdt no-bdbtm pd-16">&emsp;</div>' +
+							'<div class="fl-14 tb no-bdt no-bdbtm pd-16">&emsp;</div>' +
+							'<div class="fl-14 tb no-bdt no-bdbtm pd-16">&emsp;</div>' +
+							'<div class="fl-13 tb no-bdt pd-15">ส่วนลด / Discount</div>' +
+							'<div class="fl-13 tb no-bdt pd-15">'+parseFloat(dis).toFixed(2)+'</div>' +
+						'</div>'+
+
+						'<div>'+
+							'<div class="fl-14 tb-st no-bdt no-bdbtm pd-16">&emsp;</div>'+
+							'<div class="fl-14 tb no-bdt no-bdbtm pd-16">&emsp;</div>'+
+							'<div class="fl-14 tb no-bdt no-bdbtm pd-16">&emsp;</div>'+
+							'<div class="fl-14 tb no-bdt no-bdbtm pd-16">&emsp;</div>'+
+							'<div class="fl-14 tb no-bdt no-bdbtm pd-16">&emsp;</div>'+
+							'<div class="fl-13 tb no-bdt pd-15">สุทธิ / Net</div>'+
+							'<div class="fl-13 tb no-bdt pd-15">'+parseFloat($('#final-price').val()).toFixed(2)+'</div>'+
+						'</div>'+
+
+						'<div>'+
+							'<div class="fl-14 tb-st no-bdt no-bdbtm pd-16 ">................................</div>'+
+							'<div class="fl-14 tb no-bdt no-bdbtm pd-16">................................</div>'+
+							'<div class="fl-14 tb no-bdt no-bdbtm pd-16">................................</div>'+
+							'<div class="fl-14 tb no-bdt no-bdbtm pd-16">................................</div>'+
+							'<div class="fl-14 tb no-bdt no-bdbtm pd-16">................................</div>'+
+							'<div class="fl-13 tb no-bdt pd-15">ภาษีมูลค่าเพิ่ม / Vat</div>'+
+							'<div class="fl-13 tb no-bdt pd-15">0.00</div>'+
+						'</div>'+
+
+						'<div>'+
+							'<div class="fl-14 tb-st no-bdt pd-15">ผู้ขายของ</div>'+
+							'<div class="fl-14 tb no-bdt pd-15">คลังสินค้า/ผู้ตรวจสอบ</div>'+
+							'<div class="fl-14 tb no-bdt pd-15">ผู้ส่งของ</div>'+
+							'<div class="fl-14 tb no-bdt pd-15">ผู้รับของ</div>'+
+							'<div class="fl-14 tb no-bdt pd-15">ผู้มีอำนาจลงนาม</div>'+
+							'<div class="fl-13 tb no-bdt pd-15">ทั้งสิ้น / Grand Total</div>'+
+							'<div class="fl-13 tb no-bdt pd-15">'+parseFloat($('#final-price').val()).toFixed(2)+'</div>'+
+						'</div>'+
+					'</div>'+
+
+					"<div class='ctn' style='top: 50%; margin-top: -5mm;'>" +
+						"<div class='fl-35'>" +
+							"<img style='width: 250px; height: 150px;' src='img/logo.jpg'>" +
+						"</div>" +
+						'<div class="fl-spc">&emsp;</div>' +
+						"<div class='fl-25' style='margin-top: 30px;'>" +
+						'<h1 style="border: 1px solid #555; border-radius: 10px; padding-top: 10px; padding-bottom: 10px; background-color: #555 !important; color: white; font-size: 210%;">ใบรายการขาย</h1>' +
+						'</div>' +
+						'<div class="fl-20">&emsp;</div>' +
+						"<div class='fl-15' style='text-align: center; margin-bottom: 30px;'>" +
+							'<h4 style="border: 1px solid black; background-color: #cccccc; padding-top: 5px; padding-bottom: 5px; width: 90%;">สำเนา</h4>' +
+						'</div>' +
+
+						'<div style=" text-align: right;">' +
+							'<p style="width: 99%;"><span class="bold">เลขที่  : </span><span>&emsp;order_num</span></p>' +
+							'<p style="width: 99%; margin-top: -15px;"><span class="bold">วันที่  : </span>&emsp;&emsp; <span>'+date+'</span></p>' +
+							'<p style="width: 99%; margin-top: -15px;"><span class="bold">เครดิต : </span><span style="margin-left: 98px;">'+$('#btn-p').text().substr(8,2)+'</span></p>' +
+						'</div>'+
+						
+						'<div style=" text-align: left; margin-top: -41px;">'+
+							'&emsp; <span class="bold">สถานที่ส่งสินค้า : </span><span>&emsp;รถบริษัท DD MOTOR SPORT B-24, B-28 อาคารศรีวรจักร ถ.หลวงป้อมปราบศัตรูพ่าย</span>'+
+						'</div>' +
+
+						'<div style="margin-top: 5px;">' +
+							'<div class="fl-80 tb-st no-bdbtm" style="text-align: left;">&emsp; <span class="bold">ชื่อลูกค้า : </span><span>&emsp;'+$('#cus').val()+'</span> &emsp;&emsp;&emsp; <span class="bold">โทร : </span><span>&emsp;'+cus_tel+'</span></div>' +
+							'<div class="fl-9 tb no-bdbtm ccc bold">วันครบกำหนด</div>' +
+							'<div class="fl-9 tb no-bdbtm ccc bold">ทำรายการโดย</div>' +
+						'</div>'+
+
+						'<div style="margin-top: 5px;">' +
+							'<div class="fl-80 tb-st no-bdt" style="text-align: left;">&emsp; <span class="bold">ที่อยู่ : </span><span>&emsp;'+cus_addr+'</span></div>'+
+							'<div class="fl-9 tb" style="margin-top: -1px;">'+date_ex+'</div>'+
+							'<div class="fl-9 tb" style="margin-top: -1px;">local.user_name</div>'+
+						'</div>' +
+
+						'<div>'+
+							'<div class="fl-spc tb-st no-bdt ccc bold">ที่</div>'+
+							'<div class="fl-15 tb no-bdt ccc bold">รหัสสินค้า</div>'+
+							'<div class="fl-45 tb no-bdt ccc bold">รายการ</div>'+
+							'<div class="fl-spc tb no-bdt ccc bold">จำนวน</div>'+
+							'<div class="fl-13 tb no-bdt ccc bold">ราคา / หน่วย</div>'+
+							'<div class="fl-13 tb no-bdt ccc bold">จำนวนเงิน</div>' +
+						'</div>' +
+							arr_a4[m] +
+						'<div>' +
+							'<div class="fl-spc tb-st no-bdt pd-15">จำนวน</div>' +
+							'<div class="fl-12 tb no-bdt pd-15">................ กล่อง</div>' +
+							'<div class="fl-12 tb no-bdt pd-15">................... ลัง</div>' +
+							'<div class="fl-12 tb no-bdt pd-15">................... มัด</div>' +
+							'<div class="fl-12 tb no-bdt pd-15">................ ม้วน</div>' +
+							'<div class="fl-12 tb no-bdt pd-15">................... ชิ้น</div>' +
+							'<div class="fl-13 tb no-bdt pd-15">รวม / Total</div>' +
+							'<div class="fl-13 tb no-bdt pd-15">'+parseFloat($('#net-price').val()).toFixed(2)+'</div>' +
+						'</div>' +
+
+						'<div>' +
+							'<div class="fl-14 tb-st no-bdt no-bdbtm pd-16">&emsp;</div>' +
+							'<div class="fl-14 tb no-bdt no-bdbtm pd-16">&emsp;</div>' +
+							'<div class="fl-14 tb no-bdt no-bdbtm pd-16">&emsp;</div>' +
+							'<div class="fl-14 tb no-bdt no-bdbtm pd-16">&emsp;</div>' +
+							'<div class="fl-14 tb no-bdt no-bdbtm pd-16">&emsp;</div>' +
+							'<div class="fl-13 tb no-bdt pd-15">ส่วนลด / Discount</div>' +
+							'<div class="fl-13 tb no-bdt pd-15">'+parseFloat(dis).toFixed(2)+'</div>' +
+						'</div>'+
+
+						'<div>'+
+							'<div class="fl-14 tb-st no-bdt no-bdbtm pd-16">&emsp;</div>'+
+							'<div class="fl-14 tb no-bdt no-bdbtm pd-16">&emsp;</div>'+
+							'<div class="fl-14 tb no-bdt no-bdbtm pd-16">&emsp;</div>'+
+							'<div class="fl-14 tb no-bdt no-bdbtm pd-16">&emsp;</div>'+
+							'<div class="fl-14 tb no-bdt no-bdbtm pd-16">&emsp;</div>'+
+							'<div class="fl-13 tb no-bdt pd-15">สุทธิ / Net</div>'+
+							'<div class="fl-13 tb no-bdt pd-15">'+parseFloat($('#final-price').val()).toFixed(2)+'</div>'+
+						'</div>'+
+
+						'<div>'+
+							'<div class="fl-14 tb-st no-bdt no-bdbtm pd-16 ">................................</div>'+
+							'<div class="fl-14 tb no-bdt no-bdbtm pd-16">................................</div>'+
+							'<div class="fl-14 tb no-bdt no-bdbtm pd-16">................................</div>'+
+							'<div class="fl-14 tb no-bdt no-bdbtm pd-16">................................</div>'+
+							'<div class="fl-14 tb no-bdt no-bdbtm pd-16">................................</div>'+
+							'<div class="fl-13 tb no-bdt pd-15">ภาษีมูลค่าเพิ่ม / Vat</div>'+
+							'<div class="fl-13 tb no-bdt pd-15">0.00</div>'+
+						'</div>'+
+
+						'<div>'+
+							'<div class="fl-14 tb-st no-bdt pd-15">ผู้ขายของ</div>'+
+							'<div class="fl-14 tb no-bdt pd-15">คลังสินค้า/ผู้ตรวจสอบ</div>'+
+							'<div class="fl-14 tb no-bdt pd-15">ผู้ส่งของ</div>'+
+							'<div class="fl-14 tb no-bdt pd-15">ผู้รับของ</div>'+
+							'<div class="fl-14 tb no-bdt pd-15">ผู้มีอำนาจลงนาม</div>'+
+							'<div class="fl-13 tb no-bdt pd-15">ทั้งสิ้น / Grand Total</div>'+
+							'<div class="fl-13 tb no-bdt pd-15">'+parseFloat($('#final-price').val()).toFixed(2)+'</div>'+
+						'</div>'+
+					'</div>');
+				}				
 				WinPrint.document.write('</body></html>');
 				//WinPrint.document.close();
 				WinPrint.focus();
@@ -798,7 +1043,7 @@
 	            <div class="col-2"></div>
 	            <div class="col-3 text-center" style="border: solid #767676; padding-top: 5px;"><h3>ลด : </h3></div>
 	            <div class="col-5 text-center" style="border: solid #767676; background: #767676;">
-	              <input id="discount-money" onchange="chng_discount()"  data-index="5" type="number" class="form-control form-control-lg text-center no-spin no-border check-bill-input" style="background: #767676; color: #fd8b5e;">
+	              <input id="discount-money"  data-index="5" type="number" class="form-control form-control-lg text-center no-spin no-border check-bill-input" style="background: #767676; color: #fd8b5e;">
 	            </div>
 	            <div class="col-2"></div>
 	          </div> <br>
