@@ -442,6 +442,7 @@
 			$('#retail').val("");
 			$('#amount').val("1");
 			$('#at').val("")
+			print();
 		}
 
   		function edit(arg){
@@ -528,7 +529,7 @@
 					if(index_qr % 2 != 0){						
 						$('#show_qr').append('<div id="ctn'+index_qr+'" class="ctn">' +
 						'<div class="left">' +
-							'<div>'+arr_data[i].name+'</div>' +
+							'<div>ไฟท้าย abc360 80 eagle eye super power naja aaaaaaaaaaaaaaaaaaaaaa</div>' +
 							'<div class="qr" id="qrcode'+index_qr+'"></div>' +
 							'<div>'+arr_data[i].price+'</div>' +
 						'</div>' +						
@@ -540,7 +541,7 @@
 							'<div>'+arr_data[i].price+'</div>' +
 						'</div>');
 					}											
-					qrcode = new QRCode("qrcode"+index_qr,{width: 125, height: 102});
+					qrcode = new QRCode("qrcode"+index_qr,{width: 125, height: 95});
 					qrcode.makeCode(arr_data[i].qr);
 					index_qr++;
 				}
@@ -553,7 +554,7 @@
 			var dataString =  "JSON=" + json_string + "&ware_id=" + ware_id + "&date=" + datetime
 			+ "&sum=" + sum + "&user_id=" + "20";
 			//alert(dataString);
-			print();
+			//print();
 
 		/*$.ajax({
 			type: "POST",
@@ -588,7 +589,7 @@
 		}
 
 		function print(){
-			$("#show_qr").print({
+			/*$("#show_qr").print({
                 addGlobalStyles : true,
                 stylesheet : null,
                 rejectWindow : true,
@@ -596,8 +597,18 @@
                 iframe : true,
                 append : null,
                 prepend : null
-            });           
-    }
+            }); */
+			var ele =  document.getElementById('show_qr').innerHTML;
+			var WinPrint  = window.open();
+			WinPrint.document.write("<html><head><link href='https://fonts.googleapis.com/css?family=Maitree' rel='stylesheet'></head><body>");
+			WinPrint.document.write("<style>@media print {body {-webkit-print-color-adjust: exact;}} @page {size: auto; margin: 0mm;} body{font-family: 'Maitree'; line-height: 1.5; font-size: 0.5em;}.ctn{width: 10.1cm; height: 4cm;} .left{float: left; width: 5.05cm; height: 4cm; text-align: center;} .right{float: left; width: 5.05cm; height: 4cm; text-align: center;} .qr{width: 33mm; height: 25mm; margin-left: 18%; background-color: black; color: white;}</style>" +
+				ele);
+			WinPrint.document.write('</body></html>');
+			//WinPrint.document.close();
+			WinPrint.focus();
+			//WinPrint.print();
+			//WinPrint.close();   
+    	}
 
   </script>
 
@@ -621,7 +632,7 @@
 	.active{
 		color: #666;
 	}
-	@media print {body {-webkit-print-color-adjust: exact;}} @page {size: auto; margin: 0mm;} body{font-family: "Prompt"; line-height: 1.5; font-size: 1em;}.ctn{width: 10.1cm; height: 4cm; margin-bottom: 2mm;} .left{float: left; width: 5.05cm; height: 4cm; text-align: center;} .right{float: left; width: 5.05cm; height: 4cm; text-align: center;} .qr{width: 33mm; height: 27mm; margin-left: 18%;}
+	/*@media print {body {-webkit-print-color-adjust: exact;}} @page {size: auto; margin: 0mm;} body{font-family: "Prompt"; line-height: 1.5; font-size: 1em;}.ctn{width: 10.1cm; height: 4cm; margin-bottom: 2mm;} .left{float: left; width: 5.05cm; height: 4cm; text-align: center;} .right{float: left; width: 5.05cm; height: 4cm; text-align: center;} .qr{width: 33mm; height: 27mm; margin-left: 18%;}*/
   </style>
 </head>
 <body>
@@ -737,7 +748,7 @@
 		        <button id="btn_checkbill" class="btn btn-success" onclick="save2db()">บันทึก</button>
 		    </div>
 			</div>
-			<div id="show_qr">
+			<div id="show_qr" hidden>
 
 			</div>
 
