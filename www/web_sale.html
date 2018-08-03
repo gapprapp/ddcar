@@ -442,9 +442,9 @@
 
 		arr_a4 = [];
 		function save2db(){
-			if(arr_data.length == 0 || cus_id == -1){
+			/*if(arr_data.length == 0 || cus_id == -1){
 					return 0;
-			}
+			}*/
 			if($("#change-money").val() == "" || $("#get-money").val() == ""){
 					return 0;
 			}			
@@ -563,8 +563,8 @@
 				}
 				WinPrint.document.write("<html><head><link href='https://fonts.googleapis.com/css?family=Maitree' rel='stylesheet'>");
 				WinPrint.document.write(" <style>@media print {body {-webkit-print-color-adjust: exact;}} @page {size: auto; margin: 0;}.fl-spc{float: left; width: 5%;}.fl-9{float: left; width: 9%;}.fl-12{float: left; width: 12.752%;}.fl-13{float: left; width: 13.05%;}.fl-14{float: left; width: 13.88%;}.fl-15{float: left; width: 15%;}.fl-20{float: left; width: 20%; text-align: center;}.fl-25{float: left; width: 25%; text-align: center;}.fl-35{float: left; width: 35%; text-align: center;}.fl-45{float: left; width: 45%; text-align: center;}.fl-80{float: left; width: 80%; text-align: center;}.ctn{position: relative; width: 297mm; height: 10%; padding: 10mm 15mm 0mm 10mm; font-family: 'Maitree';}.tb-st{border: 1px solid black; text-align: center; padding: 3px;}.tb{border: 1px solid black; text-align: center; padding: 3px; border-left: none;}.no-bdt{border-top: none;}.no-bdbtm{border-bottom: none;}.bold{font-weight: bold;}.ccc{background-color: #ccc;}.pd-15{padding-top: 15px;}.pd-16{padding-top: 16px;}.mg-5{margin-top: 5px;}</style></head><body>");
-				for(var m = 0;m < arr_a4.length;m++){
-					WinPrint.document.write("<div class='ctn'>" +
+				for(var m = 0;m < /*arr_a4.length*/ 2;m++){
+					WinPrint.document.write("<div class='ctn' style='margin-top: -8mm;'>" +
 						"<div class='fl-35'>" +
 							"<img style='width: 250px; height: 150px;' src='img/logo.jpg'>" +
 						"</div>" +
@@ -607,7 +607,66 @@
 							'<div class="fl-13 tb no-bdt ccc bold">ราคา / หน่วย</div>'+
 							'<div class="fl-13 tb no-bdt ccc bold">จำนวนเงิน</div>' +
 						'</div>' +
-							arr_a4[m] +
+							//arr_a4[m] +
+							'<div>'+
+								'<div class="fl-spc tb-st no-bdt">1</div>'+
+								'<div class="fl-15 tb no-bdt">bc1093384</div>'+
+								'<div class="fl-45 tb no-bdt">รองเท้าผ้าใบ</div>'+
+								'<div class="fl-spc tb no-bdt">4</div>'+
+								'<div class="fl-13 tb no-bdt">250.00</div>'+
+								'<div class="fl-13 tb no-bdt">750.00</div>'+
+							'</div>'+
+						
+							'<div>'+
+								'<div class="fl-spc tb-st no-bdt">2</div>'+
+								'<div class="fl-15 tb no-bdt">bc1093384</div>'+
+								'<div class="fl-45 tb no-bdt">รองเท้าผ้าใบ</div>'+
+								'<div class="fl-spc tb no-bdt">4</div>'+
+								'<div class="fl-13 tb no-bdt">250.00</div>'+
+								'<div class="fl-13 tb no-bdt">750.00</div>'+
+							'</div>'+
+							'<div>'+
+								'<div class="fl-spc tb-st no-bdt">3</div>'+
+								'<div class="fl-15 tb no-bdt">bc1093384</div>'+
+								'<div class="fl-45 tb no-bdt">รองเท้าผ้าใบ</div>'+
+								'<div class="fl-spc tb no-bdt">4</div>'+
+								'<div class="fl-13 tb no-bdt">250.00</div>'+
+								'<div class="fl-13 tb no-bdt">750.00</div>'+
+							'</div>'+
+							'<div>'+
+								'<div class="fl-spc tb-st no-bdt">4</div>'+
+								'<div class="fl-15 tb no-bdt">bc1093384</div>'+
+								'<div class="fl-45 tb no-bdt">รองเท้าผ้าใบ</div>'+
+								'<div class="fl-spc tb no-bdt">4</div>'+
+								'<div class="fl-13 tb no-bdt">250.00</div>'+
+								'<div class="fl-13 tb no-bdt">750.00</div>'+
+							'</div>'+
+							'<div>'+
+								'<div class="fl-spc tb-st no-bdt">5</div>'+
+							'	<div class="fl-15 tb no-bdt">bc1093384</div>'+
+								'<div class="fl-45 tb no-bdt">รองเท้าผ้าใบ</div>'+
+								'<div class="fl-spc tb no-bdt">4</div>'+
+								'<div class="fl-13 tb no-bdt">250.00</div>'+
+								'<div class="fl-13 tb no-bdt">750.00</div>'+
+							'</div>'+
+						'	<div>'+
+								'<div class="fl-spc tb-st no-bdt">&emsp;</div>'+
+								'<div class="fl-15 tb no-bdt">&emsp;</div>'+
+								'<div class="fl-45 tb no-bdt">&emsp;</div>'+
+								'<div class="fl-spc tb no-bdt">&emsp;</div>'+
+								'<div class="fl-13 tb no-bdt">&emsp;</div>'+
+								'<div class="fl-13 tb no-bdt">&emsp;</div>'+
+							'</div>'+
+
+							'<div>'+
+								'<div class="fl-spc tb-st no-bdt">&emsp;</div>'+
+								'<div class="fl-15 tb no-bdt">&emsp;</div>'+
+								'<div class="fl-45 tb no-bdt">&emsp;</div>'+
+								'<div class="fl-spc tb no-bdt">&emsp;</div>'+
+								'<div class="fl-13 tb no-bdt">&emsp;</div>'+
+								'<div class="fl-13 tb no-bdt">&emsp;</div>'+
+							'</div>'+
+
 						'<div>' +
 							'<div class="fl-spc tb-st no-bdt pd-15">จำนวน</div>' +
 							'<div class="fl-12 tb no-bdt pd-15">................ กล่อง</div>' +
@@ -660,7 +719,7 @@
 						'</div>'+
 					'</div>'+
 
-					"<div class='ctn' style='margin-top: 165mm;'>" +
+					"<div class='ctn' style='margin-top: 155mm;'>" +
 						"<div class='fl-35'>" +
 							"<img style='width: 250px; height: 150px;' src='img/logo.jpg'>" +
 						"</div>" +
@@ -703,7 +762,66 @@
 							'<div class="fl-13 tb no-bdt ccc bold">ราคา / หน่วย</div>'+
 							'<div class="fl-13 tb no-bdt ccc bold">จำนวนเงิน</div>' +
 						'</div>' +
-							arr_a4[m] +
+							//arr_a4[m] +
+							'<div>'+
+								'<div class="fl-spc tb-st no-bdt">1</div>'+
+								'<div class="fl-15 tb no-bdt">bc1093384</div>'+
+								'<div class="fl-45 tb no-bdt">รองเท้าผ้าใบ</div>'+
+								'<div class="fl-spc tb no-bdt">4</div>'+
+								'<div class="fl-13 tb no-bdt">250.00</div>'+
+								'<div class="fl-13 tb no-bdt">750.00</div>'+
+							'</div>'+
+						
+							'<div>'+
+								'<div class="fl-spc tb-st no-bdt">2</div>'+
+								'<div class="fl-15 tb no-bdt">bc1093384</div>'+
+								'<div class="fl-45 tb no-bdt">รองเท้าผ้าใบ</div>'+
+								'<div class="fl-spc tb no-bdt">4</div>'+
+								'<div class="fl-13 tb no-bdt">250.00</div>'+
+								'<div class="fl-13 tb no-bdt">750.00</div>'+
+							'</div>'+
+							'<div>'+
+								'<div class="fl-spc tb-st no-bdt">3</div>'+
+								'<div class="fl-15 tb no-bdt">bc1093384</div>'+
+								'<div class="fl-45 tb no-bdt">รองเท้าผ้าใบ</div>'+
+								'<div class="fl-spc tb no-bdt">4</div>'+
+								'<div class="fl-13 tb no-bdt">250.00</div>'+
+								'<div class="fl-13 tb no-bdt">750.00</div>'+
+							'</div>'+
+							'<div>'+
+								'<div class="fl-spc tb-st no-bdt">4</div>'+
+								'<div class="fl-15 tb no-bdt">bc1093384</div>'+
+								'<div class="fl-45 tb no-bdt">รองเท้าผ้าใบ</div>'+
+								'<div class="fl-spc tb no-bdt">4</div>'+
+								'<div class="fl-13 tb no-bdt">250.00</div>'+
+								'<div class="fl-13 tb no-bdt">750.00</div>'+
+							'</div>'+
+							'<div>'+
+								'<div class="fl-spc tb-st no-bdt">5</div>'+
+							'	<div class="fl-15 tb no-bdt">bc1093384</div>'+
+								'<div class="fl-45 tb no-bdt">รองเท้าผ้าใบ</div>'+
+								'<div class="fl-spc tb no-bdt">4</div>'+
+								'<div class="fl-13 tb no-bdt">250.00</div>'+
+								'<div class="fl-13 tb no-bdt">750.00</div>'+
+							'</div>'+
+						'	<div>'+
+								'<div class="fl-spc tb-st no-bdt">&emsp;</div>'+
+								'<div class="fl-15 tb no-bdt">&emsp;</div>'+
+								'<div class="fl-45 tb no-bdt">&emsp;</div>'+
+								'<div class="fl-spc tb no-bdt">&emsp;</div>'+
+								'<div class="fl-13 tb no-bdt">&emsp;</div>'+
+								'<div class="fl-13 tb no-bdt">&emsp;</div>'+
+							'</div>'+
+
+							'<div>'+
+								'<div class="fl-spc tb-st no-bdt">&emsp;</div>'+
+								'<div class="fl-15 tb no-bdt">&emsp;</div>'+
+								'<div class="fl-45 tb no-bdt">&emsp;</div>'+
+								'<div class="fl-spc tb no-bdt">&emsp;</div>'+
+								'<div class="fl-13 tb no-bdt">&emsp;</div>'+
+								'<div class="fl-13 tb no-bdt">&emsp;</div>'+
+							'</div>'+
+
 						'<div>' +
 							'<div class="fl-spc tb-st no-bdt pd-15">จำนวน</div>' +
 							'<div class="fl-12 tb no-bdt pd-15">................ กล่อง</div>' +
@@ -905,7 +1023,7 @@
       			</div>
       			
       			<div class="col-3 text-center nopd">
-      				<button id="btn-b" type="button" class="btn dropdown-toggle text-right" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="background-color: #666;"></button>
+      				<button id="btn-b" type="button" class="btn dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="background-color: #666;"></button>
 
       				<div id="b" class="dropdown-menu" aria-labelledby="dropdownMenuButton">
 
