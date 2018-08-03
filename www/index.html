@@ -108,11 +108,14 @@
         success: function(data){ 
           $(".overlay").prop('hidden', true);                 
         }               
-      });*/      
+      });*/     
       var d = new Date($.now());
       var last_d = new Date(d.getFullYear(),d.getMonth()+1, 0).getDate();
-      var cd = last_d - d.getDate();
+      var cd = last_d - d.getDate();           
       if(cd == 0){
+        if(localStorage.last_m == 1){
+          return 0;
+        }  
         $.confirm({
           title: 'แจ้งเตือน',
           content: 'สิ้นเดือนแล้ว กรุณาเข้าไปจัดการรายการเครดิต รายการ->รายการเครดิต',
@@ -126,6 +129,9 @@
               }
           }
         });
+        localStorage.last_m = 1;
+      }else{
+        localStorage.last_m = 0;
       }
     }
 

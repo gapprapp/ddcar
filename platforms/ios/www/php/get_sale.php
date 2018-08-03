@@ -1,6 +1,6 @@
 <?php
-    include "db.php";
-    $cus_id = $_POST['cus_id'];
+    include "db.php";   
+    $cus_id = $_POST['cus_id'];   
 
     if(isset($_POST['qr'])){
         $qr = $_POST['qr'];    

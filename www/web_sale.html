@@ -552,15 +552,11 @@
 			if(print_type == "a4"){
 				var dt = datetime.split(" ");
 				var time = dt[1];
-				var d = dt[0].split("-");
-				var date = d[2] + "/" + d[1] + "/" + d[0];
-				if($('#btn-p').text() == "เครดิต (30)"){
-					var date_ex = d[2] + "/" + (parseInt(d[1])+parseInt(1)) + "/" + d[0];
-				}else if($('#btn-p').text() == "เครดิต (60)"){
-					var date_ex = d[2] + "/" + (parseInt(d[1])+parseInt(2)) + "/" + d[0];
-				}else if($('#btn-p').text() == "เครดิต (90)"){
-					var date_ex = d[2] + "/" + (parseInt(d[1])+parseInt(3)) + "/" + d[0];
-				}
+				var day = dt[0].split("-");
+				var date = day[2] + "/" + day[1] + "/" + day[0];
+				var credit = parseInt($('#btn-p').text().substr(8,2));
+				d.setDate(d.getDate() + credit);
+				var date_ex = d.getDate() + "/" + (d.getMonth()+1) + "/" +   d.getFullYear();
 				WinPrint.document.write("<html><head><link href='https://fonts.googleapis.com/css?family=Maitree' rel='stylesheet'>");
 				WinPrint.document.write(" <style>@media print {body {-webkit-print-color-adjust: exact;}} @page {size: auto; margin: 0;}.fl-spc{float: left; width: 5%;}.fl-9{float: left; width: 9%;}.fl-12{float: left; width: 12.752%;}.fl-13{float: left; width: 13.05%;}.fl-14{float: left; width: 13.88%;}.fl-15{float: left; width: 15%;}.fl-20{float: left; width: 20%; text-align: center;}.fl-25{float: left; width: 25%; text-align: center;}.fl-35{float: left; width: 35%; text-align: center;}.fl-45{float: left; width: 45%; text-align: center;}.fl-80{float: left; width: 80%; text-align: center;}.ctn{position: relative; width: 297mm; height: 10%; padding: 10mm 15mm 0mm 10mm; font-family: 'Maitree';}.tb-st{border: 1px solid black; text-align: center; padding: 3px;}.tb{border: 1px solid black; text-align: center; padding: 3px; border-left: none;}.no-bdt{border-top: none;}.no-bdbtm{border-bottom: none;}.bold{font-weight: bold;}.ccc{background-color: #ccc;}.pd-15{padding-top: 15px;}.pd-16{padding-top: 16px;}.mg-5{margin-top: 5px;}</style></head><body>");
 				for(var m = 0;m < /*arr_a4.length*/ 2;m++){
@@ -580,7 +576,7 @@
 						'<div style=" text-align: right;">' +
 							'<p style="width: 99%;"><span class="bold">เลขที่  : </span><span>&emsp;order_num</span></p>' +
 							'<p style="width: 99%; margin-top: -15px;"><span class="bold">วันที่  : </span>&emsp;&emsp; <span>'+date+'</span></p>' +
-							'<p style="width: 99%; margin-top: -15px;"><span class="bold">เครดิต : </span><span style="margin-left: 98px;">'+$('#btn-p').text().substr(8,2)+'</span></p>' +
+							'<p style="width: 99%; margin-top: -15px;"><span class="bold">เครดิต : </span><span style="margin-left: 98px;">'+credit+'</span></p>' +
 						'</div>'+
 						
 						'<div style=" text-align: left; margin-top: -41px;">'+

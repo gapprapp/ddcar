@@ -17,7 +17,7 @@
 
   <!-- Super cool dialog-->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.0/jquery-confirm.min.css">
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.0/jquery-confirm.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.0/jquery-confirm.min.js"></script>
 
 	<!-- Easy-autocomplete -->
 	<script src="js/jquery.easy-autocomplete.js"></script>
@@ -26,7 +26,11 @@
 	
 	<!-- Loading -->
 	<link rel="stylesheet" href="css/easy-loading.css">
-  <script src="js/easy-loading.js"></script>
+	<script src="js/easy-loading.js"></script>
+	
+	<!-- QRcode -->
+	<script type="text/javascript" src="js/qrcode.min.js"></script>
+	<script type="text/javascript" src="js/jQuery.print.js"></script>
 
   <!-- Font -->
   <link href="https://fonts.googleapis.com/css?family=Prompt" rel="stylesheet">
@@ -34,6 +38,12 @@
   <link href="css/untitled.css" rel="stylesheet">
   <link rel="stylesheet" href="css/popup.css">
 
+  	<style>
+		img{
+			height: 200px;
+			width: 200px;
+		}
+	</style>
   <script>		
 		var prod_id,img,cost_o;
 		var flag = 1;
@@ -71,20 +81,17 @@
 						},
 
 						onChooseEvent: function() {
-							/*for(var b = 0; b < count; b++){
+							for(var b = 0; b < count; b++){
 								if($("#name").val() == $("#name-"+b).val()){
 									$.alert({
 										icon: 'fa fa-warning',
 										title: 'เตือน',
 										content: "มีการเพิ่มสินค้า " + $("#name").val() + "กรุณาแก้ไขที่จำนวนของสินค้าที่ได้เพิ่มแล้ว",
 									});
-									$("#name").val("");
-									$('#barcode').val("");
-									$('#price').val("");
-									$('#fund').val("");                 
+									set_default();
 									return 0;                
 								}
-							}*/							
+							}							
 							var barcode = $("#name").getSelectedItemData().prod_code;
 							var price = $("#name").getSelectedItemData().prod_price;
 							var price_s = $("#name").getSelectedItemData().prod_pricesend;
@@ -124,7 +131,7 @@
 
 		function get_header(){
 			var d = new Date($.now());			
-      var date = d.getDate() + "/" + (d.getMonth()+1) + "/" + d.getFullYear();
+      		var date = d.getDate() + "/" + (d.getMonth()+1) + "/" + d.getFullYear();
 			$('#date').text(date);
 
 			$.ajax({
@@ -332,7 +339,7 @@
 
 		arr_data = []
 		var count = 0;
-  	function show(){
+  		function show(){
   		var bottom = $(window).height() - $("#cnt-add").offset().top - $("#cnt-add").height();
   		// Always scroll to the bottom
   		if(bottom < 200){
@@ -344,12 +351,12 @@
 					'<div class="col-1"></div>'+
           '<div class="col-2">'+
             '<div class="input-group-prepend">'+
-              '<span id="span-no" class="input-group-text">'+(count+1)+'</span>'+
+              '<span id="span-no-'+count+'" class="input-group-text">'+(count+1)+'</span>'+
               '<input id="barcodee" type="text" value="'+$('#barcode').val()+'" class="form-control text-center" readonly>'+
             '</div>'+
           '</div>'+
           '<div class="col-1 nopd-8">'+
-            '<input id="att" type="text" value="'+$('#at').val()+'" placeholder="'+$('#at').attr('placeholder')+'" class="form-control text-center" readonly>'+
+            '<input id="at-'+count+'" type="text" value="'+$('#at').val()+'" placeholder="'+$('#at').attr('placeholder')+'" class="form-control text-center" readonly>'+
           '</div>'+
           '<div class="col-3 nopd-8">'+
             '<input id="name-'+count+'" value="'+$('#name').val()+'" class="form-control text-center" rel="popover" data-img="'+img+'" readonly>'+
@@ -388,7 +395,8 @@
 				item ["name"] =  $('#name').val();
 				item ["cost"] =  $('#fund').val();               
 				item ["amt"] =  $('#amount').val();			
-				item ["addr"] = $('#at').val();    
+				item ["addr"] = $('#at').val();  
+				item ["price"] = $('#retail').val();    
 
 				arr_data.push(item);		
 				$("#btn-b").attr('disabled',true);
@@ -414,6 +422,7 @@
 						is_show = 0;
 				}            
 				$('#avg-rate').text("");
+				count++;
 		}
 		
 		function set_default(){
@@ -433,19 +442,174 @@
 			$('#retail').val("");
 			$('#amount').val("1");
 			$('#at').val("")
+			print();
 		}
 
-  	function edit(){
-  		$("#btn-edit").prop('hidden', true);
-  		$("#btn-trash").prop('hidden', true);
-  		$("#btn-save").prop('hidden', false);
+  		function edit(arg){
+			stop = false;
+			for(i = 0; i < count; i++){
+				if($("#btn-save-" + i).is(":visible")){
+					stop = true;
+				}
+			}
+			if(stop){
+				return 0;
+			}			   
+				$("#amount-" + arg).prop('readonly', false);
+				$("#at-" + arg).prop('readonly', false);         
+
+				//change btn-edit to save
+				$("#btn-edit-"+arg).prop('hidden', true);
+				$("#btn-trash-"+arg).prop('hidden', true);
+				$("#btn-save-"+arg).prop('hidden', false);
+
+				//$("#btn-edit-" + arg).attr('onclick', "save_edit(" + arg + ")");
+				//total_old = $("#net-" + arg).val();  		
   	}
 
-  	function save(){
-  		$("#btn-edit").prop('hidden', false);
-  		$("#btn-trash").prop('hidden', false);
-  		$("#btn-save").prop('hidden', true);
+  		function save(arg){
+			arr_data[arg].amt = $("#amount-"+arg).val();
+			arr_data[arg].addr = $("#at-"+arg).val();       
+
+			$("#amount-" + arg).prop('readonly', true);
+			$("#at-" + arg).prop('readonly', true);  
+
+  		$("#btn-edit-"+arg).prop('hidden', false);
+  		$("#btn-trash-"+arg).prop('hidden', false);
+  		$("#btn-save-"+arg).prop('hidden', true);
   	}
+
+		function remove(arg) {
+			$.confirm({
+				icon: 'fa fa-warning',
+				title: 'แน่ใจหรือว่าต้องการลบ!',
+				content: 'ต้องการลบรายการสินค้าออกจากรายการ!',
+				buttons: {
+					danger: {
+						btnClass: 'btn-danger',
+						text: 'ลบ',
+						action: function () {						
+							arr_data.splice(arg, 1);
+							$("#add-" + arg).remove();
+							for (i = arg+1; i <= count-1; i++) {
+								$("#span-no-" + (i)).text(i);								
+								$("#span-no-"+ i).prop('id', 'span-no-'+ (i-1));						
+								$("#amount-" + i).prop('id', 'amount-' + (i - 1));
+								$("#name-" + i).prop('id', 'name-' + (i - 1));
+								$("#at-" + i).prop('id', 'at-' + (i - 1));							
+								$("#add-" + i).prop('id', 'add-' + (i - 1));                 
+								$("#btn-trash-" + i).attr('onclick', "remove(" + (i - 1) + ")");
+								$("#btn-trash-" + i).prop('id', 'btn-trash-' + (i - 1));
+								$("#btn-edit-" + i).attr('onclick', "edit(" + (i - 1) + ")");
+								$("#btn-edit-" + i).prop('id', 'btn-edit-' + (i - 1));
+								$("#btn-save-" + i).attr('onclick', "save(" + (i - 1) + ")");
+								$("#btn-save-" + i).prop('id', 'btn-save-' + (i - 1));							
+							}
+							count--;
+							if(arr_data.length == 0){
+								$("#btn-b").attr('disabled',false);
+							}
+						}
+					},
+					ยกเลิก: function () { },
+				}
+			});
+    }
+
+		var qrcode;
+		function save2db(){
+			if(arr_data.length == 0){
+					return 0;
+			}
+			var sum = 0;
+			var index_qr = 1;
+			$.each(arr_data, function(i, field){				
+				for(var j = 0 ; j < arr_data[i].amt; j++){
+					//$('#show_qr').append("<div>"+arr_data[i].name+"</div><div id='qrcode"+index_qr+"'></div><div>"+arr_data[i].price+"</div><br>");	
+					if(index_qr % 2 != 0){						
+						$('#show_qr').append('<div id="ctn'+index_qr+'" class="ctn">' +
+						'<div class="left">' +
+							'<div>ไฟท้าย abc360 80 eagle eye super power naja aaaaaaaaaaaaaaaaaaaaaa</div>' +
+							'<div class="qr" id="qrcode'+index_qr+'"></div>' +
+							'<div>'+arr_data[i].price+'</div>' +
+						'</div>' +						
+						'</div>');		
+					}else{						
+						$('#ctn'+(index_qr-1)).append('<div class="right">' +
+							'<div>'+arr_data[i].name+'</div>' +
+							'<div class="qr" id="qrcode'+index_qr+'"></div>' +
+							'<div>'+arr_data[i].price+'</div>' +
+						'</div>');
+					}											
+					qrcode = new QRCode("qrcode"+index_qr,{width: 125, height: 95});
+					qrcode.makeCode(arr_data[i].qr);
+					index_qr++;
+				}
+				sum += parseFloat(arr_data[i].cost)*parseInt(arr_data[i].amt);
+				                                                           
+			});
+			var d = new Date($.now());         
+			var datetime = d.getFullYear() + "-" + (d.getMonth()+1) + "-" + d.getDate() + " " + d.getHours() + ":" + d.getMinutes() + ":" + d.getSeconds(); 
+			json_string = JSON.stringify(arr_data);
+			var dataString =  "JSON=" + json_string + "&ware_id=" + ware_id + "&date=" + datetime
+			+ "&sum=" + sum + "&user_id=" + "20";
+			//alert(dataString);
+			//print();
+
+		/*$.ajax({
+			type: "POST",
+			url:"php/stock_in.php",           
+			data: dataString,               
+			beforeSend: function(){
+				EasyLoading.show({                           
+					text: "กำลังโหลด"                            
+				});
+			},             
+			success: function(data){  
+				EasyLoading.hide();    
+				if(data == "success"){                       
+					location.reload(true);         
+				}else{
+					$.confirm({
+							title: 'พบข้อผิดพลาด',
+							content: 'ลองอีกครั้ง',
+							backgroundDismiss: true,
+							buttons: {
+									formSubmit: {
+									text: 'ตกลง',
+									btnClass: 'btn-regis',
+									action: function () {
+									}
+									}
+							}
+					});
+				}
+			}               
+			});*/
+		}
+
+		function print(){
+			/*$("#show_qr").print({
+                addGlobalStyles : true,
+                stylesheet : null,
+                rejectWindow : true,
+                noPrintSelector : ".no-print",
+                iframe : true,
+                append : null,
+                prepend : null
+            }); */
+			var ele =  document.getElementById('show_qr').innerHTML;
+			var WinPrint  = window.open();
+			WinPrint.document.write("<html><head><link href='https://fonts.googleapis.com/css?family=Maitree' rel='stylesheet'></head><body>");
+			WinPrint.document.write("<style>@media print {body {-webkit-print-color-adjust: exact;}} @page {size: auto; margin: 0mm;} body{font-family: 'Maitree'; line-height: 1.5; font-size: 0.5em;}.ctn{width: 10.1cm; height: 5cm; } .left{float: left; width: 5.05cm; height: 5cm; text-align: center;} .right{float: left; width: 5.05cm; height: 5cm; text-align: center;} .qr{width: 33mm; height: 25mm; margin-left: 15%; background-color: black; color: white;}</style>" +
+				ele);
+			WinPrint.document.write('</body></html>');
+			//WinPrint.document.close();
+			WinPrint.focus();
+			//WinPrint.print();
+			//WinPrint.close();   
+    	}
+
   </script>
 
   <style>
@@ -468,6 +632,7 @@
 	.active{
 		color: #666;
 	}
+	/*@media print {body {-webkit-print-color-adjust: exact;}} @page {size: auto; margin: 0mm;} body{font-family: "Prompt"; line-height: 1.5; font-size: 1em;}.ctn{width: 10.1cm; height: 4cm; margin-bottom: 2mm;} .left{float: left; width: 5.05cm; height: 4cm; text-align: center;} .right{float: left; width: 5.05cm; height: 4cm; text-align: center;} .qr{width: 33mm; height: 27mm; margin-left: 18%;}*/
   </style>
 </head>
 <body>
@@ -503,9 +668,9 @@
       			<div class="col-3"></div>
       			<div class="col-2 text-center">
       				<div id="select-ware" class="dropdown">
-      				  <button id="btn-b" class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="background-color: #666; width: 103.33px;">
+      				  <button id="btn-b" class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="background-color: #666; width: 111px;">
       				  </button>
-      				  <div id="b" class="dropdown-menu" aria-labelledby="dropdownMenuButton" style="min-width: 0px !important; width: 103.33px;">      				    
+      				  <div id="b" class="dropdown-menu" aria-labelledby="dropdownMenuButton">      				    
       				    
       				  </div>
       				</div>
@@ -580,197 +745,19 @@
 		<div id="ctn-bttm" class="container-fullwidth fixed-bottom" style="margin-bottom: 15px; z-index: 0;">
 		  <div class="row">
 		    <div class="col-12 text-center">
-		        <button id="btn_checkbill" class="btn btn-success" onclick="">บันทึก</button>
+		        <button id="btn_checkbill" class="btn btn-success" onclick="save2db()">บันทึก</button>
 		    </div>
+			</div>
+			<div id="show_qr" hidden>
+
+			</div>
+
 		</div>
-	</div>
-
-	<!-- The Modal -->
-	<div class="modal fade" id="myModal" tabindex='-1'>
-	  <div class="modal-dialog modal-md modal-dialog-centered">
-	    <div class="modal-content">
-	      <!-- Modal Header -->
-	      <div class="col-12 text-center" style="margin-top: 15px;">
-	        <h4 class="modal-title">คิดเงิน</h4>
-	        <hr style="width: 70%;">
-	      </div>
-
-	      <!-- Modal body -->
-	      <div class="modal-body">
-	        <div class="container">
-	          <div class="row">
-	            <div class="col-2"></div>
-	            <div class="col-3 text-center" style="border: solid #767676; padding-top: 5px;">
-	              <h3>รวม : </h3>
-	            </div>
-	            <div class="col-5 text-center" style="border: solid #767676; background: #767676;">
-	              <input id="net-price" type="number" class="form-control form-control-lg text-center no-spin no-border check-bill-input" style="background: #767676; color: #5dbe5d;"
-	                readonly>
-	            </div>
-	            <div class="col-2"></div>
-	          </div><br>
-
-	          <div class="row">
-	            <div class="col-2"></div>
-	            <div class="col-3 text-center" style="border: solid #767676; padding-top: 5px;"><h3>ลด : </h3></div>
-	            <div class="col-5 text-center" style="border: solid #767676; background: #767676;">
-	              <input id="discount-money" onchange="chng_discount()"  data-index="5" type="number" class="form-control form-control-lg text-center no-spin no-border check-bill-input" style="background: #767676; color: #fd8b5e;">
-	            </div>
-	            <div class="col-2"></div>
-	          </div> <br>
-
-	          <div class="row">
-	            <div class="col-2"></div>
-	            <div class="col-3 text-center" style="border: solid #767676; padding-top: 5px;"><h3>สุทธิ : </h3></div>
-	            <div class="col-5 text-center" style="border: solid #767676; background: #767676;">
-	              <input id="final-price" type="number" class="form-control form-control-lg text-center no-spin no-border check-bill-input" style="background: #767676; color: #ffffff;"
-	              readonly>
-	            </div>
-	            <div class="col-2"></div>
-	          </div>
-	          <br>
-
-	          <div class="row">
-	            <div class="col-2"></div>
-	            <div class="col-3 text-center" style="border: solid #767676; padding-top: 5px;"><h3>รับ : </h3></div>
-	            <div class="col-5 text-center" style="border: solid #767676; background: #767676;">
-	              <input id="get-money" type="number" data-index="6" class="form-control form-control-lg text-center no-spin no-border check-bill-input" style=" background: #767676;  color: #DBBD5B;">
-	            </div>
-	            <div class="col-2"></div>
-	          </div> <br>
-
-	          <div class="row">
-	            <div class="col-2"></div>
-	            <div class="col-3 text-center" style="border: solid #767676; padding-top: 5px;"><h3>ทอน : </h3></div>
-	            <div class="col-5 text-center" style="border: solid #767676; background: #767676;">
-	              <input id="change-money" type="number" class="form-control form-control-lg text-center no-spin no-border check-bill-input" style="background: #767676; color: #A5FAE9"
-	              readonly>
-	            </div>
-	            <div class="col-2"></div>
-	          </div> <br>
-	      </div> <br>
-
-	      <!-- Modal footer -->
-	      <div class="col-12 text-center">
-	        <button id="btn_save" type="button" class="btn btn-success" data-dismiss="modal" onclick="save()" style="margin-right: 15px;">บันทึก</button>
-	        <button type="button" class="btn btn-secondary" data-dismiss="modal">ปิด</button>
-	      </div><br>
-	    </div>
-	  </div>
-	</div>
-	</div>
-
-	<!-- Print Modal -->
-	<div class="modal fade" id="printModal" tabindex='-1'>
-	  <div class="modal-dialog modal-md modal-dialog-centered">
-	    <div class="modal-content">
-	      <!-- Modal Header -->
-	      <div class="col-12 text-center" style="margin-top: 15px;">
-	        <h4 class="modal-title">ตั้งค่าการพิมพ์</h4>
-	        <hr style="width: 70%;">
-	      </div>
-
-	      <!-- Modal body -->
-	      <div class="modal-body">
-	        <div class="col-12 text-center">
-	          <label class="radio-inline" style="font-size: 120%;">
-	            <input type="radio" name="print-radio" value="print" checked>พิมพ์</label>
-	          <label class="radio-inline" style="font-size: 120%;">
-	            <input type="radio" name="print-radio" value="no">ไม่พิมพ์</label>
-	        </div>
-	        <div id="print-option-title" class="col-12 text-center">
-	          <h5 style="text-decoration: underline;">ตัวเลือก</h5>
-	        </div>
-	        <div id="print-option" class="col-12 text-center">
-	          <label class="radio-inline" style="font-size: 120%;">
-	            <input id="bill" type="radio" name="print-option" value="bill" checked>ใบเสร็จ</label>
-	          <label class="radio-inline" style="font-size: 120%;">
-	            <input id="a4" type="radio" name="print-option" value="a4">ใบรายการขาย(A4)</label>
-	        </div><br>
-	        <!-- Modal footer -->
-	        <div class="col-12 text-center">
-	          <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="set_print_title();">บันทึก</button>
-	        </div>
-	        <br>
-	      </div>
-	    </div>
-	  </div>
-	</div>
-
-	<!-- Pay Modal -->
-	<div class="modal fade" id="payModal" tabindex='-1'>
-	  <div class="modal-dialog modal-md modal-dialog-centered">
-	    <div class="modal-content">
-	      <!-- Modal Header -->
-	      <div class="col-12 text-center" style="margin-top: 15px;">
-	        <h4 class="modal-title">เงื่อนไขการชำระเงิน</h4>
-	        <hr style="width: 70%;">
-	      </div>
-
-	      <!-- Pay body -->
-	      <div class="modal-body">
-	        <div class="col-12 text-center">
-	          <label class="radio-inline">
-	            <input type="radio" name="pay-radio" value="เงินสด" checked>เงินสด</label>
-	          <label class="radio-inline">
-	            <input type="radio" name="pay-radio" value="เงินโอน">เงินโอน</label>
-	          <label class="radio-inline">
-	            <input type="radio" name="pay-radio" value="ลูกหนี้">ลูกหนี้</label>
-	        </div>
-	        <div class="col-12">
-	          <div class="form-group">
-	            <label for="comment">หมายเหตุ:</label>
-	            <textarea class="form-control" rows="5" id="comment" disabled></textarea>
-	          </div>
-	        </div>
-	        <br>
-	        <!-- Modal footer -->
-	        <div class="col-12 text-center">
-	          <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="set_pay_title();">บันทึก</button>
-	        </div>
-	        <br>
-	      </div>
-	    </div>
-	  </div>
-	</div>
-
-	<script>
-		$('input:radio[name="pay-radio"]').change(
-		    function () {
-		      text_html = "<span><i class='fa fa-print'></i></span>";
-		      if ($(this).is(':checked') && $(this).val() == "เงินโอน") {
-		        $('textarea').prop('disabled', false);
-		        $("#bill").prop("checked", true);
-		      }else if ($(this).is(':checked') && $(this).val() == "ลูกหนี้") {
-		        $('textarea').prop('disabled', false);
-		        $("#bill").prop("checked", false);
-		        $("#a4").prop("checked", true);
-		      }else if ($(this).is(':checked') && $(this).val() == "เงินสด") {
-		        $('textarea').prop('disabled', true);
-		        $("#bill").prop("checked", true);
-		        $('textarea').val("");
-		      }
-		});	
-		
+	<script>		
 		$('#name').on('input', function() {
 			var name = $('#name').val();           
 			if(name == ""){
-				$('#at').attr("placeholder","");
-				$('#barcode').val("");
-				$('#name').val("");
-				/*$("#name").attr('data-img',"");
-				$('#name[rel=popover]').popover({
-					html: true, 
-					trigger: 'hover',
-					placement: 'left',
-					content: function(){
-					return '<img src='+$(this).data('img')+'>';}
-				}); */		
-				$('#fund').val("");
-				$('#whole').val("");
-				$('#retail').val("");
-				$('#amount').val("1");
-				$('#at').val("")
+				set_default();
 			}            
 		});      
 	</script>

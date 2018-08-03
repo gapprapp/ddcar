@@ -213,13 +213,16 @@
           var dis = $('#dis').val(); 
           var net = $('#net').val();         
           $('#total').val(net - dis);
-          var get = $('#get').val();
-          var total = $('#total').val();        
-          if(get - total < 0){           
-            $('#chng').val("");
-          }else{
-            $('#chng').val(get - total);
-          }    
+          var pay = $('#pay').val();
+          if(pay == "เงินสด"){
+            var get = $('#get').val();
+            var total = $('#total').val();        
+            if(get - total < 0){           
+                $('#chng').val("");
+            }else{
+                $('#chng').val(get - total);
+            }    
+          }         
         }
 
         function get_money(){
