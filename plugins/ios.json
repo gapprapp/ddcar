@@ -19,9 +19,6 @@
     "cordova-plugin-device": {
       "PACKAGE_NAME": "com.gitmew.ddcar"
     },
-    "cordova-plugin-file-transfer": {
-      "PACKAGE_NAME": "com.gitmew.ddcar"
-    },
     "cordova-plugin-statusbar": {
       "PACKAGE_NAME": "com.gitmew.ddcar"
     },
@@ -35,6 +32,9 @@
       "PACKAGE_NAME": "com.gitmew.ddcar"
     },
     "cordova-plugin-fullscreen": {
+      "PACKAGE_NAME": "com.gitmew.ddcar"
+    },
+    "cordova-plugin-file-transfer": {
       "PACKAGE_NAME": "com.gitmew.ddcar"
     }
   },

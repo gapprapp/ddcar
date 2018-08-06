@@ -115,15 +115,16 @@
       $("#row-img").prop('hidden', false);
 
       navigator.camera.getPicture(onSuccess, onFail, { quality: 100,
-        destinationType: Camera.DestinationType.DATA_URL,
-        //targetWidth:200,
-        //targetHeight:300,
+        destinationType: Camera.DestinationType.FILE_URI,
+        targetWidth:200,
+        targetHeight:300,
         correctOrientation: true
       });
 
       function onSuccess(imageData) {                
           var image = document.getElementById('img');
-          image.src =  "data:image/jpeg;base64," + imageData;                           
+          image.src =  imageData;  
+          $('#a').attr("href",imageData);
       }
 
       function onFail(message) {
@@ -147,7 +148,7 @@
       $("#row-img").prop('hidden', false);
 
       navigator.camera.getPicture(onSuccess, onFail, { quality: 100,
-        destinationType: Camera.DestinationType.DATA_URL,
+        destinationType: Camera.DestinationType.FILE_URI,
         sourceType: Camera.PictureSourceType.PHOTOLIBRARY,
         //targetWidth:200,
         //targetHeight:300,
@@ -156,7 +157,8 @@
 
       function onSuccess(imageData) {                
           var image = document.getElementById('img');
-          image.src =  "data:image/jpeg;base64," + imageData;                    
+          image.src =  imageData;  
+          $('#a').attr("href",imageData);            
       }
 
       function onFail(message) {
@@ -197,25 +199,18 @@
         });
         return 0; 
       } 
-      var fileURL = "";      
-      var image = document.getElementById('img');       
-      fileURL = image.src;
-        
-      $.ajax({
-        type: "POST",
-        url:"http://migky.myqnapcloud.com:8083/dd-shop/php/add_prod.php",           
-        data: {'name_prod' : name,
-              'code' : code,
-              'parent' : folder,
-              'img' : fileURL,
-              'min' : min},               
-          beforeSend: function(){
-            $(".overlay").prop('hidden', false);
-          },             
-          success: function(data){
-          $(".overlay").prop('hidden', true);                               
-          if(data == "success"){
-            $.confirm({
+      $('#img').each(function () {
+        if(this.src.length > 0){         
+          var image = document.getElementById('img');       
+          var fileURL = image.src;
+          var filename = fileURL.substr(fileURL.lastIndexOf('/') + 1)/*.split("?")*/;  
+          alert(fileURL + "\n"  +filename);             
+          
+          var success = function (r) {
+            $(".overlay").prop('hidden', true);
+            alert(r.response);  
+            if(r.response == "success"){                           
+              $.confirm({
                 title: 'เสร็จสิ้น',
                 content: 'เพิ่มสินค้า ' +name+ ' ในหมวดหมู่ ' +folder+ ' เสร็จสิ้น',
                 backgroundDismiss: true,
@@ -228,12 +223,30 @@
                       }
                   }
                 }
-            });
-            out(); 
-          }else{
+              });
+              out(); 
+            }else{
+              $.confirm({
+                title: 'พบข้อผิดพลาด',
+                content: 'ลองอีกครั้ง',
+                backgroundDismiss: true,
+                buttons: {
+                  formSubmit: {
+                    text: 'ตกลง',
+                    btnClass: 'btn-regis',
+                    action: function () {
+                    }
+                  }
+                }
+              }); 
+            }                                                   
+          }
+
+          var fail = function (error) {
+            $(".overlay").prop('hidden', true);
             $.confirm({
               title: 'พบข้อผิดพลาด',
-              content: 'ลองอีกครั้ง',
+              content: error.code,
               backgroundDismiss: true,
               buttons: {
                 formSubmit: {
@@ -243,11 +256,71 @@
                   }
                 }
               }
-            });
+            });             
           }
-        }               
-      });     
-    }
+
+          var options = new FileUploadOptions();
+          options.fileKey = "file";
+          options.fileName = filename;
+          options.mimeType = "image/jpeg";       
+          //options.chunkedMode = false;            
+          
+          var ft = new FileTransfer();    
+          /*ft.onprogress = function(progressEvent) {
+            $(".overlay").prop('hidden', false);
+          };*/               
+          ft.upload(fileURL,
+          "http://migky.myqnapcloud.com:8083/dd-shop/php/add_prod.php"
+          , success, fail, options);
+        }else{
+          $.ajax({
+            type: "POST",
+            url:"http://migky.myqnapcloud.com:8083/dd-shop/php/add_prod_noimg.php",           
+            data: {'name_prod' : name,
+                  'code' : code,
+                  'parent' : folder,                  
+                  'min' : min},               
+              beforeSend: function(){
+                $(".overlay").prop('hidden', false);
+              },             
+              success: function(data){
+              $(".overlay").prop('hidden', true);                               
+              if(data == "success"){
+                $.confirm({
+                    title: 'เสร็จสิ้น',
+                    content: 'เพิ่มสินค้า ' +name+ ' ในหมวดหมู่ ' +folder+ ' เสร็จสิ้น',
+                    backgroundDismiss: true,
+                    buttons: {
+                      formSubmit: {
+                        text: 'ตกลง',
+                        btnClass: 'btn-regis',
+                        action: function () {
+                            out();
+                          }
+                      }
+                    }
+                });
+                out(); 
+              }else{
+                $.confirm({
+                  title: 'พบข้อผิดพลาด',
+                  content: 'ลองอีกครั้ง',
+                  backgroundDismiss: true,
+                  buttons: {
+                    formSubmit: {
+                      text: 'ตกลง',
+                      btnClass: 'btn-regis',
+                      action: function () {
+                      }
+                    }
+                  }
+                });
+              }
+            }               
+          });  
+        }
+      });        
+    }    
 
     function out(){
       $('#name').val("");
@@ -302,12 +375,12 @@
         </div>
         <div class="col-5 text-center">
           <label for="min">ขั้นต่ำ</label>
-          <input id="min" type="text" class="w3-input"  data-index="3">
+          <input id="min" type="number" class="w3-input"  data-index="3">
         </div>
       </div>
-      <div id="row-img" class="row" style="margin-bottom: 5%;" hidden>
+      <div id="row-img" class="row" hidden>
         <div class="col-12 text-center">
-        <img id='img' alt="" style="width: 70%; height: 70%;">
+          <a id="a"><img id='img' alt="" style="width: 70%; height: 70%;"></a>
         </div>
       </div>
       <div class="row mg-10">

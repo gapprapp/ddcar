@@ -10,7 +10,7 @@
         "spec": ">=5.0.0",
         "type": "range"
       },
-      "C:\\Users\\moronz\\Documents\\GitHub\\ddcar"
+      "D:\\GitHub\\ddcar"
     ]
   ],
   "_from": "cordova-plugin-file@>=5.0.0",
@@ -45,7 +45,7 @@
   "_shasum": "49606b8c15a5688d4728f92e4a7325a061de07f5",
   "_shrinkwrap": null,
   "_spec": "cordova-plugin-file@>=5.0.0",
-  "_where": "C:\\Users\\moronz\\Documents\\GitHub\\ddcar",
+  "_where": "D:\\GitHub\\ddcar",
   "author": {
     "name": "Apache Software Foundation"
   },

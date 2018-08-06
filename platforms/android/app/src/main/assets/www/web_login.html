@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    
+    <title>เข้าสู่ระบบ</title>
+    
+    <!-- Bootstrap Import -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.6/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.1/css/all.css" integrity="sha384-O8whS3fhG2OnA5Kas0Y9l3cfpmYjapjI0E4theH4iuMD+pLhbf6JI0jIMfYcK3yZ" crossorigin="anonymous">
+
+    <!-- Super cool dialog-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.0/jquery-confirm.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.0/jquery-confirm.min.js"></script>
+    
+    <!-- Loading -->
+	<link rel="stylesheet" href="css/easy-loading.css">
+	<script src="js/easy-loading.js"></script>
+   
+    <!-- Font -->
+    <link href="https://fonts.googleapis.com/css?family=Prompt" rel="stylesheet">
+    <!-- Main -->
+    <link href="css/untitled.css" rel="stylesheet">
+    <!--<link href="css/login.css" rel="stylesheet">-->
+</head>
+<body>
+    <div id="wrapper">
+        <div id="page-content-wrapper">
+            <!-- Navbar -->
+            <nav class="navbar navbar-dark bg-dark rounded">
+                <div class="col-12 text-center">
+                    <h3 style="color: white;">เข้าสู่ระบบ</h3>
+                </div>
+            </nav>
+            <!-- End Navbar -->
+            
+            <div class="container" style="margin-top: 3%;">
+                <div class="row">
+                    <img style='width: 30%; height: 30%; margin: 0 auto;' src='img/logo.jpg'>
+                </div><br><br>
+                <div class="row">
+                    <div class="col-12 text-center" >
+                        <input id="name" type="text" class="form-control-lg text-center no-border" placeholder="ชื่อผู้ใช้" style="width: 40%; background: white;" data-index="1">
+                    </div>
+                </div><br>
+
+                <div class="row">
+                    <div class="col-12 text-center" >
+                        <input id="password" type="password" class="form-control-lg text-center no-border" placeholder="รหัสผ่าน" style="width: 40%; background: white;"  data-index="2">
+                    </div>
+                </div><br><br>
+
+                <div class="row">
+                    <div class="col-12 text-center">
+                        <button class="btn btn-lg btn-success" onclick="login()">เข้าสู่ระบบ</button>
+                    </div>
+                </div><br>
+
+                <div class="row" hidden>
+                    <div class="col-12 text-center">
+                        <button class="btn btn-lg" style="color: white; background: #3b5998"><i class="fa fa-facebook-f"> </i> Login with Facebook</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+         $(document).keydown(function(objEvent) {
+          if (objEvent.keyCode == 13) {  //enter pressed
+              objEvent.preventDefault();           
+              var $this = $(objEvent.target);
+              var i_enter = parseFloat($this.attr('data-index'));                      
+              if(i_enter == 2){
+                login();
+              }else{
+                $('[data-index="' + (i_enter+1).toString() + '"]').focus();
+              }              
+          }         
+        })
+
+        function login(){
+            var name = $('#name').val();
+            var pass = $('#password').val();
+            if(name && pass){
+                $.ajax({
+                    type: "POST",
+                    url: "php/login.php",
+                    data: {'name': name,
+                        'pass' : pass},    
+                    beforeSend: function(){
+                        EasyLoading.show({                           
+                            text: "กำลังโหลด"                            
+                        });
+                    },                         
+                    success: function(data){
+                    EasyLoading.hide();
+                    if(data == "fail"){
+                        $.confirm({
+                            title: 'พบข้อผิดพลาด',
+                            content: 'ชื่อหรือรหัสผ่านไม่ถูกต้อง',
+                            backgroundDismiss: true,
+                            buttons: {
+                                formSubmit: {
+                                text: 'ตกลง',
+                                btnClass: 'btn-regis',
+                                action: function () {
+                                }
+                                }
+                            }
+                        });
+                    }else{
+                        var obj = jQuery.parseJSON(data);
+                        $.each(obj, function(i, field){
+                            localStorage.user_name = name
+                            localStorage.user_id = field.user_id;
+                            localStorage.user_role = field.user_role;
+                            window.location = 'web_sale.html';
+                        });                      
+                    }
+                    }                            
+                });  
+            }             
+        }
+    </script>
+    
+</body>
+</html>

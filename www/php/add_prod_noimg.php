@@ -3,9 +3,10 @@
     $name  = $_POST['name_prod'];    
     $code  = $_POST['code'];   
     $parent  = $_POST['parent'];
+    $min = $_POST['min'];
 
     mysqli_begin_transaction($conn);
-    $sql = "INSERT INTO product(prod_name,prod_code) VALUE ('$name','$code')";
+    $sql = "INSERT INTO product(prod_name,prod_code,min_amount) VALUE ('$name','$code','$min')";
     $result = mysqli_query($conn, $sql);    
     $title = mysqli_insert_id($conn);
     if(!$result){

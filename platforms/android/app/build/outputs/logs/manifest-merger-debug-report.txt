@@ -11,10 +11,10 @@ INJECTED from D:\GitHub\ddcar\platforms\android\app\src\main\AndroidManifest.xml
 	android:name
 		ADDED from D:\GitHub\ddcar\platforms\android\app\src\main\AndroidManifest.xml:12:127-181
 manifest
-ADDED from D:\GitHub\ddcar\platforms\android\app\src\main\AndroidManifest.xml:2:1-23:12
-INJECTED from D:\GitHub\ddcar\platforms\android\app\src\main\AndroidManifest.xml:2:1-23:12
-INJECTED from D:\GitHub\ddcar\platforms\android\app\src\main\AndroidManifest.xml:2:1-23:12
-INJECTED from D:\GitHub\ddcar\platforms\android\app\src\main\AndroidManifest.xml:2:1-23:12
+ADDED from D:\GitHub\ddcar\platforms\android\app\src\main\AndroidManifest.xml:2:1-24:12
+INJECTED from D:\GitHub\ddcar\platforms\android\app\src\main\AndroidManifest.xml:2:1-24:12
+INJECTED from D:\GitHub\ddcar\platforms\android\app\src\main\AndroidManifest.xml:2:1-24:12
+INJECTED from D:\GitHub\ddcar\platforms\android\app\src\main\AndroidManifest.xml:2:1-24:12
 MERGED from [:barcodescanner-release-2.1.5:] C:\Users\moronz\.gradle\caches\transforms-1\files-1.1\barcodescanner-release-2.1.5.aar\b07811c53a299101782b556223467be9\AndroidManifest.xml:2:1-14:12
 MERGED from [com.android.support:support-v4:27.1.1] C:\Users\moronz\.gradle\caches\transforms-1\files-1.1\support-v4-27.1.1.aar\adaeba44539453a8ce949a2d206f2d7a\AndroidManifest.xml:17:1-22:12
 MERGED from [:CordovaLib] D:\GitHub\ddcar\platforms\android\CordovaLib\build\intermediates\manifests\full\debug\AndroidManifest.xml:20:1-27:12
@@ -27,9 +27,9 @@ MERGED from [android.arch.lifecycle:runtime:1.1.0] C:\Users\moronz\.gradle\cache
 MERGED from [android.arch.lifecycle:livedata-core:1.1.0] C:\Users\moronz\.gradle\caches\transforms-1\files-1.1\livedata-core-1.1.0.aar\296f9096139fdad2347a7ac22b4e3778\AndroidManifest.xml:17:1-22:12
 MERGED from [android.arch.lifecycle:viewmodel:1.1.0] C:\Users\moronz\.gradle\caches\transforms-1\files-1.1\viewmodel-1.1.0.aar\88003d8762f4df31390323a666a81d9c\AndroidManifest.xml:17:1-22:12
 MERGED from [android.arch.core:runtime:1.1.0] C:\Users\moronz\.gradle\caches\transforms-1\files-1.1\runtime-1.1.0.aar\64228bccb36eef23908c11d0ca40cc76\AndroidManifest.xml:17:1-22:12
-INJECTED from D:\GitHub\ddcar\platforms\android\app\src\main\AndroidManifest.xml:2:1-23:12
-INJECTED from D:\GitHub\ddcar\platforms\android\app\src\main\AndroidManifest.xml:2:1-23:12
-INJECTED from D:\GitHub\ddcar\platforms\android\app\src\main\AndroidManifest.xml:2:1-23:12
+INJECTED from D:\GitHub\ddcar\platforms\android\app\src\main\AndroidManifest.xml:2:1-24:12
+INJECTED from D:\GitHub\ddcar\platforms\android\app\src\main\AndroidManifest.xml:2:1-24:12
+INJECTED from D:\GitHub\ddcar\platforms\android\app\src\main\AndroidManifest.xml:2:1-24:12
 	package
 		ADDED from D:\GitHub\ddcar\platforms\android\app\src\main\AndroidManifest.xml:2:102-128
 		INJECTED from D:\GitHub\ddcar\platforms\android\app\src\main\AndroidManifest.xml
@@ -158,20 +158,24 @@ uses-permission#android.permission.WRITE_EXTERNAL_STORAGE
 ADDED from D:\GitHub\ddcar\platforms\android\app\src\main\AndroidManifest.xml:19:5-81
 	android:name
 		ADDED from D:\GitHub\ddcar\platforms\android\app\src\main\AndroidManifest.xml:19:22-78
+uses-permission#android.permission.READ_EXTERNAL_STORAGE
+ADDED from D:\GitHub\ddcar\platforms\android\app\src\main\AndroidManifest.xml:20:5-80
+	android:name
+		ADDED from D:\GitHub\ddcar\platforms\android\app\src\main\AndroidManifest.xml:20:22-77
 uses-permission#android.permission.CAMERA
-ADDED from D:\GitHub\ddcar\platforms\android\app\src\main\AndroidManifest.xml:20:5-65
+ADDED from D:\GitHub\ddcar\platforms\android\app\src\main\AndroidManifest.xml:21:5-65
 	android:name
-		ADDED from D:\GitHub\ddcar\platforms\android\app\src\main\AndroidManifest.xml:20:22-62
+		ADDED from D:\GitHub\ddcar\platforms\android\app\src\main\AndroidManifest.xml:21:22-62
 uses-permission#android.permission.FLASHLIGHT
-ADDED from D:\GitHub\ddcar\platforms\android\app\src\main\AndroidManifest.xml:21:5-69
+ADDED from D:\GitHub\ddcar\platforms\android\app\src\main\AndroidManifest.xml:22:5-69
 	android:name
-		ADDED from D:\GitHub\ddcar\platforms\android\app\src\main\AndroidManifest.xml:21:22-66
+		ADDED from D:\GitHub\ddcar\platforms\android\app\src\main\AndroidManifest.xml:22:22-66
 uses-feature#android.hardware.camera
-ADDED from D:\GitHub\ddcar\platforms\android\app\src\main\AndroidManifest.xml:22:5-84
+ADDED from D:\GitHub\ddcar\platforms\android\app\src\main\AndroidManifest.xml:23:5-84
 	android:required
-		ADDED from D:\GitHub\ddcar\platforms\android\app\src\main\AndroidManifest.xml:22:58-81
+		ADDED from D:\GitHub\ddcar\platforms\android\app\src\main\AndroidManifest.xml:23:58-81
 	android:name
-		ADDED from D:\GitHub\ddcar\platforms\android\app\src\main\AndroidManifest.xml:22:19-57
+		ADDED from D:\GitHub\ddcar\platforms\android\app\src\main\AndroidManifest.xml:23:19-57
 meta-data#android.support.FILE_PROVIDER_PATHS
 ADDED from D:\GitHub\ddcar\platforms\android\app\src\main\AndroidManifest.xml:13:13-116
 	android:resource
