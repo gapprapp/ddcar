@@ -558,8 +558,7 @@
 			json_string = JSON.stringify(arr_data);
 			var dataString =  "JSON=" + json_string + "&ware_id=" + ware_id + "&date=" + datetime
 			+ "&sum=" + sum + "&user_id=" + localStorage.user_id;
-			//alert(dataString);
-			//print();
+			//alert(dataString);			
 
 		/*$.ajax({
 			type: "POST",
@@ -572,7 +571,8 @@
 			},             
 			success: function(data){  
 				EasyLoading.hide();    
-				if(data == "success"){                       
+				if(data == "success"){ 
+					print();                      
 					location.reload(true);         
 				}else{
 					$.confirm({
@@ -606,7 +606,7 @@
 			var ele =  document.getElementById('show_qr').innerHTML;
 			var WinPrint  = window.open();
 			WinPrint.document.write("<html><head><link href='https://fonts.googleapis.com/css?family=Maitree' rel='stylesheet'></head><body>");
-			WinPrint.document.write("<style>@media print {body {-webkit-print-color-adjust: exact;}} @page {size: auto; margin: 0mm;} body{font-family: 'Maitree'; line-height: 1.5; font-size: 0.5em;}.ctn{width: 10.1cm; height: 5cm; } .left{float: left; width: 5.05cm; height: 5cm; text-align: center;} .right{float: left; width: 5.05cm; height: 5cm; text-align: center;} .qr{width: 33mm; height: 25mm; margin-left: 15%; background-color: black; color: white;}</style>" +
+			WinPrint.document.write("<style>@media print {body {-webkit-print-color-adjust: exact;}} @page {size: auto; margin: 0mm;} body{font-family: 'Maitree'; line-height: 1.5; font-size: 0.5em;}.ctn{width: 10.1cm; height: 4cm;} .left{float: left; width: 5.05cm; height: 4cm; text-align: center;} .right{float: left; width: 5.05cm; height: 4cm; text-align: center;} .qr{width: 33mm; height: 25mm; margin-left: 15%; background-color: black; color: white;}</style>" +
 				ele);
 			WinPrint.document.write('</body></html>');
 			//WinPrint.document.close();

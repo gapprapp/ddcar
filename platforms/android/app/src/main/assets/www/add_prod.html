@@ -203,8 +203,10 @@
         if(this.src.length > 0){         
           var image = document.getElementById('img');       
           var fileURL = image.src;
-          var filename = fileURL.substr(fileURL.lastIndexOf('/') + 1)/*.split("?")*/;  
-          alert(fileURL + "\n"  +filename);             
+          window.requestFileSystem(fileURL, function (entry) { 
+            var fileURL2 = entry.toURL(); 
+            var filename = fileURL.substr(fileURL.lastIndexOf('/') + 1)/*.split("?")*/;
+          //alert(fileURL + "\n"  +filename);             
           
           var success = function (r) {
             $(".overlay").prop('hidden', true);
@@ -263,15 +265,16 @@
           options.fileKey = "file";
           options.fileName = filename;
           options.mimeType = "image/jpeg";       
-          //options.chunkedMode = false;            
+          //options.chunkedMode = false;                 
           
           var ft = new FileTransfer();    
-          /*ft.onprogress = function(progressEvent) {
+          ft.onprogress = function(progressEvent) {
             $(".overlay").prop('hidden', false);
-          };*/               
-          ft.upload(fileURL,
+          };               
+          ft.upload(fileURL2,
           "http://migky.myqnapcloud.com:8083/dd-shop/php/add_prod.php"
           , success, fail, options);
+          });          
         }else{
           $.ajax({
             type: "POST",
