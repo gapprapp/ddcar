@@ -10,7 +10,7 @@
         "spec": "latest",
         "type": "tag"
       },
-      "C:\\Users\\moronz\\Documents\\GitHub\\ddcar"
+      "D:\\GitHub\\ddcar"
     ]
   ],
   "_from": "cordova-plugin-file-transfer@latest",
@@ -45,7 +45,7 @@
   "_shasum": "a75d8be2ebc3bb9b23c5b1bbd199214ec267586b",
   "_shrinkwrap": null,
   "_spec": "cordova-plugin-file-transfer",
-  "_where": "C:\\Users\\moronz\\Documents\\GitHub\\ddcar",
+  "_where": "D:\\GitHub\\ddcar",
   "author": {
     "name": "Apache Software Foundation"
   },

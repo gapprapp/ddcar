@@ -132,37 +132,65 @@
 
         function get_prod(id){
             prod_id = id;
-            $.ajax({
-                type: "POST",
-                url:"http://migky.myqnapcloud.com:8083/dd-shop/php/get_prod.php",    
-                data:{'prod_id' : id},
-                //async: false,                       
-                beforeSend: function(){
-                    $(".overlay").prop('hidden', false);
-                },             
-                success: function(data){  
-                    $(".overlay").prop('hidden', true);
-                    var obj = jQuery.parseJSON(data);                                         
-                    $.each(obj, function(i, field){
-                        $('#name').val(obj[i].prod_name);
-                        $('#barcode').val(obj[i].prod_code); 
-                        cost_o = obj[i].prod_cost;                       
-                        img = obj[i].img;   
-                        if(obj[i].prod_cost == 0 && obj[i].prod_price == 0 && obj[i].prod_pricesend == 0){
-                            $('#cost').val("");
-                            $('#wholesale').val("");
-                            $('#retail').val("");  
-                        }else{
-                            $('#cost').val(cost_o);
-                            $('#wholesale').val(obj[i].prod_pricesend);
-                            $('#retail').val(obj[i].prod_price);                     
-                            flag = 1;
-                        }                        
-                    }); 
-                    show_prod();                                       
-                }               
-            });
-            get_place();            
+            if(localStorage.arr_prod){
+                var retrievedObject = localStorage.getItem('arr_prod');
+                var arr_data = JSON.parse(retrievedObject); 
+                var bool = true;
+                for(var b = 0; b < arr_data.length; b++){
+                    if(prod_id == arr_data[b].prod_id){
+                        $.confirm({
+                            title: 'เตือน',
+                            content: 'มีการเพิ่มสินค้า ' + arr_data[b].name + ' กรุณาแก้ไขที่จำนวนของสินค้าที่ได้เพิ่มแล้ว',
+                            backgroundDismiss: true,
+                            buttons: {
+                                formSubmit: {
+                                text: 'ตกลง',
+                                btnClass: 'btn-regis',
+                                action: function () {
+                                }
+                                }
+                            }
+                        });  
+                        bool = false;                               
+                        break;           
+                    }
+                }                 
+            }
+            if(bool){
+                $.ajax({
+                    type: "POST",
+                    url:"http://migky.myqnapcloud.com:8083/dd-shop/php/get_prod.php",    
+                    data:{'prod_id' : id},
+                    //async: false,                       
+                    beforeSend: function(){
+                        $(".overlay").prop('hidden', false);
+                    },             
+                    success: function(data){  
+                        $(".overlay").prop('hidden', true);
+                        var obj = jQuery.parseJSON(data);                                         
+                        $.each(obj, function(i, field){
+                            $('#name').val(obj[i].prod_name);
+                            $('#barcode').val(obj[i].prod_code); 
+                            cost_o = obj[i].prod_cost;                       
+                            img = obj[i].img;   
+                            if(obj[i].prod_cost == 0 && obj[i].prod_price == 0 && obj[i].prod_pricesend == 0){
+                                $('#cost').val("");
+                                $('#wholesale').val("");
+                                $('#retail').val("");  
+                            }else{
+                                $('#cost').val(cost_o);
+                                $('#wholesale').val(obj[i].prod_pricesend);
+                                $('#retail').val(obj[i].prod_price);                     
+                                flag = 1;
+                            }                        
+                        }); 
+                        show_prod();                                       
+                    }               
+                });
+                get_place();    
+            }else{
+                show('dup','dup');
+            }                   
         }
 
         var check =  0;
@@ -328,28 +356,29 @@
         }     
         
         function show(code,cost){
-            if(localStorage.arr_prod){
-                var retrievedObject = localStorage.getItem('arr_prod');
-                var arr_data = JSON.parse(retrievedObject);               
-            }else{
-                var arr_data = [];              
-            }        
-           
-            item = {}            
-            item ["qr"] =  code;
-            item ["prod_id"] =  prod_id;
-            item ["name"] =  $('#name').val();
-            item ["cost"] =  cost;               
-            item ["amt"] =  $('#amount').val();
-            item ["img"] =  img; 
-            item ["addr"] = $('#prod-addr').val();    
+            if(code != 'dup'){
+                if(localStorage.arr_prod){
+                    var retrievedObject = localStorage.getItem('arr_prod');
+                    var arr_data = JSON.parse(retrievedObject);               
+                }else{
+                    var arr_data = [];              
+                }        
+            
+                item = {}            
+                item ["qr"] =  code;
+                item ["prod_id"] =  prod_id;
+                item ["name"] =  $('#name').val();
+                item ["cost"] =  cost;               
+                item ["amt"] =  $('#amount').val();
+                item ["img"] =  img; 
+                item ["addr"] = $('#prod-addr').val();    
 
-            arr_data.push(item); 
-            localStorage.setItem('arr_prod', JSON.stringify(arr_data));         
-           
-            $('#check-import').text(arr_data.length);
-            $("#h5-title").unbind(); 
-
+                arr_data.push(item); 
+                localStorage.setItem('arr_prod', JSON.stringify(arr_data));         
+            
+                $('#check-import').text(arr_data.length);
+                $("#h5-title").unbind(); 
+            }
             $('#prod-addr').attr("placeholder","");
             $('#barcode').val("");
             $('#name').val("");

@@ -120,37 +120,66 @@
             }         
         })
 
+        var bool = true;
         function get_sale(id){
             prod_id = id;
-            $.ajax({
-                type: "POST",
-                url:"http://migky.myqnapcloud.com:8083/dd-shop/php/get_sale.php",    
-                data:{'prod_id' : id,'cus_id':cus_id},
-                //async: false,                       
-                beforeSend: function(){
-                    $(".overlay").prop('hidden', false);
-                },             
-                success: function(data){  
-                    $(".overlay").prop('hidden', true); 
-                    var obj = jQuery.parseJSON(data);                                                           
-                    $.each(obj, function(i, field){                           
-                        if(obj[i][9]){
-                            $('#price').val(obj[i][9]);  
-                        }else{                                
-                            if(type == "ขายปลีก"){
-                                $('#price').val(obj[i].prod_price);  
-                            }else{
-                                $('#price').val(obj[i].prod_pricesend);  
-                            }                                
-                        }  
-                        $('#name').val(obj[i].prod_name);
-                        $('#barcode').val(obj[i].prod_code);                                                       
-                        img = obj[i].img;   
-                        old_price = $('#price').val();                                                                    
-                    });
-                    show();                                             
-                }               
-            });            
+            if(localStorage.arr_sale){
+                var retrievedObject = localStorage.getItem('arr_sale');
+                var arr_data = JSON.parse(retrievedObject); 
+                bool = true;
+                for(var b = 0; b < arr_data.length; b++){
+                    if(prod_id == arr_data[b].prod_id){
+                        $.confirm({
+                            title: 'เตือน',
+                            content: 'มีการเพิ่มสินค้า ' + arr_data[b].name + ' กรุณาแก้ไขที่จำนวนของสินค้าที่ได้เพิ่มแล้ว',
+                            backgroundDismiss: true,
+                            buttons: {
+                                formSubmit: {
+                                text: 'ตกลง',
+                                btnClass: 'btn-regis',
+                                action: function () {
+                                }
+                                }
+                            }
+                        });  
+                        bool = false;                               
+                        break;           
+                    }
+                }                 
+            }
+            if(bool){
+                $.ajax({
+                    type: "POST",
+                    url:"http://migky.myqnapcloud.com:8083/dd-shop/php/get_sale.php",    
+                    data:{'prod_id' : id,'cus_id':cus_id},
+                    //async: false,                       
+                    beforeSend: function(){
+                        $(".overlay").prop('hidden', false);
+                    },             
+                    success: function(data){  
+                        $(".overlay").prop('hidden', true); 
+                        var obj = jQuery.parseJSON(data);                                                           
+                        $.each(obj, function(i, field){                           
+                            if(obj[i][9]){
+                                $('#price').val(obj[i][9]);  
+                            }else{                                
+                                if(type == "ขายปลีก"){
+                                    $('#price').val(obj[i].prod_price);  
+                                }else{
+                                    $('#price').val(obj[i].prod_pricesend);  
+                                }                                
+                            }  
+                            $('#name').val(obj[i].prod_name);
+                            $('#barcode').val(obj[i].prod_code);                                                       
+                            img = obj[i].img;   
+                            old_price = $('#price').val();                                                                    
+                        });
+                        show();                                             
+                    }               
+                });     
+            }else{
+                add_prod();
+            }                   
         }
 
         function scanqr(){
@@ -161,37 +190,65 @@
                         if(result.format == "QR_CODE"){
                                 var value = result.text;
                                 // This is the retrieved content of the qr code
-                                //alert(value);                        
-                                $.ajax({
-                                    type: "POST",
-                                    url: "http://migky.myqnapcloud.com:8083/dd-shop/php/get_sale.php",                
-                                    data: {'qr' : value,'cus_id':cus_id},             
-                                    beforeSend: function(){
-                                        $(".overlay").prop('hidden', false);
-                                    },             
-                                    success: function(data){  
-                                        $(".overlay").prop('hidden', true);                             
-                                        var obj = jQuery.parseJSON(data); 
-                                        $.each(obj, function(i, field){                                           
-                                            if(obj[i][9]){
-                                                $('#price').val(obj[i][9]);  
-                                            }else{                                
-                                                if(type == "ขายปลีก"){
-                                                    $('#price').val(obj[i].prod_price);  
-                                                }else{
-                                                    $('#price').val(obj[i].prod_pricesend);  
-                                                }                                
-                                            }  
-                                            $('#name').val(obj[i].prod_name);
-                                            $('#barcode').val(obj[i].prod_code);                                                       
-                                            img = obj[i].img;   
-                                            old_price = $('#price').val(); 
-                                            prod_id = obj[i].prod_id;  
-                                        });                                                                                        
-                                    }               
-                                });
-                                var temp = $('#price').val();
-                                $("#price").focus().val("").val(temp);                                      
+                                //alert(value);
+                                if(localStorage.arr_sale){
+                                    var retrievedObject = localStorage.getItem('arr_sale');
+                                    var arr_data = JSON.parse(retrievedObject); 
+                                    bool = true;
+                                    for(var b = 0; b < arr_data.length; b++){
+                                        if(prod_id == arr_data[b].prod_id){
+                                            $.confirm({
+                                                title: 'เตือน',
+                                                content: 'มีการเพิ่มสินค้า ' + arr_data[b].name + ' กรุณาแก้ไขที่จำนวนของสินค้าที่ได้เพิ่มแล้ว',
+                                                backgroundDismiss: true,
+                                                buttons: {
+                                                    formSubmit: {
+                                                    text: 'ตกลง',
+                                                    btnClass: 'btn-regis',
+                                                    action: function () {
+                                                    }
+                                                    }
+                                                }
+                                            });  
+                                            bool = false;                               
+                                            break;           
+                                        }
+                                    }                 
+                                } 
+                                if(bool){
+                                    $.ajax({
+                                        type: "POST",
+                                        url: "http://migky.myqnapcloud.com:8083/dd-shop/php/get_sale.php",                
+                                        data: {'qr' : value,'cus_id':cus_id},             
+                                        beforeSend: function(){
+                                            $(".overlay").prop('hidden', false);
+                                        },             
+                                        success: function(data){  
+                                            $(".overlay").prop('hidden', true);                             
+                                            var obj = jQuery.parseJSON(data); 
+                                            $.each(obj, function(i, field){                                           
+                                                if(obj[i][9]){
+                                                    $('#price').val(obj[i][9]);  
+                                                }else{                                
+                                                    if(type == "ขายปลีก"){
+                                                        $('#price').val(obj[i].prod_price);  
+                                                    }else{
+                                                        $('#price').val(obj[i].prod_pricesend);  
+                                                    }                                
+                                                }  
+                                                $('#name').val(obj[i].prod_name);
+                                                $('#barcode').val(obj[i].prod_code);                                                       
+                                                img = obj[i].img;   
+                                                old_price = $('#price').val(); 
+                                                prod_id = obj[i].prod_id;  
+                                            });                                                                                        
+                                        }               
+                                    });
+                                    var temp = $('#price').val();
+                                    $("#price").focus().val("").val(temp);  
+                                }else{
+                                    add_prod();
+                                }                                                              
                         }else{
                             //alert("Sorry, only qr codes this time ;)");
                         }
@@ -264,47 +321,48 @@
         }*/
 
         function add_prod(){
-            var code = $('#barcode').val();
-            var price = $('#price').val();   
-            var name = $('#name').val();    
-            var amt = $('#amount').val();            
-            if(name == "" || amt == "" || code == "" || price == ""){ 
-                $.confirm({
-                  title: 'พบข้อผิดพลาด',
-                  content: 'กรุณากรอกข้อมูลให้ครบ',
-                  backgroundDismiss: true,
-                  buttons: {
-                    formSubmit: {
-                      text: 'ตกลง',
-                      btnClass: 'btn-regis',
-                      action: function () {
-                      }
+            if(bool){
+                var code = $('#barcode').val();
+                var price = $('#price').val();   
+                var name = $('#name').val();    
+                var amt = $('#amount').val();            
+                if(name == "" || amt == "" || code == "" || price == ""){ 
+                    $.confirm({
+                    title: 'พบข้อผิดพลาด',
+                    content: 'กรุณากรอกข้อมูลให้ครบ',
+                    backgroundDismiss: true,
+                    buttons: {
+                        formSubmit: {
+                        text: 'ตกลง',
+                        btnClass: 'btn-regis',
+                        action: function () {
+                        }
+                        }
                     }
-                  }
-                });
-                return 0;
-            }                   
-            if(localStorage.arr_sale){
-                var retrievedObject = localStorage.getItem('arr_sale');
-                var arr_data = JSON.parse(retrievedObject);               
-            }else{
-                var arr_data = [];              
-            }           
-            item = {}            
-            item ["qr"] =  code;
-            item ["prod_id"] =  prod_id;
-            item ["name"] =  name;
-            item ["old_price"] =  old_price; 
-            item ["price"] =  price;               
-            item ["amt"] =  amt;
-            item ["img"] =  img;     
+                    });
+                    return 0;
+                }                   
+                if(localStorage.arr_sale){
+                    var retrievedObject = localStorage.getItem('arr_sale');
+                    var arr_data = JSON.parse(retrievedObject);               
+                }else{
+                    var arr_data = [];              
+                }           
+                item = {}            
+                item ["qr"] =  code;
+                item ["prod_id"] =  prod_id;
+                item ["name"] =  name;
+                item ["old_price"] =  old_price; 
+                item ["price"] =  price;               
+                item ["amt"] =  amt;
+                item ["img"] =  img;     
 
-            arr_data.push(item); 
-            localStorage.setItem('arr_sale', JSON.stringify(arr_data));         
-        
-            $('#check-sale').text(arr_data.length);
-            $("#cus").attr('disabled',true);           
-
+                arr_data.push(item); 
+                localStorage.setItem('arr_sale', JSON.stringify(arr_data));         
+            
+                $('#check-sale').text(arr_data.length);
+                $("#cus").attr('disabled',true);           
+            }
             $('#barcode').val("");
             $('#name').val("");
             $('#price').val("");                
@@ -480,7 +538,7 @@
                     <button id="btn-addpic" class="mbtn-green" onclick="scanqr();" disabled>สแกน</button>
                 </div>
                 <div class="col-8 text-center" style="padding-right: 0;">
-                    <button id="btn-folder" class="select_folder" onclick="selectfolder()">เลือกสินค้า</button>
+                    <button id="btn-folder" class="select_folder" onclick="selectfolder()" disabled>เลือกสินค้า</button>
                 </div>
             </div>
             <div class="row">

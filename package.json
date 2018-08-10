@@ -33,13 +33,13 @@
       "phonegap-plugin-barcodescanner": {
         "ANDROID_SUPPORT_V4_VERSION": "27.+"
       },
-      "cordova-plugin-file-transfer": {},
       "cordova-plugin-camera": {},
       "cordova-plugin-device": {},
       "cordova-plugin-statusbar": {},
       "cordova-plugin-datepicker": {},
       "cordova-plugin-screen-orientation": {},
-      "cordova-plugin-fullscreen": {}
+      "cordova-plugin-fullscreen": {},
+      "cordova-plugin-file-transfer": {}
     },
     "platforms": [
       "ios",

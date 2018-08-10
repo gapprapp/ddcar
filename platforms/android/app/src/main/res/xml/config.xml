@@ -13,14 +13,6 @@
     <feature name="Device">
         <param name="android-package" value="org.apache.cordova.device.Device" />
     </feature>
-    <feature name="File">
-        <param name="android-package" value="org.apache.cordova.file.FileUtils" />
-        <param name="onload" value="true" />
-    </feature>
-    <allow-navigation href="cdvfile:*" />
-    <feature name="FileTransfer">
-        <param name="android-package" value="org.apache.cordova.filetransfer.FileTransfer" />
-    </feature>
     <feature name="CDVOrientation">
         <param name="android-package" value="cordova.plugins.screenorientation.CDVOrientation" />
     </feature>
@@ -37,6 +29,14 @@
     </feature>
     <feature name="AndroidFullScreen">
         <param name="android-package" value="com.mesmotronic.plugins.FullScreenPlugin" />
+    </feature>
+    <feature name="File">
+        <param name="android-package" value="org.apache.cordova.file.FileUtils" />
+        <param name="onload" value="true" />
+    </feature>
+    <allow-navigation href="cdvfile:*" />
+    <feature name="FileTransfer">
+        <param name="android-package" value="org.apache.cordova.filetransfer.FileTransfer" />
     </feature>
     <name>ddcar</name>
     <description>
