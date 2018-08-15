@@ -534,14 +534,14 @@
 					if(index_qr % 2 != 0){						
 						$('#show_qr').append('<div id="ctn'+index_qr+'" class="ctn">' +
 						'<div class="left">' +
-							'<div>ไฟท้าย abc360 80 eagle eye super power naja aaaaaaaaaaaaaaaaaaaaaa</div>' +
+							'<div class="name">'+arr_data[i].name+'</div>' +
 							'<div class="qr" id="qrcode'+index_qr+'"></div>' +
 							'<div>'+arr_data[i].price+'</div>' +
 						'</div>' +						
 						'</div>');		
 					}else{						
 						$('#ctn'+(index_qr-1)).append('<div class="right">' +
-							'<div>'+arr_data[i].name+'</div>' +
+							'<div class="name">'+arr_data[i].name+'</div>' +
 							'<div class="qr" id="qrcode'+index_qr+'"></div>' +
 							'<div>'+arr_data[i].price+'</div>' +
 						'</div>');
@@ -560,37 +560,37 @@
 			+ "&sum=" + sum + "&user_id=" + localStorage.user_id;
 			//alert(dataString);			
 
-		/*$.ajax({
-			type: "POST",
-			url:"php/stock_in.php",           
-			data: dataString,               
-			beforeSend: function(){
-				EasyLoading.show({                           
-					text: "กำลังโหลด"                            
-				});
-			},             
-			success: function(data){  
-				EasyLoading.hide();    
-				if(data == "success"){ 
-					print();                      
-					location.reload(true);         
-				}else{
-					$.confirm({
+			$.ajax({
+				type: "POST",
+				url:"php/stock_in.php",           
+				data: dataString,               
+				beforeSend: function(){
+					EasyLoading.show({                           
+						text: "กำลังโหลด"                            
+					});
+				},             
+				success: function(data){  
+					EasyLoading.hide();    
+					if(data == "success"){ 
+						print();                      
+						location.reload(true);         
+					}else{
+						$.confirm({
 							title: 'พบข้อผิดพลาด',
 							content: 'ลองอีกครั้ง',
 							backgroundDismiss: true,
 							buttons: {
-									formSubmit: {
-									text: 'ตกลง',
-									btnClass: 'btn-regis',
-									action: function () {
-									}
-									}
+								formSubmit: {
+								text: 'ตกลง',
+								btnClass: 'btn-regis',
+								action: function () {
+								}
+								}
 							}
-					});
-				}
-			}               
-			});*/
+						});
+					}
+				}               
+				});
 		}
 
 		function print(){
@@ -606,7 +606,7 @@
 			var ele =  document.getElementById('show_qr').innerHTML;
 			var WinPrint  = window.open();
 			WinPrint.document.write("<html><head><link href='https://fonts.googleapis.com/css?family=Maitree' rel='stylesheet'></head><body>");
-			WinPrint.document.write("<style>@media print {body {-webkit-print-color-adjust: exact;}} @page {size: auto; margin: 0mm;} body{font-family: 'Maitree'; line-height: 1.5; font-size: 0.5em;}.ctn{width: 10.1cm; height: 4cm;} .left{float: left; width: 5.05cm; height: 4cm; text-align: center;} .right{float: left; width: 5.05cm; height: 4cm; text-align: center;} .qr{width: 33mm; height: 25mm; margin-left: 15%; background-color: black; color: white;}</style>" +
+			WinPrint.document.write("<style>@media print {body {-webkit-print-color-adjust: exact;}} @page {size: auto; margin: 0mm;} body{font-family: 'Maitree'; line-height: 1.5; font-size: 1em;} .name{font-family: 'Maitree'; line-height: 1.5; font-size: 0.5em;}.ctn{width: 10.1cm; height: 3.9cm; margin-top: -2mm;} .left{float: left; width: 5.05cm; height: 3.9cm; text-align: center;} .right{float: left; width: 5.05cm; height: 3.9cm; text-align: center;} .qr{width: 33mm; height: 25mm; margin-left: 15%; background-color: black; color: white;}</style>" +
 				ele);
 			WinPrint.document.write('</body></html>');
 			//WinPrint.document.close();
