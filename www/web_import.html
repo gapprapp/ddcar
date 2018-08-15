@@ -33,7 +33,7 @@
 	<script type="text/javascript" src="js/jQuery.print.js"></script>
 
   <!-- Font -->
-  <link href="https://fonts.googleapis.com/css?family=Prompt" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Prompt" rel="stylesheet"> 
   <!-- Main -->
   <link href="css/untitled.css" rel="stylesheet">
   <link rel="stylesheet" href="css/popup.css">
@@ -42,9 +42,9 @@
 		img{
 			height: 200px;
 			width: 200px;
-		}
+		}		
 	</style>
-  <script>		
+  <script>	
 		var prod_id,img,cost_o;
 		var flag = 1;
 		$(document).ready(function () {
@@ -447,7 +447,7 @@
 			$('#retail').val("");
 			$('#amount').val("1");
 			$('#at').val("")
-			print();
+			//print();
 		}
 
   		function edit(arg){
@@ -560,6 +560,7 @@
 			+ "&sum=" + sum + "&user_id=" + localStorage.user_id;
 			//alert(dataString);			
 
+			var WinPrint  = window.open();
 			$.ajax({
 				type: "POST",
 				url:"php/stock_in.php",           
@@ -572,8 +573,19 @@
 				success: function(data){  
 					EasyLoading.hide();    
 					if(data == "success"){ 
-						print();                      
-						location.reload(true);         
+						var ele =  document.getElementById('show_qr').innerHTML;			
+						WinPrint.document.write("<html><head><link href='https://fonts.googleapis.com/css?family=Maitree' rel='stylesheet'></head><body>");
+						WinPrint.document.write("<style>@media print {body {-webkit-print-color-adjust: exact;}} @page {size: auto; margin: 0mm;} body{font-family: 'Maitree'; line-height: 1.5; font-size: 1em;} .name{font-family: 'Maitree'; line-height: 1.5; font-size: 0.5em;}.ctn{width: 10.1cm; height: 3.7cm; margin-top: -2mm;} .left{float: left; width: 5.05cm; height: 3.7cm; text-align: center;} .right{float: left; width: 5.05cm; height: 3.7cm; text-align: center;} .qr{width: 33mm; height: 25mm; margin-left: 15%; background-color: black; color: white;}</style>" +
+							ele);
+						WinPrint.document.write('</body></html>');
+						WinPrint.document.close();
+						WinPrint.focus();
+						window.setTimeout(function() {
+							WinPrint.print();
+							WinPrint.close();
+							location.reload(true);		
+						}, 250);			                     
+						         
 					}else{
 						$.confirm({
 							title: 'พบข้อผิดพลาด',
@@ -590,30 +602,8 @@
 						});
 					}
 				}               
-				});
-		}
-
-		function print(){
-			/*$("#show_qr").print({
-                addGlobalStyles : true,
-                stylesheet : null,
-                rejectWindow : true,
-                noPrintSelector : ".no-print",
-                iframe : true,
-                append : null,
-                prepend : null
-            }); */
-			var ele =  document.getElementById('show_qr').innerHTML;
-			var WinPrint  = window.open();
-			WinPrint.document.write("<html><head><link href='https://fonts.googleapis.com/css?family=Maitree' rel='stylesheet'></head><body>");
-			WinPrint.document.write("<style>@media print {body {-webkit-print-color-adjust: exact;}} @page {size: auto; margin: 0mm;} body{font-family: 'Maitree'; line-height: 1.5; font-size: 1em;} .name{font-family: 'Maitree'; line-height: 1.5; font-size: 0.5em;}.ctn{width: 10.1cm; height: 3.9cm; margin-top: -2mm;} .left{float: left; width: 5.05cm; height: 3.9cm; text-align: center;} .right{float: left; width: 5.05cm; height: 3.9cm; text-align: center;} .qr{width: 33mm; height: 25mm; margin-left: 15%; background-color: black; color: white;}</style>" +
-				ele);
-			WinPrint.document.write('</body></html>');
-			//WinPrint.document.close();
-			WinPrint.focus();
-			//WinPrint.print();
-			//WinPrint.close();   
-    	}
+			});
+		}	
 
 		function logout(){
 			localStorage.clear();
@@ -640,8 +630,7 @@
   	}
 	.active{
 		color: #666;
-	}
-	/*@media print {body {-webkit-print-color-adjust: exact;}} @page {size: auto; margin: 0mm;} body{font-family: "Prompt"; line-height: 1.5; font-size: 1em;}.ctn{width: 10.1cm; height: 4cm; margin-bottom: 2mm;} .left{float: left; width: 5.05cm; height: 4cm; text-align: center;} .right{float: left; width: 5.05cm; height: 4cm; text-align: center;} .qr{width: 33mm; height: 27mm; margin-left: 18%;}*/
+	}	
   </style>
 </head>
 <body>
@@ -760,8 +749,7 @@
 			</div>
 			<div id="show_qr" hidden>
 
-			</div>
-
+			</div>			
 		</div>
 	<script>		
 		$('#name').on('input', function() {

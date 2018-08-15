@@ -562,11 +562,13 @@
 												"<div class='txt-ct'>พนักงานขาย : "+localStorage.user_name+"</div>"+
 											"</div>");
 										WinPrint.document.write('</body></html>');
-										//WinPrint.document.close();
+										WinPrint.document.close();
 										WinPrint.focus();
-										//WinPrint.print();
-										//WinPrint.close();   
-										location.reload(true);
+										setTimeout(function() {
+											WinPrint.print();
+											WinPrint.close();		
+											location.reload(true);
+										}, 250);										
 									}
 									else if(print_type == "a4"){
 										var dt = datetime.split(" ");
@@ -773,13 +775,15 @@
 											'</div>');
 										}				
 										WinPrint.document.write('</body></html>');
-										//WinPrint.document.close();
+										WinPrint.document.close();
 										WinPrint.focus();
-										//WinPrint.print();
-										//WinPrint.close();   
-										location.reload(true);
+										setTimeout(function() {
+											WinPrint.print();
+											WinPrint.close();	
+											location.reload(true);	
+										}, 250);										
 									}								
-								location.reload(true);
+								//location.reload(true);
 							}else{
 									$.confirm({
 											title: 'พบข้อผิดพลาด',
