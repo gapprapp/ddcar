@@ -47,6 +47,7 @@
 				window.location = 'web_login.html';
 			}
 			get_header();
+			setTimeout(function() {$("#cus").focus();}, 100);
 
 			var options = {
 				url: function(phrase) {				
@@ -188,6 +189,34 @@
 				};
 			$("#cus").easyAutocomplete(options_cus);
 		});	
+		
+		$(document).keydown(function(objEvent) {
+			if (objEvent.keyCode == 9) {  //tab pressed
+				objEvent.preventDefault(); // stops its action         
+			}
+			if (objEvent.keyCode == 13) {  //enter pressed
+				objEvent.preventDefault();
+				var $this = $(objEvent.target);
+				var i_enter = parseFloat($this.attr('data-index'));                      
+				if(i_enter == 4){
+					add();
+				}else if(i_enter == 6){
+					save2db();
+				}else{          
+					var temp = $('[data-index="' + (i_enter+1).toString() + '"]').val();
+          $('[data-index="' + (i_enter+1).toString() + '"]').focus().val("").val(temp);
+				}                       
+			}  
+			if (objEvent.keyCode == 113) {  //f2 pressed
+        add();
+			}
+			if (objEvent.keyCode == 115) {  //f4 pressed
+				set_default();
+			}
+			if (objEvent.keyCode == 118) {  //f7 pressed
+				$('#btn_checkbill').click();          
+			}       
+		})
 
 		function get_header(){
 			var d = new Date($.now());			
@@ -247,6 +276,7 @@
 			$('#price').val("");
 			$('#total').val("");		
 			$('#amount').val("1");		
+			$('#name').focus();
 		}
 
 		arr_data = [];
@@ -257,6 +287,7 @@
 			var name = $('#name').val();    
 			var amt = $('#amount').val();            
 			if(name == "" || amt == "" || code == "" || price == ""){ 
+				$('#name').focus();
 					$.confirm({
 						title: 'พบข้อผิดพลาด',
 						content: 'กรุณากรอกข้อมูลให้ครบ',
@@ -335,6 +366,7 @@
 				$('#total').val("");			
 				$('#amount').val("1");
 				count++;
+				$('#name').focus();
   	}
 
 		var total_old;
@@ -406,6 +438,7 @@
 							count--;							
 							if(arr_data.length == 0){
 								$("#cus").attr('disabled',false);
+								$("#cus").focus();
 							}
 						}
 					},
@@ -430,8 +463,8 @@
   	}
 
 		function check_bill(){
-      var total = $('#total-price').val();     
-
+      var total = $('#total-price').val();    
+			
       $('#net-price').val(total);
       $('#discount-money').val("");
       $('#final-price').val(total); 
@@ -913,7 +946,7 @@
       		<div class="row" style="padding-left: 2%; padding-right: 2%;">
       			<div id="date" class="col-2 text-center" style="margin-top: 5px; color: #666;">12/5/2018</div>
       			<div class="col-2 text-center nopd">
-      				<input id='cus' type='text' class='form-control text-center'>
+      				<input id='cus' type='text' class='form-control text-center' autofocus data-index="1">
       			</div>
       			
       			<div class="col-3 text-center nopd">
@@ -963,13 +996,13 @@
 			    </div>
 			  </div>
 			  <div class='col-4'>
-			    <input id="name" class="form-control text-center"></input>
+			    <input id="name" class="form-control text-center" data-index="2">
 			  </div>
 			  <div class='col-1 nopd'>
-			    <input id='amount' type='number' class='form-control text-center no-spin' min='1'>
+			    <input id='amount' type='number' class='form-control text-center no-spin' min='1' data-index="3">
 			  </div>
 			  <div class='col-2'>
-			    <input id='price' type='number' class='form-control text-center no-spin' min='0'>
+			    <input id='price' type='number' class='form-control text-center no-spin' min='0' data-index="4">
 			  </div>
 			  <div class='col-2'>
 			    <input id='total' type='number' class='form-control text-center no-spin' min='0' readonly>
@@ -1055,7 +1088,7 @@
 	            <div class="col-2"></div>
 	            <div class="col-3 text-center" style="border: solid #767676; padding-top: 5px;"><h3>ลด : </h3></div>
 	            <div class="col-5 text-center" style="border: solid #767676; background: #767676;">
-	              <input id="discount-money"  data-index="5" type="number" class="form-control form-control-lg text-center no-spin no-border check-bill-input" style="background: #767676; color: #fd8b5e;">
+	              <input id="discount-money" autofocus  data-index="5" type="number" class="form-control form-control-lg text-center no-spin no-border check-bill-input" style="background: #767676; color: #fd8b5e;">
 	            </div>
 	            <div class="col-2"></div>
 	          </div> <br>
@@ -1228,6 +1261,10 @@
 				$('#change-money').val(get - total);
 			}
 		});
+
+		$('#myModal').on('shown.bs.modal', function() {
+			$('#discount-money').focus();			
+		})
 	</script>
 </body>
 </html>
