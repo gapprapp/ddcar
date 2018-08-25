@@ -38,12 +38,32 @@
   <link href="css/untitled.css" rel="stylesheet">
   <link rel="stylesheet" href="css/popup.css">
 
-  	<style>
-		img{
-			height: 200px;
-			width: 200px;
-		}		
-	</style>
+  <style>
+  	img{
+  		height: 200px;
+  		width: 200px;
+  	}	
+  	label{
+  		color: #666;
+  		margin-right: 15px; margin-top: 5px;
+  	}
+  	#from{
+  		width: 50%; background-color: #666; border-color: #666; color: white;
+  	}
+  	#from:focus{
+  		outline: 0;
+  	}
+  	a{
+  		color: #999;
+  	}
+  	a:hover{
+  		color: #666;
+  	}
+	.active{
+		color: #666;
+	}	
+  </style>
+
   <script>	
 		var prod_id,img,cost_o;
 		var flag = 1;
@@ -640,28 +660,6 @@
 		}
 
   </script>
-
-  <style>
-  	label{
-  		color: #666;
-  		margin-right: 15px; margin-top: 5px;
-  	}
-  	#from{
-  		width: 50%; background-color: #666; border-color: #666; color: white;
-  	}
-  	#from:focus{
-  		outline: 0;
-  	}
-  	a{
-  		color: #999;
-  	}
-  	a:hover{
-  		color: #666;
-  	}
-	.active{
-		color: #666;
-	}	
-  </style>
 </head>
 <body>
 	<div class="container-fullwidth justify-content-center">
