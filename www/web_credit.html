@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <title>รายงานเครดิต</title>
+
+  <!-- Bootstrap Import -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.6/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js"></script>
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.1/css/all.css" integrity="sha384-O8whS3fhG2OnA5Kas0Y9l3cfpmYjapjI0E4theH4iuMD+pLhbf6JI0jIMfYcK3yZ" crossorigin="anonymous">
+
+  <!-- Super cool dialog-->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.0/jquery-confirm.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.0/jquery-confirm.min.js"></script>
+
+	<!-- Easy-autocomplete -->
+	<script src="js/jquery.easy-autocomplete.js"></script>
+	<link rel="stylesheet" href="css/easy-autocomplete.min.css">
+	<link rel="stylesheet" href="css/easy-autocomplete.themes.min.css">
+	
+	<!-- Loading -->
+	<link rel="stylesheet" href="css/easy-loading.css">
+	<script src="js/easy-loading.js"></script>
+	
+	<!-- QRcode -->
+	<script type="text/javascript" src="js/qrcode.min.js"></script>
+	<script type="text/javascript" src="js/jQuery.print.js"></script>
+
+  <!-- Font -->
+  <link href="https://fonts.googleapis.com/css?family=Prompt" rel="stylesheet"> 
+  <!-- Main -->
+  <link href="css/untitled.css" rel="stylesheet">
+  <link rel="stylesheet" href="css/popup.css">
+  <style>
+    body{color: #666;}
+    a{ color: #999;}
+    a:hover{color: #666;}
+    .active{color: #666;}
+    .cus-odd, .cus-even{
+      padding-top: 1%; padding-bottom: 1%; color: #fff; margin-bottom: 1%; cursor: pointer;
+    }
+    .cus-odd{
+      background-color: #999;
+    }
+    .cus-even{
+      background-color: #858585;
+    }
+    h5{
+      letter-spacing: 2px;
+    }
+  </style>
+  <script>
+    
+  </script>
+</head>
+<body>
+	<div class="container-fullwidth justify-content-center">
+		<nav class="navbar navbar-expand-md navbar-dark">
+    	<div class="collapse navbar-collapse justify-content-md-center" id="navbarCollapse">
+      		<h3 id="nav-title">รายงานเครดิต</h3>
+    	</div>
+    </nav>
+    <div class="container">
+      <div class="row" style="margin-top: 2px;">
+        <div class="col-12 text-center">
+          <a href="web_sale.html" class="mgr-20">ขายสินค้า</a>
+          <a href="web_import.html" class="mgr-20">นำสินค้าเข้าโกดัง</a>
+          <a href="web_stock.html" class="mgr-20">เช็คสต๊อก</a>
+          <a href="web_select.html" class="mgr-20 active">รายการย้อนหลัง</a>
+          <a href="" class="mgr-20" onclick="logout()">ออกจากระบบ</a>
+        </div>
+      </div>
+    </div><br><br>
+    <div class="container-fullwidth">
+      <div class="input-group row justify-content-center" style="margin-bottom: 4%; margin-left: 0.5%">
+        <input id="input-search" type="text" class="form-control-lg text-center" placeholder="ค้นหาลูกค้า" style="width: 60%;">
+          <button class="btn btn-outline-secondary" type="button" style="margin-left: 10px;" onclick="show();">
+              <i class="fa fa-search"></i>
+          </button>
+      </div>
+    </div>
+    <div class="container-fullwidth">
+      <div class="row justify-content-center">
+        <div class="col-4 text-center"><h4>ชื่อลูกค้า</h4></div>
+        <div class="col-3"><h4>ครบกำหนดวางบิล (วันที่)</h4></div>
+        <div class="col-2 text-center"><h4>ราคารวม</h4></div>
+      </div>
+    </div><hr style="width: 75%; margin-top: 0;"> <br>
+    <div id="ctn-append" class="container-fullwidth">
+      <div class="row justify-content-center cus-odd">
+        <div class="col-4 text-center"><h5>ชื่อลูกค้า</h5></div>
+        <div class="col-3" style="padding-left: 8%;"><h5>2/01/12</h5></div>
+        <div class="col-2 text-center"><h5>ราคารวม</h5></div>
+      </div>
+      <div class="row justify-content-center cus-even">
+        <div class="col-4 text-center"><h5>ชื่อลูกค้า</h5></div>
+        <div class="col-3" style="padding-left: 8%;"><h5>2/01/12</h5></div>
+        <div class="col-2 text-center"><h5>ราคารวม</h5></div>
+      </div>
+      <div class="row justify-content-center cus-odd">
+        <div class="col-4 text-center"><h5>ชื่อลูกค้า</h5></div>
+        <div class="col-3" style="padding-left: 8%;"><h5>2/01/12</h5></div>
+        <div class="col-2 text-center"><h5>ราคารวม</h5></div>
+      </div>
+      <div class="row justify-content-center cus-even">
+        <div class="col-4 text-center"><h5>ชื่อลูกค้า</h5></div>
+        <div class="col-3" style="padding-left: 8%;"><h5>2/01/12</h5></div>
+        <div class="col-2 text-center"><h5>ราคารวม</h5></div>
+      </div>
+      <div class="row justify-content-center cus-odd">
+        <div class="col-4 text-center"><h5>ชื่อลูกค้า</h5></div>
+        <div class="col-3" style="padding-left: 8%;"><h5>2/01/12</h5></div>
+        <div class="col-2 text-center"><h5>ราคารวม</h5></div>
+      </div>
+      <div class="row justify-content-center cus-even">
+        <div class="col-4 text-center"><h5>ชื่อลูกค้า</h5></div>
+        <div class="col-3" style="padding-left: 8%;"><h5>2/01/12</h5></div>
+        <div class="col-2 text-center"><h5>ราคารวม</h5></div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

@@ -203,8 +203,8 @@
         if(this.src.length > 0){         
           var image = document.getElementById('img');       
           var fileURL = image.src;
-          window.requestFileSystem(fileURL, function (entry) { 
-            var fileURL2 = entry.toURL(); 
+          window.resolveLocalFileSystemURL(fileURL, function (entry) { 
+            var fileURL2 = entry.toInternalURL(); 
             var filename = fileURL.substr(fileURL.lastIndexOf('/') + 1)/*.split("?")*/;
           //alert(fileURL + "\n"  +filename);             
           
