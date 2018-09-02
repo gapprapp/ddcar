@@ -150,7 +150,7 @@
             if(bool){
                 $.ajax({
                     type: "POST",
-                    url:"http://migky.myqnapcloud.com:8083/dd-shop/php/get_sale.php",    
+                    url:"http://ddaccessory.trueddns.com:24330/dd-shop/php/get_sale.php",    
                     data:{'prod_id' : id,'cus_id':cus_id},
                     //async: false,                       
                     beforeSend: function(){
@@ -218,7 +218,7 @@
                                 if(bool){
                                     $.ajax({
                                         type: "POST",
-                                        url: "http://migky.myqnapcloud.com:8083/dd-shop/php/get_sale.php",                
+                                        url: "http://ddaccessory.trueddns.com:24330/dd-shop/php/get_sale.php",                
                                         data: {'qr' : value,'cus_id':cus_id},             
                                         beforeSend: function(){
                                             $(".overlay").prop('hidden', false);
@@ -429,7 +429,7 @@
             $('#myUL').empty();
             $.ajax({
                 type: "POST",
-                url: "http://migky.myqnapcloud.com:8083/dd-shop/php/search_prod.php",
+                url: "http://ddaccessory.trueddns.com:24330/dd-shop/php/search_prod.php",
                 data: {'phrase' : val},
                 beforeSend: function(){
                     $(".overlay").prop('hidden', false);

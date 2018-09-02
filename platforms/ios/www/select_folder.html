@@ -70,7 +70,7 @@
 
       $.ajax({
         type: "POST",
-        url:"http://migky.myqnapcloud.com:8083/dd-shop/php/get_folder.php",
+        url:"http://ddaccessory.trueddns.com:24330/dd-shop/php/get_folder.php",
         crossDomain: true,
         data: {'parent' : parent},  
         beforeSend: function(){
@@ -345,7 +345,7 @@
         if(input != ""){
           $.ajax({
             type: "POST",
-            url: "http://migky.myqnapcloud.com:8083/dd-shop/php/add_folder.php",
+            url: "http://ddaccessory.trueddns.com:24330/dd-shop/php/add_folder.php",
             data: {
               'title': input,
               'parent': parent
@@ -406,7 +406,7 @@
         if(input != "") {
           $.ajax({
             type: "POST",
-            url: "http://migky.myqnapcloud.com:8083/dd-shop/php/add_folder.php",
+            url: "http://ddaccessory.trueddns.com:24330/dd-shop/php/add_folder.php",
             data: {
               'title': input,
               'parent': parent
@@ -492,7 +492,7 @@
       // h5 hidden true
       $.ajax({
         type: "POST",
-        url:"http://migky.myqnapcloud.com:8083/dd-shop/php/rename_folder.php",           
+        url:"http://ddaccessory.trueddns.com:24330/dd-shop/php/rename_folder.php",           
         data: {'old_name' : old_name,
                'name' : name},               
         beforeSend: function(){
@@ -539,7 +539,7 @@
               action: function () {
                 $.ajax({
                   type: "POST",
-                  url:"http://migky.myqnapcloud.com:8083/dd-shop/php/delete_folder.php",           
+                  url:"http://ddaccessory.trueddns.com:24330/dd-shop/php/delete_folder.php",           
                   data: {'title' : title},               
                   beforeSend: function(){
                       $(".overlay").prop('hidden', false);
@@ -595,7 +595,7 @@
               action: function () {
                 $.ajax({
                   type: "POST",
-                  url:"http://migky.myqnapcloud.com:8083/dd-shop/php/delete_prod.php",           
+                  url:"http://ddaccessory.trueddns.com:24330/dd-shop/php/delete_prod.php",           
                   data: {'title' : prod_id},               
                   beforeSend: function(){
                       $(".overlay").prop('hidden', false);

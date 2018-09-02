@@ -89,7 +89,7 @@
       function get_amt(prod_id){
         $.ajax({
           type: "POST",
-          url: "http://migky.myqnapcloud.com:8083/dd-shop/php/check_amt_prod.php",                
+          url: "http://ddaccessory.trueddns.com:24330/dd-shop/php/check_amt_prod.php",                
           data: {'prod_id': prod_id},    
           beforeSend: function(){
             $(".overlay").prop('hidden', false);
@@ -150,7 +150,7 @@
         $('#myUL').empty();
         $.ajax({
           type: "POST",
-          url: "http://migky.myqnapcloud.com:8083/dd-shop/php/search_prod.php",
+          url: "http://ddaccessory.trueddns.com:24330/dd-shop/php/search_prod.php",
           data: {'phrase' : val},
           beforeSend: function(){
             $(".overlay").prop('hidden', false);

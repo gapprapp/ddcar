@@ -124,6 +124,7 @@
       function onSuccess(imageData) {                
           var image = document.getElementById('img');
           image.src =  imageData;  
+          getFileEntry(imageData);
           $('#a').attr("href",imageData);
       }
 
@@ -178,6 +179,40 @@
       }
     }
 
+    var fileImg;
+    function getFileEntry(imgUri) {
+      window.resolveLocalFileSystemURL(imgUri, function success(fileEntry) {
+
+        // Do something with the FileEntry object, like write to it, upload it, etc.
+        // writeFile(fileEntry, imgUri);
+        fileImg = fileEntry;
+        alert("got file: " + fileEntry.fullPath);
+        // displayFileData(fileEntry.nativeURL, "Native URL");
+
+      }, function () {
+        // If don't get the FileEntry (which may happen when testing
+        // on some emulators), copy to a new FileEntry.
+        createNewFileEntry(imgUri);
+      });
+    }
+
+    function createNewFileEntry(imgUri) {
+      window.resolveLocalFileSystemURL(cordova.file.cacheDirectory, function success(dirEntry) {
+
+        // JPEG file
+        dirEntry.getFile("tempFile.jpeg", { create: true, exclusive: false }, function (fileEntry) {
+
+          // Do something with it, like write to it, upload it, etc.
+          // writeFile(fileEntry, imgUri);
+          fileImg = fileEntry;
+          alert("got file: " + fileEntry.fullPath);
+          // displayFileData(fileEntry.fullPath, "File copied to");
+
+        }, onErrorCreateFile);
+
+      }, onErrorResolveUrl);
+    }
+
     function add_prod(){
       var name = $('#name').val();
       var code = $('#barcode').val();
@@ -202,10 +237,8 @@
       $('#img').each(function () {
         if(this.src.length > 0){         
           var image = document.getElementById('img');       
-          var fileURL = image.src;
-          window.resolveLocalFileSystemURL(fileURL, function (entry) { 
-            var fileURL2 = entry.toInternalURL(); 
-            var filename = fileURL.substr(fileURL.lastIndexOf('/') + 1)/*.split("?")*/;
+          var fileURL = image.src;           
+          var filename = fileURL.substr(fileURL.lastIndexOf('/') + 1)/*.split("?")*/;
           //alert(fileURL + "\n"  +filename);             
           
           var success = function (r) {
@@ -271,14 +304,11 @@
           ft.onprogress = function(progressEvent) {
             $(".overlay").prop('hidden', false);
           };               
-          ft.upload(fileURL2,
-          "http://migky.myqnapcloud.com:8083/dd-shop/php/add_prod.php"
-          , success, fail, options);
-          });          
+          ft.upload(fileImg,"http://ddaccessory.trueddns.com:24330/dd-shop/php/add_prod.php", success, fail, options);                    
         }else{
           $.ajax({
             type: "POST",
-            url:"http://migky.myqnapcloud.com:8083/dd-shop/php/add_prod_noimg.php",           
+            url:"http://ddaccessory.trueddns.com:24330/dd-shop/php/add_prod_noimg.php",           
             data: {'name_prod' : name,
                   'code' : code,
                   'parent' : folder,                  

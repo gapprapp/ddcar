@@ -13,7 +13,7 @@
     $parent  = $_GET['parent'];    
     $min = $_GET['min'];  
     
-    echo $file_name;
+    echo "hello world";
     
     /*$ftp_conn = ftp_ssl_connect($server);
     $login = ftp_login($ftp_conn, $serverUser, $serverPassword);

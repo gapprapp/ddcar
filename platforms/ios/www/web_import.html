@@ -33,25 +33,46 @@
 	<script type="text/javascript" src="js/jQuery.print.js"></script>
 
   <!-- Font -->
-  <link href="https://fonts.googleapis.com/css?family=Prompt" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Prompt" rel="stylesheet"> 
   <!-- Main -->
   <link href="css/untitled.css" rel="stylesheet">
   <link rel="stylesheet" href="css/popup.css">
 
-  	<style>
-		img{
-			height: 200px;
-			width: 200px;
-		}
-	</style>
-  <script>		
+  <style>
+  	img{
+  		height: 200px;
+  		width: 200px;
+  	}	
+  	label{
+  		color: #666;
+  		margin-right: 15px; margin-top: 5px;
+  	}
+  	#from{
+  		width: 50%; background-color: #666; border-color: #666; color: white;
+  	}
+  	#from:focus{
+  		outline: 0;
+  	}
+  	a{
+  		color: #999;
+  	}
+  	a:hover{
+  		color: #666;
+  	}
+	.active{
+		color: #666;
+	}	
+  </style>
+
+  <script>	
 		var prod_id,img,cost_o;
 		var flag = 1;
 		$(document).ready(function () {
 			if(!localStorage.user_id){
 				window.location = 'web_login.html';
 			}
-			get_header();
+			get_header();		
+			setTimeout(function() {$("#name").focus();}, 100);
 
 			var options = {
 				url: function(phrase) {
@@ -132,6 +153,32 @@
 			$("#name").easyAutocomplete(options);	
 		});		
 
+		$(document).keydown(function(objEvent) {
+			if (objEvent.keyCode == 9) {  //tab pressed
+              objEvent.preventDefault(); // stops its action         
+          	}
+			if (objEvent.keyCode == 13) {  //enter pressed
+				objEvent.preventDefault();
+				var $this = $(objEvent.target);
+				var i_enter = parseFloat($this.attr('data-index'));                      
+				if(i_enter == 6){
+					add();
+				}else{          
+					var temp = $('[data-index="' + (i_enter+1).toString() + '"]').val();
+                    $('[data-index="' + (i_enter+1).toString() + '"]').focus().val("").val(temp);
+				}                       
+			}  
+			if (objEvent.keyCode == 113) {  //f2 pressed
+              	add();
+			}
+			if (objEvent.keyCode == 115) {  //f4 pressed
+				set_default();
+			}
+			if (objEvent.keyCode == 118) {  //f7 pressed
+				save2db();          
+			}       
+		})
+
 		function get_header(){
 			var d = new Date($.now());			
       		var date = d.getDate() + "/" + (d.getMonth()+1) + "/" + d.getFullYear();
@@ -160,7 +207,7 @@
 						}); 
 					}
 				}               
-			}); 
+			}); 		
 		}
 
 		arr_place = [];
@@ -253,6 +300,7 @@
 			var name = $('#name').val(); 
 			var amt = $('#amount').val(); 
 			if(!$('#at').prop('placeholder') && $('#at').val() == ""){ 
+				$('#name').focus(); 
 					$.confirm({
 						title: 'พบข้อผิดพลาด',
 						content: 'กรุณากรอกข้อมูลให้ครบ',
@@ -265,7 +313,7 @@
 								}
 							}
 						}
-					});                
+					});   					            
 					return 0;
 			}            
 			if(name != "" && amt != "" && code != "" && cost != "" && price_s != "" && price_w != "" && jQuery.inArray($('#at').val().toLowerCase(),arr_place) == -1 && prod_id != 0){      
@@ -339,7 +387,8 @@
 							}
 						}
 					});
-			}          
+			}
+			$('#name').focus();			          
 		}     
 
 		arr_data = []
@@ -446,8 +495,9 @@
 			$('#whole').val("");
 			$('#retail').val("");
 			$('#amount').val("1");
-			$('#at').val("")
-			print();
+			$('#at').val("");
+			$('#name').focus(); 
+			//print();
 		}
 
   		function edit(arg){
@@ -534,14 +584,14 @@
 					if(index_qr % 2 != 0){						
 						$('#show_qr').append('<div id="ctn'+index_qr+'" class="ctn">' +
 						'<div class="left">' +
-							'<div>ไฟท้าย abc360 80 eagle eye super power naja aaaaaaaaaaaaaaaaaaaaaa</div>' +
+							'<div class="name">'+arr_data[i].name+'</div>' +
 							'<div class="qr" id="qrcode'+index_qr+'"></div>' +
 							'<div>'+arr_data[i].price+'</div>' +
 						'</div>' +						
 						'</div>');		
 					}else{						
 						$('#ctn'+(index_qr-1)).append('<div class="right">' +
-							'<div>'+arr_data[i].name+'</div>' +
+							'<div class="name">'+arr_data[i].name+'</div>' +
 							'<div class="qr" id="qrcode'+index_qr+'"></div>' +
 							'<div>'+arr_data[i].price+'</div>' +
 						'</div>');
@@ -558,91 +608,58 @@
 			json_string = JSON.stringify(arr_data);
 			var dataString =  "JSON=" + json_string + "&ware_id=" + ware_id + "&date=" + datetime
 			+ "&sum=" + sum + "&user_id=" + localStorage.user_id;
-			//alert(dataString);
-			//print();
+			//alert(dataString);			
 
-		/*$.ajax({
-			type: "POST",
-			url:"php/stock_in.php",           
-			data: dataString,               
-			beforeSend: function(){
-				EasyLoading.show({                           
-					text: "กำลังโหลด"                            
-				});
-			},             
-			success: function(data){  
-				EasyLoading.hide();    
-				if(data == "success"){                       
-					location.reload(true);         
-				}else{
-					$.confirm({
+			var WinPrint  = window.open();
+			$.ajax({
+				type: "POST",
+				url:"php/stock_in.php",           
+				data: dataString,               
+				beforeSend: function(){
+					EasyLoading.show({                           
+						text: "กำลังโหลด"                            
+					});
+				},             
+				success: function(data){  
+					EasyLoading.hide();    
+					if(data == "success"){ 
+						var ele =  document.getElementById('show_qr').innerHTML;			
+						WinPrint.document.write("<html><head><link href='https://fonts.googleapis.com/css?family=Maitree' rel='stylesheet'></head><body>");
+						WinPrint.document.write("<style>@media print {body {-webkit-print-color-adjust: exact;}} @page {size: auto; margin: 0mm;} body{font-family: 'Maitree'; line-height: 1.5; font-size: 1em;} .name{font-family: 'Maitree'; line-height: 1.5; font-size: 0.5em;}.ctn{width: 10.1cm; height: 3.7cm; margin-top: -2mm;} .left{float: left; width: 5.05cm; height: 3.7cm; text-align: center;} .right{float: left; width: 5.05cm; height: 3.7cm; text-align: center;} .qr{width: 33mm; height: 25mm; margin-left: 15%; background-color: black; color: white;}</style>" +
+							ele);
+						WinPrint.document.write('</body></html>');
+						WinPrint.document.close();
+						WinPrint.focus();
+						window.setTimeout(function() {
+							WinPrint.print();
+							WinPrint.close();
+							location.reload(true);		
+						}, 250);			                     
+						         
+					}else{
+						$.confirm({
 							title: 'พบข้อผิดพลาด',
 							content: 'ลองอีกครั้ง',
 							backgroundDismiss: true,
 							buttons: {
-									formSubmit: {
-									text: 'ตกลง',
-									btnClass: 'btn-regis',
-									action: function () {
-									}
-									}
+								formSubmit: {
+								text: 'ตกลง',
+								btnClass: 'btn-regis',
+								action: function () {
+								}
+								}
 							}
-					});
-				}
-			}               
-			});*/
-		}
-
-		function print(){
-			/*$("#show_qr").print({
-                addGlobalStyles : true,
-                stylesheet : null,
-                rejectWindow : true,
-                noPrintSelector : ".no-print",
-                iframe : true,
-                append : null,
-                prepend : null
-            }); */
-			var ele =  document.getElementById('show_qr').innerHTML;
-			var WinPrint  = window.open();
-			WinPrint.document.write("<html><head><link href='https://fonts.googleapis.com/css?family=Maitree' rel='stylesheet'></head><body>");
-			WinPrint.document.write("<style>@media print {body {-webkit-print-color-adjust: exact;}} @page {size: auto; margin: 0mm;} body{font-family: 'Maitree'; line-height: 1.5; font-size: 0.5em;}.ctn{width: 10.1cm; height: 5cm; } .left{float: left; width: 5.05cm; height: 5cm; text-align: center;} .right{float: left; width: 5.05cm; height: 5cm; text-align: center;} .qr{width: 33mm; height: 25mm; margin-left: 15%; background-color: black; color: white;}</style>" +
-				ele);
-			WinPrint.document.write('</body></html>');
-			//WinPrint.document.close();
-			WinPrint.focus();
-			//WinPrint.print();
-			//WinPrint.close();   
-    	}
+						});
+					}
+				}               
+			});
+		}	
 
 		function logout(){
 			localStorage.clear();
 		}
 
   </script>
-
-  <style>
-  	label{
-  		color: #666;
-  		margin-right: 15px; margin-top: 5px;
-  	}
-  	#from{
-  		width: 50%; background-color: #666; border-color: #666; color: white;
-  	}
-  	#from:focus{
-  		outline: 0;
-  	}
-  	a{
-  		color: #999;
-  	}
-  	a:hover{
-  		color: #666;
-  	}
-	.active{
-		color: #666;
-	}
-	/*@media print {body {-webkit-print-color-adjust: exact;}} @page {size: auto; margin: 0mm;} body{font-family: "Prompt"; line-height: 1.5; font-size: 1em;}.ctn{width: 10.1cm; height: 4cm; margin-bottom: 2mm;} .left{float: left; width: 5.05cm; height: 4cm; text-align: center;} .right{float: left; width: 5.05cm; height: 4cm; text-align: center;} .qr{width: 33mm; height: 27mm; margin-left: 18%;}*/
-  </style>
 </head>
 <body>
 	<div class="container-fullwidth justify-content-center">
@@ -656,8 +673,8 @@
       			<div class="col-12 text-center">
       				<a href="web_sale.html" class="mgr-20">ขายสินค้า</a>
       				<a href="web_import.html" class="mgr-20 active">นำสินค้าเข้าโกดัง</a>
-      				<a href="" class="mgr-20">เช็คสต๊อก</a>
-					<a href="" class="mgr-20">รายการย้อนหลัง</a>
+      				<a href="web_stock.html" class="mgr-20">เช็คสต๊อก</a>
+					<a href="web_select.html" class="mgr-20">รายการย้อนหลัง</a>
 					<a href="" class="mgr-20" onclick="logout()">ออกจากระบบ</a>
       			</div>
       		</div>
@@ -719,23 +736,23 @@
 			    </div>
 			  </div>
 			  <div class='col-1 nopd-8'>
-			    <input id='at' type='text' class='form-control text-center'>
+			    <input id='at' type='text' class='form-control text-center' data-index="6">
 			  </div>
 			  <div class='col-3 nopd-8'>
-			    <input id="name" class="form-control text-center" rel="popover" data-img=""></input>
+			    <input id="name" class="form-control text-center" rel="popover" data-img="" data-index="1" autofocus>
 			  </div>
 			  <div class='col-1 nopd-8'>
-			    <input id='amount' type='number' onchange="cal_avg('amt')" class='form-control text-center no-spin' min='1' value="1">
+			    <input id='amount' type='number' onchange="cal_avg('amt')" class='form-control text-center no-spin' min='1' value="1" data-index="2">
 			  </div>
 			  <div class='col-1 nopd-8 popup'>
 			  	<span class="popuptext" id="myPopup">เฉลี่ย : <span id="avg-rate"></span></span>
-			    <input id='fund' type='number'  onchange="cal_avg('cost')" class='form-control text-center no-spin' min='0'>
+			    <input id='fund' type='number'  onchange="cal_avg('cost')" class='form-control text-center no-spin' min='0' data-index="3">
 			  </div>
 			  <div class='col-1 nopd-8'>
-			    <input id='whole' type='number' class='form-control text-center no-spin' min='0'>
+			    <input id='whole' type='number' class='form-control text-center no-spin' min='0' data-index="4">
 			  </div>
 			  <div class='col-1 nopd-8'>
-			    <input id='retail' type='number' class='form-control text-center no-spin' min='0'>
+			    <input id='retail' type='number' class='form-control text-center no-spin' min='0' data-index="5">
 			  </div>
 			  <div class="col-1 nopd text-center">
 			  	<button class="btn btn-sm btn-primary" disabled> <i class="fas fa-pencil-alt"></i></button>
@@ -760,8 +777,7 @@
 			</div>
 			<div id="show_qr" hidden>
 
-			</div>
-
+			</div>			
 		</div>
 	<script>		
 		$('#name').on('input', function() {
