@@ -54,7 +54,12 @@
     $(document).ready(function() {
       url = new URL(window.location.href);
       folder = url.searchParams.get("folder");     
-      $("#folder-title").text(folder);      
+      $("#folder-title").text(folder);
+
+      if(localStorage.img){
+        var image = document.getElementById('img');
+        image.src =  localStorage.img;  
+      }   
     });
 
     $(document).keydown(function(objEvent) {
@@ -112,20 +117,49 @@
     }
 
     function take_photo(){
-      $("#row-img").prop('hidden', false);
+      navigator.camera.getPicture(onSuccess, onFail, { quality: 75,
+        destinationType: Camera.DestinationType.DATA_URL,
+        targetWidth:960,
+        targetHeight:960,
+        correctOrientation: true
+      });
 
-      navigator.camera.getPicture(onSuccess, onFail, { quality: 100,
-        destinationType: Camera.DestinationType.FILE_URI,
-        targetWidth:200,
-        targetHeight:300,
+      function onSuccess(imageData) {    
+        $("#row-img").prop('hidden', false);            
+        var image = document.getElementById('img');
+        image.src =  "data:image/jpeg;base64," + imageData;  
+      }
+
+      function onFail(message) {
+        $.confirm({
+          title: 'พบข้อผิดพลาด',
+          content: message,
+          backgroundDismiss: true,
+          buttons: {
+            formSubmit: {
+              text: 'ตกลง',
+              btnClass: 'btn-regis',
+              action: function () {
+              }
+            }
+          }
+        });
+      }
+    }   
+   
+    function upload_photo(){
+      navigator.camera.getPicture(onSuccess, onFail, { quality: 75,
+        destinationType: Camera.DestinationType.DATA_URL,
+        sourceType: Camera.PictureSourceType.PHOTOLIBRARY,
+        targetWidth:960,
+        targetHeight:960,
         correctOrientation: true
       });
 
       function onSuccess(imageData) {                
-          var image = document.getElementById('img');
-          image.src =  imageData;  
-          getFileEntry(imageData);
-          $('#a').attr("href",imageData);
+        $("#row-img").prop('hidden', false);            
+        var image = document.getElementById('img');
+        image.src =  "data:image/jpeg;base64," + imageData;         
       }
 
       function onFail(message) {
@@ -145,74 +179,6 @@
       }
     }
    
-    function upload_photo(){
-      $("#row-img").prop('hidden', false);
-
-      navigator.camera.getPicture(onSuccess, onFail, { quality: 100,
-        destinationType: Camera.DestinationType.FILE_URI,
-        sourceType: Camera.PictureSourceType.PHOTOLIBRARY,
-        //targetWidth:200,
-        //targetHeight:300,
-        correctOrientation: true
-      });
-
-      function onSuccess(imageData) {                
-          var image = document.getElementById('img');
-          image.src =  imageData;  
-          $('#a').attr("href",imageData);            
-      }
-
-      function onFail(message) {
-        $.confirm({
-          title: 'พบข้อผิดพลาด',
-          content: message,
-          backgroundDismiss: true,
-          buttons: {
-            formSubmit: {
-              text: 'ตกลง',
-              btnClass: 'btn-regis',
-              action: function () {
-              }
-            }
-          }
-        });
-      }
-    }
-
-    var fileImg;
-    function getFileEntry(imgUri) {
-      window.resolveLocalFileSystemURL(imgUri, function success(fileEntry) {
-
-        // Do something with the FileEntry object, like write to it, upload it, etc.
-        // writeFile(fileEntry, imgUri);
-        fileImg = fileEntry;
-        alert("got file: " + fileEntry.fullPath);
-        // displayFileData(fileEntry.nativeURL, "Native URL");
-
-      }, function () {
-        // If don't get the FileEntry (which may happen when testing
-        // on some emulators), copy to a new FileEntry.
-        createNewFileEntry(imgUri);
-      });
-    }
-
-    function createNewFileEntry(imgUri) {
-      window.resolveLocalFileSystemURL(cordova.file.cacheDirectory, function success(dirEntry) {
-
-        // JPEG file
-        dirEntry.getFile("tempFile.jpeg", { create: true, exclusive: false }, function (fileEntry) {
-
-          // Do something with it, like write to it, upload it, etc.
-          // writeFile(fileEntry, imgUri);
-          fileImg = fileEntry;
-          alert("got file: " + fileEntry.fullPath);
-          // displayFileData(fileEntry.fullPath, "File copied to");
-
-        }, onErrorCreateFile);
-
-      }, onErrorResolveUrl);
-    }
-
     function add_prod(){
       var name = $('#name').val();
       var code = $('#barcode').val();
@@ -235,80 +201,58 @@
         return 0; 
       } 
       $('#img').each(function () {
-        if(this.src.length > 0){         
-          var image = document.getElementById('img');       
-          var fileURL = image.src;           
-          var filename = fileURL.substr(fileURL.lastIndexOf('/') + 1)/*.split("?")*/;
-          //alert(fileURL + "\n"  +filename);             
-          
-          var success = function (r) {
-            $(".overlay").prop('hidden', true);
-            alert(r.response);  
-            if(r.response == "success"){                           
-              $.confirm({
-                title: 'เสร็จสิ้น',
-                content: 'เพิ่มสินค้า ' +name+ ' ในหมวดหมู่ ' +folder+ ' เสร็จสิ้น',
-                backgroundDismiss: true,
-                buttons: {
-                  formSubmit: {
-                    text: 'ตกลง',
-                    btnClass: 'btn-regis',
-                    action: function () {
-                        out();
+        if(this.src.length > 0){  
+          var imgb64 = $('#img').attr('src');              
+          $.ajax({
+            type: "POST",
+            url:"http://ddaccessory.trueddns.com:24330/dd-shop/php/add_prod.php",           
+            data: {'name_prod' : name,
+                  'code' : code,
+                  'parent' : folder,
+                  'img' : imgb64,                 
+                  'min' : min},               
+              beforeSend: function(){
+                $(".overlay").prop('hidden', false);
+              },             
+              success: function(data){
+              $(".overlay").prop('hidden', true);                               
+              if(data == "success"){
+                $.confirm({
+                    title: 'เสร็จสิ้น',
+                    content: 'เพิ่มสินค้า ' +name+ ' ในหมวดหมู่ ' +folder+ ' เสร็จสิ้น',
+                    backgroundDismiss: true,
+                    buttons: {
+                      formSubmit: {
+                        text: 'ตกลง',
+                        btnClass: 'btn-regis',
+                        action: function () {
+                            out();
+                          }
                       }
-                  }
-                }
-              });
-              out(); 
-            }else{
-              $.confirm({
-                title: 'พบข้อผิดพลาด',
-                content: 'ลองอีกครั้ง',
-                backgroundDismiss: true,
-                buttons: {
-                  formSubmit: {
-                    text: 'ตกลง',
-                    btnClass: 'btn-regis',
-                    action: function () {
+                    }
+                });
+                out(); 
+              }else{
+                $.confirm({
+                  title: 'พบข้อผิดพลาด',
+                  content: 'ลองอีกครั้ง',
+                  backgroundDismiss: true,
+                  buttons: {
+                    formSubmit: {
+                      text: 'ตกลง',
+                      btnClass: 'btn-regis',
+                      action: function () {
+                      }
                     }
                   }
-                }
-              }); 
-            }                                                   
-          }
-
-          var fail = function (error) {
-            $(".overlay").prop('hidden', true);
-            $.confirm({
-              title: 'พบข้อผิดพลาด',
-              content: error.code,
-              backgroundDismiss: true,
-              buttons: {
-                formSubmit: {
-                  text: 'ตกลง',
-                  btnClass: 'btn-regis',
-                  action: function () {
-                  }
-                }
+                });
               }
-            });             
-          }
-
-          var options = new FileUploadOptions();
-          options.fileKey = "file";
-          options.fileName = filename;
-          options.mimeType = "image/jpeg";       
-          //options.chunkedMode = false;                 
-          
-          var ft = new FileTransfer();    
-          ft.onprogress = function(progressEvent) {
-            $(".overlay").prop('hidden', false);
-          };               
-          ft.upload(fileImg,"http://ddaccessory.trueddns.com:24330/dd-shop/php/add_prod.php", success, fail, options);                    
+            }               
+          }); 
         }else{
           $.ajax({
             type: "POST",
-            url:"http://ddaccessory.trueddns.com:24330/dd-shop/php/add_prod_noimg.php",           
+            url:"http://ddaccessory.trueddns.com:24330/dd-shop/php/add_prod.php",           
             data: {'name_prod' : name,
                   'code' : code,
                   'parent' : folder,                  
@@ -370,6 +314,12 @@
       transition_page_back(goto);
     }
 
+    function show_pic(){
+      localStorage.img = $('#img').attr('src');           
+      goto = "show_pic.html?from=a&folder="+folder;
+      transition_page_next(goto);
+    }
+
   </script>
 </head>
 
@@ -411,9 +361,9 @@
           <input id="min" type="number" class="w3-input"  data-index="3">
         </div>
       </div>
-      <div id="row-img" class="row" hidden>
+      <div id="row-img" class="row mg-7">
         <div class="col-12 text-center">
-          <a id="a"><img id='img' alt="" style="width: 70%; height: 70%;"></a>
+          <img id="img" class="square" alt="" onclick="show_pic()" src="">
         </div>
       </div>
       <div class="row mg-10">

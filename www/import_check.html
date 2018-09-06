@@ -80,7 +80,7 @@
             <div id='collapse-"+i+"' class='container collapse' style='margin-top: 5%;'>\
                 <div class='row'>\
                     <div class='col-12 text-center'>\
-                        <img id='img' src='"+arr_data[i].img+"' alt='' style='width: 96%; height: 96%; border-radius: 3px;'>\
+                        <img id='img' src='"+arr_data[i].img+"' alt='' onclick='show_pic()' class='collapse-square'>\
                     </div>\
                 </div>\
                 <div class='row' style='margin-bottom: 4%; margin-top: 4%;'>\
@@ -296,6 +296,12 @@
             transition_page_back('import.html');
         }
 
+        function show_pic(){
+            localStorage.img = $('#img').attr('src');           
+            goto = "show_pic.html";
+            transition_page_next(goto);
+        }
+
     </script>
 </head>
 
@@ -330,7 +336,7 @@
             <div class="row">
                 <div class="col-12 text-center">
                     <h5 class="h5-title" style="font-size: 130%;">รวม :
-                        <span  style="color: red;"id="net">500000</span>
+                        <span  style="color: red;"id="net">0</span>
                     </h5>
                 </div>
             </div>

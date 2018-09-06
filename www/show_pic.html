@@ -28,15 +28,23 @@
   <link href="https://fonts.googleapis.com/css?family=Prompt" rel="stylesheet">
 
   <script>
+		var from,folder,prod_id;
 		$(document).ready(function () { 
-			//url = new URL(window.location.href);
-			//img = url.searchParams.get("img");				
-			//$("#img").attr("src", localStorage.img);
+			url = new URL(window.location.href);
+			from = url.searchParams.get("from");	
+			folder = url.searchParams.get("folder");	
+			prod_id = url.searchParams.get("prod_id");	
     });
 
   	function back(){
   		screen.orientation.lock('portrait');
-  		transition_page_back(window.history.back());
+			if(from == "a"){
+				transition_page_back("add_prod.html?folder="+folder);
+			}else	if(from == "e"){
+				transition_page_back("edit_prod.html?folder="+folder+"&prod_id="+prod_id);
+			}else{
+				transition_page_back(window.history.back());
+			}  		
   	}
 
    function rotate(){

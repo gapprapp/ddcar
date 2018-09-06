@@ -47,7 +47,11 @@
             url = new URL(window.location.href);
             folder = url.searchParams.get("folder");
             prod_id = url.searchParams.get("prod_id");
-            get_prod(prod_id);                       
+            get_prod(prod_id);      
+            if(localStorage.img){
+                var image = document.getElementById('img');
+                image.src =  localStorage.img;  
+            }                    
         });
         
         $(document).keydown(function(objEvent) {
@@ -121,16 +125,14 @@
         }
 
         function take_photo(){
-            $("#row-img").prop('hidden', false);
-
-            navigator.camera.getPicture(onSuccess, onFail, { quality: 100,
+            navigator.camera.getPicture(onSuccess, onFail, { quality: 75,
                 destinationType: Camera.DestinationType.DATA_URL,
-                targetWidth:200,
-                targetHeight:300,
+                targetWidth:960,
+                targetHeight:960,
                 correctOrientation: true
             });
 
-            function onSuccess(imageData) {                
+            function onSuccess(imageData) {                       
                 var image = document.getElementById('img');
                 image.src =  "data:image/jpeg;base64," + imageData;                        
             }
@@ -153,13 +155,11 @@
         }
 
         function upload_photo(){
-            $("#row-img").prop('hidden', false);
-
-            navigator.camera.getPicture(onSuccess, onFail, { quality: 100,
+            navigator.camera.getPicture(onSuccess, onFail, { quality: 75,
                 destinationType: Camera.DestinationType.DATA_URL,
                 sourceType: Camera.PictureSourceType.PHOTOLIBRARY,
-                targetWidth:200,
-                targetHeight:300,
+                targetWidth:960,
+                targetHeight:960,
                 correctOrientation: true
             });
 
@@ -271,6 +271,12 @@
             transition_page_back(goto);
         }
        
+        function show_pic(){
+            localStorage.img = $('#img').attr('src');           
+            goto = "show_pic.html?from=e&folder="+folder+"&prod_id="+prod_id;
+            transition_page_next(goto);
+        }
+
     </script>
 </head>
 
@@ -325,7 +331,7 @@
         </div>
         <div id="row-img" class="row mg-7">
             <div class="col-12 text-center">
-             <img id='img' alt="" src="https://www.bzh.be/img.php?src=https://www.sortir-en-bretagne.fr/images/no-image.png&w=330&h=200&zc=1">
+             <img id="img" class="square" alt="" onclick="show_pic()" src="https://www.bzh.be/img.php?src=https://www.sortir-en-bretagne.fr/images/no-image.png&w=330&h=200&zc=1">
             </div>
         </div>
         <div class="row mg-7">

@@ -110,11 +110,11 @@
                 type: "POST",
                 url:"http://ddaccessory.trueddns.com:24330/dd-shop/php/get_place.php",    
                 data:{'prod_id' : prod_id,"ware_id":localStorage.ware_id_im},  
-                beforeSend: function(){
-                    $(".overlay").prop('hidden', false);
-                },                                     
+                // beforeSend: function(){
+                //     $(".overlay").prop('hidden', false);
+                // },                                     
                 success: function(data){
-                    $(".overlay").prop('hidden', true);    
+                    // $(".overlay").prop('hidden', true);    
                     var obj = jQuery.parseJSON(data);                    
                     if(obj){                        
                         var txt = "";                                         
@@ -132,10 +132,10 @@
 
         function get_prod(id){
             prod_id = id;
+            var bool = true;
             if(localStorage.arr_prod){
                 var retrievedObject = localStorage.getItem('arr_prod');
-                var arr_data = JSON.parse(retrievedObject); 
-                var bool = true;
+                var arr_data = JSON.parse(retrievedObject);                 
                 for(var b = 0; b < arr_data.length; b++){
                     if(prod_id == arr_data[b].prod_id){
                         $.confirm({
