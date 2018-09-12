@@ -79,7 +79,8 @@
                 get_prod(prod_id);
             } 
             if(localStorage.arr_prod_i){
-                $("#btn-folder").attr('disabled',true);           
+                $("#btn-folder").attr('disabled',true);
+                $("#name").attr('disabled',true);           
                 //$("#btn-addpic").attr('disabled',true);
                 var retrievedObject = localStorage.getItem('arr_prod_i');
                 var arr_data = JSON.parse(retrievedObject); 
@@ -407,7 +408,8 @@
                 prod_id = arr_data2[0].prod_id;            
                 get_prod(prod_id);            
             }else{                   
-                $("#btn-folder").removeAttr('disabled');           
+                $("#btn-folder").removeAttr('disabled'); 
+                $("#name").removeAttr('disabled');          
                 //$("#btn-addpic").removeAttr('disabled');
             }                      
         }  
