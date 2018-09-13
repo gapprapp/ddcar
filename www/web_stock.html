@@ -124,7 +124,7 @@
 					var obj = jQuery.parseJSON(data);
 					if(obj){
 						$.each(obj, function(i, field){ 
-							get_amt(field.prod_id);       
+							get_amt(field.prod_id,field.prod_name);       
 						}); 
 					}                                                                                                                                        
 				}               
