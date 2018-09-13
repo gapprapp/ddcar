@@ -108,8 +108,9 @@
 	function showsub(arg,arg2){
 		console.log(arg);
 		if(arg2){
-			$("#append-title").empty();
+			$(".prod-title").empty();
 			localStorage.stack_folder = "";
+			$('.prod-title').append('<i id="i-back" onclick="page_back();" class="fas fa-angle-left" hidden></i>&emsp;');
 		}
 		if(localStorage.stack_folder){
 			var retrievedObject = localStorage.getItem('stack_folder');
@@ -127,8 +128,8 @@
 		localStorage.setItem('stack_folder', JSON.stringify(arr_data));		
 		$("#append-prod").empty();
 		//$("#append-title").append('<h5 id="'+arg+'" onclick="page_back(\''+arg+'\')" class="prod-title">'+arg+'</h5>');
-    // ลองแก้เป็นแบบนี้ดู
-//$('.prod-title').append('<span id="'+arg+'" onclick="page_back(\''+arg+'\')">'+arg+'</span>');
+    	// ลองแก้เป็นแบบนี้ดู
+		$('.prod-title').append('<span id="'+arg+'" onclick="page_back(\''+arg+'\')">  '+arg+'  >></span>');
 		$.ajax({
 			type: "POST",
 			url:"php/get_folder.php",
@@ -527,10 +528,10 @@
         		</div>       		
         		
         	</div>
-			<div id="col-prod" class="col-md-9" style="overflow-y: auto;">
-				<div id="append-title">				
-					<h5 class="prod-title"><i id="i-back" onclick="page_back();" class="fas fa-angle-left"></i> ชื่อสินค้า <span> < ชื่อสินค้า 2</span> <span> < ชื่อสินค้า 3</span><i id="i-prod-add" class="fas fa-plus-circle" style="margin-left: 75%; margin-right: 1.5%;" onclick="addprod()"></i><i class="fas fa-trash" style="margin-right: 1.5%;" onclick="removeprod();"></i><i class="fas fa-pen" onclick="editprod();"></i></h5>
-				</div>				
+			<div id="col-prod" class="col-md-9" style="overflow-y: auto;" hidden>							
+				<h5 class="prod-title">
+					<!-- <i id="i-back" onclick="page_back();" class="fas fa-angle-left"></i> ชื่อสินค้า <span> < ชื่อสินค้า 2</span> <span> < ชื่อสินค้า 3</span><i id="i-prod-add" class="fas fa-plus-circle" style="margin-left: 75%; margin-right: 1.5%;" onclick="addprod()"></i><i class="fas fa-trash" style="margin-right: 1.5%;" onclick="removeprod();"></i><i class="fas fa-pen" onclick="editprod();"></i> -->
+				</h5>						
 				<div id="append-prod">						
 					<!-- append prod or folder -->
 				</div>
