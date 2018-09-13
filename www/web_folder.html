@@ -51,7 +51,7 @@
 		from = url.searchParams.get("from");
 		$.ajax({
 			type: "POST",
-			url:"http://ddaccessory.trueddns.com:24330/dd-shop/php/get_folder.php",
+			url:"php/get_folder.php",
 			crossDomain: true,
 			data: {'parent' : "car"},  
 			beforeSend: function(){
@@ -85,7 +85,8 @@
       for(var i = 0 ; i < arr_prod.length ; i++){
         if(arr_prod[i].prod_id != 0){
             item = {}
-            item["prod_id"] = arr_prod[i].prod_id;           
+            item["prod_id"] = arr_prod[i].prod_id;  
+			item["name"] = arr_prod[i].name;           
             json.push(item);               
         }
       }
@@ -98,7 +99,10 @@
         }else if(from == "sale"){
           localStorage.setItem('arr_prod_s', JSON.stringify(json)); 
           window.location = "web_sale.html";
-        }       
+        }else if(from == "stock"){
+          localStorage.setItem('arr_prod_st', JSON.stringify(json)); 
+          window.location = "web_stock.html";
+        }        
 	}
 
 	function showsub(arg,arg2){
@@ -125,7 +129,7 @@
 		$("#append-title").append('<h5 id="'+arg+'" onclick="page_back(\''+arg+'\')" class="prod-title">'+arg+'</h5>');
 		$.ajax({
 			type: "POST",
-			url:"http://ddaccessory.trueddns.com:24330/dd-shop/php/get_folder.php",
+			url:"php/get_folder.php",
 			crossDomain: true,
 			data: {'parent' : arg},  
 			beforeSend: function(){
@@ -169,6 +173,7 @@
 
 	function choose(arg2){
 		arg = $('#prod-'+arg2).find('input[type=checkbox]');
+		name = $('#prod-'+arg2).text();
 		check = arg.prop('checked');	
 		isenable = !arg.is(":disabled");
 		if(check == false && isenable){
@@ -184,7 +189,8 @@
 			if(!ch){          
 				item = {};   
 				item ["arg"] = arg2;        
-				item ["prod_id"] = arg2;         
+				item ["prod_id"] = arg2; 
+				item ["name"] = name;        
 				arr_prod.push(item);          
 			}   
 			num_prod++;				

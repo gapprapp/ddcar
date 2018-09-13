@@ -18,25 +18,15 @@
   <!-- Super cool dialog-->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.0/jquery-confirm.min.css">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.0/jquery-confirm.min.js"></script>
-
-	<!-- Easy-autocomplete -->
-	<script src="js/jquery.easy-autocomplete.js"></script>
-	<link rel="stylesheet" href="css/easy-autocomplete.min.css">
-	<link rel="stylesheet" href="css/easy-autocomplete.themes.min.css">
 	
 	<!-- Loading -->
 	<link rel="stylesheet" href="css/easy-loading.css">
-	<script src="js/easy-loading.js"></script>
-	
-	<!-- QRcode -->
-	<script type="text/javascript" src="js/qrcode.min.js"></script>
-	<script type="text/javascript" src="js/jQuery.print.js"></script>
+	<script src="js/easy-loading.js"></script>	
 
   <!-- Font -->
   <link href="https://fonts.googleapis.com/css?family=Prompt" rel="stylesheet"> 
   <!-- Main -->
-  <link href="css/untitled.css" rel="stylesheet">
-  <link rel="stylesheet" href="css/popup.css">
+  <link href="css/untitled.css" rel="stylesheet">  
   <style>
     body{color: #666;}
     a{ color: #999;}
@@ -54,9 +44,225 @@
     h5{
       letter-spacing: 2px;
     }
+    ul {
+      list-style-type: none;
+      margin: 0;
+      padding: 0;
+    }   
+    .yellow{
+        color: #ffbb33;
+    }
+    .red{
+      color: #d63232;
+    }
+    .green{
+      color: #3dd12a;
+    } 
   </style>
   <script>
-    
+    $(document).ready(function(){
+      $.ajax({
+        type: "GET",
+        url:"php/get_credit.php",          
+        beforeSend: function(){
+          EasyLoading.show({                           
+						text: "กำลังโหลด"                            
+					});	
+        },                       
+        success: function(data){ 
+          EasyLoading.hide();  
+          var obj = jQuery.parseJSON(data);
+          if(obj){
+            arr = [];
+            var d = new Date($.now());
+            $.each(obj, function(i, field){
+              var txt = field.date_time.split(" ");
+              var date = txt[0].split("-");
+              var cus = field.cus_name;              
+              var total = field.total_price;
+              var cus_id = field.customer_id;                    
+              var last_d = new Date(d.getFullYear(),d.getMonth()+1, 0).getDate();              
+              var cd = last_d - d.getDate();
+              if(d.getMonth()+1 != date[1]){
+                cd = "เลย";
+              }
+              item = {}              
+              item ["cus"] =  cus;
+              item ["cus_id"] = cus_id;
+              item ["total"] = total;
+              item ["cd"] = cd;             
+              if(i == 0){                
+                arr.push(item);
+              }else{
+                var bool = false;
+                for(var j = 0; j < arr.length ;j++){                  
+                  if(cus == arr[j].cus && cd == arr[j].cd){
+                    bool = true;                    
+                    arr[j].total = parseFloat(arr[j].total) + parseFloat(total);
+                    break;
+                  }
+                }                 
+                if(!bool){
+                  arr.push(item);
+                }
+              }                              
+            });
+            for(var k = 0; k < arr.length;k++){  
+              if(arr[k].cd <= 3 && arr[k].cd > 1){
+                if(k % 2 == 0){
+                  $('#myUL').append('<li> <div class="row justify-content-center cus-odd">'+
+                    '<div class="col-1"><i class="fas fa-circle yellow"></i></div>'+
+                    '<div class="col-4 text-center"><h5>'+arr[k].cus+'</h5></div>'+
+                    '<div class="col-3" style="padding-left: 8%;"><h5>'+arr[k].cd+' วัน</h5></div>'+
+                    '<div class="col-2 text-center"><h5>'+arr[k].total+'</h5></div>'+
+                    '<div onclick="print('+arr[k].cus_id+',\''+arr[k].cd+'\')" class="col-1 text-right"><h5><i class="fa fa-print" style="color: #ffd17c;"></i></h5></div>'+
+                  '</div></li>');   
+                }else{
+                  $('#myUL').append('<li> <div class="row justify-content-center cus-even">'+
+                    '<div class="col-1"><i class="fas fa-circle yellow"></i></div>'+
+                    '<div class="col-4 text-center"><h5>'+arr[k].cus+'</h5></div>'+
+                    '<div class="col-3" style="padding-left: 8%;"><h5>'+arr[k].cd+' วัน</h5></div>'+
+                    '<div class="col-2 text-center"><h5>'+arr[k].total+'</h5></div>'+
+                    '<div onclick="print('+arr[k].cus_id+',\''+arr[k].cd+'\')" class="col-1 text-right"><h5><i class="fa fa-print" style="color: #ffd17c;"></i></h5></div>'+
+                  '</div></li>');
+                }                
+              }else if(arr[k].cd <= 1 || arr[k].cd == "เลย"){
+                if(k % 2 == 0){
+                  $('#myUL').append('<li> <div class="row justify-content-center cus-odd">'+
+                    '<div class="col-1"><i class="fas fa-circle red"></i></div>'+
+                    '<div class="col-4 text-center"><h5>'+arr[k].cus+'</h5></div>'+
+                    '<div class="col-3" style="padding-left: 8%;"><h5>'+arr[k].cd+' วัน</h5></div>'+
+                    '<div class="col-2 text-center"><h5>'+arr[k].total+'</h5></div>'+
+                    '<div onclick="print('+arr[k].cus_id+',\''+arr[k].cd+'\')" class="col-1 text-right"><h5><i class="fa fa-print" style="color: #ffd17c;"></i></h5></div>'+
+                  '</div></li>');   
+                }else{
+                  $('#myUL').append('<li> <div class="row justify-content-center cus-even">'+
+                    '<div class="col-1"><i class="fas fa-circle red"></i></div>'+
+                    '<div class="col-4 text-center"><h5>'+arr[k].cus+'</h5></div>'+
+                    '<div class="col-3" style="padding-left: 8%;"><h5>'+arr[k].cd+' วัน</h5></div>'+
+                    '<div class="col-2 text-center"><h5>'+arr[k].total+'</h5></div>'+
+                    '<div onclick="print('+arr[k].cus_id+',\''+arr[k].cd+'\')" class="col-1 text-right"><h5><i class="fa fa-print" style="color: #ffd17c;"></i></h5></div>'+
+                  '</div></li>');
+                }    
+              }else{
+                if(k % 2 == 0){
+                  $('#myUL').append('<li> <div class="row justify-content-center cus-odd">'+
+                    '<div class="col-1"><i class="fas fa-circle green"></i></div>'+
+                    '<div class="col-4 text-center"><h5>'+arr[k].cus+'</h5></div>'+
+                    '<div class="col-3" style="padding-left: 8%;"><h5>'+arr[k].cd+' วัน</h5></div>'+
+                    '<div class="col-2 text-center"><h5>'+arr[k].total+'</h5></div>'+
+                    '<div onclick="print('+arr[k].cus_id+',\''+arr[k].cd+'\')" class="col-1 text-right"><h5><i class="fa fa-print" style="color: #ffd17c;"></i></h5></div>'+
+                  '</div></li>');   
+                }else{
+                  $('#myUL').append('<li> <div class="row justify-content-center cus-even">'+
+                    '<div class="col-1"><i class="fas fa-circle green"></i></div>'+
+                    '<div class="col-4 text-center"><h5>'+arr[k].cus+'</h5></div>'+
+                    '<div class="col-3" style="padding-left: 8%;"><h5>'+arr[k].cd+' วัน</h5></div>'+
+                    '<div class="col-2 text-center"><h5>'+arr[k].total+'</h5></div>'+
+                    '<div onclick="print('+arr[k].cus_id+',\''+arr[k].cd+'\')" class="col-1 text-right"><h5><i class="fa fa-print" style="color: #ffd17c;"></i></h5></div>'+
+                  '</div></li>');
+                }    
+              }             
+            }           
+          }                                
+        }               
+      });
+    });
+
+    function search(){
+      $('#myUL li').each(function(){
+          $(this).attr('data-search-term', $(this).text().toLowerCase());
+      });      
+
+      var searchTerm = $('#search_credit').val().toLowerCase();
+
+        $('#myUL li').each(function(){
+          if ($(this).filter('[data-search-term *= ' + searchTerm + ']').length > 0 || searchTerm.length < 1) {
+            $(this).show();                                                     
+          } else {
+            $(this).hide();                               
+          }
+        });                    
+    }
+
+    function print(cus_id,cd){ 
+      var text = ""; 
+      var sum = 0;  
+      var cus_name;  
+      $.ajax({
+        type: "POST",
+        url:"php/get_credit_info.php", 
+        data: {'cus_id':cus_id, 'cd':cd},         
+        beforeSend: function(){
+          EasyLoading.show({                           
+						text: "กำลังโหลด"                            
+					});	
+        },                       
+        success: function(data){ 
+          EasyLoading.hide();
+          var obj = jQuery.parseJSON(data); 
+          $('#h5-title').text(obj[0].cus_name);
+          var sum = 0;
+          $.each(obj, function(i, field){
+            cus_name = field.cus_name;
+            var txt = field.date_time.split(" ");
+            var date = txt[0].split("-");
+            var dateformat = date[2] + "/" + date[1] + "/" + date[0];  
+            var credit = parseInt(field.payment_type.substr(8,2)); 
+            var tomorrow = new Date(date[0],parseInt(date[1])-1,date[2]);
+            tomorrow.setDate(tomorrow.getDate() + credit); 
+            var date_ex = tomorrow.getDate() + "/" + (tomorrow.getMonth()+1) + "/" +   tomorrow.getFullYear();           
+            text = text +  '<div>'+
+                '<div class="fl-spc tb-st inner no-bdt no-bdbtm">'+(i+1)+'</div>'+
+                '<div class="fl-15 tb inner no-bdt no-bdbtm">'+field.order_number+'</div>'+
+                '<div class="fl-12 tb inner no-bdt no-bdbtm">'+dateformat+'</div>'+
+                '<div class="fl-12 tb inner no-bdt no-bdbtm">'+date_ex+'</div>'+
+                '<div class="fl-20 tb inner no-bdt no-bdbtm">'+parseFloat(field.total_price).toFixed(2).toLocaleString()+'</div>'+
+                '<div class="fl-15 tb inner no-bdt no-bdbtm">&emsp;</div>'+
+                '<div class="fl-15 tb inner no-bdt no-bdbtm">'+parseFloat(field.total_price).toFixed(2).toLocaleString()+'</div>'+
+              '</div>'            
+            sum += parseFloat(field.total_price); 
+          });          
+        }               
+      });
+
+      $.ajax({
+        type: "POST",
+        url:"php/save_credit.php", 
+        data: {'cus_id':cus_id, 'total':sum},         
+        beforeSend: function(){
+          EasyLoading.show({                           
+						text: "กำลังโหลด"                            
+					});	
+        },                       
+        success: function(data){ 
+          EasyLoading.hide();
+          var obj = jQuery.parseJSON(data); 
+          $('#h5-title').text(obj[0].cus_name);
+          var sum = 0;
+          $.each(obj, function(i, field){
+            var txt = field.date_time.split(" ");
+            var date = txt[0].split("-");
+            var dateformat = date[2] + "/" + date[1] + "/" + date[0];  
+            var credit = parseInt(field.payment_type.substr(8,2)); 
+            var tomorrow = new Date(date[0],parseInt(date[1])-1,date[2]);
+            tomorrow.setDate(tomorrow.getDate() + credit); 
+            var date_ex = tomorrow.getDate() + "/" + (tomorrow.getMonth()+1) + "/" +   tomorrow.getFullYear();           
+            text = text +  '<div>'+
+                '<div class="fl-spc tb-st inner no-bdt no-bdbtm">'+(i+1)+'</div>'+
+                '<div class="fl-15 tb inner no-bdt no-bdbtm">'+field.order_number+'</div>'+
+                '<div class="fl-12 tb inner no-bdt no-bdbtm">'+dateformat+'</div>'+
+                '<div class="fl-12 tb inner no-bdt no-bdbtm">'+date_ex+'</div>'+
+                '<div class="fl-20 tb inner no-bdt no-bdbtm">'+parseFloat(field.total_price).toFixed(2).toLocaleString()+'</div>'+
+                '<div class="fl-15 tb inner no-bdt no-bdbtm">&emsp;</div>'+
+                '<div class="fl-15 tb inner no-bdt no-bdbtm">'+parseFloat(field.total_price).toFixed(2).toLocaleString()+'</div>'+
+              '</div>'            
+            sum += parseFloat(field.total_price); 
+          });          
+        }               
+      })
+    }
+
   </script>
 </head>
 <body>
@@ -80,61 +286,22 @@
     <div class="container-fullwidth">
       <div class="input-group row justify-content-center" style="margin-bottom: 4%; margin-left: 0.5%">
         <input id="input-search" type="text" class="form-control-lg text-center" placeholder="ค้นหาลูกค้า" style="width: 60%;">
-          <button class="btn btn-outline-secondary" type="button" style="margin-left: 10px;" onclick="show();">
-              <i class="fa fa-search"></i>
+          <button id="search_credit" class="btn btn-outline-secondary" type="button" style="margin-left: 10px;" onkeyup="search();">
+              <!-- <i class="fa fa-search"></i> -->
           </button>
       </div>
     </div>
     <div class="container-fullwidth">
       <div class="row justify-content-center">
         <div class="col-4 text-center"><h4>ชื่อลูกค้า</h4></div>
-        <div class="col-3"><h4>ครบกำหนดวางบิล (วันที่)</h4></div>
+        <div class="col-3"><h4>ครบกำหนดวางบิล (จำนวนวัน)</h4></div>
         <div class="col-2 text-center"><h4>ราคารวม</h4></div>
       </div>
     </div><hr style="width: 75%; margin-top: 0;"> <br>
     <div id="ctn-append" class="container-fullwidth">
-      <div class="row justify-content-center cus-odd">
-        <div class="col-1"></div>
-        <div class="col-4 text-center"><h5>ชื่อลูกค้า</h5></div>
-        <div class="col-3" style="padding-left: 8%;"><h5>2/01/12</h5></div>
-        <div class="col-2 text-center"><h5>ราคารวม</h5></div>
-        <div class="col-1 text-right"><h5><i class="fa fa-print" style="color: #ffd17c;"></i></h5></div>
-      </div>
-      <div class="row justify-content-center cus-even">
-        <div class="col-1"></div>
-        <div class="col-4 text-center"><h5>ชื่อลูกค้า</h5></div>
-        <div class="col-3" style="padding-left: 8%;"><h5>2/01/12</h5></div>
-        <div class="col-2 text-center"><h5>ราคารวม</h5></div>
-        <div class="col-1 text-right"><h5><i class="fa fa-print" style="color: #ffd17c;"></i></h5></div>
-      </div>
-      <div class="row justify-content-center cus-odd">
-        <div class="col-1"></div>
-        <div class="col-4 text-center"><h5>ชื่อลูกค้า</h5></div>
-        <div class="col-3" style="padding-left: 8%;"><h5>2/01/12</h5></div>
-        <div class="col-2 text-center"><h5>ราคารวม</h5></div>
-        <div class="col-1 text-right"><h5><i class="fa fa-print" style="color: #ffd17c;"></i></h5></div>
-      </div>
-      <div class="row justify-content-center cus-even">
-        <div class="col-1"></div>
-        <div class="col-4 text-center"><h5>ชื่อลูกค้า</h5></div>
-        <div class="col-3" style="padding-left: 8%;"><h5>2/01/12</h5></div>
-        <div class="col-2 text-center"><h5>ราคารวม</h5></div>
-        <div class="col-1 text-right"><h5><i class="fa fa-print" style="color: #ffd17c;"></i></h5></div>
-      </div>
-      <div class="row justify-content-center cus-odd">
-        <div class="col-1"></div>
-        <div class="col-4 text-center"><h5>ชื่อลูกค้า</h5></div>
-        <div class="col-3" style="padding-left: 8%;"><h5>2/01/12</h5></div>
-        <div class="col-2 text-center"><h5>ราคารวม</h5></div>
-        <div class="col-1 text-right"><h5><i class="fa fa-print" style="color: #ffd17c;"></i></h5></div>
-      </div>
-      <div class="row justify-content-center cus-even">
-        <div class="col-1"></div>
-        <div class="col-4 text-center"><h5>ชื่อลูกค้า</h5></div>
-        <div class="col-3" style="padding-left: 8%;"><h5>2/01/12</h5></div>
-        <div class="col-2 text-center"><h5>ราคารวม</h5></div>
-        <div class="col-1 text-right"><h5><i class="fa fa-print" style="color: #ffd17c;"></i></h5></div>
-      </div>
+      <ul id="myUL">
+     
+      </ul>      
     </div>
   </div>
 </body>
