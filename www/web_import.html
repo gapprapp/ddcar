@@ -69,9 +69,9 @@
 		var flag = 1;
 		arr_data = [];		
 		$(document).ready(function () {
-			if(!localStorage.user_id){
+			/*if(!localStorage.user_id){
 				window.location = 'web_login.html';
-			}
+			}*/
 			get_header();		
 			setTimeout(function() {$("#name").focus();}, 100);
 
@@ -872,7 +872,7 @@
       			</div>
       			<div id="date" class="col-2 text-center" style="margin-top: 5px; color: #666;">12/5/2018</div>
       			<div id="user" class="col-2 text-center nopd" style="margin-top: 5px; color: #666;">ชายเมืองสิงค์</div>
-      			<div class="col-3"><button id="btn-folder" onclick="selectfolder()" class="select_folder">เลือกสินค้า</button></div>
+      			<!--<div class="col-3"><button id="btn-folder" onclick="selectfolder()" class="select_folder">เลือกสินค้า</button></div>-->
       		</div>
       	</div><hr style="width: 85%;">
       	
@@ -929,11 +929,11 @@
 			  </div>
 			</div><br>
 			<div class="row">
-				<div class="col-11 text-right nopd-8">
+				<div class="col-11 text-right" style="margin-left: 5%;">
 					<button class="btn btn-md btn-success" style="margin-right: 5px;" onclick="add();">เพิ่มสินค้า</button>
+					<button id="btn-folder" class="select_folder btn btn-md btn-primary" style="margin-right: 5px;" onclick="selectfolder();">เลือกสินค้า</button>
 					<button id="btn-def" class="btn btn-md btn-danger" onclick="set_default()">ค่าเริ่มต้น</button>
 				</div>
-				<div class="col-1"></div>
 			</div>
 		</div>
 
@@ -941,7 +941,7 @@
 		  <div class="row">
 		    <div class="col-12 text-center">
 				<button id="btn_checkbill" class="btn btn-success" onclick="save2db()">บันทึก</button>
-				<button class="btn btn-success" onclick="cancel()">ยกเลิก</button>
+				<button class="btn btn-danger" onclick="cancel()">ยกเลิก</button>
 		    </div>
 			</div>
 			<div id="show_qr" hidden>
