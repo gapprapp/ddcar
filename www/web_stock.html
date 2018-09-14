@@ -57,7 +57,7 @@
 			color: #666;
 		}
 		img{
-			width: 340px; height: 300px; margin-bottom: 4%;
+			width: 340px; height: 300px; margin-bottom: 4%; margin-left: -4%;
 		}
 		.inforow{
 			margin-bottom: -2%;
@@ -74,7 +74,8 @@
 					prod_id = arr_data[i].prod_id;	
 					name = arr_data[i].name;				       
 					get_amt(prod_id,name);
-				}				
+				}	
+				localStorage.arr_prod_st = "";			
 			}  
 		});
 
@@ -149,19 +150,28 @@
 					if(obj != ""){                
 						$.each(obj, function(i, field){					
 							img = obj[i].img;              
-              msg = msg + '<p>'+obj[i][0]+' :'+'</p><p>&nbsp;'+obj[i].amount+'</p><br/>';							
+              msg = msg + '<div class="inforow row justify-content-center">'+
+														'<p>'+obj[i][0]+' :'+'</p>'+
+														'<p>&nbsp;'+obj[i].amount+'</p>'+
+													'</div>';							
 						});	
-						$('#append-ctn').append('<div class="jumbotron text-center jumbo-center">'+
+						if(img == ""){
+							$('#append-ctn').append('<div class="jumbotron text-center jumbo-center">'+
+									'<p class="display">'+name+'</p> <hr class="jumbohr">' +
+									'<img src="img/no_img.png" alt="pic">'+								
+										msg +								
+								'</div>');
+						}else{
+							$('#append-ctn').append('<div class="jumbotron text-center jumbo-center">'+
 								'<p class="display">'+name+'</p> <hr class="jumbohr">' +
-								'<img src="'+img+'" alt="pic">'+
-								'<div class="inforow row justify-content-center">'+
-									msg + 
-								'</div>'+
-							'</div>');			
+								'<img src="'+img+'" alt="pic">'+								
+									msg +								
+							'</div>');
+						}									
 					}else{
 						$('#append-ctn').append('<div class="jumbotron text-center jumbo-center">'+
 								'<p class="display">'+name+'</p> <hr class="jumbohr">' +
-								'<img src="'+img+'" alt="pic">'+
+								'<img src="img/no_img.png" alt="pic">'+
 								'<div class="inforow row justify-content-center">'+
 									'<p>ไม่มีสินค้าในโกดัง/หน้าร้าน</p>'+
 								'</div>'+
@@ -209,9 +219,11 @@
           <p class="display">แสดงชื่อสินค้า</p> <hr class="jumbohr">
           <img src="https://c2.staticflickr.com/4/3891/14354989289_2eec0ba724_b.jpg" alt="pic">
           <div class="inforow row justify-content-center">
-            <p>ข้อมูลที่ต้องการแสดง : </p>
-						<p>&nbsp;1234</p>
-						<p>ข้อมูลที่ต้องการแสดง : </p>
+            <p>2 : </p>
+						<p>&nbsp;1234</p>					
+					</div>
+					<div class="inforow row justify-content-center">
+            <p>2 : </p>
             <p>&nbsp;1234</p>
           </div>
         </div>
