@@ -65,32 +65,27 @@
   </style>
 
   <script>	
-		var prod_id,img,cost_o;
-		var flag = 1;
+		var prod_id,img;		
 		arr_data = [];		
 		$(document).ready(function () {
 			if(!localStorage.user_id){
 				window.location = 'web_login.html';
-			}
+            }            
 			get_header();		
-			setTimeout(function() {$("#name").focus();}, 100);
+			setTimeout(function() {$("#name").focus();}, 100);			
 
-			if(localStorage.ware_id_im){
-                $('#btn-b').text(localStorage.ware_name_im);
-            }
-
-			if(localStorage.arr_prod){     
-				var retrievedObject = localStorage.getItem('arr_prod');
+			if(localStorage.arr_ex){     
+				var retrievedObject = localStorage.getItem('arr_ex');
 				arr_data = JSON.parse(retrievedObject);          
 				count = arr_data[arr_data.length-1].count + 1;             
 				add_previous();
             }      
 
-			if(localStorage.arr_prod_i){
+			if(localStorage.arr_prod_e){
 				$("#btn-folder").attr('disabled',true);
 				$("#btn-def").attr('disabled',true);
 				$("#name").attr('readonly',true);
-                var retrievedObject = localStorage.getItem('arr_prod_i');
+                var retrievedObject = localStorage.getItem('arr_prod_e');
                 var arr_data2 = JSON.parse(retrievedObject); 
                 prod_id = arr_data2[0].prod_id;            
 				get_prod(prod_id);
@@ -139,35 +134,13 @@
 									return 0;                
 								}
 							}							
-							var barcode = $("#name").getSelectedItemData().prod_code;
-							var price = $("#name").getSelectedItemData().prod_price;
-							var price_s = $("#name").getSelectedItemData().prod_pricesend;
-							cost_o = $("#name").getSelectedItemData().prod_cost;
+							var barcode = $("#name").getSelectedItemData().prod_code;							
+							var cost = $("#name").getSelectedItemData().prod_cost;
 							prod_id = $("#name").getSelectedItemData().prod_id;
-							img = $("#name").getSelectedItemData().img;	
-
-							if(cost_o == 0 && price == 0 && price_s == 0){
-								$('#retail').val("");
-								$('#fund').val("");						
-								$('#whole').val("");	 
-							}else{
-								$('#retail').val(price);
-								$('#fund').val(cost_o);						
-								$('#whole').val(price_s);                
-								flag = 1;
-							}   						
-
-							/*$("#name").attr('data-img',img);
-							$('#name[rel=popover]').popover({
-								html: true, 
-								trigger: 'hover',
-								placement: 'left',
-								content: function(){
-								return '<img src='+$(this).data('img')+'>';}
-							});*/ 						
+							img = $("#name").getSelectedItemData().img;									
+							$('#fund').val(cost);	
 							$('#barcode').val(barcode);							
-							$('#amount').val("1");						
-							get_place();                   
+							$('#amount').val("1");						                
 						}
 				},
 				requestDelay: 300,
@@ -217,25 +190,14 @@
                         $.each(obj, function(i, field){
                             $('#name').val(obj[i].prod_name);
 							$('#barcode').val(obj[i].prod_code); 
-							$('#amount').val("1");
-                            cost_o = obj[i].prod_cost;                       
-                            img = obj[i].img;   
-                            if(obj[i].prod_cost == 0 && obj[i].prod_price == 0 && obj[i].prod_pricesend == 0){
-                                $('#fund').val("");
-                                $('#whole').val("");
-                                $('#retail').val("");  
-                            }else{
-                                $('#fund').val(cost_o);
-                                $('#whole').val(obj[i].prod_pricesend);
-                                $('#retail').val(obj[i].prod_price);                     
-                                flag = 1;
-                            }                        
-						});  
-						get_place();                                                           
+							$('#amount').val("1");                                               
+                            img = obj[i].img; 
+                            $('#fund').val(obj[i].prod_cost);                                                  
+						});                                                   
                     }               
                 });                    
             }else{
-            	show('dup');
+            	add('dup');
             }               
         }
 
@@ -247,7 +209,7 @@
 				objEvent.preventDefault();
 				var $this = $(objEvent.target);
 				var i_enter = parseFloat($this.attr('data-index'));                      
-				if(i_enter == 6){
+				if(i_enter == 2){
 					add();
 				}else{          
 					var temp = $('[data-index="' + (i_enter+1).toString() + '"]').val();
@@ -285,114 +247,38 @@
 					var obj = jQuery.parseJSON(data); 
 					if(obj){
 						$.each(obj, function(i, field){
-							if(!localStorage.ware_id_im){
+							// if(!localStorage.ware_id_im){
 								if(i == 0){
-									localStorage.ware_id_im =  field.ware_id;
-									// ware_id = field.ware_id;
+									// localStorage.ware_id_im =  field.ware_id;
+									ware_id = field.ware_id;
 									$('#btn-b').text(field.ware_name);
-									localStorage.ware_name_im =  field.ware_name;								
+									// localStorage.ware_name_im =  field.ware_name;								
 								}
-							}							
+							// }							
 							$('#b').append('<a class="dropdown-item text-center" href="#" onclick="setware('+field.ware_id+',\''+field.ware_name+'\')">'+field.ware_name+'</a>');
 						}); 
 					}
 				}               
 			}); 		
 		}
-
-		arr_place = [];
-		function get_place(){
-			$.ajax({
-				type: "POST",
-				url:"php/get_place.php",    
-				data:{'prod_id' : prod_id,"ware_id":localStorage.ware_id_im},  			                                 
-				success: function(data){				
-					var obj = jQuery.parseJSON(data);                    
-					if(obj){                        
-							var txt = "";                                         
-							$.each(obj, function(i, field){
-									txt += field.place + " "; 
-									arr_place.push(field.place.toLowerCase());                                                         
-							});    
-							$('#at').attr("placeholder",txt);                       
-					}else{
-							$('#at').attr("placeholder",""); 
-					}                                                      
-				}               
-			});  
-		}
-
-		function show_avg(){
-			var popup = document.getElementById("myPopup");
-			popup.classList.toggle("show");
-		}
-
-		// var ware_id;
-		function setware(arg,arg2){
-			localStorage.ware_id_im = arg;
-			// ware_id = arg;
-			localStorage.ware_name_im = arg2;
-			$('#btn-b').text(arg2);
-			get_place();
-		}
-	
-		var check =  0;
-		var is_show = 0;
-		function cal_avg(type){
-			if(flag == 1){
-				if(type == "cost"){
-						$.ajax({
-								type: "POST",
-								url:"php/get_amt_prod.php",           
-								data: {prod:prod_id},								          
-								success: function(data){									                                                        
-										var cost_n = $('#fund').val();
-										var amt_n = $('#amount').val();
-										var amt_o = data;
-
-										var avg = (parseInt(cost_n*amt_n) + parseInt(cost_o*amt_o))/(parseInt(amt_n)+parseInt(amt_o));    
-										
-										$('#avg-rate').text(Math.round(avg));
-										if(is_show == 0){
-												show_avg(); 
-												is_show = 1;
-										}                       
-										check = 1;                              
-								}               
-						});            
-				}else if(type == "amt" && check == 1){
-						$.ajax({
-								type: "POST",
-								url:"php/get_amt_prod.php",           
-								data: {prod:prod_id}, 
-								success: function(data){          
-										var cost_n = $('#fund').val();
-										var amt_n = $('#amount').val();
-										var amt_o = data;
-
-										var avg = (parseInt(cost_n*amt_n) + parseInt(cost_o*amt_o))/(parseInt(amt_n)+parseInt(amt_o));    
-										
-										$('#avg-rate').text(Math.round(avg)); 
-										if(is_show == 0){
-												show_avg(); 
-												is_show = 1;
-										}                                                         
-								}               
-						});            
-				}
-			
-			}           
-		}  
 		
-		function add(){
-			var code = $('#barcode').val();
-			var cost = $('#fund').val();
-			var price_s = $('#whole').val();
-			var price_w = $('#retail').val(); 
+		var ware_id;
+		function setware(arg,arg2){
+			// localStorage.ware_id_im = arg;
+			ware_id = arg;
+			// localStorage.ware_name_im = arg2;
+			$('#btn-b').text(arg2);			
+		}
+			
+		var count = 0;
+  		function add(arg){
+		if(arg != 'dup'){	
+            var code = $('#barcode').val();
+			var cost = $('#fund').val();		
 			var name = $('#name').val(); 
-			var amt = $('#amount').val(); 
-			if(!$('#at').prop('placeholder') && $('#at').val() == ""){ 
-				$('#name').focus(); 
+			var amt = $('#amount').val(); 		      
+			if(name == "" || amt == "" || code == "" || cost == "" ){      
+                $('#name').focus(); 
 					$.confirm({
 						title: 'พบข้อผิดพลาด',
 						content: 'กรุณากรอกข้อมูลให้ครบ',
@@ -406,86 +292,8 @@
 							}
 						}
 					});   					            
-					return 0;
-			}            
-			if(name != "" && amt != "" && code != "" && cost != "" && price_s != "" && price_w != "" && jQuery.inArray($('#at').val().toLowerCase(),arr_place) == -1 && prod_id != 0){      
-					if(flag == 0){                 
-							$.ajax({
-									type: "POST",
-									url:"php/update_prod.php",           
-									data: {prod:prod_id , cost:cost , price_s:price_s , price_w:price_w},									          
-									success: function(data){
-											if(data == "success"){
-													show();
-											}else{
-											$.confirm({
-													title: 'พบข้อผิดพลาด',
-													content: 'ลองอีกครั้ง',
-													backgroundDismiss: true,
-													buttons: {
-															formSubmit: {
-															text: 'ตกลง',
-															btnClass: 'btn-regis',
-															action: function () {
-															}
-															}
-													}
-											});
-											}
-									}               
-							});                   
-					}else if(flag == 1 && check == 1){
-							$.ajax({
-									type: "POST",
-									url:"php/update_prod.php",           
-									data: {prod:prod_id , cost:cost , price_s:price_s , price_w:price_w},					            
-									success: function(data){ 
-											if(data == "success"){
-													flag = 0;
-													check = 0;
-													show();
-											}else{
-											$.confirm({
-													title: 'พบข้อผิดพลาด',
-													content: 'ลองอีกครั้ง',
-													backgroundDismiss: true,
-													buttons: {
-															formSubmit: {
-															text: 'ตกลง',
-															btnClass: 'btn-regis',
-															action: function () {
-															}
-															}
-													}
-											});
-											}
-									}               
-							});                                      
-					}else{
-							flag = 0;
-							show();
-					}               
-			}else{
-					$.confirm({
-						title: 'พบข้อผิดพลาด',
-						content: 'กรุณากรอกข้อมูลให้ครบ',
-						backgroundDismiss: true,
-						buttons: {
-							formSubmit: {
-								text: 'ตกลง',
-								btnClass: 'btn-regis',
-								action: function () {
-								}
-							}
-						}
-					});
-			}
-			$('#name').focus();			          
-		}     
-		
-		var count = 0;
-  		function show(arg){
-		if(arg != 'dup'){			
+                    return 0;
+            }	   		
 			var bottom = $(window).height() - $("#cnt-add").offset().top - $("#cnt-add").height();
 			// Always scroll to the bottom
 			if(bottom < 200){
@@ -495,30 +303,21 @@
 
 			$("#cnt-add").append('<div id="add-'+count+'" class="row mgb-5">'+
 					'<div class="col-1"></div>'+
-          '<div class="col-2">'+
+          '<div class="col-3">'+
             '<div class="input-group-prepend">'+
               '<span id="span-no-'+count+'" class="input-group-text">'+(count+1)+'</span>'+
               '<input id="barcodee" type="text" value="'+$('#barcode').val()+'" class="form-control text-center" readonly>'+
             '</div>'+
-          '</div>'+
-          '<div class="col-1 nopd-8">'+
-            '<input id="at-'+count+'" type="text" value="'+$('#at').val()+'" placeholder="'+$('#at').attr('placeholder')+'" class="form-control text-center" readonly>'+
-          '</div>'+
+          '</div>'+         
           '<div class="col-3 nopd-8">'+
             '<input id="name-'+count+'" value="'+$('#name').val()+'" class="form-control text-center" rel="popover" data-img="'+img+'" readonly>'+
           '</div>'+
           '<div class="col-1 nopd-8">'+
             '<input id="amount-'+count+'" value="'+$('#amount').val()+'" type="number" class="form-control text-center no-spin" min="1" readonly>'+
           '</div>'+
-          '<div class="col-1 nopd-8">'+
+          '<div class="col-2 nopd-8">'+
             '<input id="fundd" type="number" value="'+$('#fund').val()+'" class="form-control text-center no-spin" min="0" readonly>'+
-          '</div>'+          
-          '<div class="col-1 nopd-8">'+
-            '<input id="wholee" type="number" value="'+$('#whole').val()+'" class="form-control text-center no-spin" min="0" readonly>'+
-          '</div>'+
-          '<div class="col-1 nopd-8">'+
-            '<input id="retaill" type="number" value="'+$('#retail').val()+'" class="form-control text-center no-spin" min="0" readonly>'+
-          '</div>'+
+          '</div>'+ 
           '<div class="col-1 nopd text-center">'+
           '<button id="btn-edit-'+count+'" class="btn btn-sm btn-primary mgr-5" onclick="edit('+count+');"> <i class="fas fa-pencil-alt"></i></button>'+
           '<button id="btn-save-'+count+'" class="btn btn-sm btn-success mgr-5" onclick="save('+count+');" hidden> <i class="fa fa-check"></i></button>'+
@@ -541,42 +340,28 @@
 			item ["prod_id"] =  prod_id;
 			item ["name"] =  $('#name').val();
 			item ["cost"] =  $('#fund').val();               
-			item ["amt"] =  $('#amount').val();			
-			item ["addr"] = $('#at').val();  
-			item ["price_s"] = $('#whole').val();
-			item ["price"] = $('#retail').val();   
+			item ["amt"] =  $('#amount').val();	  
 			item ["img"] = img;   
-			item ["plholder"] = $('#at').attr('placeholder');  
-
+			
 			arr_data.push(item);	
-			localStorage.setItem('arr_prod', JSON.stringify(arr_data));	
-			$("#btn-b").attr('disabled',true);
+			localStorage.setItem('arr_ex', JSON.stringify(arr_data));			
 			count++;			
 		}
-			$('#at').attr("placeholder","");
 			$('#barcode').val("");
 			$('#name').val("");			
-			$('#fund').val("");
-			$('#whole').val("");
-			$('#retail').val("");
-			$('#amount').val("1");
-			$('#at').val("")
-			if(is_show == 1){
-					show_avg(); 
-					is_show = 0;
-			}            
-			$('#avg-rate').text("");		
-			if(localStorage.arr_prod_i){
-                var retrievedObject = localStorage.getItem('arr_prod_i');
+			$('#fund').val("");			
+			$('#amount').val("1");				
+			if(localStorage.arr_prod_e){
+                var retrievedObject = localStorage.getItem('arr_prod_e');
                 var arr_data2 = JSON.parse(retrievedObject);
                 arr_data2.splice(0,1); 
-                localStorage.setItem('arr_prod_i', JSON.stringify(arr_data2));  
+                localStorage.setItem('arr_prod_e', JSON.stringify(arr_data2));  
                 if(arr_data2.length == 0){
-                    localStorage.arr_prod_i = "";  
+                    localStorage.arr_prod_e = "";  
                 }                                 
             }  
-            if(localStorage.arr_prod_i){                    
-                var retrievedObject = localStorage.getItem('arr_prod_i');
+            if(localStorage.arr_prod_e){                    
+                var retrievedObject = localStorage.getItem('arr_prod_e');
                 var arr_data2 = JSON.parse(retrievedObject);                                   
                 prod_id = arr_data2[0].prod_id;            
                 get_prod(prod_id);            
@@ -584,7 +369,8 @@
 				$("#btn-folder").removeAttr('disabled');
 				$("#btn-def").removeAttr('disabled');
 				$("#name").removeAttr('readonly');
-            }    	
+            }    
+            $('#name').focus();	
 		}
 		
 		function add_previous(){
@@ -598,30 +384,21 @@
 
 				$("#cnt-add").append('<div id="add-'+arr_data[i].count+'" class="row mgb-5">'+
 						'<div class="col-1"></div>'+
-				'<div class="col-2">'+
+				'<div class="col-3">'+
 					'<div class="input-group-prepend">'+
 					'<span id="span-no-'+arr_data[i].count+'" class="input-group-text">'+(arr_data[i].count+1)+'</span>'+
 					'<input id="barcodee" type="text" value="'+arr_data[i].qr+'" class="form-control text-center" readonly>'+
 					'</div>'+
-				'</div>'+
-				'<div class="col-1 nopd-8">'+
-					'<input id="at-'+arr_data[i].count+'" type="text" value="'+arr_data[i].addr+'" placeholder="'+arr_data[i].plholder+'" class="form-control text-center" readonly>'+
-				'</div>'+
+				'</div>'+				
 				'<div class="col-3 nopd-8">'+
 					'<input id="name-'+arr_data[i].count+'" value="'+arr_data[i].name+'" class="form-control text-center" rel="popover" data-img="'+arr_data[i].img+'" readonly>'+
 				'</div>'+
 				'<div class="col-1 nopd-8">'+
 					'<input id="amount-'+arr_data[i].count+'" value="'+arr_data[i].amt+'" type="number" class="form-control text-center no-spin" min="1" readonly>'+
 				'</div>'+
-				'<div class="col-1 nopd-8">'+
+				'<div class="col-2 nopd-8">'+
 					'<input id="fundd" type="number" value="'+arr_data[i].cost+'" class="form-control text-center no-spin" min="0" readonly>'+
-				'</div>'+          
-				'<div class="col-1 nopd-8">'+
-					'<input id="wholee" type="number" value="'+arr_data[i].price_s+'" class="form-control text-center no-spin" min="0" readonly>'+
-				'</div>'+
-				'<div class="col-1 nopd-8">'+
-					'<input id="retaill" type="number" value="'+arr_data[i].price+'" class="form-control text-center no-spin" min="0" readonly>'+
-				'</div>'+
+				'</div>'+  
 				'<div class="col-1 nopd text-center">'+
 				'<button id="btn-edit-'+arr_data[i].count+'" class="btn btn-sm btn-primary mgr-5" onclick="edit('+arr_data[i].count+');"> <i class="fas fa-pencil-alt"></i></button>'+
 				'<button id="btn-save-'+arr_data[i].count+'" class="btn btn-sm btn-success mgr-5" onclick="save('+arr_data[i].count+');" hidden> <i class="fa fa-check"></i></button>'+
@@ -636,33 +413,17 @@
 							"return '<img src='+$(this).data('img')+'>';}" +
 							"});" +
 						"</" + "script>" +
-					'</div>');
-
-				// count++;			
-				$("#btn-b").attr('disabled',true);	
+					'</div>');				
 			}
 		
 		}
 
 		function set_default(){
-			$('#at').attr("placeholder","");
 			$('#barcode').val("");
-			$('#name').val("");
-			//$("#name").attr('data-img',"");
-			/*$('#name[rel=popover]').popover({
-				html: true, 
-				trigger: 'hover',
-				placement: 'left',
-				content: function(){
-				return '<img src='+$(this).data('img')+'>';}
-			});*/ 		
-			$('#fund').val("");
-			$('#whole').val("");
-			$('#retail').val("");
-			$('#amount').val("1");
-			$('#at').val("");
-			$('#name').focus(); 
-			//print();
+			$('#name').val("");			
+			$('#fund').val("");			
+			$('#amount').val("1");		
+			$('#name').focus();			
 		}
 
   		function edit(arg){
@@ -675,8 +436,7 @@
 			if(stop){
 				return 0;
 			}			   
-				$("#amount-" + arg).prop('readonly', false);
-				$("#at-" + arg).prop('readonly', false);         
+				$("#amount-" + arg).prop('readonly', false);				  
 
 				//change btn-edit to save
 				$("#btn-edit-"+arg).prop('hidden', true);
@@ -688,12 +448,10 @@
   	}
 
   		function save(arg){
-			arr_data[arg].amt = $("#amount-"+arg).val();
-			arr_data[arg].addr = $("#at-"+arg).val();    
-			localStorage.setItem('arr_prod', JSON.stringify(arr_data));	   
+			arr_data[arg].amt = $("#amount-"+arg).val();			
+			localStorage.setItem('arr_ex', JSON.stringify(arr_data));	   
 
-			$("#amount-" + arg).prop('readonly', true);
-			$("#at-" + arg).prop('readonly', true);  
+			$("#amount-" + arg).prop('readonly', true);			
 
 			$("#btn-edit-"+arg).prop('hidden', false);
 			$("#btn-trash-"+arg).prop('hidden', false);
@@ -715,8 +473,7 @@
 								$("#span-no-" + (i)).text(i);								
 								$("#span-no-"+ i).prop('id', 'span-no-'+ (i-1));						
 								$("#amount-" + i).prop('id', 'amount-' + (i - 1));
-								$("#name-" + i).prop('id', 'name-' + (i - 1));
-								$("#at-" + i).prop('id', 'at-' + (i - 1));							
+								$("#name-" + i).prop('id', 'name-' + (i - 1));												
 								$("#add-" + i).prop('id', 'add-' + (i - 1));                 
 								$("#btn-trash-" + i).attr('onclick', "remove(" + (i - 1) + ")");
 								$("#btn-trash-" + i).prop('id', 'btn-trash-' + (i - 1));
@@ -727,11 +484,11 @@
 								arr_data[i].count--;						
 							}
 							arr_data.splice(arg, 1);
-							localStorage.setItem('arr_prod', JSON.stringify(arr_data));	
+							localStorage.setItem('arr_ex', JSON.stringify(arr_data));	
 							count--;
-							if(arr_data.length == 0){
-								$("#btn-b").attr('disabled',false);
-							}
+							// if(arr_data.length == 0){
+							// 	$("#btn-b").attr('disabled',false);
+							// }
 						}
 					},
 					ยกเลิก: function () { },
@@ -739,88 +496,45 @@
 			});
     }
 
-		var qrcode;
 		function save2db(){
 			if(arr_data.length == 0){
 					return 0;
-			}
-			var sum = 0;
-			var index_qr = 1;
-			$.each(arr_data, function(i, field){				
-				for(var j = 0 ; j < arr_data[i].amt; j++){
-					//$('#show_qr').append("<div>"+arr_data[i].name+"</div><div id='qrcode"+index_qr+"'></div><div>"+arr_data[i].price+"</div><br>");	
-					if(index_qr % 2 != 0){						
-						$('#show_qr').append('<div id="ctn'+index_qr+'" class="ctn">' +
-						'<div class="left">' +
-							'<div class="name">'+arr_data[i].name+'</div>' +
-							'<div class="qr" id="qrcode'+index_qr+'"></div>' +
-							'<div>'+arr_data[i].price+'</div>' +
-						'</div>' +						
-						'</div>');		
-					}else{						
-						$('#ctn'+(index_qr-1)).append('<div class="right">' +
-							'<div class="name">'+arr_data[i].name+'</div>' +
-							'<div class="qr" id="qrcode'+index_qr+'"></div>' +
-							'<div>'+arr_data[i].price+'</div>' +
-						'</div>');
-					}											
-					qrcode = new QRCode("qrcode"+index_qr,{width: 125, height: 95});
-					qrcode.makeCode(arr_data[i].qr);
-					index_qr++;
-				}
-				sum += parseFloat(arr_data[i].cost)*parseInt(arr_data[i].amt);
-				                                                           
-			});
-			var d = new Date($.now());         
-			var datetime = d.getFullYear() + "-" + (d.getMonth()+1) + "-" + d.getDate() + " " + d.getHours() + ":" + d.getMinutes() + ":" + d.getSeconds(); 
-			json_string = JSON.stringify(arr_data);
-			var dataString =  "JSON=" + json_string + "&ware_id=" + localStorage.ware_id_im + "&date=" + datetime
-			+ "&sum=" + sum + "&user_id=" + localStorage.user_id;
-			//alert(dataString);			
+			}  
+            var d = new Date($.now());           
+            var datetime = d.getFullYear() + "-" + (d.getMonth()+1) + "-" + d.getDate() + " " + d.getHours() + ":" + d.getMinutes() + ":" + d.getSeconds(); 
+            json_string = JSON.stringify(arr_data); 
+            var dataString =  "JSON=" + json_string + "&ware_id=" + ware_id + "&date=" + datetime + "&user_id=" + localStorage.user_id;                        
 
-			var WinPrint  = window.open();
-			$.ajax({
-				type: "POST",
-				url:"php/stock_in.php",           
-				data: dataString,               
-				beforeSend: function(){
-					EasyLoading.show({                           
+            $.ajax({
+                type: "POST",
+                url:"php/stock_out.php",           
+                data: dataString,    
+                beforeSend: function(){
+                    EasyLoading.show({                           
 						text: "กำลังโหลด"                            
 					});
-				},             
-				success: function(data){  
-					EasyLoading.hide();    
-					if(data == "success"){ 
-						var ele =  document.getElementById('show_qr').innerHTML;			
-						WinPrint.document.write("<html><head><link href='https://fonts.googleapis.com/css?family=Maitree' rel='stylesheet'></head><body>");
-						WinPrint.document.write("<style>@media print {body {-webkit-print-color-adjust: exact;}} @page {size: auto; margin: 0mm;} body{font-family: 'Maitree'; line-height: 1.5; font-size: 1em;} .name{font-family: 'Maitree'; line-height: 1.5; font-size: 0.5em;}.ctn{width: 10.1cm; height: 3.7cm; margin-top: -2mm;} .left{float: left; width: 5.05cm; height: 3.7cm; text-align: center;} .right{float: left; width: 5.05cm; height: 3.7cm; text-align: center;} .qr{width: 33mm; height: 25mm; margin-left: 15%; background-color: black; color: white;}</style>" +
-							ele);
-						WinPrint.document.write('</body></html>');
-						WinPrint.document.close();
-						WinPrint.focus();
-						window.setTimeout(function() {
-							WinPrint.print();
-							WinPrint.close();
-							cancel();		
-						}, 250);			                     
-						         
-					}else{
-						$.confirm({
-							title: 'พบข้อผิดพลาด',
-							content: 'ลองอีกครั้ง',
-							backgroundDismiss: true,
-							buttons: {
-								formSubmit: {
-								text: 'ตกลง',
-								btnClass: 'btn-regis',
-								action: function () {
-								}
-								}
-							}
-						});
-					}
-				}               
-			});
+                },            
+                success: function(data){  
+                    EasyLoading.hide();                
+                    if(data == "success"){
+                       cancel();         
+                    }else{
+                        $.confirm({
+                            title: 'พบข้อผิดพลาด',
+                            content: 'ลองอีกครั้ง',
+                            backgroundDismiss: true,
+                            buttons: {
+                                formSubmit: {
+                                text: 'ตกลง',
+                                btnClass: 'btn-regis',
+                                action: function () {
+                                }
+                                }
+                            }
+                        });
+                    }
+                }               
+            });
 		}	
 
 		function logout(){
@@ -828,15 +542,13 @@
 		}
 
 		function cancel(){
-			localStorage.arr_prod = "";
-			localStorage.arr_prod_i = "";
-			localStorage.ware_name_im = "";
-			localStorage.ware_id_im = "";
+			localStorage.arr_ex = "";
+			localStorage.arr_prod_e = "";		
 			location.reload();
 		}
 
 		function selectfolder() {
-            window.location = "web_folder.html?from=import";            
+            window.location = "web_folder.html?from=export";            
         } 
 
   </script>
@@ -845,16 +557,16 @@
 	<div class="container-fullwidth justify-content-center">
 		<nav class="navbar navbar-expand-md navbar-dark">
         	<div class="collapse navbar-collapse justify-content-md-center" id="navbarCollapse">
-          	<h3 id="nav-title">นำสินค้าเข้าโกดัง</h3>
+          	<h3 id="nav-title">สินค้าออกโกดัง</h3>
         	</div>
       	</nav>
       	<div class="container">
       		<div class="row" style="margin-top: 2px;">
       			<div class="col-12 text-center">
 					<a href="web_sale.html" class="mgr-20">ขายสินค้า</a>
-					<a href="web_import.html" class="mgr-20 active">นำสินค้าเข้าโกดัง</a>
+					<a href="web_import.html" class="mgr-20">นำสินค้าเข้าโกดัง</a>
 					<a href="web_stock.html" class="mgr-20">เช็คสต๊อก</a>
-					<a href="web_export.html" class="mgr-20">สินค้าออกโกดัง</a>
+					<a href="web_export.html" class="mgr-20 active">สินค้าออกโกดัง</a>
 					<a href="web_select.html" class="mgr-20">รายการย้อนหลัง</a>
 					<a href="" class="mgr-20" onclick="logout()">ออกจากระบบ</a>
       			</div>
@@ -892,13 +604,10 @@
       	<div class="container-fullwidth nopd">
       		<div id="head" class="row mgb-5">
       		  <div class="col-1"></div>
-      		  <div class="col-2 text-center nopd">บาร์โค้ด</div>
-      		  <div class="col-1 text-center nopd-8">ที่อยู่สินค้า</div>
+      		  <div class="col-3 text-center nopd">บาร์โค้ด</div>      		 
       		  <div class="col-3 text-center nopd">ชื่อสินค้า</div>
       		  <div class="col-1 text-center nopd-8">จำนวน</div>
-      		  <div class="col-1 text-center nopd-8">ทุน</div>
-      		  <div class="col-1 text-center nopd-8">ราคาส่ง</div>
-      		  <div class="col-1 text-center nopd-8">ราคาปลีก</div>
+      		  <div class="col-2 text-center nopd-8">ทุน</div>      		
       		</div>
       	</div>
 	
@@ -910,31 +619,21 @@
 			<!-- Input -->
 			<div class="row" >
 			  <div class="col-1"></div>
-			  <div class="col-2">
+			  <div class="col-3">
 			    <div class='input-group-prepend'>
 			      <span id="span-no" class='input-group-text'>#</span>
 			      <input id='barcode' type='text' class='form-control text-center' readonly>
 			    </div>
-			  </div>
-			  <div class='col-1 nopd-8'>
-			    <input id='at' type='text' class='form-control text-center' data-index="6">
-			  </div>
+			  </div>			 
 			  <div class='col-3 nopd-8'>
 			    <input id="name" class="form-control text-center" rel="popover" data-img="" data-index="1" autofocus>
 			  </div>
 			  <div class='col-1 nopd-8'>
-			    <input id='amount' type='number' onchange="cal_avg('amt')" class='form-control text-center no-spin' min='1' value="1" data-index="2">
+			    <input id='amount' type='number' class='form-control text-center no-spin' min='1' value="1" data-index="2">
 			  </div>
-			  <div class='col-1 nopd-8 popup'>
-			  	<span class="popuptext" id="myPopup">เฉลี่ย : <span id="avg-rate"></span></span>
-			    <input id='fund' type='number'  onchange="cal_avg('cost')" class='form-control text-center no-spin' min='0' data-index="3">
-			  </div>
-			  <div class='col-1 nopd-8'>
-			    <input id='whole' type='number' class='form-control text-center no-spin' min='0' data-index="4">
-			  </div>
-			  <div class='col-1 nopd-8'>
-			    <input id='retail' type='number' class='form-control text-center no-spin' min='0' data-index="5">
-			  </div>
+			  <div class='col-2 nopd-8 popup'>			  	
+			    <input id='fund' type='number' class='form-control text-center no-spin' min='0' readonly>
+			  </div>			 
 			  <div class="col-1 nopd text-center">
 			  	<button class="btn btn-sm btn-primary" disabled> <i class="fas fa-pencil-alt"></i></button>
 			  	<button class="btn btn-sm btn-danger" disabled> <i class="fa fa-trash"></i></button>
@@ -956,10 +655,7 @@
 				<button id="btn_checkbill" class="btn btn-success" onclick="save2db()">บันทึก</button>
 				<button class="btn btn-danger" onclick="cancel()">ยกเลิก</button>
 		    </div>
-			</div>
-			<div id="show_qr" hidden>
-
-			</div>			
+			</div>				
 		</div>
 	<script>		
 		$('#name').on('input', function() {

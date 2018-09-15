@@ -68,7 +68,11 @@
     }
   </style>
   <script>
-    
+    $(document).ready(function() {
+      if(!localStorage.user_id){
+        window.location = 'web_login.html';
+      } 
+    });
   </script>
 </head>
 <body>
@@ -81,11 +85,12 @@
     <div class="container">
       <div class="row" style="margin-top: 2px;">
         <div class="col-12 text-center">
-          <a href="web_sale.html" class="mgr-20">ขายสินค้า</a>
-          <a href="web_import.html" class="mgr-20">นำสินค้าเข้าโกดัง</a>
-          <a href="web_stock.html" class="mgr-20">เช็คสต๊อก</a>
-          <a href="web_select.html" class="mgr-20 active">รายการย้อนหลัง</a>
-          <a href="" class="mgr-20" onclick="logout()">ออกจากระบบ</a>
+          	<a href="web_sale.html" class="mgr-20">ขายสินค้า</a>
+						<a href="web_import.html" class="mgr-20">นำสินค้าเข้าโกดัง</a>
+						<a href="web_stock.html" class="mgr-20">เช็คสต๊อก</a>
+						<a href="web_export.html" class="mgr-20">สินค้าออกโกดัง</a>
+						<a href="web_select.html" class="mgr-20 active">รายการย้อนหลัง</a>
+						<a href="" class="mgr-20" onclick="logout()">ออกจากระบบ</a>
         </div>
       </div>
     </div><br><br>

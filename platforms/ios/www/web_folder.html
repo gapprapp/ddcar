@@ -17,17 +17,12 @@
 
   <!-- Super cool dialog-->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.0/jquery-confirm.min.css">
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.0/jquery-confirm.min.js"></script>
-
-	<!-- Easy-autocomplete -->
-	<script src="js/jquery.easy-autocomplete.js"></script>
-	<link rel="stylesheet" href="css/easy-autocomplete.min.css">
-	<link rel="stylesheet" href="css/easy-autocomplete.themes.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.0/jquery-confirm.min.js"></script>	
 	
 	<!-- Loading -->
 	<link rel="stylesheet" href="css/easy-loading.css">
 	<script src="js/easy-loading.js"></script>
-	
+
 	<!-- QRcode -->
 	<script type="text/javascript" src="js/qrcode.min.js"></script>
 	<script type="text/javascript" src="js/jQuery.print.js"></script>
@@ -36,8 +31,7 @@
   <link href="https://fonts.googleapis.com/css?family=Prompt" rel="stylesheet"> 
   <!-- Main -->
   <link href="css/untitled.css" rel="stylesheet">
-  <link href="css/web_folder.css" rel="stylesheet">
-  <link rel="stylesheet" href="css/popup.css">
+  <link href="css/web_folder.css" rel="stylesheet">  
 
   <style>
   	.i-trash{
@@ -49,37 +43,201 @@
   </style>
 
   <script>
+	arr_prod = [];
+	var num_prod = 0,from;
   	$(document).ready(function() {
-  		$(".brand").attr('onclick', 'showsub()');
+		if(!localStorage.user_id){
+			window.location = 'web_login.html';
+		} 
+		localStorage.stack_folder = "";
+		url = new URL(window.location.href);		
+		from = url.searchParams.get("from");
+		$.ajax({
+			type: "POST",
+			url:"php/get_folder.php",
+			crossDomain: true,
+			data: {'parent' : "car"},  
+			beforeSend: function(){
+				EasyLoading.show({                           
+						text: "กำลังโหลด"                            
+					});			
+			},             
+			success: function(data){  
+				EasyLoading.hide();			          
+				var obj = jQuery.parseJSON(data);              
+				if(obj){				           
+					$.each(obj, function(i, field){
+						if(obj.length-1 > i){
+							text_html = "<h3 class='brand' onclick='showsub(\""+obj[i].title+"\",1)'>"+obj[i].title+"</h3>";
+							$("#col-brand").append(text_html);
+							index = i;
+						}                                                 
+					});               
+				}                               
+				                          
+			}               
+		});
+		
+  	});	
 
-  		$("input[type=checkbox]").click(function(event) {
-  			check = $(this).prop('checked');
-  			isenable = !$(this).is(":disabled");
-  			if(check == false && isenable)
-  				$(this).prop('checked', true);
-  			else if(isenable)
-  				$(this).prop('checked', false);
-  		});
-  		$(".prod-odd").click(function(event) {
-  			arg = $(this).find('input[type=checkbox]');
-  			check = arg.prop('checked');
-  			isenable = !arg.is(":disabled");
-  			if(check == false && isenable)
-  				arg.prop('checked', true);
-  			else if(isenable)
-  				arg.prop('checked', false);
-  		});
-  		$(".prod-even").click(function(event) {
-  			arg = $(this).find('input[type=checkbox]');
-  			check = arg.prop('checked');
-  			isenable = !arg.is(":disabled");
-  			if(check == false && isenable)
-  				arg.prop('checked', true);
-  			else if(isenable)
-  				arg.prop('checked', false);
-  		});
-  	});
+	function next(){
+	  if(num_prod == 0){
+		  return 0;
+	  }
+	  json = [];
+      for(var i = 0 ; i < arr_prod.length ; i++){
+        if(arr_prod[i].prod_id != 0){
+            item = {}
+            item["prod_id"] = arr_prod[i].prod_id;  
+			item["name"] = arr_prod[i].name;           
+            json.push(item);               
+        }
+      }
+      if(from == "import"){
+          localStorage.setItem('arr_prod_i', JSON.stringify(json)); 
+          window.location = "web_import.html";
+        }else if(from == "export"){
+          localStorage.setItem('arr_prod_e', JSON.stringify(json)); 
+          window.location = "web_export.html";
+        }else if(from == "sale"){
+          localStorage.setItem('arr_prod_s', JSON.stringify(json)); 
+          window.location = "web_sale.html";
+        }else if(from == "stock"){
+          localStorage.setItem('arr_prod_st', JSON.stringify(json)); 
+          window.location = "web_stock.html";
+        }        
+	}
 
+	function showsub(arg,arg2){
+		console.log(arg);
+		if(arg2){
+			$(".prod-title").empty();
+			localStorage.stack_folder = "";
+			$('.prod-title').append('<i id="i-back" onclick="page_back();" class="fas fa-angle-left" hidden></i>&emsp;');
+		}
+		if(localStorage.stack_folder){
+			var retrievedObject = localStorage.getItem('stack_folder');
+			var arr_data = JSON.parse(retrievedObject); 			
+			$('#i-back').prop('hidden',false);
+			if(arr_data.length == 0){
+				var arr_data = [];    
+				$('#i-back').prop('hidden',true); 
+			} 
+		}else{
+			var arr_data = [];    
+			$('#i-back').prop('hidden',true);   
+		}
+		arr_data.push(arg); 
+		localStorage.setItem('stack_folder', JSON.stringify(arr_data));		
+		$("#append-prod").empty();
+		//$("#append-title").append('<h5 id="'+arg+'" onclick="page_back(\''+arg+'\')" class="prod-title">'+arg+'</h5>');
+    	// ลองแก้เป็นแบบนี้ดู
+		$('.prod-title').append('<span id="'+arg+'" onclick="page_back(\''+arg+'\')">  '+arg+'  >></span>');
+		$.ajax({
+			type: "POST",
+			url:"php/get_folder.php",
+			crossDomain: true,
+			data: {'parent' : arg},  
+			beforeSend: function(){
+				EasyLoading.show({                           
+						text: "กำลังโหลด"                            
+					});			
+			},             
+			success: function(data){  
+				EasyLoading.hide();
+				if(data != "last node"){
+					var obj = jQuery.parseJSON(data); 
+					$('#col-prod').prop('hidden',false);             
+					if(obj[obj.length-1] == "last node"){               
+					$.each(obj, function(i, field){
+						if(obj.length-1 > i){
+							if(i % 2 == 0){
+								text_html = '<h5 id="prod-'+obj[i].title+'" class="prod-odd" onclick="choose('+obj[i].title+')"><input type="checkbox">'+obj[i][2]+'<i class="fas fa-trash i-trash" hidden></i><i class="fas fa-pen i-edit" hidden></i></h5>';
+							}else{
+								text_html = '<h5 id="prod-'+obj[i].title+'" class="prod-even" onclick="choose('+obj[i].title+')"><input type="checkbox">'+obj[i][2]+'<i class="fas fa-trash i-trash" hidden></i><i class="fas fa-pen i-edit" hidden></i></h5>';
+							}                     
+						$("#append-prod").append(text_html);                      
+						}                                                 
+					});                                                                
+					}else{					              
+						$.each(obj, function(i, field){
+							if(obj.length-1 > i){
+								if(i % 2 == 0){
+									text_html = '<h5 class="prod-odd" onclick="showsub(\''+obj[i].title+'\')"><i class="fas fa-folder"></i>'+ obj[i].title +'<i class="fas fa-trash i-trash" hidden></i><i class="fas fa-pen i-edit" hidden></i></h5>';
+								}else{
+									text_html = '<h5 class="prod-even" onclick="showsub(\''+obj[i].title+'\')"><i class="fas fa-folder"></i>'+ obj[i].title +'<i class="fas fa-trash i-trash" hidden></i><i class="fas fa-pen i-edit" hidden></i></h5>';
+								}
+								$("#append-prod").append(text_html);							
+							}                                                 
+						});               
+					}
+				}			          
+								                          
+			}               
+		});
+	}
+
+	function choose(arg2){
+		arg = $('#prod-'+arg2).find('input[type=checkbox]');
+		name = $('#prod-'+arg2).text();
+		check = arg.prop('checked');	
+		isenable = !arg.is(":disabled");
+		if(check == false && isenable){
+			arg.prop('checked', true);
+			var ch = false;
+			for(var i = 0 ; i < arr_prod.length ; i++){
+				if(arr_prod[i].arg == arg2){
+					arr_prod[i].prod_id = arg2;
+					ch = true;
+					break;
+				}
+			}
+			if(!ch){          
+				item = {};   
+				item ["arg"] = arg2;        
+				item ["prod_id"] = arg2; 
+				item ["name"] = name;        
+				arr_prod.push(item);          
+			}   
+			num_prod++;				
+			$('#btn-next').text("เลือกสินค้า("+num_prod+")");  
+		}else if(isenable){
+			arg.prop('checked', false);
+			for(var i = 0 ; i < arr_prod.length ; i++){
+				if(arr_prod[i].arg == arg2){
+					arr_prod[i].prod_id = 0;
+					break;
+				}
+			} 
+			num_prod--;
+			$('#btn-next').text("เลือกสินค้า("+num_prod+")");
+		}
+	}
+
+	function page_back(arg){
+		var retrievedObject = localStorage.getItem('stack_folder');
+		var arr_data = JSON.parse(retrievedObject); 
+		if(arg){
+			for(var i = 1 ; i <= arr_data.length ; i++){
+				$('#'+arr_data[arr_data.length-i]).remove();				
+				if(arr_data[arr_data.length-i] == arg){
+					arr_data.splice(arr_data.length-i,i);
+					break;
+				}				
+			}			
+			localStorage.setItem('stack_folder', JSON.stringify(arr_data));  
+			showsub(arg);
+		}else{
+			for(var i = 1 ; i <= 2 ; i++){
+				$('#'+arr_data[arr_data.length-i]).remove();
+			}
+			var data = arr_data[arr_data.length-2];		
+			arr_data.splice(arr_data.length-2,2);
+			localStorage.setItem('stack_folder', JSON.stringify(arr_data));  
+			showsub(data);	
+		}
+			
+	}   
   	/* Brand Zone */
   	function addbrandconfirm(){
   		brandname = $(".newbrand").val();
@@ -108,11 +266,7 @@
   		}
   		$("#brand-tools").after('<input type="text" class="form-control text-center newbrand"><div id="addbrandbtn" class="row justify-content-center"><button class="btn btn-sm btn-success" style="margin-right: 10px; color: #fff" onclick="addbrandconfirm();">เพิ่ม</button><button class="btn btn-sm btn-danger" style="color: #fff" onclick="addbrandcancle();">ยกเลิก</button></div>');
   	}
-
-  	function showsub(){
-  		alert('showsub');
-  	}
-
+	
   	function dialogbrandremove(arg){
   		$.confirm({
 			icon: 'fa fa-warning',
@@ -202,7 +356,8 @@
   		$(".brand").addClass('editbrand');
   		$(".brand").attr('onclick', 'showbrandedit($(this))');
   	}
-  	/* Prod Zone */
+  	
+	/* Prod Zone */
   	function delnewprod(np){
   		$.confirm({
 			icon: 'fa fa-warning',
@@ -230,6 +385,7 @@
   		$("#div-btn").remove();
   		np=0;
   	}
+
   	function addprodconfirm(np){
   		newprod = $("#newprod-"+np+" input[type='text']").val();
   		if(newprod == "") return 0;
@@ -360,60 +516,33 @@
   			$("#prod-"+i).attr('onclick', 'editspcfprod($(this))');
   		}
   	}
+		  
   </script>
 </head>
 <body style="overflow: hidden">
 	<div class="container-fullwidth justify-content-center h-100">
       	<div class="row" style="padding-left: 1.5%; padding-right: 1.5%; margin-top: 3%; margin-bottom: 15px; height: 85%;">
         	<div id="col-brand" class="col-md-3 text-center" style="padding-top: 3%; padding-bottom: 3%; overflow-y: auto;">
-        		<h3 class="folder-title">หมวดหมู่สินค้า</h3>
-        		<div id="brand-tools" class="row justify-content-center" style="margin-top: -5%;">
+        		<h3 id="title-lft" class="folder-title">หมวดหมู่สินค้า</h3>
+        		<!-- <div id="brand-tools" class="row justify-content-center" style="margin-top: -5%;">
         			<div id="brand-add" class="col-2"><h4><i id="i-brand-add" class="fas fa-plus-circle" onclick="addbrand();"></i></h4></div>
         			<div id="brand-remove" class="col-2"><h4><i id="i-brand-trash" class="fas fa-trash" onclick="removebrand('fa-trash');"></i></h4></div>
         			<div id="brand-edit" class="col-2"><h4><i id="i-brand-edit" class="fas fa-pen" onclick="editbrand('fa-pen');"></i></h4></div>
-        		</div>
-        		<h3 class="brand">Toyota</h3>
-        		<h3 class="brand">Honda</h3>
-        		<h3 class="brand">Toyota</h3>
-        		<h3 class="brand">Honda</h3>
-        		<h3 class="brand">Toyota</h3>
-        		<h3 class="brand">Honda</h3>
-        		<h3 class="brand">Toyota</h3>
-        		<h3 class="brand">Honda</h3>
-        		<h3 class="brand">Toyota</h3>
-        		<h3 class="brand">Honda</h3>
-        		<h3 class="brand">Toyota</h3>
-        		<h3 class="brand">Honda</h3>
-        		<h3 class="brand">Toyota</h3>
-        		<h3 class="brand">Honda</h3>
-        		<h3 class="brand">Toyota</h3>
-        		<h3 class="brand">Honda</h3>
-        		<h3 class="brand">Toyota</h3>
-        		<h3 class="brand">Honda</h3>
+        		</div>       		 -->
+        		
         	</div>
-        	<div id="col-prod" class="col-md-9" style="overflow-y: auto;">
-        		<h5 class="prod-title">ชื่อสินค้า<i id="i-prod-add" class="fas fa-plus-circle" style="margin-left: 75%; margin-right: 1.5%;" onclick="addprod()"></i><i class="fas fa-trash" style="margin-right: 1.5%;" onclick="removeprod();"></i><i class="fas fa-pen" onclick="editprod();"></i></h5>
-        		<h5 id="prod-1" class="prod-odd"><input type="checkbox">รายการสินค้า<i class="fas fa-trash i-trash" hidden></i><i class="fas fa-pen i-edit" hidden></i></h5>
-        		<h5 id="prod-2" class="prod-even"><input type="checkbox">รายการสินค้า<i class="fas fa-trash i-trash" hidden></i><i class="fas fa-pen i-edit" hidden></i></h5>
-        		<h5 id="prod-3" class="prod-odd"><input type="checkbox">รายการสินค้า<i class="fas fa-trash i-trash" hidden></i><i class="fas fa-pen i-edit" hidden></i></h5>
-        		<h5 id="prod-4" class="prod-even"><i class="fas fa-folder"></i>รายการสินค้า<i class="fas fa-trash i-trash" hidden></i><i class="fas fa-pen i-edit" hidden></i></h5>
-        		<h5 id="prod-5" class="prod-odd"><i class="fas fa-folder"></i>รายการสินค้า<i class="fas fa-trash i-trash" hidden></i><i class="fas fa-pen i-edit" hidden></i></h5>
-        		<h5 id="prod-6" class="prod-even"><i class="fas fa-folder"></i>รายการสินค้า<i class="fas fa-trash i-trash" hidden></i><i class="fas fa-pen i-edit" hidden></i></h5>
-        		<h5 id="prod-7" class="prod-odd"><i class="fas fa-folder"></i>รายการสินค้า<i class="fas fa-trash i-trash" hidden></i><i class="fas fa-pen i-edit" hidden></i></h5>
-        		<h5 id="prod-8" class="prod-even"><input type="checkbox">รายการสินค้า<i class="fas fa-trash i-trash" hidden></i><i class="fas fa-pen i-edit" hidden></i></h5>
-        		<h5 id="prod-9" class="prod-odd"><input type="checkbox">รายการสินค้า<i class="fas fa-trash i-trash" hidden></i><i class="fas fa-pen i-edit" hidden></i></h5>
-        		<h5 id="prod-10" class="prod-even"><input type="checkbox">รายการสินค้า<i class="fas fa-trash i-trash" hidden></i><i class="fas fa-pen i-edit" hidden></i></h5>
-        		<h5 id="prod-11" class="prod-odd"><input type="checkbox">รายการสินค้า<i class="fas fa-trash i-trash" hidden></i><i class="fas fa-pen i-edit" hidden></i></h5>
-        		<h5 id="prod-12" class="prod-even"><input type="checkbox">รายการสินค้า<i class="fas fa-trash i-trash" hidden></i><i class="fas fa-pen i-edit" hidden></i></h5>
-        		<h5 id="prod-13" class="prod-odd"><input type="checkbox">รายการสินค้า<i class="fas fa-trash i-trash" hidden></i><i class="fas fa-pen i-edit" hidden></i></h5>
-        		<h5 id="prod-14" class="prod-even"><input type="checkbox">รายการสินค้า<i class="fas fa-trash i-trash" hidden></i><i class="fas fa-pen i-edit" hidden></i></h5>
-        		<h5 id="prod-15" class="prod-odd"><input type="checkbox">รายการสินค้า<i class="fas fa-trash i-trash" hidden></i><i class="fas fa-pen i-edit" hidden></i></h5>
-        		<h5 id="prod-16" class="prod-even"><input type="checkbox">รายการสินค้า<i class="fas fa-trash i-trash" hidden></i><i class="fas fa-pen i-edit" hidden></i></h5>
+			<div id="col-prod" class="col-md-9" style="overflow-y: auto;" hidden>							
+				<h5 class="prod-title">
+					<!-- <i id="i-back" onclick="page_back();" class="fas fa-angle-left"></i> ชื่อสินค้า <span> < ชื่อสินค้า 2</span> <span> < ชื่อสินค้า 3</span><i id="i-prod-add" class="fas fa-plus-circle" style="margin-left: 75%; margin-right: 1.5%;" onclick="addprod()"></i><i class="fas fa-trash" style="margin-right: 1.5%;" onclick="removeprod();"></i><i class="fas fa-pen" onclick="editprod();"></i> -->
+				</h5>						
+				<div id="append-prod">						
+					<!-- append prod or folder -->
+				</div>
         	</div>
       	</div>
       	<div class="row justify-content-end">
       		<div class="col-2 text-center">
-      			<button class="btn btn-success">เลือกสินค้า(5)</button>
+      			<button id="btn-next" class="btn btn-success" onclick="next()">เลือกสินค้า(0)</button>
       		</div>
       	</div>
 	</div>

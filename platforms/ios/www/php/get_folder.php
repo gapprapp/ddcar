@@ -1,7 +1,8 @@
 <?php
     include "db.php";
     $parent  = $_POST['parent']; 
-    $msg = "";   
+    $msg = ""; 
+    $output = array();  
    
     $sql = "SELECT node.title, (COUNT(parent.title) - (sub_tree.depth + 1)) AS depth
     FROM tree AS node,
