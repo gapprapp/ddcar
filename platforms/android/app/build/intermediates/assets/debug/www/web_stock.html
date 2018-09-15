@@ -74,12 +74,9 @@
 	</style>
   <script>
 		$(document).ready(function () {
-<<<<<<< HEAD
-=======
 			if(!localStorage.user_id){
 				window.location = 'web_login.html';
       } 
->>>>>>> f8aa8c1ecc2239d493d1c5e87784b484793ba9d3
 			if(localStorage.arr_prod_st){
 				$("#main-ctn").prop('hidden', true);
 				$("#detail-ctn").prop('hidden', false);
@@ -137,14 +134,6 @@
 				},             
 				success: function(data){  
 					EasyLoading.hide();
-<<<<<<< HEAD
-					var obj = jQuery.parseJSON(data);
-					if(obj){
-						$.each(obj, function(i, field){ 
-							get_amt(field.prod_id,field.prod_name);       
-						}); 
-					}                                                                                                                                        
-=======
 					var obj = jQuery.parseJSON(data);					
 					if(obj.length > 0){
 						$.each(obj, function(i, field){ 
@@ -153,7 +142,6 @@
 					}else{					
 						$('#append-ctn').append('<p class="display">ไม่พบสินค้า</p>');
 					}                                                                                                                                      
->>>>>>> f8aa8c1ecc2239d493d1c5e87784b484793ba9d3
 				}               
       }); 
   	}
@@ -216,6 +204,10 @@
 			window.location = 'web_folder.html?from=stock';
 		}
 
+		function logout(){
+			localStorage.clear();
+		}
+
   </script>
 </head>
 <body>
@@ -241,11 +233,7 @@
     <div id="main-ctn" class="container-fullwidth" style="margin-top: 15%;">
     	<div class="input-group row justify-content-center" style="margin-bottom: 4%; margin-left: 0.5%">
     		<h4 id="back" onclick="reposition();"><i class="fa fa-arrow-left" hidden></i></h4>
-<<<<<<< HEAD
-    		<input id="input-search" data-index="1" type="text" class="form-control-lg text-center" placeholder="ค้นหาสินค้า" style="width: 60%;">
-=======
     		<input id="input-search" data-index="1" type="text" class="form-control-lg text-center" placeholder="ค้นหาสินค้าหรือรหัสสินค้า" style="width: 60%;">
->>>>>>> f8aa8c1ecc2239d493d1c5e87784b484793ba9d3
 	        <button class="btn btn-outline-secondary" type="button" style="margin-left: 10px;" onclick="show();">
 	            <i class="fa fa-search"></i>
 	        </button>

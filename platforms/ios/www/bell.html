@@ -44,6 +44,9 @@
     </style>
     <script>
       $(document).ready(function () {
+        if(localStorage.bell){
+          $('.dot').prop('hidden',false);
+        }  
         $.ajax({
           type: "GET",
           url:"http://ddaccessory.trueddns.com:24330/dd-shop/php/get_status_prod.php",          
@@ -53,7 +56,7 @@
           success: function(data){  
             $(".overlay").prop('hidden', true); 
             var obj = jQuery.parseJSON(data); 
-            if(obj){
+            if(obj.length > 0){
               $.each(obj, function(i, field){ 
                 if(field.status == "warning"){
                   $('#ctn-prod').append('<div class="row">' +
@@ -73,10 +76,30 @@
                     '</div><hr class="mg-5">');
                 }                                                                                 
               });
+            }else{
+              update_bell();
             }
           }               
         });               
       });
+
+      function update_bell(){
+        $.ajax({ 
+          type: "GET",
+          url:"http://ddaccessory.trueddns.com:24330/dd-shop/php/update_bell.php",
+          beforeSend: function(){
+              $(".overlay").prop('hidden', false);
+          },                       
+          success: function(data){ 
+            $(".overlay").prop('hidden', true); 
+            if(data == "fail"){
+              console.log('error');
+            }else{
+              $('.dot').prop('hidden',true);              
+            }
+          }               
+        }); 
+      }
 
       /*function tabs(arg){
         arr = ['prod', 'credit'];
@@ -167,6 +190,7 @@
         <i id="i-home" class="fas fa-home menu"></i>
       </div>
       <div class="col-3 text-center" onclick="menu('bell')">
+        <div class="dot" hidden></div>
         <i id="i-bell" class="fas fa-bell menu active"></i>
       </div>
       <div class="col-3 text-center" onclick="scan();">

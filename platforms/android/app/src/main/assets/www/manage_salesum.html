@@ -44,6 +44,9 @@
 
   <script>
     $(document).ready(function(){
+      if(localStorage.bell){
+          $('.dot').prop('hidden',false);
+      }  
       $('#datepicker').duDatepicker(({format: 'dd/mm/yy', theme: 'red', cancelBtn: true, maxDate: "today"})).on('datechanged', function(e){
         console.log(e.date);
         $("#date").text(e.date);

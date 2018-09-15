@@ -85,7 +85,10 @@
                 var arr_data = JSON.parse(retrievedObject); 
                 prod_id = arr_data[0].prod_id;            
                 get_prod(prod_id);
-            }               
+            } 
+            if(localStorage.bell){
+                $('.dot').prop('hidden',false);
+            }                
         });
         
         $(document).keydown(function(objEvent) {

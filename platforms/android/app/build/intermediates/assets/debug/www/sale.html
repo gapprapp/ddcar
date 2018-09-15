@@ -100,9 +100,12 @@
             }
             if(ch){
                 if(ch == "true"){
-                    alert('bell');
+                    $('.dot').prop('hidden',false);
                 }
-            }        
+            }  
+            if(localStorage.bell){
+                $('.dot').prop('hidden',false);
+            }      
         });
 
         $(document).keydown(function(objEvent) {

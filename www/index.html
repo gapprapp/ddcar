@@ -104,26 +104,24 @@
     function onLoad(){
       if(!localStorage.user_id){                      
         transition_page_back('login.html');
-      }      
-      if(localStorage.ch_ucredit == 1){
+      }       
          
-      }else{
-        localStorage.ch_ucredit = 0;
-        // update credit auto when late
-        $.ajax({ 
-          type: "GET",
-          url:"http://ddaccessory.trueddns.com:24330/dd-shop/php/update_credit_auto.php",
-          beforeSend: function(){
-              $(".overlay").prop('hidden', false);
-          },                       
-          success: function(data){ 
-            $(".overlay").prop('hidden', true); 
-            if(data == "success"){
-              localStorage.ch_ucredit = 1;    
-            }                     
-          }               
-        });    
-      }
+      $.ajax({ 
+        type: "GET",
+        url:"http://ddaccessory.trueddns.com:24330/dd-shop/php/get_bell.php",
+        beforeSend: function(){
+            $(".overlay").prop('hidden', false);
+        },                       
+        success: function(data){ 
+          $(".overlay").prop('hidden', true); 
+          if(data == "alert"){
+            localStorage.bell = 1;
+            $('.dot').prop('hidden',false);
+          }else if(data == "normal"){
+            localStorage.bell = "";
+          }                            
+        }               
+      });     
 
       var d = new Date($.now());
       var last_d = new Date(d.getFullYear(),d.getMonth()+1, 0).getDate();
@@ -148,6 +146,27 @@
         localStorage.last_m = 1;
       }else{
         localStorage.last_m = 0;
+      }
+
+      if(d.getDate() == 3){
+        if(localStorage.ch_ucredit == 1){
+          return 0;
+        }  
+        $.ajax({ 
+          type: "GET",
+          url:"http://ddaccessory.trueddns.com:24330/dd-shop/php/update_credit_auto.php",
+          beforeSend: function(){
+              $(".overlay").prop('hidden', false);
+          },                       
+          success: function(data){ 
+            $(".overlay").prop('hidden', true); 
+            if(data == "success"){
+              localStorage.ch_ucredit = 1;    
+            }                     
+          }               
+        });       
+      }else{
+        localStorage.ch_ucredit == 0;
       }
     }
 

@@ -72,6 +72,9 @@
 
   <script>
     $(document).ready(function(){
+      if(localStorage.bell){
+          $('.dot').prop('hidden',false);
+      }  
       $.ajax({
         type: "GET",
         url:"http://ddaccessory.trueddns.com:24330/dd-shop/php/get_credit.php",          
