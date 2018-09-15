@@ -79,7 +79,8 @@
                 get_prod(prod_id);
             } 
             if(localStorage.arr_prod_i){
-                $("#btn-folder").attr('disabled',true);           
+                $("#btn-folder").attr('disabled',true);
+                $("#name").attr('disabled',true);           
                 //$("#btn-addpic").attr('disabled',true);
                 var retrievedObject = localStorage.getItem('arr_prod_i');
                 var arr_data = JSON.parse(retrievedObject); 
@@ -407,7 +408,8 @@
                 prod_id = arr_data2[0].prod_id;            
                 get_prod(prod_id);            
             }else{                   
-                $("#btn-folder").removeAttr('disabled');           
+                $("#btn-folder").removeAttr('disabled'); 
+                $("#name").removeAttr('disabled');          
                 //$("#btn-addpic").removeAttr('disabled');
             }                      
         }  
@@ -632,6 +634,7 @@
             <i id="i-home" class="fas fa-home menu"></i>
         </div>
         <div class="col-3 text-center" onclick="transition_page_next('bell.html')">
+            <div class="dot" hidden></div>
             <i id="i-bell" class="fas fa-bell menu"></i>
         </div>
         <div class="col-3 text-center" onclick="scan();">

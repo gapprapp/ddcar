@@ -31,19 +31,25 @@
       padding-right: 5px;
       padding-left: 5px;
     }
+    .dot {
+        position: absolute;
+        margin-top: -3px;
+        right: 30%;
+        font-size: 18px;
+        height: 10px;
+        width: 10px;
+        border-radius: 50%;
+        background-color: #fff;
+    }
   </style>
   <script>
     $(document).ready(function() {
       url = new URL(window.location.href);
       u = url.searchParams.get("u");
-      m = url.searchParams.get("menu");
 
-      if(menu == 2){
+      if(localStorage.menu != ""){
         //Back from function
-        $("#tabs-main").trigger('click');
-      }else if(menu == 3){
-        //Back from function
-        $("#tabs-log").trigger('click');
+        $("#tabs-"+localStorage.menu).trigger('click');
       }
 
       localStorage.stack_folder = "";
@@ -156,6 +162,7 @@
           }
         }$("#tabs-"+arg).addClass('tabs'); $("#tabs-"+arg).removeClass('non'); $("div #"+arg).prop('hidden', false);
       }
+      localStorage.menu = arg;
     }
 
     function disactive(arg) {
@@ -295,6 +302,7 @@
       <i id="i-home" class="fas fa-home menu active"></i>
     </div>
     <div class="col-3 text-center" onclick="transition_page_next('bell.html')">
+      <div class="dot" hidden></div>
       <i id="i-bell" class="fas fa-bell menu"></i>
     </div>
     <div class="col-3 text-center" onclick="scan();">

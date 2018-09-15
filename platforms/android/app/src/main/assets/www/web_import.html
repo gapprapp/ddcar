@@ -67,12 +67,31 @@
   <script>	
 		var prod_id,img,cost_o;
 		var flag = 1;
+		arr_data = [];		
 		$(document).ready(function () {
-			if(!localStorage.user_id){
+			/*if(!localStorage.user_id){
 				window.location = 'web_login.html';
-			}
+			}*/
 			get_header();		
 			setTimeout(function() {$("#name").focus();}, 100);
+
+			if(localStorage.arr_prod){     
+				var retrievedObject = localStorage.getItem('arr_prod');
+				arr_data = JSON.parse(retrievedObject);          
+				count = arr_data[arr_data.length-1].count + 1;             
+				add_previous();
+            }      
+
+			if(localStorage.arr_prod_i){
+				$("#btn-folder").attr('disabled',true);
+				$("#btn-def").attr('disabled',true);
+				$("#name").attr('readonly',true);
+                var retrievedObject = localStorage.getItem('arr_prod_i');
+                var arr_data2 = JSON.parse(retrievedObject); 
+                prod_id = arr_data2[0].prod_id;            
+				get_prod(prod_id);
+				setTimeout(function() {$("#amount").focus();}, 100);
+            }    
 
 			var options = {
 				url: function(phrase) {
@@ -151,7 +170,70 @@
 				theme: "blue-light",
 				};
 			$("#name").easyAutocomplete(options);	
-		});		
+		});	
+		
+		function get_prod(id){
+            prod_id = id;
+            var bool = true;
+            if(arr_data.length > 0){                 
+                for(var b = 0; b < arr_data.length; b++){
+                    if(prod_id == arr_data[b].prod_id){
+                        $.confirm({
+                            title: 'เตือน',
+                            content: 'มีการเพิ่มสินค้า ' + arr_data[b].name + ' กรุณาแก้ไขที่จำนวนของสินค้าที่ได้เพิ่มแล้ว',
+                            backgroundDismiss: true,
+                            buttons: {
+                                formSubmit: {
+                                text: 'ตกลง',
+                                btnClass: 'btn-regis',
+                                action: function () {
+                                }
+                                }
+                            }
+                        });  
+                        bool = false;                               
+                        break;           
+                    }
+                }                 
+            }
+            if(bool){
+                $.ajax({
+                    type: "POST",
+                    url:"php/get_prod.php",    
+                    data:{'prod_id' : id},
+                    //async: false,                       
+                    beforeSend: function(){
+						EasyLoading.show({                           
+							text: "กำลังโหลด"                            
+						});
+                    },             
+                    success: function(data){  
+                        EasyLoading.hide();
+                        var obj = jQuery.parseJSON(data);                                         
+                        $.each(obj, function(i, field){
+                            $('#name').val(obj[i].prod_name);
+							$('#barcode').val(obj[i].prod_code); 
+							$('#amount').val("1");
+                            cost_o = obj[i].prod_cost;                       
+                            img = obj[i].img;   
+                            if(obj[i].prod_cost == 0 && obj[i].prod_price == 0 && obj[i].prod_pricesend == 0){
+                                $('#fund').val("");
+                                $('#whole').val("");
+                                $('#retail').val("");  
+                            }else{
+                                $('#fund').val(cost_o);
+                                $('#whole').val(obj[i].prod_pricesend);
+                                $('#retail').val(obj[i].prod_price);                     
+                                flag = 1;
+                            }                        
+						});  
+						get_place();                                                           
+                    }               
+                });                    
+            }else{
+            	show('dup');
+            }               
+        }
 
 		$(document).keydown(function(objEvent) {
 			if (objEvent.keyCode == 9) {  //tab pressed
@@ -390,16 +472,16 @@
 			}
 			$('#name').focus();			          
 		}     
-
-		arr_data = []
+		
 		var count = 0;
-  		function show(){
-  		var bottom = $(window).height() - $("#cnt-add").offset().top - $("#cnt-add").height();
-  		// Always scroll to the bottom
-  		if(bottom < 200){
-  		  $("#cnt-add").css('max-height', $("#cnt-add").height());
-  		  $("#cnt-add").animate({scrollTop: $('#cnt-add').prop('scrollHeight')});
-  		}   
+  		function show(arg){
+		if(arg != 'dup'){			
+			var bottom = $(window).height() - $("#cnt-add").offset().top - $("#cnt-add").height();
+			// Always scroll to the bottom
+			if(bottom < 200){
+				$("#cnt-add").css('max-height', $("#cnt-add").height());
+				$("#cnt-add").animate({scrollTop: $('#cnt-add').prop('scrollHeight')});
+			}   
 
 			$("#cnt-add").append('<div id="add-'+count+'" class="row mgb-5">'+
 					'<div class="col-1"></div>'+
@@ -443,42 +525,115 @@
 					"</" + "script>" +
 				'</div>');
 				
-				item = {}            
-				item ["qr"] =  $('#barcode').val();
-				item ["prod_id"] =  prod_id;
-				item ["name"] =  $('#name').val();
-				item ["cost"] =  $('#fund').val();               
-				item ["amt"] =  $('#amount').val();			
-				item ["addr"] = $('#at').val();  
-				item ["price"] = $('#retail').val();    
+			item = {}           
+			item ["count"] =  count; 
+			item ["qr"] =  $('#barcode').val();
+			item ["prod_id"] =  prod_id;
+			item ["name"] =  $('#name').val();
+			item ["cost"] =  $('#fund').val();               
+			item ["amt"] =  $('#amount').val();			
+			item ["addr"] = $('#at').val();  
+			item ["price_s"] = $('#whole').val();
+			item ["price"] = $('#retail').val();   
+			item ["img"] = img;   
+			item ["plholder"] = $('#at').attr('placeholder');  
 
-				arr_data.push(item);		
-				$("#btn-b").attr('disabled',true);
-
-				$('#at').attr("placeholder","");
-				$('#barcode').val("");
-				$('#name').val("");
-				/*$("#name").attr('data-img',"");
-				$('#name[rel=popover]').popover({
-					html: true, 
-					trigger: 'hover',
-					placement: 'left',
-					content: function(){
-					return '<img src='+$(this).data('img')+'>';}
-				});*/ 		
-				$('#fund').val("");
-				$('#whole').val("");
-				$('#retail').val("");
-				$('#amount').val("1");
-				$('#at').val("")
-				if(is_show == 1){
-						show_avg(); 
-						is_show = 0;
-				}            
-				$('#avg-rate').text("");
-				count++;
+			arr_data.push(item);	
+			localStorage.setItem('arr_prod', JSON.stringify(arr_data));	
+			$("#btn-b").attr('disabled',true);
+			count++;			
+		}
+			$('#at').attr("placeholder","");
+			$('#barcode').val("");
+			$('#name').val("");			
+			$('#fund').val("");
+			$('#whole').val("");
+			$('#retail').val("");
+			$('#amount').val("1");
+			$('#at').val("")
+			if(is_show == 1){
+					show_avg(); 
+					is_show = 0;
+			}            
+			$('#avg-rate').text("");		
+			if(localStorage.arr_prod_i){
+                var retrievedObject = localStorage.getItem('arr_prod_i');
+                var arr_data2 = JSON.parse(retrievedObject);
+                arr_data2.splice(0,1); 
+                localStorage.setItem('arr_prod_i', JSON.stringify(arr_data2));  
+                if(arr_data2.length == 0){
+                    localStorage.arr_prod_i = "";  
+                }                                 
+            }  
+            if(localStorage.arr_prod_i){                    
+                var retrievedObject = localStorage.getItem('arr_prod_i');
+                var arr_data2 = JSON.parse(retrievedObject);                                   
+                prod_id = arr_data2[0].prod_id;            
+                get_prod(prod_id);            
+            }else{                   
+				$("#btn-folder").removeAttr('disabled');
+				$("#btn-def").removeAttr('disabled');
+				$("#name").removeAttr('readonly');
+            }    	
 		}
 		
+		function add_previous(){
+			for(var i = 0;i < arr_data.length; i++){
+				var bottom = $(window).height() - $("#cnt-add").offset().top - $("#cnt-add").height();
+				// Always scroll to the bottom
+				if(bottom < 200){
+					$("#cnt-add").css('max-height', $("#cnt-add").height());
+					$("#cnt-add").animate({scrollTop: $('#cnt-add').prop('scrollHeight')});
+				}   
+
+				$("#cnt-add").append('<div id="add-'+arr_data[i].count+'" class="row mgb-5">'+
+						'<div class="col-1"></div>'+
+				'<div class="col-2">'+
+					'<div class="input-group-prepend">'+
+					'<span id="span-no-'+arr_data[i].count+'" class="input-group-text">'+(arr_data[i].count+1)+'</span>'+
+					'<input id="barcodee" type="text" value="'+arr_data[i].qr+'" class="form-control text-center" readonly>'+
+					'</div>'+
+				'</div>'+
+				'<div class="col-1 nopd-8">'+
+					'<input id="at-'+arr_data[i].count+'" type="text" value="'+arr_data[i].addr+'" placeholder="'+arr_data[i].plholder+'" class="form-control text-center" readonly>'+
+				'</div>'+
+				'<div class="col-3 nopd-8">'+
+					'<input id="name-'+arr_data[i].count+'" value="'+arr_data[i].name+'" class="form-control text-center" rel="popover" data-img="'+arr_data[i].img+'" readonly>'+
+				'</div>'+
+				'<div class="col-1 nopd-8">'+
+					'<input id="amount-'+arr_data[i].count+'" value="'+arr_data[i].amt+'" type="number" class="form-control text-center no-spin" min="1" readonly>'+
+				'</div>'+
+				'<div class="col-1 nopd-8">'+
+					'<input id="fundd" type="number" value="'+arr_data[i].cost+'" class="form-control text-center no-spin" min="0" readonly>'+
+				'</div>'+          
+				'<div class="col-1 nopd-8">'+
+					'<input id="wholee" type="number" value="'+arr_data[i].price_s+'" class="form-control text-center no-spin" min="0" readonly>'+
+				'</div>'+
+				'<div class="col-1 nopd-8">'+
+					'<input id="retaill" type="number" value="'+arr_data[i].price+'" class="form-control text-center no-spin" min="0" readonly>'+
+				'</div>'+
+				'<div class="col-1 nopd text-center">'+
+				'<button id="btn-edit-'+arr_data[i].count+'" class="btn btn-sm btn-primary mgr-5" onclick="edit('+arr_data[i].count+');"> <i class="fas fa-pencil-alt"></i></button>'+
+				'<button id="btn-save-'+arr_data[i].count+'" class="btn btn-sm btn-success mgr-5" onclick="save('+arr_data[i].count+');" hidden> <i class="fa fa-check"></i></button>'+
+				'<button id="btn-trash-'+arr_data[i].count+'" class="btn btn-sm btn-danger" onclick="remove('+arr_data[i].count+');"> <i class="fa fa-trash"></i></button>'+
+						'</div>'+
+						"<script>" +
+							"$('#name-"+arr_data[i].count+"[rel=popover]').popover({" +
+							"html: true," +
+							"trigger: 'hover'," +
+							"placement: 'left'," +
+							"content: function(){" +
+							"return '<img src='+$(this).data('img')+'>';}" +
+							"});" +
+						"</" + "script>" +
+					'</div>');
+
+				// count++;			
+				$("#btn-b").attr('disabled',true);	
+			}
+		
+		}
+
 		function set_default(){
 			$('#at').attr("placeholder","");
 			$('#barcode').val("");
@@ -524,14 +679,15 @@
 
   		function save(arg){
 			arr_data[arg].amt = $("#amount-"+arg).val();
-			arr_data[arg].addr = $("#at-"+arg).val();       
+			arr_data[arg].addr = $("#at-"+arg).val();    
+			localStorage.setItem('arr_prod', JSON.stringify(arr_data));	   
 
 			$("#amount-" + arg).prop('readonly', true);
 			$("#at-" + arg).prop('readonly', true);  
 
-  		$("#btn-edit-"+arg).prop('hidden', false);
-  		$("#btn-trash-"+arg).prop('hidden', false);
-  		$("#btn-save-"+arg).prop('hidden', true);
+			$("#btn-edit-"+arg).prop('hidden', false);
+			$("#btn-trash-"+arg).prop('hidden', false);
+			$("#btn-save-"+arg).prop('hidden', true);
   	}
 
 		function remove(arg) {
@@ -543,8 +699,7 @@
 					danger: {
 						btnClass: 'btn-danger',
 						text: 'ลบ',
-						action: function () {						
-							arr_data.splice(arg, 1);
+						action: function () {							
 							$("#add-" + arg).remove();
 							for (i = arg+1; i <= count-1; i++) {
 								$("#span-no-" + (i)).text(i);								
@@ -558,8 +713,11 @@
 								$("#btn-edit-" + i).attr('onclick', "edit(" + (i - 1) + ")");
 								$("#btn-edit-" + i).prop('id', 'btn-edit-' + (i - 1));
 								$("#btn-save-" + i).attr('onclick', "save(" + (i - 1) + ")");
-								$("#btn-save-" + i).prop('id', 'btn-save-' + (i - 1));							
+								$("#btn-save-" + i).prop('id', 'btn-save-' + (i - 1));
+								arr_data[i].count--;						
 							}
+							arr_data.splice(arg, 1);
+							localStorage.setItem('arr_prod', JSON.stringify(arr_data));	
 							count--;
 							if(arr_data.length == 0){
 								$("#btn-b").attr('disabled',false);
@@ -633,7 +791,7 @@
 						window.setTimeout(function() {
 							WinPrint.print();
 							WinPrint.close();
-							location.reload(true);		
+							cancel();		
 						}, 250);			                     
 						         
 					}else{
@@ -658,6 +816,16 @@
 		function logout(){
 			localStorage.clear();
 		}
+
+		function cancel(){
+			localStorage.arr_prod = "";
+			localStorage.arr_prod_i = "";
+			location.reload();
+		}
+
+		function selectfolder() {
+            window.location = "web_folder.html?from=import";            
+        } 
 
   </script>
 </head>
@@ -704,7 +872,7 @@
       			</div>
       			<div id="date" class="col-2 text-center" style="margin-top: 5px; color: #666;">12/5/2018</div>
       			<div id="user" class="col-2 text-center nopd" style="margin-top: 5px; color: #666;">ชายเมืองสิงค์</div>
-      			<div class="col-3"></div>
+      			<!--<div class="col-3"><button id="btn-folder" onclick="selectfolder()" class="select_folder">เลือกสินค้า</button></div>-->
       		</div>
       	</div><hr style="width: 85%;">
       	
@@ -761,18 +929,19 @@
 			  </div>
 			</div><br>
 			<div class="row">
-				<div class="col-11 text-right nopd-8">
+				<div class="col-11 text-right" style="margin-left: 5%;">
 					<button class="btn btn-md btn-success" style="margin-right: 5px;" onclick="add();">เพิ่มสินค้า</button>
-					<button class="btn btn-md btn-danger" onclick="set_default()">ค่าเริ่มต้น</button>
+					<button id="btn-folder" class="select_folder btn btn-md btn-primary" style="margin-right: 5px;" onclick="selectfolder();">เลือกสินค้า</button>
+					<button id="btn-def" class="btn btn-md btn-danger" onclick="set_default()">ค่าเริ่มต้น</button>
 				</div>
-				<div class="col-1"></div>
 			</div>
 		</div>
 
 		<div id="ctn-bttm" class="container-fullwidth fixed-bottom" style="margin-bottom: 15px; z-index: 0;">
 		  <div class="row">
 		    <div class="col-12 text-center">
-		        <button id="btn_checkbill" class="btn btn-success" onclick="save2db()">บันทึก</button>
+				<button id="btn_checkbill" class="btn btn-success" onclick="save2db()">บันทึก</button>
+				<button class="btn btn-danger" onclick="cancel()">ยกเลิก</button>
 		    </div>
 			</div>
 			<div id="show_qr" hidden>
