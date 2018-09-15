@@ -1,6 +1,7 @@
 {
     "logs": [
         {
+<<<<<<< HEAD
             "outputFile": "/Users/phoenix/Documents/ddcar/platforms/android/app/build/intermediates/incremental/mergeDebugResources/merged.dir/values-ro/values-ro.xml",
             "map": [
                 {
@@ -158,6 +159,9 @@
         },
         {
             "outputFile": "/Users/phoenix/Documents/ddcar/D:\\Users\\phoenix\\Documents\\ddcar\\D:\\Users\\phoenix\\Documents\\ddcar\\D:\\GitHub\\ddcar\\platforms\\android\\app\\build\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values-ro\\values-ro.xml",
+=======
+            "outputFile": "D:\\GitHub\\ddcar\\platforms\\android\\app\\build\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values-ro\\values-ro.xml",
+>>>>>>> f8aa8c1ecc2239d493d1c5e87784b484793ba9d3
             "map": [
                 {
                     "source": "/Users/phoenix/Documents/ddcar/D:\\Users\\phoenix\\Documents\\ddcar\\D:\\Users\\phoenix\\Documents\\ddcar\\C:\\Users\\moronz\\.gradle\\caches\\transforms-1\\files-1.1\\support-compat-27.1.1.aar\\6fbd0ab55dc61ca6c0d5a5e352bd6f0b\\res\\values-ro\\values-ro.xml",
@@ -194,6 +198,7 @@
                     }
                 }
             ]
+<<<<<<< HEAD
         },
         {
             "outputFile": "/Users/phoenix/Documents/ddcar/D:\\Users\\phoenix\\Documents\\ddcar\\D:\\Users\\phoenix\\Documents\\ddcar\\D:\\Users\\phoenix\\Documents\\ddcar\\D:\\GitHub\\ddcar\\platforms\\android\\app\\build\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values-ro\\values-ro.xml",
@@ -350,6 +355,8 @@
                     }
                 }
             ]
+=======
+>>>>>>> f8aa8c1ecc2239d493d1c5e87784b484793ba9d3
         }
     ]
 }

@@ -1,6 +1,7 @@
 {
     "logs": [
         {
+<<<<<<< HEAD
             "outputFile": "/Users/phoenix/Documents/ddcar/D:\\Users\\phoenix\\Documents\\ddcar\\D:\\Users\\phoenix\\Documents\\ddcar\\D:\\Users\\phoenix\\Documents\\ddcar\\D:\\GitHub\\ddcar\\platforms\\android\\app\\build\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values-it\\values-it.xml",
             "map": [
                 {
@@ -137,6 +138,10 @@
                         "endOffsets": "9404"
                     }
                 },
+=======
+            "outputFile": "D:\\GitHub\\ddcar\\platforms\\android\\app\\build\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values-it\\values-it.xml",
+            "map": [
+>>>>>>> f8aa8c1ecc2239d493d1c5e87784b484793ba9d3
                 {
                     "source": "/Users/phoenix/Documents/ddcar/D:\\Users\\phoenix\\Documents\\ddcar\\D:\\Users\\phoenix\\Documents\\ddcar\\D:\\Users\\phoenix\\Documents\\ddcar\\D:\\Users\\phoenix\\.gradle\\caches\\transforms-1\\files-1.1\\barcodescanner-release-2.1.5.aar\\cac649330a5d3b102e3f8f15c3dd0a86\\res\\values-it\\values-it.xml",
                     "from": {
@@ -194,6 +199,7 @@
                     }
                 }
             ]
+<<<<<<< HEAD
         },
         {
             "outputFile": "/Users/phoenix/Documents/ddcar/D:\\Users\\phoenix\\Documents\\ddcar\\D:\\Users\\phoenix\\Documents\\ddcar\\D:\\Users\\phoenix\\Documents\\ddcar\\platforms\\android\\app\\build\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values-it\\values-it.xml",
@@ -350,6 +356,8 @@
                     }
                 }
             ]
+=======
+>>>>>>> f8aa8c1ecc2239d493d1c5e87784b484793ba9d3
         }
     ]
 }

@@ -33,14 +33,7 @@
     },
     "cordova-plugin-fullscreen": {
       "PACKAGE_NAME": "com.gitmew.ddcar"
-    },
-    "cordova-plugin-file-transfer": {
-      "PACKAGE_NAME": "com.gitmew.ddcar"
     }
   },
-  "dependent_plugins": {
-    "cordova-plugin-file": {
-      "PACKAGE_NAME": "com.gitmew.ddcar"
-    }
-  }
+  "dependent_plugins": {}
 }

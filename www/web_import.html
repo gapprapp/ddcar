@@ -69,11 +69,15 @@
 		var flag = 1;
 		arr_data = [];		
 		$(document).ready(function () {
-			/*if(!localStorage.user_id){
+			if(!localStorage.user_id){
 				window.location = 'web_login.html';
-			}*/
+			}
 			get_header();		
 			setTimeout(function() {$("#name").focus();}, 100);
+
+			if(localStorage.ware_id_im){
+                $('#btn-b').text(localStorage.ware_name_im);
+            }
 
 			if(localStorage.arr_prod){     
 				var retrievedObject = localStorage.getItem('arr_prod');
@@ -281,10 +285,14 @@
 					var obj = jQuery.parseJSON(data); 
 					if(obj){
 						$.each(obj, function(i, field){
-							if(i == 0){
-								ware_id = field.ware_id;
-								$('#btn-b').text(field.ware_name);								
-							}
+							if(!localStorage.ware_id_im){
+								if(i == 0){
+									localStorage.ware_id_im =  field.ware_id;
+									// ware_id = field.ware_id;
+									$('#btn-b').text(field.ware_name);
+									localStorage.ware_name_im =  field.ware_name;								
+								}
+							}							
 							$('#b').append('<a class="dropdown-item text-center" href="#" onclick="setware('+field.ware_id+',\''+field.ware_name+'\')">'+field.ware_name+'</a>');
 						}); 
 					}
@@ -297,7 +305,7 @@
 			$.ajax({
 				type: "POST",
 				url:"php/get_place.php",    
-				data:{'prod_id' : prod_id,"ware_id":ware_id},  			                                 
+				data:{'prod_id' : prod_id,"ware_id":localStorage.ware_id_im},  			                                 
 				success: function(data){				
 					var obj = jQuery.parseJSON(data);                    
 					if(obj){                        
@@ -319,9 +327,11 @@
 			popup.classList.toggle("show");
 		}
 
-		var ware_id;
+		// var ware_id;
 		function setware(arg,arg2){
-			ware_id = arg;
+			localStorage.ware_id_im = arg;
+			// ware_id = arg;
+			localStorage.ware_name_im = arg2;
 			$('#btn-b').text(arg2);
 			get_place();
 		}
@@ -764,7 +774,7 @@
 			var d = new Date($.now());         
 			var datetime = d.getFullYear() + "-" + (d.getMonth()+1) + "-" + d.getDate() + " " + d.getHours() + ":" + d.getMinutes() + ":" + d.getSeconds(); 
 			json_string = JSON.stringify(arr_data);
-			var dataString =  "JSON=" + json_string + "&ware_id=" + ware_id + "&date=" + datetime
+			var dataString =  "JSON=" + json_string + "&ware_id=" + localStorage.ware_id_im + "&date=" + datetime
 			+ "&sum=" + sum + "&user_id=" + localStorage.user_id;
 			//alert(dataString);			
 
@@ -820,6 +830,8 @@
 		function cancel(){
 			localStorage.arr_prod = "";
 			localStorage.arr_prod_i = "";
+			localStorage.ware_name_im = "";
+			localStorage.ware_id_im = "";
 			location.reload();
 		}
 
@@ -839,9 +851,10 @@
       	<div class="container">
       		<div class="row" style="margin-top: 2px;">
       			<div class="col-12 text-center">
-      				<a href="web_sale.html" class="mgr-20">ขายสินค้า</a>
-      				<a href="web_import.html" class="mgr-20 active">นำสินค้าเข้าโกดัง</a>
-      				<a href="web_stock.html" class="mgr-20">เช็คสต๊อก</a>
+					<a href="web_sale.html" class="mgr-20">ขายสินค้า</a>
+					<a href="web_import.html" class="mgr-20 active">นำสินค้าเข้าโกดัง</a>
+					<a href="web_stock.html" class="mgr-20">เช็คสต๊อก</a>
+					<a href="web_export.html" class="mgr-20">สินค้าออกโกดัง</a>
 					<a href="web_select.html" class="mgr-20">รายการย้อนหลัง</a>
 					<a href="" class="mgr-20" onclick="logout()">ออกจากระบบ</a>
       			</div>

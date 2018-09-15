@@ -38,6 +38,7 @@
                     }
                 }
             ]
+<<<<<<< HEAD
         },
         {
             "outputFile": "/Users/phoenix/Documents/ddcar/D:\\Users\\phoenix\\Documents\\ddcar\\D:\\Users\\phoenix\\Documents\\ddcar\\D:\\Users\\phoenix\\Documents\\ddcar\\platforms\\android\\app\\build\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values-zh-rCN\\values-zh-rCN.xml",
@@ -350,6 +351,8 @@
                     }
                 }
             ]
+=======
+>>>>>>> f8aa8c1ecc2239d493d1c5e87784b484793ba9d3
         }
     ]
 }

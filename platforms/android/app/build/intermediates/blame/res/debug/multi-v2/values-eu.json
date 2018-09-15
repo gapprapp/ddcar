@@ -1,6 +1,7 @@
 {
     "logs": [
         {
+<<<<<<< HEAD
             "outputFile": "/Users/phoenix/Documents/ddcar/D:\\Users\\phoenix\\Documents\\ddcar\\D:\\Users\\phoenix\\Documents\\ddcar\\D:\\Users\\phoenix\\Documents\\ddcar\\platforms\\android\\app\\build\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values-eu\\values-eu.xml",
             "map": [
                 {
@@ -275,6 +276,9 @@
         },
         {
             "outputFile": "/Users/phoenix/Documents/ddcar/D:\\Users\\phoenix\\Documents\\ddcar\\D:\\Users\\phoenix\\Documents\\ddcar\\D:\\GitHub\\ddcar\\platforms\\android\\app\\build\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values-eu\\values-eu.xml",
+=======
+            "outputFile": "D:\\GitHub\\ddcar\\platforms\\android\\app\\build\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values-eu\\values-eu.xml",
+>>>>>>> f8aa8c1ecc2239d493d1c5e87784b484793ba9d3
             "map": [
                 {
                     "source": "/Users/phoenix/Documents/ddcar/D:\\Users\\phoenix\\Documents\\ddcar\\D:\\Users\\phoenix\\Documents\\ddcar\\C:\\Users\\moronz\\.gradle\\caches\\transforms-1\\files-1.1\\support-compat-27.1.1.aar\\6fbd0ab55dc61ca6c0d5a5e352bd6f0b\\res\\values-eu\\values-eu.xml",
@@ -292,6 +296,7 @@
                         "endColumns": "100",
                         "endOffsets": "9291"
                     }
+<<<<<<< HEAD
                 },
                 {
                     "source": "/Users/phoenix/Documents/ddcar/D:\\Users\\phoenix\\Documents\\ddcar\\D:\\Users\\phoenix\\Documents\\ddcar\\C:\\Users\\moronz\\.gradle\\caches\\transforms-1\\files-1.1\\barcodescanner-release-2.1.5.aar\\b07811c53a299101782b556223467be9\\res\\values-eu\\values-eu.xml",
@@ -348,6 +353,8 @@
                         "endColumns": "55,62,64,63,61,46,81,56,55,68,51,42,66,67,70,55,62,73,67,57,58,57,51,58,56,69,59,69,60,53,52,66,63,80,48,80,56,50,61,59,46,49,51,48,103,141,55,55,57,105,52,49,110,43,51,53,151,62,52,105,80,73,46,52,74,82,153,78,48,85,85,74,89,105,83,80,140,96,80,74,66,79,70,65,92,94,115,89,75,75,68,67,63,201,79,71,87,69,143,85,54,81,70,121,87,71,97,72,128,86,61,79,73,76,75,58,63,62,67,61,55,69,57,82",
                         "endOffsets": "106,169,234,298,360,407,489,546,602,671,723,766,833,901,972,1028,1091,1165,1233,1291,1350,1408,1460,1519,1576,1646,1706,1776,1837,1891,1944,2011,2075,2156,2205,2286,2343,2394,2456,2516,2563,2613,2665,2714,2818,2960,3016,3072,3130,3236,3289,3339,3450,3494,3546,3600,3752,3815,3868,3974,4055,4129,4176,4229,4304,4387,4541,4620,4669,4755,4841,4916,5006,5112,5196,5277,5418,5515,5596,5671,5738,5818,5889,5955,6048,6143,6259,6349,6425,6501,6570,6638,6702,6904,6984,7056,7144,7214,7358,7444,7499,7581,7652,7774,7862,7934,8032,8105,8234,8321,8383,8463,8537,8614,8690,8749,8813,8876,8944,9006,9062,9132,9190,9374"
                     }
+=======
+>>>>>>> f8aa8c1ecc2239d493d1c5e87784b484793ba9d3
                 }
             ]
         }

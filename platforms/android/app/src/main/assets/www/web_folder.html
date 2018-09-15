@@ -46,6 +46,12 @@
 	arr_prod = [];
 	var num_prod = 0,from;
   	$(document).ready(function() {
+<<<<<<< HEAD
+=======
+		if(!localStorage.user_id){
+			window.location = 'web_login.html';
+		} 
+>>>>>>> f8aa8c1ecc2239d493d1c5e87784b484793ba9d3
 		localStorage.stack_folder = "";
 		url = new URL(window.location.href);		
 		from = url.searchParams.get("from");
@@ -521,11 +527,19 @@
       	<div class="row" style="padding-left: 1.5%; padding-right: 1.5%; margin-top: 3%; margin-bottom: 15px; height: 85%;">
         	<div id="col-brand" class="col-md-3 text-center" style="padding-top: 3%; padding-bottom: 3%; overflow-y: auto;">
         		<h3 id="title-lft" class="folder-title">หมวดหมู่สินค้า</h3>
+<<<<<<< HEAD
         		<div id="brand-tools" class="row justify-content-center" style="margin-top: -5%;">
         			<div id="brand-add" class="col-2"><h4><i id="i-brand-add" class="fas fa-plus-circle" onclick="addbrand();"></i></h4></div>
         			<div id="brand-remove" class="col-2"><h4><i id="i-brand-trash" class="fas fa-trash" onclick="removebrand('fa-trash');"></i></h4></div>
         			<div id="brand-edit" class="col-2"><h4><i id="i-brand-edit" class="fas fa-pen" onclick="editbrand('fa-pen');"></i></h4></div>
         		</div>       		
+=======
+        		<!-- <div id="brand-tools" class="row justify-content-center" style="margin-top: -5%;">
+        			<div id="brand-add" class="col-2"><h4><i id="i-brand-add" class="fas fa-plus-circle" onclick="addbrand();"></i></h4></div>
+        			<div id="brand-remove" class="col-2"><h4><i id="i-brand-trash" class="fas fa-trash" onclick="removebrand('fa-trash');"></i></h4></div>
+        			<div id="brand-edit" class="col-2"><h4><i id="i-brand-edit" class="fas fa-pen" onclick="editbrand('fa-pen');"></i></h4></div>
+        		</div>       		 -->
+>>>>>>> f8aa8c1ecc2239d493d1c5e87784b484793ba9d3
         		
         	</div>
 			<div id="col-prod" class="col-md-9" style="overflow-y: auto;" hidden>							
