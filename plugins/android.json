@@ -1,0 +1,44 @@
+{
+  "prepare_queue": {
+    "installed": [],
+    "uninstalled": []
+  },
+  "config_munge": {
+    "files": {}
+  },
+  "installed_plugins": {
+    "com.telerik.plugins.nativepagetransitions": {
+      "PACKAGE_NAME": "com.gitmew.ddcar"
+    },
+    "cordova-plugin-camera": {
+      "PACKAGE_NAME": "com.gitmew.ddcar"
+    },
+    "cordova-plugin-datepicker": {
+      "PACKAGE_NAME": "com.gitmew.ddcar"
+    },
+    "cordova-plugin-device": {
+      "PACKAGE_NAME": "com.gitmew.ddcar"
+    },
+    "cordova-plugin-fullscreen": {
+      "PACKAGE_NAME": "com.gitmew.ddcar"
+    },
+    "cordova-plugin-screen-orientation": {
+      "PACKAGE_NAME": "com.gitmew.ddcar"
+    },
+    "cordova-plugin-statusbar": {
+      "PACKAGE_NAME": "com.gitmew.ddcar"
+    },
+    "cordova-plugin-whitelist": {
+      "PACKAGE_NAME": "com.gitmew.ddcar"
+    },
+    "phonegap-plugin-barcodescanner": {
+      "ANDROID_SUPPORT_V4_VERSION": "27.+",
+      "PACKAGE_NAME": "com.gitmew.ddcar"
+    }
+  },
+  "dependent_plugins": {
+    "es6-promise-plugin": {
+      "PACKAGE_NAME": "com.gitmew.ddcar"
+    }
+  }
+}

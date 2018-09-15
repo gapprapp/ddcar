@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Home</title>
+    <!-- Bootstrap Import -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <script type="text/javascript" src="js/jquery-3.3.1.min.js"></script>
+    <script type="text/javascript" src="js/jquery-ui.min.js"></script>
+    <script type="text/javascript" src="js/jquery.easing.1.3.min.js"></script>
+    <script type="text/javascript" src="js/transition.js"></script>
+    <script type="text/javascript" src="js/jquery-confirm.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.6/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+    <script defer src="https://use.fontawesome.com/releases/v5.0.8/js/all.js"></script>
+    <script src="cordova.js"></script>
+
+    <link rel="stylesheet" href="css/index.css">
+    <link rel="stylesheet" href="css/jquery-confirm.css">
+    <link rel="stylesheet" href="css/loading.css">
+
+    <!-- Font -->
+    <link href="https://fonts.googleapis.com/css?family=Prompt" rel="stylesheet">
+
+    <style>
+        #title {
+            color: #666666;
+            letter-spacing: 2px;
+        }
+
+        .no-pd {
+            padding-right: 0px;
+            padding-left: 0px;
+            font-size: 120%;
+        }
+
+        hr {
+            margin-top: 0;
+        }
+
+        .i-del, .i-edit{
+            color: #666666;
+        }
+
+        .collapse{
+            margin-top: 1%; 
+            background: #fafafa; 
+            padding-top: 5%; 
+            padding-bottom: 5%;
+            border-radius: 1%;
+        }
+        .input-cf{
+          margin-top: -6px;
+        }
+    </style>
+
+    <script>
+        var arr_detail = [];
+        $(document).ready(function () {
+            var retrievedObject = localStorage.getItem('arr_sale');
+            var arr_data = JSON.parse(retrievedObject);
+            for(var i = 0 ; i < arr_data.length ; i ++){                
+                if(arr_data[i].old_price != arr_data[i].price){
+                    item = {};                 
+                    item ["prod_id"] = arr_data[i].prod_id;                  
+                    item ["price"] =  arr_data[i].price;          
+
+                    arr_detail.push(item); 
+                }
+            } 
+            if(localStorage.type == "ขายปลีก"){
+                $("#bill").val('ใบเสร็จ');
+                $('#vat').attr('disabled',true);
+            }           
+        });
+
+        $(document).keydown(function(objEvent) {
+            if (objEvent.keyCode == 13) {  //enter pressed
+                objEvent.preventDefault();
+                var $this = $(objEvent.target);
+                var i_enter = parseFloat($this.attr('data-index'));   
+                if($('#pay').val() != "เงินสด"){
+                    save2db();
+                }else{
+                     if(i_enter == 2){                    
+                        save2db();                    
+                    }else{
+                        $('[data-index="' + (i_enter+1).toString() + '"]').focus();
+                    }   
+                }                   
+                                   
+            }         
+        })
+
+        function showpay(){
+            $.confirm({
+              title: 'การชำระเงิน',
+              content: '<hr style="width: 80%; margin-bottom: 0;">',
+              backgroundDismiss: true,
+              buttons: {
+                form1: {
+                  text: 'เงินสด',
+                  btnClass: 'btn-choice',
+                  action: function () {
+                    $("#pay").val('เงินสด');
+                  }
+                },
+                form2: {
+                  text: 'เครดิต (30)',
+                  btnClass: 'btn-choice',
+                  action: function () {
+                    $("#pay").val('เครดิต (30)');
+                  }
+                },
+                form3: {
+                  text: 'เครดิต (60)',
+                  btnClass: 'btn-choice',
+                  action: function () {
+                    $("#pay").val('เครดิต (60)');
+                  }
+                },
+                form4: {
+                  text: 'เครดิต (90)',
+                  btnClass: 'btn-choice',
+                  action: function () {
+                    $("#pay").val('เครดิต (90)');
+                  }
+                }
+              }
+            });
+        }
+
+        function showbill(){
+            $.confirm({
+              title: 'ใบเสร็จ',
+              content: '<hr style="width: 80%; margin-bottom: 0;">',
+              backgroundDismiss: true,
+              buttons: {
+                form1: {
+                  text: 'ใบเสร็จ',
+                  btnClass: 'btn-choice',
+                  action: function () {
+                    $("#bill").val('ใบเสร็จ');
+                    $('#vat').attr('disabled',true);
+                  }
+                },
+                form2: {
+                  text: 'ใบรายงานการขาย (A4)',
+                  btnClass: 'btn-choice',
+                  action: function () {
+                    $("#bill").val('ใบรายงานการขาย (A4)');
+                    $('#vat').attr('disabled',false);
+                  }
+                },
+                form3: {
+                  text: 'ไม่พิมพ์',
+                  btnClass: 'btn-choice',
+                  action: function () {
+                    $("#bill").val('ไม่พิมพ์');
+                    $('#vat').attr('disabled',true);
+                  }
+                }
+              }
+            });
+        }
+
+        function showware(){
+            $("style").append('.jconfirm .jconfirm-box{max-height: 420px;}');
+            $.confirm({
+              title: 'หน้าร้าน/โกดัง',
+              content: '<hr style="width: 80%; margin-bottom: 0;">',
+              backgroundDismiss: true,
+              onOpenBefore: function () {
+                $(".jconfirm-buttons .btn-default").remove();
+                //ajax and apeend
+                $.ajax({
+                    type: "GET",
+                    url:"http://ddaccessory.trueddns.com:24330/dd-shop/php/get_ware_shop.php",     
+                    beforeSend: function(){
+                        $(".overlay").prop('hidden', false);
+                    },                        
+                    success: function(data){
+                    $(".overlay").prop('hidden', true);  
+                        var obj = jQuery.parseJSON(data);
+                        if(obj){
+                            $.each(obj, function(i, field){   
+                                if(obj[i][2] == "โกดัง"){  
+                                    $(".jconfirm-buttons").append('<button id="li-ware-'+i+'" type="button" onclick="setware('+i+')" class="btn btn-choice">'+obj[i].ware_name+'</button>' +
+                                    '<span id="id-ware-'+i+'" hidden>'+obj[i].ware_id+'</span>' +
+                                    '<span id="type-'+i+'" hidden>โกดัง</span>');                       
+                                }else if(obj[i][2] == "หน้าร้าน"){ 
+                                    $(".jconfirm-buttons").append('<button id="li-ware-'+i+'" type="button" onclick="setware('+i+')" class="btn btn-choice">'+obj[i].shop_name+'</button>' +
+                                    '<span id="id-ware-'+i+'" hidden>'+obj[i].shop_id+'</span>' +
+                                    '<span id="type-'+i+'" hidden>หน้าร้าน</span>');
+                                }                    
+                            });   
+                        }else{
+                            $(".jconfirm-buttons").append("กรุณาเพิ่มหน้าร้าน/โกดังก่อนทำรายการ");     
+                        }                                                      
+                    }               
+                });               
+              },
+              onDestroy: function () {
+                $("style").append('.jconfirm .jconfirm-box{margin-bottom: 5%;}');
+                $("style").append('.jconfirm .jconfirm-box{max-height: 100%;}');
+              }             
+            });
+        }
+
+        function edit_discount(){
+          var dis = $('#dis').val(); 
+          var net = $('#net').val();         
+          $('#total').val(net - dis);
+          var pay = $('#pay').val();
+          if(pay == "เงินสด"){
+            var get = $('#get').val();
+            var total = $('#total').val();        
+            if(get - total < 0){           
+                $('#chng').val("");
+            }else{
+                $('#chng').val(get - total);
+            }    
+          }         
+        }
+
+        function get_money(){
+          var get = $('#get').val();
+          var total = $('#total').val();
+          if(get - total < 0){
+            $('#chng').val("");
+          }else{
+            $('#chng').val(get - total);
+          }
+        }
+
+        function save(){
+            if($("#ware").val() == ""){
+                $.confirm({
+                    title: 'พบข้อผิดพลาด',
+                    content: 'กรุณาเลือกโกดัง',
+                    backgroundDismiss: true,
+                    buttons: {
+                    formSubmit: {
+                        text: 'ตกลง',
+                        btnClass: 'btn-regis',
+                        action: function () {
+                        }
+                    }
+                    }
+                });
+                return 0;
+            }          
+            $("style").append('.jconfirm .jconfirm-box{margin-bottom: 60%;}');
+            $.confirm({
+                title: '',
+                content: '<div class="row mg-6"><div class="col-2"></div><div class="col-8 text-center"><label for="net">รวม</label><input id="net" type="number" class="input-cf" value="'+localStorage.net+'" readonly></div><div class="col-2"></div></div><div class="row mg-6"><div class="col-2"></div><div class="col-8 text-center"><label for="dis">ลด</label><input data-index="1" autofocus id="dis" type="number" class="input-cf" oninput="edit_discount()"></div><div class="col-2"></div></div><div class="row mg-6"><div class="col-2"></div><div class="col-8 text-center"><label for="total">สุทธิ</label><input id="total" type="number" class="input-cf" value="'+localStorage.net+'" readonly></div><div class="col-2"></div></div><div class="row mg-6"><div class="col-1"></div><div class="col-5 text-center"><label for="get">รับ</label><input data-index="2" id="get" type="number" class="input-cf" oninput="get_money()"></div><div class="col-5 text-center"><label for="chng">ทอน</label><input id="chng" type="number" class="input-cf" readonly></div><div class="col-1"></div></div>',
+                backgroundDismiss: true,
+                onContentReady: function () {
+                    var pay = $('#pay').val();
+                    if(pay != "เงินสด"){
+                        $('#get').val("0");
+                        $('#chng').val("0");
+                        $('#get').attr("readonly",true);
+                    }
+                },
+                onDestroy: function () {
+                    $("style").append('.jconfirm .jconfirm-box{margin-bottom: 5%;}');
+                },
+                buttons: {
+                    ยกเลิก: function () {
+                    },
+                    formSubmit: {
+                    text: 'ตกลง',
+                    btnClass: 'btn-danger',
+                    action: function () {   
+                        if($("#chng").val() == "" || $("#get").val() == ""){
+                            return 0;
+                        }                    
+                        save2db();
+                    }
+                    }
+                }  
+            }); 
+            
+          
+        }
+
+        function save2db(){
+            if($("#chng").val() == "" || $("#get").val() == ""){
+                return 0;
+            }
+            document.elementFromPoint(0, 0).click();
+            var dis = $('#dis').val();
+            if(dis == ""){
+              dis = 0;
+            }
+            var d = new Date($.now());
+            var datetime = d.getFullYear() + "-" + (d.getMonth()+1) + "-" + d.getDate() + " " + d.getHours() + ":" + d.getMinutes() + ":" + d.getSeconds(); 
+            var retrievedObject = localStorage.getItem('arr_sale');
+            var arr_data = JSON.parse(retrievedObject);
+            json_string = JSON.stringify(arr_data); 
+            json_detail = JSON.stringify(arr_detail);           
+            var dataString =  "JSON=" + json_string + "&JSOND=" + json_detail + "&ware_id=" + b_id + "&date=" + datetime + "&type=" + type
+            + "&cus_id=" + localStorage.cus_id + "&pay=" + $("#pay").val() + "&net=" + localStorage.net + "&dis=" + dis
+            + "&total=" + $('#total').val() + "&get_price=" + $('#get').val() + "&chng=" + $('#chng').val() + "&user_id=" + localStorage.user_id;
+            //alert(dataString);
+            $.ajax({
+                type: "POST",
+                url:"http://ddaccessory.trueddns.com:24330/dd-shop/php/save_order.php",           
+                data: dataString,
+                beforeSend: function(){
+                    $(".overlay").prop('hidden', false);
+                },               
+                success: function(data){  
+                    $(".overlay").prop('hidden', true);                           
+                    //alert(data);
+                    if(data != "fail"){
+                        var temp = data.split(" ");
+                        var order_num = temp[0];
+                        var ch = temp[1];
+                        localStorage.arr_ex = "";
+                        localStorage.cus_name = "";
+                        localStorage.cus_id = "";
+                        localStorage.type = "";
+                        localStorage.arr_sale = "";                    
+                        localStorage.net =  "";    
+                        localStorage.arr_prod_s =  "";                                                                               
+                        goto = "sale.html?ch="+ch;
+                        transition_page_back(goto);            
+                    }else{
+                        $.confirm({
+                            title: 'พบข้อผิดพลาด',
+                            content: 'ลองอีกครั้ง',
+                            backgroundDismiss: true,
+                            buttons: {
+                                formSubmit: {
+                                text: 'ตกลง',
+                                btnClass: 'btn-regis',
+                                action: function () {
+                                }
+                                }
+                            }
+                        });
+                    }
+                }               
+            });
+        }
+
+        var b_id,type;
+        function setware(arg) {
+            ware = $("#li-ware-" + arg).text();
+            type = $("#type-" + arg).text();
+            $("#ware").val(ware);
+            b_id = $("#id-ware-" + arg).text();  
+            document.elementFromPoint(0, 0).click();
+        }
+
+        function showvat(){
+            $.confirm({
+              title: 'VAT 7%',
+              content: '<hr style="width: 80%; margin-bottom: 0;">',
+              backgroundDismiss: true,
+              buttons: {
+                form1: {
+                  text: 'รวม vat',
+                  btnClass: 'btn-choice',
+                  action: function () {
+                    $("#vat").val('รวม vat');
+                  }
+                },
+                form2: {
+                  text: 'ไม่รวม vat',
+                  btnClass: 'btn-choice',
+                  action: function () {
+                    $("#vat").val('ไม่รวม vat');
+                  }
+                }
+              }
+            });
+        }
+    </script>    
+</head>
+
+<body style="overflow: auto;">
+    <!-- Loading -->
+    <div class="overlay" hidden><div class="loading"></div></div>    
+
+    <!-- Nav menu top -->
+    <div class="row fixed-top navs">
+        <div class="col-1 text-center" onclick="transition_page_back('sale_check.html')">
+            <i id="i-back" class="fas fa-angle-left"></i>
+        </div>
+        <div class="col-10 text-center">
+            <h5 id="h5-title">รายละเอียด</h5>
+        </div>
+        <div class="col-1">
+        </div>
+    </div>
+    <br>
+
+    <!-- End big container -->
+    <div id="big-ctn" class="container justify-content-center" style="margin-top: 45%;">
+        <div class="container">
+            <div class="row mg-10">
+                <div class="col-6 text-center">
+                    <label for="pay">ชำระเงิน</label>
+                    <input id="pay" type="text" class="w3-input" readonly onclick="showpay();" value="เงินสด">
+                </div>
+                <div class="col-6 text-center">
+                    <label for="bill">พิมพ์</label>
+                    <input id="bill" type="text" class="w3-input" readonly onclick="showbill();" value="ใบรายงานการขาย (A4)">
+                </div>
+            </div>
+            <div class="row" style="margin-bottom: 18%;" id="showvat">
+                <div class="col-8 text-center">
+                    <label for="ware">ขายจาก</label>
+                    <input id="ware" type="text" class="w3-input" readonly onclick="showware();" placeholder="เลือกหน้าร้าน/โกดัง">                   
+                </div>
+                <div class="col-4 text-center">
+                    <label for="vat">vat</label>
+                    <input id="vat" type="text" class="w3-input" readonly onclick="showvat();" value="ไม่รวม vat">
+                </div>
+            </div>
+            <div class="row" style="margin-bottom: 18%;" id="novat" hidden>
+              <div class="col-1"></div>
+                <div class="col-10 text-center">
+                    <label for="ware">ขายจาก</label>
+                    <input id="ware" type="text" class="w3-input" readonly onclick="showware();" placeholder="เลือกหน้าร้าน/โกดัง">                   
+                </div>
+                <div class="col-1"></div>
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    <button class="mbtn" onclick="save()">คิดเงิน</button>
+                </div>
+            </div>  
+        </div>
+    </div>
+    <!-- End big container -->
+    <script>
+      //Touch animation
+    $(".mbtn").on("touchstart", function() {
+      $(this).addClass('mbtn-touch');
+    });
+    $(".mbtn").on("touchend", function() {
+      $(this).removeClass('mbtn-touch');
+    });
+    </script>
+</body>
+
+</html>

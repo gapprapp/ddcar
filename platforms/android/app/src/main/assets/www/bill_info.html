@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>Home</title>
+  <!-- Bootstrap Import -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+  <script type="text/javascript" src="js/jquery-3.3.1.min.js"></script>
+  <script type="text/javascript" src="js/jquery-ui.min.js"></script>
+  <script type="text/javascript" src="js/jquery.easing.1.3.min.js"></script>
+  <script type="text/javascript" src="js/transition.js"></script>
+  <script type="text/javascript" src="js/jquery-confirm.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.6/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+  <script defer src="https://use.fontawesome.com/releases/v5.0.8/js/all.js"></script>
+  <script src="cordova.js"></script>
+
+  <link rel="stylesheet" href="css/index.css">
+  <link rel="stylesheet" href="css/jquery-confirm.css">
+  <link rel="stylesheet" href="css/loading.css">
+
+  <!-- Font -->
+  <link href="https://fonts.googleapis.com/css?family=Prompt" rel="stylesheet">
+
+  <!-- DatePicker -->
+  <link rel="stylesheet" href="css/duDatepicker.css">
+  <script src="js/duDatepicker.js"></script>
+
+  <style>
+    hr{
+      margin-top: 0;
+      height: 90%;
+    }
+    .pdr{
+    	padding-right: 10%;
+    }
+    .pdl{
+    	padding-left: 10%;
+    }
+
+    .nopd{
+    	padding-left: 0;
+    	padding-right: 0;
+    }
+
+    .underline{
+    	text-decoration: underline #666;
+    }
+
+    .bold{
+      font-weight: bold;
+    }
+    
+    p[id*="price-"] {
+      font-size: 95%;
+      margin-top: 2px;
+      letter-spacing: -1px;
+    }
+    
+    p[id*="total-"] {
+      font-size: 95%;
+      margin-top: 2px;
+      letter-spacing: -1px;
+    }
+
+  </style>
+
+  <script>
+    var bill_id,pay,dis,get,ware_id_o,type_o;
+    arr = [];
+    $(document).ready(function(){
+      url = new URL(window.location.href);
+      bill_id = url.searchParams.get("id"); 
+
+      $.ajax({
+        type: "POST",
+        url:"http://ddaccessory.trueddns.com:24330/dd-shop/php/get_bill_info.php",    
+        data:{'bill_id' : bill_id},                            
+        beforeSend: function(){
+            $(".overlay").prop('hidden', false);
+        },             
+        success: function(data){  
+          $(".overlay").prop('hidden', true);
+          var obj = jQuery.parseJSON(data); 
+          $('#h5-title').text(obj[0].order_number);
+          if(obj[0].type == "โกดัง"){
+            $('#warehouse').text(obj[0][17].ware_name);           
+          }else if(obj[0].type == "หน้าร้าน"){
+            $('#warehouse').text(obj[0][17].shop_name);           
+          }          
+          $('#cus').text(obj[0].cus_name + " ");
+          $("#cus").append('<span id="type">'+obj[0].payment_type+'</span>');
+          //$("#type").text(obj[0].payment_type);
+          var txt = obj[0].date_time.split(" ");
+          var txt2 = txt[0].split("-");
+          var date = txt2[2] + "/" + txt2[1] + "/" + txt2[0].substr(2) + " " + txt[1].substr(0,5);
+          $('#date').text(date);
+          $('#sum').text(obj[0].sum_price);
+          $('#discount').text(obj[0].total_discount);
+          $('#total').text(obj[0].total_price);
+          $('#get').text(obj[0].get_price);
+          $('#chng').text(obj[0].chng);
+          $('#user').text("ผู้ทำรายการ: " + obj[0].user_name);
+          type_o = obj[0].type;
+          type = obj[0].type;
+          ware_id_o = obj[0].branch_id;
+          ware_id = obj[0].branch_id;
+          pay = obj[0].payment_type;
+          dis = obj[0].total_discount;
+          get = obj[0].get_price;
+          $.each(obj, function(i, field){
+            $('#ctn-show').append('<div id="prod-'+field.item_id+'" class="row">' +
+              '<div class="col-1 text-center" ">' +
+                '<p id="amt-'+field.item_id+'" class="amount">'+field.prod_amount+'</p>' +
+              '</div>' +
+              '<div class="col-7 text-center nopd">' +
+                '<p id="name-'+field.item_id+'">'+field.prod_name+'</p>' +
+                '</div>' +
+                '<div class="col-1 text-center">' +
+                  '<p id="price-'+field.item_id+'">'+field.prod_price+'</p>' +
+                '</div>' +
+                  '<div class="col-3 text-center nopd">' +
+                    '<p id="total-'+field.item_id+'">'+field.prod_price*field.prod_amount+'</p>' +
+                  '</div>' +
+              '</div>');
+            arr.push(field.prod_amount);
+          });                                             
+        }               
+      });
+    });   
+
+    function disactive(arg) {
+        nav_menu = ['home', 'add', 'edit', 'del'];
+        for (i = 0; i < 4; i++) {
+            if (nav_menu[i] != arg) {
+                if ($("#i-" + nav_menu[i]).hasClass('active')) $("#i-" + nav_menu[i]).removeClass('active');
+            }
+        }
+    }
+
+    function menu(arg) {
+    	// Animate
+        disactive(arg);
+        if($("#i-"+arg).hasClass('active')){
+            //console.log("i-"+arg+"hasClass('active')");
+            $("#i-"+arg).removeClass('active');
+          }else{
+            $("#i-" + arg).fadeOut(150).fadeIn(100, function() {
+              $("#i-" + arg).addClass('active');
+            });
+        }
+        if (arg == "add") {
+            /*goto = "sale.html";
+            transition_page_back(goto);*/
+        } else if(arg == "edit"){
+            // show edit all
+            if ($("#warehouse").hasClass('underline')) {
+              $(".i-del").attr('hidden', true);
+              $(".amount").removeClass('underline');
+              $("#discount").removeClass('underline');
+              $("#type").removeClass('underline');
+              $("#get").removeClass('underline');
+              $("#warehouse").removeClass('underline');
+              $("#warehouse").attr('onclick', '');
+              $("#discount").attr('onclick', '');
+              $("#type").attr('onclick', '');
+              $("#get").attr('onclick', '');
+              $("#i-save").attr('onclick', '');
+              $("#i-save").css('color', "#e57f7f");
+              // if has 3 prod then index = 3
+              for(i = 1; i <= 3; i++){ $("#amt-"+i).attr('onclick', ''); }
+            } else {
+              $(".i-del").attr('hidden', true);
+              $(".amount").addClass('underline');
+              $("#discount").addClass('underline');
+              $("#get").addClass('underline');
+              $("#type").addClass('underline');
+              $("#warehouse").addClass('underline');           
+              $("#warehouse").attr('onclick', 'edit_warehouse()');    
+              $("#discount").attr('onclick', 'edit_discount()');
+              $("#type").attr('onclick', 'edit_type()');
+              $("#get").attr('onclick', 'edit_get()');
+              $("#i-save").attr('onclick', 'save()');
+              $("#i-save").css('color', "#fff");
+              for(i = 1; i <= 3; i++){ $("#amt-"+i).attr('onclick', 'edit_amount('+i+')'); }
+            }
+        } else if (arg == "del") {
+            // show trash all 
+            $("style").append(".jconfirm .jconfirm-box{margin-bottom: 5%;}");
+            $.confirm({
+                title: 'ลบรายการ',
+                content: 'ต้องการลบบิล '+$("#h5-title").text()+' หรือไม่',
+                backgroundDismiss: true,
+                buttons: { 
+                  formSubmit: {
+                    text: 'ตกลง',
+                    btnClass: 'btn-danger',
+                    action: function () {
+                      // delete bill
+                      $.ajax({
+                        type: "POST",
+                        url:"http://ddaccessory.trueddns.com:24330/php/delete_bill.php",         
+                        data:{'bill_id' : bill_id,'b_id' : ware_id_o,'type' : type_o},
+                        beforeSend: function(){
+                          $(".overlay").prop('hidden', false);
+                        },                       
+                        success: function(data){ 
+                          $(".overlay").prop('hidden', true);                     
+                          if(data == "success"){                    
+                            transition_page_back('manage_bill.html');
+                          }else{
+                            $.confirm({
+                              title: 'พบข้อผิดพลาด',
+                              content: 'ลองอีกครั้ง',
+                              backgroundDismiss: true,
+                              buttons: {
+                                formSubmit: {
+                                text: 'ตกลง',
+                                btnClass: 'btn-regis',
+                                action: function () {
+                                }
+                                }
+                              }
+                            });
+                          }                         
+                        }               
+                      });      
+                    }
+                  },ยกเลิก: function () {}, 
+                }  
+            });
+        }
+    } 
+
+    function edit_amount(arg){
+    	$("style").append(".jconfirm .jconfirm-box{margin-bottom:60%;}");
+    	$.confirm({
+        title: $("#name-"+arg).text(),
+        content: '<div class="row" style="margin-top: 2%; margin-bottom: 2%;"><div class="col-12 text-center" style="font-size: 110%; font-weight: bold;">จำนวน</div></div><div class="row"><div class="col-3"></div><div class="col-6 text-center"><input id="edt-amt" type="number" class="input-cf" value="'+$("#amt-"+arg).text()+'"></div><div class="col-3"></div></div>',
+        backgroundDismiss: true,
+        onContentReady: function () {
+          var temp = $('#edt-amt').val();
+          $("#edt-amt").focus().val("").val(temp);
+        },
+        buttons: {
+          formSubmit: {
+            text: 'ตกลง',
+            btnClass: 'btn-danger',
+            action: function () {
+              var amt = $('#edt-amt').val();
+              if(amt == $("#amt-"+arg).text()){
+                return 0;
+              }
+              var sum = $('#sum').text();
+              var sum_o = $('#price-'+arg).text()*$("#amt-"+arg).text();
+              var sum_n = $('#price-'+arg).text()*amt;
+              var sumsum = (sum-sum_o)+sum_n;
+              var total =sumsum-$('#discount').text();
+              $('#total-'+arg).text(sum_n);
+              $('#sum').text(sumsum);
+              $('#total').text(total);
+              $('#chng').text($('#get').text()-total);
+              $("#amt-"+arg).text(amt);              
+            }
+          },ยกเลิก: function () {
+              //$(".jconfirm .jconfirm-box").css('margin-bottom', '5%');
+            }
+        }
+      });
+    }
+
+    function edit_discount(){
+      $("style").append(".jconfirm .jconfirm-box{margin-bottom:60%;}");
+      $.confirm({
+        title: "ลด",
+        content: '<div class="row"><div class="col-3"></div><div class="col-6 text-center"><input id="edt-disc" type="number" class="input-cf" value="'+$("#discount").text()+'"></div><div class="col-3"></div></div>',
+        backgroundDismiss: true,
+        onContentReady: function () {
+          var temp = $('#edt-disc').val();
+          $("#edt-disc").focus().val("").val(temp);
+        },
+        buttons: {
+          formSubmit: {
+            text: 'ตกลง',
+            btnClass: 'btn-danger',
+            action: function () {
+              var disc = $('#edt-disc').val();
+              if(disc == $("#discount").text()){
+                return 0;
+              }
+              var sum = $('#sum').text();
+              if(sum-disc < 0){
+                $.confirm({
+                  title: 'พบข้อผิดพลาด',
+                  content: 'เงินสุทธิห้ามต่ำกว่า 0',
+                  backgroundDismiss: true,
+                  buttons: {
+                      formSubmit: {
+                      text: 'ตกลง',
+                      btnClass: 'btn-regis',
+                      action: function () {
+                      }
+                      }
+                  }
+                });
+                return 0;
+              }
+              $('#total').text(sum-disc);
+              $('#chng').text($('#get').text()- $('#total').text());
+              $("#discount").text(disc);
+            }
+          },ยกเลิก: function () {
+              //$(".jconfirm .jconfirm-box").css('margin-bottom', '5%');
+            }
+          }              
+      });
+    }
+
+    function edit_get(){
+      $("style").append(".jconfirm .jconfirm-box{margin-bottom:60%;}");
+      $.confirm({
+        title: "รับ",
+        content: '<div class="row"><div class="col-3"></div><div class="col-6 text-center"><input id="edt-get" type="number" class="input-cf" value="'+$("#get").text()+'"></div><div class="col-3"></div></div>',
+        backgroundDismiss: true,
+        onContentReady: function () {
+          var temp = $('#edt-get').val();
+          $("#edt-get").focus().val("").val(temp);
+        },
+        buttons: {
+          formSubmit: {
+            text: 'ตกลง',
+            btnClass: 'btn-danger',
+            action: function () {
+              var gett = $('#edt-get').val();
+              if(gett == $("#get").text()){
+                return 0;
+              }
+              var total = $('#total').text();
+              if(gett-total < 0){
+                $.confirm({
+                  title: 'พบข้อผิดพลาด',
+                  content: 'เงินทอนห้ามต่ำกว่า 0',
+                  backgroundDismiss: true,
+                  buttons: {
+                      formSubmit: {
+                      text: 'ตกลง',
+                      btnClass: 'btn-regis',
+                      action: function () {
+                      }
+                      }
+                  }
+                });
+                return 0;
+              }
+              $('#chng').text(gett-total);
+              $("#get").text(gett);
+            }
+          },ยกเลิก: function () {
+              //$(".jconfirm .jconfirm-box").css('margin-bottom', '5%');
+            }
+        }
+      });
+    }
+
+    function edit_type(){
+      $.confirm({
+        title: 'การชำระเงิน',
+        content: '<hr style="width: 80%; margin-bottom: 0;">',
+        backgroundDismiss: true,
+        buttons: {
+          form1: {
+            text: 'เงินสด',
+            btnClass: 'btn-choice',
+            action: function () {                       
+              $('#type').text('เงินสด');
+            }
+          },
+          form2: {
+            text: 'เครดิต (30)',
+            btnClass: 'btn-choice',
+            action: function () {              
+              $('#type').text('เครดิต (30)');
+            }
+          },
+          form3: {
+            text: 'เครดิต (60)',
+            btnClass: 'btn-choice',
+            action: function () {             
+              $('#type').text('เครดิต (60)');
+            }
+          },
+          form4: {
+            text: 'เครดิต (90)',
+            btnClass: 'btn-choice',
+            action: function () {
+              $('#type').text('เครดิต (90)');
+            }
+          }
+        }
+      });
+    }
+
+    function edit_warehouse(){
+      $("style").append('.jconfirm .jconfirm-box{max-height: 420px;}');
+        $.confirm({
+          title: 'หน้าร้าน/โกดัง',
+          content: '<hr style="width: 80%; margin-bottom: 0;">',
+          backgroundDismiss: true,
+          onOpenBefore: function () {
+            $(".jconfirm-buttons .btn-default").remove();
+            //ajax and apeend
+            $.ajax({
+              type: "GET",
+              url:"http://ddaccessory.trueddns.com:24330/dd-shop/php/get_ware_shop.php",     
+              beforeSend: function(){
+                  $(".overlay").prop('hidden', false);
+              },                        
+              success: function(data){
+              $(".overlay").prop('hidden', true);  
+                  var obj = jQuery.parseJSON(data);
+                  if(obj){
+                      $.each(obj, function(i, field){   
+                          if(obj[i][2] == "โกดัง"){  
+                              $(".jconfirm-buttons").append('<button id="li-ware-'+i+'" type="button" onclick="setware('+i+')" class="btn btn-choice">'+obj[i].ware_name+'</button>' +
+                              '<span id="id-ware-'+i+'" hidden>'+obj[i].ware_id+'</span>' +
+                              '<span id="type-'+i+'" hidden>โกดัง</span>');                       
+                          }else if(obj[i][2] == "หน้าร้าน"){ 
+                              $(".jconfirm-buttons").append('<button id="li-ware-'+i+'" type="button" onclick="setware('+i+')" class="btn btn-choice">'+obj[i].shop_name+'</button>' +
+                              '<span id="id-ware-'+i+'" hidden>'+obj[i].shop_id+'</span>' +
+                              '<span id="type-'+i+'" hidden>หน้าร้าน</span>');
+                          }                    
+                      });   
+                  }else{
+                      $(".jconfirm-buttons").append("กรุณาเพิ่มหน้าร้าน/โกดังก่อนทำรายการ");     
+                  }                                                      
+              }               
+            });                    
+          },
+          onDestroy: function () {
+            $("style").append('.jconfirm .jconfirm-box{margin-bottom: 5%;}');
+            $("style").append('.jconfirm .jconfirm-box{max-height: 100%;}');
+          }             
+        });
+    }
+
+    var ware_id,type;
+    function setware(arg) {
+      ware = $("#li-ware-" + arg).text();
+      type = $("#type-" + arg).text();
+      $("#warehouse").text(ware);
+      ware_id = $("#id-ware-" + arg).text();  
+      document.elementFromPoint(0, 0).click();        
+    }
+
+    function save(){
+      arr_data = [];
+      var f = false;      
+      if(pay == $('#type').text() && dis == $('#discount').text() && get == $('#get').text() && 
+      ware_id == ware_id_o && type == type_o){
+        f = true;       
+      }
+      var ch = 0;
+      for(var i = 0;i < arr.length;i++){       
+        if($("#amt-"+(i+1)).text() == arr[i]){
+          ch++;
+          item = {}            
+          item ["item_id"] = i+1;
+          item ["amt"] =  $("#amt-"+(i+1)).text();
+          item ["ch"] = 0;
+          arr_data.push(item);
+        }else{
+          item = {}            
+          item ["item_id"] = i+1;
+          item ["amt"] =  $("#amt-"+(i+1)).text();
+          item ["ch"] = 1;
+          arr_data.push(item);
+        }        
+      }        
+      if(ch == arr.length && f){
+        return 0;
+      }
+      if($('#total').text() < 0 || $('#chng').text() < 0){
+        $.confirm({
+          title: 'พบข้อผิดพลาด',
+          content: 'เงินสุทธิหรือเงินทอนห้ามต่ำกว่า 0',
+          backgroundDismiss: true,
+          buttons: {
+              formSubmit: {
+              text: 'ตกลง',
+              btnClass: 'btn-regis',
+              action: function () {
+              }
+              }
+          }
+        });
+        return 0;
+      }
+      var json_string = JSON.stringify(arr_data); 
+      var dataString =  "JSON=" + json_string + "&bill_id=" + bill_id + "&pay=" + $('#type').text() + "&sum=" + $('#sum').text()
+      + "&dis=" + $('#discount').text() + "&total=" + $('#total').text() + "&get=" + $('#get').text() + "&chng=" + $('#chng').text()
+      + "&b_id=" + ware_id + "&type=" + type;
+      //alert(dataString);
+      $.ajax({
+        type: "POST",
+        url:"http://ddaccessory.trueddns.com:24330/dd-shop/php/rename_bill.php",         
+        data: dataString,
+        beforeSend: function(){
+          $(".overlay").prop('hidden', false);
+        },                       
+        success: function(data){ 
+          $(".overlay").prop('hidden', true);                     
+          if(data == "success"){                    
+            location.reload();
+          }else{
+            $.confirm({
+              title: 'พบข้อผิดพลาด',
+              content: 'ลองอีกครั้ง',
+              backgroundDismiss: true,
+              buttons: {
+                  formSubmit: {
+                  text: 'ตกลง',
+                  btnClass: 'btn-regis',
+                  action: function () {
+                  }
+                  }
+              }
+            });
+          }                         
+        }               
+      });
+    }
+
+  </script>
+</head>
+
+<body style="overflow: auto;">
+  <!-- Loading -->
+  <div class="overlay" hidden><div class="loading"></div></div>
+
+  <!-- Nav menu top -->
+  <div class="row fixed-top navs">
+    <div class="col-1 text-center" onclick="transition_page_back(window.history.back())">
+      <i id="i-back" class="fa fa-angle-left"></i>
+    </div>
+    <div class="col-9 text-center" style="margin-left: 3%;">
+      <h5 id="h5-title">S18-00001</h5>
+    </div>
+    <div class="col-1 text-center">
+      <i id="i-save" class="fa fa-save" style="font-size: 135%; color: #e57f7f; margin-top: 3px;"></i>
+    </div>
+  </div><br>
+
+  <!-- End big container -->
+  <div class="container justify-content-center" style="margin-top: 15%;">
+    <div class="row">
+      <div class="col-12 text-center pdl pdr"><h5 id="warehouse">โกดัง A</h5></div>
+    </div>
+  	<div class="row">
+      <div class="col-12 text-center pdl pdr"><h5 id="cus">สมพงศ์ สะอาด<span> (เครดิต 30)</span></h5></div>
+  	</div>
+  	<div class="row">
+  		<div class="col-12 text-center pdl pdr"><h5 id="date">12/01/18 15:00</h5></div>
+  	</div><hr style="width: 75%;">
+
+    <div class="row" style="margin-bottom: 2%;">
+    	<div class="col-12 text-center pdl pdr">
+    		<h5>รายการ</h5>
+    	</div>
+    </div>
+    <div class="container-fullwidth">    
+      <div id="ctn-show">
+      </div>
+      <hr style="width: 75%; margin-top: 5%">
+    	<div id="bill-bttm" class="container" style="margin-top: 5%;">
+    		<div class="row">
+    			<div class="col-6 text-center"><h5 class="bold">รวม</h5></div>
+    			<div class="col-3 text-right nopd"><h5 class="bold" id="sum">150</h5></div>
+    		</div>
+    		<div class="row">
+    			<div class="col-6 text-center"><h5 class="bold">ลด</h5></div>
+    			<div class="col-3 text-right nopd"><h5 class="bold" id="discount">150</h5></div>
+    		</div>
+    		<div class="row">
+    			<div class="col-6 text-center"><h5 class="bold">สุทธิ  </h5></div>
+    			<div class="col-3 text-right nopd"><h5 class="bold" id="total">100000</h5></div>
+    		</div>
+    		<div class="row">
+    			<div class="col-6 text-center nopd"><h5 class="bold">รับ / ทอน</h5></div>
+    			<div class="col-3 text-right nopd"><h5 class="bold" id="get">150000</h5></div>
+    			<div class="col-3 text-right nopd"><h5 class="bold" id="chng">1000</h5></div>
+    		</div><hr style="width: 75%; margin-top: 5%">
+    		<div class="row" style="margin-top: 5%;">
+    			<div class="col-12 text-center">
+    				<h5 id="user">ชื่อผู้บันทึก</h5>
+    			</div>
+    		</div>
+    	</div>
+    </div>
+  <!-- End big container -->
+
+  <!-- Nav menu bottom -->
+  <div class="row fixed-bottom" style="background: #d63232;">
+    <div class="col-4 text-center" onclick="transition_page_back('index.html');">
+      <i id="i-home" class="fa fa-home menu"></i>
+    </div>
+    <div class="col-4 text-center" onclick="menu('edit')">
+      <i id="i-edit" class="fa fa-edit menu"></i>
+    </div>
+    <div class="col-4 text-center" onclick="menu('del')">
+      <i id="i-del" class="fa fa-trash-alt menu"></i>
+    </div>
+  </div>
+  <!-- End Nav menu bottom -->
+  <script>
+    //Touch animation
+    $(".mbtn").on("touchstart", function() {
+      $(this).addClass('mbtn-touch');
+    });
+    $(".mbtn").on("touchend", function() {
+      $(this).removeClass('mbtn-touch');
+    });
+    $(".mbtn-green").on("touchstart", function() {
+      $(this).addClass('mbtn-green-touch');
+    });
+    $(".mbtn-green").on("touchend", function() {
+      $(this).removeClass('mbtn-green-touch');
+    });
+    $(".select_folder").on("touchstart", function() {
+      $(this).addClass('select_folder-touch');
+    });
+    $(".select_folder").on("touchend", function() {
+      $(this).removeClass('select_folder-touch');
+    });
+
+    /* ---- แก้ไข ชื่อและเครดิตไม่ชิดกัน ---- */
+    //console.log($("#cus span").text()); // (เครดิต 30)
+    //$("#cus").text("สมชาย");
+    //console.log($("#cus span").text()); // empty
+    //$("#cus").append('<span> (เครดิต 65)</span>');
+    //console.log($("#cus").text()); // สมชาย (เครดิต 65)
+
+    /*$(function () {
+      var viewer = ImageViewer();
+      $('#img').click(function () {
+          alert("click");
+          var imgSrc = this.src;
+          viewer.show(imgSrc);
+      });
+    });*/
+  </script>
+</body>
+
+</html>

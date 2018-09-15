@@ -1,0 +1,234 @@
+{
+  "prepare_queue": {
+    "installed": [],
+    "uninstalled": []
+  },
+  "config_munge": {
+    "files": {
+      "res/xml/config.xml": {
+        "parents": {
+          "/*": [
+            {
+              "xml": "<feature name=\"NativePageTransitions\"><param name=\"android-package\" value=\"com.telerik.plugins.nativepagetransitions.NativePageTransitions\" /><param name=\"onload\" value=\"true\" /></feature>",
+              "count": 1
+            },
+            {
+              "xml": "<feature name=\"Camera\"><param name=\"android-package\" value=\"org.apache.cordova.camera.CameraLauncher\" /></feature>",
+              "count": 1
+            },
+            {
+              "xml": "<feature name=\"DatePickerPlugin\"><param name=\"android-package\" value=\"com.plugin.datepicker.DatePickerPlugin\" /></feature>",
+              "count": 1
+            },
+            {
+              "xml": "<feature name=\"Device\"><param name=\"android-package\" value=\"org.apache.cordova.device.Device\" /></feature>",
+              "count": 1
+            },
+            {
+              "xml": "<feature name=\"AndroidFullScreen\"><param name=\"android-package\" value=\"com.mesmotronic.plugins.FullScreenPlugin\" /></feature>",
+              "count": 1
+            },
+            {
+              "xml": "<feature name=\"CDVOrientation\"><param name=\"android-package\" value=\"cordova.plugins.screenorientation.CDVOrientation\" /></feature>",
+              "count": 1
+            },
+            {
+              "xml": "<feature name=\"StatusBar\"><param name=\"android-package\" value=\"org.apache.cordova.statusbar.StatusBar\" /><param name=\"onload\" value=\"true\" /></feature>",
+              "count": 1
+            },
+            {
+              "xml": "<feature name=\"Whitelist\"><param name=\"android-package\" value=\"org.apache.cordova.whitelist.WhitelistPlugin\" /><param name=\"onload\" value=\"true\" /></feature>",
+              "count": 1
+            },
+            {
+              "xml": "<feature name=\"BarcodeScanner\"><param name=\"android-package\" value=\"com.phonegap.plugins.barcodescanner.BarcodeScanner\" /></feature>",
+              "count": 1
+            }
+          ]
+        }
+      },
+      "AndroidManifest.xml": {
+        "parents": {
+          "/*": [
+            {
+              "xml": "<uses-permission android:name=\"android.permission.WRITE_EXTERNAL_STORAGE\" />",
+              "count": 1
+            }
+          ],
+          "application": [
+            {
+              "xml": "<provider android:authorities=\"${applicationId}.provider\" android:exported=\"false\" android:grantUriPermissions=\"true\" android:name=\"android.support.v4.content.FileProvider\"><meta-data android:name=\"android.support.FILE_PROVIDER_PATHS\" android:resource=\"@xml/provider_paths\" /></provider>",
+              "count": 1
+            }
+          ],
+          "/manifest/application": [
+            {
+              "xml": "<activity android:clearTaskOnLaunch=\"true\" android:configChanges=\"orientation|keyboardHidden|screenSize\" android:exported=\"false\" android:name=\"com.google.zxing.client.android.CaptureActivity\" android:theme=\"@android:style/Theme.NoTitleBar.Fullscreen\" android:windowSoftInputMode=\"stateAlwaysHidden\" />",
+              "count": 1
+            },
+            {
+              "xml": "<activity android:label=\"Share\" android:name=\"com.google.zxing.client.android.encode.EncodeActivity\" />",
+              "count": 1
+            }
+          ],
+          "/manifest": [
+            {
+              "xml": "<uses-permission android:name=\"android.permission.CAMERA\" />",
+              "count": 1
+            },
+            {
+              "xml": "<uses-permission android:name=\"android.permission.FLASHLIGHT\" />",
+              "count": 1
+            },
+            {
+              "xml": "<uses-feature android:name=\"android.hardware.camera\" android:required=\"true\" />",
+              "count": 1
+            }
+          ]
+        }
+      }
+    }
+  },
+  "installed_plugins": {
+    "com.telerik.plugins.nativepagetransitions": {
+      "PACKAGE_NAME": "com.gitmew.ddcar"
+    },
+    "cordova-plugin-camera": {
+      "PACKAGE_NAME": "com.gitmew.ddcar"
+    },
+    "cordova-plugin-datepicker": {
+      "PACKAGE_NAME": "com.gitmew.ddcar"
+    },
+    "cordova-plugin-device": {
+      "PACKAGE_NAME": "com.gitmew.ddcar"
+    },
+    "cordova-plugin-fullscreen": {
+      "PACKAGE_NAME": "com.gitmew.ddcar"
+    },
+    "es6-promise-plugin": {
+      "PACKAGE_NAME": "com.gitmew.ddcar"
+    },
+    "cordova-plugin-screen-orientation": {
+      "PACKAGE_NAME": "com.gitmew.ddcar"
+    },
+    "cordova-plugin-statusbar": {
+      "PACKAGE_NAME": "com.gitmew.ddcar"
+    },
+    "cordova-plugin-whitelist": {
+      "PACKAGE_NAME": "com.gitmew.ddcar"
+    },
+    "phonegap-plugin-barcodescanner": {
+      "ANDROID_SUPPORT_V4_VERSION": "27.+",
+      "PACKAGE_NAME": "com.gitmew.ddcar"
+    }
+  },
+  "dependent_plugins": {},
+  "modules": [
+    {
+      "id": "com.telerik.plugins.nativepagetransitions.NativePageTransitions",
+      "file": "plugins/com.telerik.plugins.nativepagetransitions/www/NativePageTransitions.js",
+      "pluginId": "com.telerik.plugins.nativepagetransitions",
+      "clobbers": [
+        "window.plugins.nativepagetransitions"
+      ]
+    },
+    {
+      "id": "cordova-plugin-camera.Camera",
+      "file": "plugins/cordova-plugin-camera/www/CameraConstants.js",
+      "pluginId": "cordova-plugin-camera",
+      "clobbers": [
+        "Camera"
+      ]
+    },
+    {
+      "id": "cordova-plugin-camera.CameraPopoverOptions",
+      "file": "plugins/cordova-plugin-camera/www/CameraPopoverOptions.js",
+      "pluginId": "cordova-plugin-camera",
+      "clobbers": [
+        "CameraPopoverOptions"
+      ]
+    },
+    {
+      "id": "cordova-plugin-camera.camera",
+      "file": "plugins/cordova-plugin-camera/www/Camera.js",
+      "pluginId": "cordova-plugin-camera",
+      "clobbers": [
+        "navigator.camera"
+      ]
+    },
+    {
+      "id": "cordova-plugin-camera.CameraPopoverHandle",
+      "file": "plugins/cordova-plugin-camera/www/CameraPopoverHandle.js",
+      "pluginId": "cordova-plugin-camera",
+      "clobbers": [
+        "CameraPopoverHandle"
+      ]
+    },
+    {
+      "id": "cordova-plugin-datepicker.DatePicker",
+      "file": "plugins/cordova-plugin-datepicker/www/android/DatePicker.js",
+      "pluginId": "cordova-plugin-datepicker",
+      "clobbers": [
+        "datePicker"
+      ]
+    },
+    {
+      "id": "cordova-plugin-device.device",
+      "file": "plugins/cordova-plugin-device/www/device.js",
+      "pluginId": "cordova-plugin-device",
+      "clobbers": [
+        "device"
+      ]
+    },
+    {
+      "id": "cordova-plugin-fullscreen.AndroidFullScreen",
+      "file": "plugins/cordova-plugin-fullscreen/www/AndroidFullScreen.js",
+      "pluginId": "cordova-plugin-fullscreen",
+      "clobbers": [
+        "AndroidFullScreen"
+      ]
+    },
+    {
+      "id": "es6-promise-plugin.Promise",
+      "file": "plugins/es6-promise-plugin/www/promise.js",
+      "pluginId": "es6-promise-plugin",
+      "runs": true
+    },
+    {
+      "id": "cordova-plugin-screen-orientation.screenorientation",
+      "file": "plugins/cordova-plugin-screen-orientation/www/screenorientation.js",
+      "pluginId": "cordova-plugin-screen-orientation",
+      "clobbers": [
+        "cordova.plugins.screenorientation"
+      ]
+    },
+    {
+      "id": "cordova-plugin-statusbar.statusbar",
+      "file": "plugins/cordova-plugin-statusbar/www/statusbar.js",
+      "pluginId": "cordova-plugin-statusbar",
+      "clobbers": [
+        "window.StatusBar"
+      ]
+    },
+    {
+      "id": "phonegap-plugin-barcodescanner.BarcodeScanner",
+      "file": "plugins/phonegap-plugin-barcodescanner/www/barcodescanner.js",
+      "pluginId": "phonegap-plugin-barcodescanner",
+      "clobbers": [
+        "cordova.plugins.barcodeScanner"
+      ]
+    }
+  ],
+  "plugin_metadata": {
+    "com.telerik.plugins.nativepagetransitions": "0.6.5",
+    "cordova-plugin-camera": "4.0.2",
+    "cordova-plugin-datepicker": "0.9.3",
+    "cordova-plugin-device": "2.0.1",
+    "cordova-plugin-fullscreen": "1.1.0",
+    "es6-promise-plugin": "4.2.2",
+    "cordova-plugin-screen-orientation": "3.0.1",
+    "cordova-plugin-statusbar": "2.4.2",
+    "cordova-plugin-whitelist": "1.3.3",
+    "phonegap-plugin-barcodescanner": "7.1.0"
+  }
+}

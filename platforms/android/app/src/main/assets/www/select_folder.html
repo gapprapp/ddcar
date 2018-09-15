@@ -1,0 +1,760 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>Home</title>
+  <!-- Bootstrap Import -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+  <script type="text/javascript" src="js/jquery-3.3.1.min.js"></script>
+  <script type="text/javascript" src="js/jquery-ui.min.js"></script>
+  <script type="text/javascript" src="js/jquery.easing.1.3.min.js"></script>
+  <script type="text/javascript" src="js/transition.js"></script>
+  <script type="text/javascript" src="js/jquery-confirm.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.6/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
+  <script src="cordova.js"></script>
+
+  <link rel="stylesheet" href="css/index.css">
+  <link rel="stylesheet" href="css/jquery-confirm.css">
+  <link rel="stylesheet" href="css/loading.css">
+
+  <!-- Font -->
+  <link href="https://fonts.googleapis.com/css?family=Prompt" rel="stylesheet">
+
+  <style>
+    h5 {
+      color: #515151;
+      letter-spacing: 2px;
+    }
+
+    .six{
+      color: #666;
+    }
+
+    .checked{
+      color: #66b266;
+    }
+  </style>
+
+  <script>
+    var parent;
+    var index;
+    var last_node = 0;
+    var from;
+    $(document).ready(function() {
+      url = new URL(window.location.href);
+      folder = url.searchParams.get("folder");  
+      from = url.searchParams.get("from");
+      
+      if(folder){
+        $("#h5-title").text(folder);
+        parent = folder;
+      }else{        
+        parent = "car";
+      }
+      if(parent == "car"){
+        $("#h5-title").text("หมวดหมู่");
+      }
+
+      if(localStorage.stack_folder){
+        var retrievedObject = localStorage.getItem('stack_folder');
+        var arr_data = JSON.parse(retrievedObject);   
+      }else{
+        var arr_data = [];       
+      }
+      arr_data.push(parent); 
+      localStorage.setItem('stack_folder', JSON.stringify(arr_data));   
+
+      $.ajax({
+        type: "POST",
+        url:"http://ddaccessory.trueddns.com:24330/dd-shop/php/get_folder.php",
+        crossDomain: true,
+        data: {'parent' : parent},  
+        beforeSend: function(){
+          $(".overlay").prop('hidden', false);
+        },             
+        success: function(data){  
+            $(".overlay").prop('hidden', true);            
+            if(data == "last node"){
+              // case no node 
+              if(from == "add"){ 
+                $("#add-ctn").prop('hidden', false);
+                $("#main-ctn").prop('hidden', true);
+                //$("#navs-bttm").prop("hidden", false);
+                if(parent == "car"){
+                  $("#add-prod").prop('hidden', true);
+                }                  
+              }           
+            }else{           
+              var obj = jQuery.parseJSON(data);              
+              if(obj[obj.length-1] == "last node"){
+                // case last node have product                    
+                  if(from == "add"){
+                    $("#navs-bttm").prop("hidden", false);
+                  }else{                
+                    $("#show-box").prop('hidden',false); 
+                    if(from == "stock" || from == "thre"){
+                      $("#show-box").prop('hidden',true); 
+                    }                                      
+                  } 
+                  $.each(obj, function(i, field){
+                    if(obj.length-1 > i){
+                      text_html = "<div id='row-title-"+i+"' class='row'>" +
+                        "<span id='span-"+i+"' hidden>" + obj[i].title + "</span>" +
+                        "<div class='col-2 text-center'><i id='box-"+i+"' class='far fa-check-square six box' onclick='check("+i+")' hidden></i><i class='fa fa-trash-alt i-trash' onclick='remove("+i+")' style='color: #666;' hidden></i><i class='fa fa-edit i-edit' onclick='edit("+i+")' style='color: #666;' hidden></i></div>" +                        
+                        "<div id='getin-"+i+"' class='col-8 text-center title' onclick='getIn(\"" + obj[i].title + "\", "+i+")'>" +
+                        "<h5 id='title-"+i+"'>" + obj[i][2] + "</h5>" +
+                        "</div>" +
+                        "<div class='col-2'></div>" +
+                        "</div >"+
+                        "<hr id='hr-"+i+"'>";
+                      $("#append-ctn").append(text_html);
+                      index = i;
+                      }                                                 
+                    });
+                    last_node = 1;                                                 
+              }else{
+                // case have folder 
+                if(from == "add"){
+                  $("#navs-bttm").prop("hidden", false);
+                }                
+                $.each(obj, function(i, field){
+                if(obj.length-1 > i){
+                  text_html = "<div id='row-title-"+i+"' class='row'>" +
+                    "<span id='span-"+i+"' hidden>" + obj[i].title + "</span>" +
+                    "<div class='col-2'><i class='fa fa-trash-alt i-trash' onclick='remove("+i+")' style='color: #666;' hidden></i><i class='fa fa-edit i-edit' onclick='edit("+i+")' style='color: #666;' hidden></i></div>" +
+                    "<div id='getin-"+i+"' class='col-8 text-center title' onclick='getIn(\"" + obj[i].title + "\")'>" +
+                    "<h5 id='title-"+i+"'>" + obj[i].title + "</h5></div>" +
+                    "<div class='col-2'></div>" +
+                    "</div ><hr id='hr-"+i+"'>";
+                  $("#append-ctn").append(text_html);
+                  index = i;
+                  }                                                 
+                });               
+              }                               
+            }                          
+        }               
+      });
+        // index = i;
+    });   
+    
+    function show_box(){
+      if ($(".box").is(":visible")) {
+          $(".box").attr('hidden', true);        
+      }else{
+          $(".box").attr('hidden', false);         
+      }
+    }
+
+    arr_prod = [];
+    function check(arg){
+      //console.log('row ' + arg + ' checked');
+      $("#box-"+arg).removeClass('six'); 
+      $("#box-"+arg).removeClass('far'); 
+      $("#box-"+arg).addClass('checked'); 
+      $("#box-"+arg).addClass('fa');
+      $("#box-"+arg).attr('onclick', 'uncheck('+arg+')'); 
+
+      $("#show-box-go").prop('hidden',false);
+      $("#show-box").prop('hidden',true);
+      var ch = false;
+      for(var i = 0 ; i < arr_prod.length ; i++){
+          if(arr_prod[i].arg == arg){
+            arr_prod[i].prod_id = $('#span-'+arg).text();
+            ch = true;
+            break;
+          }
+      }
+      if(!ch){          
+          item = {};   
+          item ["arg"] = arg;        
+          item ["prod_id"] = $('#span-'+arg).text();         
+          arr_prod.push(item);          
+      }     
+    }
+
+    function uncheck(arg){
+      //console.log('row ' + arg + ' unchecked');
+      $("#box-"+arg).removeClass('checked'); 
+      $("#box-"+arg).removeClass('fa'); 
+      $("#box-"+arg).addClass('six'); 
+      $("#box-"+arg).addClass('far'); 
+      $("#box-"+arg).attr('onclick', 'check('+arg+')');
+
+      for(var i = 0 ; i < arr_prod.length ; i++){
+        if(arr_prod[i].arg == arg){
+            arr_prod[i].prod_id = 0;
+            break;
+        }
+      } 
+
+      var ch = 0;
+      for(var i=0 ; i <= index;i++){
+        if($('#box-'+i).hasClass('six')){
+          ch++;
+        }
+      }
+      if(ch-1 == index){
+        $("#show-box-go").prop('hidden',true);
+        $("#show-box").prop('hidden',false);
+      }
+    }
+
+    function nextselect(){
+      json = [];
+      for(var i = 0 ; i < arr_prod.length ; i++){
+        if(arr_prod[i].prod_id != 0){
+            item = {}
+            item["prod_id"] = arr_prod[i].prod_id;           
+            json.push(item);               
+        }
+      }
+      if(from == "import"){
+          localStorage.setItem('arr_prod_i', JSON.stringify(json)); 
+          goto = "import.html";
+        }else if(from == "tran_in"){
+          localStorage.setItem('arr_prod_t', JSON.stringify(json)); 
+          goto = "transfer_in.html";
+        }else if(from == "export"){
+          localStorage.setItem('arr_prod_e', JSON.stringify(json)); 
+          goto = "export.html";
+        }else if(from == "sale"){
+          localStorage.setItem('arr_prod_s', JSON.stringify(json)); 
+          goto = "sale.html";
+        } 
+      transition_page_next(goto);    
+    }
+
+    function disactive(arg) {
+      nav_menu = ['home', 'add', 'edit', 'del'];
+      for (i = 0; i < 4; i++) {
+        if (nav_menu[i] != arg) {
+          if ($("#i-" + nav_menu[i]).hasClass('active')) $("#i-" + nav_menu[i]).removeClass('active');
+        }
+      }
+    }
+
+    function disac(arg){
+      if ($("#i-" + arg).hasClass('active')) $("#i-" + arg).removeClass('active');
+    }
+
+    function menu(arg) {
+      // Animate
+      disactive(arg);
+      if($("#i-"+arg).hasClass('active')){
+        console.log("i-"+arg+"hasClass('active')");
+        $("#i-"+arg).removeClass('active');
+      }else{
+        $("#i-" + arg).fadeOut(150).fadeIn(100, function() {
+          $("#i-" + arg).addClass('active');
+        });
+      }
+
+      if(arg == "add"){
+        if(last_node == 1){
+          add_prod();
+        }
+        if ($(".i-add").is(":visible")) {
+          $(".i-trash").attr('hidden', true);$(".i-edit").attr('hidden', true);
+          $(".i-edit").attr('hidden', true);
+          disac("edit");
+        } else {
+          $(".i-add").attr('hidden', false);
+          $(".i-trash").attr('hidden', true);
+          $(".i-edit").attr('hidden', true);
+        }
+        $("style").append(".jconfirm .jconfirm-box{margin-bottom:70%;}");
+        $.confirm({
+          title: "เพิ่มหมวดหมู่",
+          content: '<div class="row" style="margin-top: 2%; margin-bottom: 2%;"><div class="col-1"></div><div class="col-10"><input id="edt-name" type="text" class="input-cf" autofocus style="text-transform: uppercase";></div><div class="col-1"></div></div>',
+          backgroundDismiss: true,
+          buttons: {
+            ยกเลิก: function () {
+                //$(".jconfirm .jconfirm-box").css('margin-bottom', '5%');
+              },
+            formSubmit: {
+              text: 'ตกลง',
+              btnClass: 'btn-danger',
+              action: function () {
+                newname = $("#edt-name").val().toUpperCase();
+                add(newname);                   
+              }
+            }
+          }
+        });
+      }else if(arg == "home"){
+        transition_page_back('index.html');
+      }else if(arg == "edit"){       
+        if ($(".i-edit").is(":visible")) {
+          $(".i-trash").attr('hidden', true);
+          $(".i-edit").attr('hidden', true);
+          disac("edit");
+        } else {           
+          $(".i-trash").attr('hidden', true);
+          $(".i-edit").attr('hidden', false);             
+        }
+      }else if(arg == "del"){       
+        if($(".i-trash").is(":visible")){
+          $(".i-edit").attr('hidden', true);
+          $(".i-trash").attr('hidden', true);
+          disac("del");
+        }else{           
+          $(".i-edit").attr('hidden', true);
+          $(".i-trash").attr('hidden', false);           
+        }
+      }
+    }
+
+    function getIn(arg, arg2){
+      if(last_node == 0){
+        goto = "select_folder.html?from="+ from+ "&folder=" +arg;
+      }else if(last_node == 1){ 
+        if($(".box").is(':visible')){
+          if($("#box-"+arg2).hasClass('six')) check(arg2);
+          else if($("#box-"+arg2).hasClass('checked')) uncheck(arg2);         
+        }else if(from == "import"){
+          goto = "import.html?product="+arg;
+        }else if(from == "tran_in"){
+          goto = "transfer_in.html?product="+arg;
+        }else if(from == "export"){
+          goto = "export.html?product="+arg;
+        }else if(from == "sale"){
+          goto = "sale.html?product="+arg;
+        }else if(from == "stock"){
+          goto = "stock.html?product="+arg;
+        }else if(from == "thre"){
+          goto = "set_threshold.html?product="+arg;
+        }else if(from == "add"){
+          var retrievedObject = localStorage.getItem('stack_folder');
+          var arr_data = JSON.parse(retrievedObject);      
+          arr_data.splice(arr_data.length-1,1);
+          localStorage.setItem('stack_folder', JSON.stringify(arr_data));         
+          goto = "show_prod.html?prod_id="+arg+"&folder="+parent;        
+        }
+      }     
+      transition_page_next(goto);
+    }
+
+    function add(arg){
+      // First State
+      if(!$("#main-ctn").is(":visible")){
+        input = $("#first-add").val().toUpperCase();
+        if(input != ""){
+          $.ajax({
+            type: "POST",
+            url: "http://ddaccessory.trueddns.com:24330/dd-shop/php/add_folder.php",
+            data: {
+              'title': input,
+              'parent': parent
+            },
+            beforeSend: function(){
+              $(".overlay").prop('hidden', false);
+            },             
+            success: function(data){  
+              $(".overlay").prop('hidden', true);
+              if (data == "success") {
+                index++;
+                text_html = "<div id='row-title-"+index+"' class='row'>" +
+                  "<span id='span-"+index+"' hidden>" + input + "</span>" +
+                  "<div class='col-2'><i class='fa fa-trash-alt i-trash' onclick='remove("+index+")' style='color: #666;' hidden></i><i class='fa fa-edit i-edit' onclick='edit("+index+")' style='color: #666;' hidden></i></div>" +
+                  "<div id='getin-"+index+"' class='col-8 text-center title' onclick='getIn(\"" + input + "\")'>" +
+                  "<h5 id='title-"+index+"'>" + input + "</h5></div>" +
+                  "<div class='col-2'></div>" +
+                  "</div ><hr id='hr-"+index+"'>";
+
+                $("#main-ctn").prop('hidden', false);
+                $("#add-ctn").prop('hidden', true);
+                $("#navs-bttm").prop("hidden", false);
+                $("#append-ctn").append(text_html);
+              } else {
+                $.confirm({
+                  title: 'พบข้อผิดพลาด',
+                  content: 'ลองอีกครั้ง',
+                  backgroundDismiss: true,
+                  buttons: {
+                    formSubmit: {
+                      text: 'ตกลง',
+                      btnClass: 'btn-regis',
+                      action: function () {
+                      }
+                    }
+                  }
+                });
+              }
+            }
+          });
+        }else{
+          $.confirm({
+            title: 'พบข้อผิดพลาด',
+            content: 'กรอกหมวดหมู่ก่อนเพิ่ม',
+            backgroundDismiss: true,
+            buttons: {
+              formSubmit: {
+                text: 'ตกลง',
+                btnClass: 'btn-regis',
+                action: function () {
+                }
+              }
+            }
+          });         
+        }
+      }else{
+        input = arg;
+        if(input != "") {
+          $.ajax({
+            type: "POST",
+            url: "http://ddaccessory.trueddns.com:24330/dd-shop/php/add_folder.php",
+            data: {
+              'title': input,
+              'parent': parent
+            },
+            success: function (data) {
+              if(data == "success"){
+                index++;
+                text_html = "<div id='row-title-"+index+"' class='row'>" +
+                  "<span id='span-"+index+"' hidden>" + input + "</span>" +
+                  "<div class='col-2'><i class='fa fa-trash-alt i-trash' onclick='remove("+index+")' style='color: #666;' hidden></i><i class='fa fa-edit i-edit' onclick='edit("+index+")' style='color: #666;' hidden></i></div>" +
+                  "<div id='getin-"+index+"' class='col-8 text-center title' onclick='getIn(\"" + input + "\")'>" +
+                  "<h5 id='title-"+index+"'>" + input + "</h5></div>" +
+                  "<div class='col-2'></div>" +
+                  "</div ><hr id='hr-"+index+"'>";
+                $("#append-ctn").append(text_html);
+              }else{
+                $.confirm({
+                  title: 'พบข้อผิดพลาด',
+                  content: 'ลองอีกครั้ง',
+                  backgroundDismiss: true,
+                  buttons: {
+                    formSubmit: {
+                      text: 'ตกลง',
+                      btnClass: 'btn-regis',
+                      action: function () {
+                      }
+                    }
+                  }
+                });
+              }
+            }
+          });
+        }else{
+          document.elementFromPoint(0, 0).click();
+        }
+      }
+    }
+
+    /*function close_row_edit(arg){
+      old_name = $("#title-" + arg).text();
+      $("#input-" + arg).val(old_name);
+      $("#row-title-" + arg).prop('hidden', false);
+      $("#row-edit-" + arg).prop('hidden', true); 
+    }*/
+
+    function edit(arg){
+      if(last_node == 0){
+        name = $("#title-"+arg).text();
+        $("style").append(".jconfirm .jconfirm-box{margin-bottom:70%;}");
+        $.confirm({
+          title: "แก้ไข",
+          content: '<div class="row" style="margin-top: 2%; margin-bottom: 2%;"><div class="col-1"></div><div class="col-10"><input id="edt-name" type="text" class="input-cf" autofocus placeholder="'+name+'" style="text-transform: uppercase"></div><div class="col-1"></div></div>',
+          backgroundDismiss: true,
+          buttons: {
+            ยกเลิก: function () {
+                //$(".jconfirm .jconfirm-box").css('margin-bottom', '5%');
+              },
+            formSubmit: {
+              text: 'ตกลง',
+              btnClass: 'btn-danger',
+              action: function () {
+                newname = $("#edt-name").val().toUpperCase();;
+                rename(arg, newname);                   
+              }
+            }
+          }
+        }); 
+      }else if(last_node == 1){
+        var retrievedObject = localStorage.getItem('stack_folder');
+        var arr_data = JSON.parse(retrievedObject);      
+        arr_data.splice(arr_data.length-1,1);
+        localStorage.setItem('stack_folder', JSON.stringify(arr_data));  
+        prod_id = $("#span-"+arg).text();
+        goto = "edit_prod.html?prod_id="+prod_id+"&folder="+parent;         
+        transition_page_next_flip(goto);
+      }      
+    }
+
+    function rename(arg, name){
+      old_name = $("#title-"+arg).text();
+
+      // input hidden false
+      // h5 hidden true
+      $.ajax({
+        type: "POST",
+        url:"http://ddaccessory.trueddns.com:24330/dd-shop/php/rename_folder.php",           
+        data: {'old_name' : old_name,
+               'name' : name},               
+        beforeSend: function(){
+          $(".overlay").prop('hidden', false);
+        },             
+        success: function(data){ 
+            if(data == "success"){
+              $(".overlay").prop('hidden', true);                             
+              $("#title-" + arg).text(name); 
+              $("#getin-"+arg).attr("onclick", "getIn(\"" + name + "\")");
+            }else{
+              $.confirm({
+                title: 'พบข้อผิดพลาด',
+                content: 'ลองอีกครั้ง',
+                backgroundDismiss: true,
+                buttons: {
+                  formSubmit: {
+                    text: 'ตกลง',
+                    btnClass: 'btn-regis',
+                    action: function () {
+                    }
+                  }
+                }
+              });
+            }             
+            //$("#row-title-" + arg).prop('hidden', false);
+            //$("#row-edit-" + arg).prop('hidden', true);          
+        }               
+      });
+    }
+
+    function remove(arg){
+      var title = $("#title-" + arg).text();
+      if(last_node == 0){        
+        $("style").append('.jconfirm .jconfirm-box{margin-bottom: 5%;}');
+        $.confirm({
+          title: 'ลบรายการ',
+          content: 'ต้องการลบ '+title+' หรือไม่',
+          backgroundDismiss: true,
+          buttons: { 
+            formSubmit: {
+              text: 'ตกลง',
+              btnClass: 'btn-danger',
+              action: function () {
+                $.ajax({
+                  type: "POST",
+                  url:"http://ddaccessory.trueddns.com:24330/dd-shop/php/delete_folder.php",           
+                  data: {'title' : title},               
+                  beforeSend: function(){
+                      $(".overlay").prop('hidden', false);
+                  },             
+                  success: function(data){  
+                    $(".overlay").prop('hidden', true);                             
+                    if(data == "success"){
+                      $("#hr-"+arg).remove();
+                      $("#row-title-" + arg).remove();
+                      //$("#row-edit-" + arg).remove();
+                      if($("#append-ctn").children().length == 0){
+                        // no child
+                        $("#add-ctn").prop('hidden', false);
+                        $("#main-ctn").prop('hidden', true);
+                        $("#navs-bttm").prop("hidden", true);
+                        if(parent == "car"){
+                          $("#add-prod").prop('hidden', true);
+                        } 
+                        disac('del');
+                      }           
+                    }else{
+                      $.confirm({
+                        title: 'พบข้อผิดพลาด',
+                        content: 'ลองอีกครั้ง',
+                        backgroundDismiss: true,
+                        buttons: {
+                          formSubmit: {
+                            text: 'ตกลง',
+                            btnClass: 'btn-regis',
+                            action: function () {
+                            }
+                          }
+                        }
+                      });
+                    }                               
+                  }               
+                });
+              }
+            },ยกเลิก: function () {}
+          }  
+        });
+      }else if(last_node == 1){
+        var prod_id = $("#span-" + arg).text();        
+        $("style").append('.jconfirm .jconfirm-box{margin-bottom: 5%;}');
+        $.confirm({
+          title: 'ลบรายการ',
+          content: 'ต้องการลบ '+title+' หรือไม่',
+          backgroundDismiss: true,
+          buttons: {  
+            formSubmit: {
+              text: 'ตกลง',
+              btnClass: 'btn-danger',
+              action: function () {
+                $.ajax({
+                  type: "POST",
+                  url:"http://ddaccessory.trueddns.com:24330/dd-shop/php/delete_prod.php",           
+                  data: {'title' : prod_id},               
+                  beforeSend: function(){
+                      $(".overlay").prop('hidden', false);
+                  },             
+                  success: function(data){  
+                    $(".overlay").prop('hidden', true);                             
+                    if(data == "success"){
+                      $("#hr-"+arg).remove();
+                      $("#row-title-" + arg).remove();
+                      //$("#row-edit-" + arg).remove();
+                      if($("#append-ctn").children().length == 0){
+                        // no child
+                        $("#add-ctn").prop('hidden', false);
+                        $("#main-ctn").prop('hidden', true);
+                        $("#navs-bttm").prop("hidden", true);
+                        disac('del');
+                      }           
+                    }else{
+                      $.confirm({
+                        title: 'พบข้อผิดพลาด',
+                        content: 'ลองอีกครั้ง',
+                        backgroundDismiss: true,
+                        buttons: {
+                          formSubmit: {
+                            text: 'ตกลง',
+                            btnClass: 'btn-regis',
+                            action: function () {
+                            }
+                          }
+                        }
+                      });
+                    }           
+                  }               
+                });
+              }
+            },ยกเลิก: function () {}
+          }  
+        });
+      }      
+    }
+
+    function add_prod(){  
+      var retrievedObject = localStorage.getItem('stack_folder');
+      var arr_data = JSON.parse(retrievedObject);      
+      arr_data.splice(arr_data.length-1,1);
+      localStorage.setItem('stack_folder', JSON.stringify(arr_data));  
+      goto = "add_prod.html?folder="+parent;         
+      transition_page_next_flip(goto);
+    }
+
+    function page_back(){
+      if(parent == "car"){
+        localStorage.stack_folder = "";
+        if(from == "add"){
+          goto = "index.html";
+        }else if(from == "import"){
+          goto = "import.html";
+        }else if(from == "tran_in"){
+          goto = "transfer_in.html";
+        }else if(from == "export"){
+          goto = "export.html";
+        }else if(from == "sale"){
+          goto = "sale.html";
+        }else if(from == "stock"){
+          goto = "stock.html";
+        }else if(from == "thre"){
+          goto = "set_threshold.html";
+        }
+        transition_page_back(goto);  
+      }     
+      var retrievedObject = localStorage.getItem('stack_folder');
+      var arr_data = JSON.parse(retrievedObject);   
+      var data = arr_data[arr_data.length-2];
+      arr_data.splice(arr_data.length-2,2);
+      localStorage.setItem('stack_folder', JSON.stringify(arr_data));  
+      goto = "select_folder.html?from="+ from+ "&folder=" +data;
+      transition_page_back(goto);        
+      
+      /*$.ajax({
+        type: "POST",
+        url:"http://migky.myqnapcloud.com:8083/dd-shop/php/back_folder.php",           
+        data: {'title' : parent},               
+        beforeSend: function(){
+            //$(".overlay").prop('hidden', false);
+        },             
+        success: function(data){  
+          //$(".overlay").prop('hidden', true);                             
+          if(data != "fail"){           
+            goto = "select_folder.html?from="+ from+ "&folder=" +data;
+            transition_page_back(goto);       
+          }                               
+        }               
+      });*/      
+    }   
+  </script>
+</head>
+
+<body style="overflow: auto;">
+  <!-- Loading -->
+  <div class="overlay" hidden><div class="loading"></div></div>
+
+  <!-- Nav menu top -->
+  <div class="row fixed-top navs">
+    <div class="col-1 text-center" onclick="page_back();">
+      <i id="i-back" class="fas fa-angle-left"></i>
+    </div>
+    <div class="col-8 text-center" style="padding-left: 15%; margin-right: 4%;">
+      <h5 id="h5-title"></h5>
+    </div>
+    <div class="col-2 text-center">
+        <i id='show-box' class='fas fa-check-square' onclick='show_box()' hidden></i>
+        <i id='show-box-go' class='fa fa-check' onclick='nextselect()' hidden></i>
+    </div>
+  </div><br>
+
+  <!-- start big container -->
+
+  <div id="add-ctn" class="container justify-content-center" style="margin-top: 50%;" hidden>
+    <div class="container">
+      <div id="row-input-add" class="row" style="margin-bottom: 15%;">
+        <div class="col-12 text-center">
+          <input id="first-add" type="text" class="w3-input" placeholder="เพิ่มหมวดหมู่" style="text-transform:uppercase;" autofocus>
+        </div>
+      </div>
+      <div id="add-folder" class="row" style="margin-bottom: 10%;">
+        <div class="col-12 text-center">
+          <button class="mbtn" onclick="add();">เพิ่มหมวดหมู่</button>
+        </div>
+      </div>
+      <div id="add-prod" class="row">
+        <div class="col-12 text-center">
+          <button class="mbtn" onclick="add_prod();">เพิ่มสินค้า</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="main-ctn" class="container justify-content-center" style="margin-top: 20%; margin-bottom: 20%;">
+    <div id="append-ctn" class="container">
+    </div>
+  </div> 
+  <!-- End big container -->
+
+   <!-- Nav menu bottom -->
+   <div id="navs-bttm" class="row fixed-bottom navs" hidden>
+    <div class="col-3 text-center" onclick="menu('home')">
+        <i id="i-home" class="fas fa-home menu"></i>
+    </div>
+    <div class="col-3 text-center" onclick="menu('add')">
+        <i id="i-add" class="fas fa-plus menu"></i>
+    </div>
+    <div class="col-3 text-center" onclick="menu('edit')">
+        <i id="i-edit" class="fas fa-edit menu"></i>
+    </div>
+    <div class="col-3 text-center" onclick="menu('del')">
+        <i id="i-del" class="fa fa-trash-alt menu"></i>
+    </div>
+</div>
+<!-- End Nav menu bottom -->
+</body>
+
+</html>

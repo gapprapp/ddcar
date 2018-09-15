@@ -79,6 +79,7 @@
             if(localStorage.arr_prod_e){
                 $("#btn-folder").attr('disabled',true);           
                 $("#btn-addpic").attr('disabled',true);
+                $("#name").attr('disabled',true);
                 var retrievedObject = localStorage.getItem('arr_prod_e');
                 var arr_data = JSON.parse(retrievedObject); 
                 prod_id = arr_data[0].prod_id;            
@@ -243,6 +244,7 @@
             }else{                   
                 $("#btn-folder").removeAttr('disabled');           
                 $("#btn-addpic").removeAttr('disabled');
+                $("#name").removeAttr('disabled');
             }                
         }     
 

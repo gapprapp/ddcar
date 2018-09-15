@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>Home</title>
+  <!-- Bootstrap Import -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+  <script type="text/javascript" src="js/jquery-3.3.1.min.js"></script>
+  <script type="text/javascript" src="js/jquery-ui.min.js"></script>
+  <script type="text/javascript" src="js/jquery.easing.1.3.min.js"></script>
+  <script type="text/javascript" src="js/transition.js"></script>
+  <script type="text/javascript" src="js/jquery-confirm.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.6/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+  <script defer src="https://use.fontawesome.com/releases/v5.0.8/js/all.js"></script>
+  <script src="cordova.js"></script>
+  <script type="text/javascript" src="js/scanqr.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.0/jquery-confirm.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.0/jquery-confirm.min.js"></script>
+ 
+  <link rel="stylesheet" href="css/index.css">
+  <link rel="stylesheet" href="css/jquery-confirm.css">
+  <link rel="stylesheet" href="css/loading.css">
+
+  <!-- Font -->
+  <link href="https://fonts.googleapis.com/css?family=Prompt" rel="stylesheet">
+
+  <!-- DatePicker -->
+  <link rel="stylesheet" href="css/duDatepicker.css">
+  <script src="js/duDatepicker.js"></script>
+
+  <style>
+    hr{
+      margin-top: 0;
+    }  
+    ul {
+      list-style-type: none;
+      margin: 0;
+      padding: 0;
+    }    
+  </style>
+
+  <script>
+    var start = start_d = start_s = 0;
+    var bool = bool_d = bool_s = false;
+    $(document).ready(function(){
+      $('#datepicker-from').duDatepicker(({format: 'dd/mm/yy', theme: 'red', cancelBtn: true, maxDate: "today"})).on('datechanged', function(e){
+        console.log(e.date);
+        $("#date").text(e.date);
+        if(e.date != null){
+          e.date = new Date();
+        }
+        $("#datepicker-to").trigger('click');
+      });
+
+      $('#datepicker-to').duDatepicker(({format: 'dd/mm/yy', theme: 'red', cancelBtn: true, maxDate: "today"})).on('datechanged', function(e){
+        console.log(e.date);
+        $("#date").append(" - " + e.date);
+        $("#date_row").prop('hidden', false);
+        $("#search_row").prop('hidden', true);
+        start_d = 0;
+        bool_d = false;
+        $("#myS").prop('hidden', true);
+        $("#myUL").prop('hidden', true);
+        $("#myD").prop('hidden', false);
+        $("#myD").empty();
+        $("#i-back").attr("onclick","showUL()");
+        search_date();
+      });
+      get_import();
+
+      //scroll to bottom
+      $(window).on("scroll", function() {
+        var scrollHeight = $(document).height();
+        var scrollPosition = $(window).height() + $(window).scrollTop();
+        if ((scrollHeight - scrollPosition) / scrollHeight === 0) {          
+          if(!$("#myUL").prop('hidden')){
+            if(bool){
+              return 0;
+            }
+            get_import();            
+          }else if(!$("#myD").prop('hidden')){
+            if(bool_d){
+              return 0;
+            }
+            search_date();
+          }else if(!$("#myS").prop('hidden')){
+            if(bool_s){
+              return 0;
+            }
+            get_import_s();
+          }
+        }
+      });      
+    });
+    
+    $(document).keydown(function(objEvent) {
+      if (objEvent.keyCode == 13) {  //enter pressed
+        objEvent.preventDefault();           
+        search();        
+      }         
+    })
+
+    function showUL(){
+      $("#myS").prop('hidden', true);
+      $("#myUL").prop('hidden', false);
+      $("#myD").prop('hidden', true);
+      $("#search_row").prop('hidden', true);
+      $("#date_row").prop('hidden', true);
+      $("#i-back").attr("onclick","transition_page_back('index.html?menu=3')");
+    }
+
+    function get_import(){
+      $.ajax({
+        type: "POST",
+        url:"http://ddaccessory.trueddns.com:24330/dd-shop/php/get_import.php",
+        data: {'start': start},       
+        beforeSend: function(){
+            $(".overlay").prop('hidden', false);
+        },                       
+        success: function(data){ 
+          $(".overlay").prop('hidden', true);  
+          var obj = jQuery.parseJSON(data);
+          if(obj[0] == "last"){
+            bool = true
+          }                        
+          $.each(obj, function(i, field){
+            if(i > 0){
+              var txt = field.date_time.split(" ");
+              var txt2 = txt[0].split("-");
+              var date = txt2[2] + "/" + txt2[1] + "/" + txt2[0].substr(2);
+              $('#myUL').append('<li> <div class="row" onclick="import_info('+field.stock_id+')">'+
+                '<div class="col-4 text-center no-pd">' +
+                  '<p>'+field.stock_number+'</p>' +
+                '</div>' +
+                '<div class="col-3 text-center no-pd">' +
+                  '<p>'+date+'</p>' +
+                '</div>' +
+                '<div class="col-5 text-center no-pd">' +
+                  '<p>'+field.ware_name+'</p>' +
+                '</div>' +
+              '</div><hr></li>');   
+            }                                               
+          });                                          
+        }               
+      });
+      start += 8;
+    }
+
+    function import_info(arg){
+      transition_page_next('import_info.html?id='+arg);
+    }
+
+    function show_search(){
+      if($("#search_row").is(':visible')){
+        $("#search_row").prop('hidden', true);
+        if(!$("#myD").prop('hidden')){
+          $("#date_row").prop('hidden', false);
+        }
+      }else{
+        $("#search_row").prop('hidden', false);
+        $("#date_row").prop('hidden', true);
+      }
+    }
+
+    var val;
+    function search(){
+      if($('#search_import').val() == ""){
+        return 0;
+      }
+      $('#search_import').blur();
+      val = $('#search_import').val();
+      start_s = 0;
+      bool_s = false;
+      $("#myS").prop('hidden', false);
+      $("#myUL").prop('hidden', true);
+      $("#myD").prop('hidden', true);
+      $("#myS").empty();
+      $("#i-back").attr("onclick","showUL()");
+      get_import_s();
+    }
+
+    function get_import_s(){
+      $.ajax({
+        type: "POST",
+        url:"http://ddaccessory.trueddns.com:24330/dd-shop/php/get_import.php",
+        data: {'start': start_s, 'value' : val},
+        beforeSend: function(){
+            $(".overlay").prop('hidden', false);
+        },                       
+        success: function(data){ 
+          $(".overlay").prop('hidden', true);  
+          var obj = jQuery.parseJSON(data);
+          if(obj[0] == "last"){
+            bool_s = true
+          }
+          $.each(obj, function(i, field){
+            if(i > 0){
+              var txt = field.date_time.split(" ");
+              var txt2 = txt[0].split("-");
+              var date = txt2[2] + "/" + txt2[1] + "/" + txt2[0].substr(2);
+              $('#myS').append('<li> <div class="row" onclick="import_info('+field.stock_id+')">'+
+                '<div class="col-4 text-center no-pd">' +
+                  '<p>'+field.stock_number+'</p>' +
+                '</div>' +
+                '<div class="col-3 text-center no-pd">' +
+                  '<p>'+date+'</p>' +
+                '</div>' +
+                '<div class="col-5 text-center no-pd">' +
+                  '<p>'+field.ware_name+'</p>' +
+                '</div>' +
+              '</div><hr></li>');     
+            }                                                
+          });                                         
+        }               
+      });
+      start_s += 8;
+    }
+
+    function search_date(){
+      txt = $("#date").text().split("-");
+      temp = txt[0].split("/");
+      date =  "20" + temp[2] + "-" + temp[1] + "-" + temp[0];
+      date = date.replace(/\s+/g, '');
+      date = date + " 00:00:00";
+
+      temp = txt[1].split("/");
+      date_to =  "20" + temp[2] + "-" + temp[1] + "-" + temp[0];
+      date_to = date_to.replace(/\s+/g, '');
+      date_to = date_to + " 23:59:59";
+
+      $.ajax({
+        type: "POST",
+        url:"http://ddaccessory.trueddns.com:24330/dd-shop/php/get_import.php",         
+        data:{'date' : date, 'date_to' : date_to ,'start' : start_d},
+        beforeSend: function(){
+          $(".overlay").prop('hidden', false);
+        },                       
+        success: function(data){ 
+          $(".overlay").prop('hidden', true);  
+          var obj = jQuery.parseJSON(data);
+          if(obj[0] == "last"){
+            bool_d = true;
+          }                              
+          $.each(obj, function(i, field){
+            if(i > 0){
+              var txt = field.date_time.split(" ");
+              var txt2 = txt[0].split("-");
+              var date = txt2[2] + "/" + txt2[1] + "/" + txt2[0].substr(2);
+              $('#myD').append('<li> <div class="row" onclick="import_info('+field.stock_id+')">'+
+                '<div class="col-4 text-center no-pd">' +
+                  '<p>'+field.stock_number+'</p>' +
+                '</div>' +
+                '<div class="col-3 text-center no-pd">' +
+                  '<p>'+date+'</p>' +
+                '</div>' +
+                '<div class="col-5 text-center no-pd">' +
+                  '<p>'+field.ware_name+'</p>' +
+                '</div>' +
+              '</div><hr></li>'); 
+            }                                      
+          });                                         
+        }               
+      });  
+      start_d += 8;          
+    }
+
+  </script>
+</head>
+
+<body style="overflow: auto;">
+  <!-- Loading -->
+  <div class="overlay" hidden><div class="loading"></div></div>
+
+  <!-- Nav menu top -->
+  <div class="row fixed-top navs">
+    <div id="i-back" class="col-1 text-center" onclick="transition_page_back('index.html?menu=3')">
+      <i  class="fas fa-angle-left"></i>
+    </div>
+    <div class="col-9 text-center" style="padding-left: 10%; margin-right: 3%;">
+      <h5 id="h5-title">รายการสินค้าเข้า</h5>
+    </div>
+    <div class="col-1 text-right" onclick="show_search();">
+      <i class="fas fa-search" style="color: white; font-size: 120%; margin-top: 3px;"></i>
+    </div>
+  </div><br>
+
+  <!-- End big container -->
+  <div class="container justify-content-center" style="margin-top: 15%;">
+    <div id="date_row" class="row mg-5" style="margin-left: 5%;" hidden>
+      <div class="col-11 text-center">
+        <h5 id="date">date</h5>
+      </div>
+    </div>
+    <div id="search_row" class="row mg-10" hidden>
+      <div class="col-9">
+        <input id="search_import" type="search" class="form-control form-control-lg text-center" placeholder="เลขที่ / โกดัง">
+      </div>      
+      <div class="col-3">
+        <button id="datepicker-from" class="mbtn" style="height: 90%; margin-top: 2px;">
+          <i class="far fa-calendar-alt"></i>
+        </button>
+        <button id="datepicker-to" hidden></button>
+      </div> 
+    </div>
+
+    <div class="row">
+      <div class="col-4 text-center no-pd">
+        <h5 id="title">เลขที่</h5>
+      </div>
+      <div class="col-3 text-center no-pd">
+        <h5 id="title">วันที่</h5>
+      </div>
+      <div class="col-5 text-center no-pd">
+        <h5 id="title">โกดัง</h5>
+      </div>
+    </div>
+    <hr> 
+    <ul id="myUL">
+
+    </ul>
+    <ul id="myD" hidden>
+
+    </ul>
+    <ul id="myS" hidden>
+
+    </ul>
+    </div>
+  <!-- End big container -->
+
+  <!-- Nav menu bottom -->
+  <div class="row fixed-bottom navs">
+    <div class="col-3 text-center" onclick="transition_page_back('index.html');">
+      <i id="i-home" class="fas fa-home menu"></i>
+    </div>
+    <div class="col-3 text-center" onclick="transition_page_next('bell.html')">
+      <i id="i-bell" class="fas fa-bell menu"></i>
+    </div>
+    <div class="col-3 text-center" onclick="scan();">
+      <i id="i-qrcode" class="fas fa-qrcode menu"></i>
+    </div>
+    <div class="col-3 text-center" onclick="return 0;">
+      <i id="i-bars" class="fa fa-bars menu"></i>
+    </div>
+  </div>
+  <!-- End Nav menu bottom -->
+  <script>
+    //Touch animation
+    $(".mbtn").on("touchstart", function() {
+      $(this).addClass('mbtn-touch');
+    });
+    $(".mbtn").on("touchend", function() {
+      $(this).removeClass('mbtn-touch');
+    });
+    /*$(function () {
+      var viewer = ImageViewer();
+      $('#img').click(function () {
+          alert("click");
+          var imgSrc = this.src;
+          viewer.show(imgSrc);
+      });
+    });*/
+  </script>
+</body>
+
+</html>
