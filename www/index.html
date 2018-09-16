@@ -114,11 +114,12 @@
         },                       
         success: function(data){ 
           $(".overlay").prop('hidden', true); 
-          if(data == "alert"){
+          if(data == "alert"){           
             localStorage.bell = 1;
             $('.dot').prop('hidden',false);
-          }else if(data == "normal"){
+          }else if(data == "normal"){           
             localStorage.bell = "";
+            $('.dot').prop('hidden',true);
           }                            
         }               
       });     
@@ -336,7 +337,7 @@
     <div class="col-3 text-center" onclick="scan();">
       <i id="i-qrcode" class="fas fa-qrcode menu"></i>
     </div>
-    <div class="col-3 text-center" onclick="localStorage.clear();">
+    <div class="col-3 text-center" onclick="localStorage.clear();transition_page_next('login.html')">
       <i class="fa fa-bars menu"></i>
     </div>
   </div>

@@ -67,10 +67,14 @@
   <script>
     var cus_id,cus_name,cd,text = "",sum = 0;
     $(document).ready(function(){
+      if(localStorage.bell){
+          $('.dot').prop('hidden',false);
+      } 
       url = new URL(window.location.href);      
       cus_id = url.searchParams.get("cus");
       cd = url.searchParams.get("cd");
       cus_name = url.searchParams.get("cus_name");
+      var index = 0;
 
       $.ajax({
         type: "POST",
@@ -107,7 +111,19 @@
               '<div class="fl-15 tb inner no-bdt no-bdbtm">'+parseFloat(field.total_price).toFixed(2).toLocaleString()+'</div>'+
             '</div>'            
             sum += parseFloat(field.total_price); 
+            index = (i+1);
           });
+          for(var j = 0;j < 20-index;j++){
+            text = text +  '<div>'+
+              '<div class="fl-spc tb-st inner no-bdt no-bdbtm">&emsp;</div>'+
+              '<div class="fl-15 tb inner no-bdt no-bdbtm">&emsp;</div>'+
+              '<div class="fl-12 tb inner no-bdt no-bdbtm">&emsp;</div>'+
+              '<div class="fl-12 tb inner no-bdt no-bdbtm">&emsp;</div>'+
+              '<div class="fl-20 tb inner no-bdt no-bdbtm">&emsp;</div>'+
+              '<div class="fl-15 tb inner no-bdt no-bdbtm">&emsp;</div>'+
+              '<div class="fl-15 tb inner no-bdt no-bdbtm">&emsp;</div>'+
+            '</div>' 
+          } 
           $('#net').text("รวมทั้งสิ้น : " +sum);          
         }               
       });

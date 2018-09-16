@@ -130,6 +130,8 @@
         success: function(data){ 
           $(".overlay").prop('hidden', true);  
           var obj = jQuery.parseJSON(data);
+          alert(obj[0]);
+          alert(obj);
           if(obj[0] == "last"){
             bool = true
           }
@@ -338,7 +340,7 @@
 
   <!-- Nav menu bottom -->
   <div class="row fixed-bottom navs">
-    <div class="col-3 text-center" onclick="transition_page_back('index.html');">
+    <div class="col-3 text-center" onclick="transition_page_back('index.html?menu=3');">
       <i id="i-home" class="fas fa-home menu"></i>
     </div>
     <div class="col-3 text-center" onclick="transition_page_next('bell.html')">

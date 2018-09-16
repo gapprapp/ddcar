@@ -57,7 +57,7 @@
     </style>
 
     <script>
-        var arr_detail = [];
+        arr_detail = [];
         $(document).ready(function () {
             /*var retrievedObject = localStorage.getItem('arr_sale');
             var arr_data = JSON.parse(retrievedObject);
@@ -362,7 +362,7 @@
                     if(data != "fail"){
                         var temp = data.split(" ");
                         var order_num = temp[0];
-                        var ch = temp[1];
+                        var ch = temp[1];                       
                         if(print == "ใบเสร็จ"){
                             var dt = datetime.split(" ");
                             var time = dt[1];
@@ -390,7 +390,7 @@
                                     "<div class='txt-left'>ส่วนลด : </div>"+
                                     "<div class='txt-right'>"+dis+" บาท</div><br>"+
                                     "<div class='txt-left'>สุทธิ : </div>"+
-                                    "<div class='txt-right'>"+('#total').val()+" บาท</div><br>"+
+                                    "<div class='txt-right'>"+$('#total').val()+" บาท</div><br>"+
                                     "<div class='txt-left' style='width: 30%;'>รับ / ทอน : </div>"+
                                     "<div class='txt-right'><span style='margin-right: 20px'>"+$('#get').val()+" บาท</span><span> "+$('#chng').val()+" บาท</span></div><br><br>"+
                                     "<div class='txt-ct' style='margin-bottom: 0.5em;'>ขอบคุณที่ใช้บริการ</div>"+
@@ -538,7 +538,7 @@
                                     '</div>'+
 
                                     '<div style="margin-top: 5px;">' +
-                                        '<div class="fl-80 tb-st no-bdt" style="text-align: left;">&emsp; <span class="bold">ที่อยู่ : </span><span>&emsp;'+cus_addr+'</span></div>'+
+                                        '<div class="fl-80 tb-st no-bdt" style="text-align: left;">&emsp; <span class="bold">ที่อยู่ : </span><span>&emsp;'+localStorage.cus_addr+'</span></div>'+
                                         '<div class="fl-9 tb" style="margin-top: -1px;">'+date_ex+'</div>'+
                                         '<div class="fl-9 tb" style="margin-top: -1px;">'+localStorage.user_name+'</div>'+
                                     '</div>' +

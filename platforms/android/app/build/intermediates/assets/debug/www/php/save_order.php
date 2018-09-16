@@ -176,7 +176,7 @@
             exit;
         }    
     }
-    if($ch == true){
+    if($ch == 'true'){
         $sql = "UPDATE bell SET status = 'alert'";
         $result = mysqli_query($conn, $sql);       
         if(!$result){
