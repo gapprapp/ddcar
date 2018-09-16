@@ -116,14 +116,12 @@
           $(".overlay").prop('hidden', true); 
           if(data == "alert"){
             localStorage.bell = 1;
+            $('.dot').prop('hidden',false);
           }else if(data == "normal"){
             localStorage.bell = "";
-          }                     
+          }                            
         }               
-      }); 
-      if(localStorage.bell){
-        $('.dot').prop('hidden',false);
-      } 
+      });     
 
       var d = new Date($.now());
       var last_d = new Date(d.getFullYear(),d.getMonth()+1, 0).getDate();

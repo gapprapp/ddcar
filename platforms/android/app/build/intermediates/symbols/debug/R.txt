@@ -194,10 +194,12 @@ int layout notification_template_media 0x7f090011
 int layout notification_template_media_custom 0x7f090012
 int layout notification_template_part_chronometer 0x7f090013
 int layout notification_template_part_time 0x7f090014
-int layout search_book_contents 0x7f090015
-int layout search_book_contents_header 0x7f090016
-int layout search_book_contents_list_item 0x7f090017
-int layout share 0x7f090018
+int layout printer_list_item 0x7f090015
+int layout search_book_contents 0x7f090016
+int layout search_book_contents_header 0x7f090017
+int layout search_book_contents_list_item 0x7f090018
+int layout select_printer_activity 0x7f090019
+int layout share 0x7f09001a
 int menu capture 0x7f0a0000
 int menu encode 0x7f0a0001
 int menu history 0x7f0a0002

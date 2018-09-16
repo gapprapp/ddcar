@@ -67,6 +67,10 @@
         <activity
             android:name="com.google.zxing.client.android.encode.EncodeActivity"
             android:label="Share" />
+        <activity
+            android:name="de.appplant.cordova.plugin.printer.ui.SelectPrinterActivity"
+            android:exported="false"
+            android:label="Printer" />
     </application>
 
 </manifest>

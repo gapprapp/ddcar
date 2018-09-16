@@ -49,11 +49,13 @@
 
     <script>
         var prod_id,img,cus_id,type,old_price;
-        $(document).ready(function () { 
+        $(document).ready(function () {
             url = new URL(window.location.href);
             cus = url.searchParams.get("name");
             cus_id = url.searchParams.get("cus");
             type = url.searchParams.get("type");
+            localStorage.cus_addr = url.searchParams.get("addr");
+            localStorage.cus_tel = url.searchParams.get("tel");
             prod_id = url.searchParams.get("product");
             var ch = url.searchParams.get("ch");
            

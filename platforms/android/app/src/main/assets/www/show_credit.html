@@ -65,10 +65,12 @@
   </style>
 
   <script>
+    var cus_id,cus_name,cd,text = "",sum = 0;
     $(document).ready(function(){
       url = new URL(window.location.href);      
-      var cus_id = url.searchParams.get("cus");
-      var cd = url.searchParams.get("cd");
+      cus_id = url.searchParams.get("cus");
+      cd = url.searchParams.get("cd");
+      cus_name = url.searchParams.get("cus_name");
 
       $.ajax({
         type: "POST",
@@ -80,11 +82,11 @@
         success: function(data){ 
           $(".overlay").prop('hidden', true);  
           var obj = jQuery.parseJSON(data); 
-          $('#h5-title').text(obj[0].cus_name);
-          var sum = 0;
+          $('#h5-title').text(obj[0].cus_name);          
           $.each(obj, function(i, field){
             var txt = field.date_time.split(" ");
-            var date = txt[0].split("-");  
+            var date = txt[0].split("-"); 
+            var dateformat = date[2] + "/" + date[1] + "/" + date[0];   
             var credit = parseInt(field.payment_type.substr(8,2)); 
             var tomorrow = new Date(date[0],parseInt(date[1])-1,date[2]);
             tomorrow.setDate(tomorrow.getDate() + credit); 
@@ -94,6 +96,16 @@
             '<div class="col-4 text-center">'+date_ex+'</div>'+
             '<div class="col-3 text-center">'+field.total_price+'</div>'+
             '</div><hr style="margin-top: 4%"></li>');
+
+            text = text +  '<div>'+
+              '<div class="fl-spc tb-st inner no-bdt no-bdbtm">'+(i+1)+'</div>'+
+              '<div class="fl-15 tb inner no-bdt no-bdbtm">'+field.order_number+'</div>'+
+              '<div class="fl-12 tb inner no-bdt no-bdbtm">'+dateformat+'</div>'+
+              '<div class="fl-12 tb inner no-bdt no-bdbtm">'+date_ex+'</div>'+
+              '<div class="fl-20 tb inner no-bdt no-bdbtm">'+parseFloat(field.total_price).toFixed(2).toLocaleString()+'</div>'+
+              '<div class="fl-15 tb inner no-bdt no-bdbtm">&emsp;</div>'+
+              '<div class="fl-15 tb inner no-bdt no-bdbtm">'+parseFloat(field.total_price).toFixed(2).toLocaleString()+'</div>'+
+            '</div>'            
             sum += parseFloat(field.total_price); 
           });
           $('#net').text("รวมทั้งสิ้น : " +sum);          
@@ -104,6 +116,107 @@
     function bill_info(arg){
       transition_page_next('bill_info.html?id='+arg);
     }
+
+    function print(){
+      var d = new Date($.now());
+			var datetime = d.getFullYear() + "-" + (d.getMonth()+1) + "-" + d.getDate() + " " + d.getHours() + ":" + d.getMinutes() + ":" + d.getSeconds();	
+      $.ajax({
+        type: "POST",
+        url:"http://ddaccessory.trueddns.com:24330/dd-shop/php/save_credit.php", 
+        data: {'cus_id':cus_id, 'total':sum, 'dt':datetime,'user_id':localStorage.user_id},         
+        beforeSend: function(){
+          $(".overlay").prop('hidden', false);
+        },                       
+        success: function(data){ 
+          $(".overlay").prop('hidden', true);
+          if(data != "fail"){
+            var dt = datetime.split(" ");           
+            var d = dt[0].split("-");
+            var date = d[2] + "/" + d[1] + "/" + d[0];
+            var contentP = "<html><head><link href='https://fonts.googleapis.com/css?family=Maitree' rel='stylesheet'></head><body>"+
+            "<style>@media print {body {-webkit-print-color-adjust: exact;}} @page {size: auto; margin: 0;}.fl-spc{float: left; width: 5%;}.fl-10{float: left; width: 10.25%;}.fl-12{float: left; width: 12.752%;}.fl-14{float: left; width: 15.1%;}.fl-15{float: left; width: 15%;}.fl-20{float: left; width: 20%; text-align: center;}.fl-25{float: left; width: 25%; text-align: center;}.fl-33{float: left; width: 33%; text-align: center;}.fl-35{float: left; width: 35%; text-align: center;}.fl-45{float: left; width: 45%; text-align: center;}.fl-83{float: left; width: 83.55%; text-align: center;}.ctn{position: relative; width: 297mm; height: 210mm; padding: 10mm 15mm 5mm 10mm; font-family: 'Maitree';}.tb-st{border: 1px solid black; text-align: center; padding: 3px;}.tb{border: 1px solid black; text-align: center; padding: 3px; border-left: none;}.no-bdt{border-top: none;}.no-bdbtm{border-bottom: none;}.bold{font-weight: bold;}.head{font-size: 1.3em; padding-top: 10px; padding-bottom: 10px;}.inner{font-size: 1.15em; padding-top: 8px; padding-bottom: 8px;}</style>" +
+            '<div class="ctn" style="margin-top: -8mm;">'+
+            '<div class="fl-35">&emsp;</div> '+
+            '<div class="fl-spc">&emsp;</div>'+
+           ' <div class="fl-25" style="margin-top: 30px;"">'+
+              '<h1 style="border: 1px solid #555; border-radius: 10px; padding-top: 10px; padding-bottom: 10px; background-color: #555 !important; color: white; font-size: 210%;">ใบวางบิล</h1>'+
+            '</div>'+
+            '<div class="fl-20">&emsp;</div>'+
+            '<div class="fl-15" style="text-align: center;"">&emsp;</div>'+
+          
+           ' <div style=" text-align: left;">'+
+              '<p style="width: 60%;"><span class="bold">ชื่อลูกค้า  : </span><span>&emsp; '+cus_name+'</span></p>'+
+            '</div>'+
+            '<div style="text-align: right; margin-top: -50px;">'+
+              '<p style="width: 99%;"><span class="bold">เลขที่  : </span><span>&emsp;'+data+'</span></p>'+
+              '<p style="width: 99%;"><span class="bold">วันที่  : </span>&emsp;&emsp; <span>'+date+'</span></p>'+
+              '<p style="width: 99%;"><span class="bold">เครดิต : </span><span style="margin-left: 44px;">'+cd+' &emsp;&emsp;วัน</span></p>'+
+           ' </div>'+
+
+            '<div>'+
+              '<div class="fl-spc tb-st head bold">ที่</div>'+
+              '<div class="fl-15 tb head bold">เลขที่บิล</div>'+
+              '<div class="fl-12 tb head bold">วันที่</div>'+
+              '<div class="fl-12 tb head bold">ครบกำหนด</div>'+
+              '<div class="fl-20 tb head bold">จำนวนเงิน</div>'+
+              '<div class="fl-15 tb head bold">ชำระแล้ว</div>'+
+              '<div class="fl-15 tb head bold">เงินตกค้าง</div>'+
+            '</div>'+
+            text +
+            '<div>'+
+              '<div class="fl-spc tb-st inner no-bdt">&emsp;</div>'+
+              '<div class="fl-15 tb inner no-bdt">&emsp;</div>'+
+              '<div class="fl-12 tb inner no-bdt">&emsp;</div>'+
+              '<div class="fl-12 tb inner no-bdt">&emsp;</div>'+
+              '<div class="fl-20 tb inner no-bdt">&emsp;</div>'+
+              '<div class="fl-15 tb inner no-bdt">&emsp;</div>'+
+              '<div class="fl-15 tb inner no-bdt">&emsp;</div>'+
+            '</div>'+
+
+            '<div>'+
+              '<div class="fl-83 tb-st inner no-bdt" style="text-align: right;">รวมทั้งสิ้น&emsp;&emsp;</div>'+
+              '<div class="fl-14 tb inner no-bdt">'+parseFloat(sum).toFixed(2).toLocaleString()+'</div>'+
+            '</div>'+
+            '<div style="margin-top: 1150px;">'+
+              '<div class="fl-33">_________________________</div>'+
+              '<div class="fl-33">_________________________</div>'+
+              '<div class="fl-33">________/________/_________</div>'+
+            '</div>'+
+            '<div>'+
+              '<div class="fl-33 inner">ชื่อผู้วางบิล</div>'+
+              '<div class="fl-33 inner">ชื่อผู้รับวางบิล</div>'+
+              '<div class="fl-33 inner">นัดรับเช็ควันที่</div>'+
+            '</div>'+
+            '<div style="margin-top: 1240px;">'+
+              '<div class="fl-33">________/________/_________</div>'+
+              '<div class="fl-33">________/________/_________</div>'+
+              '<div class="fl-33">&emsp;</div>'+
+           ' </div>'+
+            '</div>'+
+            '</body></html>';
+            cordova.plugins.printer.print(contentP, { duplex: 'none' }, function (res) {
+              
+            });
+            transition_page_back('manage_credit.html');      
+          }else{
+            $.confirm({
+              title: 'พบข้อผิดพลาด',
+              content: 'ลองอีกครั้ง',
+              backgroundDismiss: true,
+              buttons: {
+                  formSubmit: {
+                  text: 'ตกลง',
+                  btnClass: 'btn-regis',
+                  action: function () {
+                  }
+                  }
+              }
+            });
+          }              
+        }               
+      });
+    }
+
   </script>
 </head>
 
@@ -119,7 +232,8 @@
     <div class="col-9 text-center" style="padding-left: 10%; margin-right: 3%;">
       <h5 id="h5-title"></h5>
     </div>
-    <div class="col-1 text-right">
+    <div onclick="print()" class="col-1 text-right">
+        <i class="fa fa-print" style="color: #ffffff;"></i>
     </div>
   </div><br>
 

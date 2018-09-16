@@ -252,6 +252,10 @@
         "source": "D:\\GitHub\\ddcar\\platforms\\android\\app\\src\\main\\res\\drawable-port-ldpi\\screen.png"
     },
     {
+        "merged": "D:\\GitHub\\ddcar\\platforms\\android\\app\\build\\intermediates\\res\\merged\\debug\\layout_select_printer_activity.xml.flat",
+        "source": "D:\\GitHub\\ddcar\\platforms\\android\\app\\src\\main\\res\\layout\\select_printer_activity.xml"
+    },
+    {
         "merged": "D:\\GitHub\\ddcar\\platforms\\android\\app\\build\\intermediates\\res\\merged\\debug\\drawable-land-xhdpi_screen.png.flat",
         "source": "D:\\GitHub\\ddcar\\platforms\\android\\app\\src\\main\\res\\drawable-land-xhdpi\\screen.png"
     },
@@ -274,6 +278,10 @@
     {
         "merged": "D:\\GitHub\\ddcar\\platforms\\android\\app\\build\\intermediates\\res\\merged\\debug\\drawable-port-xxhdpi_screen.png.flat",
         "source": "D:\\GitHub\\ddcar\\platforms\\android\\app\\src\\main\\res\\drawable-port-xxhdpi\\screen.png"
+    },
+    {
+        "merged": "D:\\GitHub\\ddcar\\platforms\\android\\app\\build\\intermediates\\res\\merged\\debug\\layout_printer_list_item.xml.flat",
+        "source": "D:\\GitHub\\ddcar\\platforms\\android\\app\\src\\main\\res\\layout\\printer_list_item.xml"
     },
     {
         "merged": "D:\\GitHub\\ddcar\\platforms\\android\\app\\build\\intermediates\\res\\merged\\debug\\layout_search_book_contents_header.xml.flat",

@@ -131,10 +131,10 @@ public final class R {
         public static final int notification_template_media = 0x7f090011;
         public static final int notification_template_part_chronometer = 0x7f090013;
         public static final int notification_template_part_time = 0x7f090014;
-        public static final int search_book_contents = 0x7f090015;
-        public static final int search_book_contents_header = 0x7f090016;
-        public static final int search_book_contents_list_item = 0x7f090017;
-        public static final int share = 0x7f090018;
+        public static final int search_book_contents = 0x7f090016;
+        public static final int search_book_contents_header = 0x7f090017;
+        public static final int search_book_contents_list_item = 0x7f090018;
+        public static final int share = 0x7f09001a;
     }
     public static final class menu {
         public static final int capture = 0x7f0a0000;
