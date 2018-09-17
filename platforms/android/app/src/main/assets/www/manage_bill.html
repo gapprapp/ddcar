@@ -130,8 +130,6 @@
         success: function(data){ 
           $(".overlay").prop('hidden', true);  
           var obj = jQuery.parseJSON(data);
-          alert(obj[0]);
-          alert(obj);
           if(obj[0] == "last"){
             bool = true
           }

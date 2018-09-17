@@ -32,6 +32,16 @@
     </style>
 
     <script>
+        document.addEventListener("deviceready", onDeviceReady, false);
+
+        function onDeviceReady(){            
+            document.addEventListener("backbutton", onBackKeyDown, false);
+        }
+
+        function onBackKeyDown() {
+            navigator.app.exitApp();
+        }
+       
        $(document).keydown(function(objEvent) {
             if (objEvent.keyCode == 13) {  //enter pressed
                 objEvent.preventDefault();
@@ -79,7 +89,7 @@
                             localStorage.user_name = name
                             localStorage.user_id = field.user_id;
                             localStorage.user_role = field.user_role;
-                            transition_page_next('index.html');
+                            transition_page_next('index.html?u=1');
                         });                      
                     }
                     }                            

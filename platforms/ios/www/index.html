@@ -47,14 +47,32 @@
       url = new URL(window.location.href);
       u = url.searchParams.get("u");
 
+      if(u){
+        if(localStorage.user_role == "เจ้าของร้าน"){
+          $('#tabs-admin').prop('hidden',true);
+          $("#tabs-main").trigger('click');
+        }else if(localStorage.user_role == "พนักงาน"){
+          $('#tabs-admin').prop('hidden',true);
+          $('#tabs-log').prop('hidden',true);
+          $("#tabs-main").trigger('click');
+        }
+      }else{
+        if(localStorage.user_role == "เจ้าของร้าน"){
+          $('#tabs-admin').prop('hidden',true);         
+        }else if(localStorage.user_role == "พนักงาน"){
+          $('#tabs-admin').prop('hidden',true);
+          $('#tabs-log').prop('hidden',true);          
+        }
+      }      
+
       if(localStorage.menu != ""){
         //Back from function
         $("#tabs-"+localStorage.menu).trigger('click');
-      }
+      }     
 
       localStorage.stack_folder = "";
       localStorage.img = "";
-
+     
       if(u == "owner"){
         //loging in?? else login.html
         $("#row-admin").prop('hidden', true);
@@ -101,7 +119,12 @@
       }); 
     });
 
+    function onDeviceReady(){
+      localStorage.setItem("menu", "");
+    }
+
     function onLoad(){
+      document.addEventListener("deviceready", onDeviceReady, false);
       if(!localStorage.user_id){                      
         transition_page_back('login.html');
       }       
@@ -219,6 +242,11 @@
 
     function onDeviceReady(){
         AndroidFullScreen.immersiveMode();
+        document.addEventListener("backbutton", onBackKeyDown, false);
+    }
+
+    function onBackKeyDown() {
+      navigator.app.exitApp();
     }
   </script>
 </head>
@@ -239,7 +267,7 @@
   </div><br>
   
   <div id="big-ctn" class="container justify-content-center" style="margin-top: 7%;">
-    <div class="row navs" style="background: #fafafa !important;">
+    <div class="row navs justify-content-center" style="background: #fafafa !important;">
       <div id="tabs-admin" class="col-4 text-center tabs" onclick="tabs('admin');">แอดมิน</div>
       <div id="tabs-main" class="col-4 text-center non" onclick="tabs('main');">ฟังชั่น</div>
       <div id="tabs-log" class="col-4 text-center non" onclick="tabs('log');">รายการ</div>
