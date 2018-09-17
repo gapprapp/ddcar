@@ -46,7 +46,7 @@
   </style>
 
   <script>
-    $( document ).ready(function() {    
+    $( document ).ready(function() {
         $.ajax({
             type: "GET",
             url: "http://ddaccessory.trueddns.com:24330/dd-shop/php/get_cus.php",                   
@@ -59,7 +59,7 @@
               if(obj){
                 $.each(obj, function(i, field){                   
                   $('#myUL').append("<li>" +                
-                  "<div id='cus-"+i+"' class='row' onclick='select_cus("+field.cus_id+",\""+field.cus_name+"\",\""+field.cus_type+"\");'>" +         
+                  "<div id='cus-"+i+"' class='row' onclick='select_cus("+field.cus_id+",\""+field.cus_name+"\",\""+field.cus_type+"\",\""+field.cus_addr+"\",\""+field.cus_tel+"\");'>" +         
                     "<div class='col-7 text-center'>" +
                       "<p id='cus_name-"+i+"'>"+field.cus_name+"</p>" +
                     "</div>" +
@@ -78,12 +78,18 @@
                               
     });
 
-    function select_cus(arg,name,type){    
-      goto = 'sale.html?cus='+arg+'&name='+name+'&type='+type;
+    function select_cus(arg,name,type,addr,tel){
+      if(addr == ""){
+        addr = "-"
+      }
+      if(tel == ""){
+        tel = "-"
+      }
+      goto = 'sale.html?cus='+arg+'&name='+name+'&type='+type+'&addr='+addr+'&tel='+tel;
       transition_page_back_flip(goto);
     }
 
-    function search() {                  
+    function search() {
       $('#myUL li').each(function(){
           $(this).attr('data-search-term', $(this).text().toLowerCase());
       });      

@@ -41,6 +41,9 @@
     <feature name="CDVOrientation">
         <param name="ios-package" value="CDVOrientation" />
     </feature>
+    <feature name="Printer">
+        <param name="ios-package" value="APPPrinter" />
+    </feature>
     <name>ddcar</name>
     <description>
         A sample Apache Cordova application that responds to the deviceready event.

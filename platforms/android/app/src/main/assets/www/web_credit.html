@@ -61,12 +61,9 @@
   </style>
   <script>
     $(document).ready(function(){
-<<<<<<< HEAD
-=======
       if(!localStorage.user_id){
 				window.location = 'web_login.html';
       } 
->>>>>>> f8aa8c1ecc2239d493d1c5e87784b484793ba9d3
       $.ajax({
         type: "GET",
         url:"php/get_credit.php",          
@@ -350,6 +347,10 @@
         }               
       });
     }
+
+    function logout(){
+			localStorage.clear();
+		}
 
   </script>
 </head>

@@ -44,6 +44,9 @@
 
   <script>
     $(document).ready(function(){
+      if(localStorage.bell){
+          $('.dot').prop('hidden',false);
+      }  
       $('#datepicker').duDatepicker(({format: 'dd/mm/yy', theme: 'red', cancelBtn: true, maxDate: "today"})).on('datechanged', function(e){
         console.log(e.date);
         $("#date").text(e.date);
@@ -156,10 +159,11 @@
 
   <!-- Nav menu bottom -->
   <div id="navs-menu" class="row fixed-bottom navs">
-    <div class="col-3 text-center" onclick="transition_page_back('index.html');">
+    <div class="col-3 text-center" onclick="transition_page_back('index.html?menu=3');">
       <i id="i-home" class="fas fa-home menu"></i>
     </div>
     <div class="col-3 text-center" onclick="transition_page_next('bell.html')">
+      <div class="dot" hidden></div>
       <i id="i-bell" class="fas fa-bell menu"></i>
     </div>
     <div class="col-3 text-center" onclick="scan();">

@@ -86,7 +86,10 @@
                 var arr_data = JSON.parse(retrievedObject); 
                 prod_id = arr_data[0].prod_id;            
                 get_prod(prod_id);
-            }      
+            } 
+            if(localStorage.bell){
+                $('.dot').prop('hidden',false);
+            }       
         });
 
         $(document).keydown(function(objEvent) {
@@ -630,10 +633,11 @@
 
     <!-- Nav menu bottom -->
     <div id="navs-bttm" class="row fixed-bottom navs">
-        <div class="col-3 text-center" onclick="transition_page_back('index.html')">
+        <div class="col-3 text-center" onclick="transition_page_back('index.html?menu=2')">
             <i id="i-home" class="fas fa-home menu"></i>
         </div>
         <div class="col-3 text-center" onclick="transition_page_next('bell.html')">
+            <div class="dot" hidden></div>
             <i id="i-bell" class="fas fa-bell menu"></i>
         </div>
         <div class="col-3 text-center" onclick="scan();">

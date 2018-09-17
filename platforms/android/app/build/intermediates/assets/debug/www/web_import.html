@@ -69,19 +69,16 @@
 		var flag = 1;
 		arr_data = [];		
 		$(document).ready(function () {
-			/*if(!localStorage.user_id){
+			if(!localStorage.user_id){
 				window.location = 'web_login.html';
-			}*/
+			}
 			get_header();		
 			setTimeout(function() {$("#name").focus();}, 100);
 
-<<<<<<< HEAD
-=======
 			if(localStorage.ware_id_im){
                 $('#btn-b').text(localStorage.ware_name_im);
             }
 
->>>>>>> f8aa8c1ecc2239d493d1c5e87784b484793ba9d3
 			if(localStorage.arr_prod){     
 				var retrievedObject = localStorage.getItem('arr_prod');
 				arr_data = JSON.parse(retrievedObject);          
@@ -555,42 +552,6 @@
 			localStorage.setItem('arr_prod', JSON.stringify(arr_data));	
 			$("#btn-b").attr('disabled',true);
 			count++;			
-<<<<<<< HEAD
-=======
-		}
-			$('#at').attr("placeholder","");
-			$('#barcode').val("");
-			$('#name').val("");			
-			$('#fund').val("");
-			$('#whole').val("");
-			$('#retail').val("");
-			$('#amount').val("1");
-			$('#at').val("")
-			if(is_show == 1){
-					show_avg(); 
-					is_show = 0;
-			}            
-			$('#avg-rate').text("");		
-			if(localStorage.arr_prod_i){
-                var retrievedObject = localStorage.getItem('arr_prod_i');
-                var arr_data2 = JSON.parse(retrievedObject);
-                arr_data2.splice(0,1); 
-                localStorage.setItem('arr_prod_i', JSON.stringify(arr_data2));  
-                if(arr_data2.length == 0){
-                    localStorage.arr_prod_i = "";  
-                }                                 
-            }  
-            if(localStorage.arr_prod_i){                    
-                var retrievedObject = localStorage.getItem('arr_prod_i');
-                var arr_data2 = JSON.parse(retrievedObject);                                   
-                prod_id = arr_data2[0].prod_id;            
-                get_prod(prod_id);            
-            }else{                   
-				$("#btn-folder").removeAttr('disabled');
-				$("#btn-def").removeAttr('disabled');
-				$("#name").removeAttr('readonly');
-            }    	
->>>>>>> f8aa8c1ecc2239d493d1c5e87784b484793ba9d3
 		}
 			$('#at').attr("placeholder","");
 			$('#barcode').val("");
@@ -681,64 +642,6 @@
 				$("#btn-b").attr('disabled',true);	
 			}
 		
-<<<<<<< HEAD
-=======
-		function add_previous(){
-			for(var i = 0;i < arr_data.length; i++){
-				var bottom = $(window).height() - $("#cnt-add").offset().top - $("#cnt-add").height();
-				// Always scroll to the bottom
-				if(bottom < 200){
-					$("#cnt-add").css('max-height', $("#cnt-add").height());
-					$("#cnt-add").animate({scrollTop: $('#cnt-add').prop('scrollHeight')});
-				}   
-
-				$("#cnt-add").append('<div id="add-'+arr_data[i].count+'" class="row mgb-5">'+
-						'<div class="col-1"></div>'+
-				'<div class="col-2">'+
-					'<div class="input-group-prepend">'+
-					'<span id="span-no-'+arr_data[i].count+'" class="input-group-text">'+(arr_data[i].count+1)+'</span>'+
-					'<input id="barcodee" type="text" value="'+arr_data[i].qr+'" class="form-control text-center" readonly>'+
-					'</div>'+
-				'</div>'+
-				'<div class="col-1 nopd-8">'+
-					'<input id="at-'+arr_data[i].count+'" type="text" value="'+arr_data[i].addr+'" placeholder="'+arr_data[i].plholder+'" class="form-control text-center" readonly>'+
-				'</div>'+
-				'<div class="col-3 nopd-8">'+
-					'<input id="name-'+arr_data[i].count+'" value="'+arr_data[i].name+'" class="form-control text-center" rel="popover" data-img="'+arr_data[i].img+'" readonly>'+
-				'</div>'+
-				'<div class="col-1 nopd-8">'+
-					'<input id="amount-'+arr_data[i].count+'" value="'+arr_data[i].amt+'" type="number" class="form-control text-center no-spin" min="1" readonly>'+
-				'</div>'+
-				'<div class="col-1 nopd-8">'+
-					'<input id="fundd" type="number" value="'+arr_data[i].cost+'" class="form-control text-center no-spin" min="0" readonly>'+
-				'</div>'+          
-				'<div class="col-1 nopd-8">'+
-					'<input id="wholee" type="number" value="'+arr_data[i].price_s+'" class="form-control text-center no-spin" min="0" readonly>'+
-				'</div>'+
-				'<div class="col-1 nopd-8">'+
-					'<input id="retaill" type="number" value="'+arr_data[i].price+'" class="form-control text-center no-spin" min="0" readonly>'+
-				'</div>'+
-				'<div class="col-1 nopd text-center">'+
-				'<button id="btn-edit-'+arr_data[i].count+'" class="btn btn-sm btn-primary mgr-5" onclick="edit('+arr_data[i].count+');"> <i class="fas fa-pencil-alt"></i></button>'+
-				'<button id="btn-save-'+arr_data[i].count+'" class="btn btn-sm btn-success mgr-5" onclick="save('+arr_data[i].count+');" hidden> <i class="fa fa-check"></i></button>'+
-				'<button id="btn-trash-'+arr_data[i].count+'" class="btn btn-sm btn-danger" onclick="remove('+arr_data[i].count+');"> <i class="fa fa-trash"></i></button>'+
-						'</div>'+
-						"<script>" +
-							"$('#name-"+arr_data[i].count+"[rel=popover]').popover({" +
-							"html: true," +
-							"trigger: 'hover'," +
-							"placement: 'left'," +
-							"content: function(){" +
-							"return '<img src='+$(this).data('img')+'>';}" +
-							"});" +
-						"</" + "script>" +
-					'</div>');
-
-				// count++;			
-				$("#btn-b").attr('disabled',true);	
-			}
-		
->>>>>>> f8aa8c1ecc2239d493d1c5e87784b484793ba9d3
 		}
 
 		function set_default(){
@@ -927,11 +830,8 @@
 		function cancel(){
 			localStorage.arr_prod = "";
 			localStorage.arr_prod_i = "";
-<<<<<<< HEAD
-=======
 			localStorage.ware_name_im = "";
 			localStorage.ware_id_im = "";
->>>>>>> f8aa8c1ecc2239d493d1c5e87784b484793ba9d3
 			location.reload();
 		}
 

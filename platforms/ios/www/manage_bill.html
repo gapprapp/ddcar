@@ -50,6 +50,9 @@
     var start = start_d = start_s = 0;
     var bool = bool_d = bool_s = false;
     $(document).ready(function(){
+      if(localStorage.bell){
+          $('.dot').prop('hidden',false);
+      }  
       $('#datepicker-from').duDatepicker(({format: 'dd/mm/yy', theme: 'red', cancelBtn: true, maxDate: "today"})).on('datechanged', function(e){
         console.log(e.date);
         $("#date").text(e.date);
@@ -127,6 +130,8 @@
         success: function(data){ 
           $(".overlay").prop('hidden', true);  
           var obj = jQuery.parseJSON(data);
+          alert(obj[0]);
+          alert(obj);
           if(obj[0] == "last"){
             bool = true
           }
@@ -150,7 +155,7 @@
           });                                         
         }               
       });
-      start += 8;
+      start += 20;
     }
 
     function bill_info(arg){
@@ -220,7 +225,7 @@
           });                                         
         }               
       });
-      start_s += 8;
+      start_s += 20;
     }
 
     function search_date(){
@@ -268,7 +273,7 @@
           });                                          
         }               
       });
-      start_d += 8;
+      start_d += 20;
     }
   </script>
 </head>
@@ -335,10 +340,11 @@
 
   <!-- Nav menu bottom -->
   <div class="row fixed-bottom navs">
-    <div class="col-3 text-center" onclick="transition_page_back('index.html');">
+    <div class="col-3 text-center" onclick="transition_page_back('index.html?menu=3');">
       <i id="i-home" class="fas fa-home menu"></i>
     </div>
     <div class="col-3 text-center" onclick="transition_page_next('bell.html')">
+      <div class="dot" hidden></div>
       <i id="i-bell" class="fas fa-bell menu"></i>
     </div>
     <div class="col-3 text-center" onclick="scan();">

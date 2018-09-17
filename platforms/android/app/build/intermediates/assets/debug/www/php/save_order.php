@@ -131,17 +131,8 @@
                 $amount += $row['amount'];                    
             }
         } 
-        if($status == 'normal'){
-            if($amount - $amt <= $min){
-                $sql = "UPDATE product SET status = 'warning' WHERE prod_id = '$prod_id'";
-                $result = mysqli_query($conn, $sql); 
-                $ch = 'true';    
-                if(!$result){
-                    mysqli_rollback($conn);
-                    echo "fail";
-                    exit;
-                } 
-            }else if($amount - $amt <= 10){
+        if($status == 'normal'){            
+            if($amount - $amt <= 10){
                 $sql = "UPDATE product SET status = 'danger' WHERE prod_id = '$prod_id'";
                 $result = mysqli_query($conn, $sql);
                 $ch = 'true';    
@@ -150,6 +141,15 @@
                     echo "fail";
                     exit;
                 }    
+            }else if($amount - $amt <= $min){
+                $sql = "UPDATE product SET status = 'warning' WHERE prod_id = '$prod_id'";
+                $result = mysqli_query($conn, $sql); 
+                $ch = 'true';    
+                if(!$result){
+                    mysqli_rollback($conn);
+                    echo "fail";
+                    exit;
+                } 
             }
         }else if($status == 'warning'){
             if($amount - $amt <= 10){
@@ -162,7 +162,7 @@
                     exit;
                 }    
             }
-        }
+        }       
        
         if($type == "โกดัง"){
             $sql_up = "UPDATE warehouse SET amount = amount-'$amt' WHERE ware_id = '$b' AND prod_id = '$prod_id'"; 
@@ -175,6 +175,15 @@
             echo "fail";
             exit;
         }    
+    }
+    if($ch == 'true'){
+        $sql = "UPDATE bell SET status = 'alert'";
+        $result = mysqli_query($conn, $sql);       
+        if(!$result){
+            mysqli_rollback($conn);
+            echo "fail";
+            exit;
+        }         
     }
     mysqli_commit($conn); 
     echo $order_number." ".$ch;

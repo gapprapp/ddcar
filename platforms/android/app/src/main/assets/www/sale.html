@@ -49,19 +49,23 @@
 
     <script>
         var prod_id,img,cus_id,type,old_price;
-        $(document).ready(function () { 
+        $(document).ready(function () {
             url = new URL(window.location.href);
             cus = url.searchParams.get("name");
             cus_id = url.searchParams.get("cus");
             type = url.searchParams.get("type");
+            var addr = url.searchParams.get("addr");
+            var tel = url.searchParams.get("tel");
             prod_id = url.searchParams.get("product");
-            var ch = url.searchParams.get("ch");
+            var ch = url.searchParams.get("ch");               
            
             if(cus){
                 $("#cus").val(cus);
                 localStorage.cus_name = cus;
                 localStorage.cus_id = cus_id;
                 localStorage.type = type;
+                localStorage.cus_addr = addr;
+                localStorage.cus_tel = tel;
                 $("#name").removeAttr('disabled');
                 $("#price").removeAttr('readonly');
                 $("#amount").removeAttr('readonly');   
@@ -71,7 +75,7 @@
             }
             if(localStorage.cus_name){
                 cus_id = localStorage.cus_id;
-                type = localStorage.type;
+                type = localStorage.type;                
                 $("#cus").val(localStorage.cus_name);              
                 $("#name").removeAttr('disabled');
                 $("#price").removeAttr('readonly');
@@ -100,9 +104,12 @@
             }
             if(ch){
                 if(ch == "true"){
-                    alert('bell');
+                    $('.dot').prop('hidden',false);
                 }
-            }        
+            }  
+            if(localStorage.bell){
+                $('.dot').prop('hidden',false);
+            }      
         });
 
         $(document).keydown(function(objEvent) {
@@ -554,7 +561,7 @@
 
     <!-- Nav menu bottom -->
     <div id="navs-bttm" class="row fixed-bottom navs">
-        <div class="col-3 text-center" onclick="transition_page_back('index.html');">
+        <div class="col-3 text-center" onclick="transition_page_back('index.html?menu=2');">
             <i id="i-home" class="fas fa-home menu"></i>
         </div>
         <div class="col-3 text-center" onclick="transition_page_next('bell.html')">
