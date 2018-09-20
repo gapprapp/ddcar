@@ -44,7 +44,7 @@
     <feature name="Printer">
         <param name="ios-package" value="APPPrinter" />
     </feature>
-    <name>ddcar</name>
+    <name>DD</name>
     <description>
         A sample Apache Cordova application that responds to the deviceready event.
     </description>
@@ -61,6 +61,10 @@
     <allow-intent href="geo:*" />
     <allow-intent href="itms:*" />
     <allow-intent href="itms-apps:*" />
+    <icon height="57" src="res/icon/ios/icon-57.png" width="57" />
+    <icon height="114" src="res/icon/ios/icon-114.png" width="114" />
+    <icon height="72" src="res/icon/ios/icon-72.png" width="72" />
+    <icon height="144" src="res/icon/ios/icon-144.png" width="144" />
     <preference name="AllowInlineMediaPlayback" value="false" />
     <preference name="BackupWebStorage" value="cloud" />
     <preference name="DisallowOverscroll" value="false" />

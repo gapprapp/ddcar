@@ -33,7 +33,7 @@
     <feature name="Printer">
         <param name="android-package" value="de.appplant.cordova.plugin.printer.Printer" />
     </feature>
-    <name>ddcar</name>
+    <name>DD</name>
     <description>
         A sample Apache Cordova application that responds to the deviceready event.
     </description>
@@ -49,6 +49,10 @@
     <allow-intent href="mailto:*" />
     <allow-intent href="geo:*" />
     <allow-intent href="market:*" />
+    <icon density="ldpi" src="res/icon/android/icon-36.png" />
+    <icon density="mdpi" src="res/icon/android/icon-48.png" />
+    <icon density="hdpi" src="res/icon/android/icon-72.png" />
+    <icon density="xhdpi" src="res/icon/android/icon-96.png" />
     <preference name="loglevel" value="DEBUG" />
     <preference name="StatusBarBackgroundColor" value="#952323" />
     <preference name="Orientation" value="portrait" />

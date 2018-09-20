@@ -754,6 +754,7 @@
 						'<div class="left">' +
 							'<div class="name">'+arr_data[i].name+'</div>' +
 							'<div class="qr" id="qrcode'+index_qr+'"></div>' +
+							'<div>'+arr_data[i].qr+'</div>'+
 							'<div>'+arr_data[i].price+'</div>' +
 						'</div>' +						
 						'</div>');		
@@ -761,10 +762,11 @@
 						$('#ctn'+(index_qr-1)).append('<div class="right">' +
 							'<div class="name">'+arr_data[i].name+'</div>' +
 							'<div class="qr" id="qrcode'+index_qr+'"></div>' +
+							'<div>'+arr_data[i].qr+'</div>'+
 							'<div>'+arr_data[i].price+'</div>' +
 						'</div>');
 					}											
-					qrcode = new QRCode("qrcode"+index_qr,{width: 125, height: 95});
+					qrcode = new QRCode("qrcode"+index_qr,{width: 57, height: 57});
 					qrcode.makeCode(arr_data[i].qr);
 					index_qr++;
 				}
@@ -793,7 +795,7 @@
 					if(data == "success"){ 
 						var ele =  document.getElementById('show_qr').innerHTML;			
 						WinPrint.document.write("<html><head><link href='https://fonts.googleapis.com/css?family=Maitree' rel='stylesheet'></head><body>");
-						WinPrint.document.write("<style>@media print {body {-webkit-print-color-adjust: exact;}} @page {size: auto; margin: 0mm;} body{font-family: 'Maitree'; line-height: 1.5; font-size: 1em;} .name{font-family: 'Maitree'; line-height: 1.5; font-size: 0.5em;}.ctn{width: 10.1cm; height: 3.7cm; margin-top: -2mm;} .left{float: left; width: 5.05cm; height: 3.7cm; text-align: center;} .right{float: left; width: 5.05cm; height: 3.7cm; text-align: center;} .qr{width: 33mm; height: 25mm; margin-left: 15%; background-color: black; color: white;}</style>" +
+						WinPrint.document.write("<style>@media print {body {-webkit-print-color-adjust: exact;}} @page {size: auto; margin: 0mm;} body{font-family: 'Maitree'; line-height: 1; font-size: 1em;} .name{font-family: 'Maitree'; line-height: 1.5; font-size: 1em; word-wrap:break-word;}.ctn{width: 10.1cm; height: 3.97cm; margin-top: -2.1mm; margin-left: 0mm;} .left{float: left; width: 5.05cm; height: 3.97cm; text-align: center;} .right{float: left; width: 5.05cm; height: 3.97cm; text-align: center;} .qr{width: 15mm; height: 15mm; margin-left: 35%; background-color: black; color: white;}</style>" +
 							ele);
 						WinPrint.document.write('</body></html>');
 						WinPrint.document.close();
