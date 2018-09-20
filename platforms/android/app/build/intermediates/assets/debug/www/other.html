@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Home</title>
+    <!-- Bootstrap Import -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <script type="text/javascript" src="js/jquery-3.3.1.min.js"></script>
+    <script type="text/javascript" src="js/jquery-ui.min.js"></script>
+    <script type="text/javascript" src="js/jquery.easing.1.3.min.js"></script>
+    <script type="text/javascript" src="js/transition.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.6/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+    <script defer src="https://use.fontawesome.com/releases/v5.0.8/js/all.js"></script>
+    <script src="cordova.js"></script>
+    <script type="text/javascript" src="js/scanqr.js"></script>
+    <script type="text/javascript" src="js/jquery.touchSwipe.min.js"></script>    
+
+    <link rel="stylesheet" href="css/index.css">
+    <link rel="stylesheet" href="css/jquery-confirm.css">   
+    <link rel="stylesheet" href="css/loading.css">
+
+    <!-- Font -->
+    <link href="https://fonts.googleapis.com/css?family=Prompt" rel="stylesheet">
+
+    <style>
+      .row{
+        background: #fbfbf9; height: 50px; margin-bottom: 8px;
+      }
+      h4{
+        color: #da4646; letter-spacing: 1px;
+      }
+    </style>
+</head>
+
+<body style="overflow-y: auto;">
+    <!-- Loading -->
+    <div class="overlay" hidden><div class="loading"></div></div>    
+
+    <!-- Nav menu top -->
+    <div class="row fixed-top navs ่justify-content-center">
+        <div class="col-1 text-center" onclick="transition_page_back(window.history.back())">
+            <i id="i-back" class="fas fa-angle-left"></i>
+        </div>
+        <div class="col-10 text-center">
+            <h5 id="h5-title">อื่นๆ</h5>
+        </div>
+    </div>
+    <br>
+
+    <!-- big container -->
+    <div id="big-ctn" class="container justify-content-center" style="margin-top: 15%;">
+      <div class="row text-center" onclick="">
+        <div class="col-11 align-self-center" style="padding-left: 10%;">
+          <h4>ตรวจสอบเวอร์ชั่น</h4>
+        </div>
+        <div class="col-1 align-self-center">
+          <i style="color: #da4646;" class="fas fa-angle-right"></i>
+        </div>
+      </div>
+
+      <div class="row text-center" onclick="localStorage.clear();transition_page_next('login.html')">
+        <div class="col-11 align-self-center" style="padding-left: 10%;">
+          <h4>ออกจากระบบ</h4>
+        </div>
+        <div class="col-1 align-self-center">
+          <i style="color: #da4646;" class="fas fa-angle-right"></i>
+        </div>
+      </div>
+    </div>
+    <!-- End big container -->
+
+    <!-- Nav menu bottom -->
+    <div class="row fixed-bottom navs">
+      <div class="col-3 text-center" onclick="transition_page_back('index.html');">
+        <i id="i-home" class="fas fa-home menu"></i>
+      </div>
+      <div class="col-3 text-center" onclick="menu('bell')">
+        <div class="dot" hidden></div>
+        <i id="i-bell" class="fas fa-bell menu"></i>
+      </div>
+      <div class="col-3 text-center" onclick="scan();">
+        <i id="i-qrcode" class="fas fa-qrcode menu"></i>
+      </div>
+      <div class="col-3 text-center" onclick="">
+        <i id="i-bars" class="fa fa-bars menu active"></i>
+      </div>
+    </div>
+  <!-- End Nav menu bottom -->
+</body>
+
+</html>

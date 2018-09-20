@@ -36,7 +36,6 @@ var projectName = null;
 // These are regular expressions to detect if the user is changing any of the built-in xcodebuildArgs
 /* eslint-disable no-useless-escape */
 var buildFlagMatchers = {
-    'xcconfig': /^\-xcconfig\s*(.*)$/,
     'workspace': /^\-workspace\s*(.*)/,
     'scheme': /^\-scheme\s*(.*)/,
     'configuration': /^\-configuration\s*(.*)/,
@@ -171,7 +170,7 @@ module.exports.run = function (buildOpts) {
             // remove the build/device folder before building
             return spawn('rm', [ '-rf', buildOutputDir ], projectPath)
                 .then(function () {
-                    var xcodebuildArgs = getXcodeBuildArgs(projectName, projectPath, configuration, buildOpts.device, buildOpts.buildFlag, emulatorTarget);
+                    var xcodebuildArgs = getXcodeBuildArgs(projectName, projectPath, configuration, buildOpts.device, buildOpts.buildFlag, emulatorTarget, buildOpts.automaticProvisioning);
                     return spawn('xcodebuild', xcodebuildArgs, projectPath);
                 });
 
@@ -268,9 +267,10 @@ module.exports.findXCodeProjectIn = findXCodeProjectIn;
  * @param  {Boolean} isDevice       Flag that specify target for package (device/emulator)
  * @param  {Array}   buildFlags
  * @param  {String}  emulatorTarget Target for emulator (rather than default)
+ * @param  {Boolean} autoProvisioning   Whether to allow Xcode to automatically update provisioning
  * @return {Array}                  Array of arguments that could be passed directly to spawn method
  */
-function getXcodeBuildArgs (projectName, projectPath, configuration, isDevice, buildFlags, emulatorTarget) {
+function getXcodeBuildArgs (projectName, projectPath, configuration, isDevice, buildFlags, emulatorTarget, autoProvisioning) {
     var xcodebuildArgs;
     var options;
     var buildActions;
@@ -290,7 +290,6 @@ function getXcodeBuildArgs (projectName, projectPath, configuration, isDevice, b
 
     if (isDevice) {
         options = [
-            '-xcconfig', customArgs.xcconfig || path.join(__dirname, '..', 'build-' + configuration.toLowerCase() + '.xcconfig'),
             '-workspace', customArgs.workspace || projectName + '.xcworkspace',
             '-scheme', customArgs.scheme || projectName,
             '-configuration', customArgs.configuration || configuration,
@@ -307,9 +306,12 @@ function getXcodeBuildArgs (projectName, projectPath, configuration, isDevice, b
         if (customArgs.sdk) {
             customArgs.otherFlags = customArgs.otherFlags.concat(['-sdk', customArgs.sdk]);
         }
+
+        if (autoProvisioning) {
+            options = options.concat(['-allowProvisioningUpdates']);
+        }
     } else { // emulator
         options = [
-            '-xcconfig', customArgs.xcconfig || path.join(__dirname, '..', 'build-' + configuration.toLowerCase() + '.xcconfig'),
             '-workspace', customArgs.project || projectName + '.xcworkspace',
             '-scheme', customArgs.scheme || projectName,
             '-configuration', customArgs.configuration || configuration,

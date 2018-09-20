@@ -65,6 +65,15 @@ module.exports = [
     ]
   },
   {
+    "id": "cordova-plugin-printer.Printer",
+    "file": "plugins/cordova-plugin-printer/www/printer.js",
+    "pluginId": "cordova-plugin-printer",
+    "clobbers": [
+      "plugin.printer",
+      "cordova.plugins.printer"
+    ]
+  },
+  {
     "id": "es6-promise-plugin.Promise",
     "file": "plugins/es6-promise-plugin/www/promise.js",
     "pluginId": "es6-promise-plugin",
@@ -93,15 +102,6 @@ module.exports = [
     "clobbers": [
       "cordova.plugins.barcodeScanner"
     ]
-  },
-  {
-    "id": "cordova-plugin-printer.Printer",
-    "file": "plugins/cordova-plugin-printer/www/printer.js",
-    "pluginId": "cordova-plugin-printer",
-    "clobbers": [
-      "plugin.printer",
-      "cordova.plugins.printer"
-    ]
   }
 ];
 module.exports.metadata = 
@@ -112,12 +112,12 @@ module.exports.metadata =
   "cordova-plugin-datepicker": "0.9.3",
   "cordova-plugin-device": "2.0.1",
   "cordova-plugin-fullscreen": "1.1.0",
+  "cordova-plugin-printer": "0.7.3",
   "es6-promise-plugin": "4.2.2",
   "cordova-plugin-screen-orientation": "3.0.1",
   "cordova-plugin-statusbar": "2.4.2",
   "cordova-plugin-whitelist": "1.3.3",
-  "phonegap-plugin-barcodescanner": "7.1.0",
-  "cordova-plugin-printer": "0.7.3"
+  "phonegap-plugin-barcodescanner": "7.1.0"
 };
 // BOTTOM OF METADATA
 });

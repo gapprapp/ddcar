@@ -47,9 +47,9 @@
       url = new URL(window.location.href);
       u = url.searchParams.get("u");
 
-      if(localStorage.menu != ""){
+      if(sessionStorage.menu != ""){
         //Back from function
-        $("#tabs-"+localStorage.menu).trigger('click');
+        $("#tabs-"+sessionStorage.menu).trigger('click');
       }
 
       localStorage.stack_folder = "";
@@ -73,6 +73,7 @@
           $("#tabs-main").removeClass('non'); $("#tabs-main").addClass('tabs');
           $("#admin").prop('hidden', true);
           $("#main").prop('hidden',false);
+          sessionStorage.menu = "main";
         }
         },threshold:75
       });
@@ -82,11 +83,13 @@
           $("#tabs-admin").removeClass('non'); $("#tabs-admin").addClass('tabs');
           $("#main").prop('hidden', true);
           $("#admin").prop('hidden', false);
+          sessionStorage.menu = "admin";
         }else if(direction == "left"){ 
           $("#tabs-main").removeClass('tabs'); $("#tabs-main").addClass('non'); 
           $("#tabs-log").removeClass('non'); $("#tabs-log").addClass('tabs');
           $("#main").prop('hidden', true);
           $("#log").prop('hidden', false);
+          sessionStorage.menu = "log";
         }
         },threshold:75
       }); 
@@ -96,6 +99,7 @@
           $("#tabs-main").removeClass('non'); $("#tabs-main").addClass('tabs');
           $("#log").prop('hidden',true);
           $("#main").prop('hidden', false);
+          sessionStorage.menu = "main";
         }
         },threshold:75
       }); 
@@ -104,7 +108,7 @@
     function onLoad(){
       if(!localStorage.user_id){                      
         transition_page_back('login.html');
-      }       
+      }
          
       $.ajax({ 
         type: "GET",
@@ -191,7 +195,7 @@
           }
         }$("#tabs-"+arg).addClass('tabs'); $("#tabs-"+arg).removeClass('non'); $("div #"+arg).prop('hidden', false);
       }
-      localStorage.menu = arg;
+      sessionStorage.menu = arg;
     }
 
     function disactive(arg) {
@@ -218,6 +222,7 @@
     document.addEventListener("deviceready", onDeviceReady, false);
 
     function onDeviceReady(){
+      if(device.platform == "Android")
         AndroidFullScreen.immersiveMode();
     }
   </script>
@@ -337,7 +342,7 @@
     <div class="col-3 text-center" onclick="scan();">
       <i id="i-qrcode" class="fas fa-qrcode menu"></i>
     </div>
-    <div class="col-3 text-center" onclick="localStorage.clear();transition_page_next('login.html')">
+    <div class="col-3 text-center" onclick="transition_page_next('other.html')">
       <i class="fa fa-bars menu"></i>
     </div>
   </div>

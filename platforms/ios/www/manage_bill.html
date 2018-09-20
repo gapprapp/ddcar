@@ -130,8 +130,6 @@
         success: function(data){ 
           $(".overlay").prop('hidden', true);  
           var obj = jQuery.parseJSON(data);
-          alert(obj[0]);
-          alert(obj);
           if(obj[0] == "last"){
             bool = true
           }
@@ -350,7 +348,7 @@
     <div class="col-3 text-center" onclick="scan();">
       <i id="i-qrcode" class="fas fa-qrcode menu"></i>
     </div>
-    <div class="col-3 text-center" onclick="return 0;">
+    <div class="col-3 text-center" onclick="transition_page_next('other.html')">
       <i id="i-bars" class="fa fa-bars menu"></i>
     </div>
   </div>

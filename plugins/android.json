@@ -22,10 +22,10 @@
     "cordova-plugin-fullscreen": {
       "PACKAGE_NAME": "com.gitmew.ddcar"
     },
-    "cordova-plugin-screen-orientation": {
+    "cordova-plugin-printer": {
       "PACKAGE_NAME": "com.gitmew.ddcar"
     },
-    "cordova-plugin-statusbar": {
+    "cordova-plugin-screen-orientation": {
       "PACKAGE_NAME": "com.gitmew.ddcar"
     },
     "cordova-plugin-whitelist": {
@@ -33,9 +33,6 @@
     },
     "phonegap-plugin-barcodescanner": {
       "ANDROID_SUPPORT_V4_VERSION": "27.+",
-      "PACKAGE_NAME": "com.gitmew.ddcar"
-    },
-    "cordova-plugin-printer": {
       "PACKAGE_NAME": "com.gitmew.ddcar"
     }
   },

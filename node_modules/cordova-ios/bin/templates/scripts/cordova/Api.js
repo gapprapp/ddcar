@@ -30,6 +30,7 @@ var events = require('cordova-common').events;
 var PluginManager = require('cordova-common').PluginManager;
 var Q = require('q');
 var util = require('util');
+var ConfigParser = require('cordova-common').ConfigParser;
 
 function setupEvents (externalEventEmitter) {
     if (externalEventEmitter) {
@@ -179,7 +180,7 @@ Api.prototype.getPlatformInfo = function () {
     result.root = this.root;
     result.name = this.platform;
     result.version = require('./version');
-    result.projectConfig = this._config;
+    result.projectConfig = new ConfigParser(this.locations.configXml);
 
     return result;
 };
@@ -233,6 +234,26 @@ Api.prototype.addPlugin = function (plugin, installOptions) {
     return PluginManager.get(self.platform, self.locations, xcodeproj)
         .addPlugin(plugin, installOptions)
         .then(function () {
+            if (plugin != null) {
+                var headerTags = plugin.getHeaderFiles(self.platform);
+                var bridgingHeaders = headerTags.filter(function (obj) {
+                    return (obj.type === 'BridgingHeader');
+                });
+                if (bridgingHeaders.length > 0) {
+                    var project_dir = self.locations.root;
+                    var project_name = self.locations.xcodeCordovaProj.split('/').pop();
+                    var BridgingHeader = require('./lib/BridgingHeader').BridgingHeader;
+                    var bridgingHeaderFile = new BridgingHeader(path.join(project_dir, project_name, 'Bridging-Header.h'));
+                    events.emit('verbose', 'Adding Bridging-Headers since the plugin contained <header-file> with type="BridgingHeader"');
+                    bridgingHeaders.forEach(function (obj) {
+                        var bridgingHeaderPath = path.basename(obj.src);
+                        bridgingHeaderFile.addHeader(plugin.id, bridgingHeaderPath);
+                    });
+                    bridgingHeaderFile.write();
+                }
+            }
+        })
+        .then(function () {
             var frameworkTags = plugin.getFrameworks(self.platform);
             var frameworkPods = frameworkTags.filter(function (obj) {
                 return (obj.type === 'podspec');
@@ -247,6 +268,7 @@ Api.prototype.addPlugin = function (plugin, installOptions) {
 
             var project_dir = self.locations.root;
             var project_name = self.locations.xcodeCordovaProj.split('/').pop();
+            var minDeploymentTarget = self.getPlatformInfo().projectConfig.getPreference('deployment-target', 'ios');
 
             var Podfile = require('./lib/Podfile').Podfile;
             var PodsJson = require('./lib/PodsJson').PodsJson;
@@ -254,7 +276,7 @@ Api.prototype.addPlugin = function (plugin, installOptions) {
             events.emit('verbose', 'Adding pods since the plugin contained <framework>(s) with type="podspec"');
 
             var podsjsonFile = new PodsJson(path.join(project_dir, PodsJson.FILENAME));
-            var podfileFile = new Podfile(path.join(project_dir, Podfile.FILENAME), project_name);
+            var podfileFile = new Podfile(path.join(project_dir, Podfile.FILENAME), project_name, minDeploymentTarget);
 
             frameworkPods.forEach(function (obj) {
                 var podJson = {
@@ -285,6 +307,7 @@ Api.prototype.addPlugin = function (plugin, installOptions) {
             if (podfileFile.isDirty()) {
                 podfileFile.write();
                 events.emit('verbose', 'Running `pod install` (to install plugins)');
+                projectFile.purgeProjectFileCache(self.locations.root);
 
                 return podfileFile.install(check_reqs.check_cocoapods);
             } else {
@@ -315,6 +338,26 @@ Api.prototype.removePlugin = function (plugin, uninstallOptions) {
 
     return PluginManager.get(self.platform, self.locations, xcodeproj)
         .removePlugin(plugin, uninstallOptions)
+        .then(function () {
+            if (plugin != null) {
+                var headerTags = plugin.getHeaderFiles(self.platform);
+                var bridgingHeaders = headerTags.filter(function (obj) {
+                    return (obj.type === 'BridgingHeader');
+                });
+                if (bridgingHeaders.length > 0) {
+                    var project_dir = self.locations.root;
+                    var project_name = self.locations.xcodeCordovaProj.split('/').pop();
+                    var BridgingHeader = require('./lib/BridgingHeader').BridgingHeader;
+                    var bridgingHeaderFile = new BridgingHeader(path.join(project_dir, project_name, 'Bridging-Header.h'));
+                    events.emit('verbose', 'Removing Bridging-Headers since the plugin contained <header-file> with type="BridgingHeader"');
+                    bridgingHeaders.forEach(function (obj) {
+                        var bridgingHeaderPath = path.basename(obj.src);
+                        bridgingHeaderFile.removeHeader(plugin.id, bridgingHeaderPath);
+                    });
+                    bridgingHeaderFile.write();
+                }
+            }
+        })
         .then(function () {
             var frameworkTags = plugin.getFrameworks(self.platform);
             var frameworkPods = frameworkTags.filter(function (obj) {

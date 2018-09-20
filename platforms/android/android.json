@@ -29,11 +29,11 @@
               "count": 1
             },
             {
-              "xml": "<feature name=\"CDVOrientation\"><param name=\"android-package\" value=\"cordova.plugins.screenorientation.CDVOrientation\" /></feature>",
+              "xml": "<feature name=\"Printer\"><param name=\"android-package\" value=\"de.appplant.cordova.plugin.printer.Printer\" /></feature>",
               "count": 1
             },
             {
-              "xml": "<feature name=\"StatusBar\"><param name=\"android-package\" value=\"org.apache.cordova.statusbar.StatusBar\" /><param name=\"onload\" value=\"true\" /></feature>",
+              "xml": "<feature name=\"CDVOrientation\"><param name=\"android-package\" value=\"cordova.plugins.screenorientation.CDVOrientation\" /></feature>",
               "count": 1
             },
             {
@@ -42,10 +42,6 @@
             },
             {
               "xml": "<feature name=\"BarcodeScanner\"><param name=\"android-package\" value=\"com.phonegap.plugins.barcodescanner.BarcodeScanner\" /></feature>",
-              "count": 1
-            },
-            {
-              "xml": "<feature name=\"Printer\"><param name=\"android-package\" value=\"de.appplant.cordova.plugin.printer.Printer\" /></feature>",
               "count": 1
             }
           ]
@@ -67,15 +63,15 @@
           ],
           "/manifest/application": [
             {
+              "xml": "<activity android:exported=\"false\" android:label=\"Printer\" android:name=\"de.appplant.cordova.plugin.printer.ui.SelectPrinterActivity\"></activity>",
+              "count": 1
+            },
+            {
               "xml": "<activity android:clearTaskOnLaunch=\"true\" android:configChanges=\"orientation|keyboardHidden|screenSize\" android:exported=\"false\" android:name=\"com.google.zxing.client.android.CaptureActivity\" android:theme=\"@android:style/Theme.NoTitleBar.Fullscreen\" android:windowSoftInputMode=\"stateAlwaysHidden\" />",
               "count": 1
             },
             {
               "xml": "<activity android:label=\"Share\" android:name=\"com.google.zxing.client.android.encode.EncodeActivity\" />",
-              "count": 1
-            },
-            {
-              "xml": "<activity android:exported=\"false\" android:label=\"Printer\" android:name=\"de.appplant.cordova.plugin.printer.ui.SelectPrinterActivity\"></activity>",
               "count": 1
             }
           ],
@@ -113,13 +109,13 @@
     "cordova-plugin-fullscreen": {
       "PACKAGE_NAME": "com.gitmew.ddcar"
     },
+    "cordova-plugin-printer": {
+      "PACKAGE_NAME": "com.gitmew.ddcar"
+    },
     "es6-promise-plugin": {
       "PACKAGE_NAME": "com.gitmew.ddcar"
     },
     "cordova-plugin-screen-orientation": {
-      "PACKAGE_NAME": "com.gitmew.ddcar"
-    },
-    "cordova-plugin-statusbar": {
       "PACKAGE_NAME": "com.gitmew.ddcar"
     },
     "cordova-plugin-whitelist": {
@@ -127,9 +123,6 @@
     },
     "phonegap-plugin-barcodescanner": {
       "ANDROID_SUPPORT_V4_VERSION": "27.+",
-      "PACKAGE_NAME": "com.gitmew.ddcar"
-    },
-    "cordova-plugin-printer": {
       "PACKAGE_NAME": "com.gitmew.ddcar"
     }
   },
@@ -200,6 +193,15 @@
       ]
     },
     {
+      "id": "cordova-plugin-printer.Printer",
+      "file": "plugins/cordova-plugin-printer/www/printer.js",
+      "pluginId": "cordova-plugin-printer",
+      "clobbers": [
+        "plugin.printer",
+        "cordova.plugins.printer"
+      ]
+    },
+    {
       "id": "es6-promise-plugin.Promise",
       "file": "plugins/es6-promise-plugin/www/promise.js",
       "pluginId": "es6-promise-plugin",
@@ -214,28 +216,11 @@
       ]
     },
     {
-      "id": "cordova-plugin-statusbar.statusbar",
-      "file": "plugins/cordova-plugin-statusbar/www/statusbar.js",
-      "pluginId": "cordova-plugin-statusbar",
-      "clobbers": [
-        "window.StatusBar"
-      ]
-    },
-    {
       "id": "phonegap-plugin-barcodescanner.BarcodeScanner",
       "file": "plugins/phonegap-plugin-barcodescanner/www/barcodescanner.js",
       "pluginId": "phonegap-plugin-barcodescanner",
       "clobbers": [
         "cordova.plugins.barcodeScanner"
-      ]
-    },
-    {
-      "id": "cordova-plugin-printer.Printer",
-      "file": "plugins/cordova-plugin-printer/www/printer.js",
-      "pluginId": "cordova-plugin-printer",
-      "clobbers": [
-        "plugin.printer",
-        "cordova.plugins.printer"
       ]
     }
   ],
@@ -245,11 +230,10 @@
     "cordova-plugin-datepicker": "0.9.3",
     "cordova-plugin-device": "2.0.1",
     "cordova-plugin-fullscreen": "1.1.0",
+    "cordova-plugin-printer": "0.7.3",
     "es6-promise-plugin": "4.2.2",
     "cordova-plugin-screen-orientation": "3.0.1",
-    "cordova-plugin-statusbar": "2.4.2",
     "cordova-plugin-whitelist": "1.3.3",
-    "phonegap-plugin-barcodescanner": "7.1.0",
-    "cordova-plugin-printer": "0.7.3"
+    "phonegap-plugin-barcodescanner": "7.1.0"
   }
 }

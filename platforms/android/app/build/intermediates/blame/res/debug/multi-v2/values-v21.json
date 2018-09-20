@@ -1,10 +1,10 @@
 {
     "logs": [
         {
-            "outputFile": "D:\\GitHub\\ddcar\\platforms\\android\\app\\build\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values-v21\\values-v21.xml",
+            "outputFile": "/Users/phoenix/Documents/ddcar/platforms/android/app/build/intermediates/incremental/mergeDebugResources/merged.dir/values-v21/values-v21.xml",
             "map": [
                 {
-                    "source": "C:\\Users\\moronz\\.gradle\\caches\\transforms-1\\files-1.1\\support-compat-27.1.1.aar\\6fbd0ab55dc61ca6c0d5a5e352bd6f0b\\res\\values-v21\\values-v21.xml",
+                    "source": "/Users/phoenix/.gradle/caches/transforms-1/files-1.1/support-compat-27.1.1.aar/50561e229d5364de474e813611b88f65/res/values-v21/values-v21.xml",
                     "from": {
                         "startLines": "2,3,4,5,6,7,8,9,10,13",
                         "startColumns": "4,4,4,4,4,4,4,4,4,4",
@@ -23,7 +23,7 @@
                     }
                 },
                 {
-                    "source": "C:\\Users\\moronz\\.gradle\\caches\\transforms-1\\files-1.1\\support-media-compat-27.1.1.aar\\e1380525cd4519ec31a95797643e2e3f\\res\\values-v21\\values-v21.xml",
+                    "source": "/Users/phoenix/.gradle/caches/transforms-1/files-1.1/support-media-compat-27.1.1.aar/7cdee73053267401ca39dc0cfae4e955/res/values-v21/values-v21.xml",
                     "from": {
                         "startLines": "2,5,8,11",
                         "startColumns": "4,4,4,4",

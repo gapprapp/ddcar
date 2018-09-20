@@ -75,7 +75,7 @@
       }         
     })
 
-    function disactive(arg) {
+    /*function disactive(arg) {
       nav_menu = ['home', 'bell', 'qrcode', 'bars'];
       for (i = 0; i < 4; i++) {
         if (nav_menu[i] != arg) {
@@ -90,7 +90,7 @@
       $("#i-" + arg).fadeOut(100).fadeIn(100, function() {
         $("#i-" + arg).addClass('active');
       });
-    }
+    }*/
 
     function addpic(){
       $.confirm({
@@ -391,7 +391,7 @@
     <div class="col-3 text-center" onclick="scan();">
       <i id="i-qrcode" class="fas fa-qrcode menu"></i>
     </div>
-    <div class="col-3 text-center" onclick="return 0;">
+    <div class="col-3 text-center" onclick="transition_page_next('other.html')">
       <i id="i-bars" class="fa fa-bars menu"></i>
     </div>
   </div>
