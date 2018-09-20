@@ -40,7 +40,7 @@
     <feature name="BarcodeScanner">
         <param name="ios-package" value="CDVBarcodeScanner" />
     </feature>
-    <name>DD</name>
+    <name>ddcar</name>
     <description>
         A sample Apache Cordova application that responds to the deviceready event.
     </description>
