@@ -29,14 +29,7 @@
     <feature name="BarcodeScanner">
         <param name="android-package" value="com.phonegap.plugins.barcodescanner.BarcodeScanner" />
     </feature>
-<<<<<<< HEAD
     <name>ddcar</name>
-=======
-    <feature name="Printer">
-        <param name="android-package" value="de.appplant.cordova.plugin.printer.Printer" />
-    </feature>
-    <name>DD</name>
->>>>>>> 3c10316092b19c59640867bd40119c8115a7a945
     <description>
         A sample Apache Cordova application that responds to the deviceready event.
     </description>

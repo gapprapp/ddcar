@@ -64,17 +64,12 @@
         "source": "/Users/phoenix/.gradle/caches/transforms-1/files-1.1/barcodescanner-release-2.1.5.aar/cac649330a5d3b102e3f8f15c3dd0a86/res/drawable/share_via_barcode.png"
     },
     {
-<<<<<<< HEAD
         "merged": "/Users/phoenix/Documents/ddcar/platforms/android/app/build/intermediates/res/merged/debug/drawable_notification_icon_background.xml.flat",
         "source": "/Users/phoenix/.gradle/caches/transforms-1/files-1.1/support-compat-27.1.1.aar/50561e229d5364de474e813611b88f65/res/drawable/notification_icon_background.xml"
     },
     {
         "merged": "/Users/phoenix/Documents/ddcar/platforms/android/app/build/intermediates/res/merged/debug/layout_notification_action.xml.flat",
         "source": "/Users/phoenix/.gradle/caches/transforms-1/files-1.1/support-compat-27.1.1.aar/50561e229d5364de474e813611b88f65/res/layout/notification_action.xml"
-=======
-        "merged": "D:\\GitHub\\ddcar\\platforms\\android\\app\\build\\intermediates\\res\\merged\\debug\\layout-v21_notification_template_icon_group.xml.flat",
-        "source": "C:\\Users\\moronz\\.gradle\\caches\\transforms-1\\files-1.1\\support-compat-27.1.1.aar\\6fbd0ab55dc61ca6c0d5a5e352bd6f0b\\res\\layout-v21\\notification_template_icon_group.xml"
->>>>>>> 3c10316092b19c59640867bd40119c8115a7a945
     },
     {
         "merged": "/Users/phoenix/Documents/ddcar/platforms/android/app/build/intermediates/res/merged/debug/layout-v21_notification_template_custom_big.xml.flat",
@@ -111,10 +106,6 @@
     {
         "merged": "/Users/phoenix/Documents/ddcar/platforms/android/app/build/intermediates/res/merged/debug/layout_help.xml.flat",
         "source": "/Users/phoenix/.gradle/caches/transforms-1/files-1.1/barcodescanner-release-2.1.5.aar/cac649330a5d3b102e3f8f15c3dd0a86/res/layout/help.xml"
-    },
-    {
-        "merged": "/Users/phoenix/Documents/ddcar/platforms/android/app/build/intermediates/res/merged/debug/mipmap-xxhdpi_icon.png.flat",
-        "source": "/Users/phoenix/Documents/ddcar/platforms/android/app/src/main/res/mipmap-xxhdpi/icon.png"
     },
     {
         "merged": "/Users/phoenix/Documents/ddcar/platforms/android/app/build/intermediates/res/merged/debug/drawable-hdpi-v4_notification_bg_low_pressed.9.png.flat",
@@ -193,10 +184,6 @@
         "source": "/Users/phoenix/Documents/ddcar/platforms/android/app/src/main/res/layout/select_printer_activity.xml"
     },
     {
-        "merged": "/Users/phoenix/Documents/ddcar/platforms/android/app/build/intermediates/res/merged/debug/mipmap-xxxhdpi_icon.png.flat",
-        "source": "/Users/phoenix/Documents/ddcar/platforms/android/app/src/main/res/mipmap-xxxhdpi/icon.png"
-    },
-    {
         "merged": "/Users/phoenix/Documents/ddcar/platforms/android/app/build/intermediates/res/merged/debug/drawable-xhdpi-v4_notify_panel_notification_icon_bg.png.flat",
         "source": "/Users/phoenix/.gradle/caches/transforms-1/files-1.1/support-compat-27.1.1.aar/50561e229d5364de474e813611b88f65/res/drawable-xhdpi-v4/notify_panel_notification_icon_bg.png"
     },
@@ -205,17 +192,12 @@
         "source": "/Users/phoenix/.gradle/caches/transforms-1/files-1.1/barcodescanner-release-2.1.5.aar/cac649330a5d3b102e3f8f15c3dd0a86/res/layout/capture.xml"
     },
     {
-<<<<<<< HEAD
         "merged": "/Users/phoenix/Documents/ddcar/platforms/android/app/build/intermediates/res/merged/debug/drawable-xxhdpi_launcher_icon.png.flat",
         "source": "/Users/phoenix/.gradle/caches/transforms-1/files-1.1/barcodescanner-release-2.1.5.aar/cac649330a5d3b102e3f8f15c3dd0a86/res/drawable-xxhdpi/launcher_icon.png"
     },
     {
         "merged": "/Users/phoenix/Documents/ddcar/platforms/android/app/build/intermediates/res/merged/debug/drawable-port-xxxhdpi_screen.png.flat",
         "source": "/Users/phoenix/Documents/ddcar/platforms/android/app/src/main/res/drawable-port-xxxhdpi/screen.png"
-=======
-        "merged": "D:\\GitHub\\ddcar\\platforms\\android\\app\\build\\intermediates\\res\\merged\\debug\\drawable_launcher_icon.png.flat",
-        "source": "C:\\Users\\moronz\\.gradle\\caches\\transforms-1\\files-1.1\\barcodescanner-release-2.1.5.aar\\b07811c53a299101782b556223467be9\\res\\drawable\\launcher_icon.png"
->>>>>>> 3c10316092b19c59640867bd40119c8115a7a945
     },
     {
         "merged": "/Users/phoenix/Documents/ddcar/platforms/android/app/build/intermediates/res/merged/debug/layout_printer_list_item.xml.flat",

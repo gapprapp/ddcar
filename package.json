@@ -39,8 +39,8 @@
       "cordova-plugin-printer": {}
     },
     "platforms": [
-      "android",
-      "ios"
+      "ios",
+      "android"
     ]
   }
 }
