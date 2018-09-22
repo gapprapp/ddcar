@@ -130,12 +130,7 @@
       }); 
     });
 
-    function onDeviceReady(){
-      localStorage.setItem("menu", "");
-    }
-
     function onLoad(){
-      document.addEventListener("deviceready", onDeviceReady, false);
       if(!localStorage.user_id){                      
         transition_page_back('login.html');
       }
@@ -252,6 +247,7 @@
     document.addEventListener("deviceready", onDeviceReady, false);
 
     function onDeviceReady(){
+      if(device.platform == "Android")
         AndroidFullScreen.immersiveMode();
         document.addEventListener("backbutton", onBackKeyDown, false);
     }
