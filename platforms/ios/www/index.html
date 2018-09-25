@@ -69,11 +69,6 @@
         }
       }      
 
-      // if(localStorage.menu != ""){
-      //   //Back from function
-      //   $("#tabs-"+localStorage.menu).trigger('click');
-      // }     
-
       localStorage.stack_folder = "";
       localStorage.img = "";
      
@@ -247,6 +242,7 @@
       if(device.platform == "Android")
         AndroidFullScreen.immersiveMode();
         document.addEventListener("backbutton", onBackKeyDown, false);
+        
     }
 
     function onBackKeyDown() {

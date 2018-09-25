@@ -52,4 +52,5 @@
     <preference name="loglevel" value="DEBUG" />
     <preference name="Orientation" value="portrait" />
     <preference name="Fullscreen" value="true" />
+    <preference name="DisallowOverscroll" value="true" />
 </widget>

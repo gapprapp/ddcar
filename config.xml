@@ -38,6 +38,7 @@
     <plugin name="cordova-plugin-camera" spec="^4.0.2" />
     <preference name="Orientation" value="portrait" />
     <preference name="Fullscreen" value="true" />
+    <preference name="DisallowOverscroll" value="true" />
     <plugin name="cordova-plugin-datepicker" spec="^0.9.3" />
     <plugin name="cordova-plugin-screen-orientation" spec="^3.0.1" />
     <plugin name="cordova-plugin-fullscreen" spec="^1.2.0" />

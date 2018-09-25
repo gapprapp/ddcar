@@ -71,7 +71,6 @@ body{
 #i-back{
 	font-size: 145%;
 	color: white;
-	margin-top: 3px;
 }
 
 #show-box, #show-box-go{
@@ -282,6 +281,7 @@ label{
 	background: #fafafa;
 	font-weight: bold;
 	color: #d63232;
+	margin-bottom: 6px;
 }
 
 #search_prod:focus, #search_prod:active {
