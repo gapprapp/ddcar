@@ -27,9 +27,6 @@
   <!-- Font -->
   <link href="https://fonts.googleapis.com/css?family=Prompt" rel="stylesheet">
   <style>
-  .row{
-        background: #fbfbf9; height: 50px;
-      }
       h4{
         color: #da4646; letter-spacing: 1px;
       }
@@ -37,6 +34,12 @@
         margin-top: 8px
       }
   </style>
+  <script>
+    // get update
+    // 3taPCR
+    // $("#a-android").attr('href', result from ajax);
+    // $("#a-ios").attr('href', result from ajax);
+  </script>
 </head>
 
 <body onload="onLoad();" style="overflow: hidden;">
@@ -49,30 +52,44 @@
             <i id="i-back" class="fas fa-angle-left"></i>
         </div>
         <div class="col-10 text-center">
-            <h5 id="h5-title">อื่นๆ</h5>
+            <h5 id="h5-title">เวอร์ชั่น</h5>
         </div>
     </div>
     <br>
 
   <!-- big container -->
-  <div id="big-ctn" class="container justify-content-center" style="margin-top: 15%;">
-    <div class="row text-center" onclick="tansition_page_next('update.html')">
-      <div class="col-11 align-self-center" style="padding-left: 10%;">
-        <h4>ตรวจสอบเวอร์ชั่น</h4>
+  <div id="big-ctn" class="container" style="margin-top: 15%;">
+    <div class="row text-center">
+      <div class="col-12 text-center" style="background-color: white;">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/8/8f/New-Play-Store-logo.png" alt="" style="width: 40%; height: auto">
       </div>
-      <div class="col-1 align-self-center">
-        <i style="color: #da4646;" class="fas fa-angle-right"></i>
+    </div>
+    <div class="row mg-top8">
+      <div class="col-12 text-center">
+        <h4>ดาวโหลดอัพเดต</h4>
+      </div>
+    </div>
+    <div class="row mg-top8">
+      <div class="col-12 text-center">
+        <a href="https://i.diawi.com/3taPCR" style="color: blue; text-decoration: underline;" id="a-android">คลิก</a>
       </div>
     </div>
 
-    <div class="row text-center mg-top8" onclick="localStorage.clear();transition_page_next('login.html')">
-      <div class="col-11 align-self-center" style="padding-left: 10%;">
-        <h4>ออกจากระบบ</h4>
-      </div>
-      <div class="col-1 align-self-center">
-        <i style="color: #da4646;" class="fas fa-angle-right"></i>
+    <!--<div class="row text-center" style="margin-top: 12%;">
+      <div class="col-12 text-center" style="background-color: white; padding-top: 8px; padding-bottom: 8px;">
+        <img src="https://img.freepik.com/free-icon/macos-platform_318-33076.jpg?size=338&ext=jpg" alt="" style="width: 40%; height: auto">
       </div>
     </div>
+    <div class="row mg-top8">
+      <div class="col-12 text-center">
+        <h4>ดาวโหลดอัพเดต</h4>
+      </div>
+    </div>
+    <div class="row mg-top8">
+      <div class="col-12 text-center">
+        <a href="#" style="color: blue; text-decoration: underline;">คลิก</a>
+      </div>
+    </div><br>-->
   </div>
   <!-- End big container -->
 

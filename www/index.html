@@ -47,12 +47,10 @@
       url = new URL(window.location.href);
       u = url.searchParams.get("u");
 
-<<<<<<< HEAD
       if(sessionStorage.menu != ""){
         //Back from function
         $("#tabs-"+sessionStorage.menu).trigger('click');
       }
-=======
       if(u){
         if(localStorage.user_role == "เจ้าของร้าน"){
           $('#tabs-admin').prop('hidden',true);
@@ -70,12 +68,6 @@
           $('#tabs-log').prop('hidden',true);          
         }
       }      
-
-      if(localStorage.menu != ""){
-        //Back from function
-        $("#tabs-"+localStorage.menu).trigger('click');
-      }     
->>>>>>> 3c10316092b19c59640867bd40119c8115a7a945
 
       localStorage.stack_folder = "";
       localStorage.img = "";
