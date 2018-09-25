@@ -6,7 +6,11 @@
   <meta name="description" content="">
   <meta name="author" content="">
 
+<<<<<<< HEAD
   <title>นำสินค้าเข้าโกดัง</title>
+=======
+  <title>พิมพ์คิวอาร์</title>
+>>>>>>> d858ac4cf596da0a576a8d3db3496963485bb8f8
 
   <!-- Bootstrap Import -->
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
@@ -35,8 +39,12 @@
   <!-- Font -->
   <link href="https://fonts.googleapis.com/css?family=Prompt" rel="stylesheet"> 
   <!-- Main -->
+<<<<<<< HEAD
   <link href="css/untitled.css" rel="stylesheet">
   <link rel="stylesheet" href="css/popup.css">
+=======
+  <link href="css/untitled.css" rel="stylesheet">  
+>>>>>>> d858ac4cf596da0a576a8d3db3496963485bb8f8
 
   <style>
   	img{
@@ -62,24 +70,451 @@
 	.active{
 		color: #666;
 	}	
+<<<<<<< HEAD
   </style>
+=======
+	</style>
+	
+	<script>	
+		var prod_id,img,price;	
+		arr_data = [];		
+		$(document).ready(function () {
+			if(!localStorage.user_id){
+				window.location = 'web_login.html';
+			}		
+			setTimeout(function() {$("#name").focus();}, 100);	
+
+			if(localStorage.arr_qr){			
+				var retrievedObject = localStorage.getItem('arr_qr');
+				arr_data = JSON.parse(retrievedObject);          
+				count = arr_data[arr_data.length-1].count + 1;   
+				if(!localStorage.arr_prod_qr){				
+					add_previous();
+				}		
+			}  						  
+
+			if(localStorage.arr_prod_qr){				
+				var retrievedObject = localStorage.getItem('arr_prod_qr');
+				var arr_data2 = JSON.parse(retrievedObject);			
+				for(var j = 0 ; j < arr_data2.length ; j++){
+					prod_id = arr_data2[j].prod_id;				
+					get_prod(prod_id);
+				}	
+				setTimeout(function() {				 
+					localStorage.arr_prod_qr = ""; 	
+					//var retrievedObject = localStorage.getItem('arr_qr');
+					//arr_data = JSON.parse(retrievedObject);          
+					count = arr_data[arr_data.length-1].count + 1;             
+					add_previous();				 	
+				}, 500);					
+      }				  		   
+
+			var options = {
+				url: function(phrase) {
+					return "php/search_prod.php";
+				},
+				getValue: function(element) {
+					//console.log(element);
+					return element.prod_name;
+				},
+				ajaxSettings: {
+					method: "POST",
+					data: {}
+				},
+				preparePostData: function(data) {     
+					prod_id = 0;     
+					data.phrase = $("#name").val();
+					return data;
+				},
+				minCharNumber: 3,
+				list: {
+						maxNumberOfElements: 1000,
+
+						showAnimation: {
+								type: "slide",
+								time: 100
+						},
+						hideAnimation: {
+								type: "slide",
+								time: 100
+						},
+
+						onChooseEvent: function() {
+							for(var b = 0; b < count; b++){
+								if($("#name").val() == $("#name-"+b).val()){
+									$.alert({
+										icon: 'fa fa-warning',
+										title: 'เตือน',
+										content: "มีการเพิ่มสินค้า " + $("#name").val() + "กรุณาแก้ไขที่จำนวนของสินค้าที่ได้เพิ่มแล้ว",
+									});
+									set_default();
+									return 0;                
+								}
+							}							
+							var barcode = $("#name").getSelectedItemData().prod_code;
+							price = $("#name").getSelectedItemData().prod_price;					
+							prod_id = $("#name").getSelectedItemData().prod_id;
+							img = $("#name").getSelectedItemData().img;						
+						
+							$('#barcode').val(barcode);							
+							$('#amount').val("1");					               
+						}
+				},
+				requestDelay: 300,
+				theme: "blue-light",
+				};
+			$("#name").easyAutocomplete(options);	
+		});	
+		
+		function get_prod(id){
+				prod_id = id;
+				var bool = true;
+				if(arr_data.length > 0){                 
+						for(var b = 0; b < arr_data.length; b++){
+								if(prod_id == arr_data[b].prod_id){
+										$.confirm({
+												title: 'เตือน',
+												content: 'มีการเพิ่มสินค้า ' + arr_data[b].name + ' กรุณาแก้ไขที่จำนวนของสินค้าที่ได้เพิ่มแล้ว',
+												backgroundDismiss: true,
+												buttons: {
+														formSubmit: {
+														text: 'ตกลง',
+														btnClass: 'btn-regis',
+														action: function () {
+														}
+														}
+												}
+										});  
+										bool = false;                               
+										break;           
+								}
+						}                 
+				}
+				if(bool){
+						$.ajax({
+								type: "POST",
+								url:"php/get_prod.php",    
+								data:{'prod_id' : id},
+								//async: false,                       
+								beforeSend: function(){
+									EasyLoading.show({                           
+										text: "กำลังโหลด"                            
+								});
+								},             
+								success: function(data){  
+										EasyLoading.hide();
+										var obj = jQuery.parseJSON(data);                                         
+										$.each(obj, function(i, field){														
+											item = {}           
+											item ["count"] =  count; 
+											item ["prod_id"] =  id;
+											item ["qr"] =  obj[i].prod_code;										
+											item ["name"] = obj[i].prod_name;										
+											item ["amt"] =  1;									
+											item ["price"] = obj[i].prod_price;   
+											item ["img"] =  obj[i].img;
+
+											arr_data.push(item);	
+											localStorage.setItem('arr_qr', JSON.stringify(arr_data));
+											//console.log(arr_data)										                           										      
+										});	
+										count++;	                                                 
+								}               
+						});                    
+				}            
+		}
+
+		$(document).keydown(function(objEvent) {
+			if (objEvent.keyCode == 9) {  //tab pressed
+              objEvent.preventDefault(); // stops its action         
+          	}
+			if (objEvent.keyCode == 13) {  //enter pressed
+				objEvent.preventDefault();
+				var $this = $(objEvent.target);
+				var i_enter = parseFloat($this.attr('data-index'));                      
+				if(i_enter == 2){
+					add();
+				}else{          
+					var temp = $('[data-index="' + (i_enter+1).toString() + '"]').val();
+         	$('[data-index="' + (i_enter+1).toString() + '"]').focus().val("").val(temp);
+				}                       
+			}  
+			if (objEvent.keyCode == 113) {  //f2 pressed
+        add();
+			}
+			if (objEvent.keyCode == 115) {  //f4 pressed
+				set_default();
+			}
+			if (objEvent.keyCode == 118) {  //f7 pressed
+				print();          
+			}       
+		})		
+		
+		function add(){
+			var code = $('#barcode').val();		
+			var name = $('#name').val(); 
+			var amt = $('#amount').val(); 
+		
+			if(name != "" && amt != "" && code != "" && prod_id != 0){
+				show();
+			}else{
+					$.confirm({
+						title: 'พบข้อผิดพลาด',
+						content: 'กรุณากรอกข้อมูลให้ครบ',
+						backgroundDismiss: true,
+						buttons: {
+							formSubmit: {
+								text: 'ตกลง',
+								btnClass: 'btn-regis',
+								action: function () {
+								}
+							}
+						}
+					});
+			}
+			$('#name').focus();			          
+		}     
+		
+		var count = 0;
+  	function show(){
+			var bottom = $(window).height() - $("#cnt-add").offset().top - $("#cnt-add").height();
+			// Always scroll to the bottom
+			if(bottom < 200){
+				$("#cnt-add").css('max-height', $("#cnt-add").height());
+				$("#cnt-add").animate({scrollTop: $('#cnt-add').prop('scrollHeight')});
+			}   
+
+			$("#cnt-add").append('<div id="add-'+count+'" class="row mgb-5">'+
+					'<div class="col-2"></div>'+
+          '<div class="col-3">'+
+            '<div class="input-group-prepend">'+
+              '<span id="span-no-'+count+'" class="input-group-text">'+(count+1)+'</span>'+
+              '<input id="barcodee" type="text" value="'+$('#barcode').val()+'" class="form-control text-center" readonly>'+
+            '</div>'+
+          '</div>'+          
+          '<div class="col-3 nopd-8">'+
+            '<input id="name-'+count+'" value="'+$('#name').val()+'" class="form-control text-center" rel="popover" data-img="'+img+'" readonly>'+
+          '</div>'+
+          '<div class="col-1 nopd-8">'+
+            '<input id="amount-'+count+'" onkeyup="edit_amt('+count+')" value="'+$('#amount').val()+'" type="number" class="form-control text-center no-spin" min="1">'+
+          '</div>'+       
+          '<div class="col-1 nopd text-center">'+         
+          '<button id="btn-trash-'+count+'" class="btn btn-sm btn-danger" onclick="remove('+count+');"> <i class="fa fa-trash"></i></button>'+
+					'</div>'+
+					'<div class="col-2"></div>'+
+					"<script>" +
+						"$('#name-"+count+"[rel=popover]').popover({" +
+						"html: true," +
+						"trigger: 'hover'," +
+						"placement: 'left'," +
+						"content: function(){" +
+						"return '<img src='+$(this).data('img')+'>';}" +
+						"});" +
+					"</" + "script>" +
+				'</div>');
+				
+			item = {}           
+			item ["count"] =  count; 
+			item ["prod_id"] =  prod_id;
+			item ["qr"] =  $('#barcode').val();		
+			item ["name"] =  $('#name').val();		
+			item ["amt"] =  $('#amount').val();			
+			item ["price"] = price;   
+			item ["img"] = img;	
+
+			arr_data.push(item);	
+			localStorage.setItem('arr_qr', JSON.stringify(arr_data));		
+			count++;
+
+			$('#barcode').val("");
+			$('#name').val("");		
+			$('#amount').val("1");		
+		}
+		
+		function add_previous(){
+			for(var i = 0;i < arr_data.length; i++){
+				var bottom = $(window).height() - $("#cnt-add").offset().top - $("#cnt-add").height();
+				// Always scroll to the bottom
+				if(bottom < 200){
+					$("#cnt-add").css('max-height', $("#cnt-add").height());
+					$("#cnt-add").animate({scrollTop: $('#cnt-add').prop('scrollHeight')});
+				}   
+
+				$("#cnt-add").append('<div id="add-'+arr_data[i].count+'" class="row mgb-5">'+
+						'<div class="col-2"></div>'+
+				'<div class="col-3">'+
+					'<div class="input-group-prepend">'+
+					'<span id="span-no-'+arr_data[i].count+'" class="input-group-text">'+(arr_data[i].count+1)+'</span>'+
+					'<input id="barcodee" type="text" value="'+arr_data[i].qr+'" class="form-control text-center" readonly>'+
+					'</div>'+
+				'</div>'+				
+				'<div class="col-3 nopd-8">'+
+					'<input id="name-'+arr_data[i].count+'" value="'+arr_data[i].name+'" class="form-control text-center" rel="popover" data-img="'+arr_data[i].img+'" readonly>'+
+				'</div>'+
+				'<div class="col-1 nopd-8">'+
+					'<input id="amount-'+arr_data[i].count+'" onkeyup="edit_amt('+arr_data[i].count+')" value="'+arr_data[i].amt+'" type="number" class="form-control text-center no-spin" min="1">'+
+				'</div>'+			
+				'<div class="col-1 nopd text-center">'+			
+				'<button id="btn-trash-'+arr_data[i].count+'" class="btn btn-sm btn-danger" onclick="remove('+arr_data[i].count+');"> <i class="fa fa-trash"></i></button>'+
+				'</div>'+
+				'<div class="col-2"></div>'+
+						"<script>" +
+							"$('#name-"+arr_data[i].count+"[rel=popover]').popover({" +
+							"html: true," +
+							"trigger: 'hover'," +
+							"placement: 'left'," +
+							"content: function(){" +
+							"return '<img src='+$(this).data('img')+'>';}" +
+							"});" +
+						"</" + "script>" +
+					'</div>');				
+			}
+		
+		}
+
+		function set_default(){
+			$('#barcode').val("");
+			$('#name').val("");		
+			$('#amount').val("1");	
+			$('#name').focus(); 		
+		}  	
+
+		function edit_amt(arg){
+			arr_data[arg].amt = $("#amount-"+arg).val();		
+			localStorage.setItem('arr_qr', JSON.stringify(arr_data));	
+		}
+
+		function remove(arg) {
+			$.confirm({
+				icon: 'fa fa-warning',
+				title: 'แน่ใจหรือว่าต้องการลบ!',
+				content: 'ต้องการลบรายการสินค้าออกจากรายการ!',
+				buttons: {
+					danger: {
+						btnClass: 'btn-danger',
+						text: 'ลบ',
+						action: function () {							
+							$("#add-" + arg).remove();
+							for (i = arg+1; i <= count-1; i++) {
+								$("#span-no-" + (i)).text(i);								
+								$("#span-no-"+ i).prop('id', 'span-no-'+ (i-1));		
+								$("#amount-" + i).attr('onkeyup', "edit_amt(" + (i - 1) + ")");				
+								$("#amount-" + i).prop('id', 'amount-' + (i - 1));
+								$("#name-" + i).prop('id', 'name-' + (i - 1));							
+								$("#add-" + i).prop('id', 'add-' + (i - 1));                 
+								$("#btn-trash-" + i).attr('onclick', "remove(" + (i - 1) + ")");
+								$("#btn-trash-" + i).prop('id', 'btn-trash-' + (i - 1));							
+								arr_data[i].count--;						
+							}
+							arr_data.splice(arg, 1);
+							localStorage.setItem('arr_qr', JSON.stringify(arr_data));	
+							count--;						
+						}
+					},
+					ยกเลิก: function () { },
+				}
+			});
+    }
+
+		var qrcode;
+		function print(){
+			if(arr_data.length == 0){
+					return 0;
+			}
+			var sum = 0;
+			var index_qr = 1;
+			$.each(arr_data, function(i, field){				
+				for(var j = 0 ; j < arr_data[i].amt; j++){					
+					if(index_qr % 2 != 0){						
+						$('#show_qr').append('<div id="ctn'+index_qr+'" class="ctn">' +
+						'<div class="left">' +
+							'<div class="name">'+arr_data[i].name+'</div>' +
+							'<div style="display: inline-block; float: left; margin-left: 5%;">'+
+								'<div class="qr-l" id="qrcode'+index_qr+'"></div>' +
+								'<div class="code-l">'+arr_data[i].qr+'</div>'+
+							'</div>'+
+							'<div class="price-l">ราคา '+arr_data[i].price+' บาท</div>' +
+						'</div>' +						
+						'</div>');		
+					}else{						
+						$('#ctn'+(index_qr-1)).append('<div class="right">' +
+							'<div class="name">'+arr_data[i].name+'</div>' +
+							'<div style="display: inline-block; float: left; margin-left: 5%;">'+
+								'<div class="qr-l" id="qrcode'+index_qr+'"></div>' +
+								'<div class="code-l">'+arr_data[i].qr+'</div>'+
+							'</div>'+
+							'<div class="price-l">ราคา '+arr_data[i].price+' บาท</div>' +
+						'</div>');
+					}											
+					qrcode = new QRCode("qrcode"+index_qr,{width: 57, height: 57});
+					qrcode.makeCode(arr_data[i].qr);
+					index_qr++;
+				}				                                                           
+			});	
+
+			var WinPrint  = window.open();
+			window.setTimeout(function() {
+				var ele =  document.getElementById('show_qr').innerHTML;			
+				WinPrint.document.write("<html><head><link href='https://fonts.googleapis.com/css?family=Maitree' rel='stylesheet'></head><body>");
+				WinPrint.document.write("<style>@media print {body {-webkit-print-color-adjust: exact;}} @page {size: auto; margin: 0mm;} .name{line-height: 1.2; font-size: 0.9em; word-wrap:break-word; height: 3.5em; margin-top: 0%;}.ctn{width: 10.1cm; height: 3.79cm; margin-top: -2.1mm; margin-left: 0mm;} .left{float: left; width: 5.05cm; height: 3.97cm; text-align: center;} .right{float: left; width: 5.05cm; height: 3.97cm; text-align: center;} .qr-r{width: 15mm; height: 15mm; margin-right: 2%; float: right; background-color: black; color: white;} .code-r{margin-right: 8%; margin-top: 3%;font-size: 0.7em} .price-r{margin-top: 8%;font-size: 1em;} .qr-l{width: 15mm; height: 15mm; margin-right: 2%; float: left; background-color: black; color: white;} .code-l{margin-right: 8%; margin-top: 3%;font-size: 0.7em} .price-l{margin-top: 8%;font-size: 1em;} </style>" +
+					ele);
+				WinPrint.document.write('</body></html>');
+				WinPrint.document.close();
+				WinPrint.focus();
+				window.setTimeout(function() {
+					WinPrint.print();
+					WinPrint.close();
+					//cancel();		
+				}, 250);
+			}, 500);
+			
+		}	
+
+		function logout(){
+			localStorage.clear();
+		}
+
+		function cancel(){
+			localStorage.arr_qr = "";
+			localStorage.arr_prod_qr = "";	
+			location.reload();
+		}
+
+		function selectfolder() {
+			window.location = "web_folder.html?from=qr";            
+		} 
+
+  </script>
+>>>>>>> d858ac4cf596da0a576a8d3db3496963485bb8f8
 </head>
 <body>
 	<div class="container-fullwidth justify-content-center">
 		<nav class="navbar navbar-expand-md navbar-dark">
         	<div class="collapse navbar-collapse justify-content-md-center" id="navbarCollapse">
+<<<<<<< HEAD
           	<h3 id="nav-title">นำสินค้าเข้าโกดัง</h3>
+=======
+          	<h3 id="nav-title">พิมพ์คิวอาร์</h3>
+>>>>>>> d858ac4cf596da0a576a8d3db3496963485bb8f8
         	</div>
       	</nav>
       	<div class="container">
       		<div class="row" style="margin-top: 2px;">
       			<div class="col-12 text-center">
 					<a href="web_sale.html" class="mgr-20">ขายสินค้า</a>
+<<<<<<< HEAD
 					<a href="web_import.html" class="mgr-20 active">นำสินค้าเข้าโกดัง</a>
 					<a href="web_stock.html" class="mgr-20">เช็คสต๊อก</a>
 					<a href="web_export.html" class="mgr-20">สินค้าออกโกดัง</a>
 					<a href="web_select.html" class="mgr-20">รายการย้อนหลัง</a>
 					<a href="web_qrprint.html" class="mgr-20">พิมพ์คิวอาร์</a>
+=======
+					<a href="web_import.html" class="mgr-20">นำสินค้าเข้าโกดัง</a>
+					<a href="web_stock.html" class="mgr-20">เช็คสต๊อก</a>
+					<a href="web_export.html" class="mgr-20">สินค้าออกโกดัง</a>
+					<a href="web_select.html" class="mgr-20">รายการย้อนหลัง</a>
+					<a href="web_qrprint.html" class="mgr-20 active">พิมพ์คิวอาร์</a>
+>>>>>>> d858ac4cf596da0a576a8d3db3496963485bb8f8
 					<a href="" class="mgr-20" onclick="logout()">ออกจากระบบ</a>
       			</div>
       		</div>
@@ -88,7 +523,11 @@
       	<div class="container-fullwidth nopd">
       		<div id="head" class="row mgb-5 justify-content-center">
       		  <div class="col-2"></div>
+<<<<<<< HEAD
       		  <div class="col-2 text-center nopd">บาร์โค้ด</div>
+=======
+      		  <div class="col-3 text-center nopd">บาร์โค้ด</div>
+>>>>>>> d858ac4cf596da0a576a8d3db3496963485bb8f8
       		  <div class="col-3 text-center nopd">ชื่อสินค้า</div>
       		  <div class="col-1 text-center nopd-8">จำนวน</div>
       		  <div class="col-3"></div>
@@ -103,7 +542,11 @@
 			<!-- Input -->
 			<div class="row justify-content-center align-items-center">
 				<div class="col-2"></div>
+<<<<<<< HEAD
 			  <div class="col-2">
+=======
+			  <div class="col-3">
+>>>>>>> d858ac4cf596da0a576a8d3db3496963485bb8f8
 			    <div class='input-group-prepend'>
 			      <span id="span-no" class='input-group-text'>#</span>
 			      <input id='barcode' type='text' class='form-control text-center' readonly>
@@ -113,7 +556,11 @@
 			    <input id="name" class="form-control text-center" rel="popover" data-img="" data-index="1" autofocus>
 			  </div>
 			  <div class='col-1 nopd-8'>
+<<<<<<< HEAD
 			    <input id='amount' type='number' onchange="cal_avg('amt')" class='form-control text-center no-spin' min='1' value="1" data-index="2">
+=======
+			    <input id='amount' type='number' class='form-control text-center no-spin' min='1' value="1" data-index="2">
+>>>>>>> d858ac4cf596da0a576a8d3db3496963485bb8f8
 			  </div>
 			  <div class="col-1 nopd text-center">
 			  	<button class="btn btn-sm btn-danger" disabled> <i class="fa fa-trash"></i></button>
@@ -134,6 +581,10 @@
 		  <div class="row">
 		    <div class="col-12 text-center">
 				<button id="btn_checkbill" class="btn btn-warning" onclick="print()">พิมพ์คิวอาร์</button>
+<<<<<<< HEAD
+=======
+				<button class="btn btn-danger" onclick="cancel()">ยกเลิก</button>
+>>>>>>> d858ac4cf596da0a576a8d3db3496963485bb8f8
 		    </div>
 			</div>
 			<div id="show_qr" hidden>
