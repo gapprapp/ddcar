@@ -39,6 +39,40 @@
     // 3taPCR
     // $("#a-android").attr('href', result from ajax);
     // $("#a-ios").attr('href', result from ajax);
+    function onLoad(){
+      if(localStorage.bell){
+          $('.dot').prop('hidden',false);
+      }  
+
+      $.ajax({ 
+        type: "GET",
+        url:"http://ddaccessory.trueddns.com:24330/dd-shop/php/get_lastV.php",
+        beforeSend: function(){
+            $(".overlay").prop('hidden', false);
+        },                       
+        success: function(data){ 
+          $(".overlay").prop('hidden', true); 
+          if(data == "fail"){           
+            $.confirm({
+              title: 'พบข้อผิดพลาด',
+              content: 'กรุณาลองอีกครั้ง',
+              backgroundDismiss: true,
+              buttons: {
+                formSubmit: {
+                  text: 'ตกลง',
+                  btnClass: 'btn-regis',
+                  action: function () {
+                  }
+                }
+              }
+            });
+          }else{           
+            $("#a-android").attr('href', data);
+          }                            
+        }               
+      });     
+    }
+
   </script>
 </head>
 
@@ -71,7 +105,7 @@
     </div>
     <div class="row mg-top8">
       <div class="col-12 text-center">
-        <a href="https://i.diawi.com/3taPCR" style="color: blue; text-decoration: underline;" id="a-android">คลิก</a>
+        <a href="https://i.diawi.com/3taPCR" style="color: blue; text-decoration: underline;" id="a-android">คลิกเพื่อดาวน์โหลด</a>
       </div>
     </div>
 

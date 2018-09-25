@@ -37,6 +37,14 @@
         margin-top: 8px
       }
   </style>
+  <script>     
+      $(document).ready(function() {
+        if(localStorage.bell){
+            $('.dot').prop('hidden',false);
+        }       
+      });
+  
+    </script>
 </head>
 
 <body onload="onLoad();" style="overflow: hidden;">
