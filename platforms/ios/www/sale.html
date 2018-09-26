@@ -261,6 +261,7 @@
                             //alert("Sorry, only qr codes this time ;)");
                         }
                     }else{
+                        window.location = "member.html";
                         //alert("The user has dismissed the scan");
                     }
                 },
@@ -503,7 +504,7 @@
 
     <!-- Nav menu top -->
     <div class="row fixed-top navs align-items-center" >
-        <div id="col-back" class="col-1 text-center" onclick="transition_page_back('index.html?menu=2')">
+        <div id="col-back" class="col-1 text-center" onclick="transition_page_back('index.html')">
             <i id="i-back" class="fas fa-angle-left"></i>
         </div>
         <div class="col-9 text-center" style="padding-left: 12%; margin-right: 2%;">
@@ -561,7 +562,7 @@
 
     <!-- Nav menu bottom -->
     <div id="navs-bttm" class="row fixed-bottom navs">
-        <div class="col-3 text-center" onclick="transition_page_back('index.html?menu=2');">
+        <div class="col-3 text-center" onclick="transition_page_back('index.html');">
             <i id="i-home" class="fas fa-home menu"></i>
         </div>
         <div class="col-3 text-center" onclick="transition_page_next('bell.html')">

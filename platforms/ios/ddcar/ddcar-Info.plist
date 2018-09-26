@@ -55,5 +55,7 @@
       <string>UIInterfaceOrientationPortrait</string>
       <string>UIInterfaceOrientationPortraitUpsideDown</string>
     </array>
+    <key>NSCameraUsageDescription</key>
+    <string>To scan barcodes</string>
   </dict>
 </plist>

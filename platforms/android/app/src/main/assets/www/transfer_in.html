@@ -16,6 +16,7 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
     <script defer src="https://use.fontawesome.com/releases/v5.0.8/js/all.js"></script>
     <script src="cordova.js"></script>
+    <script type="text/javascript" src="js/scanqr.js"></script>
 
     <script src="js/jquery.easy-autocomplete.min.js"></script>   
     <link rel="stylesheet" href="css/easy-autocomplete.themes.min.css">
@@ -207,10 +208,11 @@
                                 });
                                 var temp = $('#prod-addr').val();
                                 $("#prod-addr").focus().val("").val(temp);
-                        }else{
+                        }else{                           
                             //alert("Sorry, only qr codes this time ;)");
                         }
                     }else{
+                        window.location =  "member.html";
                         //alert("The user has dismissed the scan");
                     }
                 },
@@ -439,7 +441,7 @@
 
     <!-- Nav menu top -->
     <div class="row fixed-top navs align-items-center">
-        <div id="col-back" class="col-1 text-center" onclick="transition_page_back('index.html?menu=2')">
+        <div id="col-back" class="col-1 text-center" onclick="transition_page_back('index.html')">
             <i id="i-back" class="fas fa-angle-left"></i>
         </div>
         <div class="col-8 text-center" style="padding-left: 15%; margin-right: 4%;">
@@ -491,14 +493,14 @@
 
     <!-- Nav menu bottom -->
     <div  id="navs-bttm" class="row fixed-bottom navs">
-        <div class="col-3 text-center" onclick="transition_page_back('index.html?menu=2');">
+        <div class="col-3 text-center" onclick="transition_page_back('index.html');">
             <i id="i-home" class="fas fa-home menu"></i>
         </div>
         <div class="col-3 text-center" onclick="transition_page_next('bell.html')">
             <div class="dot" hidden></div>
             <i id="i-bell" class="fas fa-bell menu"></i>
         </div>
-        <div class="col-3 text-center" onclick="menu('qrcode')">
+        <div class="col-3 text-center" onclick="scan();">
             <i id="i-qrcode" class="fas fa-qrcode menu"></i>
         </div>
         <div class="col-3 text-center" onclick="transition_page_next('other.html')">

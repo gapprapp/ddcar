@@ -1,4 +1,4 @@
-function scan(){
+function scan(arg){
         cordova.plugins.barcodeScanner.scan(
         function (result) {
             if(!result.cancelled){
@@ -62,13 +62,18 @@ function scan(){
                     //alert("Sorry, only qr codes this time ;)");
                 }
             }else{
+                if(arg == "index"){
+                    window.location = "index.html";
+                }else{
+                    window.location = "member.html";
+                }               
               //alert("The user has dismissed the scan");
             }
         },
         function (error) {
           $.confirm({
             title: 'พบข้อผิดพลาด',
-            content: 'กรุณากรอกข้อมูลให้ครบ',
+            content: 'กรุณาลองอีกครั้ง',
             backgroundDismiss: true,
             buttons: {
               formSubmit: {
