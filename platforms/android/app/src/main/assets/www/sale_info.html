@@ -236,22 +236,6 @@
         }
 
         function save(){
-            if($("#ware").val() == ""){
-                $.confirm({
-                    title: 'พบข้อผิดพลาด',
-                    content: 'กรุณาเลือกโกดัง',
-                    backgroundDismiss: true,
-                    buttons: {
-                    formSubmit: {
-                        text: 'ตกลง',
-                        btnClass: 'btn-regis',
-                        action: function () {
-                        }
-                    }
-                    }
-                });
-                return 0;
-            }          
             $("style").append('.jconfirm .jconfirm-box{margin-bottom: 60%;}');
             $.confirm({
                 title: '',
