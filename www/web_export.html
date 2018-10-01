@@ -65,14 +65,19 @@
   </style>
 
   <script>	
-		var prod_id,img;		
+		var prod_id,img,min;		
 		arr_data = [];		
 		$(document).ready(function () {
 			if(!localStorage.user_id){
 				window.location = 'web_login.html';
             }            
 			get_header();		
-			setTimeout(function() {$("#name").focus();}, 100);			
+			setTimeout(function() {$("#name").focus();}, 100);	
+
+			if(localStorage.ware_id_ex){
+                $('#btn-b').text(localStorage.ware_name_ex);
+				ware_id = localStorage.ware_id_ex;
+            }		
 
 			if(localStorage.arr_ex){     
 				var retrievedObject = localStorage.getItem('arr_ex');
@@ -94,7 +99,7 @@
 
 			var options = {
 				url: function(phrase) {
-					return "php/search_prod.php";
+					return "php/search_prod.php?ware_id="+ware_id;
 				},
 				getValue: function(element) {
 					//console.log(element);
@@ -137,10 +142,27 @@
 							var barcode = $("#name").getSelectedItemData().prod_code;							
 							var cost = $("#name").getSelectedItemData().prod_cost;
 							prod_id = $("#name").getSelectedItemData().prod_id;
-							img = $("#name").getSelectedItemData().img;									
+							img = $("#name").getSelectedItemData().img;
+							min = $("#name").getSelectedItemData().min_amount;							
 							$('#fund').val(cost);	
 							$('#barcode').val(barcode);							
-							$('#amount').val("1");						                
+							$('#amount').val("1");	
+							if(min == 0){
+								$.confirm({
+									title: 'เตือน',
+									content: 'สินค้าไม่มีใน' + $('#btn-b').text(),
+									backgroundDismiss: true,
+									buttons: {
+										formSubmit: {
+										text: 'ตกลง',
+										btnClass: 'btn-regis',
+										action: function () {
+										}
+										}
+									}
+								});  
+								set_default();
+							}					                
 						}
 				},
 				requestDelay: 300,
@@ -177,7 +199,7 @@
                 $.ajax({
                     type: "POST",
                     url:"php/get_prod.php",    
-                    data:{'prod_id' : id},
+                    data:{'prod_id' : id, 'ware_id' : ware_id},
                     //async: false,                       
                     beforeSend: function(){
 						EasyLoading.show({                           
@@ -192,7 +214,24 @@
 							$('#barcode').val(obj[i].prod_code); 
 							$('#amount').val("1");                                               
                             img = obj[i].img; 
-                            $('#fund').val(obj[i].prod_cost);                                                  
+                            $('#fund').val(obj[i].prod_cost);
+							min = obj[i].min_amount;
+							if(min == 0){
+								$.confirm({
+									title: 'เตือน',
+									content: 'สินค้าไม่มีใน' + $('#btn-b').text(),
+									backgroundDismiss: true,
+									buttons: {
+										formSubmit: {
+										text: 'ตกลง',
+										btnClass: 'btn-regis',
+										action: function () {
+										}
+										}
+									}
+								});  
+								add('dup');
+							}	                                                 
 						});                                                   
                     }               
                 });                    
@@ -247,14 +286,14 @@
 					var obj = jQuery.parseJSON(data); 
 					if(obj){
 						$.each(obj, function(i, field){
-							// if(!localStorage.ware_id_im){
+							if(!localStorage.ware_id_ex){
 								if(i == 0){
-									// localStorage.ware_id_im =  field.ware_id;
+									localStorage.ware_id_ex =  field.ware_id;
 									ware_id = field.ware_id;
 									$('#btn-b').text(field.ware_name);
-									// localStorage.ware_name_im =  field.ware_name;								
+									localStorage.ware_name_ex =  field.ware_name;								
 								}
-							// }							
+							}							
 							$('#b').append('<a class="dropdown-item text-center" href="#" onclick="setware('+field.ware_id+',\''+field.ware_name+'\')">'+field.ware_name+'</a>');
 						}); 
 					}
@@ -262,12 +301,76 @@
 			}); 		
 		}
 		
+		function edit_amt(){
+			var amt = parseInt($('#amount').val());
+			if(amt > parseInt(min)){
+				$.confirm({
+					title: 'เตือน',
+					content: 'สินค้ามีจำนวนไม่พอใน' + $('#btn-b').text() + ' สินค้ามีจำนวน ' + min,
+					backgroundDismiss: true,
+					buttons: {
+						formSubmit: {
+						text: 'ตกลง',
+						btnClass: 'btn-regis',
+						action: function () {
+						}
+						}
+					}
+				});  
+				$("#btn-add").attr('disabled',true);
+			}else{
+				$("#btn-add").attr('disabled',false);
+			}	
+		}
+
 		var ware_id;
 		function setware(arg,arg2){
-			// localStorage.ware_id_im = arg;
+			localStorage.ware_id_ex = arg;
 			ware_id = arg;
-			// localStorage.ware_name_im = arg2;
-			$('#btn-b').text(arg2);			
+			localStorage.ware_name_ex = arg2;
+			$('#btn-b').text(arg2);	
+			if($('#name').val() != ""){
+				$.ajax({
+					type: "POST",
+					url:"php/get_prod.php",    
+					data:{'prod_id' : prod_id, 'ware_id' : ware_id},
+					//async: false,                       
+					beforeSend: function(){
+						EasyLoading.show({                           
+							text: "กำลังโหลด"                            
+						});
+					},             
+					success: function(data){  
+						EasyLoading.hide();
+						var obj = jQuery.parseJSON(data);                                         
+						$.each(obj, function(i, field){					
+							min = obj[i].min_amount;
+							if(min == 0){
+								$.confirm({
+									title: 'เตือน',
+									content: 'สินค้าไม่มีใน' + $('#btn-b').text(),
+									backgroundDismiss: true,
+									buttons: {
+										formSubmit: {
+										text: 'ตกลง',
+										btnClass: 'btn-regis',
+										action: function () {
+										}
+										}
+									}
+								});
+								if(localStorage.arr_prod_e){
+									add('dup');
+								}else{
+									set_default();
+								}
+								
+							}	                                                 
+						});                                                   
+					}               
+				});   
+			}
+			                 		
 		}
 			
 		var count = 0;
@@ -342,10 +445,12 @@
 			item ["cost"] =  $('#fund').val();               
 			item ["amt"] =  $('#amount').val();	  
 			item ["img"] = img;   
+			item ["min"] = min;   
 			
 			arr_data.push(item);	
 			localStorage.setItem('arr_ex', JSON.stringify(arr_data));			
-			count++;			
+			count++;
+			$("#btn-b").attr('disabled',true);			
 		}
 			$('#barcode').val("");
 			$('#name').val("");			
@@ -415,7 +520,7 @@
 						"</" + "script>" +
 					'</div>');				
 			}
-		
+			$("#btn-b").attr('disabled',true);		
 		}
 
 		function set_default(){
@@ -448,6 +553,23 @@
   	}
 
   		function save(arg){
+			if(parseInt($("#amount-"+arg).val()) > parseInt(arr_data[arg].min)){
+				$.confirm({
+					title: 'เตือน',
+					content: 'สินค้ามีจำนวนไม่พอใน' + $('#btn-b').text() + ' สินค้ามีจำนวน ' + arr_data[arg].min,
+					backgroundDismiss: true,
+					buttons: {
+						formSubmit: {
+						text: 'ตกลง',
+						btnClass: 'btn-regis',
+						action: function () {
+						}
+						}
+					}
+				}); 
+				$("#amount-" + arg).val(arr_data[arg].min);	 
+				return 0;
+			}	
 			arr_data[arg].amt = $("#amount-"+arg).val();			
 			localStorage.setItem('arr_ex', JSON.stringify(arr_data));	   
 
@@ -486,9 +608,10 @@
 							arr_data.splice(arg, 1);
 							localStorage.setItem('arr_ex', JSON.stringify(arr_data));	
 							count--;
-							// if(arr_data.length == 0){
-							// 	$("#btn-b").attr('disabled',false);
-							// }
+							if(arr_data.length == 0){
+								$("#btn-b").attr('disabled',false);
+								localStorage.arr_ex = "";
+							}
 						}
 					},
 					ยกเลิก: function () { },
@@ -543,7 +666,9 @@
 
 		function cancel(){
 			localStorage.arr_ex = "";
-			localStorage.arr_prod_e = "";		
+			localStorage.arr_prod_e = "";	
+			// localStorage.ware_id_ex = "";
+			// localStorage.ware_name_ex = "";	
 			location.reload();
 		}
 
@@ -630,7 +755,7 @@
 			    <input id="name" class="form-control text-center" rel="popover" data-img="" data-index="1" autofocus>
 			  </div>
 			  <div class='col-1 nopd-8'>
-			    <input id='amount' type='number' class='form-control text-center no-spin' min='1' value="1" data-index="2">
+			    <input id='amount' type='number' onkeyup="edit_amt()" class='form-control text-center no-spin' min='1' value="1" data-index="2">
 			  </div>
 			  <div class='col-2 nopd-8 popup'>			  	
 			    <input id='fund' type='number' class='form-control text-center no-spin' min='0' readonly>
@@ -643,7 +768,7 @@
 			</div><br>
 			<div class="row">
 				<div class="col-11 text-right" style="margin-left: 5%;">
-					<button class="btn btn-md btn-success" style="margin-right: 5px;" onclick="add();">เพิ่มสินค้า</button>
+					<button id="btn-add" class="btn btn-md btn-success" style="margin-right: 5px;" onclick="add();">เพิ่มสินค้า</button>
 					<button id="btn-folder" class="select_folder btn btn-md btn-primary" style="margin-right: 5px;" onclick="selectfolder();">เลือกสินค้า</button>
 					<button id="btn-def" class="btn btn-md btn-danger" onclick="set_default()">ค่าเริ่มต้น</button>
 				</div>
