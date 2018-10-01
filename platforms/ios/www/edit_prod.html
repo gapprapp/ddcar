@@ -269,12 +269,14 @@
         function page_back(){
             goto = "select_folder.html?from=add&folder="+folder;
             transition_page_back(goto);
+            window.location = goto;
         }
        
         function show_pic(){
             localStorage.img = $('#img').attr('src');           
             goto = "show_pic.html?from=e&folder="+folder+"&prod_id="+prod_id;
             transition_page_next(goto);
+            window.location = goto;
         }
 
     </script>

@@ -147,13 +147,15 @@
         function selectfolder(){
             goto = "select_folder.html?from=thre";
             transition_page_next_flip(goto);
+            window.location = goto;
         }
 
         function save(){
             var amt = $('#amount').val();
             var del = $('#deliver').val();
             if(amt == amount && del == deliver){
-                transition_page_back('threshold.html');               
+                transition_page_back('threshold.html');
+                window.location = 'threshold.html';               
             }
             if(amt == "" || del == "" || $('#name').val() == ""){
                 $.confirm({
@@ -193,6 +195,7 @@
                     if(data == "success"){ 
                         if(prod_id){
                             transition_page_back('threshold.html'); 
+                            window.location = 'threshold.html';
                         }             
                         clear();
                     }else{
@@ -269,7 +272,7 @@
         function show(){
             $("#search-ctn").prop('hidden', true);
             $("#big-ctn").prop('hidden', false);
-            $("#col-back").attr('onclick', 'transition_page_back("threshold.html")');
+            $("#col-back").attr('onclick', 'transition_page_back("threshold.html"); window.location = "threshold.html";');
             $('#myUL').empty();
             ch = 0;
         }
@@ -304,7 +307,7 @@
 
     <!-- Nav menu top -->
     <div class="row fixed-top navs align-items-center" >
-        <div id="col-back" class="col-1 text-center" onclick="transition_page_back('threshold.html')">
+        <div id="col-back" class="col-1 text-center" onclick="transition_page_back('threshold.html'); window.location = 'threshold.html';">
             <i id="i-back" class="fas fa-angle-left"></i>
         </div>
         <div class="col-10 text-center">

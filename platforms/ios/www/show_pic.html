@@ -40,10 +40,13 @@
   		screen.orientation.lock('portrait');
 			if(from == "a"){
 				transition_page_back("add_prod.html?folder="+folder);
+				window.location = "add_prod.html?folder="+folder;
 			}else	if(from == "e"){
 				transition_page_back("edit_prod.html?folder="+folder+"&prod_id="+prod_id);
+				window.location = "edit_prod.html?folder="+folder+"&prod_id="+prod_id;
 			}else{
 				transition_page_back(window.history.back());
+				window.location = window.history.back();
 			}  		
   	}
 

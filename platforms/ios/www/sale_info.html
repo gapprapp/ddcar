@@ -642,6 +642,7 @@
             localStorage.cus_tel = "";                                                                              
             goto = "sale.html?ch="+ch;
             transition_page_back(goto);
+            window.location = goto;
         }
 
         var b_id,type;
@@ -685,7 +686,7 @@
 
     <!-- Nav menu top -->
     <div class="row fixed-top navs align-items-center">
-        <div class="col-1 text-center" onclick="transition_page_back('sale_check.html')">
+        <div class="col-1 text-center" onclick="transition_page_back('sale_check.html'); window.location = 'sale_check.html';">
             <i id="i-back" class="fas fa-angle-left"></i>
         </div>
         <div class="col-10 text-center">

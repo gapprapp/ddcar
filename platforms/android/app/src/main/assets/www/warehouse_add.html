@@ -99,6 +99,7 @@
                       action: function () {
                           goto = "warehouse.html";
                           transition_page_back_flip(goto);
+                          window.location = goto;
                       }
                     }
                   }
@@ -135,7 +136,7 @@
 
   <!-- Nav menu top -->
   <div class="row fixed-top navs align-items-center">
-    <div class="col-1 text-center" onclick="transition_page_back('warehouse.html')">
+    <div class="col-1 text-center" onclick="transition_page_back('warehouse.html'); window.location = 'warehouse.html';">
       <i id="i-back" class="fas fa-angle-left"></i>
     </div>
     <div class="col-10 text-center">
