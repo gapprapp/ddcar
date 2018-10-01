@@ -168,12 +168,14 @@
                                     action: function () {
                                         goto = "customer.html";
                                         transition_page_next_flip(goto);
+                                        window.location = goto;
                                       }
                                   }
                                 }
                             });                       
                             goto = "customer.html";
                             transition_page_back_flip(goto);
+                            window.location = goto;
                         }else{
                             $.confirm({
                                 title: 'พบข้อผิดพลาด',
@@ -206,7 +208,7 @@
 
     <!-- Nav menu top -->
     <div class="row fixed-top navs align-items-center">
-        <div class="col-1 text-center" onclick="transition_page_back('customer.html')">
+        <div class="col-1 text-center" onclick="transition_page_back('customer.html'); window.location = 'customer.html';">
             <i id="i-back" class="fas fa-angle-left"></i>
         </div>
         <div class="col-10 text-center">

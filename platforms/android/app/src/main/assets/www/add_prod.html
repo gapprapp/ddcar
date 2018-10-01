@@ -312,12 +312,14 @@
     function page_back(){
       goto = "select_folder.html?from=add&folder="+folder;
       transition_page_back(goto);
+      window.location = goto;
     }
 
     function show_pic(){
       localStorage.img = $('#img').attr('src');           
       goto = "show_pic.html?from=a&folder="+folder;
       transition_page_next(goto);
+      window.location = goto;
     }
 
   </script>
@@ -381,17 +383,17 @@
 
   <!-- Nav menu bottom -->
   <div class="row fixed-bottom navs">
-    <div class="col-3 text-center" onclick="transition_page_back('index.html');">
+    <div class="col-3 text-center" onclick="transition_page_back('index.html'); window.location = 'index.html';">
       <i id="i-home" class="fas fa-home menu"></i>
     </div>
-    <div class="col-3 text-center" onclick="transition_page_next('bell.html')">
+    <div class="col-3 text-center" onclick="transition_page_next('bell.html'); window.location ='bell.html';">
       <div class="dot" hidden></div>
       <i id="i-bell" class="fas fa-bell menu"></i>
     </div>
     <div class="col-3 text-center" onclick="scan();">
       <i id="i-qrcode" class="fas fa-qrcode menu"></i>
     </div>
-    <div class="col-3 text-center" onclick="transition_page_next('other.html')">
+    <div class="col-3 text-center" onclick="transition_page_next('other.html'); window.location = 'other.html';">
       <i id="i-bars" class="fa fa-bars menu"></i>
     </div>
   </div>

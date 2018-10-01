@@ -180,7 +180,7 @@
       function show(){
         $("#search-ctn").prop('hidden', true);
         $("#big-ctn").prop('hidden', false);
-        $("#col-back").attr('onclick', 'transition_page_back("index.html")');
+        $("#col-back").attr('onclick', 'transition_page_back("index.html"); window.location = "index.html";');
         $('#myUL').empty();
         $('#search_prod').val("");
       }
@@ -188,6 +188,7 @@
       function selectfolder() {
         goto = "select_folder.html?from=stock";
         transition_page_next_flip(goto);
+        window.location = goto;
       }     
     </script>
 </head>
@@ -198,7 +199,7 @@
 
     <!-- Nav menu top -->
     <div class="row fixed-top navs align-items-center">
-        <div id="col-back" class="col-1 text-center" onclick="transition_page_back('index.html')">
+        <div id="col-back" class="col-1 text-center" onclick="transition_page_back('index.html'); window.location = 'index.html';">
             <i id="i-back" class="fas fa-angle-left"></i>
         </div>
         <div class="col-10 text-center" style="padding-left: 0;">

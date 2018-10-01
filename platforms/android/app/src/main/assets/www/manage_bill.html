@@ -116,7 +116,7 @@
       $("#myD").prop('hidden', true);
       $("#search_row").prop('hidden', true);
       $("#date_row").prop('hidden', true);
-      $("#i-back").attr("onclick","transition_page_back('index.html?menu=3')");
+      $("#i-back").attr("onclick","transition_page_back('index.html?menu=3'); window.location = 'index.html?menu=3';");
     }
 
     function get_bill(){
@@ -158,6 +158,7 @@
 
     function bill_info(arg){
       transition_page_next('bill_info.html?id='+arg);
+      window.location = 'bill_info.html?id='+arg;
     }
 
     function show_search(){
@@ -282,7 +283,7 @@
 
   <!-- Nav menu top -->
   <div class="row fixed-top navs">
-    <div id="i-back" class="col-1 text-center" onclick="transition_page_back('index.html?menu=3')">
+    <div id="i-back" class="col-1 text-center" onclick="transition_page_back('index.html?menu=3'); window.location ='index.html?menu=3';">
       <i class="fas fa-angle-left"></i>
     </div>
     <div class="col-9 text-center" style="padding-left: 10%; margin-right: 3%;">
@@ -338,17 +339,17 @@
 
   <!-- Nav menu bottom -->
   <div class="row fixed-bottom navs">
-    <div class="col-3 text-center" onclick="transition_page_back('index.html?menu=3');">
+    <div class="col-3 text-center" onclick="transition_page_back('index.html?menu=3');  window.location ='index.html?menu=3';">
       <i id="i-home" class="fas fa-home menu"></i>
     </div>
-    <div class="col-3 text-center" onclick="transition_page_next('bell.html')">
+    <div class="col-3 text-center" onclick="transition_page_next('bell.html'); window.location = 'bell.html'">
       <div class="dot" hidden></div>
       <i id="i-bell" class="fas fa-bell menu"></i>
     </div>
     <div class="col-3 text-center" onclick="scan();">
       <i id="i-qrcode" class="fas fa-qrcode menu"></i>
     </div>
-    <div class="col-3 text-center" onclick="transition_page_next('other.html')">
+    <div class="col-3 text-center" onclick="transition_page_next('other.html'); window.location = 'other.html'">
       <i id="i-bars" class="fa fa-bars menu"></i>
     </div>
   </div>

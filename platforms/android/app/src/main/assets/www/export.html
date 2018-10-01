@@ -272,11 +272,13 @@
         function selectfolder() {
             goto = "select_folder.html?from=export";
             transition_page_next_flip(goto);
+            window.location = goto;
         }
 
         function check() {
             goto = "export_check.html";
             transition_page_next(goto);
+            window.location = goto;
         }
         
         function setware(arg) {
@@ -400,7 +402,7 @@
 
     <!-- Nav menu top -->
     <div class="row fixed-top navs align-items-center">
-        <div id="col-back" class="col-1 text-center" onclick="transition_page_back('index.html')">
+        <div id="col-back" class="col-1 text-center" onclick="transition_page_back('index.html'); window.location = 'index.html';">
             <i id="i-back" class="fas fa-angle-left"></i>
         </div>
         <div class="col-9 text-right" style="margin-right: 2%;">
@@ -452,17 +454,17 @@
 
     <!-- Nav menu bottom -->
     <div id="navs-bttm" class="row fixed-bottom navs">
-        <div class="col-3 text-center" onclick="transition_page_back('index.html')">
+        <div class="col-3 text-center" onclick="transition_page_back('index.html'); window.location = 'index.html';">
             <i id="i-home" class="fas fa-home menu"></i>
         </div>
-        <div class="col-3 text-center" onclick="transition_page_next('bell.html')">
+        <div class="col-3 text-center" onclick="transition_page_next('bell.html'); window.location = 'bell.html';">
             <div class="dot" hidden></div>
             <i id="i-bell" class="fas fa-bell menu"></i>
         </div>
         <div class="col-3 text-center" onclick="scan()">
             <i id="i-qrcode" class="fas fa-qrcode menu"></i>
         </div>
-        <div class="col-3 text-center" onclick="transition_page_next('other.html')">
+        <div class="col-3 text-center" onclick="transition_page_next('other.html'); window.location = 'other.html';">
             <i id="i-bars" class="fa fa-bars menu"></i>
         </div>
     </div>

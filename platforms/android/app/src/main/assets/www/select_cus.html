@@ -87,6 +87,7 @@
       }
       goto = 'sale.html?cus='+arg+'&name='+name+'&type='+type+'&addr='+addr+'&tel='+tel;
       transition_page_back_flip(goto);
+      window.location = goto;
     }
 
     function search() {

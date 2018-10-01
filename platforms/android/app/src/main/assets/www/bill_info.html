@@ -210,6 +210,7 @@
                           $(".overlay").prop('hidden', true);                     
                           if(data == "success"){                    
                             transition_page_back('manage_bill.html');
+                            window.location = 'manage_bill.html';
                           }else{
                             $.confirm({
                               title: 'พบข้อผิดพลาด',
@@ -602,7 +603,7 @@
 
   <!-- Nav menu bottom -->
   <div class="row fixed-bottom" style="background: #d63232;">
-    <div class="col-4 text-center" onclick="transition_page_back('index.html');">
+    <div class="col-4 text-center" onclick="transition_page_back('index.html'); window.location = 'index.html';">
       <i id="i-home" class="fa fa-home menu"></i>
     </div>
     <div class="col-4 text-center" onclick="menu('edit')">

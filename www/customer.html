@@ -100,6 +100,7 @@
       if(arg == "add"){
         goto = "customer_add.html";
         transition_page_back_flip(goto);
+        window.location = goto;
       }else if(arg == "edit"){
         // show edit all
         if ($(".i-edit").is(":visible")) {
@@ -126,11 +127,13 @@
     function show_cus(arg){
       goto = "customer_show.html?cus="+arg;
       transition_page_next(goto);
+      window.location = goto;
     }
 
     function edit_cus(arg) {
       goto = "customer_show.html?cus=" + arg + "&edit=true";
       transition_page_next_flip(goto);
+      window.location = goto;
     }
 
     function edit_del(arg,i) {   
@@ -186,7 +189,7 @@
 
   <!-- Nav menu top -->
   <div class="row fixed-top navs align-items-center">
-    <div class="col-1 text-center" onclick="transition_page_back('index.html')">
+    <div class="col-1 text-center" onclick="transition_page_back('index.html'); window.location = 'index.html';">
       <i id="i-back" class="fas fa-angle-left"></i>
     </div>
     <div class="col-10 text-center" style="padding-left: 0;">
@@ -220,7 +223,7 @@
 
   <!-- Nav menu bottom -->
   <div class="row fixed-bottom navs">
-    <div class="col-3 text-center" onclick="transition_page_back('index.html');">
+    <div class="col-3 text-center" onclick="transition_page_back('index.html'); window.location = 'index.html';">
       <i id="i-home" class="fas fa-home menu"></i>
     </div>
     <div class="col-3 text-center" onclick="menu('add')">

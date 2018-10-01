@@ -225,7 +225,8 @@
           localStorage.setItem('arr_prod_s', JSON.stringify(json)); 
           goto = "sale.html";
         } 
-      transition_page_next(goto);    
+      transition_page_next(goto);
+      window.location = goto;    
     }
 
     function disactive(arg) {
@@ -287,6 +288,7 @@
         });
       }else if(arg == "home"){
         transition_page_back('index.html');
+        window.location = 'index.html';
       }else if(arg == "edit"){       
         if ($(".i-edit").is(":visible")) {
           $(".i-trash").attr('hidden', true);
@@ -336,6 +338,7 @@
         }
       }     
       transition_page_next(goto);
+      window.location = goto;
     }
 
     function add(arg){
@@ -482,6 +485,7 @@
         prod_id = $("#span-"+arg).text();
         goto = "edit_prod.html?prod_id="+prod_id+"&folder="+parent;         
         transition_page_next_flip(goto);
+        window.location = goto;
       }      
     }
 
@@ -644,6 +648,7 @@
       localStorage.setItem('stack_folder', JSON.stringify(arr_data));  
       goto = "add_prod.html?folder="+parent;         
       transition_page_next_flip(goto);
+      window.location = goto;
     }
 
     function page_back(){
@@ -664,7 +669,8 @@
         }else if(from == "thre"){
           goto = "set_threshold.html";
         }
-        transition_page_back(goto);  
+        transition_page_back(goto);
+        window.location = goto;  
       }     
       var retrievedObject = localStorage.getItem('stack_folder');
       var arr_data = JSON.parse(retrievedObject);   
@@ -672,7 +678,8 @@
       arr_data.splice(arr_data.length-2,2);
       localStorage.setItem('stack_folder', JSON.stringify(arr_data));  
       goto = "select_folder.html?from="+ from+ "&folder=" +data;
-      transition_page_back(goto);        
+      transition_page_back(goto);
+      window.location = goto;        
       
       /*$.ajax({
         type: "POST",
