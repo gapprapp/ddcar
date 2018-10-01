@@ -1,6 +1,8 @@
 <?php
     include "db.php";   
     $cus_id = $_POST['cus_id'];   
+    $ware_id = $_POST['ware_id'];
+    $type = $_POST['type'];
 
     if(isset($_POST['qr'])){
         $qr = $_POST['qr'];    
@@ -21,7 +23,20 @@
                 $cus_price = $row1['cus_price'];
                 array_push($row,$cus_price);              
             }   
-          } 
+        }
+        if($type == "โกดัง"){
+            $query = "SELECT amount FROM warehouse WHERE prod_id = '$prod_id' AND ware_id = '$ware_id'";
+        }else if($type == "หน้าร้าน"){
+            $query = "SELECT amount FROM shop WHERE prod_id = '$prod_id' AND shop_id = '$ware_id'";
+        }        
+        $result2 = mysqli_query($conn, $query);
+        if(mysqli_num_rows($result2) > 0){    
+            while($row2 = mysqli_fetch_array($result2)){      
+                $row['min_amount'] = $row2['amount'];
+            }   
+        }else{
+            $row['min_amount'] = 0;
+        } 
         $output[] = $row;  
       }   
     }

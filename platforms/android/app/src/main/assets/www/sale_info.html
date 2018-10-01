@@ -236,22 +236,6 @@
         }
 
         function save(){
-            if($("#ware").val() == ""){
-                $.confirm({
-                    title: 'พบข้อผิดพลาด',
-                    content: 'กรุณาเลือกโกดัง',
-                    backgroundDismiss: true,
-                    buttons: {
-                    formSubmit: {
-                        text: 'ตกลง',
-                        btnClass: 'btn-regis',
-                        action: function () {
-                        }
-                    }
-                    }
-                });
-                return 0;
-            }          
             $("style").append('.jconfirm .jconfirm-box{margin-bottom: 60%;}');
             $.confirm({
                 title: '',
@@ -345,7 +329,7 @@
 			} 	
             json_string = JSON.stringify(arr_data); 
             json_detail = JSON.stringify(arr_detail);           
-            var dataString =  "JSON=" + json_string + "&JSOND=" + json_detail + "&ware_id=" + b_id + "&date=" + datetime + "&type=" + type
+            var dataString =  "JSON=" + json_string + "&JSOND=" + json_detail + "&ware_id=" + localStorage.ware_id_s + "&date=" + datetime + "&type=" + localStorage.ware_type
             + "&cus_id=" + localStorage.cus_id + "&pay=" + $("#pay").val() + "&net=" + localStorage.net + "&dis=" + dis
             + "&total=" + $('#total').val() + "&get_price=" + $('#get').val() + "&chng=" + $('#chng').val() + "&user_id=" + localStorage.user_id;
             //alert(dataString);
@@ -710,12 +694,8 @@
                     <input id="bill" type="text" class="w3-input" readonly onclick="showbill();" value="ใบรายงานการขาย (A4)">
                 </div>
             </div>
-            <div class="row" style="margin-bottom: 18%;" id="showvat">
-                <div class="col-8 text-center">
-                    <label for="ware">ขายจาก</label>
-                    <input id="ware" type="text" class="w3-input" readonly onclick="showware();" placeholder="เลือกหน้าร้าน/โกดัง">                   
-                </div>
-                <div class="col-4 text-center">
+            <div class="row" style="margin-bottom: 18%;" id="showvat">               
+                <div class="col-12 text-center">
                     <label for="vat">vat</label>
                     <input id="vat" type="text" class="w3-input" readonly onclick="showvat();" value="ไม่รวม vat">
                 </div>

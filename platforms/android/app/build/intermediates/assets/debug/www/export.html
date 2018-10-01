@@ -56,7 +56,7 @@
 
     <script>
         var prod_id;     
-        var img;    
+        var img,min;    
         $(document).ready(function () { 
             url = new URL(window.location.href);
             prod_id = url.searchParams.get("product");  
@@ -71,7 +71,8 @@
             if(localStorage.arr_ex){
                 var retrievedObject = localStorage.getItem('arr_ex');
                 var arr_data = JSON.parse(retrievedObject);             
-                $('#check-export').text(arr_data.length);       
+                $('#check-export').text(arr_data.length);   
+                $("#h5-title").prop('onclick',"");    
             }
             if(prod_id){
                 get_prod(prod_id);
@@ -108,7 +109,7 @@
             $.ajax({
                 type: "POST",
                 url:"http://ddaccessory.trueddns.com:24330/dd-shop/php/get_prod.php",    
-                data:{'prod_id' : id},
+                data:{'prod_id' : id, 'ware_id' : localStorage.ware_id_ex},
                 //async: false,                       
                 beforeSend: function(){
                     $(".overlay").prop('hidden', false);
@@ -120,7 +121,27 @@
                         $('#name').val(obj[i].prod_name);
                         $('#barcode').val(obj[i].prod_code); 
                         $('#cost').val(obj[i].prod_cost);                       
-                        img = obj[i].img;                           
+                        img = obj[i].img;    
+                        min = obj[i].min_amount;
+                        if(min == 0){
+                            $.confirm({
+                                title: 'เตือน',
+                                content: 'สินค้าไม่มีใน' + $('#h5-title').text(),
+                                backgroundDismiss: true,
+                                buttons: {
+                                    formSubmit: {
+                                    text: 'ตกลง',
+                                    btnClass: 'btn-regis',
+                                    action: function () {
+                                    }
+                                    }
+                                }
+                            });  
+                            set_default();
+                            if(localStorage.arr_prod_e){
+                               add_export('dup');
+                            }  
+                        }	                           
                     });
                     show();                                        
                 }               
@@ -128,6 +149,22 @@
         }
 
         function scanqr(){
+            if($("#h5-title").text() == "เลือกโกดัง(ออก)"){
+                $.confirm({
+                    title: 'เตือน',
+                    content: 'กรุณาเลือกโกดัง',
+                    backgroundDismiss: true,
+                    buttons: {
+                        formSubmit: {
+                        text: 'ตกลง',
+                        btnClass: 'btn-regis',
+                        action: function () {
+                        }
+                        }
+                    }
+                });  
+                return 0;
+            }
             cordova.plugins.barcodeScanner.scan(
             function (result) {
                     if(!result.cancelled){
@@ -139,7 +176,7 @@
                                 $.ajax({
                                     type: "POST",
                                     url: "http://ddaccessory.trueddns.com:24330/dd-shop/php/get_prod.php",                
-                                    data: {'qr' : value},             
+                                    data: {'qr' : value,'ware_id': localStorage.ware_id_ex},             
                                     beforeSend: function(){
                                         $(".overlay").prop('hidden', false);
                                     },             
@@ -151,7 +188,24 @@
                                             $('#barcode').val(obj[i].prod_code); 
                                             $('#cost').val(obj[i].prod_cost);                       
                                             img = obj[i].img;                                             
-                                            prod_id = obj[i].prod_id;       
+                                            prod_id = obj[i].prod_id;      
+                                            min = obj[i].min_amount;
+                                            if(min == 0){
+                                                $.confirm({
+                                                    title: 'เตือน',
+                                                    content: 'สินค้าไม่มีใน' + $('#h5-title').text(),
+                                                    backgroundDismiss: true,
+                                                    buttons: {
+                                                        formSubmit: {
+                                                        text: 'ตกลง',
+                                                        btnClass: 'btn-regis',
+                                                        action: function () {
+                                                        }
+                                                        }
+                                                    }
+                                                });  
+                                                set_default();                                                
+                                            }	 
                                         });                                                                                      
                                     }               
                                 });
@@ -187,46 +241,71 @@
 
         } 
 
-        function add_export(){
+        function edit_amt(){
+			var amt = parseInt($('#amount').val());
+			if(amt > parseInt(min)){
+				$.confirm({
+					title: 'เตือน',
+					content: 'สินค้ามีจำนวนไม่พอใน' + $('#h5-title').text() + ' สินค้ามีจำนวน ' + min,
+					backgroundDismiss: true,
+					buttons: {
+						formSubmit: {
+						text: 'ตกลง',
+						btnClass: 'btn-regis',
+						action: function () {
+						}
+						}
+					}
+				});  
+				$("#btn-add").attr('disabled',true);
+			}else{
+				$("#btn-add").attr('disabled',false);
+			}	
+		}
+
+        function add_export(arg){
             var code = $('#barcode').val();
             var cost = $('#cost').val(); 
             var name  = $('#name').val();
-            var amt = $('#amount').val();         
-            if(name == "" || amt == "" || code == "" || cost == "" || $("#h5-title").text() == "เลือกโกดัง(ออก)"){
-                $.confirm({
-                  title: 'พบข้อผิดพลาด',
-                  content: 'กรุณากรอกข้อมูลให้ครบ',
-                  backgroundDismiss: true,
-                  buttons: {
-                    formSubmit: {
-                      text: 'ตกลง',
-                      btnClass: 'btn-regis',
-                      action: function () {
-                      }
+            var amt = $('#amount').val();      
+            if(arg != 'dup'){
+                if(name == "" || amt == "" || code == "" || cost == "" || $("#h5-title").text() == "เลือกโกดัง(ออก)"){
+                    $.confirm({
+                    title: 'พบข้อผิดพลาด',
+                    content: 'กรุณากรอกข้อมูลให้ครบ',
+                    backgroundDismiss: true,
+                    buttons: {
+                        formSubmit: {
+                        text: 'ตกลง',
+                        btnClass: 'btn-regis',
+                        action: function () {
+                        }
+                        }
                     }
-                  }
-                });
-                return 0;
-            }                 
-            if(localStorage.arr_ex){
-                var retrievedObject = localStorage.getItem('arr_ex');
-                var arr_data = JSON.parse(retrievedObject);               
-            }else{
-                var arr_data = [];              
-            }           
-            item = {}            
-            item ["qr"] =  code;
-            item ["prod_id"] =  prod_id;
-            item ["name"] =  name;
-            item ["cost"] =  cost;               
-            item ["amt"] =  amt;
-            item ["img"] =  img;     
+                    });
+                    return 0;
+                }                 
+                if(localStorage.arr_ex){
+                    var retrievedObject = localStorage.getItem('arr_ex');
+                    var arr_data = JSON.parse(retrievedObject);               
+                }else{
+                    var arr_data = [];              
+                }           
+                item = {}            
+                item ["qr"] =  code;
+                item ["prod_id"] =  prod_id;
+                item ["name"] =  name;
+                item ["cost"] =  cost;               
+                item ["amt"] =  amt;
+                item ["img"] =  img;  
+                item ["min"] =  min;   
 
-            arr_data.push(item); 
-            localStorage.setItem('arr_ex', JSON.stringify(arr_data));         
-        
-            $('#check-export').text(arr_data.length);       
-
+                arr_data.push(item); 
+                localStorage.setItem('arr_ex', JSON.stringify(arr_data));         
+            
+                $('#check-export').text(arr_data.length);    
+                $("#h5-title").prop('onclick',"");   
+            } 
             $('#barcode').val("");
             $('#name').val("");
             $('#cost').val("");                
@@ -270,6 +349,22 @@
         }*/
        
         function selectfolder() {
+            if($("#h5-title").text() == "เลือกโกดัง(ออก)"){
+                $.confirm({
+                    title: 'เตือน',
+                    content: 'กรุณาเลือกโกดัง',
+                    backgroundDismiss: true,
+                    buttons: {
+                        formSubmit: {
+                        text: 'ตกลง',
+                        btnClass: 'btn-regis',
+                        action: function () {
+                        }
+                        }
+                    }
+                });  
+                return 0;
+            }
             goto = "select_folder.html?from=export";
             transition_page_next_flip(goto);
             window.location = goto;
@@ -291,6 +386,45 @@
             //$("#ware").val(ware);
             localStorage.ware_id_ex = $("#id-ware-" + arg).text();
             document.elementFromPoint(0, 0).click();
+            if($('#name').val() != ""){
+                $.ajax({
+                    type: "POST",
+                    url:"http://ddaccessory.trueddns.com:24330/dd-shop/php/get_prod.php",    
+                    data:{'prod_id' : prod_id, 'ware_id' : localStorage.ware_id_ex},
+                    //async: false,                       
+                    beforeSend: function(){
+                        $(".overlay").prop('hidden', false);
+                    },             
+                    success: function(data){  
+                        $(".overlay").prop('hidden', true);
+                        var obj = jQuery.parseJSON(data);                                         
+                        $.each(obj, function(i, field){                      
+                            min = obj[i].min_amount;
+                            if(min == 0){
+                                $.confirm({
+                                    title: 'เตือน',
+                                    content: 'สินค้าไม่มีใน' + $('#h5-title').text(),
+                                    backgroundDismiss: true,
+                                    buttons: {
+                                        formSubmit: {
+                                        text: 'ตกลง',
+                                        btnClass: 'btn-regis',
+                                        action: function () {
+                                        }
+                                        }
+                                    }
+                                });                            
+                                if(localStorage.arr_prod_e){
+                                    add_export('dup');
+                                }else{
+                                    set_default();
+                                }
+                            }	                           
+                        });
+                        show();                                        
+                    }               
+                });   
+            }           
         }
 
         function showware(){
@@ -362,6 +496,22 @@
         }
      
         function search(){
+            if($("#h5-title").text() == "เลือกโกดัง(ออก)"){
+                $.confirm({
+                    title: 'เตือน',
+                    content: 'กรุณาเลือกโกดัง',
+                    backgroundDismiss: true,
+                    buttons: {
+                        formSubmit: {
+                        text: 'ตกลง',
+                        btnClass: 'btn-regis',
+                        action: function () {
+                        }
+                        }
+                    }
+                });  
+                return 0;
+            }
             $("#search-ctn").prop('hidden', false);
             $("#big-ctn").prop('hidden', true);
             $("#navs-bttm").prop('hidden', true);
@@ -372,12 +522,20 @@
             $("#search-ctn").prop('hidden', true);
             $("#big-ctn").prop('hidden', false);
             $("#navs-bttm").prop('hidden', false);
-            $("#col-back").attr('onclick', 'transition_page_back("index.html")');
+            $("#col-back").attr('onclick', 'transition_page_back("index.html"); window.location = "index.html";');
             $('#myUL').empty();
             $('#search_prod').val("");
             var temp = $('#amount').val();           
             $("#amount").focus().val("").val(temp);
         } 
+
+        function set_default(){
+			$('#barcode').val("");
+			$('#name').val("");			
+			$('#cost').val("");			
+			$('#amount').val("1");		
+			$('#name').focus();			
+		}
 
     </script>
 </head>
@@ -428,7 +586,7 @@
                 </div>
                 <div class="col-3 text-center">
                     <label for="amount">จำนวน</label>
-                    <input id="amount" type="number" min="1" value="1" class="w3-input" data-index="2">
+                    <input id="amount" onkeyup="edit_amt()" type="number" min="1" value="1" class="w3-input" data-index="2">
                 </div>
                 <div class="col-3 text-center">
                     <label for="cost">ทุน</label>
@@ -445,7 +603,7 @@
             </div>
             <div class="row mg-10">
                 <div class="col-12 text-center">
-                    <button class="mbtn" onclick="add_export();">เพิ่มสินค้า</button>
+                    <button id="btn-add" class="mbtn" onclick="add_export();">เพิ่มสินค้า</button>
                 </div>
             </div>
         </div>

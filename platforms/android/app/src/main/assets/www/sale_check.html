@@ -196,6 +196,23 @@
                   text: 'ตกลง',
                   btnClass: 'btn-danger',
                   action: function () {
+                    if(parseInt($("#edt-amt").val()) > parseInt(arr_data[arg].min)){
+                        $.confirm({
+                            title: 'เตือน',
+                            content: 'สินค้ามีจำนวนไม่พอใน' + localStorage.ware_name_s + ' สินค้ามีจำนวน ' + arr_data[arg].min,
+                            backgroundDismiss: true,
+                            buttons: {
+                                formSubmit: {
+                                text: 'ตกลง',
+                                btnClass: 'btn-regis',
+                                action: function () {
+                                }
+                                }
+                            }
+                        }); 
+                        $("#edt-amt").val(arr_data[arg].min);	 
+                        return 0;
+                    }	
                     var price = $("#edt-price").val();   
                     var amt = $("#edt-amt").val();
                     arr_data[arg].amt = amt;  
@@ -264,7 +281,10 @@
                 $("#sum-"+i).prop('id', 'sum-'+(i-1));         
                 $("#hr-"+i).prop('id', 'hr-'+(i-1));      
             } 
-            localStorage.setItem('arr_sale', JSON.stringify(arr_data));          
+            localStorage.setItem('arr_sale', JSON.stringify(arr_data));   
+            if(arr_data.length == 0){                
+                localStorage.arr_sale = "";
+            }        
         }
         
         function collapse(arg){
@@ -316,6 +336,9 @@
             localStorage.arr_prod_s =  "";
             localStorage.cus_addr = "";
             localStorage.cus_tel = "";    
+            localStorage.ware_name_s =  "";
+            localStorage.ware_id_s = "";
+            localStorage.ware_type = "";    
             transition_page_back('sale.html');
             window.location = 'sale.html';
         }

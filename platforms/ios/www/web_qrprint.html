@@ -264,7 +264,7 @@
 		}     
 		
 		var count = 0;
-  	function show(){
+  		function show(){
 			var bottom = $(window).height() - $("#cnt-add").offset().top - $("#cnt-add").height();
 			// Always scroll to the bottom
 			if(bottom < 200){
@@ -396,7 +396,10 @@
 							}
 							arr_data.splice(arg, 1);
 							localStorage.setItem('arr_qr', JSON.stringify(arr_data));	
-							count--;						
+							count--;
+							if(arr_data.length == 0){							
+								localStorage.arr_qr = "";
+							}						
 						}
 					},
 					ยกเลิก: function () { },

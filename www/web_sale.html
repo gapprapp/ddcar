@@ -41,7 +41,7 @@
   </style>
 
   <script>
-		var prod_id,img,cus_id,cus_type,old_price,cus_addr,cus_tel;
+		var prod_id,img,cus_id,cus_type,old_price,cus_addr,cus_tel,min;
 		$(document).ready(function () {
 			if(!localStorage.user_id){
 				window.location = 'web_login.html';
@@ -49,12 +49,18 @@
 			get_header();
 			setTimeout(function() {$("#cus").focus();}, 100);
 
+			if(localStorage.ware_id_s){
+                $('#btn-b').text(localStorage.ware_name_s);
+				b_id = localStorage.ware_id_s;
+				type = localStorage.type;
+            }	
+
 			if(localStorage.cus_id){
-					cus_id = localStorage.cus_id;
-					cus_type = localStorage.cus_type;
-					cus_addr = localStorage.cus_addr;
-					cus_tel = localStorage.cus_tel;
-					$("#cus").val(localStorage.cus_name);				
+				cus_id = localStorage.cus_id;
+				cus_type = localStorage.cus_type;
+				cus_addr = localStorage.cus_addr;
+				cus_tel = localStorage.cus_tel;
+				$("#cus").val(localStorage.cus_name);				
 			}      
 
 			if(localStorage.arr_sale){     
@@ -62,7 +68,7 @@
 				arr_data = JSON.parse(retrievedObject);          
 				count = arr_data[arr_data.length-1].count + 1;             
 				add_previous();
-      }      
+     		 }      
 
 			if(localStorage.arr_prod_s){
 				$("#btn-folder").attr('disabled',true);
@@ -73,11 +79,11 @@
 				prod_id = arr_data2[0].prod_id;            
 				get_sale(prod_id);
 				setTimeout(function() {$("#amount").focus();}, 100);
-      }    
+      		}    
 
 			var options = {
 				url: function(phrase) {				
-					return "php/search_sale.php?cus_id="+cus_id;
+					return "php/search_sale.php?cus_id="+cus_id+"&ware_id="+b_id+"&type="+type;
 				},
 				getValue: function(element) {
 					//console.log(element);
@@ -140,10 +146,27 @@
 										$('#price').val($("#name").getSelectedItemData().prod_pricesend);  
 								}                                
 							}
-							old_price = $('#price').val();        
+							old_price = $('#price').val();
+							min = $("#name").getSelectedItemData().min_amount;        
 							$('#barcode').val(barcode);							
 							$('#amount').val("1");		
 							$('#total').val(old_price);
+							if(min == 0){
+								$.confirm({
+									title: 'เตือน',
+									content: 'สินค้าไม่มีใน' + $('#btn-b').text(),
+									backgroundDismiss: true,
+									buttons: {
+										formSubmit: {
+										text: 'ตกลง',
+										btnClass: 'btn-regis',
+										action: function () {
+										}
+										}
+									}
+								});  
+								set_default();
+							}	
 						}
 				},
 				requestDelay: 300,
@@ -232,63 +255,81 @@
 
 		var bool = true;
 		function get_sale(id){
-				prod_id = id;					
-				bool = true;
-				for(var b = 0; b < arr_data.length; b++){
-						if(prod_id == arr_data[b].prod_id){
-								$.confirm({
+			prod_id = id;					
+			bool = true;
+			for(var b = 0; b < arr_data.length; b++){
+				if(prod_id == arr_data[b].prod_id){
+					$.confirm({
+						title: 'เตือน',
+						content: 'มีการเพิ่มสินค้า ' + arr_data[b].name + ' กรุณาแก้ไขที่จำนวนของสินค้าที่ได้เพิ่มแล้ว',
+						backgroundDismiss: true,
+						buttons: {
+							formSubmit: {
+							text: 'ตกลง',
+							btnClass: 'btn-regis',
+							action: function () {
+							}
+							}
+						}
+					});  
+					bool = false;                               
+					break;           
+				}
+			}			
+			if(bool){
+					$.ajax({
+						type: "POST",
+						url:"php/get_sale.php",    
+						data:{'prod_id' : id,'cus_id':cus_id,'ware_id':b_id,'type':type},
+						//async: false,                       
+						beforeSend: function(){
+							EasyLoading.show({                           
+								text: "กำลังโหลด"                            
+							});
+						},             
+						success: function(data){  
+							EasyLoading.hide();
+							var obj = jQuery.parseJSON(data);                                                           
+							$.each(obj, function(i, field){                           
+								if(obj[i][9]){
+									$('#price').val(obj[i][9]);  
+								}else{                                
+									if(cus_type == "ขายปลีก"){
+										$('#price').val(obj[i].prod_price);  
+									}else{
+										$('#price').val(obj[i].prod_pricesend);  
+									}                                
+								}  
+								$('#name').val(obj[i].prod_name);
+								$('#barcode').val(obj[i].prod_code);                                                       
+								img = obj[i].img;   
+								old_price = $('#price').val();
+								$('#amount').val("1");		
+								$('#total').val(old_price);  
+								min = obj[i].min_amount;
+								if(min == 0){
+									$.confirm({
 										title: 'เตือน',
-										content: 'มีการเพิ่มสินค้า ' + arr_data[b].name + ' กรุณาแก้ไขที่จำนวนของสินค้าที่ได้เพิ่มแล้ว',
+										content: 'สินค้าไม่มีใน' + $('#btn-b').text(),
 										backgroundDismiss: true,
 										buttons: {
-												formSubmit: {
-												text: 'ตกลง',
-												btnClass: 'btn-regis',
-												action: function () {
-												}
-												}
+											formSubmit: {
+											text: 'ตกลง',
+											btnClass: 'btn-regis',
+											action: function () {
+											}
+											}
 										}
-								});  
-								bool = false;                               
-								break;           
-						}
-				}			
-				if(bool){
-						$.ajax({
-								type: "POST",
-								url:"php/get_sale.php",    
-								data:{'prod_id' : id,'cus_id':cus_id},
-								//async: false,                       
-								beforeSend: function(){
-									EasyLoading.show({                           
-										text: "กำลังโหลด"                            
-									});
-								},             
-								success: function(data){  
-									EasyLoading.hide();
-										var obj = jQuery.parseJSON(data);                                                           
-										$.each(obj, function(i, field){                           
-												if(obj[i][9]){
-														$('#price').val(obj[i][9]);  
-												}else{                                
-														if(cus_type == "ขายปลีก"){
-																$('#price').val(obj[i].prod_price);  
-														}else{
-																$('#price').val(obj[i].prod_pricesend);  
-														}                                
-												}  
-												$('#name').val(obj[i].prod_name);
-												$('#barcode').val(obj[i].prod_code);                                                       
-												img = obj[i].img;   
-												old_price = $('#price').val();
-												$('#amount').val("1");		
-												$('#total').val(old_price);                                                                    
-										});									                                          
-								}               
-						});     
-				}else{
-						add();
-				}                   
+									});  
+									bool = false; 
+									add();
+								}	                                                                     
+							});									                                          
+						}               
+					});     
+			}else{
+					add();
+			}                   
 		}
 		
 		$(document).keydown(function(objEvent) {
@@ -321,7 +362,7 @@
 
 		function get_header(){
 			var d = new Date($.now());			
-      var date = d.getDate() + "/" + (d.getMonth()+1) + "/" + d.getFullYear();
+      		var date = d.getDate() + "/" + (d.getMonth()+1) + "/" + d.getFullYear();
 			$('#date').text(date);
 
 			$('#user').text(localStorage.user_name);
@@ -338,22 +379,32 @@
 					EasyLoading.hide();
 					var obj = jQuery.parseJSON(data); 
 					if(obj){
-						$.each(obj, function(i, field){
+						$.each(obj, function(i, field){							
 							if(obj[i][2] == "โกดัง"){  
-								if(i == 0){
-									b_id = field.ware_id;
-									type = "โกดัง";
-									$('#btn-b').text(field.ware_name);								
+								if(!localStorage.ware_id_s){
+									if(i == 0){
+										localStorage.ware_id_s =  field.ware_id;
+										localStorage.ware_name_s =  field.ware_name;
+										b_id = field.ware_id;
+										type = "โกดัง";
+										localStorage.type =  type;
+										$('#btn-b').text(field.ware_name);								
+									}
 								}
 								$('#b').append('<a class="dropdown-item text-center" href="#" onclick="setware('+field.ware_id+',\''+field.ware_name+'\',\'โกดัง\')">'+field.ware_name+'</a>');
 							}else if(obj[i][2] == "หน้าร้าน"){ 
-								if(i == 0){
-									b_id = field.shop_id;
-									type = "หน้าร้าน";
-									$('#btn-b').text(field.shop_name);								
+								if(!localStorage.ware_id_s){
+									if(i == 0){
+										localStorage.ware_id_s =  field.shop_id;
+										localStorage.ware_name_s =  field.shop_name;
+										b_id = field.shop_id;
+										type = "หน้าร้าน";
+										localStorage.type =  type;
+										$('#btn-b').text(field.shop_name);								
+									}
 								}
 								$('#b').append('<a class="dropdown-item text-center" href="#" onclick="setware('+field.shop_id+',\''+field.shop_name+'\',\'หน้าร้าน\')">'+field.shop_name+'</a>');
-							}			
+							}										
 						}); 
 					}
 				}               
@@ -364,7 +415,53 @@
 		function setware(arg,arg2,arg3){
 			b_id = arg;
 			type = arg3;		
-			$('#btn-b').text(arg2);			
+			$('#btn-b').text(arg2);	
+			localStorage.ware_id_s = arg;			
+			localStorage.ware_name_s = arg2;
+			localStorage.type = arg3;
+			$('#btn-b').text(arg2);	
+			if($('#name').val() != ""){
+				$.ajax({
+					type: "POST",
+					url:"php/get_sale.php",    
+					data:{'prod_id' : prod_id,'cus_id':cus_id,'ware_id':b_id,'type':type},
+					//async: false,                       
+					beforeSend: function(){
+						EasyLoading.show({                           
+							text: "กำลังโหลด"                            
+						});
+					},             
+					success: function(data){  
+						EasyLoading.hide();
+						var obj = jQuery.parseJSON(data);                                         
+						$.each(obj, function(i, field){					
+							min = obj[i].min_amount;
+							if(min == 0){
+								$.confirm({
+									title: 'เตือน',
+									content: 'สินค้าไม่มีใน' + $('#btn-b').text(),
+									backgroundDismiss: true,
+									buttons: {
+										formSubmit: {
+										text: 'ตกลง',
+										btnClass: 'btn-regis',
+										action: function () {
+										}
+										}
+									}
+								});
+								if(localStorage.arr_prod_s){
+									bool = false;
+									add();
+								}else{
+									set_default();
+								}
+								
+							}	                                                 
+						});                                                   
+					}               
+				});  
+			}           		
 		}
 
 		function setpay(arg){
@@ -382,7 +479,7 @@
 
 		arr_data = [];
 		var count = 0;
-  	function add(){
+  		function add(){
 			if(bool){
 				var code = $('#barcode').val();
 				var price = $('#price').val();   
@@ -460,11 +557,13 @@
 					item ["amt"] =  amt;		
 					item ["total"] =  $('#total').val();
 					item ["img"] = img;
+					item ["min"] = min;
 
 					arr_data.push(item); 
 					localStorage.setItem('arr_sale', JSON.stringify(arr_data));
 					$("#cus").attr('disabled',true);
 					count++;
+					$("#btn-b").attr('disabled',true);	
 			}			
 				$('#barcode').val("");
 				$('#name').val("");			
@@ -541,12 +640,13 @@
 					sum += parseFloat(arr_data[i].total);
 					$('#total-price').val(sum);
 					$("#cus").attr('disabled',true);
+					$("#btn-b").attr('disabled',true);	
 			}
 		
 		}
 
 		var total_old;
-  	function edit(arg){
+  		function edit(arg){
 			stop = false;
 			for(i = 0; i < count; i++){
 				if($("#btn-save-" + i).is(":visible")){
@@ -617,6 +717,8 @@
 							if(arr_data.length == 0){
 								$("#cus").attr('disabled',false);
 								$("#cus").focus();
+								$("#btn-b").attr('disabled',false);
+								localStorage.arr_sale = "";
 							}
 						}
 					},
@@ -625,7 +727,24 @@
 			});
     }
 
-  	function save(arg){
+  		function save(arg){
+			if(parseInt($("#amount-"+arg).val()) > parseInt(arr_data[arg].min)){
+				$.confirm({
+					title: 'เตือน',
+					content: 'สินค้ามีจำนวนไม่พอใน' + $('#btn-b').text() + ' สินค้ามีจำนวน ' + arr_data[arg].min,
+					backgroundDismiss: true,
+					buttons: {
+						formSubmit: {
+						text: 'ตกลง',
+						btnClass: 'btn-regis',
+						action: function () {
+						}
+						}
+					}
+				}); 
+				$("#amount-" + arg).val(arr_data[arg].min);	 
+				return 0;
+			}	
 			arr_data[arg].amt = $("#amount-"+arg).val();
 			arr_data[arg].price = $("#price-"+arg).val(); 
 			arr_data[arg].total = $('#total-'+arg).val(); 
@@ -637,10 +756,10 @@
 			$("#amount-" + arg).prop('readonly', true);
 			$("#price-" + arg).prop('readonly', true);  
 
-  		$("#btn-edit-"+arg).prop('hidden', false);
-  		$("#btn-trash-"+arg).prop('hidden', false);
-  		$("#btn-save-"+arg).prop('hidden', true);
-  	}
+			$("#btn-edit-"+arg).prop('hidden', false);
+			$("#btn-trash-"+arg).prop('hidden', false);
+			$("#btn-save-"+arg).prop('hidden', true);
+		}
 
 		function check_bill(){
       var total = $('#total-price').val();    
@@ -1076,6 +1195,9 @@
 			localStorage.cus_type = "";
 			localStorage.cus_addr = "";
 			localStorage.cus_tel = "";
+			// localStorage.ware_id_s = "";
+			// localStorage.ware_name_s = "";
+			// localStorage.type = "";
 			location.reload();
 		}
 
@@ -1230,7 +1352,7 @@
 			</div><br>
 			<div class="row">
 				<div class="col-12 text-right">
-					<button class="btn btn-md btn-success" style="margin-right: 5px;" onclick="add();">เพิ่มสินค้า</button>
+					<button id="btn-add" class="btn btn-md btn-success" style="margin-right: 5px;" onclick="add();">เพิ่มสินค้า</button>
 					<button id="btn-folder" class="select_folder btn btn-md btn-primary" style="margin-right: 5px;" onclick="selectfolder();">เลือกสินค้า</button>
 					<button id="btn-def" class="btn btn-md btn-danger" onclick="set_default();">ค่าเริ่มต้น</button>
 				</div>
@@ -1434,9 +1556,27 @@
 
 		$('#amount').on("keyup input", function(){
 			var price = $('#price').val();
-			var amount = $('#amount').val();
+			var amount = parseInt($('#amount').val());
 			var total = price*amount;
 			$('#total').val(total);
+			if(amount > parseInt(min)){
+				$.confirm({
+					title: 'เตือน',
+					content: 'สินค้ามีจำนวนไม่พอใน' + $('#btn-b').text() + ' สินค้ามีจำนวน ' + min,
+					backgroundDismiss: true,
+					buttons: {
+						formSubmit: {
+						text: 'ตกลง',
+						btnClass: 'btn-regis',
+						action: function () {
+						}
+						}
+					}
+				});  
+				$("#btn-add").attr('disabled',true);
+			}else{
+				$("#btn-add").attr('disabled',false);
+			}	
 		});
 
 		$('#price').on("keyup input", function(){
