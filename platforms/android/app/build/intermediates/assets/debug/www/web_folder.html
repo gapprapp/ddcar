@@ -44,7 +44,7 @@
 
   <script>
 	arr_prod = [];
-	var num_prod = 0,from;
+	var num_prod = 0,from,p = 0;
   	$(document).ready(function() {
 		if(!localStorage.user_id){
 			window.location = 'web_login.html';
@@ -69,8 +69,7 @@
 					$.each(obj, function(i, field){
 						if(obj.length-1 > i){
 							text_html = "<h3 class='brand' onclick='showsub(\""+obj[i].title+"\",1)'>"+obj[i].title+"</h3>";
-							$("#col-brand").append(text_html);
-							index = i;
+							$("#col-brand").append(text_html);							
 						}                                                 
 					});               
 				}                               
@@ -111,12 +110,14 @@
         }        
 	}
 
+	var parent;
 	function showsub(arg,arg2){
+		parent = arg;
 		console.log(arg);
 		if(arg2){
 			$(".prod-title").empty();
 			localStorage.stack_folder = "";
-			$('.prod-title').append('<i id="i-back" onclick="page_back();" class="fas fa-angle-left" hidden></i>&emsp;');
+			$('.prod-title').append('<span id="st"><i id="i-back" onclick="page_back();" class="fas fa-angle-left" hidden></i></span>&emsp;<!--<i class="fas fa-trash" style="float: right; margin-right: 1.5%;" onclick="removeprod();"></i><i class="fas fa-pen" style="float: right; margin-right: 1.5%;" onclick="editprod();"></i><i id="i-prod-add" class="fas fa-plus-circle" style="float: right; margin-right: 1.5%;" onclick="addprod()"></i>-->');
 		}
 		if(localStorage.stack_folder){
 			var retrievedObject = localStorage.getItem('stack_folder');
@@ -135,7 +136,8 @@
 		$("#append-prod").empty();
 		//$("#append-title").append('<h5 id="'+arg+'" onclick="page_back(\''+arg+'\')" class="prod-title">'+arg+'</h5>');
     	// ลองแก้เป็นแบบนี้ดู
-		$('.prod-title').append('<span id="'+arg+'" onclick="page_back(\''+arg+'\')">  '+arg+'  >></span>');
+		$('#st').append('<span id="'+arg+'" onclick="page_back(\''+arg+'\')">  '+arg+'  >></span><span>');
+		p = 0;
 		$.ajax({
 			type: "POST",
 			url:"php/get_folder.php",
@@ -158,7 +160,9 @@
 								text_html = '<h5 id="prod-'+obj[i].title+'" class="prod-odd" onclick="choose('+obj[i].title+')"><input type="checkbox">'+obj[i][2]+'<i class="fas fa-trash i-trash" hidden></i><i class="fas fa-pen i-edit" hidden></i></h5>';
 							}else{
 								text_html = '<h5 id="prod-'+obj[i].title+'" class="prod-even" onclick="choose('+obj[i].title+')"><input type="checkbox">'+obj[i][2]+'<i class="fas fa-trash i-trash" hidden></i><i class="fas fa-pen i-edit" hidden></i></h5>';
-							}                     
+							} 
+							p++ 
+							                  
 						$("#append-prod").append(text_html);                      
 						}                                                 
 					});                                                                
@@ -166,9 +170,9 @@
 						$.each(obj, function(i, field){
 							if(obj.length-1 > i){
 								if(i % 2 == 0){
-									text_html = '<h5 class="prod-odd" onclick="showsub(\''+obj[i].title+'\')"><i class="fas fa-folder"></i>'+ obj[i].title +'<i class="fas fa-trash i-trash" hidden></i><i class="fas fa-pen i-edit" hidden></i></h5>';
+									text_html = '<h5 class="prod-odd list" onclick="showsub(\''+obj[i].title+'\')"><i class="fas fa-folder"></i>'+ obj[i].title +'<i class="fas fa-trash i-trash" hidden></i><i class="fas fa-pen i-edit" hidden></i></h5>';
 								}else{
-									text_html = '<h5 class="prod-even" onclick="showsub(\''+obj[i].title+'\')"><i class="fas fa-folder"></i>'+ obj[i].title +'<i class="fas fa-trash i-trash" hidden></i><i class="fas fa-pen i-edit" hidden></i></h5>';
+									text_html = '<h5 class="prod-even list" onclick="showsub(\''+obj[i].title+'\')"><i class="fas fa-folder"></i>'+ obj[i].title +'<i class="fas fa-trash i-trash" hidden></i><i class="fas fa-pen i-edit" hidden></i></h5>';
 								}
 								$("#append-prod").append(text_html);							
 							}                                                 
@@ -245,13 +249,46 @@
 		}
 			
 	}   
-  	/* Brand Zone */
+	  
+	/* Brand Zone */
   	function addbrandconfirm(){
-  		brandname = $(".newbrand").val();
+  		brandname = $(".newbrand").val().toUpperCase();
   		if(brandname != ""){
-  			$("#brand-tools").after('<h3 class="brand">'+brandname+'</h3>');
-  			$(".newbrand").remove();
-  			$("#addbrandbtn").remove();
+			$.ajax({
+				type: "POST",
+				url: "php/add_folder.php",
+				data: {
+				'title': brandname,
+				'parent': "car"
+				},
+				beforeSend: function(){
+					EasyLoading.show({                           
+						text: "กำลังโหลด"                            
+					});	
+				},             
+				success: function(data){  
+					EasyLoading.hide();
+					if (data == "success") {
+						$("#brand-tools").after('<h3 class="brand" onclick="showsub(\''+brandname+'\',1)">'+brandname+'</h3>');
+						$(".newbrand").remove();
+						$("#addbrandbtn").remove();
+					} else {
+						$.confirm({
+						title: 'พบข้อผิดพลาด',
+						content: 'ลองอีกครั้ง',
+						backgroundDismiss: true,
+						buttons: {
+							formSubmit: {
+							text: 'ตกลง',
+							btnClass: 'btn-regis',
+							action: function () {
+							}
+							}
+						}
+						});
+					}
+				}
+			});  			
   		}else{
   			return 0;
   		}
@@ -283,8 +320,37 @@
 				danger: {
 					btnClass: 'btn-danger',
 					text: 'ลบ',
-					action: function () {	
-						arg.remove();					
+					action: function () {
+						$.ajax({
+							type: "POST",
+							url:"php/delete_folder.php",           
+							data: {'title' : arg.text()},               
+							beforeSend: function(){
+								EasyLoading.show({                           
+									text: "กำลังโหลด"                            
+								});	
+							},             
+							success: function(data){  
+								EasyLoading.hide();                           
+								if(data == "success"){
+									arg.remove();	
+								}else{
+									$.confirm({
+										title: 'พบข้อผิดพลาด',
+										content: 'ลองอีกครั้ง',
+										backgroundDismiss: true,
+										buttons: {
+										formSubmit: {
+											text: 'ตกลง',
+											btnClass: 'btn-regis',
+											action: function () {
+											}
+										}
+										}
+									});
+								}                               
+							}               
+						});											
 					}
 				},
 				ยกเลิก: function () {},
@@ -308,27 +374,60 @@
   		if(arg == "fa-trash"){
   			$("."+arg).attr('onclick', 'removebrand("'+arg+'")');
   			$(".brand").removeClass('delbrand');
-  			$(".brand").attr('onclick', 'showsub()');
+  			$(".brand").attr('onclick', 'showsub($(this).text(),1)');
   			$("#i-brand-add").attr('onclick', 'addbrand()');
   			$("#i-brand-edit").attr('onclick', 'editbrand("fa-pen")');
   		}else if(arg == "fa-pen"){
   			$("."+arg).attr('onclick', 'editbrand("'+arg+'")');
   			$(".brand").removeClass('editbrand');
-  			$(".brand").attr('onclick', 'showsub()');
+  			$(".brand").attr('onclick', 'showsub($(this).text(),1)');
   			$("#i-brand-add").attr('onclick', 'addbrand()');
   			$("#i-brand-trash").attr('onclick', 'removebrand("fa-trash")');
   		}
   	}
 
-  	function editbrandconfirm(){
-  		brandname = $(".bluebrand").val();
+  	function editbrandconfirm(arg){
+		  brandname = $(".bluebrand").val().toUpperCase();
+		  oldname = arg;
   		if(brandname != ""){
-  			$(".invis").text(brandname);
-  			//alert($(".brand .invis").text());
-  			$(".bluebrand").remove();
-  			$("#editbrandbtn").remove();
-  			$(".brand").prop('hidden', false);
-  			$(".brand").removeClass('invis');
+			$.ajax({
+				type: "POST",
+				url:"php/rename_folder.php",           
+				data: {'old_name' : oldname,
+					'name' : brandname},               
+				beforeSend: function(){
+					EasyLoading.show({                           
+						text: "กำลังโหลด"                            
+					});
+				},             
+				success: function(data){ 
+					EasyLoading.hide();       
+					if(data == "success"){					                    
+						$(".invis").text(brandname);
+						//alert($(".brand .invis").text());
+						$(".bluebrand").remove();
+						$("#editbrandbtn").remove();
+						$(".brand").prop('hidden', false);
+						$(".brand").removeClass('invis');
+					}else{
+						$.confirm({
+							title: 'พบข้อผิดพลาด',
+							content: 'ลองอีกครั้ง',
+							backgroundDismiss: true,
+							buttons: {
+							formSubmit: {
+								text: 'ตกลง',
+								btnClass: 'btn-regis',
+								action: function () {
+								}
+							}
+							}
+						});
+					}             
+					//$("#row-title-" + arg).prop('hidden', false);
+					//$("#row-edit-" + arg).prop('hidden', true);          
+				}               
+			});  			
   		}else{
   			return 0;
   		}
@@ -349,7 +448,7 @@
   		if($(".bluebrand").is(":visible")){
   			return 0;
   		}
-  		arg.after('<input type="text" class="form-control text-center bluebrand" value="'+arg.text()+'"><div id="editbrandbtn" class="row justify-content-center"><button class="btn btn-sm btn-success" style="margin-right: 10px; color: #fff" onclick="editbrandconfirm();">ตกลง</button><button class="btn btn-sm btn-danger" style="color: #fff" onclick="editbrandcancle();">ยกเลิก</button></div>');
+  		arg.after('<input type="text" class="form-control text-center bluebrand" value="'+arg.text()+'"><div id="editbrandbtn" class="row justify-content-center"><button class="btn btn-sm btn-success" style="margin-right: 10px; color: #fff" onclick="editbrandconfirm(\''+arg.text()+'\');">ตกลง</button><button class="btn btn-sm btn-danger" style="color: #fff" onclick="editbrandcancle();">ยกเลิก</button></div>');
   		arg.addClass('invis');
   		arg.prop('hidden', true);
   	}
@@ -378,13 +477,55 @@
 						$("#newprod-"+np).remove(); 	
 						if(np == 1){
 							$("#div-btn").remove();
-						}				
+						}							
 					}
 				},
 				ยกเลิก: function () {},
 			}
 		});
   	}
+
+	function addall(){
+		for(var i = 1; i <= np; i++)
+			$.ajax({
+				type: "POST",
+				url: "php/add_folder.php",
+				data: {
+				'title': brandname,
+				'parent': parent
+				},
+				beforeSend: function(){
+					EasyLoading.show({                           
+						text: "กำลังโหลด"                            
+					});	
+				},             
+				success: function(data){  
+					EasyLoading.hide();
+					if (data == "success") {
+						$("#brand-tools").after('<h3 class="brand" onclick="showsub(\''+brandname+'\',1)">'+brandname+'</h3>');
+						$(".newbrand").remove();
+						$("#addbrandbtn").remove();
+					} else {
+						$.confirm({
+						title: 'พบข้อผิดพลาด',
+						content: 'ลองอีกครั้ง',
+						backgroundDismiss: true,
+						buttons: {
+							formSubmit: {
+							text: 'ตกลง',
+							btnClass: 'btn-regis',
+							action: function () {
+							}
+							}
+						}
+						});
+					}
+				}
+			});  
+  			$("#newprod-"+i).remove();
+  		$("#div-btn").remove();
+  		np=0;
+	}
 
   	function addcancleall(){
   		for(var i = 1; i <= np; i++)
@@ -394,19 +535,19 @@
   	}
 
   	function addprodconfirm(np){
-  		newprod = $("#newprod-"+np+" input[type='text']").val();
-  		if(newprod == "") return 0;
+  		newprod = $("#newprod-"+np+" input[type='text']").val().toUpperCase();
+		  if(newprod == "") return 0;
+		  
+		$("#newprod-"+np+"input[type='text']").remove();
+		$("#newprod-"+np+"div").remove();
+		$("#newprod-"+np).text(newprod);
+		$("#newprod-"+np).prepend("<input type='checkbox'>");
+		$("#newprod-"+np).append('<i class="fas fa-trash" style="float: right; margin-right: 10%; color: white;" onclick="delnewprod('+np+')"></i>');
 
-  		$("#newprod-"+np+"input[type='text']").remove();
-  		$("#newprod-"+np+"div").remove();
-  		$("#newprod-"+np).text(newprod);
-  		$("#newprod-"+np).prepend("<input type='checkbox'>");
-  		$("#newprod-"+np).append('<i class="fas fa-trash" style="float: right; margin-right: 10%; color: white;" onclick="delnewprod('+np+')"></i>');
-
-  		if(np == 1){
-  			$("#newprod-"+np).after('<div id="div-btn" class="row justify-content-end" style="margin-right: 2%; margin-bottom: 20px;"><button class="btn btn-primary" style="margin-right: 10px;">บันทึก</button><button class="btn btn-danger" onclick="addcancleall();">ยกเลิก</button></div>');
-  		}
-  		addprod();
+		if(np == 1){
+			$("#newprod-"+np).after('<div id="div-btn" class="row justify-content-end" style="margin-right: 2%; margin-bottom: 20px;"><button class="btn btn-primary" style="margin-right: 10px;" onclick="addall();>บันทึก</button><button class="btn btn-danger" onclick="addcancleall();">ยกเลิก</button></div>');
+		}
+		addprod();	
   	}
 
   	function addprodcancle(np){
@@ -439,28 +580,59 @@
 					btnClass: 'btn-danger',
 					text: 'ลบ',
 					action: function () {	
-						arg.remove(); 				
+						$.ajax({
+							type: "POST",
+							url:"php/delete_folder.php",           
+							data: {'title' : arg.text()},               
+							beforeSend: function(){
+								EasyLoading.show({                           
+									text: "กำลังโหลด"                            
+								});	
+							},             
+							success: function(data){  
+								EasyLoading.hide();                           
+								if(data == "success"){
+									arg.remove();	
+								}else{
+									$.confirm({
+										title: 'พบข้อผิดพลาด',
+										content: 'ลองอีกครั้ง',
+										backgroundDismiss: true,
+										buttons: {
+										formSubmit: {
+											text: 'ตกลง',
+											btnClass: 'btn-regis',
+											action: function () {
+											}
+										}
+										}
+									});
+								}                               
+							}               
+						});									
 					}
 				},
 				ยกเลิก: function () {},
 			}
 		});
   	}
-  	var p = 16; // number of prod
+		
   	function removeprod(){
   		if($(".i-trash").is(":visible")){
   			$(".i-trash").prop('hidden', true);
   			$("input[type='checkbox']").prop('disabled', false);
   			for(var j = 1; j <= p; j++){
   			  	$("#prod-"+j).attr('onclick', '');
-  			}
+			  }
+			  $(".list").attr('onclick', 'showsub($(this).text())');
   			return 0;
   		}
   		$("input[type='checkbox']").prop('disabled', true);
   		$(".i-trash").prop('hidden', false);
   		for(var i = 1; i <= p; i++){
   			$("#prod-"+i).attr('onclick', 'delspcfprod($(this))');
-  		}
+		  }
+		  $(".list").attr('onclick', 'delspcfprod($(this))');
   	}
 
   	var presymb;
@@ -473,7 +645,8 @@
   			presymb = arg.find('i').attr('class').split('-')[1];
   		}
   		id = arg.attr("id");
-  		cls = arg.attr("class");
+		cls = arg.attr("class");
+		arg.addClass('invis');
   		// prod-id[1];
   		text = arg.text();
   		arg.text('แก้ไขรายการ : ');
@@ -483,28 +656,62 @@
   	}
 
   	function editprodconfirm(arg1,arg2){
-  		text = $("#editprod input").val();
-  		$("#editprod").remove();
-  		$("#"+arg2).text(text);
-  		if(presymb == "checkbox"){
-  			$("#"+arg2).prepend('<input type="checkbox" disabled>');
-  		}else if(presymb == "folder"){
-  			$("#"+arg2).prepend('<i class="fas fa-folder"></i>');
-  		}
-  		$("#"+arg2).append('<i class="fas fa-trash i-trash" hidden></i><i class="fas fa-pen i-edit"></i>');
-  		$("#"+arg2).prop('hidden', false);
+		text = $("#editprod input").val().toUpperCase();
+		$.ajax({
+			type: "POST",
+			url:"php/rename_folder.php",           
+			data: {'old_name' : arg1,
+				'name' : text},               
+			beforeSend: function(){
+				EasyLoading.show({                           
+					text: "กำลังโหลด"                            
+				});
+			},             
+			success: function(data){ 
+				EasyLoading.hide();       
+				if(data == "success"){					                    
+					$("#editprod").remove();
+					$(".invis").text(text);
+					// $("#"+arg2).text(text);
+					if(presymb == "checkbox"){
+						$(".invis").prepend('<input type="checkbox" disabled>');
+					}else if(presymb == "folder"){
+						$(".invis").prepend('<i class="fas fa-folder"></i>');
+					}
+					$(".invis").append('<i class="fas fa-trash i-trash" hidden></i><i class="fas fa-pen i-edit"></i>');
+					$(".invis").prop('hidden', false);
+					$(".list").removeClass('invis');
+				}else{
+					$.confirm({
+						title: 'พบข้อผิดพลาด',
+						content: 'ลองอีกครั้ง',
+						backgroundDismiss: true,
+						buttons: {
+						formSubmit: {
+							text: 'ตกลง',
+							btnClass: 'btn-regis',
+							action: function () {
+							}
+						}
+						}
+					});
+				}				    
+			}               
+		});		
   	}
 
   	function editprodcancle(arg1, arg2){
-  		$("#editprod").remove();
-  		$("#"+arg2).text(arg1);
+		  $("#editprod").remove();
+		  $(".invis").text(arg1);
+  		// $("#"+arg2).text(arg1);
   		if(presymb == "checkbox"){
-  			$("#"+arg2).prepend('<input type="checkbox" disabled>');
+			$(".invis").prepend('<input type="checkbox" disabled>');
   		}else if(presymb == "folder"){
-  			$("#"+arg2).prepend('<i class="fas fa-folder"></i>');
+			$(".invis").prepend('<i class="fas fa-folder"></i>');
   		}
-  		$("#"+arg2).append('<i class="fas fa-trash i-trash" hidden></i><i class="fas fa-pen i-edit"></i>');
-  		$("#"+arg2).prop('hidden', false);
+  		$(".invis").append('<i class="fas fa-trash i-trash" hidden></i><i class="fas fa-pen i-edit"></i>');
+		  $(".invis").prop('hidden', false);
+		  $(".list").removeClass('invis');
   		//alert($("#"+arg2).closest('input').attr('type'));
   	}
 
@@ -514,14 +721,16 @@
   			$("input[type='checkbox']").prop('disabled', false);
   			for(var j = 1; j <= p; j++){
   			  	$("#prod-"+j).attr('onclick', '');
-  			}
+			  }
+			  $(".list").attr('onclick', 'showsub($(this).text())');
   			return 0;
   		}
   		$("input[type='checkbox']").prop('disabled', true);
   		$(".i-edit").prop('hidden', false);
   		for(var i = 1; i <= p; i++){
   			$("#prod-"+i).attr('onclick', 'editspcfprod($(this))');
-  		}
+		}
+		$(".list").attr('onclick', 'editspcfprod($(this))');
   	}
 		  
   </script>
@@ -531,11 +740,11 @@
       	<div class="row" style="padding-left: 1.5%; padding-right: 1.5%; margin-top: 3%; margin-bottom: 15px; height: 85%;">
         	<div id="col-brand" class="col-md-3 text-center" style="padding-top: 3%; padding-bottom: 3%; overflow-y: auto;">
         		<h3 id="title-lft" class="folder-title">หมวดหมู่สินค้า</h3>
-        		<!-- <div id="brand-tools" class="row justify-content-center" style="margin-top: -5%;">
-        			<div id="brand-add" class="col-2"><h4><i id="i-brand-add" class="fas fa-plus-circle" onclick="addbrand();"></i></h4></div>
-        			<div id="brand-remove" class="col-2"><h4><i id="i-brand-trash" class="fas fa-trash" onclick="removebrand('fa-trash');"></i></h4></div>
-        			<div id="brand-edit" class="col-2"><h4><i id="i-brand-edit" class="fas fa-pen" onclick="editbrand('fa-pen');"></i></h4></div>
-        		</div>       		 -->
+        		<div id="brand-tools" class="row justify-content-center" style="margin-top: -5%;">
+        			<div id="brand-add" class="col-2"><h4><i id="i-brand-add" class="fas fa-plus-circle" onclick="addbrand();"></i></h4></div>        			
+					<div id="brand-edit" class="col-2"><h4><i id="i-brand-edit" class="fas fa-pen" onclick="editbrand('fa-pen');"></i></h4></div>
+					<div id="brand-remove" class="col-2"><h4><i id="i-brand-trash" class="fas fa-trash" onclick="removebrand('fa-trash');"></i></h4></div>
+        		</div>       		
         		
         	</div>
 			<div id="col-prod" class="col-md-9" style="overflow-y: auto;" hidden>							
