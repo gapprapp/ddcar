@@ -64,9 +64,7 @@ function scan(arg){
             }else{
                 if(arg == "index"){
                     window.location = "index.html";
-                }else{
-                    window.location = "member.html";
-                }               
+                }              
               //alert("The user has dismissed the scan");
             }
         },
