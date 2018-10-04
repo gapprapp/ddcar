@@ -216,7 +216,7 @@
               },             
               success: function(data){
               $(".overlay").prop('hidden', true);                               
-              if(data == "success"){
+              if(data != "fail"){
                 $.confirm({
                     title: 'เสร็จสิ้น',
                     content: 'เพิ่มสินค้า ' +name+ ' ในหมวดหมู่ ' +folder+ ' เสร็จสิ้น',
@@ -262,7 +262,7 @@
               },             
               success: function(data){
               $(".overlay").prop('hidden', true);                               
-              if(data == "success"){
+              if(data != "fail"){
                 $.confirm({
                     title: 'เสร็จสิ้น',
                     content: 'เพิ่มสินค้า ' +name+ ' ในหมวดหมู่ ' +folder+ ' เสร็จสิ้น',

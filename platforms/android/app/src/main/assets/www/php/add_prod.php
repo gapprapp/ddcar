@@ -53,6 +53,6 @@
       }   
     }       
     mysqli_commit($conn); 
-    echo "success";   
+    echo $title;   
     mysqli_close($conn);   
 ?>
