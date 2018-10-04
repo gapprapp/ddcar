@@ -44,7 +44,7 @@
 
   <script>
 	arr_prod = [];
-	var num_prod = 0,from,p = 0;
+	var num_prod = 0,from,p = 0,last_node = 0;
   	$(document).ready(function() {
 		if(!localStorage.user_id){
 			window.location = 'web_login.html';
@@ -65,7 +65,7 @@
 			success: function(data){  
 				EasyLoading.hide();			          
 				var obj = jQuery.parseJSON(data);              
-				if(obj){				           
+				if(obj.length > 0){				           
 					$.each(obj, function(i, field){
 						if(obj.length-1 > i){
 							text_html = "<h3 class='brand' onclick='showsub(\""+obj[i].title+"\",1)'>"+obj[i].title+"</h3>";
@@ -117,7 +117,7 @@
 		if(arg2){
 			$(".prod-title").empty();
 			localStorage.stack_folder = "";
-			$('.prod-title').append('<span id="st"><i id="i-back" onclick="page_back();" class="fas fa-angle-left" hidden></i></span>&emsp;<!--<i class="fas fa-trash" style="float: right; margin-right: 1.5%;" onclick="removeprod();"></i><i class="fas fa-pen" style="float: right; margin-right: 1.5%;" onclick="editprod();"></i><i id="i-prod-add" class="fas fa-plus-circle" style="float: right; margin-right: 1.5%;" onclick="addprod()"></i>-->');
+			$('.prod-title').append('<span id="st"><i id="i-back" onclick="page_back();" class="fas fa-angle-left" hidden></i></span>&emsp;<i class="fas fa-trash" style="float: right; margin-right: 1.5%;" onclick="removeprod();"></i><i class="fas fa-pen" style="float: right; margin-right: 1.5%;" onclick="editprod();"></i><i id="i-prod-add" class="fas fa-plus-circle" style="float: right; margin-right: 1.5%;" onclick="addprod()"></i>');
 		}
 		if(localStorage.stack_folder){
 			var retrievedObject = localStorage.getItem('stack_folder');
@@ -136,7 +136,7 @@
 		$("#append-prod").empty();
 		//$("#append-title").append('<h5 id="'+arg+'" onclick="page_back(\''+arg+'\')" class="prod-title">'+arg+'</h5>');
     	// ลองแก้เป็นแบบนี้ดู
-		$('#st').append('<span id="'+arg+'" onclick="page_back(\''+arg+'\')">  '+arg+'  >></span><span>');
+		$('#st').append('<span id="'+arg+'" onclick="page_back(\''+arg+'\')">  '+arg+'  >></span><span>');		
 		p = 0;
 		$.ajax({
 			type: "POST",
@@ -150,22 +150,23 @@
 			},             
 			success: function(data){  
 				EasyLoading.hide();
+				$('#col-prod').prop('hidden',false);    
 				if(data != "last node"){
-					var obj = jQuery.parseJSON(data); 
-					$('#col-prod').prop('hidden',false);             
+					var obj = jQuery.parseJSON(data);					         
 					if(obj[obj.length-1] == "last node"){               
 					$.each(obj, function(i, field){
 						if(obj.length-1 > i){
 							if(i % 2 == 0){
-								text_html = '<h5 id="prod-'+obj[i].title+'" class="prod-odd" onclick="choose('+obj[i].title+')"><input type="checkbox">'+obj[i][2]+'<i class="fas fa-trash i-trash" hidden></i><i class="fas fa-pen i-edit" hidden></i></h5>';
+								text_html = '<h5 id="prod-'+p+'" class="prod-odd" onclick="choose('+p+')"><span id="id-'+p+'" hidden>'+obj[i].title+'</span><input type="checkbox">'+obj[i][2]+'<i class="fas fa-trash i-trash" hidden></i><i class="fas fa-pen i-edit" hidden></i></h5>';
 							}else{
-								text_html = '<h5 id="prod-'+obj[i].title+'" class="prod-even" onclick="choose('+obj[i].title+')"><input type="checkbox">'+obj[i][2]+'<i class="fas fa-trash i-trash" hidden></i><i class="fas fa-pen i-edit" hidden></i></h5>';
+								text_html = '<h5 id="prod-'+p+'" class="prod-even" onclick="choose('+p+')"><span  id="id-'+p+'" hidden>'+obj[i].title+'</span><input type="checkbox">'+obj[i][2]+'<i class="fas fa-trash i-trash" hidden></i><i class="fas fa-pen i-edit" hidden></i></h5>';
 							} 
 							p++ 
 							                  
 						$("#append-prod").append(text_html);                      
 						}                                                 
-					});                                                                
+					});  
+					last_node = 1                                                              
 					}else{					              
 						$.each(obj, function(i, field){
 							if(obj.length-1 > i){
@@ -176,8 +177,11 @@
 								}
 								$("#append-prod").append(text_html);							
 							}                                                 
-						});               
+						});  
+						last_node = 0             
 					}
+				}else{				
+					last_node = 2;
 				}			          
 								                          
 			}               
@@ -187,6 +191,7 @@
 	function choose(arg2){
 		arg = $('#prod-'+arg2).find('input[type=checkbox]');
 		name = $('#prod-'+arg2).text();
+		prod_id = $('#id-'+arg2).text();
 		check = arg.prop('checked');	
 		isenable = !arg.is(":disabled");
 		if(check == false && isenable){
@@ -202,7 +207,7 @@
 			if(!ch){          
 				item = {};   
 				item ["arg"] = arg2;        
-				item ["prod_id"] = arg2; 
+				item ["prod_id"] = prod_id; 
 				item ["name"] = name;        
 				arr_prod.push(item);          
 			}   
@@ -464,34 +469,32 @@
   	}
   	
 	/* Prod Zone */
-  	function delnewprod(np){
-  		$.confirm({
-			icon: 'fa fa-warning',
-			title: 'คุณต้องการลบ '+$("#newprod-"+np).text(),
-			content: 'ต้องการลบรายการสินค้าออกจากรายการ!',
-			buttons: {
-				danger: {
-					btnClass: 'btn-danger',
-					text: 'ลบ',
-					action: function () {	
-						$("#newprod-"+np).remove(); 	
-						if(np == 1){
-							$("#div-btn").remove();
-						}							
-					}
-				},
-				ยกเลิก: function () {},
-			}
-		});
-  	}
+  	function addF(arg){
+		addprodcancle(arg);
+		np++;
+		$("#append-prod").prepend('<h5 id="newprod-'+np+'" class="prod-even">เพิ่ม : <input type="text" class="form-control" style="margin: 0; margin-top: 2px; margin-bottom: 10px; font-size: 1em; width: 70%;"><div class="row" style="padding-left: 2%;"><button class="btn btn-success" style="margin-right: 10px;" onclick="addprodconfirm('+np+',\'folder\');">เพิ่ม</button><button class="btn btn-danger" onclick="addprodcancle('+np+');">ยกเลิก</button></div></h5>');
+	}
+	  
+	function addP(arg){
+		addprodcancle(arg);
+		np++;
+		$("#append-prod").prepend('<h5 id="newprod-'+np+'" class="prod-even">เพิ่ม : <div class="row">'+
+				'<input id="code-'+np+'" placeholder="รหัส" type="text" class="form-control" style="margin: 0; margin-top: 2px; margin-bottom: 10px; margin-right: 2px; font-size: 1em; width: 20%;">'+
+				'<input id="name-'+np+'" placeholder="ชื่อสินค้า" type="text" class="form-control" style="margin: 0; margin-top: 2px; margin-bottom: 10px; margin-right: 2px; font-size: 1em; width: 25%;">'+
+				'<input id="min-'+np+'" placeholder="จำนวนขั้นต่ำ" type="number" class="form-control" style="margin: 0; margin-top: 2px; margin-bottom: 10px; margin-right: 2px; font-size: 1em; width: 15%;">'+
+				'</div><div class="row" style="padding-left: 2%;"><button class="btn btn-success" style="margin-right: 10px;" onclick="addprodconfirm('+np+',\'prod\');">เพิ่ม</button><button class="btn btn-danger" onclick="addprodcancle('+np+');">ยกเลิก</button></div></h5>');
+	}
 
-	function addall(){
-		for(var i = 1; i <= np; i++)
+  	function addprodconfirm(arg,arg2){
+		if(last_node == 0 || arg2 == 'folder'){
+			newprod = $("#newprod-"+arg+" input[type='text']").val().toUpperCase();
+			if(newprod == "") return 0;
+			
 			$.ajax({
 				type: "POST",
 				url: "php/add_folder.php",
 				data: {
-				'title': brandname,
+				'title': newprod,
 				'parent': parent
 				},
 				beforeSend: function(){
@@ -502,9 +505,10 @@
 				success: function(data){  
 					EasyLoading.hide();
 					if (data == "success") {
-						$("#brand-tools").after('<h3 class="brand" onclick="showsub(\''+brandname+'\',1)">'+brandname+'</h3>');
-						$(".newbrand").remove();
-						$("#addbrandbtn").remove();
+						$("#newprod-"+arg).remove();
+						text_html = '<h5 class="prod-odd list" onclick="showsub(\''+newprod+'\')"><i class="fas fa-folder"></i>'+ newprod +'<i class="fas fa-trash i-trash" hidden></i><i class="fas fa-pen i-edit" hidden></i></h5>';
+						$("#append-prod").prepend(text_html);
+						last_node = 0 
 					} else {
 						$.confirm({
 						title: 'พบข้อผิดพลาด',
@@ -522,42 +526,60 @@
 					}
 				}
 			});  
-  			$("#newprod-"+i).remove();
-  		$("#div-btn").remove();
-  		np=0;
-	}
-
-  	function addcancleall(){
-  		for(var i = 1; i <= np; i++)
-  			$("#newprod-"+i).remove();
-  		$("#div-btn").remove();
-  		np=0;
+		}else if(last_node == 1 || arg2 == 'prod'){
+			code = $('#code-'+arg).val();
+			name = $('#name-'+arg).val();
+			min = $('#min-'+arg).val();
+			if(code == "" || name == "" || min == "") return 0;
+			$.ajax({
+				type: "POST",
+				url:"php/add_prod.php",           
+				data: {'name_prod' : name,
+					'code' : code,
+					'parent' : parent,                  
+					'min' : min},               
+				beforeSend: function(){
+					EasyLoading.show({                           
+						text: "กำลังโหลด"                            
+					});	
+				},             
+				success: function(data){
+					EasyLoading.hide();                      
+					if(data != "fail"){
+						$("#newprod-"+arg).remove();
+						text_html = '<h5 id="prod-'+p+'" class="prod-odd" onclick="choose('+p+')"><span hidden id="id-'+p+'">'+data+'</span><input type="checkbox">'+name+'<i class="fas fa-trash i-trash" hidden></i><i class="fas fa-pen i-edit" hidden></i></h5>';	
+						$("#append-prod").prepend(text_html);
+						p++		
+						last_node = 1
+					}else{
+						$.confirm({
+						title: 'พบข้อผิดพลาด',
+						content: 'ลองอีกครั้ง',
+						backgroundDismiss: true,
+						buttons: {
+							formSubmit: {
+							text: 'ตกลง',
+							btnClass: 'btn-regis',
+							action: function () {
+							}
+							}
+						}
+						});
+					}
+				}               
+			}); 
+		}	
   	}
 
-  	function addprodconfirm(np){
-  		newprod = $("#newprod-"+np+" input[type='text']").val().toUpperCase();
-		  if(newprod == "") return 0;
-		  
-		$("#newprod-"+np+"input[type='text']").remove();
-		$("#newprod-"+np+"div").remove();
-		$("#newprod-"+np).text(newprod);
-		$("#newprod-"+np).prepend("<input type='checkbox'>");
-		$("#newprod-"+np).append('<i class="fas fa-trash" style="float: right; margin-right: 10%; color: white;" onclick="delnewprod('+np+')"></i>');
-
-		if(np == 1){
-			$("#newprod-"+np).after('<div id="div-btn" class="row justify-content-end" style="margin-right: 2%; margin-bottom: 20px;"><button class="btn btn-primary" style="margin-right: 10px;" onclick="addall();>บันทึก</button><button class="btn btn-danger" onclick="addcancleall();">ยกเลิก</button></div>');
-		}
-		addprod();	
-  	}
-
-  	function addprodcancle(np){
-  		$("#newprod-"+np).remove();
+  	function addprodcancle(arg){
+  		$("#newprod-"+arg).remove();
   		np--;
   	}
-  	var np = 0;
+	  
+	var np = 0;
   	function addprod(){
-  		np++;
-  		if($(".form-control").is(":visible")){np--; return 0;} 
+		if($("#newprod-"+np).is(":visible")){ return 0;} 
+  		np++;  		
   		// find even or odd
   		prooreven = $(".prod-title").next().attr('class');
   		var cls;
@@ -565,35 +587,105 @@
   			cls = "prod-even";
   		}else{
   			cls = "prod-odd";
-  		}
+		}
+		
+		if(last_node == 0){
+			$(".prod-title").after('<h5 id="newprod-'+np+'" class="'+cls+'">เพิ่มรายการ : <input type="text" class="form-control" style="margin: 0; margin-top: 2px; margin-bottom: 10px; font-size: 1em; width: 70%;"><div class="row" style="padding-left: 2%;"><button class="btn btn-success" style="margin-right: 10px;" onclick="addprodconfirm('+np+');">เพิ่ม</button><button class="btn btn-danger" onclick="addprodcancle('+np+');">ยกเลิก</button></div></h5>');
+		}else if(last_node == 1){
+			$(".prod-title").after('<h5 id="newprod-'+np+'" class="'+cls+'">เพิ่มสินค้า : <div class="row">'+
+				'<input id="code-'+np+'" placeholder="รหัส" type="text" class="form-control" style="margin: 0; margin-top: 2px; margin-bottom: 10px; margin-right: 2px; font-size: 1em; width: 20%;">'+
+				'<input id="name-'+np+'" placeholder="ชื่อสินค้า" type="text" class="form-control" style="margin: 0; margin-top: 2px; margin-bottom: 10px; margin-right: 2px; font-size: 1em; width: 25%;">'+
+				'<input id="min-'+np+'" placeholder="จำนวนขั้นต่ำ" type="number" class="form-control" style="margin: 0; margin-top: 2px; margin-bottom: 10px; margin-right: 2px; font-size: 1em; width: 15%;">'+
+				'</div><div class="row" style="padding-left: 2%;"><button class="btn btn-success" style="margin-right: 10px;" onclick="addprodconfirm('+np+');">เพิ่ม</button><button class="btn btn-danger" onclick="addprodcancle('+np+');">ยกเลิก</button></div></h5>');
+		}else if(last_node == 2){
+			$(".prod-title").after('<h5 id="newprod-'+np+'" class="'+cls+'"><div class="row" style="padding-left: 2%;"><button class="btn btn-success" style="margin-right: 10px;" onclick="addF('+np+');">เพิ่มโฟลเดอร์</button><button class="btn btn-primary"  style="margin-right: 10px;" onclick="addP('+np+');">เพิ่มสินค้า</button><button class="btn btn-danger" onclick="addprodcancle('+np+');">ยกเลิก</button></div></h5>');
+		}
 
-  		$(".prod-title").after('<h5 id="newprod-'+np+'" class="'+cls+'">เพิ่มสินค้า : <input type="text" class="form-control" style="margin: 0; margin-top: 2px; margin-bottom: 10px; font-size: 1em; width: 70%;"><div class="row" style="padding-left: 2%;"><button class="btn btn-success" style="margin-right: 10px;" onclick="addprodconfirm('+np+');">เพิ่ม</button><button class="btn btn-danger" onclick="addprodcancle('+np+');">ยกเลิก</button></div></h5>');
   	}
 
   	function delspcfprod(arg){
-  		$.confirm({
+		if(last_node == 0){
+			$.confirm({
 			icon: 'fa fa-warning',
-			title: 'คุณต้องการลบ '+arg.text(),
-			content: 'ต้องการลบรายการสินค้าออกจากรายการ!',
-			buttons: {
-				danger: {
-					btnClass: 'btn-danger',
-					text: 'ลบ',
-					action: function () {	
-						$.ajax({
-							type: "POST",
-							url:"php/delete_folder.php",           
-							data: {'title' : arg.text()},               
-							beforeSend: function(){
-								EasyLoading.show({                           
-									text: "กำลังโหลด"                            
-								});	
-							},             
-							success: function(data){  
-								EasyLoading.hide();                           
-								if(data == "success"){
-									arg.remove();	
-								}else{
+				title: 'คุณต้องการลบ '+arg.text(),
+				content: 'ต้องการลบออกจากรายการ!',
+				buttons: {
+					danger: {
+						btnClass: 'btn-danger',
+						text: 'ลบ',
+						action: function () {	
+							$.ajax({
+								type: "POST",
+								url:"php/delete_folder.php",           
+								data: {'title' : arg.text()},               
+								beforeSend: function(){
+									EasyLoading.show({                           
+										text: "กำลังโหลด"                            
+									});	
+								},             
+								success: function(data){  
+									EasyLoading.hide();                           
+									if(data == "success"){
+										arg.remove();
+										if($("#append-prod").children().length == 0){
+											last_node = 2;
+										}     	
+									}else{
+										$.confirm({
+											title: 'พบข้อผิดพลาด',
+											content: 'ลองอีกครั้ง',
+											backgroundDismiss: true,
+											buttons: {
+											formSubmit: {
+												text: 'ตกลง',
+												btnClass: 'btn-regis',
+												action: function () {
+												}
+											}
+											}
+										});
+									}                               
+								}               
+							});									
+						}
+					},
+					ยกเลิก: function () {},
+				}
+			});
+		}else if(last_node == 1){
+			prod_id = $('#id-'+arg).text();
+			prod = $("#prod-"+arg).clone()    //clone the element
+								.children() //select all the children
+								.remove()   //remove all the children
+								.end()  //again go back to selected element
+								.text();	
+			$.confirm({
+			icon: 'fa fa-warning',
+				title: 'คุณต้องการลบ ' + prod,
+				content: 'ต้องการลบรายการสินค้าออกจากรายการ!',
+				buttons: {
+					danger: {
+						btnClass: 'btn-danger',
+						text: 'ลบ',
+						action: function () {	
+							$.ajax({
+								type: "POST",
+								url:"php/delete_prod.php",           
+								data: {'title' : prod_id},               
+								beforeSend: function(){
+									EasyLoading.show({                           
+										text: "กำลังโหลด"                            
+									});	
+								},             
+								success: function(data){  
+									EasyLoading.hide();                          
+									if(data == "success"){
+										$('#prod-'+arg).remove()
+										if($("#append-prod").children().length == 0){
+											last_node = 2;
+										} 
+										p--; 								
+									}else{
 									$.confirm({
 										title: 'พบข้อผิดพลาด',
 										content: 'ลองอีกครั้ง',
@@ -607,128 +699,178 @@
 										}
 										}
 									});
-								}                               
-							}               
-						});									
-					}
-				},
-				ยกเลิก: function () {},
-			}
-		});
+									}           
+								}               
+							});									
+						}
+					},
+					ยกเลิก: function () {},
+				}
+			});
+		}  		
   	}
 		
   	function removeprod(){
   		if($(".i-trash").is(":visible")){
   			$(".i-trash").prop('hidden', true);
   			$("input[type='checkbox']").prop('disabled', false);
-  			for(var j = 1; j <= p; j++){
-  			  	$("#prod-"+j).attr('onclick', '');
+  			for(var j = 0; j < p; j++){
+  			  	$("#prod-"+j).attr('onclick', 'choose('+j+')');
 			  }
 			  $(".list").attr('onclick', 'showsub($(this).text())');
   			return 0;
   		}
   		$("input[type='checkbox']").prop('disabled', true);
   		$(".i-trash").prop('hidden', false);
-  		for(var i = 1; i <= p; i++){
-  			$("#prod-"+i).attr('onclick', 'delspcfprod($(this))');
+  		for(var i = 0; i < p; i++){
+  			$("#prod-"+i).attr('onclick', 'delspcfprod('+i+')');
 		  }
 		  $(".list").attr('onclick', 'delspcfprod($(this))');
   	}
 
-  	var presymb;
-  	function editspcfprod(arg){
-  		if($("#editprod").is(":visible")){
+    function editspcfprod(arg){
+  		if($("#editprod").is(":visible") || $(".edt").is(":visible")){
   			return 0;
-  		}
-  		presymb = arg.find('input').attr('type');
-  		if(presymb == undefined){
-  			presymb = arg.find('i').attr('class').split('-')[1];
-  		}
-  		id = arg.attr("id");
-		cls = arg.attr("class");
-		arg.addClass('invis');
-  		// prod-id[1];
-  		text = arg.text();
-  		arg.text('แก้ไขรายการ : ');
-  		//arg.append('<input type="checkbox" hidden>');
-  		arg.after('<h5 id="editprod" class="'+cls+'">แก้ไขรายการ : <input type="text" class="form-control" style="margin: 0; margin-top: 2px; margin-bottom: 10px; font-size: 1em; width: 70%;" value="'+text+'"><div class="row" style="padding-left: 2%;"><button class="btn btn-primary" style="margin-right: 10px;" onclick="editprodconfirm(\''+text+'\',\''+id+'\')">บันทึกแก้ไข</button><button class="btn btn-danger" onclick="editprodcancle(\''+text+'\',\''+id+'\');">ยกเลิก</button></div></h5>');
-  		arg.prop('hidden', true);
+  		} 
+		  
+		if(last_node == 0){
+			arg.addClass('invis');
+			// prod-id[1];
+			text = arg.text();
+			//arg.text('แก้ไขรายการ : ');
+			//arg.append('<input type="checkbox" hidden>');
+			arg.after('<h5 id="editprod" class="prod-even">แก้ไขรายการ : <input type="text" class="form-control" style="margin: 0; margin-top: 2px; margin-bottom: 10px; font-size: 1em; width: 70%;" value="'+text+'"><div class="row" style="padding-left: 2%;"><button class="btn btn-primary" style="margin-right: 10px;" onclick="editprodconfirm(\''+text+'\')">บันทึกแก้ไข</button><button class="btn btn-danger" onclick="editprodcancle(\''+text+'\');">ยกเลิก</button></div></h5>');
+			arg.prop('hidden', true);
+		}else if(last_node == 1){		
+			text = $("#prod-"+arg).clone()    //clone the element
+								.children() //select all the children
+								.remove()   //remove all the children
+								.end()  //again go back to selected element
+								.text();			
+			$("#prod-"+arg).after('<h5 id="newprod-'+arg+'" class="prod-even edt">แก้ไขสินค้า : <div class="row">'+				
+				'<input id="name-'+arg+'" placeholder="ชื่อสินค้า" value="'+text+'" type="text" class="form-control" style="margin: 0; margin-top: 2px; margin-bottom: 10px; margin-right: 2px; font-size: 1em; width: 25%;">'+				
+				'</div><div class="row" style="padding-left: 2%;"><button class="btn btn-primary" style="margin-right: 10px;" onclick="editprodconfirm(\''+text+'\','+arg+')">บันทึกแก้ไข</button><button class="btn btn-danger" onclick="editprodcancle(\''+text+'\','+arg+');">ยกเลิก</button></div></h5>');
+			$("#prod-"+arg).prop('hidden', true);
+		}		
   	}
 
   	function editprodconfirm(arg1,arg2){
-		text = $("#editprod input").val().toUpperCase();
-		$.ajax({
-			type: "POST",
-			url:"php/rename_folder.php",           
-			data: {'old_name' : arg1,
-				'name' : text},               
-			beforeSend: function(){
-				EasyLoading.show({                           
-					text: "กำลังโหลด"                            
-				});
-			},             
-			success: function(data){ 
-				EasyLoading.hide();       
-				if(data == "success"){					                    
-					$("#editprod").remove();
-					$(".invis").text(text);
-					// $("#"+arg2).text(text);
-					if(presymb == "checkbox"){
-						$(".invis").prepend('<input type="checkbox" disabled>');
-					}else if(presymb == "folder"){
+		if(last_node == 0){
+			text = $("#editprod input").val().toUpperCase();
+			$.ajax({
+				type: "POST",
+				url:"php/rename_folder.php",           
+				data: {'old_name' : arg1,
+					'name' : text},               
+				beforeSend: function(){
+					EasyLoading.show({                           
+						text: "กำลังโหลด"                            
+					});
+				},             
+				success: function(data){ 
+					EasyLoading.hide();       
+					if(data == "success"){					                    
+						$("#editprod").remove();
+						$(".invis").text(text);
+						// $("#"+arg2).text(text);			
+					
 						$(".invis").prepend('<i class="fas fa-folder"></i>');
-					}
-					$(".invis").append('<i class="fas fa-trash i-trash" hidden></i><i class="fas fa-pen i-edit"></i>');
-					$(".invis").prop('hidden', false);
-					$(".list").removeClass('invis');
-				}else{
-					$.confirm({
+						
+						$(".invis").append('<i class="fas fa-trash i-trash" hidden></i><i class="fas fa-pen i-edit"></i>');
+						$(".invis").prop('hidden', false);
+						$(".list").removeClass('invis');
+					}else{
+						$.confirm({
+							title: 'พบข้อผิดพลาด',
+							content: 'ลองอีกครั้ง',
+							backgroundDismiss: true,
+							buttons: {
+							formSubmit: {
+								text: 'ตกลง',
+								btnClass: 'btn-regis',
+								action: function () {
+								}
+							}
+							}
+						});
+					}				    
+				}               
+			});		
+		}else if(last_node == 1){
+			name = $("#name-"+arg2).val();
+			prod_id = $('#id-'+arg2).text();	
+			$.ajax({
+                type: "POST",
+                url:"php/rename_prod_web.php",           
+                data: {'prod_id' : prod_id,
+                    'name_prod' : name},               
+                beforeSend: function(){
+                    EasyLoading.show({                           
+						text: "กำลังโหลด"                            
+					});
+                },             
+                success: function(data){
+					EasyLoading.hide();					                          
+					if(data == "success"){
+						$("#newprod-"+arg2).remove();
+						$("#prod-"+arg2).text(name);
+						// $("#"+arg2).text(text);
+						
+						$("#prod-"+arg2).prepend('<input type="checkbox" disabled>');
+					
+						$("#prod-"+arg2).append('<i class="fas fa-trash i-trash" hidden></i><i class="fas fa-pen i-edit"></i>');
+						$("#prod-"+arg2).prop('hidden', false);						
+					}else{
+						$.confirm({
 						title: 'พบข้อผิดพลาด',
 						content: 'ลองอีกครั้ง',
 						backgroundDismiss: true,
 						buttons: {
-						formSubmit: {
+							formSubmit: {
 							text: 'ตกลง',
 							btnClass: 'btn-regis',
 							action: function () {
 							}
+							}
 						}
-						}
-					});
-				}				    
-			}               
-		});		
+						});
+					}
+				}               
+            });
+		}		
   	}
 
   	function editprodcancle(arg1, arg2){
-		  $("#editprod").remove();
-		  $(".invis").text(arg1);
-  		// $("#"+arg2).text(arg1);
-  		if(presymb == "checkbox"){
-			$(".invis").prepend('<input type="checkbox" disabled>');
-  		}else if(presymb == "folder"){
+		  if(last_node == 0){
+			$("#editprod").remove();
+			$(".invis").text(arg1);
 			$(".invis").prepend('<i class="fas fa-folder"></i>');
-  		}
-  		$(".invis").append('<i class="fas fa-trash i-trash" hidden></i><i class="fas fa-pen i-edit"></i>');
-		  $(".invis").prop('hidden', false);
-		  $(".list").removeClass('invis');
-  		//alert($("#"+arg2).closest('input').attr('type'));
+			$(".invis").append('<i class="fas fa-trash i-trash" hidden></i><i class="fas fa-pen i-edit"></i>');
+			$(".invis").prop('hidden', false);
+			$(".list").removeClass('invis');
+		  }else if(last_node == 1){
+			$("#newprod-"+arg2).remove();
+			$("#prod-"+arg2).text(name);		
+			$("#prod-"+arg2).prepend('<input type="checkbox" disabled>');		
+			$("#prod-"+arg2).append('<i class="fas fa-trash i-trash" hidden></i><i class="fas fa-pen i-edit"></i>');
+			$("#prod-"+arg2).prop('hidden', false);
+		  } 
   	}
 
   	function editprod(){
   		if($(".i-edit").is(":visible")){
   			$(".i-edit").prop('hidden', true);
   			$("input[type='checkbox']").prop('disabled', false);
-  			for(var j = 1; j <= p; j++){
-  			  	$("#prod-"+j).attr('onclick', '');
+  			for(var j = 0; j < p; j++){
+  			  	$("#prod-"+j).attr('onclick', 'choose('+j+')');
 			  }
 			  $(".list").attr('onclick', 'showsub($(this).text())');
   			return 0;
   		}
   		$("input[type='checkbox']").prop('disabled', true);
   		$(".i-edit").prop('hidden', false);
-  		for(var i = 1; i <= p; i++){
-  			$("#prod-"+i).attr('onclick', 'editspcfprod($(this))');
+  		for(var i = 0; i < p; i++){
+  			$("#prod-"+i).attr('onclick', 'editspcfprod('+i+')');
 		}
 		$(".list").attr('onclick', 'editspcfprod($(this))');
   	}
