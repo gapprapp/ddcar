@@ -393,16 +393,29 @@
                             var d = new Date($.now());
                             d.setDate(d.getDate() + credit);
                             var date_ex = d.getDate() + "/" + (d.getMonth()+1) + "/" +   d.getFullYear();
-                            var contentP = "<html><head><link href='https://fonts.googleapis.com/css?family=Maitree' rel='stylesheet'>"+
-                            " <style>@media print {body,html {transform: scale(.97); -webkit-print-color-adjust: exact; padding: 0mm!important; margin-left: -2mm;}} @page {size: auto; margin: 0;}.fl-spc{float: left; width: 5%;}.fl-9{float: left; width: 9%;}.fl-12{float: left; width: 12.758%;}.fl-13{float: left; width: 13.05%;}.fl-14{float: left; width: 13.88%;}.fl-15{float: left; width: 15%;}.fl-20{float: left; width: 20%; text-align: center;}.fl-25{float: left; width: 25%; text-align: center;}.fl-35{float: left; width: 35%; text-align: center;}.fl-45{float: left; width: 45%; text-align: center;}.fl-80{float: left; width: 80%; text-align: center;}.ctn{position: relative; width: 297mm; font-family: 'Maitree'; letter-spacing: -1px;}.tb-st{border: 1px solid black; text-align: center; padding: 3px;}.tb{border: 1px solid black; text-align: center; padding: 3px; border-left: none;}.no-bdt{border-top: none;}.no-bdbtm{border-bottom: none;}.bold{font-weight: bold;}.ccc{background-color: #ccc;}.pd-15{padding-top: 15px;}.pd-16{padding-top: 16px;}.mg-5{margin-top: 5px;}</style></head><body>";
+                            // Android (Don't use)
+                            //var contentP = "<html><head><link href='https://fonts.googleapis.com/css?family=Maitree' rel='stylesheet'>"+
+                            //"<style>@media print {body {-webkit-print-color-adjust: exact;}} @page {size: auto; margin: 0;}.fl-spc{float: left; width: 5%;}.fl-9{float: left; width: 9%;}.fl-12{float: left; width: 12.752%;}.fl-13{float: left; width: 13.05%;}.fl-14{float: left; width: 13.88%;}.fl-15{float: left; width: 15%;}.fl-20{float: left; width: 20%; text-align: center;}.fl-25{float: left; width: 25%; text-align: center;}.fl-35{float: left; width: 35%; text-align: center;}.fl-45{float: left; width: 45%; text-align: center;}.fl-80{float: left; width: 80%; text-align: center;}.ctn{position: relative; width: 297mm; height: 10%; padding: 10mm 15mm 0mm 10mm; font-family: 'Maitree';}.tb-st{border: 1px solid black; text-align: center; padding: 3px;}.tb{border: 1px solid black; text-align: center; padding: 3px; border-left: none;}.no-bdt{border-top: none;}.no-bdbtm{border-bottom: none;}.bold{font-weight: bold;}.ccc{background-color: #ccc;}.pd-15{padding-top: 15px;}.pd-16{padding-top: 16px;}.mg-5{margin-top: 5px;}</style></head><body>";
+                            
+                            if(device.platform == "iOS"){
+                                // IOS
+                                var contentP = "<html><head><link href='https://fonts.googleapis.com/css?family=Maitree' rel='stylesheet'>"+
+                                "<style>@media print {html, body {-webkit-print-color-adjust: exact; transform: scale(.70); margin-top: -57mm; margin-left: -26mm; letter-spacing: -1px;} #break{page-break-before: always;} #ctn2{margin-top: 50mm;}} #date{margin-left: 3px;} @page {size: A4;} .fl-spc{float: left; width: 5%;}.fl-9{float: left; width: 9%;}.fl-12{float: left; width: 12.752%;}.fl-13{float: left; width: 13.05%;}.fl-14{float: left; width: 13.88%;}.fl-15{float: left; width: 15%;}.fl-20{float: left; width: 20%; text-align: center;}.fl-25{float: left; width: 25%; text-align: center;}.fl-35{float: left; width: 35%; text-align: center;}.fl-45{float: left; width: 45%; text-align: center;}.fl-80{float: left; width: 80%; text-align: center;}.ctn{position: relative; width: 297mm; height: auto; font-family: 'Maitree'; padding: 5mm 0mm 5mm 0mm;}.tb-st{border: 1px solid black; text-align: center; padding: 3px;}.tb{border: 1px solid black; text-align: center; padding: 3px; border-left: none;}.no-bdt{border-top: none;}.no-bdbtm{border-bottom: none;}.bold{font-weight: bold;}.ccc{background-color: #ccc;}.pd-15{padding-top: 15px;}.pd-16{padding-top: 16px;}.mg-5{margin-top: 5px;}</style></head><body>";
+                            }else if(device.platform == "Android"){
+                                // New Android
+                                var contentP = "<html><head><link href='https://fonts.googleapis.com/css?family=Maitree' rel='stylesheet'>" +
+                                "<style>@media print {body {-webkit-print-color-adjust: exact; transform: scale(.96); margin-top: -7mm; letter-spacing: -1px;} #break{} #ctn2{margin-top: 155mm;}} #date{margin-left: 10px;} @page {size: A4; margin: 0;} .fl-spc{float: left; width: 5%;}.fl-9{float: left; width: 9%;}.fl-12{float: left; width: 12.752%;}.fl-13{float: left; width: 13.05%;}.fl-14{float: left; width: 13.88%;}.fl-15{float: left; width: 15%;}.fl-20{float: left; width: 20%; text-align: center;}.fl-25{float: left; width: 25%; text-align: center;}.fl-35{float: left; width: 35%; text-align: center;}.fl-45{float: left; width: 45%; text-align: center;}.fl-80{float: left; width: 80%; text-align: center;}.ctn{position: relative; width: 297mm; height: auto; font-family: 'Maitree';}.tb-st{border: 1px solid black; text-align: center; padding: 3px;}.tb{border: 1px solid black; text-align: center; padding: 3px; border-left: none;}.no-bdt{border-top: none;}.no-bdbtm{border-bottom: none;}.bold{font-weight: bold;}.ccc{background-color: #ccc;}.pd-15{padding-top: 15px;}.pd-16{padding-top: 16px;}.mg-5{margin-top: 5px;}</style></head><body>";
+
+                            } 
+
                             for(var m = 0;m < arr_a4.length;m++){
-                                contentP = contentP +"<div class='ctn' style='margin-top: -10mm;'>" +
+                                contentP = contentP +"<div class='ctn'>" +
                                     "<div class='fl-35'>" +
                                         "<img style='width: 250px; height: 150px;' src='img/logo.jpg'>" +
                                     "</div>" +
                                     '<div class="fl-spc">&emsp;</div>' +
-                                    "<div class='fl-25' style='margin-top: 30px;'>" +
-                                    '<h1 style="border: 1px solid #555; border-radius: 10px; padding-top: 10px; padding-bottom: 10px; background-color: #555 !important; color: white; font-size: 210%;">ใบรายการขาย</h1>' +
+                                    "<div class='fl-25' style='margin-top: 30px; margin-bottom: 10px;'>" +
+                                    '<p style="border: 1px solid #555; border-radius: 10px; padding-top: 10px; padding-bottom: 10px; background-color: #555 !important; color: white; font-size: 220%;">ใบรายการขาย</p>' +
                                     '</div>' +
                                     '<div class="fl-20">&emsp;</div>' +
                                     "<div class='fl-15' style='text-align: center; margin-bottom: 30px;'>" +
@@ -411,11 +424,11 @@
 
                                     '<div style=" text-align: right;">' +
                                         '<p style="width: 99%;"><span class="bold">เลขที่  : </span><span>&emsp;'+order_num+'</span></p>' +
-                                        '<p style="width: 99%; margin-top: -15px;"><span class="bold">วันที่  : </span>&emsp;&emsp; <span>'+date+'</span></p>' +
-                                        '<p style="width: 99%; margin-top: -15px;"><span class="bold">เครดิต : </span><span style="margin-left: 98px;">'+credit+'</span></p>' +
+                                        '<p id="date" style="width: 99%; margin-top: -15px;"><span class="bold">วันที่  : </span>&emsp;&emsp; <span>'+date+'</span></p>' +
+                                        '<p style="width: 99%; margin-top: -15px;"><span class="bold">เครดิต : </span><span style="margin-left: 65px;">'+credit+'</span></p>' +
                                     '</div>'+
                                     
-                                    '<div style=" text-align: left; margin-top: -41px;">'+
+                                    '<div style=" text-align: left; margin-top: -41px; margin-right: 350px;">'+
                                         '&emsp; <span class="bold">สถานที่ส่งสินค้า : </span><span>&emsp;รถบริษัท DD MOTOR SPORT B-24, B-28 อาคารศรีวรจักร ถ.หลวงป้อมปราบศัตรูพ่าย</span>'+
                                     '</div>' +
 
@@ -481,7 +494,7 @@
                                         '<div class="fl-13 tb no-bdt pd-15">0.00</div>'+
                                     '</div>'+
 
-                                    '<div>'+
+                                    '<div style="margin-bottom: 100mm;">'+
                                         '<div class="fl-14 tb-st no-bdt pd-15">ผู้ขายของ</div>'+
                                         '<div class="fl-14 tb no-bdt pd-15">คลังสินค้า/ผู้ตรวจสอบ</div>'+
                                         '<div class="fl-14 tb no-bdt pd-15">ผู้ส่งของ</div>'+
@@ -491,14 +504,14 @@
                                         '<div class="fl-13 tb no-bdt pd-15">'+parseFloat($('#total').val()).toFixed(2)+'</div>'+
                                     '</div>'+
                                 '</div>'+
-                                "<div class='ctn' style = 'margin-top: 155mm;'>" +
-                                '<div style="text-align: center; margin-bottom: 10mm;">--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------</div>'+
+                                "<div id='ctn2' class='ctn'>" +
+                                '<div style="text-align: center; margin-bottom: 5mm;">--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------</div>'+
                                     "<div class='fl-35'>" +
                                         "<img style='width: 250px; height: 150px;' src='img/logo.jpg'>" +
                                     "</div>" +
                                     '<div class="fl-spc">&emsp;</div>' +
                                     "<div class='fl-25' style='margin-top: 30px;'>" +
-                                    '<h1 style="border: 1px solid #555; border-radius: 10px; padding-top: 10px; padding-bottom: 10px; background-color: #555 !important; color: white; font-size: 210%;">ใบรายการขาย</h1>' +
+                                    '<p style="border: 1px solid #555; border-radius: 10px; padding-top: 10px; padding-bottom: 10px; background-color: #555 !important; color: white; font-size: 220%;">ใบรายการขาย</p>' +
                                     '</div>' +
                                     '<div class="fl-20">&emsp;</div>' +
                                     "<div class='fl-15' style='text-align: center; margin-bottom: 30px;'>" +
@@ -507,11 +520,11 @@
 
                                     '<div style=" text-align: right;">' +
                                         '<p style="width: 99%;"><span class="bold">เลขที่  : </span><span>&emsp;'+order_num+'</span></p>' +
-                                        '<p style="width: 99%; margin-top: -15px;"><span class="bold">วันที่  : </span>&emsp;&emsp; <span>'+date+'</span></p>' +
-                                        '<p style="width: 99%; margin-top: -15px;"><span class="bold">เครดิต : </span><span style="margin-left: 98px;">'+credit+'</span></p>' +
+                                        '<p id="date" style="width: 99%; margin-top: -15px;"><span class="bold">วันที่  : </span>&emsp;&emsp; <span>'+date+'</span></p>' +
+                                        '<p style="width: 99%; margin-top: -15px;"><span class="bold">เครดิต : </span><span style="margin-left: 65px;">'+credit+'</span></p>' +
                                     '</div>'+
                                     
-                                    '<div style=" text-align: left; margin-top: -41px;">'+
+                                    '<div style=" text-align: left; margin-top: -41px; margin-right: 350px;">'+
                                         '&emsp; <span class="bold">สถานที่ส่งสินค้า : </span><span>&emsp;รถบริษัท DD MOTOR SPORT B-24, B-28 อาคารศรีวรจักร ถ.หลวงป้อมปราบศัตรูพ่าย</span>'+
                                     '</div>' +
 
@@ -577,7 +590,7 @@
                                         '<div class="fl-13 tb no-bdt pd-15">0.00</div>'+
                                     '</div>'+
 
-                                    '<div>'+
+                                    '<div id="break">'+
                                         '<div class="fl-14 tb-st no-bdt pd-15">ผู้ขายของ</div>'+
                                         '<div class="fl-14 tb no-bdt pd-15">คลังสินค้า/ผู้ตรวจสอบ</div>'+
                                         '<div class="fl-14 tb no-bdt pd-15">ผู้ส่งของ</div>'+
@@ -589,7 +602,7 @@
                                 '</div>';
                             }				
                             contentP = contentP + '</body></html>';
-                            cordova.plugins.printer.print(contentP, { duplex: 'none' }, function (res) {
+                            cordova.plugins.printer.print(contentP, { duplex: 'none', border: false}, function (res) {
                                 // response cancle res = false
                             });  
                         }

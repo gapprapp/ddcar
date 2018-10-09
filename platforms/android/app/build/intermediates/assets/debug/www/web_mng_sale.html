@@ -25,6 +25,11 @@
     <link rel="stylesheet" href="css/easy-loading.css">
     <script src="js/easy-loading.js"></script>
 
+    <!-- Date Picker -->
+    <link href="css/datepicker.css" rel="stylesheet">
+    <script src="js/datepicker.js"></script>
+    <script src="js/datepicker.th-TH.js"></script>
+
     <!-- Font -->
     <link href="https://fonts.googleapis.com/css?family=Prompt" rel="stylesheet">
     <!-- Main -->
@@ -34,13 +39,13 @@
     a{ color: #999;}
     a:hover{color: #666;}
     .active{color: #666;}
-    .ipt-odd, .ipt-even{
+    .sale-odd, .sale-even{
       padding-top: 1%; padding-bottom: 1%; color: #fff; margin-bottom: 1%; cursor: pointer;
     }
-    .ipt-odd{
+    .sale-odd{
       background-color: #999;
     }
-    .ipt-even{
+    .sale-even{
       background-color: #858585;
     }
     h5{
@@ -52,13 +57,31 @@
       padding: 0;
     }
   </style>
+  <script>
+      $(document).ready(function () {
+        // datepicker
+          $('[data-toggle="datepicker"]').datepicker({
+              language: 'th-TH',
+              format: 'yyyy-mm-dd',
+              autoHide: true
+          }).change(function (event) {
+              var date = $('#dpicker').val();
+              var split = date.split("-");// yyyy[0] mm[1] dd[2] 
+              var days = ['อา.', 'จ.', 'อ.', 'พ.', 'พฤ.', 'ศ.', 'ส.'];
+              var d = new Date(split[0], split[1] - 1, split[2]);
+              var first = days[d.getDay()];
+              $('#dpicker').val(first + " " + date);
+              dt = split[0] + "-" + split[1] + "-" + split[2];
+          }); 
+      });
+  </script>
 </head>
 
 <body>
     <div class="container-fullwidth justify-content-center">
         <nav class="navbar navbar-expand-md navbar-dark">
             <div class="collapse navbar-collapse justify-content-md-center" id="navbarCollapse">
-                <h3 id="nav-title">รายงานบิล</h3>
+                <h3 id="nav-title">รายงานการขาย</h3>
             </div>
         </nav>
         <div class="container">
@@ -76,8 +99,10 @@
         </div><br><br>
         <div class="container-fullwidth">
             <div class="input-group row justify-content-center" style="margin-bottom: 4%; margin-left: 0.5%">
-                <input id="input-search" onkeyup="search();" type="text" class="form-control-lg text-center"
-                    placeholder="เลือกวันที่ต้องการดูยอดขาย" style="width: 60%;">
+                <button type="text" class="btn btn-lg btn-secondary text-center" style="width: 60%;">เลือกวันที่</button>
+                <button id="dpicker"  class="btn btn-outline-secondary" type="button" style="margin-left: 10px;" data-toggle="datepicker">
+                    <i class="fa fa-calendar-alt"></i>
+                </button>
             </div>
         </div>
         <div class="container-fullwidth">
@@ -97,7 +122,7 @@
         <div id="ctn-append" class="container-fullwidth">
             <ul id="myUL">
                 <li>
-                    <div class="row justify-content-center ipt-odd">
+                    <div class="row justify-content-center sale-odd">
                         <div class="col-4 text-center">
                             <h5>S18-00054</h5>
                         </div>
@@ -110,15 +135,15 @@
                     </div>
                 </li>
                 <li>
-                    <div class="row justify-content-center ipt-even">
+                    <div class="row justify-content-center sale-even">
                         <div class="col-4 text-center">
                             <h5>IMP19-00054</h5>
                         </div>
                         <div class="col-3 text-center">
-                            <h5>03/10/18</h5>
+                            <h5>กฤต</h5>
                         </div>
                         <div class="col-3 text-center">
-                            <h5>โกดัง B</h5>
+                            <h5>200</h5>
                         </div>
                     </div>
                 </li>
