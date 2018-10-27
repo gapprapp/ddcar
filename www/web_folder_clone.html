@@ -162,13 +162,21 @@
 					$.each(obj, function(i, field){
 						if(obj.length-1 > i){
 							if(i % 2 == 0){
-								text_html = '<h5 id="prod-'+p+'" class="prod-odd" onclick="choose('+p+')"><span id="id-'+p+'" hidden>'+obj[i].title+'</span><input type="checkbox"><span id="span-code-'+p+'">'+obj[i][2].prod_code+'</span>&nbsp;&nbsp;&nbsp;&nbsp;<span id="span-name-'+p+'">'+obj[i][2].prod_name+'</span><i class="fas fa-trash i-trash" hidden></i><i class="fas fa-pen i-edit" hidden></i></h5>';
+								text_html = '<h5 id="prod-'+p+'" class="prod-odd" rel="popover" data-img="'+obj[i][2].img+'" onclick="choose('+p+')"><span id="id-'+p+'" hidden>'+obj[i].title+'</span><input type="checkbox"><span id="span-code-'+p+'">'+obj[i][2].prod_code+'</span>&nbsp;&nbsp;&nbsp;&nbsp;<span id="span-name-'+p+'">'+obj[i][2].prod_name+'</span><i class="fas fa-trash i-trash" hidden></i><i class="fas fa-pen i-edit" hidden></i></h5>';
 							}else{
-								text_html = '<h5 id="prod-'+p+'" class="prod-even" onclick="choose('+p+')"><span  id="id-'+p+'" hidden>'+obj[i].title+'</span><input type="checkbox"><span id="span-code-'+p+'">'+obj[i][2].prod_code+'</span>&nbsp;&nbsp;&nbsp;&nbsp;<span id="span-name-'+p+'">'+obj[i][2].prod_name+'</span><i class="fas fa-trash i-trash" hidden></i><i class="fas fa-pen i-edit" hidden></i></h5>';
-							} 
-							p++ 
+								text_html = '<h5 id="prod-'+p+'" class="prod-even" rel="popover" data-img="'+obj[i][2].img+'" onclick="choose('+p+')"><span  id="id-'+p+'" hidden>'+obj[i].title+'</span><input type="checkbox"><span id="span-code-'+p+'">'+obj[i][2].prod_code+'</span>&nbsp;&nbsp;&nbsp;&nbsp;<span id="span-name-'+p+'">'+obj[i][2].prod_name+'</span><i class="fas fa-trash i-trash" hidden></i><i class="fas fa-pen i-edit" hidden></i></h5>';
+							} 							 
 							                  
-						$("#append-prod").append(text_html);                      
+						$("#append-prod").append(text_html + "<script>" +
+							"$('#prod-"+p+"[rel=popover]').popover({" +
+							"html: true," +
+							"trigger: 'hover'," +
+							"placement: 'left'," +
+							"content: function(){" +
+							"return '<img src='+$(this).data('img')+'>';}" +
+							"});" +
+						"</" + "script>");
+						 p++                  
 						}                                                 
 					});  
 					last_node = 1                                                              
@@ -599,8 +607,16 @@
 						if(data != "fail"){
 							console.log(data)
 							$("#newprod-"+arg).remove();
-							text_html = '<h5 id="prod-'+p+'" class="prod-odd" onclick="choose('+p+')"><span hidden id="id-'+p+'">'+data+'</span><input type="checkbox"><span id="span-code-'+p+'">'+code+'</span>&nbsp;&nbsp;&nbsp;&nbsp;<span id="span-name-'+p+'">'+name+'</span><i class="fas fa-trash i-trash" hidden></i><i class="fas fa-pen i-edit" hidden></i></h5>';	
-							$("#append-prod").prepend(text_html);
+							text_html = '<h5 id="prod-'+p+'" class="prod-odd"  rel="popover" data-img="'+b64+'" onclick="choose('+p+')"><span hidden id="id-'+p+'">'+data+'</span><input type="checkbox"><span id="span-code-'+p+'">'+code+'</span>&nbsp;&nbsp;&nbsp;&nbsp;<span id="span-name-'+p+'">'+name+'</span><i class="fas fa-trash i-trash" hidden></i><i class="fas fa-pen i-edit" hidden></i></h5>';	
+							$("#append-prod").prepend(text_html + "<script>" +
+								"$('#prod-"+p+"[rel=popover]').popover({" +
+								"html: true," +
+								"trigger: 'hover'," +
+								"placement: 'left'," +
+								"content: function(){" +
+								"return '<img src='+$(this).data('img')+'>';}" +
+								"});" +
+							"</" + "script>");
 							p++		
 							last_node = 1
 						}else{
@@ -711,11 +727,7 @@
 			});
 		}else if(last_node == 1){
 			prod_id = $('#id-'+arg).text();
-			prod = $("#prod-"+arg).clone()    //clone the element
-								.children() //select all the children
-								.remove()   //remove all the children
-								.end()  //again go back to selected element
-								.text();	
+			prod = $("#span-name-"+arg).text();	
 			$.confirm({
 			icon: 'fa fa-warning',
 				title: 'คุณต้องการลบ ' + prod,
@@ -800,11 +812,12 @@
 			arg.prop('hidden', true);
 		}else if(last_node == 1){		
 			name = $("#span-name-"+arg).text();			
-			code = $("#span-code-"+arg).text();		
+			code = $("#span-code-"+arg).text();	
+			namedq = name.replace(/"/g, '\\"');				
 			$("#prod-"+arg).after('<h5 id="newprod-'+arg+'" class="prod-even edt">แก้ไขสินค้า : <div class="row">'+				
-				'<input id="code-'+arg+'" placeholder="" value="'+code+'" type="text" class="form-control" style="margin: 0; margin-top: 2px; margin-bottom: 10px; margin-right: 2px; font-size: 1em; width: 30%;">'+		
-				'<input id="name-'+arg+'" placeholder="ชื่อสินค้า" value="'+name+'" type="text" class="form-control" style="margin: 0; margin-top: 2px; margin-bottom: 10px; margin-right: 2px; font-size: 1em; width: 50%;">'+			
-				'</div><div class="row" style="padding-left: 2%;"><button class="btn btn-primary" style="margin-right: 10px;" onclick="editprodconfirm(\''+name+'\',\''+code+'\','+arg+')">บันทึกแก้ไข</button><button class="btn btn-danger" style="margin-right: 10px;" onclick="editprodcancle(\''+name+'\',\''+code+'\','+arg+');">ยกเลิก</button>'+
+				'<input id="code-'+arg+'" placeholder="รหัสสินค้า" value="'+code+'" type="text" class="form-control" style="margin: 0; margin-top: 2px; margin-bottom: 10px; margin-right: 2px; font-size: 1em; width: 30%;">'+		
+				"<input id='name-"+arg+"' placeholder='ชื่อสินค้า' value='"+name+"' type='text' class='form-control' style='margin: 0; margin-top: 2px; margin-bottom: 10px; margin-right: 2px; font-size: 1em; width: 50%;'>"+			
+				"</div><div class='row' style='padding-left: 2%;'><button class='btn btn-primary' style='margin-right: 10px;' onclick='editprodconfirm(\""+namedq+"\",\""+code+"\","+arg+")'>บันทึกแก้ไข</button><button class='btn btn-danger' style='margin-right: 10px;' onclick='editprodcancle(\""+namedq+"\",\""+code+"\","+arg+");'>ยกเลิก</button>"+
 					'<form id="imageUploadForm" method="post" enctype="multipart/form-data">'+
 						'<input id="fileSelect" onchange="select_img()" type="file" name="file" accept="image/*" rel="popover" data-img="">'+
 					'</form>'+	
@@ -918,6 +931,9 @@
 							$("#newprod-"+arg).remove();
 							$("#span-name-"+arg).text(name);
 							$("#span-code-"+arg).text(barcode);
+							if(b64){
+								$('#prod-'+arg).data('img', b64);
+							}							
 							// $("#"+arg2).text(text);
 							
 							//$("#prod-"+arg).prepend('<input type="checkbox" disabled>');
@@ -946,8 +962,7 @@
 		}		
   	}
 
-  	function editprodcancle(old_name,code,arg){
-		  //console.log(arg1 + arg2);
+  	function editprodcancle(old_name,code,arg){		  
 		  if(last_node == 0){
 			$("#editprod").remove();
 			$(".invis").text(old_name);

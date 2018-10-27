@@ -3,7 +3,7 @@
     $data = $_POST['phrase'];
     $output = array();
       
-    $query = "SELECT * FROM product WHERE prod_name LIKE '%$data%' OR prod_code LIKE '%$data%'";
+    $query = "SELECT * FROM product WHERE prod_name LIKE '%$data%' OR prod_code LIKE '%$data%' ORDER BY prod_code ASC";
     $result = mysqli_query($conn, $query);
 
     if(mysqli_num_rows($result) > 0){    
