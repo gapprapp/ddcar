@@ -167,7 +167,7 @@
 					$.each(obj, function(i, field){
 						if(obj.length-1 > i){
 							if(i % 2 == 0){
-								text_html = '<h5 id="prod-'+p+'" class="prod-odd" rel="popover" data-img="'+obj[i][2].img+'" onclick="choose('+p+')"><span id="id-'+p+'" hidden>'+obj[i].title+'</span><input type="checkbox"><span id="span-code-'+p+'">'+obj[i][2].prod_code+'</span>&nbsp;&nbsp;&nbsp;&nbsp;<span id="span-name-'+p+'">'+obj[i][2].prod_name+'</span><i class="fas fa-trash i-trash" hidden></i><i class="fas fa-pen i-edit" hidden></i><i class="fa fa-sort-down" data-toggle="modal" data-target="#detailModal"></i></h5>';
+								text_html = '<h5 id="prod-'+p+'" class="prod-odd" rel="popover" data-img="'+obj[i][2].img+'" onclick="choose('+p+')"><span id="id-'+p+'" hidden>'+obj[i].title+'</span><input type="checkbox"><span id="span-code-'+p+'">'+obj[i][2].prod_code+'</span>&nbsp;&nbsp;&nbsp;&nbsp;<span id="span-name-'+p+'">'+obj[i][2].prod_name+'</span><i class="fas fa-trash i-trash" hidden></i><i class="fas fa-pen i-edit" hidden></i><i class="fas fa-info-circle i-modal" data-toggle="modal" data-target="#detailModal" onclick="hideclick('+p+');"></i> </h5>';
 							}else{
 								text_html = '<h5 id="prod-'+p+'" class="prod-even" rel="popover" data-img="'+obj[i][2].img+'" onclick="choose('+p+')"><span  id="id-'+p+'" hidden>'+obj[i].title+'</span><input type="checkbox"><span id="span-code-'+p+'">'+obj[i][2].prod_code+'</span>&nbsp;&nbsp;&nbsp;&nbsp;<span id="span-name-'+p+'">'+obj[i][2].prod_name+'</span><i class="fas fa-trash i-trash" hidden></i><i class="fas fa-pen i-edit" hidden></i></h5>';
 							} 							 
@@ -1069,8 +1069,7 @@
 					<h5 id="prod-1" class="prod-odd" rel="popover" data-img="'+obj[i][2].img+'" onclick="choose(1);"><span id="id-'+p+'"
 						 hidden>'+obj[i].title+'</span><input type="checkbox"><span id="span-code-'+p+'">'+obj[i][2].prod_code+'</span>&nbsp;&nbsp;&nbsp;&nbsp;<span
 						 id="span-name-'+p+'">'+obj[i][2].prod_name+'</span><i class="fas fa-trash i-trash" hidden></i><i class="fas fa-pen i-edit"
-						 hidden></i><i class="fas fa-info-circle i-modal" data-toggle="modal" data-target="#detailModal" onclick="hideclick(1);"
-						 style="z-index: 999;"></i></h5>
+						 hidden></i><i class="fas fa-info-circle i-modal" data-toggle="modal" data-target="#detailModal" onclick="hideclick(1);"></i></h5>
 					<!-- append prod or folder -->
 				</div>
 			</div>
@@ -1094,7 +1093,7 @@
 
 				<!-- Shop body -->
 				<div class="modal-body">
-					<div class="row justify-content-center">
+					<div class="row justify-content-center r">
 						<div class="col-4 text-center" style="border: solid #666 3px; border-radius: 5px;">
 							<h5>หน้าร้าน</h5>
 						</div>
@@ -1148,14 +1147,14 @@
 					<br>
 					<!-- Modal footer -->
 					<div class="col-12 text-center">
-						<button type="button" class="btn btn-danger" data-dismiss="modal" onclick="showclick();" style="width: 120px;;">ปิด</button>
+						<button type="button" class="btn btn-primary" data-dismiss="modal" onclick="showclick();" style="width: 150px;;">ปิด และ บันทึก</button>
 					</div>
 					<br>
 				</div>
 			</div>
 		</div>
 	</div>
-	
+
 </body>
 
 </html>
