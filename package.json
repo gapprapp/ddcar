@@ -13,7 +13,6 @@
     "com.telerik.plugins.nativepagetransitions": "^0.6.5",
     "cordova-android": "^7.0.0",
     "cordova-custom-config": "^5.0.2",
-    "cordova-ios": "git+https://github.com/apache/cordova-ios.git",
     "cordova-plugin-camera": "^4.0.2",
     "cordova-plugin-datepicker": "^0.9.3",
     "cordova-plugin-device": "^2.0.1",
@@ -39,7 +38,6 @@
       "cordova-plugin-printer": {}
     },
     "platforms": [
-      "ios",
       "android"
     ]
   }

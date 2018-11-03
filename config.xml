@@ -48,6 +48,5 @@
     <plugin name="cordova-plugin-fullscreen" spec="^1.2.0" />
     <plugin name="cordova-plugin-printer" spec="^0.7.3" />
     <plugin name="cordova-plugin-device" spec="^2.0.1" />
-    <engine name="ios" spec="git+https://github.com/apache/cordova-ios.git" />
     <engine name="android" spec="^7.0.0" />
 </widget>
