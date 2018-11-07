@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content=""> 
+
+   <!-- Bootstrap Import -->
+   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.6/umd/popper.min.js"></script>
+   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js"></script>
+   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.1/css/all.css" integrity="sha384-O8whS3fhG2OnA5Kas0Y9l3cfpmYjapjI0E4theH4iuMD+pLhbf6JI0jIMfYcK3yZ" crossorigin="anonymous">
+   <script src="cordova.js"></script>
+   <!-- Super cool dialog-->
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.0/jquery-confirm.min.css">
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.0/jquery-confirm.min.js"></script>
+   
+   <!-- Loading -->
+   <link rel="stylesheet" href="css/easy-loading.css">
+   <script src="js/easy-loading.js"></script>	
+ 
+   <!-- Font -->
+   <link href="https://fonts.googleapis.com/css?family=Prompt" rel="stylesheet"> 
+   <!-- Main -->
+   <link href="css/untitled.css" rel="stylesheet"> 
+  <style>
+    .item-row {
+      margin-bottom: 6px;
+    }
+  </style>
+
+  <script>    
+    //   document.addEventListener('deviceready', function () {
+    //     // cordova.plugins.printer is now available
+    // }, false);
+
+    $(document).ready(function() {  
+       
+    });
+
+    function print(){
+      // cordova.plugins.printer.check(function (available, count) {
+      //   alert(available ? 'Found ' + count + ' services' : 'No');
+      // }); 
+
+      // cordova.plugins.printer.pick(function (uri) {
+      //   alert(uri ? uri : 'Canceled');
+      // });
+
+      // cordova.plugins.printer.pick(function (uri) {
+      //   cordova.plugins.printer.print(page, { printerId: uri });
+      // });         
+     
+      var text = "<html><head><link href='https://fonts.googleapis.com/css?family=Maitree' rel='stylesheet'></head><body>"+
+      "<style>@media print {body {-webkit-print-color-adjust: exact;}} @page {size: auto; margin: 0;}.fl-spc{float: left; width: 5%;}.fl-10{float: left; width: 10.25%;}.fl-12{float: left; width: 12.752%;}.fl-14{float: left; width: 15.1%;}.fl-15{float: left; width: 15%;}.fl-20{float: left; width: 20%; text-align: center;}.fl-25{float: left; width: 25%; text-align: center;}.fl-33{float: left; width: 33%; text-align: center;}.fl-35{float: left; width: 35%; text-align: center;}.fl-45{float: left; width: 45%; text-align: center;}.fl-83{float: left; width: 83.55%; text-align: center;}.ctn{position: relative; width: 297mm; height: 210mm; padding: 10mm 15mm 5mm 10mm; font-family: 'Maitree';}.tb-st{border: 1px solid black; text-align: center; padding: 3px;}.tb{border: 1px solid black; text-align: center; padding: 3px; border-left: none;}.no-bdt{border-top: none;}.no-bdbtm{border-bottom: none;}.bold{font-weight: bold;}.head{font-size: 1.3em; padding-top: 10px; padding-bottom: 10px;}.inner{font-size: 1.15em; padding-top: 8px; padding-bottom: 8px;}</style>" +
+      '<div class="ctn" style="margin-top: -8mm;">'+
+      '<div class="fl-35">&emsp;</div> '+
+      '<div class="fl-spc">&emsp;</div>'+
+      ' <div class="fl-25" style="margin-top: 30px;"">'+
+        '<h1 style="border: 1px solid #555; border-radius: 10px; padding-top: 10px; padding-bottom: 10px; background-color: #555 !important; color: white; font-size: 210%;">ใบวางบิล</h1>'+
+      '</div>'+
+      '<div class="fl-20">&emsp;</div>'+
+      '<div class="fl-15" style="text-align: center;"">&emsp;</div>'+
+    
+      ' <div style=" text-align: left;">'+
+        '<p style="width: 60%;"><span class="bold">ชื่อลูกค้า  : </span><span>&emsp; eiei</span></p>'+
+      '</div>'+
+      '<div style="text-align: right; margin-top: -50px;">'+
+        '<p style="width: 99%;"><span class="bold">เลขที่  : </span><span>&emsp;eiei</span></p>'+
+        '<p style="width: 99%;"><span class="bold">วันที่  : </span>&emsp;&emsp; <span>eiei</span></p>'+
+        '<p style="width: 99%;"><span class="bold">เครดิต : </span><span style="margin-left: 44px;">eiei &emsp;&emsp;วัน</span></p>'+
+      ' </div>'+
+
+      '<div>'+
+        '<div class="fl-spc tb-st head bold">ที่</div>'+
+        '<div class="fl-15 tb head bold">เลขที่บิล</div>'+
+        '<div class="fl-12 tb head bold">วันที่</div>'+
+        '<div class="fl-12 tb head bold">ครบกำหนด</div>'+
+        '<div class="fl-20 tb head bold">จำนวนเงิน</div>'+
+        '<div class="fl-15 tb head bold">ชำระแล้ว</div>'+
+        '<div class="fl-15 tb head bold">เงินตกค้าง</div>'+
+      '</div>'+
+      //text +
+      '<div>'+
+        '<div class="fl-spc tb-st inner no-bdt">&emsp;</div>'+
+        '<div class="fl-15 tb inner no-bdt">&emsp;</div>'+
+        '<div class="fl-12 tb inner no-bdt">&emsp;</div>'+
+        '<div class="fl-12 tb inner no-bdt">&emsp;</div>'+
+        '<div class="fl-20 tb inner no-bdt">&emsp;</div>'+
+        '<div class="fl-15 tb inner no-bdt">&emsp;</div>'+
+        '<div class="fl-15 tb inner no-bdt">&emsp;</div>'+
+      '</div>'+
+
+      '<div>'+
+        '<div class="fl-83 tb-st inner no-bdt" style="text-align: right;">รวมทั้งสิ้น&emsp;&emsp;</div>'+
+        '<div class="fl-14 tb inner no-bdt">eiei</div>'+
+      '</div>'+
+      '<div style="margin-top: 1150px;">'+
+        '<div class="fl-33">_________________________</div>'+
+        '<div class="fl-33">_________________________</div>'+
+        '<div class="fl-33">________/________/_________</div>'+
+      '</div>'+
+      '<div>'+
+        '<div class="fl-33 inner">ชื่อผู้วางบิล</div>'+
+        '<div class="fl-33 inner">ชื่อผู้รับวางบิล</div>'+
+        '<div class="fl-33 inner">นัดรับเช็ควันที่</div>'+
+      '</div>'+
+      '<div style="margin-top: 1240px;">'+
+        '<div class="fl-33">________/________/_________</div>'+
+        '<div class="fl-33">________/________/_________</div>'+
+        '<div class="fl-33">&emsp;</div>'+
+      ' </div>'+
+      '</div>'+
+      '</body></html>';
+      
+      cordova.plugins.printer.print(text, { duplex: 'none' }, function (res) {
+        alert(res);
+      });        
+}
+
+    function test(){
+      var contentP = "<html><head><link href='https://fonts.googleapis.com/css?family=Maitree' rel='stylesheet'></head><body>"+
+          "<style>@page {size: auto; margin: 0mm;} body{font-family: 'Maitree'; line-height: 1.5; font-size: 0.9em;} .txt-right{ margin-right: 0.5cm; text-align:right; float: right; } .txt-left{ margin-left: 0.5cm; float: left; width: 50%; }.txt-left-100{ margin-left: 0.5cm; float: left; width: 100%; } .txt-ct{ float: center; text-align: center; margin-bottom: 0.2em} .mid{float: left; width: 3.5cm; text-align: right;} .left{margin-left: 0.5cm; float: left; width: 0.3cm; text-align: center;} .right{margin-right: 0.5cm; float: left; width: 2.7cm; text-align: right;}.bold{font-weight: bold;}</style>" +
+          "<div style='width: 7.5cm;'>"+
+              "<div class='txt-ct'>DD MOTOR SPORT</div>"+
+              "<div class='txt-ct'>B-24, B-28 อาคารศรีวรจักร ถ.หลวงป้อมปราบศัตรูพ่าย</div>"+
+              "<div class='txt-ct'>โทร. 065-5028828 , 097-0631169</div>"+
+              "<div class='txt-ct bold' style='margin-top: 0.5em; margin-bottom: 0.5em;'>ใบเสร็จรับเงิน</div>"+						
+              "<div class='txt-left-100'>ลูกค้า : </div>"+
+              "<div class='txt-left-100'>ประเภท : </div>"+
+              "<div class='txt-left-100'>เลขที่บิล :  </div>"+
+              "<div class='txt-left' style='letter-spacing: -0.5px;'>วันที่ขาย : </div>"+
+              "<div class='txt-right' style='margin-bottom: 5px;'>เวลา : </div>"+
+              
+              "<hr style='width: 90%; border-top: 1px dashed; border-bottom: none;'>"+
+              "<div class='left bold'>จน.</div> <div class='mid bold'>รายการ</div> <div class='right bold'>ราคา</div>"+
+              
+              "<hr style='width: 90%; border-top: 5px; border-top: 1px dashed; border-bottom: none;'>"+
+              "<div class='txt-left'>ราคารวม : </div>"+
+              "<div class='txt-right'> บาท</div><br>"+
+              "<div class='txt-left'>ส่วนลด : </div>"+
+              "<div class='txt-right'> บาท</div><br>"+
+              "<div class='txt-left'>สุทธิ : </div>"+
+              "<div class='txt-right'> บาท</div><br>"+
+              "<div class='txt-left' style='width: 30%;'>รับ / ทอน : </div>"+
+              "<div class='txt-right'><span style='margin-right: 20px'> บาท</span><span>  บาท</span></div><br><br>"+
+              "<div class='txt-ct' style='margin-bottom: 0.5em;'>ขอบคุณที่ใช้บริการ</div>"+
+              "<div class='txt-ct'>พนักงานขาย : </div>"+
+          "</div>"+
+          '</body></html>';      
+      cordova.plugins.printer.print('<div>hell</div>', { duplex: 'none' }, function (res) {
+          // response cancle res = false
+      });                  
+    }
+
+  </script>
+</head>
+
+<body>  
+  <button class="btn btn-success" onclick="test();">click me!!!!</button>
+</body>
+
+</html>

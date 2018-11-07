@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Home</title>
+    <!-- Bootstrap Import -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <script type="text/javascript" src="js/jquery-3.3.1.min.js"></script>
+    <script type="text/javascript" src="js/jquery-ui.min.js"></script>
+    <script type="text/javascript" src="js/jquery.easing.1.3.min.js"></script>
+    <script type="text/javascript" src="js/transition.js"></script>
+    <script type="text/javascript" src="js/jquery-confirm.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.6/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+    <script defer src="https://use.fontawesome.com/releases/v5.0.8/js/all.js"></script>   
+    <script src="cordova.js"></script> 
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.0/jquery-confirm.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.0/jquery-confirm.min.js"></script>  
+
+    <link rel="stylesheet" href="css/index.css">
+    <link rel="stylesheet" href="css/jquery-confirm.css">
+    <link rel="stylesheet" href="css/loading.css">
+
+    <!-- Font -->
+    <link href="https://fonts.googleapis.com/css?family=Prompt" rel="stylesheet">
+
+    <style>
+        #title {
+            color: #666666;
+            letter-spacing: 2px;
+        }
+
+        .pdlr {
+            padding-left: 10%;
+            padding-right: 10%;
+        }
+    </style>
+
+    <script>
+        var cus_id;
+        $(document).ready(function () {
+            //get from url (cus id)
+            url = new URL(window.location.href);
+            cus_id = url.searchParams.get("cus");
+            edit = url.searchParams.get("edit");          
+
+            $.ajax({
+                type: "POST",
+                url:"http://ddaccessory.trueddns.com:24330/dd-shop/php/get_detail_cus.php",  
+                data: {'cus_id' : cus_id}, 
+                beforeSend: function(){
+                    $(".overlay").prop('hidden', false);
+                },                       
+                success: function(data){ 
+                    $(".overlay").prop('hidden', true);  
+                    var obj = jQuery.parseJSON(data);
+                    $('#name').val(obj[0].cus_name);
+                    $('#addr').val(obj[0].cus_addr);
+                    $('#tel').val(obj[0].cus_tel);
+                    $('#type').val(obj[0].cus_type);                       
+                    $.each(obj, function(i, field){
+                        if(i > 0){
+                            $('#cusprice-collapse').append("<div class='row' style='margin-bottom: 5%;'>" +
+                            "<div class='col-7 text-center'>" +
+                                "<input type='text' class='w3-input2 text-center' value='"+obj[i].prod_name+"' disabled>" +
+                            "</div>" +
+                            "<div class='col-4 text-center'>" +
+                                "<input type='text' class='w3-input2 text-center' value='"+obj[i].cus_price+"' disabled>" +
+                            "</div>" +
+                            "</div>");
+                        }                       
+                    });   
+                    $('#cusprice-collapse').append("<hr style='margin-bottom: 10%;'>");                       
+                }               
+            });
+
+            if(edit == "true"){                
+                $('#h5-title').text("แก้ไข");
+                $('#name').prop('disabled', false);
+                $('#addr').prop('disabled', false);
+                $('#tel').prop('disabled', false);
+                $('#type').prop('disabled', false);
+                var temp = $('#name').val();
+                $('#name').focus().val("").val(temp);
+            }else{
+                 $('#h5-title').text('ข้อมูล');
+                 $('#btn-update').prop('hidden', true);
+            }
+        });
+
+        $(document).keydown(function(objEvent) {
+            if (objEvent.keyCode == 13) {  //enter pressed
+                objEvent.preventDefault();
+                var $this = $(objEvent.target);
+                var i_enter = parseFloat($this.attr('data-index'));                      
+                if(i_enter == 3){
+                    $this.blur();
+                }else{
+                    var temp = $('[data-index="' + (i_enter+1).toString() + '"]').val();                  
+                    $('[data-index="' + (i_enter+1).toString() + '"]').focus().val("").val(temp);
+                }                       
+            }         
+        })
+
+        /*function disactive(arg) {
+            nav_menu = ['home', 'bell', 'qrcode', 'bars'];
+            for (i = 0; i < 4; i++) {
+                if (nav_menu[i] != arg) {
+                    if ($("#i-" + nav_menu[i]).hasClass('active')) $("#i-" + nav_menu[i]).removeClass('active');
+                }
+            }
+        }
+
+        function menu(arg) {
+            // Animate
+            disactive(arg);
+            $("#i-" + arg).fadeOut(100).fadeIn(100, function () {
+                $("#i-" + arg).addClass('active');
+            });
+        }*/
+
+        function update_cus() {
+            // save to db
+            var name = $('#name').val();
+            var addr = $('#addr').val();
+            var tel = $('#tel').val();
+            var type = $('#type').val();  
+
+            if(name == "" || type == ""){
+                $.confirm({
+                  title: 'พบข้อผิดพลาด',
+                  content: 'กรุณากรอกข้อมูลให้ครบ',
+                  backgroundDismiss: true,
+                  buttons: {
+                    formSubmit: {
+                      text: 'ตกลง',
+                      btnClass: 'btn-regis',
+                      action: function () {
+                      }
+                    }
+                  }
+                }); 
+            }  
+                $.ajax({
+                    type: "POST",
+                    url:"http://ddaccessory.trueddns.com:24330/dd-shop/php/rename_cus.php",           
+                    data: {'cus_id' : cus_id,
+                        'cus_name':name,
+                        'phone':tel,
+                        'addr':addr,
+                        'type' : type},  
+                    beforeSend: function(){
+                        $(".overlay").prop('hidden', false);
+                    },              
+                    success: function(data){  
+                        $(".overlay").prop('hidden', true);         
+                        if(data == "success"){  
+                            $.confirm({
+                                title: 'เสร็จสิ้น',
+                                content: 'ทำการแก้ไขข้อมูลของลูกค้า '+name+' เสร็จสิ้น',
+                                backgroundDismiss: true,
+                                buttons: {
+                                  formSubmit: {
+                                    text: 'ตกลง',
+                                    btnClass: 'btn-regis',
+                                    action: function () {
+                                        goto = "customer.html";
+                                        transition_page_next_flip(goto);
+                                        window.location = goto;
+                                      }
+                                  }
+                                }
+                            });                       
+                            goto = "customer.html";
+                            transition_page_back_flip(goto);
+                            window.location = goto;
+                        }else{
+                            $.confirm({
+                                title: 'พบข้อผิดพลาด',
+                                content: 'ลองอีกครั้ง',
+                                backgroundDismiss: true,
+                                buttons: {
+                                    formSubmit: {
+                                    text: 'ตกลง',
+                                    btnClass: 'btn-regis',
+                                    action: function () {
+                                    }
+                                    }
+                                }
+                             });
+                        }
+                    }               
+                });                   
+        }
+
+        function setrole(arg){
+            $("#type").val(arg);
+        }
+
+    </script>
+</head>
+
+<body style="overflow: auto;">
+    <!-- Loading -->
+    <div class="overlay" hidden><div class="loading"></div></div>
+
+    <!-- Nav menu top -->
+    <div class="row fixed-top navs align-items-center">
+        <div class="col-1 text-center" onclick="transition_page_back('customer.html'); window.location = 'customer.html';">
+            <i id="i-back" class="fas fa-angle-left"></i>
+        </div>
+        <div class="col-10 text-center">
+            <h5 id="h5-title"></h5>
+        </div>
+        <div class="col-1">
+        </div>
+    </div>
+    <br>
+
+    <!-- End big container -->
+    <div class="container justify-content-center" style="margin-top: 20%;">
+        <div class="container">
+            <div class="row mg-10">
+                <div class="col-12 text-center pdlr">
+                    <label for="name">ชื่อ</label>
+                    <input id="name" type="text" class="w3-input" disabled data-index="1">
+                </div>
+            </div>
+            <div class="row mg-10">
+                <div class="col-12 text-center pdlr">
+                    <label for="addr">ที่อยู่</label>
+                    <input id="addr" type="text" class="w3-input" disabled data-index="2">
+                </div>
+            </div>
+            <div class="row mg-10">
+                <div class="col-12 text-center pdlr">
+                    <label for="tel">เบอร์โทร</label>
+                    <input id="tel" type="tel" class="w3-input" disabled data-index="3">
+                </div>
+            </div>
+            <div class="row" style="margin-bottom: 16%;">
+                <div class="col-12 text-center pdlr">
+                    <label for="type">ประเภท</label>
+                    <input id="type" type="text" class="w3-input" readonly>
+                </div>
+            </div>
+
+            <div class="row mg-10">
+                <div class="col-12 text-center">
+                    <button id="btn-cusprice" class="mbtn-green" href="#cusprice-collapse" data-toggle="collapse">สินค้าราคาพิเศษ</button>
+                </div>
+            </div>
+
+            <div id="cusprice-collapse" class="container collapse">
+                <div class="row"> 
+                    <div class="col-7 text-center">
+                        <h5 class="title">สินค้า</h5>
+                    </div>
+                    <div class="col-4 text-center">
+                        <h5 class="title">ราคา</h5>
+                    </div>
+                </div> <hr style="width: 100%;">   
+               
+                
+            </div>
+
+            <div class="row">
+                <div class="col-12 text-center">
+                    <button id="btn-update" class="mbtn" onclick="update_cus();">บันทึก</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End big container -->
+    <script>
+        $("#type").click(function(event) {
+            url = new URL(window.location.href);
+            cus_id = url.searchParams.get("cus");
+            edit = url.searchParams.get("edit");
+            if(edit){
+                $.confirm({
+                    title: 'บทบาท',
+                    content: '<hr style="width: 80%; margin-bottom: 0;">',
+                    onOpenBefore: function () {
+                        $(".jconfirm-buttons .btn-choice:nth-child(n+1)").css("border-bottom", "solid #848484 1px");
+                    },
+                    backgroundDismiss: true,
+                    buttons: {
+                      form1: {
+                        text: 'ขายส่ง(1)',
+                        btnClass: 'btn-choice',
+                        action: function () {
+                          setrole('ขายส่ง(1)');
+                        }
+                      },
+                      form2: {
+                        text: 'ขายส่ง(2)',
+                        btnClass: 'btn-choice',
+                        action: function () {
+                          setrole('ขายส่ง(2)');
+                        }
+                      },
+                      form3: {
+                        text: 'ขายส่ง(3)',
+                        btnClass: 'btn-choice',
+                        action: function () {
+                          setrole('ขายส่ง(3)');
+                        }
+                      },
+                      form4: {
+                        text: 'ขายปลีก',
+                        btnClass: 'btn-choice',
+                        action: function () {
+                          setrole('ขายปลีก');
+                        }
+                      }
+                    }
+                });
+            }else{
+                return false;
+            }
+        });
+    </script>
+</body>
+
+</html>

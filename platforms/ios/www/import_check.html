@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Home</title>
+    <!-- Bootstrap Import -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <script type="text/javascript" src="js/jquery-3.3.1.min.js"></script>
+    <script type="text/javascript" src="js/jquery-ui.min.js"></script>
+    <script type="text/javascript" src="js/jquery.easing.1.3.min.js"></script>
+    <script type="text/javascript" src="js/transition.js"></script>
+    <script type="text/javascript" src="js/jquery-confirm.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.6/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+    <script defer src="https://use.fontawesome.com/releases/v5.0.8/js/all.js"></script>
+    <script src="cordova.js"></script>
+    
+    <link rel="stylesheet" href="css/index.css">
+    <link rel="stylesheet" href="css/jquery-confirm.css">
+    <link rel="stylesheet" href="css/loading.css">
+
+    <!-- Font -->
+    <link href="https://fonts.googleapis.com/css?family=Prompt" rel="stylesheet">
+
+    <style>
+        #title {
+            color: #666666;
+            letter-spacing: 2px;
+        }
+
+        .no-pd {
+            padding-right: 0px;
+            padding-left: 0px;
+            font-size: 120%;
+        }
+
+        hr {
+            margin-top: 0;
+        }
+    </style>
+
+    <script>
+        arr_data = [];  
+        var sum = 0;      
+        $(document).ready(function () {
+            //navs
+            margin = $("#navs-menu").outerHeight()*3;
+            $("#ctn-btm").css('padding-bottom', margin);
+            margin = $("#ctn-btm").outerHeight();
+            $("#big-ctn").css('margin-bottom', margin); 
+            
+            //$("style").append('.jconfirm .jconfirm-box{margin-bottom: 60%;}');
+
+            margin = $("#ctn-btn").outerHeight() + $("#navs-menu").outerHeight() -15;
+            $("#navs-net").css('margin-bottom', margin); 
+
+            margin = $("#ctn-btn").outerHeight() + $("#navs-menu").outerHeight() + $("#navs-net").outerHeight() -15;
+            $("#big-ctn").css('margin-bottom', margin); 
+            /********************************************/
+            $('#ware-title').text(localStorage.ware_name_im);           
+            var retrievedObject = localStorage.getItem('arr_prod');
+            arr_data = JSON.parse(retrievedObject);              
+            for(var i = 0 ; i < arr_data.length ; i ++){                              
+                var sum_prod = arr_data[i].cost*arr_data[i].amt;
+                sum += parseInt(sum_prod);
+                $('#big-ctn').append("<div id='prod-"+i+"' class='row'>\
+                <span id='id-prod-"+i+"' hidden>"+arr_data[i].prod_id+"</span>\
+                <div class='col-1 text-center no-pd'>\
+                    <i id='i-del-"+i+"' class='fa fa-trash-alt i-del' onclick='remove("+i+");' hidden style='color: #666;'></i>\
+                    <i id='i-edit-"+i+"' class='fa fa-edit i-edit' onclick='edit_prod("+i+");' hidden style='color: #666;'></i>\
+                </div>\
+                <div id='name-"+i+"' class='col-6 text-center no-pd' onclick='collapse("+i+");'>"+arr_data[i].name+"</div>\
+                <div id='price-"+i+"' class='col-3 text-center no-pd'>"+arr_data[i].cost+"</div>\
+                <span>x</span>\
+                <div id='amount-"+i+"' class='col-1 text-center no-pd'>"+arr_data[i].amt+"</div>\
+            </div>\
+            <!-- Collapse-1 -->\
+            <div id='collapse-"+i+"' class='container collapse' style='margin-top: 5%;'>\
+                <div class='row'>\
+                    <div class='col-12 text-center'>\
+                        <img id='img' src='"+arr_data[i].img+"' alt='' onclick='show_pic()' class='collapse-square'>\
+                    </div>\
+                </div>\
+                <div class='row' style='margin-bottom: 4%; margin-top: 4%;'>\
+                    <div class='col-2'></div>\
+                    <div class='col-4 text-center no-pd'>รหัส : </div>\
+                    <div class='col-4 text-center no-pd'>"+arr_data[i].qr+"</div>\
+                    <div class='col-2'></div>\
+                </div>\
+                <div class='row' style='margin-bottom: 4%;'>\
+                    <div class='col-2'></div>\
+                    <div class='col-4 text-center no-pd'>รวม : </div>\
+                    <div id='sum-"+i+"' class='col-4 text-center no-pd'>"+sum_prod+"</div>\
+                    <div class='col-2'></div>\
+                </div>\
+            </div>\
+            <hr id='hr-"+i+"' style='margin-top: 5%;'>");                    
+            }            
+            $("#net").text(sum.toLocaleString()); // 50000 -> 50,000;
+        });
+
+        function save(){
+            if(arr_data.length == 0){
+                return 0;
+            }
+            var d = new Date($.now());         
+            var datetime = d.getFullYear() + "-" + (d.getMonth()+1) + "-" + d.getDate() + " " + d.getHours() + ":" + d.getMinutes() + ":" + d.getSeconds(); 
+            json_string = JSON.stringify(arr_data);
+            var dataString =  "JSON=" + json_string + "&ware_id=" + localStorage.ware_id_im + "&date=" + datetime
+            + "&sum=" + sum + "&user_id=" + localStorage.user_id;
+
+            $.ajax({
+                type: "POST",
+                url:"http://ddaccessory.trueddns.com:24330/dd-shop/php/stock_in.php",           
+                data: dataString,               
+                beforeSend: function(){
+                    $(".overlay").prop('hidden', false);
+                },             
+                success: function(data){  
+                $(".overlay").prop('hidden', true);              
+                    if(data == "success"){                       
+                        clearAll();         
+                    }else{
+                        $.confirm({
+                            title: 'พบข้อผิดพลาด',
+                            content: 'ลองอีกครั้ง',
+                            backgroundDismiss: true,
+                            buttons: {
+                                formSubmit: {
+                                text: 'ตกลง',
+                                btnClass: 'btn-regis',
+                                action: function () {
+                                }
+                                }
+                            }
+                        });
+                    }
+                }               
+            });
+        }
+
+        function remove(num){
+            var cost = $('#price-'+num).text();   
+            var amt = $('#amount-'+num).text();
+            var name = $('#name-'+num).text();
+            var net = $("#net").html();           
+            var sum2 = parseFloat(net.replace(/,/g, ''))-(cost*amt);
+            $.confirm({
+                title: 'ลบรายการ',
+                content: 'ต้องการลบ '+name+' หรือไม่',
+                backgroundDismiss: true,
+                buttons: {
+                  formSubmit: {
+                    text: 'ตกลง',
+                    btnClass: 'btn-danger',
+                    action: function () {    
+                        sum = sum2;                              
+                        $("#net").text(sum2.toLocaleString());   
+                        $('#prod-'+num).remove();   
+                        $('#collapse-'+num).remove();   
+                        $('#hr-'+num).remove();                      
+                        arrange(num);
+                    }
+                  },ยกเลิก: function () {}
+                }  
+            });
+        }
+
+        function arrange(arg){
+            arr_data.splice(arg,1);       
+            for(var i = arg+1; i <= arr_data.length; i++){
+                $("#prod-"+i).prop('id', 'prod-'+(i-1));
+                $("#id-prod-"+i).prop('id', 'id-prod-'+(i-1));
+                $("#i-del-"+i).attr('onclick', "remove("+(i-1)+")");          
+                $("#i-edit-"+i).attr('onclick', "edit_prod("+(i-1)+")");               
+                $("#i-del-"+i).prop('id', 'i-del-'+(i-1));
+                $("#i-edit-"+i).prop('id', 'i-edit-'+(i-1));             
+                $("#price-"+i).prop('id', 'price-'+(i-1));
+                $("#amount-"+i).prop('id', 'amount-'+(i-1));
+                $("#name-"+i).attr('onclick', "collapse("+(i-1)+")");     
+                $("#name-"+i).prop('id', 'name-'+(i-1));
+                $("#collapse-"+i).prop('id', 'collapse-'+(i-1));
+                $("#sum-"+i).prop('id', 'sum-'+(i-1));    
+                $("#hr-"+i).prop('id', 'hr-'+(i-1));              
+            } 
+            localStorage.setItem('arr_prod', JSON.stringify(arr_data));          
+        }
+
+        function disactive(arg) {
+            nav_menu = ['home', 'add', 'edit', 'del'];
+            for (i = 0; i < 4; i++) {
+                if (nav_menu[i] != arg) {
+                    if ($("#i-" + nav_menu[i]).hasClass('active')) $("#i-" + nav_menu[i]).removeClass('active');
+                }
+            }
+        }
+
+        function menu(arg) {
+            // Animate
+            disactive(arg);
+            if($("#i-"+arg).hasClass('active')){
+                console.log("i-"+arg+"hasClass('active')");
+                $("#i-"+arg).removeClass('active');
+              }else{
+                $("#i-" + arg).fadeOut(150).fadeIn(100, function() {
+                  $("#i-" + arg).addClass('active');
+                });
+            }
+
+            if (arg == "add") {
+                /*goto = "sale.html";
+                transition_page_back(goto);*/
+            } else if(arg == "edit"){
+                // show edit all
+                if ($(".i-edit").is(":visible")) {
+                  $(".i-del").attr('hidden', true);
+                  $(".i-edit").attr('hidden', true);
+                  disac("edit");
+                } else {
+                  $(".i-del").attr('hidden', true);
+                  $(".i-edit").attr('hidden', false);
+                }
+            } else if (arg == "del") {
+                // show trash all 
+                if($(".i-del").is(":visible")){
+                  $(".i-edit").attr('hidden', true);
+                  $(".i-del").attr('hidden', true);
+                  disac("del");
+                }else{
+                  $(".i-edit").attr('hidden', true);
+                  $(".i-del").attr('hidden', false);
+                }
+            }
+        }      
+       
+        function edit_prod(arg) {
+            var prod_name = $("#name-"+arg).text();
+            var amt = $("#amount-" + arg).text();   
+            var cost = $('#price-'+arg).text();
+            var sum_old = amt*cost;
+
+            $("style").append(".jconfirm .jconfirm-box{margin-bottom:60%;}");
+            $.confirm({
+              title: prod_name,
+              content: '<div class="row"><div class="col-2"></div><div class="col-3 text-center" style="font-size: 110%; font-weight: bold;">จำนวน</div><div class="col-5 text-center"><input id="edt-amt" type="number" class="input-cf" placeholder="" value="'+amt+'"></div><div class="col-2"></div></div>',
+              backgroundDismiss: true,
+              onContentReady: function () {
+                var temp = $('#edt-amt').val();
+                $("#edt-amt").focus().val("").val(temp);
+            },
+              onDestroy: function(){
+                $("style").append('.jconfirm .jconfirm-box{margin-bottom: 5%;}');
+            },
+              buttons: {
+                formSubmit: {
+                  text: 'ตกลง',
+                  btnClass: 'btn-danger',
+                  action: function () {  
+                    var amt = $('#edt-amt').val();
+                    $("#amount-" + arg).text(amt);
+                    arr_data[arg].amt = amt; 
+                    localStorage.setItem('arr_prod', JSON.stringify(arr_data));     
+                    sum = (sum-sum_old)+(amt*cost);
+                    $("#net").text(sum.toLocaleString());
+                    $("#sum-"+arg).text(cost*amt);  
+                  }                
+              },ยกเลิก: function () {
+                    //$(".jconfirm .jconfirm-box").css('margin-bottom', '5%');
+                }
+            }
+            });   
+        }
+
+        function collapse(arg) {
+            // 4 is num of prod
+            for (i = 0; i < 4; i++) {
+                if (i != arg && $("#collapse-" + i).is(":visible")) {
+                    $("#collapse-" + i).slideToggle('collapse');
+                }
+            }
+
+            $("#collapse-" + arg).slideToggle('collapse', function () {
+                /*$('html, body').animate({
+                    scrollTop: $("#collapse-" + arg).height()
+                }, 900);*/
+            });
+        }
+
+        function clearAll(){
+            localStorage.arr_prod = "";          
+            localStorage.arr_prod_i =  "";  
+            localStorage.ware_id_im = "";
+            localStorage.ware_name_im = "";        
+            transition_page_back('import.html');
+            window.location = 'import.html'
+        }
+
+        function show_pic(){
+            localStorage.img = $('#img').attr('src');           
+            goto = "show_pic.html";
+            transition_page_next(goto);
+            window.location = goto;
+        }
+
+    </script>
+</head>
+
+<body style="overflow: auto;">
+    <!-- Loading -->
+    <div class="overlay" hidden><div class="loading"></div></div>
+    <!-- Nav menu top -->
+    <div class="row fixed-top navs align-items-center">
+        <div class="col-1 text-center" onclick="transition_page_back('import.html'); window.location = 'import.html';">
+            <i id="i-back" class="fas fa-angle-left"></i>
+        </div>
+        <div class="col-10 text-center">
+            <h5 id="h5-title">ตรวจสอบ</h5>
+        </div>
+        <div class="col-1">
+        </div>
+    </div>
+    <br>
+
+    <!-- End big container -->
+    <div id="big-ctn" class="container justify-content-center" style="margin-top: 15%;">
+        <div class="row mg-7">
+            <div class="col-12 text-center">
+                <h5 id="ware-title">ชื่อโกดัง</h5>
+            </div>
+        </div>
+    </div>
+    <!-- End big container -->
+
+    <div id="ctn-btm" class="container fixed-bottom" style="background: #f3f3f3;">
+        <div class="container">
+            <div class="row">
+                <div class="col-12 text-center">
+                    <h5 class="h5-title" style="font-size: 130%;">รวม :
+                        <span  style="color: red;"id="net">0</span>
+                    </h5>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-4 text-center" style="padding-left: 0; padding-right: 0;">
+                    <button class="mbtn-cancle" onclick="clearAll();">ยกเลิก</button>
+                </div>
+                <div class="col-8 text-center" style="padding-right: 0;">
+                    <button class="mbtn" onclick="save()">บันทึก</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Nav menu bottom -->
+    <div id="navs-menu" class="row fixed-bottom navs">
+        <div class="col-3 text-center" onclick="transition_page_back('index.html'); window.location = 'index.html';">
+            <i id="i-home" class="fas fa-home menu"></i>
+        </div>
+        <div class="col-3 text-center" onclick="menu('add')">
+            <i id="i-add" class="fas fa-plus menu"></i>
+        </div>
+        <div class="col-3 text-center" onclick="menu('edit')">
+            <i id="i-edit" class="fas fa-edit menu"></i>
+        </div>
+        <div class="col-3 text-center" onclick="menu('del')">
+            <i id="i-del" class="fa fa-trash-alt menu"></i>
+        </div>
+    </div>
+    <!-- End Nav menu bottom -->
+    <script>
+        //Touch animation
+        $(".mbtn").on("touchstart", function() {
+          $(this).addClass('mbtn-touch');
+        });
+        $(".mbtn").on("touchend", function() {
+          $(this).removeClass('mbtn-touch');
+        });
+        $(".mbtn-cancle").on("touchstart", function() {
+          $(this).addClass('mbtn-cancle-touch');
+        });
+        $(".mbtn-cancle").on("touchend", function() {
+          $(this).removeClass('mbtn-cancle-touch');
+        });
+    </script>
+</body>
+
+</html>

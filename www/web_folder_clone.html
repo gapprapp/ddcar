@@ -97,7 +97,8 @@
         if(arr_prod[i].prod_id != 0){
             item = {}
             item["prod_id"] = arr_prod[i].prod_id;  
-			item["name"] = arr_prod[i].name;           
+			item["name"] = arr_prod[i].name;  
+			item["img"] = arr_prod[i].img;          
             json.push(item);               
         }
       }
@@ -210,6 +211,7 @@
 		arg = $('#prod-'+arg2).find('input[type=checkbox]');
 		name = $('#span-name-'+arg2).text();
 		prod_id = $('#id-'+arg2).text();
+		img = $('#prod-'+arg2).data('img');
 		console.log(name)
 		check = arg.prop('checked');	
 		isenable = !arg.is(":disabled");
@@ -227,7 +229,8 @@
 				item = {};   
 				item ["arg"] = arg2;        
 				item ["prod_id"] = prod_id; 
-				item ["name"] = name;        
+				item ["name"] = name;   
+				item ["img"] = img;        
 				arr_prod.push(item);          
 			}   
 			num_prod++;				

@@ -84,8 +84,9 @@
 				var arr_data = JSON.parse(retrievedObject); 
 				for(var i = 0 ; i < arr_data.length ; i++){
 					prod_id = arr_data[i].prod_id;	
-					name = arr_data[i].name;				       
-					get_amt(prod_id,name);
+					name = arr_data[i].name;
+					img = arr_data[i].img;				       
+					get_amt(prod_id,name,img);
 				}	
 				localStorage.arr_prod_st = "";			
 			}  
@@ -102,7 +103,7 @@
 			}         
 		})
 
-  	function reposition(){
+  		function reposition(){
   		$("#main-ctn").css('margin-top', '15%');
   		$("#row-folder").prop('hidden', false);
   		$("#back i").prop('hidden', true);
@@ -114,7 +115,7 @@
 			localStorage.arr_prod_st = "";
   	}
 
-  	function show(){
+  		function show(){
 			$('#append-ctn').empty();
 			var val = $('#input-search').val();
 			if(val == ""){
@@ -148,7 +149,7 @@
   	}
 
 		function get_amt(prod_id,name,img){	
-			//var img;	
+			var addr;
 			$.ajax({
 				type: "POST",
 				url: "php/check_amt_prod.php",                
@@ -162,14 +163,40 @@
 				success: function(data){  
 					EasyLoading.hide();				
 					var msg = "";		                      
-					var obj = jQuery.parseJSON(data); 					        
+					var obj = jQuery.parseJSON(data); 	
+					console.log(obj);				        
 					if(obj != ""){                
-						$.each(obj, function(i, field){					
-							//img = obj[i].img;              
-              msg = msg + '<div class="inforow row justify-content-center">'+
-														'<p>'+obj[i][0]+' :'+'</p>'+
-														'<p>&nbsp;'+obj[i].amount+'</p>'+
-													'</div>';							
+						$.each(obj, function(i, field){            				
+							id = obj[i].id;
+							if(obj[i][5] == "ware"){
+								datastr = {'prod_id':prod_id,'ware_id':id};
+							}else{
+								datastr = {'prod_id':prod_id,'shop_id':id};
+							}
+							addr = "";
+							$.ajax({
+								type: "POST",
+								url: "php/get_place.php",
+								data: datastr,
+								async: false,
+								beforeSend: function(){
+									EasyLoading.show({                           
+										text: "กำลังโหลด"                            
+									});		
+								},             
+								success: function(data){  
+									EasyLoading.hide();
+									var obj = jQuery.parseJSON(data);								
+									$.each(obj, function(i, field){ 
+										addr = addr + field.place + ",";
+									}); 
+								                                                                                                                                   
+								}               
+							});	
+							msg = msg + '<div class="inforow row justify-content-center">'+
+											'<p>'+obj[i][0]+' :'+'</p>'+
+											'<p>&nbsp;'+obj[i].amount+' | '+addr+'</p>'+
+										'</div>';												
 						});	
 						if(img == ""){
 							$('#append-ctn').append('<div class="jumbotron text-center jumbo-center">'+
@@ -207,7 +234,7 @@
 			}); 
     }
 
-  	function detailback(){
+  		function detailback(){
 	  	$("#detail-ctn").prop('hidden', true);
 	  	$("#main-ctn").prop('hidden', false);
   	}

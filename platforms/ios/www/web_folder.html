@@ -1,24 +1,26 @@
 <!DOCTYPE html>
 <html>
+
 <head>
 	<meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="description" content="">
-  <meta name="author" content="">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<meta name="description" content="">
+	<meta name="author" content="">
 
-  <title>หมวดหมู่สินค้า</title>
+	<title>หมวดหมู่สินค้า</title>
 
-  <!-- Bootstrap Import -->
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.6/umd/popper.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js"></script>
-  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.1/css/all.css" integrity="sha384-O8whS3fhG2OnA5Kas0Y9l3cfpmYjapjI0E4theH4iuMD+pLhbf6JI0jIMfYcK3yZ" crossorigin="anonymous">
+	<!-- Bootstrap Import -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.6/umd/popper.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js"></script>
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.1/css/all.css" integrity="sha384-O8whS3fhG2OnA5Kas0Y9l3cfpmYjapjI0E4theH4iuMD+pLhbf6JI0jIMfYcK3yZ"
+	 crossorigin="anonymous">
 
-  <!-- Super cool dialog-->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.0/jquery-confirm.min.css">
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.0/jquery-confirm.min.js"></script>	
-	
+	<!-- Super cool dialog-->
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.0/jquery-confirm.min.css">
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.0/jquery-confirm.min.js"></script>
+
 	<!-- Loading -->
 	<link rel="stylesheet" href="css/easy-loading.css">
 	<script src="js/easy-loading.js"></script>
@@ -27,27 +29,30 @@
 	<script type="text/javascript" src="js/qrcode.min.js"></script>
 	<script type="text/javascript" src="js/jQuery.print.js"></script>
 
-  <!-- Font -->
-  <link href="https://fonts.googleapis.com/css?family=Prompt" rel="stylesheet"> 
-  <!-- Main -->
-  <link href="css/untitled.css" rel="stylesheet">
-  <link href="css/web_folder.css" rel="stylesheet">  
+	<!-- Font -->
+	<link href="https://fonts.googleapis.com/css?family=Prompt" rel="stylesheet">
+	<!-- Main -->
+	<link href="css/untitled.css" rel="stylesheet">
+	<link href="css/web_folder.css" rel="stylesheet">
 
-  <style>
-  	.i-trash{
+	<style>
+		.i-trash{
   		float: right; margin-right: 10%; color: white;
   	}
   	.i-edit{
   		float: right; margin-right: 6%; color: white;
   	}
+	.i-modal{
+		float: right; margin-right: 6%; color: white; padding-top: 2px;
+	}
 	img{
 		height: 200px;
 		width: 200px;
 	}
   </style>
 
-  <script>
-	arr_prod = [];
+	<script>
+		arr_prod = [];
 	var num_prod = 0,from,p = 0,last_node = 0;
   	$(document).ready(function() {
 		if(!localStorage.user_id){
@@ -92,7 +97,8 @@
         if(arr_prod[i].prod_id != 0){
             item = {}
             item["prod_id"] = arr_prod[i].prod_id;  
-			item["name"] = arr_prod[i].name;           
+			item["name"] = arr_prod[i].name;  
+			item["img"] = arr_prod[i].img;          
             json.push(item);               
         }
       }
@@ -162,9 +168,9 @@
 					$.each(obj, function(i, field){
 						if(obj.length-1 > i){
 							if(i % 2 == 0){
-								text_html = '<h5 id="prod-'+p+'" class="prod-odd" rel="popover" data-img="'+obj[i][2].img+'" onclick="choose('+p+')"><span id="id-'+p+'" hidden>'+obj[i].title+'</span><input type="checkbox"><span id="span-code-'+p+'">'+obj[i][2].prod_code+'</span>&nbsp;&nbsp;&nbsp;&nbsp;<span id="span-name-'+p+'">'+obj[i][2].prod_name+'</span><i class="fas fa-trash i-trash" hidden></i><i class="fas fa-pen i-edit" hidden></i></h5>';
+								text_html = '<h5 id="prod-'+p+'" class="prod-odd" rel="popover" data-img="'+obj[i][2].img+'" onclick="choose('+p+')"><span id="id-'+p+'" hidden>'+obj[i].title+'</span><input type="checkbox"><span id="span-code-'+p+'">'+obj[i][2].prod_code+'</span>&nbsp;&nbsp;&nbsp;&nbsp;<span id="span-name-'+p+'">'+obj[i][2].prod_name+'</span><i class="fas fa-trash i-trash" hidden></i><i class="fas fa-pen i-edit" hidden></i><i class="fas fa-info-circle i-modal" data-toggle="modal" data-target="#detailModal" onclick="hideclick('+p+');"></i></h5>';
 							}else{
-								text_html = '<h5 id="prod-'+p+'" class="prod-even" rel="popover" data-img="'+obj[i][2].img+'" onclick="choose('+p+')"><span  id="id-'+p+'" hidden>'+obj[i].title+'</span><input type="checkbox"><span id="span-code-'+p+'">'+obj[i][2].prod_code+'</span>&nbsp;&nbsp;&nbsp;&nbsp;<span id="span-name-'+p+'">'+obj[i][2].prod_name+'</span><i class="fas fa-trash i-trash" hidden></i><i class="fas fa-pen i-edit" hidden></i></h5>';
+								text_html = '<h5 id="prod-'+p+'" class="prod-even" rel="popover" data-img="'+obj[i][2].img+'" onclick="choose('+p+')"><span  id="id-'+p+'" hidden>'+obj[i].title+'</span><input type="checkbox"><span id="span-code-'+p+'">'+obj[i][2].prod_code+'</span>&nbsp;&nbsp;&nbsp;&nbsp;<span id="span-name-'+p+'">'+obj[i][2].prod_name+'</span><i class="fas fa-trash i-trash" hidden></i><i class="fas fa-pen i-edit" hidden></i><i class="fas fa-info-circle i-modal" data-toggle="modal" data-target="#detailModal" onclick="hideclick('+p+');"></i></h5>';
 							} 							 
 							                  
 						$("#append-prod").append(text_html + "<script>" +
@@ -205,6 +211,7 @@
 		arg = $('#prod-'+arg2).find('input[type=checkbox]');
 		name = $('#span-name-'+arg2).text();
 		prod_id = $('#id-'+arg2).text();
+		img = $('#prod-'+arg2).data('img');
 		console.log(name)
 		check = arg.prop('checked');	
 		isenable = !arg.is(":disabled");
@@ -222,7 +229,8 @@
 				item = {};   
 				item ["arg"] = arg2;        
 				item ["prod_id"] = prod_id; 
-				item ["name"] = name;        
+				item ["name"] = name;   
+				item ["img"] = img;        
 				arr_prod.push(item);          
 			}   
 			num_prod++;				
@@ -1023,34 +1031,364 @@
 		});		  
 	}
 
+	var hide_func, hide_index;
+	function hideclick(arg){
+		hide_index = arg;
+		hide_func = $("#prod-"+arg).attr("onclick");
+		$("#prod-"+arg).attr("onclick", "");
+
+		$('#ware').empty();
+		$('#shop').empty();
+		$.ajax({
+			type: "GET",
+			url:"php/get_ware_shop.php",                            
+			beforeSend: function(){
+				EasyLoading.show({                           
+					text: "กำลังโหลด"                            
+				});
+			},             
+			success: function(data){  
+				EasyLoading.hide();
+				var obj = jQuery.parseJSON(data); 
+				if(obj){
+					$.each(obj, function(i, field){							
+						if(obj[i][2] == "โกดัง"){  						
+							$('#ware').append('<a class="dropdown-item" href="#" onclick="setware('+field.ware_id+',\''+field.ware_name+'\','+arg+')">'+field.ware_name+'</a>');
+						}else if(obj[i][2] == "หน้าร้าน"){ 						
+							$('#shop').append('<a class="dropdown-item" href="#" onclick="setshop('+field.shop_id+',\''+field.shop_name+'\','+arg+')">'+field.shop_name+'</a>');
+						}										
+					}); 
+				}
+			}               
+		}); 
+	}
+
+	var iw = 0;
+	var is = 0;
+	var ware_id;
+	var shop_id;
+	function setware(id,name,arg){
+		$('#btn-ware').text(name);
+		prod_id = $('#id-'+arg).text();
+		ware_id = id;
+		
+		$('#addr-ware').empty();
+		$('#input-addr-ware').empty();
+		$.ajax({
+			type: "POST",
+			url:"php/get_place.php",
+			data: {'prod_id':prod_id,'ware_id':id},                            
+			beforeSend: function(){
+				EasyLoading.show({                           
+					text: "กำลังโหลด"                            
+				});
+			},             
+			success: function(data){  
+				EasyLoading.hide();
+				var obj = jQuery.parseJSON(data); 
+				if(obj.length > 0){
+					$.each(obj, function(i, field){							
+						$('#addr-ware').append('<div id="ware-shop-'+i+'" class="col-4 text-center">'+field.place+'</div>');
+						$('#input-addr-ware').append('<div id="ware-'+i+'" class="col-4 input-group-append align-items-end">'+
+							'<input id="input-ware-'+i+'" type="text" class="form-control form-control-sm" style="margin-right: 2px;">'+
+							'<button onclick="removeplace('+i+','+prod_id+','+id+',\'ware\')" type="button" class="btn btn-sm btn-danger" style="height: 40%; margin-bottom: 8%;"><i class="fas fa-times-circle"></i></button>'+
+						'</div>');
+					iw = i+1;
+					}); 
+				}
+			}               
+		}); 
+	}
+
+	function setshop(id,name,arg){
+		$('#btn-shop').text(name);
+		prod_id = $('#id-'+arg).text();	
+		shop_id = id;	
+
+		$('#addr-shop').empty();
+		$('#input-addr-shop').empty();
+		$.ajax({
+			type: "POST",
+			url:"php/get_place.php",
+			data: {'prod_id':prod_id,'shop_id':id},                            
+			beforeSend: function(){
+				EasyLoading.show({                           
+					text: "กำลังโหลด"                            
+				});
+			},             
+			success: function(data){  
+				EasyLoading.hide();
+				var obj = jQuery.parseJSON(data); 
+				if(obj.length > 0){
+					$.each(obj, function(i, field){							
+						$('#addr-shop').append('<div id="name-shop-'+i+'" class="col-4 text-center">'+field.place+'</div>');
+						$('#input-addr-shop').append('<div id="shop-'+i+'" class="col-4 input-group-append align-items-end">'+
+							'<input id="input-shop-'+i+'" type="text" class="form-control form-control-sm" style="margin-right: 2px;">'+
+							'<button onclick="removeplace('+i+','+prod_id+','+id+',\'shop\')" type="button" class="btn btn-sm btn-danger" style="height: 40%; margin-bottom: 8%;"><i class="fas fa-times-circle"></i></button>'+
+						'</div>');
+					is = i+1;							
+					}); 
+				}
+			}               
+		}); 
+	}
+
+	function removeplace(index,prod_id,id,type){
+		if(type == "ware"){
+			datastr = {'prod_id':prod_id,'ware_id':id};
+		}else if(type == "shop"){
+			datastr = {'prod_id':prod_id,'shop_id':id};
+		}
+		
+		$.confirm({
+		icon: 'fa fa-warning',
+			title: 'ลบ',
+			content: 'ต้องการลบออกจากรายการใช่หรือไม่!',
+			buttons: {
+				danger: {
+					btnClass: 'btn-danger',
+					text: 'ลบ',
+					action: function () {	
+						$.ajax({
+							type: "POST",
+							url:"php/delete_place.php",           
+							data: datastr,               
+							beforeSend: function(){
+								EasyLoading.show({                           
+									text: "กำลังโหลด"                            
+								});	
+							},             
+							success: function(data){  
+								EasyLoading.hide();                           
+								if(data == "success"){
+									if(type == "ware"){
+										$("#name-ware-"+index).remove();
+										$("#ware-"+index).remove();		
+									}else if(type == "shop"){
+										$("#name-shop-"+index).remove();
+										$("#shop-"+index).remove();			
+									}														
+								}else{
+									$.confirm({
+										title: 'พบข้อผิดพลาด',
+										content: 'ลองอีกครั้ง',
+										backgroundDismiss: true,
+										buttons: {
+										formSubmit: {
+											text: 'ตกลง',
+											btnClass: 'btn-regis',
+											action: function () {
+											}
+										}
+										}
+									});
+								}                               
+							}               
+						});									
+					}
+				},
+				ยกเลิก: function () {},
+			}
+		});
+	}
+
+	function showclick(){
+		$("#prod-"+hide_index).attr("onclick", hide_func);
+		hide_func = "";
+
+		arr = [];
+		for(var i = 0 ; i < iw ; i++){
+			addr_ware = $('#input-ware-'+i).val()
+			if(addr_ware != ""){
+				item = {};                 
+				item ["prod_id"] = $('#id-'+hide_index).text();                  
+				item ["id"] =  ware_id;       
+				item ["addr"] =  addr_ware;    
+				item ["type"] =  "ware";      
+
+				arr.push(item); 
+			}			
+		}
+		for(var j = 0 ; j < is ; j++){
+			addr_shop = $('#input-shop-'+j).val()
+			if(addr_shop != ""){
+				item = {};                 
+				item ["prod_id"] = $('#id-'+hide_index).text();                  
+				item ["id"] =  shop_id;       
+				item ["addr"] =  addr_shop;    
+				item ["type"] =  "shop";      
+
+				arr.push(item); 
+			}			
+		}
+		jsonstr = JSON.stringify(arr);
+		$.ajax({
+			type: "POST",
+			url:"php/rename_place.php",           
+			data: {'JSON' : jsonstr},               
+			beforeSend: function(){
+				EasyLoading.show({                           
+					text: "กำลังโหลด"                            
+				});
+			},             
+			success: function(data){ 
+				EasyLoading.hide();       
+				if(data == "success"){					                    
+				
+				}else{
+					$.confirm({
+						title: 'พบข้อผิดพลาด',
+						content: 'ลองอีกครั้ง',
+						backgroundDismiss: true,
+						buttons: {
+						formSubmit: {
+							text: 'ตกลง',
+							btnClass: 'btn-regis',
+							action: function () {
+							}
+						}
+						}
+					});
+				}  
+			}               
+		});  
+
+		$('#btn-ware').text("เลือกโกดัง");
+		$('#btn-shop').text("เลือกหน้าร้าน");
+		$('#addr-ware').empty();
+		$('#input-addr-ware').empty();
+		$('#addr-shop').empty();
+		$('#input-addr-shop').empty();
+		iw = 0;
+		is = 0;
+	}
+
+	$(document).on("hidden.bs.modal", '#detailModal', function() {	
+		$("#prod-"+hide_index).attr("onclick", hide_func);
+		hide_func = "";
+
+		$('#btn-ware').text("เลือกโกดัง");
+		$('#btn-shop').text("เลือกหน้าร้าน");
+		$('#addr-ware').empty();
+		$('#input-addr-ware').empty();
+		$('#addr-shop').empty();
+		$('#input-addr-shop').empty();
+		iw = 0;
+		is = 0;
+	});
+
   </script>
 </head>
+
 <body style="overflow: hidden">
 	<div class="container-fullwidth justify-content-center h-100">
-      	<div class="row" style="padding-left: 1.5%; padding-right: 1.5%; margin-top: 3%; margin-bottom: 15px; height: 85%;">
-        	<div id="col-brand" class="col-md-3 text-center" style="padding-top: 3%; padding-bottom: 3%; overflow-y: auto;">
-        		<h3 id="title-lft" class="folder-title">หมวดหมู่สินค้า</h3>
-        		<div id="brand-tools" class="row justify-content-center" style="margin-top: -5%;">
-        			<div id="brand-add" class="col-2"><h4><i id="i-brand-add" class="fas fa-plus-circle" onclick="addbrand();"></i></h4></div>        			
-					<div id="brand-edit" class="col-2"><h4><i id="i-brand-edit" class="fas fa-pen" onclick="editbrand('fa-pen');"></i></h4></div>
-					<div id="brand-remove" class="col-2"><h4><i id="i-brand-trash" class="fas fa-trash" onclick="removebrand('fa-trash');"></i></h4></div>
-        		</div>       		
-        		
-        	</div>
-			<div id="col-prod" class="col-md-9" style="overflow-y: auto;" hidden>							
+		<div class="row" style="padding-left: 1.5%; padding-right: 1.5%; margin-top: 3%; margin-bottom: 15px; height: 85%;">
+			<div id="col-brand" class="col-md-3 text-center" style="padding-top: 3%; padding-bottom: 3%; overflow-y: auto;">
+				<h3 id="title-lft" class="folder-title">หมวดหมู่สินค้า</h3>
+				<div id="brand-tools" class="row justify-content-center" style="margin-top: -5%;">
+					<div id="brand-add" class="col-2">
+						<h4><i id="i-brand-add" class="fas fa-plus-circle" onclick="addbrand();"></i></h4>
+					</div>
+					<div id="brand-edit" class="col-2">
+						<h4><i id="i-brand-edit" class="fas fa-pen" onclick="editbrand('fa-pen');"></i></h4>
+					</div>
+					<div id="brand-remove" class="col-2">
+						<h4><i id="i-brand-trash" class="fas fa-trash" onclick="removebrand('fa-trash');"></i></h4>
+					</div>
+				</div>
+
+			</div>
+			<div id="col-prod" class="col-md-9" style="overflow-y: auto;" hidden>
 				<h5 class="prod-title">
 					<!-- <i id="i-back" onclick="page_back();" class="fas fa-angle-left"></i> ชื่อสินค้า <span> < ชื่อสินค้า 2</span> <span> < ชื่อสินค้า 3</span><i id="i-prod-add" class="fas fa-plus-circle" style="margin-left: 75%; margin-right: 1.5%;" onclick="addprod()"></i><i class="fas fa-trash" style="margin-right: 1.5%;" onclick="removeprod();"></i><i class="fas fa-pen" onclick="editprod();"></i> -->
-				</h5>						
-				<div id="append-prod">						
+				</h5>
+				<div id="append-prod">
+					<!--<h5 id="prod-1" class="prod-odd" rel="popover" data-img="'+obj[i][2].img+'" onclick="choose(1);"><span id="id-'+p+'"
+						 hidden>'+obj[i].title+'</span><input type="checkbox"><span id="span-code-'+p+'">'+obj[i][2].prod_code+'</span>&nbsp;&nbsp;&nbsp;&nbsp;<span
+						 id="span-name-'+p+'">'+obj[i][2].prod_name+'</span><i class="fas fa-trash i-trash" hidden></i><i class="fas fa-pen i-edit"
+						 hidden></i><i class="fas fa-info-circle i-modal" data-toggle="modal" data-target="#detailModal" onclick="hideclick(1);"></i></h5>-->
 					<!-- append prod or folder -->
 				</div>
-        	</div>
-      	</div>
-      	<div class="row justify-content-end">
-      		<div class="col-2 text-center">
-      			<button id="btn-next" class="btn btn-success" onclick="next()">เลือกสินค้า(0)</button>
-      		</div>
-      	</div>
-	</div>	
+			</div>
+		</div>
+		<div class="row justify-content-end">
+			<div class="col-2 text-center">
+				<button id="btn-next" class="btn btn-success" onclick="next()">เลือกสินค้า(0)</button>
+			</div>
+		</div>
+	</div>
+
+	<!-- Detail Modal -->
+	<div class="modal fade" id="detailModal" tabindex='-1'>
+		<div class="modal-dialog modal-md modal-dialog-centered">
+			<div class="modal-content">
+				<!-- Modal Header -->
+				<div class="col-12 text-center" style="margin-top: 15px;">
+					<h4 class="modal-title">ที่อยู่สินค้า</h4>
+					<hr style="width: 70%;">
+				</div>
+
+				<!-- Shop body -->
+				<div class="modal-body">
+					<div class="row justify-content-center r">					
+						<div class="dropdown">
+							<button class="btn btn-outline-dark dropdown-toggle" type="button" id="btn-ware" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+							  เลือกโกดัง
+							</button>
+							<div id="ware" class="dropdown-menu" aria-labelledby="btn-ware">
+							
+							</div>
+						  </div>
+					</div><hr style="margin-top: 0px; width: 25%;">
+					<div class="row" id="addr-ware">
+					
+					</div>
+					<div class="row" id="input-addr-ware">
+					
+					</div>
+
+					<hr style="width: 95%;">
+
+					<div class="row justify-content-center">
+						<div class="dropdown">
+							<button class="btn btn-outline-dark dropdown-toggle" type="button" id="btn-shop" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+							  เลือกหน้าร้าน
+							</button>
+							<div id="shop" class="dropdown-menu" aria-labelledby="btn-shop">
+							
+							</div>
+						  </div>
+					</div><hr style="margin-top: 0px; width: 25%;">
+					<div class="row" id="addr-shop">
+						<!-- <div class="col-4 text-center">ชื่อ 1</div>
+						<div class="col-4 text-center">ชื่อ 2</div>
+						<div class="col-4 text-center">-</div> -->
+					</div>
+					<div class="row" id="input-addr-shop">
+						<!-- <div class="col-4 input-group-append align-items-end">
+							<input type="text" class="form-control form-control-sm" style="margin-right: 2px;">
+							<button type="button" class="btn btn-sm btn-danger" style="height: 40%; margin-bottom: 8%;"><i class="fas fa-times-circle"></i></button>
+						</div>
+						<div class="col-4 input-group-append align-items-end">
+							<input type="text" class="form-control form-control-sm" style="margin-right: 2px;">
+							<button type="button" class="btn btn-sm btn-danger" style="height: 40%; margin-bottom: 8%;"><i class="fas fa-times-circle"></i></button>
+						</div>
+						<div class="col-4 input-group-append align-items-end">
+							<input type="text" class="form-control form-control-sm" style="margin-right: 2px;">
+							<button type="button" class="btn btn-sm btn-danger" style="height: 40%; margin-bottom: 8%;"><i class="fas fa-times-circle"></i></button>
+						</div> -->
+					</div>
+					<br>
+					<!-- Modal footer -->
+					<div class="col-12 text-center">
+						<button type="button" class="btn btn-primary" data-dismiss="modal" onclick="showclick();" style="width: 150px;;">บันทึก</button>
+					</div>
+					<br>
+				</div>
+			</div>
+		</div>
+	</div>
+
 </body>
+
 </html>

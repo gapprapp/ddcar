@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>Home</title>
+  <!-- Bootstrap Import -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+  <script type="text/javascript" src="js/jquery-3.3.1.min.js"></script>
+  <script type="text/javascript" src="js/jquery-ui.min.js"></script>
+  <script type="text/javascript" src="js/jquery.easing.1.3.min.js"></script>
+  <script type="text/javascript" src="js/transition.js"></script>
+  <script type="text/javascript" src="js/jquery-confirm.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.6/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+  <script defer src="https://use.fontawesome.com/releases/v5.0.8/js/all.js"></script>
+  <script src="cordova.js"></script>
+
+  <link rel="stylesheet" href="css/index.css">
+  <link rel="stylesheet" href="css/jquery-confirm.css">
+  <link rel="stylesheet" href="css/loading.css">
+
+  <!-- Font -->
+  <link href="https://fonts.googleapis.com/css?family=Prompt" rel="stylesheet">
+
+  <style>
+    #title {
+      color: #666666;
+      letter-spacing: 1px;
+      font-size: 110%;
+    }
+    .no-pd {
+      padding-right: 0px;
+      padding-left: 0px;
+    }
+    hr{
+      margin-top: 0;
+    }
+  </style>
+
+  <script>   
+    $(document).ready(function() {
+      $.ajax({
+        type: "GET",
+        url:"http://ddaccessory.trueddns.com:24330/dd-shop/php/get_threshold.php",
+        beforeSend: function(){
+            $(".overlay").prop('hidden', false);
+        },
+        success: function(data){  
+          $(".overlay").prop('hidden', true);
+          var obj = jQuery.parseJSON(data);
+          if(obj){
+            $.each(obj, function(i, field){                   
+            $('#show_thre').append( "<div id='prod-"+i+"' class='row mg-5'>" +               
+              "<div class='col-1 text-left'>" +
+                "<i class='fa fa-trash-alt i-del' onclick='remove("+i+","+field.prod_id+");' style='color: #666;' hidden></i>" +
+                "<i class='fa fa-edit i-edit' onclick='edit("+i+","+field.prod_id+","+field.min_amount+","+field.day_transport+",\""+field.prod_code+"\");' style='color: #666;' hidden></i>" +
+              "</div>" +
+              "<div id='name-"+i+"' class='col-5 text-center' style='padding-right: 0;'>"+field.prod_name+"</div>" +        
+              "<div id='deliver-1'  class='col-3 text-center'>"+field.day_transport+"</div>" +
+              "<div id='amount-1' class='col-2 text-center'>"+field.min_amount+"</div>" +
+              "<div class='col-1'></div>" +
+              "</div>   " +
+              "<hr id='hr-"+i+"'>");                                                  
+            });
+          }                                 
+        }               
+      });
+    });
+
+    function disactive(arg) {
+      nav_menu = ['home', 'add', 'edit', 'del'];
+      for (i = 0; i < 4; i++) {
+        if (nav_menu[i] != arg) {
+          if ($("#i-" + nav_menu[i]).hasClass('active')) $("#i-" + nav_menu[i]).removeClass('active');
+        }
+      }
+    }
+
+    function disac(arg){
+      if ($("#i-" + arg).hasClass('active')) $("#i-" + arg).removeClass('active');
+    }
+
+    function menu(arg) {
+      // Animate
+      disactive(arg);
+      console.log(arg);
+      if($("#i-"+arg).hasClass('active')){
+        console.log("i-"+arg+"hasClass('active')");
+        $("#i-"+arg).removeClass('active');
+      }else{
+        $("#i-" + arg).fadeOut(150).fadeIn(100, function() {
+          $("#i-" + arg).addClass('active');
+        });
+      }
+
+      if(arg == "add"){
+       
+      }else if(arg == "edit"){
+        // show edit all
+        if ($(".i-edit").is(":visible")) {
+          $(".i-del").attr('hidden', true);
+          $(".i-edit").attr('hidden', true);
+          disac("edit");
+        } else {
+          $(".i-del").attr('hidden', true);
+          $(".i-edit").attr('hidden', false);
+        }
+      }else if (arg == "del") {
+        // show trash all 
+        if($(".i-del").is(":visible")){
+          $(".i-edit").attr('hidden', true);
+          $(".i-del").attr('hidden', true);
+          disac("del");
+        }else{
+          $(".i-edit").attr('hidden', true);
+          $(".i-del").attr('hidden', false);
+        }
+      }
+    }
+
+    function edit(arg,prod,amt,trans,barcode){
+      var name = $("#name-"+arg).text();
+      window.location = "set_threshold.html?name="+name+"&prod="+prod+"&amt="+amt+"&deliver="+trans+"&barcode="+barcode;
+    }
+
+    function remove(arg,prod_id){
+      var name = $("#name-"+arg).text();
+      $.confirm({
+          title: 'ลบรายการ',
+          content: 'ต้องการลบ '+name+' หรือไม่',
+          backgroundDismiss: true,
+          buttons: {
+            formSubmit: {
+              text: 'ตกลง',
+              btnClass: 'btn-danger',
+              action: function () {
+                $.ajax({
+                  type: "POST",
+                  url:"http://ddaccessory.trueddns.com:24330/dd-shop/php/delete_threshold.php",
+                  data:{'prod_id':prod_id},
+                  beforeSend: function(){
+                      $(".overlay").prop('hidden', false);
+                  },
+                  success: function(data){  
+                    $(".overlay").prop('hidden', true);
+                    if(data == "success"){              
+                      $("#prod-"+arg).remove(); 
+                      $("#hr-"+arg).remove(); 
+                    }else{
+                      $.confirm({
+                        title: 'พบข้อผิดพลาด',
+                        content: 'ลองอีกครั้ง',
+                        backgroundDismiss: true,
+                        buttons: {
+                          formSubmit: {
+                            text: 'ตกลง',
+                            btnClass: 'btn-regis',
+                            action: function () {
+                            }
+                          }
+                        }
+                      });
+                    }                                             
+                  }               
+                });                 
+              }
+            },ยกเลิก: function () {}
+          }  
+      });   
+    }
+  </script>
+</head>
+
+<body>
+  <!-- Loading -->
+  <div class="overlay" hidden><div class="loading"></div></div>
+
+  <!-- Nav menu top -->
+  <div class="row fixed-top navs align-items-center">
+    <div class="col-1 text-center" onclick="transition_page_back('index.html'); window.location = 'index.html';">
+      <i id="i-back" class="fas fa-angle-left"></i>
+    </div>
+    <div class="col-10 text-center" style="padding-left: 0;">
+      <h5 id="h5-title">สต๊อกขั้นต่ำ</h5>
+    </div>
+    <div class="col-1">
+    </div>
+  </div>
+  <br>
+
+  <!-- End big container -->
+  <div id="big-ctn" class="container justify-content-center" style="margin-top: 15%;">
+      <div id="show_thre" class="container">
+      <div class="row mg-5">
+        <div class="col-1"></div>
+        <div class="col-5 text-center" style="padding-left: 0;">
+          <h5 id="title">ชื่อสินค้า</h5>
+        </div>
+        <div class="col-3 text-center">
+          <h5 id="title">จัดส่ง</h5>
+        </div>
+        <div class="col-2 text-center">
+          <h5 id="title">จน.</h5>
+        </div>
+      </div>
+      <hr>
+
+      <!-- Show -->
+    </div>    
+  </div>
+  <!-- End big container -->
+
+  <!-- Nav menu bottom -->
+  <div class="row fixed-bottom navs">
+    <div class="col-3 text-center" onclick="transition_page_back('index.html'); window.location = 'index.html';">
+      <i id="i-home" class="fas fa-home menu"></i>
+    </div>
+    <div class="col-3 text-center" onclick="transition_page_next('set_threshold.html'); window.location = 'set_threshold.html';">
+      <i id="i-add" class="fas fa-plus menu"></i>
+    </div>
+    <div class="col-3 text-center" onclick="menu('edit')">
+      <i id="i-edit" class="fas fa-edit menu"></i>
+    </div>
+    <div class="col-3 text-center" onclick="menu('del')">
+      <i id="i-del" class="fa fa-trash-alt menu"></i>
+    </div>
+  </div>
+  <!-- End Nav menu bottom -->
+</body>
+
+</html>

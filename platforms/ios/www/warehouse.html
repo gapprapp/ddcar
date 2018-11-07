@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>Home</title>
+  <!-- Bootstrap Import -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+  <script type="text/javascript" src="js/jquery-3.3.1.min.js"></script>
+  <script type="text/javascript" src="js/jquery-ui.min.js"></script>
+  <script type="text/javascript" src="js/jquery.easing.1.3.min.js"></script>
+  <script type="text/javascript" src="js/transition.js"></script>
+  <script type="text/javascript" src="js/jquery-confirm.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.6/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+  <script defer src="https://use.fontawesome.com/releases/v5.0.8/js/all.js"></script>
+  <script src="cordova.js"></script>
+
+  <link rel="stylesheet" href="css/index.css">
+  <link rel="stylesheet" href="css/jquery-confirm.css">
+  <link rel="stylesheet" href="css/loading.css">
+
+  <!-- Font -->
+  <link href="https://fonts.googleapis.com/css?family=Prompt" rel="stylesheet">
+
+  <style>
+    #title {
+      color: #666666;
+      letter-spacing: 2px;
+    }
+    .no-pd {
+      padding-right: 0px;
+      padding-left: 0px;
+    }
+    hr{
+      margin-top: 0;
+    }
+  </style>
+
+  <script>
+    $(document).ready(function () { 
+      $.ajax({
+        type: "GET",
+        url:"http://ddaccessory.trueddns.com:24330/dd-shop/php/get_ware_shop.php",   
+        beforeSend: function(){
+            $(".overlay").prop('hidden', false);
+        },                           
+        success: function(data){  
+          $(".overlay").prop('hidden', true); 
+          var obj = jQuery.parseJSON(data);                      
+          $.each(obj, function(i, field){     
+            if(obj[i][2] == "โกดัง"){
+              $('#show').append( "<div id='cus-"+i+"' class='row'>" +
+              "<span id='id-ware-"+i+"' hidden>"+obj[i].ware_id+"</span>" +              
+              "<div class='col-1 text-left'>" +
+                "<i class='fa fa-trash-alt i-del' onclick='edit_del("+i+");' style='color: #666666;' hidden></i>" +
+                "<i class='fa fa-edit i-edit' onclick='edit_ware("+i+");' style='color: #666666;' hidden></i>" +
+              "</div>" +
+              "<div class='col-6 text-center no-pd'>" +
+                "<p id='name-ware-"+i+"'>"+obj[i].ware_name+"</p>" +
+              "</div>" +
+              "<div class='col-4 text-center no-pd'>" +
+                "<p id='type-ware-"+i+"'>โกดัง</p>" +
+              "</div>" +
+              "<div class='col-1'></div>" +
+              "</div>" +   
+              "<hr id='hr-"+i+"'>");  
+            }else if(obj[i][2] == "หน้าร้าน"){
+              $('#show').append( "<div id='cus-"+i+"' class='row'>" +
+              "<span id='id-ware-"+i+"' hidden>"+obj[i].shop_id+"</span>" +              
+              "<div class='col-1 text-left'>" +
+                "<i class='fa fa-trash-alt i-del' onclick='edit_del("+i+");' style='color: #666666;' hidden></i>" +
+                "<i class='fa fa-edit i-edit' onclick='edit_ware("+i+");' style='color: #666666;' hidden></i>" +
+              "</div>" +
+              "<div class='col-6 text-center no-pd'>" +
+                "<p id='name-ware-"+i+"'>"+obj[i].shop_name+"</p>" +
+              "</div>" +
+              "<div class='col-4 text-center no-pd'>" +
+                "<p id='type-ware-"+i+"'>หน้าร้าน</p>" +
+              "</div>" +
+              "<div class='col-1'></div>" +
+              "</div>" +   
+              "<hr id='hr-"+i+"'>");  
+            }                                                    
+          });                        
+        }               
+      });
+    });
+
+    function disactive(arg) {
+      nav_menu = ['home', 'add', 'edit', 'del'];
+      for (i = 0; i < 4; i++) {
+        if (nav_menu[i] != arg) {
+          if ($("#i-" + nav_menu[i]).hasClass('active')) $("#i-" + nav_menu[i]).removeClass('active');
+        }
+      }
+    }
+
+    function disac(arg){
+      if ($("#i-" + arg).hasClass('active')) $("#i-" + arg).removeClass('active');
+    }
+
+    function menu(arg) {
+      // Animate
+      disactive(arg);
+      console.log(arg);
+      if($("#i-"+arg).hasClass('active')){
+        console.log("i-"+arg+"hasClass('active')");
+        $("#i-"+arg).removeClass('active');
+      }else{
+        $("#i-" + arg).fadeOut(150).fadeIn(100, function() {
+          $("#i-" + arg).addClass('active');
+        });
+      }
+
+      if(arg == "add"){
+        goto = "warehouse_add.html";
+        transition_page_back_flip(goto);
+        window.location = goto;
+      }else if(arg == "edit"){
+        // show edit all
+         //edit_ware("1");
+        if ($(".i-edit").is(":visible")) {
+          $(".i-del").attr('hidden', true);
+          $(".i-edit").attr('hidden', true);
+          disac("edit");
+        } else {
+          $(".i-del").attr('hidden', true);
+          $(".i-edit").attr('hidden', false);
+        }
+      }else if (arg == "del") {
+        //edit_del(1);
+        // show trash all 
+        if($(".i-del").is(":visible")){
+          $(".i-edit").attr('hidden', true);
+          $(".i-del").attr('hidden', true);
+          disac("del");
+        }else{
+          $(".i-edit").attr('hidden', true);
+          $(".i-del").attr('hidden', false);
+        }
+      }
+    } 
+
+    function edit_ware(arg) {
+      $("style").append('.jconfirm .jconfirm-box{margin-bottom: 55%;}');
+      var name = $("#name-ware-"+arg).text();
+      var id = $("#id-ware-"+arg).text();  
+      var type = $("#type-ware-"+arg).text();  
+      //name = "โกดัง C";
+      $.confirm({
+        title: name+" (แก้ไข)",
+        content: '<input id="edt-ware" value="'+name+'" type="text" class="input-cf" style="width: 75%; margin-left: 12.5%; margin-top: 2%;" placeholder="ใส่ชื่อที่ต้องการแก้ไข">',
+        onContentReady: function () {
+          var temp = $('#edt-ware').val();
+          $("#edt-ware").focus().val("").val(temp);
+        },
+        onDestroy: function(){
+          $("style").append('.jconfirm .jconfirm-box{margin-bottom: 5%;}');
+        },
+        backgroundDismiss: true,
+        buttons: {
+          ยกเลิก: function () {
+          },
+          formSubmit: {
+            text: 'ตกลง',
+            btnClass: 'btn-danger',
+            action: function () {              
+              var txt = $("#edt-ware").val();             
+              if(name == txt){
+                document.elementFromPoint(0, 0).click();
+                return 0;
+              }
+              $.ajax({
+                type: "POST",
+                url:"http://ddaccessory.trueddns.com:24330/dd-shop/php/rename_ware_shop.php",           
+                data: {'id' : id,
+                        'type' : type,
+                        'name' : txt}, 
+                beforeSend: function(){
+                  $(".overlay").prop('hidden', false);
+                },                          
+                success: function(data){  
+                  $(".overlay").prop('hidden', true);           
+                  if(data == "success"){                     
+                    $("#name-ware-"+arg).text(txt); 
+                  }else{
+                    $.confirm({
+                      title: 'พบข้อผิดพลาด',
+                      content: 'ลองอีกครั้ง',
+                      backgroundDismiss: true,
+                      buttons: {
+                        formSubmit: {
+                          text: 'ตกลง',
+                          btnClass: 'btn-regis',
+                          action: function () {
+                          }
+                        }
+                      }
+                    });
+                  }         
+                }               
+              });            
+            }
+          }
+        }
+      });
+    }
+
+    function edit_del(arg) {
+      var id = $('#id-ware-' + arg).text();
+      var type = $('#type-ware-' + arg).text();
+      var name = $('#name-ware-' + arg).text();
+      $.confirm({
+        title: 'ยืนยันการลบรายการ',
+        content: 'ต้องการลบ '+name+' หรือไม่',
+        backgroundDismiss: true,
+        buttons: {
+          formSubmit: {
+            text: 'ตกลง',
+            btnClass: 'btn-danger',
+            action: function () {
+              $.ajax({
+                type: "POST",
+                url:"http://ddaccessory.trueddns.com:24330/dd-shop/php/delete_ware_shop.php",           
+                data: {'id' : id,
+                       'type' : type},
+                beforeSend: function(){
+                  $(".overlay").prop('hidden', false);
+                },                         
+                success: function(data){   
+                  $(".overlay").prop('hidden', true);                           
+                  if(data == "success"){
+                    $("#cus-"+arg).remove(); 
+                    $("#hr-"+arg).remove(); 
+                  }else{
+                    $.confirm({
+                      title: 'พบข้อผิดพลาด',
+                      content: 'ลองอีกครั้ง',
+                      backgroundDismiss: true,
+                      buttons: {
+                        formSubmit: {
+                          text: 'ตกลง',
+                          btnClass: 'btn-regis',
+                          action: function () {
+                          }
+                        }
+                      }
+                    });
+                  }          
+                }               
+              });
+            }
+          },ยกเลิก: function () {}
+        }
+      }); 
+    }
+  </script>
+</head>
+
+<body>
+  <!-- Loading -->
+  <div class="overlay" hidden><div class="loading"></div></div>    
+
+  <!-- Nav menu top -->
+  <div class="row fixed-top navs align-items-center">
+    <div class="col-1 text-center" onclick="transition_page_back('index.html'); window.location = 'index.html';">
+      <i id="i-back" class="fas fa-angle-left"></i>
+    </div>
+    <div class="col-10 text-center">
+      <h5 id="h5-title">หน้าร้าน / โกดัง</h5>
+    </div>
+    <div class="col-1">
+    </div>
+  </div>
+  <br>
+
+  <!-- End big container -->
+  <div class="container justify-content-center" style="margin-top: 20%;">
+    <div id="show" class="container">
+      <div class="row">
+        <div class="col-1"></div>
+        <div class="col-6 text-center no-pd">
+          <h5 id="title">ชื่อ</h5>
+        </div>
+        <div class="col-4 text-center no-pd">
+          <h5 id="title">ประเภท</h5>
+        </div>
+        <div class="col-1"></div>
+      </div>
+      <hr>
+
+      <!-- Show -->
+     
+    </div>
+  </div>
+  <!-- End big container -->
+
+  <!-- Nav menu bottom -->
+  <div class="row fixed-bottom navs">
+    <div class="col-3 text-center" onclick="transition_page_back('index.html'); window.location = 'index.html';">
+      <i id="i-home" class="fas fa-home menu"></i>
+    </div>
+    <div class="col-3 text-center" onclick="menu('add')">
+      <i id="i-add" class="fas fa-plus menu"></i>
+    </div>
+    <div class="col-3 text-center" onclick="menu('edit')">
+      <i id="i-edit" class="fas fa-edit menu"></i>
+    </div>
+    <div class="col-3 text-center" onclick="menu('del')">
+      <i id="i-del" class="fa fa-trash-alt menu"></i>
+    </div>
+  </div>
+  <!-- End Nav menu bottom -->
+</body>
+
+</html>

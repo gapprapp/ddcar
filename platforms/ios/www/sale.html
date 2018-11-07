@@ -1,0 +1,835 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Home</title>
+    <!-- Bootstrap Import -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <script type="text/javascript" src="js/jquery-3.3.1.min.js"></script>
+    <script type="text/javascript" src="js/jquery-ui.min.js"></script>
+    <script type="text/javascript" src="js/jquery.easing.1.3.min.js"></script>
+    <script type="text/javascript" src="js/transition.js"></script>
+    <script type="text/javascript" src="js/jquery-confirm.js"></script>
+    <script type="text/javascript" src="js/scanqr.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.6/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+    <script defer src="https://use.fontawesome.com/releases/v5.0.8/js/all.js"></script>
+    <script src="cordova.js"></script>
+
+    <link rel="stylesheet" href="css/index.css">
+    <link rel="stylesheet" href="css/jquery-confirm.css">
+    <link rel="stylesheet" href="css/loading.css">
+
+    <!-- Font -->
+    <link href="https://fonts.googleapis.com/css?family=Prompt" rel="stylesheet">
+
+    <style>
+        #title {
+            color: #666666;
+            letter-spacing: 2px;
+        }
+
+        .pdlr {
+            padding-left: 10%;
+            padding-right: 10%;
+        }
+        
+        #btn-addpic{
+          width: 100%; 
+          color: white; 
+        }
+        ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+        }  
+        .fade {
+            animation-duration: 1.25s;
+            animation-name: fade;
+            animation-direction: alternate-reverse;
+            animation-iteration-count: infinite;
+        }
+
+        @-webkit-keyframes fade {
+            from {opacity: 0.55; } 
+            to {opacity: 1;}
+        }        
+    </style>
+
+    <script>
+        var prod_id,img,cus_id,type,old_price,min;
+        $(document).ready(function () {
+            url = new URL(window.location.href);
+            cus = url.searchParams.get("name");
+            cus_id = url.searchParams.get("cus");
+            type = url.searchParams.get("type");
+            var addr = url.searchParams.get("addr");
+            var tel = url.searchParams.get("tel");
+            prod_id = url.searchParams.get("product");
+            var ch = url.searchParams.get("ch");  
+
+            if(localStorage.ware_id_s){
+                $("#h5-title").removeClass('fade');                      
+                $("#h5-title").text(localStorage.ware_name_s);
+            }  
+            if(cus){
+                $("#cus").val(cus);
+                localStorage.cus_name = cus;
+                localStorage.cus_id = cus_id;
+                localStorage.type = type;
+                localStorage.cus_addr = addr;
+                localStorage.cus_tel = tel;
+                $("#name").removeAttr('disabled');
+                $("#price").removeAttr('readonly');
+                $("#amount").removeAttr('readonly');   
+                $("#btn-folder").removeAttr('disabled');           
+                $("#btn-addpic").removeAttr('disabled');
+                $("#btn-addprod").removeAttr('disabled');
+            }
+            if(localStorage.cus_name){
+                cus_id = localStorage.cus_id;
+                type = localStorage.type;                
+                $("#cus").val(localStorage.cus_name);              
+                $("#name").removeAttr('disabled');
+                $("#price").removeAttr('readonly');
+                $("#amount").removeAttr('readonly');   
+                $("#btn-folder").removeAttr('disabled');           
+                $("#btn-addpic").removeAttr('disabled');
+                $("#btn-addprod").removeAttr('disabled');
+            }            
+            if(localStorage.arr_sale){
+                var retrievedObject = localStorage.getItem('arr_sale');
+                var arr_data = JSON.parse(retrievedObject);             
+                $('#check-sale').text(arr_data.length); 
+                $("#cus").attr('disabled',true);  
+                $("#h5-title").prop('onclick',"");     
+            }
+            if(prod_id){
+              get_sale(prod_id);
+            }
+            if(localStorage.arr_prod_s){
+                $("#btn-folder").attr('disabled',true);           
+                $("#btn-addpic").attr('disabled',true);
+                $("#name").attr('disabled',true);
+                var retrievedObject = localStorage.getItem('arr_prod_s');
+                var arr_data = JSON.parse(retrievedObject); 
+                prod_id = arr_data[0].prod_id;            
+                get_sale(prod_id);
+            }
+            if(ch){
+                if(ch == "true"){
+                    $('.dot').prop('hidden',false);
+                }
+            }  
+            if(localStorage.bell){
+                $('.dot').prop('hidden',false);
+            }      
+        });
+
+        $(document).keydown(function(objEvent) {
+            if (objEvent.keyCode == 13) {  //enter pressed
+                objEvent.preventDefault();
+                var $this = $(objEvent.target);
+                var i_enter = parseFloat($this.attr('data-index'));                      
+                if(i_enter == 1){
+                    search_prod();
+                }else if(i_enter == 3){
+                    add_prod();
+                }else{
+                    var temp = $('[data-index="' + (i_enter+1).toString() + '"]').val();
+                    $('[data-index="' + (i_enter+1).toString() + '"]').focus().val("").val(temp);
+                }                       
+            }         
+        })
+
+        var bool = true;
+        function get_sale(id){
+            prod_id = id;
+            bool = true;
+            if(localStorage.arr_sale){
+                var retrievedObject = localStorage.getItem('arr_sale');
+                var arr_data = JSON.parse(retrievedObject);                 
+                for(var b = 0; b < arr_data.length; b++){
+                    if(prod_id == arr_data[b].prod_id){
+                        $.confirm({
+                            title: 'เตือน',
+                            content: 'มีการเพิ่มสินค้า ' + arr_data[b].name + ' กรุณาแก้ไขที่จำนวนของสินค้าที่ได้เพิ่มแล้ว',
+                            backgroundDismiss: true,
+                            buttons: {
+                                formSubmit: {
+                                text: 'ตกลง',
+                                btnClass: 'btn-regis',
+                                action: function () {
+                                }
+                                }
+                            }
+                        });  
+                        bool = false;                               
+                        break;           
+                    }
+                }                 
+            }
+            if(bool){
+                $.ajax({
+                    type: "POST",
+                    url:"http://ddaccessory.trueddns.com:24330/dd-shop/php/get_sale.php",    
+                    data:{'prod_id' : id,'cus_id':cus_id,'ware_id': localStorage.ware_id_s,'type':localStorage.ware_type},
+                    //async: false,                       
+                    beforeSend: function(){
+                        $(".overlay").prop('hidden', false);
+                    },             
+                    success: function(data){  
+                        $(".overlay").prop('hidden', true); 
+                        var obj = jQuery.parseJSON(data);                                                           
+                        $.each(obj, function(i, field){                           
+                            if(obj[i][9]){
+                                $('#price').val(obj[i][9]);  
+                            }else{                                
+                                if(type == "ขายปลีก"){
+                                    $('#price').val(obj[i].prod_price);  
+                                }else{
+                                    $('#price').val(obj[i].prod_pricesend);  
+                                }                                
+                            }  
+                            $('#name').val(obj[i].prod_name);
+                            $('#barcode').val(obj[i].prod_code);                                                       
+                            img = obj[i].img;   
+                            old_price = $('#price').val();  
+                            min = obj[i].min_amount;
+								if(min == 0){
+									$.confirm({
+										title: 'เตือน',
+										content: 'สินค้าไม่มีใน' + $('#h5-title').text(),
+										backgroundDismiss: true,
+										buttons: {
+											formSubmit: {
+											text: 'ตกลง',
+											btnClass: 'btn-regis',
+											action: function () {
+											}
+											}
+										}
+									});  
+									set_default();
+                                    if(localStorage.arr_prod_s){
+                                        bool = false;
+                                        add_prod();
+                                    }  
+								}	                                                                  
+                        });
+                        show();                                             
+                    }               
+                });     
+            }else{
+                add_prod();
+            }                   
+        }
+
+        function edit_amt(){
+            var amount = parseInt($('#amount').val());		
+            if(amount > parseInt(min)){
+                $.confirm({
+                    title: 'เตือน',
+                    content: 'สินค้ามีจำนวนไม่พอใน' + $('#h5-title').text() + ' สินค้ามีจำนวน ' + min,
+                    backgroundDismiss: true,
+                    buttons: {
+                        formSubmit: {
+                        text: 'ตกลง',
+                        btnClass: 'btn-regis',
+                        action: function () {
+                        }
+                        }
+                    }
+                });  
+                $("#btn-addprod").attr('disabled',true);
+            }else{
+                $("#btn-addprod").attr('disabled',false);
+            }	
+        }   
+
+        function showware(){
+            $("style").append('.jconfirm .jconfirm-box{max-height: 420px;}');
+            $.confirm({
+              title: 'หน้าร้าน/โกดัง',
+              content: '<hr style="width: 80%; margin-bottom: 0;">',
+              backgroundDismiss: true,
+              onOpenBefore: function () {
+                $(".jconfirm-buttons .btn-default").remove();
+                //ajax and apeend
+                $.ajax({
+                    type: "GET",
+                    url:"http://ddaccessory.trueddns.com:24330/dd-shop/php/get_ware_shop.php",     
+                    beforeSend: function(){
+                        $(".overlay").prop('hidden', false);
+                    },                        
+                    success: function(data){
+                    $(".overlay").prop('hidden', true);  
+                        var obj = jQuery.parseJSON(data);
+                        if(obj){
+                            $.each(obj, function(i, field){   
+                                if(obj[i][2] == "โกดัง"){  
+                                    $(".jconfirm-buttons").append('<button id="li-ware-'+i+'" type="button" onclick="setware('+i+')" class="btn btn-choice">'+obj[i].ware_name+'</button>' +
+                                    '<span id="id-ware-'+i+'" hidden>'+obj[i].ware_id+'</span>' +
+                                    '<span id="type-'+i+'" hidden>โกดัง</span>');                       
+                                }else if(obj[i][2] == "หน้าร้าน"){ 
+                                    $(".jconfirm-buttons").append('<button id="li-ware-'+i+'" type="button" onclick="setware('+i+')" class="btn btn-choice">'+obj[i].shop_name+'</button>' +
+                                    '<span id="id-ware-'+i+'" hidden>'+obj[i].shop_id+'</span>' +
+                                    '<span id="type-'+i+'" hidden>หน้าร้าน</span>');
+                                }                    
+                            });   
+                        }else{
+                            $(".jconfirm-buttons").append("กรุณาเพิ่มหน้าร้าน/โกดังก่อนทำรายการ");     
+                        }                                                      
+                    }               
+                });               
+              },
+              onDestroy: function () {
+                $("style").append('.jconfirm .jconfirm-box{margin-bottom: 5%;}');
+                $("style").append('.jconfirm .jconfirm-box{max-height: 100%;}');
+              }             
+            });
+        }
+
+        function setware(arg) {
+            $("#h5-title").removeClass('fade');
+            localStorage.ware_name_s = $("#li-ware-" + arg).text();
+            localStorage.ware_type = $("#type-" + arg).text();
+            $("#h5-title").text(localStorage.ware_name_s);
+            localStorage.ware_id_s = $("#id-ware-" + arg).text();  
+            document.elementFromPoint(0, 0).click();
+            if($('#name').val() != ""){
+                $.ajax({
+                    type: "POST",
+                    url:"http://ddaccessory.trueddns.com:24330/dd-shop/php/get_sale.php",    
+                    data:{'prod_id' : prod_id,'cus_id':cus_id,'ware_id': localStorage.ware_id_s,'type':localStorage.ware_type},
+                    //async: false,                       
+                    beforeSend: function(){
+                        $(".overlay").prop('hidden', false);
+                    },             
+                    success: function(data){  
+                        $(".overlay").prop('hidden', true);
+                        var obj = jQuery.parseJSON(data);                                         
+                        $.each(obj, function(i, field){                      
+                            min = obj[i].min_amount;
+                            if(min == 0){
+                                $.confirm({
+                                    title: 'เตือน',
+                                    content: 'สินค้าไม่มีใน' + $('#h5-title').text(),
+                                    backgroundDismiss: true,
+                                    buttons: {
+                                        formSubmit: {
+                                        text: 'ตกลง',
+                                        btnClass: 'btn-regis',
+                                        action: function () {
+                                        }
+                                        }
+                                    }
+                                });                            
+                                if(localStorage.arr_prod_s){
+									bool = false;
+									add_prod();
+								}else{
+									set_default();
+								}
+                            }	                           
+                        });
+                        show();                                        
+                    }               
+                });   
+            }           
+        }
+
+        function scanqr(){
+            if($("#h5-title").text() == "เลือกโกดัง/หน้าร้าน"){
+                $.confirm({
+                    title: 'เตือน',
+                    content: 'กรุณาเลือกโกดัง/หน้าร้าน',
+                    backgroundDismiss: true,
+                    buttons: {
+                        formSubmit: {
+                        text: 'ตกลง',
+                        btnClass: 'btn-regis',
+                        action: function () {
+                        }
+                        }
+                    }
+                });  
+                return 0;
+            }
+            cordova.plugins.barcodeScanner.scan(
+            function (result) {
+                    if(!result.cancelled){
+                        // In this case we only want to process QR Codes
+                        if(result.format == "QR_CODE"){
+                                var value = result.text;
+                                // This is the retrieved content of the qr code
+                                //alert(value);
+                                if(localStorage.arr_sale){
+                                    var retrievedObject = localStorage.getItem('arr_sale');
+                                    var arr_data = JSON.parse(retrievedObject); 
+                                    bool = true;
+                                    for(var b = 0; b < arr_data.length; b++){
+                                        if(prod_id == arr_data[b].prod_id){
+                                            $.confirm({
+                                                title: 'เตือน',
+                                                content: 'มีการเพิ่มสินค้า ' + arr_data[b].name + ' กรุณาแก้ไขที่จำนวนของสินค้าที่ได้เพิ่มแล้ว',
+                                                backgroundDismiss: true,
+                                                buttons: {
+                                                    formSubmit: {
+                                                    text: 'ตกลง',
+                                                    btnClass: 'btn-regis',
+                                                    action: function () {
+                                                    }
+                                                    }
+                                                }
+                                            });  
+                                            bool = false;                               
+                                            break;           
+                                        }
+                                    }                 
+                                } 
+                                if(bool){
+                                    $.ajax({
+                                        type: "POST",
+                                        url: "http://ddaccessory.trueddns.com:24330/dd-shop/php/get_sale.php",                
+                                        data: {'qr' : value,'cus_id':cus_id,'ware_id': localStorage.ware_id_s,'type': localStorage.ware_type},             
+                                        beforeSend: function(){
+                                            $(".overlay").prop('hidden', false);
+                                        },             
+                                        success: function(data){  
+                                            $(".overlay").prop('hidden', true);                             
+                                            var obj = jQuery.parseJSON(data); 
+                                            $.each(obj, function(i, field){                                           
+                                                if(obj[i][9]){
+                                                    $('#price').val(obj[i][9]);  
+                                                }else{                                
+                                                    if(type == "ขายปลีก"){
+                                                        $('#price').val(obj[i].prod_price);  
+                                                    }else{
+                                                        $('#price').val(obj[i].prod_pricesend);  
+                                                    }                                
+                                                }  
+                                                $('#name').val(obj[i].prod_name);
+                                                $('#barcode').val(obj[i].prod_code);                                                       
+                                                img = obj[i].img;   
+                                                old_price = $('#price').val(); 
+                                                prod_id = obj[i].prod_id;  
+                                                min = obj[i].min_amount;
+                                                if(min == 0){
+                                                    $.confirm({
+                                                        title: 'เตือน',
+                                                        content: 'สินค้าไม่มีใน' + $('#h5-title').text(),
+                                                        backgroundDismiss: true,
+                                                        buttons: {
+                                                            formSubmit: {
+                                                            text: 'ตกลง',
+                                                            btnClass: 'btn-regis',
+                                                            action: function () {
+                                                            }
+                                                            }
+                                                        }
+                                                    });  
+                                                    set_default();                                                
+                                                }	 
+                                            });                                                                                        
+                                        }               
+                                    });
+                                    var temp = $('#price').val();
+                                    $("#price").focus().val("").val(temp);  
+                                }else{
+                                    set_default();
+                                }                                                              
+                        }else{
+                            //alert("Sorry, only qr codes this time ;)");
+                        }
+                    }else{
+                        // window.location = "member.html";
+                        //alert("The user has dismissed the scan");
+                    }
+                },
+                function (error) {
+                    $.confirm({
+                      title: 'พบข้อผิดพลาด',
+                      content: 'กรุณากรอกข้อมูลให้ครบ',
+                      backgroundDismiss: true,
+                      buttons: {
+                        formSubmit: {
+                          text: 'ตกลง',
+                          btnClass: 'btn-regis',
+                          action: function () {
+                          }
+                        }
+                      }
+                    });
+                },
+                {
+                    prompt : "วางคิวอาโค้ดภายในสี่เหลี่ยมผืนผ้าที่ช่องมองภาพเพื่อแสกน"
+                }
+            );
+
+        } 
+
+        function disactive(arg) {
+            nav_menu = ['home', 'bell', 'qrcode', 'bars'];
+            for (i = 0; i < 4; i++) {
+                if (nav_menu[i] != arg) {
+                    if ($("#i-" + nav_menu[i]).hasClass('active')) $("#i-" + nav_menu[i]).removeClass('active');
+                }
+            }
+        }
+
+        function menu(arg) {
+            // Animate
+            disactive(arg);
+            $("#i-" + arg).fadeOut(100).fadeIn(100, function () {
+                $("#i-" + arg).addClass('active');
+            });
+        }
+
+        /*function sleep(milliseconds) {
+          var start = new Date().getTime();
+          for (var i = 0; i < 1e7; i++) {
+            if ((new Date().getTime() - start) > milliseconds){
+              break;
+            }
+          }
+            clear();
+            document.elementFromPoint(0,0).click();
+        }
+
+        function clear(){
+            $("#name").val("");
+            $("#cus").val("");
+            $("#barcode").val("");
+            $("#amount").val("");
+            $("#price").val("");
+            $("#name").attr("readonly");
+            $("#barcode").attr("readonly");
+            $("#amount").attr("readonly");
+            $("#price").attr("readonly");
+            $("#btn-addpic").prop("disabled", true);
+            $("#btn-addprod").prop("disabled", true);
+        }*/
+
+        function add_prod(){
+            if(bool){
+                var code = $('#barcode').val();
+                var price = $('#price').val();   
+                var name = $('#name').val();    
+                var amt = $('#amount').val();            
+                if(name == "" || amt == "" || code == "" || price == ""){ 
+                    $.confirm({
+                    title: 'พบข้อผิดพลาด',
+                    content: 'กรุณากรอกข้อมูลให้ครบ',
+                    backgroundDismiss: true,
+                    buttons: {
+                        formSubmit: {
+                        text: 'ตกลง',
+                        btnClass: 'btn-regis',
+                        action: function () {
+                        }
+                        }
+                    }
+                    });
+                    return 0;
+                }                   
+                if(localStorage.arr_sale){
+                    var retrievedObject = localStorage.getItem('arr_sale');
+                    var arr_data = JSON.parse(retrievedObject);               
+                }else{
+                    var arr_data = [];              
+                }           
+                item = {}            
+                item ["qr"] =  code;
+                item ["prod_id"] =  prod_id;
+                item ["name"] =  name;
+                item ["old_price"] =  old_price; 
+                item ["price"] =  price;               
+                item ["amt"] =  amt;
+                item ["img"] =  img;   
+                item ["min"] =  min;  
+
+                arr_data.push(item); 
+                localStorage.setItem('arr_sale', JSON.stringify(arr_data));         
+            
+                $('#check-sale').text(arr_data.length);
+                $("#cus").attr('disabled',true);  
+                $("#h5-title").prop('onclick',"");         
+            }
+            $('#barcode').val("");
+            $('#name').val("");
+            $('#price').val("");                
+            $('#amount').val("1");  
+            if(localStorage.arr_prod_s){
+                var retrievedObject = localStorage.getItem('arr_prod_s');
+                var arr_data2 = JSON.parse(retrievedObject);
+                arr_data2.splice(0,1); 
+                localStorage.setItem('arr_prod_s', JSON.stringify(arr_data2));  
+                if(arr_data2.length == 0){
+                    localStorage.arr_prod_s = "";  
+                }                                 
+            }  
+            if(localStorage.arr_prod_s){                    
+                var retrievedObject = localStorage.getItem('arr_prod_s');
+                var arr_data2 = JSON.parse(retrievedObject);                                   
+                prod_id = arr_data2[0].prod_id;            
+                get_sale(prod_id);            
+            }else{                   
+                $("#btn-folder").removeAttr('disabled');           
+                $("#btn-addpic").removeAttr('disabled');
+                $("#name").removeAttr('disabled');
+            }         
+
+           /* $.confirm({
+              title: "ชื่อสินค้า",
+              content: '<div class="row" style="margin-top: 2%; margin-bottom: 2%;"><div class="col-12 text-center"><img src="https://i.imgur.com/7LVwcUc.png" id="img" alt="" style="width: 96%; height: 96%;"></div></div><div class="row"><div class="col-2"></div><div class="col-3 nopd text-right">รหัส :</div><div class="col-4 text-right">bnk426816</div><div class="col-2"></div></div><div class="row"><div class="col-2"></div><div class="col-3 nopd text-right">ราคา :</div><div class="col-4 text-center">2500</div><div class="col-2"></div></div><div class="row"><div class="col-2"></div><div class="col-3 nopd text-right">จำนวน :</div><div class="col-4 text-center">12</div><div class="col-2"></div></div>',
+              backgroundDismiss: true,
+                onOpen: function () {
+                    sleep(800);
+                },
+              buttons: {
+                formSubmit: {
+                  text: 'ปิด',
+                  btnClass: 'btn-regis',
+                  autoClose: true,
+                  action: function () {
+                    clear();
+                  }
+                }
+              }
+            }); */
+        }
+
+        function selectfolder() {
+            if($("#h5-title").text() == "เลือกโกดัง/หน้าร้าน"){
+                $.confirm({
+                    title: 'เตือน',
+                    content: 'กรุณาเลือกโกดัง/หน้าร้าน',
+                    backgroundDismiss: true,
+                    buttons: {
+                        formSubmit: {
+                        text: 'ตกลง',
+                        btnClass: 'btn-regis',
+                        action: function () {
+                        }
+                        }
+                    }
+                });  
+                return 0;
+            }
+            goto = "select_folder.html?from=sale";
+            transition_page_next_flip(goto);
+            window.location = goto;
+        }
+
+        function check(){
+            if($("#check-sale").text() != "0"){
+                goto = "sale_check.html";
+                transition_page_next(goto);
+                window.location = goto;
+            }else{
+                return 0;
+            }
+        }
+
+        function search_prod(){
+            var val = $('#search_prod').val();
+            if(val == ""){
+                return 0;
+            }       
+            $('#search_prod').blur();  
+            $('#myUL').empty();
+            $.ajax({
+                type: "POST",
+                url: "http://ddaccessory.trueddns.com:24330/dd-shop/php/search_prod.php",
+                data: {'phrase' : val},
+                beforeSend: function(){
+                    $(".overlay").prop('hidden', false);
+                },             
+                success: function(data){  
+                    $(".overlay").prop('hidden', true);                             
+                    var obj = jQuery.parseJSON(data);
+                    if(obj){
+                        $.each(obj, function(i, field){ 
+                            $('#myUL').append('<li><div id="prod-1" class="row" onclick="get_sale('+field.prod_id+')">' +
+                            '<div class="col-4 text-center p">'+field.prod_code+'</div>' +
+                            '<div class="col-8 text-center p">'+field.prod_name+'</div>' +
+                            '</div><hr></li>');        
+                        }); 
+                    }                                                                                                                                        
+                }               
+            }); 
+        }
+
+        function select_cus(){
+            //alert("select_cus");
+            transition_page_next_flip('select_cus.html');
+            window.location = 'select_cus.html';
+        }
+       
+        function search(){
+            if($("#h5-title").text() == "เลือกโกดัง/หน้าร้าน"){
+                $.confirm({
+                    title: 'เตือน',
+                    content: 'กรุณาเลือกโกดัง/หน้าร้าน',
+                    backgroundDismiss: true,
+                    buttons: {
+                        formSubmit: {
+                        text: 'ตกลง',
+                        btnClass: 'btn-regis',
+                        action: function () {
+                        }
+                        }
+                    }
+                });  
+                return 0;
+            }
+            $("#search-ctn").prop('hidden', false);
+            $("#big-ctn").prop('hidden', true);
+            $("#navs-bttm").prop('hidden', true);
+            $("#col-back").attr('onclick', 'show()');    
+        }
+
+        function show(){
+            $("#search-ctn").prop('hidden', true);
+            $("#big-ctn").prop('hidden', false);
+            $("#navs-bttm").prop('hidden', false);
+            $("#col-back").attr('onclick', 'transition_page_back("index.html"); window.location = "index.html";');
+            $('#myUL').empty(); 
+            $('#search_prod').val("");  
+            var temp = $('#price').val();
+            //$("#price").focus().val("").val(temp);         
+        } 
+
+        function set_default(){
+			$('#barcode').val("");
+			$('#name').val("");		
+			$('#price').val("");				
+			$('#amount').val("1");		
+			$('#name').focus();
+		}
+
+    </script>
+</head>
+
+<body style="overflow-y: auto;">
+    <!-- Loading -->
+    <div class="overlay" hidden><div class="loading"></div></div>
+
+    <!-- Search ctn -->
+    <div id="search-ctn" class="container justify-content-center" style="margin-top: 20%;" hidden>
+        <div class="row mg-10">
+            <div class="col-12 text-center">
+                <input data-index="1" id="search_prod" type="search" class="form-control form-control-lg text-center" placeholder="ค้นหาสินค้า" autofocus>
+            </div>  
+        </div>
+        <div id="add_ctn" class="container">
+            <ul id="myUL">
+
+            </ul>            
+        </div>
+    </div>
+
+    <!-- Nav menu top -->
+    <div class="row fixed-top navs align-items-center" >
+        <div id="col-back" class="col-1 text-center" onclick="transition_page_back('index.html'); window.location = 'index.html';">
+            <i id="i-back" class="fas fa-angle-left"></i>
+        </div>
+        <div class="col-9 text-center" style="padding-left: 12%; margin-right: 2%;">
+            <h5 id="h5-title" class="fade" onclick="showware();">เลือกโกดัง/หน้าร้าน</h5>
+        </div>
+        <div class="col-1" onclick="check();"><div id="check-sale"class="circle-text">0</div></div>
+    </div>
+    <br>
+
+    <!-- Start big container -->
+    <div id="big-ctn" class="container justify-content-center" style="margin-top: 20%;">
+        <div class="container">
+            <div class="row mg-10">
+                <div class="col-12 text-center pdlr">
+                    <label for="cus">ลูกค้า</label>
+                    <input id="cus" type="text" class="w3-input" onclick="select_cus();" placeholder="กรุณาใส่ชื่อลูกค้าก่อนทำการขาย" readonly>
+                </div>
+            </div>
+            <div class="row mg-10">
+                <div class="col-12 text-center pdlr">
+                    <label for="name">ชื่อสินค้า</label>
+                    <input disabled id="name" type="text" class="w3-input" onclick="search();">
+                </div>
+            </div>
+            <div class="row" style="margin-bottom: 20%;">
+                <div class="col-5 text-center">
+                    <label for="barcode">รหัส</label>
+                    <input readonly id="barcode" type="text" class="w3-input">
+                </div>
+                <div class="col-4 text-center">
+                    <label for="price">ราคา</label>
+                    <input readonly id="price" type="number" class="w3-input" data-index="2">
+                </div>
+                <div class="col-3 text-center">
+                    <label for="amount">จำนวน</label>
+                    <input readonly id="amount" onkeyup="edit_amt()" type="number" min="1" value="1" class="w3-input" data-index="3">
+                </div>
+            </div>
+            <div class="row mg-10" style="padding-right: 5%; padding-left: 5%;">
+                <div class="col-4 text-center" style="padding-left: 0; padding-right: 0;">
+                    <button id="btn-addpic" class="mbtn-green" onclick="scanqr();" disabled>สแกน</button>
+                </div>
+                <div class="col-8 text-center" style="padding-right: 0;">
+                    <button id="btn-folder" class="select_folder" onclick="selectfolder()" disabled>เลือกสินค้า</button>
+                </div>
+            </div>
+            <div class="row">
+              <div class="col-12 text-center">
+                <button id="btn-addprod" class="mbtn" onclick="add_prod();" disabled>เพิ่มสินค้า</button>
+              </div>
+            </div>
+        </div>
+    </div>
+    <!-- End big container -->
+
+    <!-- Nav menu bottom -->
+    <div id="navs-bttm" class="row fixed-bottom navs">
+        <div class="col-3 text-center" onclick="transition_page_back('index.html'); window.location = 'index.html';">
+            <i id="i-home" class="fas fa-home menu"></i>
+        </div>
+        <div class="col-3 text-center" onclick="transition_page_next('bell.html'); window.location = 'bell.html';">
+            <div class="dot" hidden></div>
+            <i id="i-bell" class="fas fa-bell menu"></i>
+        </div>
+        <div class="col-3 text-center" onclick="scan();">
+            <i id="i-qrcode" class="fas fa-qrcode menu"></i>
+        </div>
+        <div class="col-3 text-center" onclick="transition_page_next('other.html'); window.location = 'other.html';">
+            <i id="i-bars" class="fa fa-bars menu"></i>
+        </div>
+    </div>
+    <!-- End Nav menu bottom -->
+    
+    <script>       
+    //Touch animation
+    $(".mbtn").on("touchstart", function() {
+      $(this).addClass('mbtn-touch');
+    });
+    $(".mbtn").on("touchend", function() {
+      $(this).removeClass('mbtn-touch');
+    });
+    $(".mbtn-green").on("touchstart", function() {
+      $(this).addClass('mbtn-green-touch');
+    });
+    $(".mbtn-green").on("touchend", function() {
+      $(this).removeClass('mbtn-green-touch');
+    });
+    $(".select_folder").on("touchstart", function() {
+      $(this).addClass('select_folder-touch');
+    });
+    $(".select_folder").on("touchend", function() {
+      $(this).removeClass('select_folder-touch');
+    });
+    
+    </script>
+</body>
+
+</html>

@@ -17,13 +17,39 @@ function scan(arg){
                             $(".overlay").prop('hidden', true);                           
                             var name;
                             var img;
-                            var msg = "";                             
+                            var msg = "";    
+                            var addr;                         
                             var obj = jQuery.parseJSON(data);              
                             if(obj != ""){                
                               $.each(obj, function(i, field){
                                   img = obj[i].img; 
                                   name = obj[i].prod_name;    
-                                  msg = msg + '<div class="row" style="margin-bottom: 3%"><div class="col-6 text-right" style="margin-right: 5%;">'+obj[i][0]+' :'+'</div><div class="col-5 text-left">'+obj[i].amount+'</div></div>';
+                                  id = obj[i].id;
+                                  prod_id = obj[i].prod_id;
+                                    if(obj[i][6] == "ware"){
+                                        datastr = {'prod_id':prod_id,'ware_id':id};
+                                    }else{
+                                        datastr = {'prod_id':prod_id,'shop_id':id};
+                                    }
+                                    addr = "";
+                                    $.ajax({
+                                        type: "POST",
+                                        url: "http://ddaccessory.trueddns.com:24330/dd-shop/php/get_place.php",
+                                        data: datastr,
+                                        async: false,
+                                        beforeSend: function(){
+                                        $(".overlay").prop('hidden', false);
+                                        },             
+                                        success: function(data){  
+                                        $(".overlay").prop('hidden', true);    
+                                        var obj = jQuery.parseJSON(data);								
+                                        $.each(obj, function(i, field){ 
+                                            addr = addr + field.place + ",";
+                                        }); 
+                                                                                                                                                                        
+                                        }               
+                                    });	   
+                                  msg = msg + '<div class="row" style="margin-bottom: 3%"><div class="col-6 text-right" style="margin-right: 5%;">'+obj[i][0]+' :'+'</div><div class="col-5 text-left">'+obj[i].amount+' | '+addr+'</div></div>';
                               });
                               var top_msg = '<div class="row" style="margin-top: 2%; margin-bottom: 2%;"><div class="col-12 text-center"><img src="'+img+'" id="img" alt="" style="width: 300px; height: 300px;"></div></div><br>'; 
                               $.confirm({

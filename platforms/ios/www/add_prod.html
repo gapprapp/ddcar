@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>Home</title>
+  <!-- Bootstrap Import -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+  <script type="text/javascript" src="js/jquery-3.3.1.min.js"></script>
+  <script type="text/javascript" src="js/jquery-ui.min.js"></script>
+  <script type="text/javascript" src="js/jquery.easing.1.3.min.js"></script>
+  <script type="text/javascript" src="js/transition.js"></script>
+  <script type="text/javascript" src="js/jquery-confirm.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.6/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+  <script defer src="https://use.fontawesome.com/releases/v5.0.8/js/all.js"></script>
+  <script src="cordova.js"></script>
+  <script type="text/javascript" src="js/scanqr.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.0/jquery-confirm.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.0/jquery-confirm.min.js"></script>
+  <script src="js/imageviewer.js"></script>
+
+  <link href="css/imageviewer.css"  rel="stylesheet" type="text/css" />
+  <link rel="stylesheet" href="css/index.css">
+  <link rel="stylesheet" href="css/jquery-confirm.css">
+  <link rel="stylesheet" href="css/loading.css">
+
+  <!-- Font -->
+  <link href="https://fonts.googleapis.com/css?family=Prompt" rel="stylesheet">
+
+  <style>
+    #title {
+      color: #666666;
+      letter-spacing: 2px;
+    }
+    .pdlr {
+      padding-left: 10%;
+      padding-right: 10%;
+    }
+    #btn-addpic{
+      width: 70%; 
+      color: white; 
+    }
+
+    #folder-title {
+      color: #515151;
+      letter-spacing: 2px;
+    }    
+  </style>
+
+  <script>
+    var folder;
+    $(document).ready(function() {
+      url = new URL(window.location.href);
+      folder = url.searchParams.get("folder");     
+      $("#folder-title").text(folder);
+
+      if(localStorage.img){
+        var image = document.getElementById('img');
+        image.src =  localStorage.img;  
+      }   
+    });
+
+    $(document).keydown(function(objEvent) {
+      if (objEvent.keyCode == 13) {  //enter pressed
+        objEvent.preventDefault();
+        var $this = $(objEvent.target);
+        var i_enter = parseFloat($this.attr('data-index'));                      
+        if(i_enter == 3){
+          $this.blur();
+        }else{          
+          $('[data-index="' + (i_enter+1).toString() + '"]').focus();
+        }                       
+      }         
+    })
+
+    /*function disactive(arg) {
+      nav_menu = ['home', 'bell', 'qrcode', 'bars'];
+      for (i = 0; i < 4; i++) {
+        if (nav_menu[i] != arg) {
+          if ($("#i-" + nav_menu[i]).hasClass('active')) $("#i-" + nav_menu[i]).removeClass('active');
+        }
+      }
+    }
+
+    function menu(arg) {
+      // Animate
+      disactive(arg);
+      $("#i-" + arg).fadeOut(100).fadeIn(100, function() {
+        $("#i-" + arg).addClass('active');
+      });
+    }*/
+
+    function addpic(){
+      $.confirm({
+        title: 'รูปภาพ',
+        content: '<hr style="width: 80%; margin-bottom: 0;">',
+        backgroundDismiss: true,
+        buttons: {
+          form1: {
+            text: 'ถ่ายรูป',
+            btnClass: 'btn-choice',
+            action: function () {
+              take_photo();
+            }
+          },
+          form2: {
+            text: 'อัลบั้ม',
+            btnClass: 'btn-choice',
+            action: function () {
+              upload_photo();
+            }
+          }
+        }
+      });
+    }
+
+    function take_photo(){
+      navigator.camera.getPicture(onSuccess, onFail, { quality: 75,
+        destinationType: Camera.DestinationType.DATA_URL,
+        targetWidth:960,
+        targetHeight:960,
+        correctOrientation: true
+      });
+
+      function onSuccess(imageData) {    
+        $("#row-img").prop('hidden', false);            
+        var image = document.getElementById('img');
+        image.src =  "data:image/jpeg;base64," + imageData;  
+      }
+
+      function onFail(message) {
+        $.confirm({
+          title: 'พบข้อผิดพลาด',
+          content: message,
+          backgroundDismiss: true,
+          buttons: {
+            formSubmit: {
+              text: 'ตกลง',
+              btnClass: 'btn-regis',
+              action: function () {
+              }
+            }
+          }
+        });
+      }
+    }   
+   
+    function upload_photo(){
+      navigator.camera.getPicture(onSuccess, onFail, { quality: 75,
+        destinationType: Camera.DestinationType.DATA_URL,
+        sourceType: Camera.PictureSourceType.PHOTOLIBRARY,
+        targetWidth:960,
+        targetHeight:960,
+        correctOrientation: true
+      });
+
+      function onSuccess(imageData) {                
+        $("#row-img").prop('hidden', false);            
+        var image = document.getElementById('img');
+        image.src =  "data:image/jpeg;base64," + imageData;         
+      }
+
+      function onFail(message) {
+        $.confirm({
+          title: 'พบข้อผิดพลาด',
+          content: message,
+          backgroundDismiss: true,
+          buttons: {
+            formSubmit: {
+              text: 'ตกลง',
+              btnClass: 'btn-regis',
+              action: function () {
+              }
+            }
+          }
+        });
+      }
+    }
+   
+    function add_prod(){
+      var name = $('#name').val();
+      var code = $('#barcode').val();
+      var min = $('#min').val();
+              
+      if(name == "" || code == "" || min == ""){
+        $.confirm({
+          title: 'พบข้อผิดพลาด',
+          content: 'กรุณากรอกข้อมูลให้ครบ',
+          backgroundDismiss: true,
+          buttons: {
+            formSubmit: {
+              text: 'ตกลง',
+              btnClass: 'btn-regis',
+              action: function () {
+              }
+            }
+          }
+        });
+        return 0; 
+      } 
+      $('#img').each(function () {
+        if(this.src.length > 0){  
+          var imgb64 = $('#img').attr('src');              
+          $.ajax({
+            type: "POST",
+            url:"http://ddaccessory.trueddns.com:24330/dd-shop/php/add_prod.php",           
+            data: {'name_prod' : name,
+                  'code' : code,
+                  'parent' : folder,
+                  'img' : imgb64,                 
+                  'min' : min},               
+              beforeSend: function(){
+                $(".overlay").prop('hidden', false);
+              },             
+              success: function(data){
+              $(".overlay").prop('hidden', true);                               
+              if(data != "fail"){
+                $.confirm({
+                    title: 'เสร็จสิ้น',
+                    content: 'เพิ่มสินค้า ' +name+ ' ในหมวดหมู่ ' +folder+ ' เสร็จสิ้น',
+                    backgroundDismiss: true,
+                    buttons: {
+                      formSubmit: {
+                        text: 'ตกลง',
+                        btnClass: 'btn-regis',
+                        action: function () {
+                            out();
+                          }
+                      }
+                    }
+                });
+                out(); 
+              }else{
+                $.confirm({
+                  title: 'พบข้อผิดพลาด',
+                  content: 'ลองอีกครั้ง',
+                  backgroundDismiss: true,
+                  buttons: {
+                    formSubmit: {
+                      text: 'ตกลง',
+                      btnClass: 'btn-regis',
+                      action: function () {
+                      }
+                    }
+                  }
+                });
+              }
+            }               
+          }); 
+        }else{
+          $.ajax({
+            type: "POST",
+            url:"http://ddaccessory.trueddns.com:24330/dd-shop/php/add_prod.php",           
+            data: {'name_prod' : name,
+                  'code' : code,
+                  'parent' : folder,                  
+                  'min' : min},               
+              beforeSend: function(){
+                $(".overlay").prop('hidden', false);
+              },             
+              success: function(data){
+              $(".overlay").prop('hidden', true);                               
+              if(data != "fail"){
+                $.confirm({
+                    title: 'เสร็จสิ้น',
+                    content: 'เพิ่มสินค้า ' +name+ ' ในหมวดหมู่ ' +folder+ ' เสร็จสิ้น',
+                    backgroundDismiss: true,
+                    buttons: {
+                      formSubmit: {
+                        text: 'ตกลง',
+                        btnClass: 'btn-regis',
+                        action: function () {
+                            out();
+                          }
+                      }
+                    }
+                });
+                out(); 
+              }else{
+                $.confirm({
+                  title: 'พบข้อผิดพลาด',
+                  content: 'ลองอีกครั้ง',
+                  backgroundDismiss: true,
+                  buttons: {
+                    formSubmit: {
+                      text: 'ตกลง',
+                      btnClass: 'btn-regis',
+                      action: function () {
+                      }
+                    }
+                  }
+                });
+              }
+            }               
+          });  
+        }
+      });        
+    }    
+
+    function out(){
+      $('#name').val("");
+      $('#barcode').val(""); 
+      $('#min').val("");
+      $("#row-img").prop('hidden', true);        
+
+      var image = document.getElementById('img');
+      image.src =  "";   
+    }  
+
+    function page_back(){
+      goto = "select_folder.html?from=add&folder="+folder;
+      transition_page_back(goto);
+      window.location = goto;
+    }
+
+    function show_pic(){
+      localStorage.img = $('#img').attr('src');           
+      goto = "show_pic.html?from=a&folder="+folder;
+      transition_page_next(goto);
+      window.location = goto;
+    }
+
+  </script>
+</head>
+
+<body style="overflow: auto;">
+  <!-- Loading -->
+  <div class="overlay" hidden><div class="loading"></div></div>
+
+  <!-- Nav menu top -->
+  <div class="row fixed-top navs align-items-center">
+    <div class="col-1 text-center" onclick="page_back()">
+      <i id="i-back" class="fas fa-angle-left"></i>
+    </div>
+    <div class="col-10 text-center" style="padding-left: 0;">
+      <h5 id="h5-title">เพิ่มสินค้า</h5>
+    </div>
+  </div><br>
+
+  <!-- End big container -->
+  <div class="container justify-content-center" style="margin-top: 15%; margin-bottom: 25%;">
+    <div class="container">
+      <div class="row mg-10">
+        <div class="col-12 text-center">
+          <h5 id="folder-title"></h5>
+        </div>
+      </div>
+      <div class="row mg-10">
+        <div class="col-12 text-center pdlr">
+          <label for="name">ชื่อสินค้า</label>
+          <input id="name" type="text" class="w3-input" data-index="1" autofocus>
+        </div>
+      </div>
+      <div class="row" style="margin-bottom: 18%">
+        <div class="col-6 text-center" style="margin-left: 4%;">
+          <label for="barcode">รหัส</label>
+          <input id="barcode" type="text" class="w3-input"  data-index="2">
+        </div>
+        <div class="col-5 text-center">
+          <label for="min">ขั้นต่ำ</label>
+          <input id="min" type="number" class="w3-input"  data-index="3">
+        </div>
+      </div>
+      <div id="row-img" class="row mg-7">
+        <div class="col-12 text-center">
+          <img id="img" class="square" alt="" onclick="show_pic()" src="">
+        </div>
+      </div>
+      <div class="row mg-10">
+        <div class="col-12 text-center">
+          <button id="btn-addpic" class="mbtn-green" onclick="addpic();">เพิ่มรูปภาพ</button>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-12 text-center">
+          <button class="mbtn" onclick="add_prod();">เพิ่มสินค้า</button>
+        </div>
+      </div>
+    </div>
+  <!-- End big container -->
+
+  <!-- Nav menu bottom -->
+  <div class="row fixed-bottom navs">
+    <div class="col-3 text-center" onclick="transition_page_back('index.html'); window.location = 'index.html';">
+      <i id="i-home" class="fas fa-home menu"></i>
+    </div>
+    <div class="col-3 text-center" onclick="transition_page_next('bell.html'); window.location ='bell.html';">
+      <div class="dot" hidden></div>
+      <i id="i-bell" class="fas fa-bell menu"></i>
+    </div>
+    <div class="col-3 text-center" onclick="scan();">
+      <i id="i-qrcode" class="fas fa-qrcode menu"></i>
+    </div>
+    <div class="col-3 text-center" onclick="transition_page_next('other.html'); window.location = 'other.html';">
+      <i id="i-bars" class="fa fa-bars menu"></i>
+    </div>
+  </div>
+  <!-- End Nav menu bottom -->
+  <script>
+    //Touch animation
+    $(".mbtn").on("touchstart", function() {
+      $(this).addClass('mbtn-touch');
+    });
+    $(".mbtn").on("touchend", function() {
+      $(this).removeClass('mbtn-touch');
+    });
+    $(".mbtn-green").on("touchstart", function() {
+      $(this).addClass('mbtn-green-touch');
+    });
+    $(".mbtn-green").on("touchend", function() {
+      $(this).removeClass('mbtn-green-touch');
+    });
+    $(".select_folder").on("touchstart", function() {
+      $(this).addClass('select_folder-touch');
+    });
+    $(".select_folder").on("touchend", function() {
+      $(this).removeClass('select_folder-touch');
+    });
+
+    /*$(function () {
+      var viewer = ImageViewer();
+      $('#img').click(function () {
+          alert("click");
+          var imgSrc = this.src;
+          viewer.show(imgSrc);
+      });
+    });*/
+  </script>
+</body>
+
+</html>
