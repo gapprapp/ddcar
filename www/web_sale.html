@@ -95,19 +95,35 @@
 				},
 				preparePostData: function(data) {     
 					if($("#cus").val() == ""){
-            $.alert({
-              icon: 'fa fa-warning',
-              title: 'เตือน',
-              content: "กรุณาใส่ชื่อลูกค้าก่อนทำรายการ"
-            });
-            $("#cus").focus();
-            $("#name").val("");
-            return 0;
-          }else{
-            prod_id = 0;
-            data.phrase = $("#name").val();
-            return data;
-          }
+						$.alert({
+						icon: 'fa fa-warning',
+						title: 'เตือน',
+						content: "กรุณาใส่ชื่อลูกค้าก่อนทำรายการ"
+						});
+						$("#cus").focus();
+						$("#name").val("");
+						return 0;
+         			}else if($('#btn-b').text() == "เลือกโกดัง/หน้าร้าน"){
+						$.confirm({
+							title: 'พบข้อผิดพลาด',
+							content: 'กรุณาเลือกโกดัง/หน้าร้านก่อนทำรายการ',
+							backgroundDismiss: true,
+							buttons: {
+								formSubmit: {
+									text: 'ตกลง',
+									btnClass: 'btn-regis',
+									action: function () {
+									}
+								}
+							}
+						});  
+						$("#name").val("");
+						return 0;
+					}else{
+						prod_id = 0;
+						data.phrase = $("#name").val();
+						return data;
+          			}
 				},
 				minCharNumber: 3,
 				list: {
@@ -381,28 +397,28 @@
 					if(obj){
 						$.each(obj, function(i, field){							
 							if(obj[i][2] == "โกดัง"){  
-								if(!localStorage.ware_id_s){
-									if(i == 0){
-										localStorage.ware_id_s =  field.ware_id;
-										localStorage.ware_name_s =  field.ware_name;
-										b_id = field.ware_id;
-										type = "โกดัง";
-										localStorage.type =  type;
-										$('#btn-b').text(field.ware_name);								
-									}
-								}
+								// if(!localStorage.ware_id_s){
+								// 	if(i == 0){
+								// 		localStorage.ware_id_s =  field.ware_id;
+								// 		localStorage.ware_name_s =  field.ware_name;
+								// 		b_id = field.ware_id;
+								// 		type = "โกดัง";
+								// 		localStorage.type =  type;
+								// 		$('#btn-b').text(field.ware_name);								
+								// 	}
+								// }
 								$('#b').append('<a class="dropdown-item text-center" href="#" onclick="setware('+field.ware_id+',\''+field.ware_name+'\',\'โกดัง\')">'+field.ware_name+'</a>');
 							}else if(obj[i][2] == "หน้าร้าน"){ 
-								if(!localStorage.ware_id_s){
-									if(i == 0){
-										localStorage.ware_id_s =  field.shop_id;
-										localStorage.ware_name_s =  field.shop_name;
-										b_id = field.shop_id;
-										type = "หน้าร้าน";
-										localStorage.type =  type;
-										$('#btn-b').text(field.shop_name);								
-									}
-								}
+								// if(!localStorage.ware_id_s){
+								// 	if(i == 0){
+								// 		localStorage.ware_id_s =  field.shop_id;
+								// 		localStorage.ware_name_s =  field.shop_name;
+								// 		b_id = field.shop_id;
+								// 		type = "หน้าร้าน";
+								// 		localStorage.type =  type;
+								// 		$('#btn-b').text(field.shop_name);								
+								// 	}
+								// }
 								$('#b').append('<a class="dropdown-item text-center" href="#" onclick="setware('+field.shop_id+',\''+field.shop_name+'\',\'หน้าร้าน\')">'+field.shop_name+'</a>');
 							}										
 						}); 
@@ -1195,9 +1211,9 @@
 			localStorage.cus_type = "";
 			localStorage.cus_addr = "";
 			localStorage.cus_tel = "";
-			// localStorage.ware_id_s = "";
-			// localStorage.ware_name_s = "";
-			// localStorage.type = "";
+			localStorage.ware_id_s = "";
+			localStorage.ware_name_s = "";
+			localStorage.type = "";
 			location.reload();
 		}
 
@@ -1210,7 +1226,22 @@
 				});
 				$("#cus").focus();
 				return 0;
-			}
+			}else if($('#btn-b').text() == "เลือกโกดัง/หน้าร้าน"){
+				$.confirm({
+					title: 'พบข้อผิดพลาด',
+					content: 'กรุณาเลือกโกดัง/หน้าร้านก่อนทำรายการ',
+					backgroundDismiss: true,
+					buttons: {
+						formSubmit: {
+							text: 'ตกลง',
+							btnClass: 'btn-regis',
+							action: function () {
+							}
+						}
+					}
+				});  
+				return 0;
+			}			
 			window.location = "web_folder.html?from=sale";            
 		} 
 
@@ -1287,7 +1318,7 @@
       			</div>
       			
       			<div class="col-3 text-center nopd">
-      				<button id="btn-b" type="button" class="btn dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="background-color: #666;"></button>
+      				<button id="btn-b" type="button" class="btn dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="background-color: #666;">เลือกโกดัง/หน้าร้าน</button>
 
       				<div id="b" class="dropdown-menu" aria-labelledby="dropdownMenuButton">
 
