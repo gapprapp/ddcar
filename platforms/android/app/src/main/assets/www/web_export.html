@@ -110,9 +110,27 @@
 					data: {}
 				},
 				preparePostData: function(data) {     
-					prod_id = 0;     
-					data.phrase = $("#name").val();
-					return data;
+					if($('#btn-b').text() == "เลือกโกดัง"){
+						$.confirm({
+							title: 'พบข้อผิดพลาด',
+							content: 'กรุณาเลือกโกดังก่อนทำรายการ',
+							backgroundDismiss: true,
+							buttons: {
+								formSubmit: {
+									text: 'ตกลง',
+									btnClass: 'btn-regis',
+									action: function () {
+									}
+								}
+							}
+						});  
+						$("#name").val("");
+						return 0;
+					}else{
+						prod_id = 0;     
+						data.phrase = $("#name").val();
+						return data;
+					}					
 				},
 				minCharNumber: 3,
 				list: {
@@ -286,14 +304,14 @@
 					var obj = jQuery.parseJSON(data); 
 					if(obj){
 						$.each(obj, function(i, field){
-							if(!localStorage.ware_id_ex){
-								if(i == 0){
-									localStorage.ware_id_ex =  field.ware_id;
-									ware_id = field.ware_id;
-									$('#btn-b').text(field.ware_name);
-									localStorage.ware_name_ex =  field.ware_name;								
-								}
-							}							
+							// if(!localStorage.ware_id_ex){
+							// 	if(i == 0){
+							// 		localStorage.ware_id_ex =  field.ware_id;
+							// 		ware_id = field.ware_id;
+							// 		$('#btn-b').text(field.ware_name);
+							// 		localStorage.ware_name_ex =  field.ware_name;								
+							// 	}
+							// }							
 							$('#b').append('<a class="dropdown-item text-center" href="#" onclick="setware('+field.ware_id+',\''+field.ware_name+'\')">'+field.ware_name+'</a>');
 						}); 
 					}
@@ -667,12 +685,28 @@
 		function cancel(){
 			localStorage.arr_ex = "";
 			localStorage.arr_prod_e = "";	
-			// localStorage.ware_id_ex = "";
-			// localStorage.ware_name_ex = "";	
+			localStorage.ware_id_ex = "";
+			localStorage.ware_name_ex = "";	
 			location.reload();
 		}
 
 		function selectfolder() {
+			if($('#btn-b').text() == "เลือกโกดัง"){
+				$.confirm({
+					title: 'พบข้อผิดพลาด',
+					content: 'กรุณาเลือกโกดังก่อนทำรายการ',
+					backgroundDismiss: true,
+					buttons: {
+						formSubmit: {
+							text: 'ตกลง',
+							btnClass: 'btn-regis',
+							action: function () {
+							}
+						}
+					}
+				});  
+				return 0;
+			}		
             window.location = "web_folder.html?from=export";            
         } 
 
@@ -714,8 +748,7 @@
       			<div class="col-3"></div>
       			<div class="col-2 text-center">
       				<div id="select-ware" class="dropdown">
-      				  <button id="btn-b" class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="background-color: #666; width: 111px;">
-      				  </button>
+      				  <button id="btn-b" class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="background-color: #666; width: 111px;">เลือกโกดัง</button>
       				  <div id="b" class="dropdown-menu" aria-labelledby="dropdownMenuButton">      				    
       				    
       				  </div>

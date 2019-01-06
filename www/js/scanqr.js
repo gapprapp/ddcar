@@ -29,7 +29,7 @@ function scan(arg){
                                   name = obj[i].prod_name;    
                                   id = obj[i].id;
                                   prod_id = obj[i].prod_id;
-                                    if(obj[i][8] == "ware"){
+                                    if(obj[i][9] == "ware"){
                                         datastr = {'prod_id':prod_id,'ware_id':id};
                                     }else{
                                         datastr = {'prod_id':prod_id,'shop_id':id};

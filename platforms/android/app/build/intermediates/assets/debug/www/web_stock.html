@@ -164,11 +164,14 @@
 					EasyLoading.hide();				
 					var msg = "";		                      
 					var obj = jQuery.parseJSON(data); 	
-					console.log(obj);				        
+					console.log(obj);					        
 					if(obj != ""){                
 						$.each(obj, function(i, field){            				
 							id = obj[i].id;
-							if(obj[i][5] == "ware"){
+							price = obj[i].prod_price;
+							pricesend = obj[i].prod_pricesend;
+							cost = obj[i].prod_cost;
+							if(obj[i][8] == "ware"){
 								datastr = {'prod_id':prod_id,'ware_id':id};
 							}else{
 								datastr = {'prod_id':prod_id,'shop_id':id};
@@ -198,15 +201,21 @@
 											'<p>&nbsp;'+obj[i].amount+' | '+addr+'</p>'+
 										'</div>';												
 						});	
+						var msg_price;					
+						if(localStorage.user_role == "พนักงาน"){
+							msg_price = '<p>ส่ง : '+pricesend+'  ปลีก : '+price+'</p>';
+						}else{
+							msg_price = '<p>ทุน : '+cost+'  ส่ง : '+pricesend+'  ปลีก : '+price+'</p>';
+						}			
 						if(img == ""){
 							$('#append-ctn').append('<div class="jumbotron text-center jumbo-center">'+
-									'<p class="display">'+name+'</p> <hr class="jumbohr">' +
+									'<p class="display">'+name+'</p><br>'+msg_price+' <hr class="jumbohr">' +
 									'<img src="img/no_img.png" alt="pic">'+								
 										msg +								
 								'</div>');
 						}else{
 							$('#append-ctn').append('<div class="jumbotron text-center jumbo-center">'+
-								'<p class="display">'+name+'</p> <hr class="jumbohr">' +
+								'<p class="display">'+name+'</p><br>'+msg_price+' <hr class="jumbohr">' +
 								'<img src="'+img+'" alt="pic">'+								
 									msg +								
 							'</div>');
