@@ -22,11 +22,14 @@ function scan(arg){
                             var obj = jQuery.parseJSON(data);              
                             if(obj != ""){                
                               $.each(obj, function(i, field){
+                                  price = obj[i].prod_price;
+                                  pricesend = obj[i].prod_pricesend;
+                                  cost = obj[i].prod_cost;
                                   img = obj[i].img; 
                                   name = obj[i].prod_name;    
                                   id = obj[i].id;
                                   prod_id = obj[i].prod_id;
-                                    if(obj[i][6] == "ware"){
+                                    if(obj[i][8] == "ware"){
                                         datastr = {'prod_id':prod_id,'ware_id':id};
                                     }else{
                                         datastr = {'prod_id':prod_id,'shop_id':id};
@@ -51,7 +54,13 @@ function scan(arg){
                                     });	   
                                   msg = msg + '<div class="row" style="margin-bottom: 3%"><div class="col-6 text-right" style="margin-right: 5%;">'+obj[i][0]+' :'+'</div><div class="col-5 text-left">'+obj[i].amount+' | '+addr+'</div></div>';
                               });
-                              var top_msg = '<div class="row" style="margin-top: 2%; margin-bottom: 2%;"><div class="col-12 text-center"><img src="'+img+'" id="img" alt="" style="width: 300px; height: 300px;"></div></div><br>'; 
+                              var msg_price;					
+                              if(localStorage.user_role == "พนักงาน"){
+                                msg_price = '<p>ส่ง : '+pricesend+'  ปลีก : '+price+'</p>';
+                              }else{
+                                msg_price = '<p>ทุน : '+cost+'  ส่ง : '+pricesend+'  ปลีก : '+price+'</p>';
+                              }	
+                              var top_msg = '<div class="row" style="margin-top: 2%; margin-bottom: 2%;"><div class="col-12 text-center">'+msg_price+'<br><img src="'+img+'" id="img" alt="" style="width: 300px; height: 300px;"></div></div><br>'; 
                               $.confirm({
                                   title: name,
                                   content: top_msg + msg,
