@@ -70,7 +70,11 @@
 		$(document).ready(function () {
 			if(!localStorage.user_id){
 				window.location = 'web_login.html';
-            }            
+            }   	
+			if(localStorage.user_role == "พนักงาน"){
+				$("#fund").prop('hidden', true);
+				$("#head-fund").prop('hidden', true);
+            }
 			get_header();		
 			setTimeout(function() {$("#name").focus();}, 100);	
 
@@ -773,7 +777,7 @@
       		  <div class="col-3 text-center nopd">บาร์โค้ด</div>      		 
       		  <div class="col-3 text-center nopd">ชื่อสินค้า</div>
       		  <div class="col-1 text-center nopd-8">จำนวน</div>
-      		  <div class="col-2 text-center nopd-8">ทุน</div>      		
+      		  <div id="head-fund" class="col-2 text-center nopd-8">ทุน</div>      		
       		</div>
       	</div>
 	

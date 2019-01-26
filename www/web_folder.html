@@ -167,13 +167,20 @@
 				if(data != "last node"){
 					var obj = jQuery.parseJSON(data);
 					//console.log(obj)					         
-					if(obj[obj.length-1] == "last node"){               
+					if(obj[obj.length-1] == "last node"){
+						obj.sort(function(a,b) {
+							if ( a.prod_code < b.prod_code)
+								return -1;
+							if ( a.prod_code > b.prod_code)
+								return 1;
+							return 0;
+						} );					    
 					$.each(obj, function(i, field){
 						if(obj.length-1 > i){
 							if(i % 2 == 0){
-								text_html = '<h5 id="prod-'+p+'" class="prod-odd" rel="popover" data-img="'+obj[i][2].img+'" onclick="choose('+p+')"><span id="id-'+p+'" hidden>'+obj[i].title+'</span><input type="checkbox"><span id="span-code-'+p+'">'+obj[i][2].prod_code+'</span>&nbsp;&nbsp;&nbsp;&nbsp;<span id="span-name-'+p+'">'+obj[i][2].prod_name+'</span><i class="fas fa-trash i-trash" hidden></i><i class="fas fa-pen i-edit" hidden></i><i class="fas fa-info-circle i-modal" data-toggle="modal" data-target="#detailModal" onclick="hideclick('+p+');"></i></h5>';
+								text_html = '<h5 id="prod-'+p+'" class="prod-odd" rel="popover" data-img="'+obj[i].img+'" onclick="choose('+p+')"><span id="id-'+p+'" hidden>'+obj[i].prod_id+'</span><input type="checkbox"><span id="span-code-'+p+'">'+obj[i].prod_code+'</span>&nbsp;&nbsp;&nbsp;&nbsp;<span id="span-name-'+p+'">'+obj[i].prod_name+'</span><i class="fas fa-trash i-trash" hidden></i><i class="fas fa-pen i-edit" hidden></i><i class="fas fa-info-circle i-modal" data-toggle="modal" data-target="#detailModal" onclick="hideclick('+p+');"></i></h5>';
 							}else{
-								text_html = '<h5 id="prod-'+p+'" class="prod-even" rel="popover" data-img="'+obj[i][2].img+'" onclick="choose('+p+')"><span  id="id-'+p+'" hidden>'+obj[i].title+'</span><input type="checkbox"><span id="span-code-'+p+'">'+obj[i][2].prod_code+'</span>&nbsp;&nbsp;&nbsp;&nbsp;<span id="span-name-'+p+'">'+obj[i][2].prod_name+'</span><i class="fas fa-trash i-trash" hidden></i><i class="fas fa-pen i-edit" hidden></i><i class="fas fa-info-circle i-modal" data-toggle="modal" data-target="#detailModal" onclick="hideclick('+p+');"></i></h5>';
+								text_html = '<h5 id="prod-'+p+'" class="prod-even" rel="popover" data-img="'+obj[i].img+'" onclick="choose('+p+')"><span  id="id-'+p+'" hidden>'+obj[i].prod_id+'</span><input type="checkbox"><span id="span-code-'+p+'">'+obj[i].prod_code+'</span>&nbsp;&nbsp;&nbsp;&nbsp;<span id="span-name-'+p+'">'+obj[i].prod_name+'</span><i class="fas fa-trash i-trash" hidden></i><i class="fas fa-pen i-edit" hidden></i><i class="fas fa-info-circle i-modal" data-toggle="modal" data-target="#detailModal" onclick="hideclick('+p+');"></i></h5>';
 							} 							 
 							                  
 						$("#append-prod").append(text_html + "<script>" +

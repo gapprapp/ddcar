@@ -95,13 +95,13 @@
         },threshold:75
       });
       $("#main").swipe( {swipe:function(event, direction, distance, duration, fingerCount, fingerData) {
-        if(direction == "right"){ 
+        if(direction == "right" && localStorage.user_role == "แอดมิน"){
           $("#tabs-main").removeClass('tabs'); $("#tabs-main").addClass('non'); 
           $("#tabs-admin").removeClass('non'); $("#tabs-admin").addClass('tabs');
           $("#main").prop('hidden', true);
           $("#admin").prop('hidden', false);
           sessionStorage.menu = "admin";
-        }else if(direction == "left"){ 
+        }else if(direction == "left" && localStorage.user_role != "พนักงาน"){ 
           $("#tabs-main").removeClass('tabs'); $("#tabs-main").addClass('non'); 
           $("#tabs-log").removeClass('non'); $("#tabs-log").addClass('tabs');
           $("#main").prop('hidden', true);
