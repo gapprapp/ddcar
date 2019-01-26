@@ -100,13 +100,20 @@
                       $("#show-box").prop('hidden',true); 
                     }                                      
                   } 
+                  obj.sort(function(a,b) {
+                    if ( a.prod_code < b.prod_code)
+                      return -1;
+                    if ( a.prod_code > b.prod_code)
+                      return 1;
+                    return 0;
+                  } );			
                   $.each(obj, function(i, field){
                     if(obj.length-1 > i){
                       text_html = "<div id='row-title-"+i+"' class='row'>" +
-                        "<span id='span-"+i+"' hidden>" + obj[i].title + "</span>" +
+                        "<span id='span-"+i+"' hidden>" + obj[i].prod_id + "</span>" +
                         "<div class='col-2 text-center'><i id='box-"+i+"' class='far fa-check-square six box' onclick='check("+i+")' hidden></i><i class='fa fa-trash-alt i-trash' onclick='remove("+i+")' style='color: #666;' hidden></i><i class='fa fa-edit i-edit' onclick='edit("+i+")' style='color: #666;' hidden></i></div>" +                        
-                        "<div id='getin-"+i+"' class='col-8 text-center title' onclick='getIn(\"" + obj[i].title + "\", "+i+")'>" +
-                        "<h5 id='title-"+i+"'>" + obj[i][2] + "</h5>" +
+                        "<div id='getin-"+i+"' class='col-8 text-center title' onclick='getIn(\"" + obj[i].prod_id + "\", "+i+")'>" +
+                        "<h5 id='title-"+i+"'>" + obj[i].prod_name + "</h5>" +
                         "</div>" +
                         "<div class='col-2'></div>" +
                         "</div >"+

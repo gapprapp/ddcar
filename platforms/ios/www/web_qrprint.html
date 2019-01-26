@@ -228,14 +228,20 @@
 				}                       
 			}  
 			if (objEvent.keyCode == 113) {  //f2 pressed
-        add();
+        		add();
 			}
 			if (objEvent.keyCode == 115) {  //f4 pressed
 				set_default();
 			}
 			if (objEvent.keyCode == 118) {  //f7 pressed
+				selectfolder();          
+			}    
+			if (objEvent.keyCode == 119) {  //f8 pressed
 				print();          
-			}       
+            } 
+            if (objEvent.keyCode == 120) {  //f9 pressed
+				cancel();          
+            }        
 		})		
 		
 		function add(){
@@ -491,6 +497,7 @@
 					<a href="web_import.html" class="mgr-20">นำสินค้าเข้าโกดัง</a>
 					<a href="web_stock.html" class="mgr-20">เช็คสต๊อก</a>
 					<a href="web_export.html" class="mgr-20">สินค้าออกโกดัง</a>
+					<a href="web_transfer_in.html" class="mgr-20">นำสินค้าเข้าหน้าร้าน</a>
 					<a href="web_select.html" class="mgr-20">รายการย้อนหลัง</a>
 					<a href="web_qrprint.html" class="mgr-20 active">พิมพ์คิวอาร์</a>
 					<a href="" class="mgr-20" onclick="logout()">ออกจากระบบ</a>
@@ -535,10 +542,10 @@
 			</div><br>
 			<div class="row">
 				<div class="col-6"></div>
-				<div class="col-4 text-center">
-					<button class="btn btn-md btn-success" style="margin-right: 5px;" onclick="add();">เพิ่มสินค้า</button>
-					<button id="btn-folder" class="select_folder btn btn-md btn-primary" style="margin-right: 5px;" onclick="selectfolder();">เลือกสินค้า</button>
-					<button id="btn-def" class="btn btn-md btn-danger" onclick="set_default()">ค่าเริ่มต้น</button>
+				<div class="col-6 text-center">
+					<button class="btn btn-md btn-success" style="margin-right: 5px;" onclick="add();">เพิ่มสินค้า (F2)</button>
+					<button id="btn-folder" class="select_folder btn btn-md btn-primary" style="margin-right: 5px;" onclick="selectfolder();">เลือกสินค้า (F7)</button>
+					<button id="btn-def" class="btn btn-md btn-danger" onclick="set_default()">ค่าเริ่มต้น (F4)</button>
 				</div>
 			</div>
 		</div>
@@ -546,8 +553,8 @@
 		<div id="ctn-bttm" class="container-fullwidth fixed-bottom" style="margin-bottom: 15px; z-index: 0;">
 		  <div class="row">
 		    <div class="col-12 text-center">
-				<button id="btn_checkbill" class="btn btn-warning" onclick="print()">พิมพ์คิวอาร์</button>
-				<button class="btn btn-danger" onclick="cancel()">ยกเลิก</button>
+				<button id="btn_checkbill" class="btn btn-warning" onclick="print()">พิมพ์คิวอาร์ (F8)</button>
+				<button class="btn btn-danger" onclick="cancel()">ยกเลิก (F9)</button>
 		    </div>
 			</div>
 			<div id="show_qr" hidden>

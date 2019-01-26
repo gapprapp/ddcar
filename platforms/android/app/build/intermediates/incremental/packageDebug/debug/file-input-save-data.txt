@@ -1,5 +1,5 @@
 #Internal package file, do not edit.
-#Wed Nov 07 21:33:22 ICT 2018
+#Sat Jan 26 16:26:34 ICT 2019
 20.base=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\res\\debug\\resources-debug.ap_
 143.base=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\assets\\debug
 340.file=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\assets\\debug\\html-zh-rHK\\scanning.html
@@ -7,7 +7,7 @@
 66.set=ANDROID_RESOURCE
 317.set=ASSET
 356.base=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\assets\\debug
-373.file=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\assets\\debug\\www\\php\\update_threshold.php
+373.file=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\res\\debug\\resources-debug.ap_\\res\\drawable\\flip_camera.png
 203.file=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\assets\\debug\\html-nl\\index.html
 86.base=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\assets\\debug
 389.base=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\res\\debug\\resources-debug.ap_
@@ -28,7 +28,7 @@
 60.file=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\assets\\debug\\html-de\\license.html
 217.set=ASSET
 192.file=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\assets\\debug\\www\\php\\db.php
-363.file=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\assets\\debug\\html-de\\index.html
+363.file=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\assets\\debug\\www\\web_transfer_in.html
 76.base=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\assets\\debug
 259.file=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\assets\\debug\\html-nl\\whatsnew.html
 97.set=ASSET
@@ -45,7 +45,7 @@
 66.base=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\res\\debug\\resources-debug.ap_
 189.base=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\assets\\debug
 83.file=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\assets\\debug\\www\\add_prod.html
-386.file=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\res\\debug\\resources-debug.ap_\\res\\layout-v21\\notification_template_icon_group.xml
+386.file=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\res\\debug\\resources-debug.ap_\\res\\layout-ldpi-v4\\capture.xml
 74.set=ANDROID_RESOURCE
 325.set=ASSET
 5.file=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\res\\debug\\resources-debug.ap_\\res\\drawable-mdpi-v4\\notify_panel_notification_icon_bg.png
@@ -122,6 +122,7 @@
 187.set=ANDROID_RESOURCE
 361.base=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\assets\\debug
 39.set=ASSET
+394.base=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\assets\\debug
 241.file=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\res\\debug\\resources-debug.ap_\\AndroidManifest.xml
 241.set=ANDROID_RESOURCE
 257.base=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\assets\\debug
@@ -129,7 +130,7 @@
 137.file=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\assets\\debug\\html-de\\about1d.html
 308.file=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\assets\\debug\\www\\php\\get_credit.php
 47.file=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\assets\\debug\\html-en\\whatsnew.html
-372.set=ANDROID_RESOURCE
+372.set=ASSET
 16.set=ASSET
 81.base=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\assets\\debug
 295.set=ASSET
@@ -145,7 +146,7 @@
 4.set=ASSET
 71.base=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\transforms\\mergeJavaRes\\debug\\0.jar
 195.set=ANDROID_RESOURCE
-391.file=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\assets\\debug\\www\\plugins\\com.telerik.plugins.nativepagetransitions\\www\\NativePageTransitions.js
+391.file=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\assets\\debug\\html\\apache-license.txt
 254.file=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\assets\\debug\\html-it\\index.html
 47.set=ASSET
 287.file=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\assets\\debug\\www\\plugins\\es6-promise-plugin\\www\\promise.js
@@ -154,7 +155,7 @@
 322.base=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\assets\\debug
 184.base=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\assets\\debug
 380.set=ASSET
-381.file=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\res\\debug\\resources-debug.ap_\\res\\layout\\notification_media_cancel_action.xml
+381.file=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\assets\\debug\\www\\cordova-js-src\\android\\nativeapiprovider.js
 24.set=ASSET
 0.file=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\assets\\debug\\html-ru\\index.html
 94.base=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\assets\\debug
@@ -181,7 +182,7 @@
 180.set=ASSET
 197.base=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\assets\\debug
 91.file=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\assets\\debug\\html-ru\\about2d.html
-368.base=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\res\\debug\\resources-debug.ap_
+368.base=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\assets\\debug
 215.file=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\res\\debug\\resources-debug.ap_\\res\\drawable-land-xxhdpi-v4\\screen.png
 32.set=ANDROID_RESOURCE
 248.file=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\assets\\debug\\www\\php\\search_cus.php
@@ -195,7 +196,7 @@
 86.set=ASSET
 337.set=ASSET
 358.base=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\assets\\debug
-375.file=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\assets\\debug\\www\\php\\rename_prod.php
+375.file=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\assets\\debug\\www\\css\\easy-autocomplete.themes.min.css
 205.file=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\assets\\debug\\html-ko\\sharing.html
 88.base=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\assets\\debug
 238.file=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\assets\\debug\\html-uk\\license.html
@@ -211,11 +212,11 @@
 168.base=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\transforms\\mergeJavaRes\\debug\\0.jar
 237.set=ASSET
 194.file=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\assets\\debug\\www\\h.html
-365.file=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\assets\\debug\\www\\php\\check_amt_prod_web.php
+365.file=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\assets\\debug\\www\\bill_info.html
 115.set=ANDROID_RESOURCE
 78.base=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\res\\debug\\resources-debug.ap_
 228.file=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\assets\\debug\\www\\css\\web_folder.css
-368.set=ANDROID_RESOURCE
+368.set=ASSET
 40.set=ASSET
 262.base=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\assets\\debug
 295.base=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\assets\\debug
@@ -229,7 +230,7 @@
 355.file=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\assets\\debug\\www\\web_import.html
 68.base=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\assets\\debug
 85.file=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\transforms\\mergeJavaRes\\debug\\0.jar\\META-INF\\android.arch.lifecycle_viewmodel.version
-388.file=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\res\\debug\\resources-debug.ap_\\res\\drawable-xhdpi-v4\\notification_bg_low_normal.9.png
+388.file=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\res\\debug\\resources-debug.ap_\\res\\drawable\\notification_icon_background.xml
 94.set=ASSET
 345.set=ASSET
 7.file=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\assets\\debug\\images\\scan-from-phone.png
@@ -291,7 +292,7 @@
 339.file=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\assets\\debug\\www\\plugins\\cordova-plugin-camera\\www\\CameraPopoverHandle.js
 340.base=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\assets\\debug
 230.set=ASSET
-373.base=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\assets\\debug
+373.base=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\res\\debug\\resources-debug.ap_
 203.base=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\assets\\debug
 220.file=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\assets\\debug\\html-en\\sharing.html
 236.base=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\assets\\debug
@@ -319,7 +320,7 @@
 392.set=ASSET
 36.set=ASSET
 50.base=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\res\\debug\\resources-debug.ap_
-370.file=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\assets\\debug\\html-ru\\whatsnew.html
+370.file=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\assets\\debug\\www\\web_folder_clone.html
 200.file=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\res\\debug\\resources-debug.ap_\\res\\drawable-hdpi-v4\\launcher_icon.png
 83.base=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\assets\\debug
 386.base=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\res\\debug\\resources-debug.ap_
@@ -336,7 +337,7 @@
 163.base=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\assets\\debug
 360.file=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\assets\\debug\\html-es\\license.html
 73.base=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\assets\\debug
-393.file=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\assets\\debug\\www\\php\\stock_in.php
+393.file=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\assets\\debug\\www\\php\\get_import_info.php
 256.file=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\assets\\debug\\html-zh-rTW\\index.html
 67.set=ASSET
 318.set=ANDROID_RESOURCE
@@ -351,7 +352,7 @@
 63.base=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\assets\\debug
 186.base=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\res\\debug\\resources-debug.ap_
 80.file=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\assets\\debug\\www\\php\\delete_cus.php
-383.file=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\assets\\debug\\www\\php\\add_prod.php
+383.file=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\assets\\debug\\www\\js\\duDatepicker.js
 44.set=ASSET
 2.file=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\res\\debug\\resources-debug.ap_\\res\\layout\\notification_media_action.xml
 96.base=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\assets\\debug
@@ -391,7 +392,7 @@
 344.file=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\assets\\debug\\html-ja\\scanning.html
 57.base=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\assets\\debug
 357.set=ANDROID_RESOURCE
-377.file=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\assets\\debug\\www\\php\\delete_folder.php
+377.file=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\assets\\debug\\www\\print_qr.html
 207.file=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\assets\\debug\\www\\php\\delete_user.php
 203.set=ASSET
 158.set=ANDROID_RESOURCE
@@ -406,7 +407,7 @@
 47.base=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\assets\\debug
 257.set=ASSET
 196.file=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\res\\debug\\resources-debug.ap_\\res\\layout-v17\\notification_template_lines_media.xml
-367.file=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\assets\\debug\\images\\demo-no.png
+367.file=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\res\\debug\\resources-debug.ap_\\res\\layout-v17\\notification_template_media_custom.xml
 135.set=ANDROID_RESOURCE
 231.base=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\assets\\debug
 388.set=ANDROID_RESOURCE
@@ -441,7 +442,7 @@
 342.set=ASSET
 77.file=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\assets\\debug\\www\\sale_check.html
 265.set=ASSET
-381.base=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\res\\debug\\resources-debug.ap_
+381.base=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\assets\\debug
 143.set=ASSET
 0.base=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\assets\\debug
 188.set=ASSET
@@ -456,7 +457,7 @@
 120.set=ASSET
 191.base=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\assets\\debug
 225.base=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\res\\debug\\resources-debug.ap_
-373.set=ASSET
+373.set=ANDROID_RESOURCE
 251.file=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\assets\\debug\\images\\big-aztec.png
 17.set=ASSET
 284.file=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\assets\\debug\\www\\php\\add_cus.php
@@ -485,7 +486,7 @@
 222.file=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\assets\\debug\\www\\php\\get_threshold.php
 173.set=ASSET
 238.base=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\assets\\debug
-381.set=ANDROID_RESOURCE
+381.set=ASSET
 25.set=ASSET
 118.file=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\assets\\debug\\www\\php\\update_credit_auto.php
 28.file=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\assets\\debug\\www\\transfer_in.html
@@ -503,7 +504,7 @@
 52.base=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\res\\debug\\resources-debug.ap_
 56.set=ANDROID_RESOURCE
 307.set=ASSET
-372.file=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\res\\debug\\resources-debug.ap_\\res\\drawable\\flip_camera.png
+372.file=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\assets\\debug\\www\\web_select.html
 355.base=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\assets\\debug
 202.file=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\assets\\debug\\www\\js\\jquery.easy-autocomplete.js
 85.base=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\transforms\\mergeJavaRes\\debug\\0.jar
@@ -533,7 +534,7 @@
 65.base=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\assets\\debug
 188.base=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\assets\\debug
 82.file=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\assets\\debug\\www\\php\\get_allprod.php
-385.file=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\res\\debug\\resources-debug.ap_\\res\\layout-ldpi-v4\\capture.xml
+385.file=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\assets\\debug\\www\\php\\get_status_prod.php
 64.set=ANDROID_RESOURCE
 315.set=ASSET
 4.file=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\assets\\debug\\www\\css\\duDatepicker.css
@@ -544,7 +545,7 @@
 300.file=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\assets\\debug\\www\\warehouse_add.html
 13.base=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\res\\debug\\resources-debug.ap_
 162.file=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\assets\\debug\\www\\threshold.html
-369.set=ASSET
+369.set=ANDROID_RESOURCE
 316.base=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\assets\\debug
 41.set=ASSET
 178.base=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\res\\debug\\resources-debug.ap_
@@ -577,7 +578,7 @@
 59.base=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\assets\\debug
 377.set=ASSET
 300.set=ASSET
-379.file=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\assets\\debug\\html-zh-rTW\\scanning.html
+379.file=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\assets\\debug\\www\\register.html
 209.file=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\res\\debug\\resources-debug.ap_\\res\\layout\\share.xml
 210.base=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\assets\\debug
 223.set=ANDROID_RESOURCE
@@ -592,7 +593,7 @@
 277.set=ANDROID_RESOURCE
 198.file=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\assets\\debug\\html-ja\\sharing.html
 200.set=ANDROID_RESOURCE
-369.file=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\assets\\debug\\www\\web_folder_clone.html
+369.file=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\res\\debug\\resources-debug.ap_\\res\\layout-v17\\printer_list_item.xml
 155.set=ASSET
 9.set=ANDROID_RESOURCE
 370.base=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\assets\\debug
@@ -613,7 +614,7 @@
 359.file=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\assets\\debug\\www\\img\\no_img.png
 89.file=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\assets\\debug\\html-pt\\sharing.html
 360.base=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\assets\\debug
-385.set=ANDROID_RESOURCE
+385.set=ASSET
 29.set=ASSET
 393.base=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\assets\\debug
 240.file=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\res\\debug\\resources-debug.ap_\\res\\drawable-mdpi-v4\\notification_bg_normal.9.png
@@ -644,7 +645,7 @@
 140.set=ASSET
 70.base=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\assets\\debug
 185.set=ANDROID_RESOURCE
-390.file=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\assets\\debug\\html\\apache-license.txt
+390.file=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\res\\debug\\resources-debug.ap_\\res\\layout-v16\\notification_template_custom_big.xml
 227.base=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\assets\\debug
 393.set=ASSET
 253.file=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\res\\debug\\resources-debug.ap_\\res\\layout-land\\encode.xml
@@ -655,7 +656,7 @@
 321.base=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\assets\\debug
 183.base=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\assets\\debug
 370.set=ASSET
-380.file=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\assets\\debug\\www\\cordova-js-src\\android\\nativeapiprovider.js
+380.file=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\assets\\debug\\html-zh-rTW\\scanning.html
 14.set=ASSET
 93.base=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\res\\debug\\resources-debug.ap_
 217.base=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\assets\\debug
@@ -682,7 +683,7 @@
 170.set=ANDROID_RESOURCE
 196.base=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\res\\debug\\resources-debug.ap_
 90.file=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\assets\\debug\\images\\big-pdf417.png
-367.base=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\assets\\debug
+367.base=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\res\\debug\\resources-debug.ap_
 214.file=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\assets\\debug\\www\\test_print.html
 99.set=ASSET
 22.set=ASSET
@@ -696,7 +697,7 @@
 76.set=ASSET
 327.set=ASSET
 357.base=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\res\\debug\\resources-debug.ap_
-374.file=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\assets\\debug\\www\\css\\easy-autocomplete.themes.min.css
+374.file=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\assets\\debug\\www\\php\\update_threshold.php
 204.file=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\assets\\debug\\html-uk\\sharing.html
 87.base=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\assets\\debug
 237.file=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\assets\\debug\\html-ko\\scanning.html
@@ -714,7 +715,7 @@
 61.file=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\assets\\debug\\www\\sale_info.html
 227.set=ASSET
 193.file=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\transforms\\mergeJavaRes\\debug\\0.jar\\META-INF\\com.android.support_support-compat.version
-364.file=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\assets\\debug\\www\\bill_info.html
+364.file=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\assets\\debug\\html-de\\index.html
 105.set=ASSET
 77.base=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\assets\\debug
 358.set=ASSET
@@ -731,7 +732,7 @@
 354.file=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\res\\debug\\resources-debug.ap_\\res\\xml\\provider_paths.xml
 67.base=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\assets\\debug
 84.file=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\assets\\debug\\html-en\\index.html
-387.file=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\res\\debug\\resources-debug.ap_\\res\\drawable\\notification_icon_background.xml
+387.file=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\res\\debug\\resources-debug.ap_\\res\\layout-v21\\notification_template_icon_group.xml
 84.set=ASSET
 335.set=ASSET
 6.file=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\assets\\debug\\html-ru\\sharing.html
@@ -754,7 +755,7 @@
 113.set=ASSET
 274.base=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\res\\debug\\resources-debug.ap_
 291.file=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\assets\\debug\\www\\css\\index.css
-366.set=ANDROID_RESOURCE
+366.set=ASSET
 121.file=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\res\\debug\\resources-debug.ap_\\res\\layout-v17\\notification_action.xml
 154.file=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\assets\\debug\\www\\import_info.html
 289.set=ASSET
@@ -791,7 +792,7 @@
 338.file=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\assets\\debug\\www\\plugins\\cordova-plugin-camera\\www\\Camera.js
 297.set=ASSET
 220.set=ASSET
-372.base=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\res\\debug\\resources-debug.ap_
+372.base=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\assets\\debug
 202.base=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\assets\\debug
 235.base=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\res\\debug\\resources-debug.ap_
 351.set=ASSET
@@ -812,10 +813,10 @@
 174.set=ASSET
 138.file=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\assets\\debug\\www\\web_credit.html
 48.file=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\assets\\debug\\www\\php\\get_amt_prod.php
-382.set=ASSET
+382.set=ANDROID_RESOURCE
 26.set=ANDROID_RESOURCE
 82.base=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\assets\\debug
-385.base=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\res\\debug\\resources-debug.ap_
+385.base=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\assets\\debug
 4.base=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\assets\\debug
 232.file=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\assets\\debug\\html-zh-rHK\\sharing.html
 265.file=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\assets\\debug\\www\\plugins\\cordova-plugin-screen-orientation\\www\\screenorientation.js
@@ -826,7 +827,7 @@
 162.base=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\assets\\debug
 160.set=ANDROID_RESOURCE
 72.base=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\assets\\debug
-392.file=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\assets\\debug\\www\\php\\get_import_info.php
+392.file=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\assets\\debug\\www\\plugins\\com.telerik.plugins.nativepagetransitions\\www\\NativePageTransitions.js
 255.file=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\assets\\debug\\www\\js\\datepicker.th-TH.js
 57.set=ASSET
 308.set=ASSET
@@ -837,8 +838,8 @@
 323.base=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\assets\\debug
 185.base=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\res\\debug\\resources-debug.ap_
 62.base=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\res\\debug\\resources-debug.ap_
-390.set=ASSET
-382.file=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\assets\\debug\\www\\js\\duDatepicker.js
+390.set=ANDROID_RESOURCE
+382.file=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\res\\debug\\resources-debug.ap_\\res\\layout\\notification_media_cancel_action.xml
 34.set=ANDROID_RESOURCE
 1.file=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\assets\\debug\\html-pt\\scanning.html
 95.base=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\res\\debug\\resources-debug.ap_
@@ -868,7 +869,7 @@
 190.set=ASSET
 198.base=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\assets\\debug
 92.file=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\res\\debug\\resources-debug.ap_\\res\\mipmap-hdpi-v4\\icon.png
-369.base=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\assets\\debug
+369.base=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\res\\debug\\resources-debug.ap_
 216.file=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\assets\\debug\\www\\css\\datepicker.css
 42.set=ASSET
 249.file=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\assets\\debug\\images\\contact-results-screen.jpg
@@ -883,7 +884,7 @@
 96.set=ASSET
 347.set=ANDROID_RESOURCE
 359.base=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\assets\\debug
-376.file=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\assets\\debug\\www\\print_qr.html
+376.file=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\assets\\debug\\www\\php\\rename_prod.php
 206.file=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\assets\\debug\\html-zh-rCN\\scanning.html
 89.base=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\assets\\debug
 239.file=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\assets\\debug\\www\\php\\get_bell.php
@@ -900,7 +901,7 @@
 46.base=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\assets\\debug
 247.set=ANDROID_RESOURCE
 195.file=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\res\\debug\\resources-debug.ap_\\res\\layout\\notification_template_big_media.xml
-366.file=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\res\\debug\\resources-debug.ap_\\res\\layout-v17\\notification_template_media_custom.xml
+366.file=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\assets\\debug\\www\\php\\check_amt_prod_web.php
 125.set=ASSET
 79.base=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\assets\\debug
 229.file=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\assets\\debug\\www\\plugins\\cordova-plugin-splashscreen\\www\\splashscreen.js
@@ -921,10 +922,10 @@
 356.file=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\assets\\debug\\www\\php\\stock_out.php
 69.base=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\assets\\debug
 86.file=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\assets\\debug\\html-ru\\about1d.html
-389.file=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\res\\debug\\resources-debug.ap_\\res\\layout-v16\\notification_template_custom_big.xml
+389.file=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\res\\debug\\resources-debug.ap_\\res\\drawable-xhdpi-v4\\notification_bg_low_normal.9.png
 355.set=ASSET
 8.file=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\assets\\debug\\www\\manage_credit.html
-390.base=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\assets\\debug
+390.base=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\res\\debug\\resources-debug.ap_
 278.set=ASSET
 201.set=ASSET
 270.file=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\assets\\debug\\www\\select_folder.html
@@ -976,6 +977,7 @@
 247.base=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\res\\debug\\resources-debug.ap_
 273.file=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\res\\debug\\resources-debug.ap_\\res\\layout\\help.xml
 186.set=ANDROID_RESOURCE
+394.set=ASSET
 37.file=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\assets\\debug\\www\\php\\get_folder.php
 38.set=ANDROID_RESOURCE
 170.base=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\res\\debug\\resources-debug.ap_
@@ -1005,7 +1007,7 @@
 141.base=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\assets\\debug
 46.set=ASSET
 51.base=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\res\\debug\\resources-debug.ap_
-371.file=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\assets\\debug\\www\\web_select.html
+371.file=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\assets\\debug\\html-ru\\whatsnew.html
 354.base=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\res\\debug\\resources-debug.ap_
 201.file=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\assets\\debug\\www\\cordova-js-src\\exec.js
 84.base=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\assets\\debug
@@ -1021,7 +1023,8 @@
 164.base=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\assets\\debug
 361.file=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\assets\\debug\\www\\php\\delete_ware_shop.php
 74.base=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\res\\debug\\resources-debug.ap_
-count=394
+394.file=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\assets\\debug\\www\\php\\stock_in.php
+count=395
 257.file=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\assets\\debug\\html-ja\\index.html
 77.set=ASSET
 328.set=ASSET
@@ -1033,7 +1036,7 @@ count=394
 64.base=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\res\\debug\\resources-debug.ap_
 187.base=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\res\\debug\\resources-debug.ap_
 81.file=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\assets\\debug\\html-it\\scanning.html
-384.file=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\assets\\debug\\www\\php\\get_status_prod.php
+384.file=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\assets\\debug\\www\\php\\add_prod.php
 54.set=ASSET
 305.set=ASSET
 3.file=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\assets\\debug\\html-it\\sharing.html
@@ -1071,8 +1074,8 @@ count=394
 174.file=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\assets\\debug\\www\\js\\jquery-ui.min.js
 345.file=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\assets\\debug\\html-zh-rCN\\about1d.html
 58.base=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\assets\\debug
-367.set=ASSET
-378.file=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\assets\\debug\\www\\register.html
+367.set=ANDROID_RESOURCE
+378.file=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\assets\\debug\\www\\php\\delete_folder.php
 208.file=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\assets\\debug\\www\\web_stock_kit.html
 213.set=ASSET
 168.set=JAVA_RESOURCE
@@ -1086,7 +1089,7 @@ count=394
 48.base=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\assets\\debug
 267.set=ANDROID_RESOURCE
 197.file=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\assets\\debug\\style.css
-368.file=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\res\\debug\\resources-debug.ap_\\res\\layout-v17\\printer_list_item.xml
+368.file=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\assets\\debug\\images\\demo-no.png
 145.set=ASSET
 232.base=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\assets\\debug
 70.set=ASSET
@@ -1118,7 +1121,7 @@ count=394
 352.set=ASSET
 78.file=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\res\\debug\\resources-debug.ap_\\res\\layout\\notification_template_part_time.xml
 275.set=ASSET
-382.base=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\assets\\debug
+382.base=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\res\\debug\\resources-debug.ap_
 153.set=JAVA_RESOURCE
 1.base=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\assets\\debug
 7.set=ASSET
@@ -1173,7 +1176,7 @@ count=394
 333.base=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\assets\\debug
 350.file=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\res\\debug\\resources-debug.ap_\\res\\layout\\notification_template_big_media_narrow_custom.xml
 195.base=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\res\\debug\\resources-debug.ap_
-366.base=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\res\\debug\\resources-debug.ap_
+366.base=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\assets\\debug
 213.file=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\assets\\debug\\www\\web_export.html
 89.set=ASSET
 12.set=ANDROID_RESOURCE

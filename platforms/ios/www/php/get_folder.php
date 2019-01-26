@@ -30,15 +30,16 @@
             if(is_numeric($row['title'])){
                 $msg = "last node";
                 $prod_id = $row['title']; 
-                $sql = "SELECT prod_name FROM product WHERE prod_id = '$prod_id'";
+                $sql = "SELECT prod_name,prod_code,prod_id FROM product WHERE prod_id = '$prod_id'";
                 $result1 = mysqli_query($conn, $sql);
                 if(mysqli_num_rows($result1) > 0){    
                     while($row1 = mysqli_fetch_array($result1)){                      
-                        array_push($row,$row1['prod_name']);              
+                        $output[] = $row1;  
                     }                    
                 }
-            }
-            $output[] = $row;             
+            }else{
+                $output[] = $row;
+            }               
         }
         array_push($output,$msg);
         echo json_encode($output);   

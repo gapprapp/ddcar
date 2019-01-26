@@ -70,7 +70,11 @@
 		$(document).ready(function () {
 			if(!localStorage.user_id){
 				window.location = 'web_login.html';
-            }            
+            }   	
+			if(localStorage.user_role == "พนักงาน"){
+				$("#fund").prop('hidden', true);
+				$("#head-fund").prop('hidden', true);
+            }
 			get_header();		
 			setTimeout(function() {$("#name").focus();}, 100);	
 
@@ -280,8 +284,14 @@
 				set_default();
 			}
 			if (objEvent.keyCode == 118) {  //f7 pressed
+				selectfolder();          
+			}   
+			if (objEvent.keyCode == 119) {  //f8 pressed
 				save2db();          
-			}       
+            } 
+            if (objEvent.keyCode == 120) {  //f9 pressed
+				cancel();          
+            }    
 		})
 
 		function get_header(){
@@ -726,6 +736,7 @@
 					<a href="web_import.html" class="mgr-20">นำสินค้าเข้าโกดัง</a>
 					<a href="web_stock.html" class="mgr-20">เช็คสต๊อก</a>
 					<a href="web_export.html" class="mgr-20 active">สินค้าออกโกดัง</a>
+					<a href="web_transfer_in.html" class="mgr-20">นำสินค้าเข้าหน้าร้าน</a>
 					<a href="web_select.html" class="mgr-20">รายการย้อนหลัง</a>
 					<a href="web_qrprint.html" class="mgr-20">พิมพ์คิวอาร์</a>
 					<a href="" class="mgr-20" onclick="logout()">ออกจากระบบ</a>
@@ -766,7 +777,7 @@
       		  <div class="col-3 text-center nopd">บาร์โค้ด</div>      		 
       		  <div class="col-3 text-center nopd">ชื่อสินค้า</div>
       		  <div class="col-1 text-center nopd-8">จำนวน</div>
-      		  <div class="col-2 text-center nopd-8">ทุน</div>      		
+      		  <div id="head-fund" class="col-2 text-center nopd-8">ทุน</div>      		
       		</div>
       	</div>
 	
@@ -801,9 +812,9 @@
 			</div><br>
 			<div class="row">
 				<div class="col-11 text-right" style="margin-left: 5%;">
-					<button id="btn-add" class="btn btn-md btn-success" style="margin-right: 5px;" onclick="add();">เพิ่มสินค้า</button>
-					<button id="btn-folder" class="select_folder btn btn-md btn-primary" style="margin-right: 5px;" onclick="selectfolder();">เลือกสินค้า</button>
-					<button id="btn-def" class="btn btn-md btn-danger" onclick="set_default()">ค่าเริ่มต้น</button>
+					<button id="btn-add" class="btn btn-md btn-success" style="margin-right: 5px;" onclick="add();">เพิ่มสินค้า (F2)</button>
+					<button id="btn-folder" class="select_folder btn btn-md btn-primary" style="margin-right: 5px;" onclick="selectfolder();">เลือกสินค้า (F7)</button>
+					<button id="btn-def" class="btn btn-md btn-danger" onclick="set_default()">ค่าเริ่มต้น (F4)</button>
 				</div>
 			</div>
 		</div>
@@ -811,8 +822,8 @@
 		<div id="ctn-bttm" class="container-fullwidth fixed-bottom" style="margin-bottom: 15px; z-index: 0;">
 		  <div class="row">
 		    <div class="col-12 text-center">
-				<button id="btn_checkbill" class="btn btn-success" onclick="save2db()">บันทึก</button>
-				<button class="btn btn-danger" onclick="cancel()">ยกเลิก</button>
+				<button id="btn_checkbill" class="btn btn-success" onclick="save2db()">บันทึก (F8)</button>
+				<button class="btn btn-danger" onclick="cancel()">ยกเลิก (F9)</button>
 		    </div>
 			</div>				
 		</div>

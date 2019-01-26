@@ -44,44 +44,46 @@
   </style>
   <script>
     $(document).ready(function() {
-      url = new URL(window.location.href);
-      u = url.searchParams.get("u");
+      // url = new URL(window.location.href);
+      // u = url.searchParams.get("u");
 
       if(sessionStorage.menu != ""){
         //Back from function
         $("#tabs-"+sessionStorage.menu).trigger('click');
+      }else if(sessionStorage.menu == "undefined"){
+        $("#tabs-main").trigger('click');
       }
-      if(u){
-        if(localStorage.user_role == "เจ้าของร้าน"){
-          $('#tabs-admin').prop('hidden',true);
-          $("#tabs-main").trigger('click');
-        }else if(localStorage.user_role == "พนักงาน"){
-          $('#tabs-admin').prop('hidden',true);
-          $('#tabs-log').prop('hidden',true);
-          $("#tabs-main").trigger('click');
-        }
-      }else{
+      // if(u){
+      //   if(localStorage.user_role == "เจ้าของร้าน"){
+      //     $('#tabs-admin').prop('hidden',true);
+      //     $("#tabs-main").trigger('click');
+      //   }else if(localStorage.user_role == "พนักงาน"){
+      //     $('#tabs-admin').prop('hidden',true);
+      //     $('#tabs-log').prop('hidden',true);
+      //     $("#tabs-main").trigger('click');
+      //   }
+      // }else{
         if(localStorage.user_role == "เจ้าของร้าน"){
           $('#tabs-admin').prop('hidden',true);         
         }else if(localStorage.user_role == "พนักงาน"){
           $('#tabs-admin').prop('hidden',true);
           $('#tabs-log').prop('hidden',true);          
         }
-      }      
+      // }      
 
       localStorage.stack_folder = "";
       localStorage.img = "";
      
-      if(u == "owner"){
-        //loging in?? else login.html
-        $("#row-admin").prop('hidden', true);
-      }else if(u == "member"){
-        //loging in?? else login.html
-        $("#big-ctn").css('margin-top', '30%');
-        $("#row-admin").prop('hidden', true);
-        $("#row-log").prop('hidden', true);
-        $("#main-collapse").slideToggle('collapse');
-      }
+      // if(u == "owner"){
+      //   //loging in?? else login.html
+      //   $("#row-admin").prop('hidden', true);
+      // }else if(u == "member"){
+      //   //loging in?? else login.html
+      //   $("#big-ctn").css('margin-top', '30%');
+      //   $("#row-admin").prop('hidden', true);
+      //   $("#row-log").prop('hidden', true);
+      //   $("#main-collapse").slideToggle('collapse');
+      // }
 
       //Slide tabs
       $("#admin").swipe( {swipe:function(event, direction, distance, duration, fingerCount, fingerData) {
@@ -95,13 +97,13 @@
         },threshold:75
       });
       $("#main").swipe( {swipe:function(event, direction, distance, duration, fingerCount, fingerData) {
-        if(direction == "right"){ 
+        if(direction == "right" && localStorage.user_role == "แอดมิน"){
           $("#tabs-main").removeClass('tabs'); $("#tabs-main").addClass('non'); 
           $("#tabs-admin").removeClass('non'); $("#tabs-admin").addClass('tabs');
           $("#main").prop('hidden', true);
           $("#admin").prop('hidden', false);
           sessionStorage.menu = "admin";
-        }else if(direction == "left"){ 
+        }else if(direction == "left" && localStorage.user_role != "พนักงาน"){ 
           $("#tabs-main").removeClass('tabs'); $("#tabs-main").addClass('non'); 
           $("#tabs-log").removeClass('non'); $("#tabs-log").addClass('tabs');
           $("#main").prop('hidden', true);
@@ -274,7 +276,7 @@
       <div id="tabs-log" class="col-4 text-center non" onclick="tabs('log');">รายการ</div>
     </div><br>
     <!-- Admin -->
-    <div id="admin" class="container" style="margin-top: 10%; padding-bottom: 50%;">
+    <div id="admin" class="container" style="margin-top: 10%; padding-bottom: 50%;" hidden>
       <div class="row mg-10">
         <div class="col-12 text-center nopd">
           <button id="mng-member" class="mbtn" onclick="transition_page_next('member.html'); window.location ='member.html';">ผู้ใช้</button>
@@ -302,7 +304,7 @@
       </div>-->
     </div>
     <!-- Main -->
-    <div id="main" class="container" style="margin-top: 10%; padding-bottom: 50%;" hidden>
+    <div id="main" class="container" style="margin-top: 10%; padding-bottom: 50%;">
       <div class="row mg-10">
         <div class="col-12 text-center nopd">
           <button class="mbtn" onclick="transition_page_next('sale.html'); window.location = 'sale.html';">ขาย</button>

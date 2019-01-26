@@ -366,14 +366,20 @@
 				}                       
 			}  
 			if (objEvent.keyCode == 113) {  //f2 pressed
-        add();
+        		add();
 			}
 			if (objEvent.keyCode == 115) {  //f4 pressed
 				set_default();
 			}
 			if (objEvent.keyCode == 118) {  //f7 pressed
+				selectfolder();         
+			}   
+			if (objEvent.keyCode == 119) {  //f8 pressed
 				$('#btn_checkbill').click();          
-			}       
+            } 
+            if (objEvent.keyCode == 120) {  //f9 pressed
+				cancel();          
+            }     
 		})
 
 		function get_header(){
@@ -1244,11 +1250,7 @@
 			}			
 			window.location = "web_folder.html?from=sale";            
 		} 
-
-		function logout(){
-			localStorage.clear();
-		}
-
+		
   </script>
 
   <style>
@@ -1293,6 +1295,7 @@
       				<a href="web_import.html" class="mgr-20">นำสินค้าเข้าโกดัง</a>
 							<a href="web_stock.html" class="mgr-20">เช็คสต๊อก</a>
 							<a href="web_export.html" class="mgr-20">สินค้าออกโกดัง</a>
+							<a href="web_transfer_in.html" class="mgr-20">นำสินค้าเข้าหน้าร้าน</a>
 							<a href="web_select.html" class="mgr-20">รายการย้อนหลัง</a>
 							<a href="web_qrprint.html" class="mgr-20">พิมพ์คิวอาร์</a>
 							<a href="" class="mgr-20" onclick="logout()">ออกจากระบบ</a>
@@ -1383,9 +1386,9 @@
 			</div><br>
 			<div class="row">
 				<div class="col-12 text-right">
-					<button id="btn-add" class="btn btn-md btn-success" style="margin-right: 5px;" onclick="add();">เพิ่มสินค้า</button>
-					<button id="btn-folder" class="select_folder btn btn-md btn-primary" style="margin-right: 5px;" onclick="selectfolder();">เลือกสินค้า</button>
-					<button id="btn-def" class="btn btn-md btn-danger" onclick="set_default();">ค่าเริ่มต้น</button>
+					<button id="btn-add" class="btn btn-md btn-success" style="margin-right: 5px;" onclick="add();">เพิ่มสินค้า (F2)</button>
+					<button id="btn-folder" class="select_folder btn btn-md btn-primary" style="margin-right: 5px;" onclick="selectfolder();">เลือกสินค้า (F7)</button>
+					<button id="btn-def" class="btn btn-md btn-danger" onclick="set_default();">ค่าเริ่มต้น (F4)</button>
 				</div>
 			</div>
 		</div>
@@ -1406,13 +1409,10 @@
 		    </div>
 		    <div class="col-1 text-center nopd">
 		     
-		    </div>
-		    <div class="col-1 text-center nopd">
-		      
-		    </div>
-		    <div class="col-2 text-right nopd" style="padding-top: 10px;">
-						<button id="btn_checkbill" class="btn btn-danger" data-toggle="modal" data-target="#myModal" onclick="check_bill()">คิดเงิน</button>
-						<button class="btn btn-danger" onclick="cancel()">ยกเลิก</button>
+		    </div>		    
+		    <div class="col-3 text-right nopd" style="padding-top: 10px;">
+						<button id="btn_checkbill" class="btn btn-danger" data-toggle="modal" data-target="#myModal" onclick="check_bill()">คิดเงิน (F8)</button>
+						<button class="btn btn-danger" onclick="cancel()">ยกเลิก (F9)</button>
 		    </div>
 		    <div class="col-3 text-right nopd" style="padding-top: 10px;">
 				<button id="print-title" class="btn btn-info" data-toggle="modal" data-target="#printModal" style="margin-right: 10px;">ใบรายการขาย
