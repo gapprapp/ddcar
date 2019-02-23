@@ -1,140 +1,180 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-        <title>Home</title>
-        <!-- Bootstrap Import -->
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
-        <script type="text/javascript" src="js/jquery-3.3.1.min.js"></script>
-        <script type="text/javascript" src="js/jquery-ui.min.js"></script>
-        <script type="text/javascript" src="js/jquery.easing.1.3.min.js"></script>
-        <script type="text/javascript" src="js/transition.js"></script>
-        <script type="text/javascript" src="js/jquery-confirm.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.6/umd/popper.min.js"></script>
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
-        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
-      
-      
-        <link rel="stylesheet" href="css/index.css">
-        <link rel="stylesheet" href="css/jquery-confirm.css">
-        <link rel="stylesheet" href="css/loading.css">
-      
-        <!-- Font -->
-        <link href="https://fonts.googleapis.com/css?family=Prompt" rel="stylesheet">
-  
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<meta name="description" content="">
+	<meta name="author" content="">
+
+	<title>หมวดหมู่สินค้า</title>
+
+	<!-- Bootstrap Import -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.6/umd/popper.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js"></script>
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.1/css/all.css" integrity="sha384-O8whS3fhG2OnA5Kas0Y9l3cfpmYjapjI0E4theH4iuMD+pLhbf6JI0jIMfYcK3yZ"
+	 crossorigin="anonymous">
+
+	<!-- Super cool dialog-->
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.0/jquery-confirm.min.css">
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.0/jquery-confirm.min.js"></script>
+
+	<!-- Loading -->
+	<link rel="stylesheet" href="css/easy-loading.css">
+	<script src="js/easy-loading.js"></script>
+
+	<!-- QRcode -->
+	<script type="text/javascript" src="js/qrcode.min.js"></script>
+	<script type="text/javascript" src="js/jQuery.print.js"></script>
+
+	<!-- Font -->
+	<link href="https://fonts.googleapis.com/css?family=Prompt" rel="stylesheet">
+	<!-- Main -->
+	<link href="css/untitled.css" rel="stylesheet">
+	<link href="css/web_folder.css" rel="stylesheet">
+
+	<style>
+		.i-trash{
+  		float: right; margin-right: 10%; color: white;
+  	}
+  	.i-edit{
+  		float: right; margin-right: 6%; color: white;
+  	}
+		.i-modal{
+			float: right; margin-right: 6%; color: white; padding-top: 2px;
+		}
+		img{
+			height: 200px;
+			width: 200px;
+		}	
+  </style>	
 </head>
-<script>
-     $(document).ready(function() {
-        // url = new URL(window.location.href);
-        // folder = url.searchParams.get("a");        
-        
-        var folder = QueryString.a;
-        var from = QueryString.cc;
 
-        if(from){
-            alert(from);
-        }else{
-            alert("else")
-        }
-       
-        alert(folder + from);
-     });
+<body style="overflow: hidden;">
+	<div class="container-fullwidth justify-content-center h-100">
+		<div class="row" style="padding-left: 1.5%; padding-right: 1.5%; margin-top: 3%; margin-bottom: 15px; height: 85%;">
+			<div id="col-brand" class="col-md-3 text-center" style="height: 100%; overflow-y: scroll">
+				<h3 id="title-lft" class="folder-title">หมวดหมู่สินค้า</h3>
+				<div id="brand-tools" class="row justify-content-center" style="margin-top: -5%;">
+					<div id="brand-add" class="col-2">
+						<h4><i id="i-brand-add" class="fas fa-plus-circle" onclick="addbrand();"></i></h4>
+					</div>
+					<div id="brand-edit" class="col-2">
+						<h4><i id="i-brand-edit" class="fas fa-pen" onclick="editbrand('fa-pen');"></i></h4>
+					</div>
+					<div id="brand-remove" class="col-2">
+						<h4><i id="i-brand-trash" class="fas fa-trash" onclick="removebrand('fa-trash');"></i></h4>
+					</div>
+                </div>
+                <h3 class='brand'>TEST</h3>
+                <h3 class='brand'>TEST</h3>
+                <h3 class='brand'>TEST</h3>
+                <h3 class='brand'>TEST</h3>
+                <h3 class='brand'>TEST</h3>
+                <h3 class='brand'>TEST</h3>
+                <h3 class='brand'>TEST</h3>
+                <h3 class='brand'>TEST</h3>
+                <h3 class='brand'>TEST</h3>
+                <h3 class='brand'>TEST</h3>
+                <h3 class='brand'>TEST</h3>
+                <h3 class='brand'>TEST</h3>
+                <h3 class='brand'>TEST</h3>
+                <h3 class='brand'>TEST</h3>
 
-     var QueryString = function () {
-        // This function is anonymous, is executed immediately and
-        // the return value is assigned to QueryString!
-        var query_string = {};
-        var query = window.location.search.substring(1);
-        var vars = query.split("&");
-        for (var i=0;i<vars.length;i++) {
-            var pair = vars[i].split("=");
-                // If first entry with this name
-            if (typeof query_string[pair[0]] === "undefined") {
-            query_string[pair[0]] = decodeURIComponent(pair[1]);
-                // If second entry with this name
-            } else if (typeof query_string[pair[0]] === "string") {
-            var arr = [ query_string[pair[0]],decodeURIComponent(pair[1]) ];
-            query_string[pair[0]] = arr;
-                // If third or later entry with this name
-            } else {
-            query_string[pair[0]].push(decodeURIComponent(pair[1]));
-            }
-        } 
-        return query_string;
-        }();
+			</div>
+			<div id="col-prod" class="col-md-9"  style="overflow-y: auto" hidden>
+				<h5 class="prod-title">
+					<!-- <i id="i-back" onclick="page_back();" class="fas fa-angle-left"></i> ชื่อสินค้า <span> < ชื่อสินค้า 2</span> <span> < ชื่อสินค้า 3</span><i id="i-prod-add" class="fas fa-plus-circle" style="margin-left: 75%; margin-right: 1.5%;" onclick="addprod()"></i><i class="fas fa-trash" style="margin-right: 1.5%;" onclick="removeprod();"></i><i class="fas fa-pen" onclick="editprod();"></i> -->
+				</h5>
+				<div id="append-prod">
+					<!--<h5 id="prod-1" class="prod-odd" rel="popover" data-img="'+obj[i][2].img+'" onclick="choose(1);"><span id="id-'+p+'"
+						 hidden>'+obj[i].title+'</span><input type="checkbox"><span id="span-code-'+p+'">'+obj[i][2].prod_code+'</span>&nbsp;&nbsp;&nbsp;&nbsp;<span
+						 id="span-name-'+p+'">'+obj[i][2].prod_name+'</span><i class="fas fa-trash i-trash" hidden></i><i class="fas fa-pen i-edit"
+						 hidden></i><i class="fas fa-info-circle i-modal" data-toggle="modal" data-target="#detailModal" onclick="hideclick(1);"></i></h5>-->
+					<!-- append prod or folder -->
+				</div>
+			</div>
+		</div>
+		<div class="row justify-content-end">
+			<div class="col-2 text-center">
+				<button id="btn-next" class="btn btn-success" onclick="next()">เลือกสินค้า(0)</button>
+			</div>
+		</div>
+	</div>
 
-    function getAllUrlParams(wat) {
+	<!-- Detail Modal -->
+	<div class="modal fade" id="detailModal" tabindex='-1'>
+		<div class="modal-dialog modal-md modal-dialog-centered">
+			<div class="modal-content">
+				<!-- Modal Header -->
+				<div class="col-12 text-center" style="margin-top: 15px;">
+					<h4 class="modal-title">ที่อยู่สินค้า</h4>
+					<hr style="width: 70%;">
+				</div>
 
-        // get query string from url (optional) or window
-        var queryString = url ? url.split('?')[1] : window.location.search.slice(1);
+				<!-- Shop body -->
+				<div class="modal-body">
+					<div class="row justify-content-center r">					
+						<div class="dropdown">
+							<button class="btn btn-outline-dark dropdown-toggle" type="button" id="btn-ware" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+							  เลือกโกดัง
+							</button>
+							<div id="ware" class="dropdown-menu" aria-labelledby="btn-ware">
+							
+							</div>
+						  </div>
+					</div><hr style="margin-top: 0px; width: 25%;">
+					<div class="row" id="addr-ware">
+					
+					</div>
+					<div class="row" id="input-addr-ware">
+					
+					</div>
 
-        // we'll store the parameters here
-        var obj = {};
+					<hr style="width: 95%;">
 
-        // if query string exists
-        if (queryString) {
+					<div class="row justify-content-center">
+						<div class="dropdown">
+							<button class="btn btn-outline-dark dropdown-toggle" type="button" id="btn-shop" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+							  เลือกหน้าร้าน
+							</button>
+							<div id="shop" class="dropdown-menu" aria-labelledby="btn-shop">
+							
+							</div>
+						  </div>
+					</div><hr style="margin-top: 0px; width: 25%;">
+					<div class="row" id="addr-shop">
+						<!-- <div class="col-4 text-center">ชื่อ 1</div>
+						<div class="col-4 text-center">ชื่อ 2</div>
+						<div class="col-4 text-center">-</div> -->
+					</div>
+					<div class="row" id="input-addr-shop">
+						<!-- <div class="col-4 input-group-append align-items-end">
+							<input type="text" class="form-control form-control-sm" style="margin-right: 2px;">
+							<button type="button" class="btn btn-sm btn-danger" style="height: 40%; margin-bottom: 8%;"><i class="fas fa-times-circle"></i></button>
+						</div>
+						<div class="col-4 input-group-append align-items-end">
+							<input type="text" class="form-control form-control-sm" style="margin-right: 2px;">
+							<button type="button" class="btn btn-sm btn-danger" style="height: 40%; margin-bottom: 8%;"><i class="fas fa-times-circle"></i></button>
+						</div>
+						<div class="col-4 input-group-append align-items-end">
+							<input type="text" class="form-control form-control-sm" style="margin-right: 2px;">
+							<button type="button" class="btn btn-sm btn-danger" style="height: 40%; margin-bottom: 8%;"><i class="fas fa-times-circle"></i></button>
+						</div> -->
+					</div>
+					<br>
+					<!-- Modal footer -->
+					<div class="col-12 text-center">
+						<button type="button" class="btn btn-primary" data-dismiss="modal" onclick="showclick();" style="width: 150px;;">บันทึก</button>
+					</div>
+					<br>
+				</div>
+			</div>
+		</div>
+	</div>
 
-        // stuff after # is not part of query string, so get rid of it
-        queryString = queryString.split('#')[0];
-
-        // split our query string into its component parts
-        var arr = queryString.split('&');
-
-        for (var i = 0; i < arr.length; i++) {
-            // separate the keys and the values
-            var a = arr[i].split('=');
-
-            // set parameter name and value (use 'true' if empty)
-            var paramName = a[0];
-            var paramValue = typeof (a[1]) === 'undefined' ? true : a[1];
-
-            // (optional) keep case consistent
-            paramName = paramName.toLowerCase();
-            if (typeof paramValue === 'string') paramValue = paramValue.toLowerCase();
-
-            // if the paramName ends with square brackets, e.g. colors[] or colors[2]
-            if (paramName.match(/\[(\d+)?\]$/)) {
-
-            // create key if it doesn't exist
-            var key = paramName.replace(/\[(\d+)?\]/, '');
-            if (!obj[key]) obj[key] = [];
-
-            // if it's an indexed array e.g. colors[2]
-            if (paramName.match(/\[\d+\]$/)) {
-                // get the index value and add the entry at the appropriate position
-                var index = /\[(\d+)\]/.exec(paramName)[1];
-                obj[key][index] = paramValue;
-            } else {
-                // otherwise add the value to the end of the array
-                obj[key].push(paramValue);
-            }
-            } else {
-            // we're dealing with a string
-            if (!obj[paramName]) {
-                // if it doesn't exist, create property
-                obj[paramName] = paramValue;
-            } else if (obj[paramName] && typeof obj[paramName] === 'string'){
-                // if property does exist and it's a string, convert it to an array
-                obj[paramName] = [obj[paramName]];
-                obj[paramName].push(paramValue);
-            } else {
-                // otherwise add the property
-                obj[paramName].push(paramValue);
-            }
-            }
-        }
-        }
-
-        return obj;
-        }
-
-</script>
-
-<body style="overflow: auto;">
-    <div id='title'>
-
-    </div>
 </body>
 
 </html>

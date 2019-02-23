@@ -31,9 +31,25 @@
                     mysqli_rollback($conn);
                     echo "fail";
                     exit;
-                }                 
-            }   
-        }        
+                }
+            }
+        }
+        
+    $sql = "SELECT p.prod_id,t.title FROM product p left join tree t on p.prod_id=t.title WHERE t.title is null";
+    $result1 = mysqli_query($conn, $sql);  
+    if(mysqli_num_rows($result1) > 0){    
+        while($row = mysqli_fetch_array($result1)){
+            $prod_id = $row['prod_id'];
+            $sql = "DELETE FROM product WHERE prod_id = '$prod_id'";
+            $result = mysqli_query($conn, $sql);
+            if(!$result){
+                mysqli_rollback($conn);
+                echo "fail";
+                exit;
+            }    
+        }
+    }
+
     mysqli_commit($conn); 
     echo "success"; 
     mysqli_close($conn);

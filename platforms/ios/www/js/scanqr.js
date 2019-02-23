@@ -60,7 +60,7 @@ function scan(arg){
                               }else{
                                 msg_price = '<p>ทุน : '+cost+'  ส่ง : '+pricesend+'  ปลีก : '+price+'</p>';
                               }	
-                              var top_msg = '<div class="row" style="margin-top: 2%; margin-bottom: 2%;"><div class="col-12 text-center">'+msg_price+'<br><img src="'+img+'" id="img" alt="" style="width: 300px; height: 300px;"></div></div><br>'; 
+                              var top_msg = '<div class="row" style="margin-top: 2%; margin-bottom: 2%;"><div class="col-12 text-center">'+msg_price+'<br><img src="'+img+'" id="img" alt="" onclick="show_pic()" style="width: 300px; height: 300px;"></div></div><br>'; 
                               $.confirm({
                                   title: name,
                                   content: top_msg + msg,
@@ -123,3 +123,8 @@ function scan(arg){
         }
         );
     }
+
+function show_pic(){
+    localStorage.img = $('#img').attr('src');           
+    window.location = "show_pic.html";   
+}

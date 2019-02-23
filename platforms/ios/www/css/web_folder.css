@@ -2,7 +2,9 @@ body, html {
   height: 100%;
 }
 #col-brand {   
-    background: #777;
+		background: #777;
+		padding-top: 3%; 
+		padding-bottom: 3%;
 }
 #col-prod {
     background: #e4e5e5;
@@ -74,4 +76,14 @@ input[type='text']{
 }
 .editbrand{
 	border-color: #5bc0de;
+}
+
+::-webkit-scrollbar {
+	-webkit-appearance: none;
+	width: 7px;
+}
+::-webkit-scrollbar-thumb {
+	border-radius: 4px;
+	background-color: rgba(0,0,0,.5);
+	box-shadow: 0 0 1px rgba(255,255,255,.5);
 }

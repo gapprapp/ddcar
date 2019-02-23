@@ -1,6 +1,7 @@
 <?php
     include "db.php";
-    $parent  = $_POST['parent']; 
+    $parent  = $_POST['parent'];
+    $order_by  = $_POST['order_by'];
     $msg = ""; 
     $output = array();  
    
@@ -22,7 +23,7 @@
             AND sub_parent.title = sub_tree.title
     GROUP BY node.title
     HAVING depth = 1
-    ORDER BY node.lft;";
+    ORDER BY node.title $order_by;";
     $result = mysqli_query($conn, $sql); 
   
     if(mysqli_num_rows($result) > 0){    
