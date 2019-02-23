@@ -22,7 +22,7 @@
             AND sub_parent.title = sub_tree.title
     GROUP BY node.title
     HAVING depth = 1
-    ORDER BY node.lft;";
+    ORDER BY node.title;";
     $result = mysqli_query($conn, $sql); 
   
     if(mysqli_num_rows($result) > 0){    
