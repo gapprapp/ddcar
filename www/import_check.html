@@ -109,7 +109,7 @@
             var datetime = d.getFullYear() + "-" + (d.getMonth()+1) + "-" + d.getDate() + " " + d.getHours() + ":" + d.getMinutes() + ":" + d.getSeconds(); 
             json_string = JSON.stringify(arr_data);
             var dataString =  "JSON=" + json_string + "&ware_id=" + localStorage.ware_id_im + "&date=" + datetime
-            + "&sum=" + sum + "&user_id=" + localStorage.user_id;
+            + "&sum=" + sum + "&user_id=" + localStorage.user_id + "&type=" + localStorage.ware_type_im;
 
             $.ajax({
                 type: "POST",
@@ -289,10 +289,11 @@
         }
 
         function clearAll(){
-            localStorage.arr_prod = "";          
-            localStorage.arr_prod_i =  "";  
+            localStorage.arr_prod = "";
+            localStorage.arr_prod_i =  "";
             localStorage.ware_id_im = "";
-            localStorage.ware_name_im = "";        
+            localStorage.ware_name_im = "";
+            localStorage.ware_type_im = "";
             transition_page_back('import.html');
             window.location = 'import.html'
         }
