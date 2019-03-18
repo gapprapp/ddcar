@@ -24,6 +24,7 @@
         $prod_id = $data['prod_id'];         
         $amt = $data['amt']; 
         $addr = $data['addr']; 
+        $amount = 0;
 
         $sql_item = "INSERT INTO transfer_in_item (tran_id,item_id,prod_id,amount) VALUE ('$last_id','$item','$prod_id','$amt')"; 
         $result_item = mysqli_query($conn, $sql_item);
@@ -31,6 +32,58 @@
             mysqli_rollback($conn);
             echo "fail";
             exit;
+        }  
+
+        $sql = "SELECT min_amount,status FROM product WHERE prod_id = '$prod_id' AND status != 'normal'"; 
+        $result = mysqli_query($conn, $sql);
+        if(mysqli_num_rows($result) > 0){    
+            while($row = mysqli_fetch_array($result)){  
+                $min = $row['min_amount'];
+                $status = $row['status'];
+            }
+        }
+        $sql = "SELECT amount FROM warehouse WHERE prod_id = '$prod_id'"; 
+        $result = mysqli_query($conn, $sql); 
+        if(mysqli_num_rows($result) > 0){    
+            while($row = mysqli_fetch_array($result)){  
+                $amount += $row['amount'];                    
+            }
+        } 
+        $sql = "SELECT amount FROM shop WHERE prod_id = '$prod_id'"; 
+        $result = mysqli_query($conn, $sql); 
+        if(mysqli_num_rows($result) > 0){    
+            while($row = mysqli_fetch_array($result)){  
+                $amount += $row['amount'];                    
+            }
+        } 
+        if($status == 'danger'){
+            if($amount + $amt >= $min){
+                $sql = "UPDATE product SET status = 'normal' WHERE prod_id = '$prod_id'";
+                $result = mysqli_query($conn, $sql);                 
+                if(!$result){
+                    mysqli_rollback($conn);
+                    echo "fail";
+                    exit;
+                } 
+            }else if($amount + $amt > 10){
+                $sql = "UPDATE product SET status = 'warning' WHERE prod_id = '$prod_id'";
+                $result = mysqli_query($conn, $sql);               
+                if(!$result){
+                    mysqli_rollback($conn);
+                    echo "fail";
+                    exit;
+                }    
+            }
+        }else if($status == 'warning'){
+            if($amount + $amt >= $min){
+                $sql = "UPDATE product SET status = 'normal' WHERE prod_id = '$prod_id'";
+                $result = mysqli_query($conn, $sql);               
+                if(!$result){
+                    mysqli_rollback($conn);
+                    echo "fail";
+                    exit;
+                }    
+            }
         }  
         
         $query = "SELECT prod_id FROM shop WHERE shop_id = '$shop_id' AND prod_id = '$prod_id'";

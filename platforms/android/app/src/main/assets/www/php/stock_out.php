@@ -57,13 +57,15 @@
             exit;
         } 
     }   
+    $ch = 'false';
     foreach ($obj as $data)
     {
         $i++;
         $item = $i;
         $prod_id = $data['prod_id'];
         $cost = $data['cost'];    
-        $amt = $data['amt'];  
+        $amt = $data['amt']; 
+        $amount = 0; 
 
         $sql_item = "INSERT INTO stock_out_item (stock_out_id,item_id,prod_id,stock_out_cost,amount) VALUE ('$last_id','$item','$prod_id','$cost','$amt')"; 
         $result_item = mysqli_query($conn, $sql_item); 
@@ -71,7 +73,63 @@
             mysqli_rollback($conn);
             echo "fail";
             exit;
-        }       
+        } 
+        
+        $sql = "SELECT min_amount,status FROM product WHERE prod_id = '$prod_id' AND status != 'danger'"; 
+        $result = mysqli_query($conn, $sql);
+        if(mysqli_num_rows($result) > 0){    
+            while($row = mysqli_fetch_array($result)){  
+                $min = $row['min_amount'];
+                $status = $row['status'];
+            }
+        }
+        
+        $sql = "SELECT amount FROM warehouse WHERE prod_id = '$prod_id'"; 
+        $result = mysqli_query($conn, $sql); 
+        if(mysqli_num_rows($result) > 0){    
+            while($row = mysqli_fetch_array($result)){  
+                $amount += $row['amount'];                    
+            }
+        } 
+        $sql = "SELECT amount FROM shop WHERE prod_id = '$prod_id'"; 
+        $result = mysqli_query($conn, $sql); 
+        if(mysqli_num_rows($result) > 0){    
+            while($row = mysqli_fetch_array($result)){  
+                $amount += $row['amount'];                    
+            }
+        } 
+        if($status == 'normal'){            
+            if($amount - $amt <= 10){
+                $sql = "UPDATE product SET status = 'danger' WHERE prod_id = '$prod_id'";
+                $result = mysqli_query($conn, $sql);
+                $ch = 'true';    
+                if(!$result){
+                    mysqli_rollback($conn);
+                    echo "fail";
+                    exit;
+                }    
+            }else if($amount - $amt <= $min){
+                $sql = "UPDATE product SET status = 'warning' WHERE prod_id = '$prod_id'";
+                $result = mysqli_query($conn, $sql); 
+                $ch = 'true';    
+                if(!$result){
+                    mysqli_rollback($conn);
+                    echo "fail";
+                    exit;
+                } 
+            }
+        }else if($status == 'warning'){
+            if($amount - $amt <= 10){
+                $sql = "UPDATE product SET status = 'danger' WHERE prod_id = '$prod_id'";
+                $result = mysqli_query($conn, $sql);
+                $ch = 'true';    
+                if(!$result){
+                    mysqli_rollback($conn);
+                    echo "fail";
+                    exit;
+                }    
+            }
+        }
        
         $sql_up = "UPDATE warehouse SET amount = amount-'$amt' WHERE ware_id = '$ware_id' AND prod_id = '$prod_id'"; 
         $result_up = mysqli_query($conn, $sql_up);
@@ -80,6 +138,15 @@
             echo "fail";
             exit;
         }             
+    }
+    if($ch == 'true'){
+        $sql = "UPDATE bell SET status = 'alert'";
+        $result = mysqli_query($conn, $sql);       
+        if(!$result){
+            mysqli_rollback($conn);
+            echo "fail";
+            exit;
+        }         
     }
     mysqli_commit($conn); 
     echo "success";

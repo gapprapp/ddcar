@@ -57,7 +57,8 @@
         var prod_id;       
         var cost_o; 
         var flag = 0; 
-        var img;    
+        var img;   
+        var bool = true; 
         $(document).ready(function () { 
             url = new URL(window.location.href);
             prod_id = url.searchParams.get("product");
@@ -73,7 +74,7 @@
                 var retrievedObject = localStorage.getItem('arr_prod');
                 var arr_data = JSON.parse(retrievedObject);             
                 $('#check-import').text(arr_data.length); 
-                $("#h5-title").unbind();      
+                $("#h5-title").prop('onclick',"");      
             }          
             if(prod_id){
                 get_prod(prod_id);
@@ -108,17 +109,134 @@
             }         
         })
 
+        function scanqr(){
+            if($("#h5-title").text() == "เลือกโกดัง/หน้าร้าน"){
+                $.confirm({
+                    title: 'เตือน',
+                    content: 'กรุณาเลือกโกดัง/หน้าร้าน',
+                    backgroundDismiss: true,
+                    buttons: {
+                        formSubmit: {
+                        text: 'ตกลง',
+                        btnClass: 'btn-regis',
+                        action: function () {
+                        }
+                        }
+                    }
+                });  
+                return 0;
+            }
+            cordova.plugins.barcodeScanner.scan(
+            function (result) {
+                    if(!result.cancelled){
+                        // In this case we only want to process QR Codes
+                        if(result.format == "QR_CODE"){
+                                var value = result.text;
+                                // This is the retrieved content of the qr code
+                                //alert(value);                        
+                                if(localStorage.arr_prod){
+                                    var retrievedObject = localStorage.getItem('arr_prod');
+                                    var arr_data = JSON.parse(retrievedObject);
+                                    bool = true;
+                                    for(var b = 0; b < arr_data.length; b++){
+                                        if(prod_id == arr_data[b].prod_id){
+                                            $.confirm({
+                                                title: 'เตือน',
+                                                content: 'มีการเพิ่มสินค้า ' + arr_data[b].name + ' กรุณาแก้ไขที่จำนวนของสินค้าที่ได้เพิ่มแล้ว',
+                                                backgroundDismiss: true,
+                                                buttons: {
+                                                    formSubmit: {
+                                                    text: 'ตกลง',
+                                                    btnClass: 'btn-regis',
+                                                    action: function () {
+                                                    }
+                                                    }
+                                                }
+                                            });  
+                                            bool = false;                               
+                                            break;           
+                                        }
+                                    }                 
+                                }
+                                if(bool){
+                                    $.ajax({
+                                        type: "POST",
+                                        url:"http://ddaccessory.trueddns.com:24330/dd-shop/php/get_prod.php",    
+                                        data:{'qr' : value},
+                                        //async: false,                       
+                                        beforeSend: function(){
+                                            $(".overlay").prop('hidden', false);
+                                        },             
+                                        success: function(data){  
+                                            $(".overlay").prop('hidden', true);
+                                            var obj = jQuery.parseJSON(data);                                         
+                                            $.each(obj, function(i, field){
+                                                $('#name').val(obj[i].prod_name);
+                                                $('#barcode').val(obj[i].prod_code); 
+                                                prod_id = obj[i].prod_id;
+                                                cost_o = obj[i].prod_cost;                       
+                                                img = obj[i].img;   
+                                                if(obj[i].prod_cost == 0 && obj[i].prod_price == 0 && obj[i].prod_pricesend == 0){
+                                                    $('#cost').val("");
+                                                    $('#wholesale').val("");
+                                                    $('#retail').val("");  
+                                                }else{
+                                                    $('#cost').val(cost_o);
+                                                    $('#wholesale').val(obj[i].prod_pricesend);
+                                                    $('#retail').val(obj[i].prod_price);                     
+                                                    flag = 1;
+                                                }                        
+                                            }); 
+                                            show_prod();                                       
+                                        }               
+                                    });
+                                    get_place();    
+                                }    
+                                var temp = $('#prod-addr').val();
+                                $("#prod-addr").focus().val("").val(temp);
+                        }else{                           
+                            //alert("Sorry, only qr codes this time ;)");
+                        }
+                    }else{
+                        // window.location =  "transfer_in.html";
+                        // alert("The user has dismissed the scan");
+                    }
+                },
+                function (error) {
+                    $.confirm({
+                      title: 'พบข้อผิดพลาด',
+                      content: 'กรุณากรอกข้อมูลให้ครบ',
+                      backgroundDismiss: true,
+                      buttons: {
+                        formSubmit: {
+                          text: 'ตกลง',
+                          btnClass: 'btn-regis',
+                          action: function () {
+                          }
+                        }
+                      }
+                    });
+                },
+                {
+                    prompt : "วางคิวอาโค้ดภายในสี่เหลี่ยมผืนผ้าที่ช่องมองภาพเพื่อแสกน"
+                }
+            );
+
+        } 
+
         arr_place = [];
         function get_place(){
+            var dataStr;
+			if(localStorage.ware_type_im == "โกดัง"){
+				dataStr = {'prod_id' : prod_id,"ware_id":localStorage.ware_id_im};
+			}else if(localStorage.ware_type_im == "หน้าร้าน"){
+				dataStr = {'prod_id' : prod_id,"shop_id":localStorage.ware_id_im};
+			}
             $.ajax({
                 type: "POST",
                 url:"http://ddaccessory.trueddns.com:24330/dd-shop/php/get_place.php",    
-                data:{'prod_id' : prod_id,"ware_id":localStorage.ware_id_im},  
-                // beforeSend: function(){
-                //     $(".overlay").prop('hidden', false);
-                // },                                     
-                success: function(data){
-                    // $(".overlay").prop('hidden', true);    
+                data: dataStr,
+                success: function(data){                   
                     var obj = jQuery.parseJSON(data);                    
                     if(obj){                        
                         var txt = "";                                         
@@ -136,7 +254,7 @@
 
         function get_prod(id){
             prod_id = id;
-            var bool = true;
+            bool = true;
             if(localStorage.arr_prod){
                 var retrievedObject = localStorage.getItem('arr_prod');
                 var arr_data = JSON.parse(retrievedObject);                 
@@ -383,7 +501,7 @@
                 localStorage.setItem('arr_prod', JSON.stringify(arr_data));         
             
                 $('#check-import').text(arr_data.length);
-                $("#h5-title").unbind(); 
+                $("#h5-title").prop('onclick',""); 
             }
             $('#prod-addr').attr("placeholder","");
             $('#barcode').val("");
@@ -419,24 +537,23 @@
             }                      
         }  
 
-        /*function disactive(arg) {
-            nav_menu = ['home', 'bell', 'qrcode', 'bars'];
-            for (i = 0; i < 4; i++) {
-                if (nav_menu[i] != arg) {
-                    if ($("#i-" + nav_menu[i]).hasClass('active')) $("#i-" + nav_menu[i]).removeClass('active');
-                }
-            }
-        }
-
-        function menu(arg) {
-            // Animate
-            disactive(arg);
-            $("#i-" + arg).fadeOut(100).fadeIn(100, function () {
-                $("#i-" + arg).addClass('active');
-            });
-        }*/       
-
         function selectfolder() {
+            if($("#h5-title").text() == "เลือกโกดัง/หน้าร้าน"){
+                $.confirm({
+                    title: 'เตือน',
+                    content: 'กรุณาเลือกโกดัง/หน้าร้าน',
+                    backgroundDismiss: true,
+                    buttons: {
+                        formSubmit: {
+                        text: 'ตกลง',
+                        btnClass: 'btn-regis',
+                        action: function () {
+                        }
+                        }
+                    }
+                });  
+                return 0;
+            }
             goto = "select_folder.html?from=import";
             transition_page_next_flip(goto);
             window.location = goto;
@@ -459,9 +576,9 @@
             $("#h5-title").removeClass('text-right');
             $("#h5-title").addClass('text-center');
             localStorage.ware_name_im = $("#li-ware-" + arg).text();
-            $("#h5-title").text(localStorage.ware_name_im);
-            //$("#ware").val(ware);
+            $("#h5-title").text(localStorage.ware_name_im);           
             localStorage.ware_id_im = $("#id-ware-" + arg).text();
+            localStorage.ware_type_im = $("#type-" + arg).text();
             document.elementFromPoint(0, 0).click();           
             get_place();
         }
@@ -471,7 +588,7 @@
             var text_html = "";
             $.ajax({
                 type: "GET",
-                url:"http://ddaccessory.trueddns.com:24330/dd-shop/php/get_ware.php",                            
+                url:"http://ddaccessory.trueddns.com:24330/dd-shop/php/get_ware_shop.php",                            
                 beforeSend: function(){
                     $(".overlay").prop('hidden', false);
                 },             
@@ -480,14 +597,21 @@
                 var obj = jQuery.parseJSON(data); 
                 if(obj){
                     $.each(obj, function(i, field){
-                        text_html = text_html + '<button id="li-ware-'+i+'" type="button" onclick="setware('+i+')" class="btn btn-choice">'+obj[i].ware_name+'</button>' +
-                        '<span id="id-ware-'+i+'" hidden>'+obj[i].ware_id+'</span>';
+                        if(obj[i][2] == "โกดัง"){ 
+                            text_html = text_html + '<button id="li-ware-'+i+'" type="button" onclick="setware('+i+')" class="btn btn-choice">'+obj[i].ware_name+'</button>' +
+                            '<span id="id-ware-'+i+'" hidden>'+obj[i].ware_id+'</span>'+
+                            '<span id="type-'+i+'" hidden>โกดัง</span>';
+                        }else if(obj[i][2] == "หน้าร้าน"){
+                            text_html = text_html + '<button id="li-ware-'+i+'" type="button" onclick="setware('+i+')" class="btn btn-choice">'+obj[i].shop_name+'</button>' +
+                            '<span id="id-ware-'+i+'" hidden>'+obj[i].shop_id+'</span>'+
+                            '<span id="type-'+i+'" hidden>โกดัง</span>';
+                        }
                     }); 
                 }else{
                     text_html = "กรุณาเพิ่มโกดังก่อนทำรายการ";  
                 }                
                 $.confirm({
-                  title: 'โกดัง',
+                  title: 'โกดัง/หน้าร้าน',
                   content: '<hr style="width: 80%; margin-bottom: 0;">',
                   backgroundDismiss: true,
                   onOpenBefore: function () {
@@ -533,6 +657,22 @@
         }
 
         function search(){
+            if($("#h5-title").text() == "เลือกโกดัง/หน้าร้าน"){
+                $.confirm({
+                    title: 'เตือน',
+                    content: 'กรุณาเลือกโกดัง/หน้าร้าน',
+                    backgroundDismiss: true,
+                    buttons: {
+                        formSubmit: {
+                        text: 'ตกลง',
+                        btnClass: 'btn-regis',
+                        action: function () {
+                        }
+                        }
+                    }
+                });  
+                return 0;
+            }
             $("#search-ctn").prop('hidden', false);
             $("#big-ctn").prop('hidden', true);
             $("#navs-bttm").prop('hidden', true);
@@ -576,7 +716,7 @@
             <i id="i-back" class="fas fa-angle-left"></i>
         </div>
         <div class="col-9 text-right" style="margin-right: 2%;">
-            <h5 id="h5-title" class="fade" onclick="showware();">เลือกโกดัง(เข้า)</h5>
+            <h5 id="h5-title" class="fade" onclick="showware();">เลือกโกดัง/หน้าร้าน</h5>
         </div>
         <div class="col-1 text-right" onclick="report();"><div id="check-import"class="circle-text">0</div></div>
     </div>
@@ -621,9 +761,12 @@
                     <input id="retail" type="number" class="w3-input" data-index="6">
                 </div>
             </div>
-            <div class="row mg-10">
-                <div class="col-12 text-center" onclick="selectfolder();">
-                    <button id="btn-folder" class="select_folder" style="width: 70%;">เลือกสินค้า</button>
+            <div class="row mg-10" style="padding-right: 5%; padding-left: 5%;">
+                <div class="col-4 text-center" style="padding-left: 0; padding-right: 0;">
+                    <button id="btn-addpic" class="mbtn-green" onclick="scanqr();">สแกน</button>
+                </div>
+                <div class="col-8 text-center" style="padding-right: 0;">
+                    <button id="btn-folder" class="select_folder" onclick="selectfolder();">เลือกสินค้า</button>
                 </div>
             </div>
             <div class="row">

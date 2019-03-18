@@ -6,7 +6,7 @@
   <meta name="description" content="">
   <meta name="author" content="">
 
-  <title>นำสินค้าเข้าโกดัง</title>
+  <title>นำสินค้าเข้า</title>
 
   <!-- Bootstrap Import -->
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
@@ -273,14 +273,14 @@
 
 		function get_header(){
 			var d = new Date($.now());			
-      		var date = d.getDate() + "/" + (d.getMonth()+1) + "/" + d.getFullYear();
+      var date = d.getDate() + "/" + (d.getMonth()+1) + "/" + d.getFullYear();
 			$('#date').text(date);
 
 			$('#user').text(localStorage.user_name);
 
 			$.ajax({
 				type: "GET",
-				url:"php/get_ware.php",                            
+				url:"php/get_ware_shop.php",                            
 				beforeSend: function(){
 					EasyLoading.show({                           
 						text: "กำลังโหลด"                            
@@ -290,28 +290,30 @@
 					EasyLoading.hide();
 					var obj = jQuery.parseJSON(data); 
 					if(obj){
-						$.each(obj, function(i, field){
-							// if(!localStorage.ware_id_im){
-							// 	if(i == 0){
-							// 		localStorage.ware_id_im =  field.ware_id;
-							// 		// ware_id = field.ware_id;
-							// 		$('#btn-b').text(field.ware_name);
-							// 		localStorage.ware_name_im =  field.ware_name;								
-							// 	}
-							// }							
-							$('#b').append('<a class="dropdown-item text-center" href="#" onclick="setware('+field.ware_id+',\''+field.ware_name+'\')">'+field.ware_name+'</a>');
+						$.each(obj, function(i, field){							
+							if(obj[i][2] == "โกดัง"){  						
+								$('#b').append('<a class="dropdown-item text-center" href="#" onclick="setware('+field.ware_id+',\''+field.ware_name+'\',\'โกดัง\')">'+field.ware_name+'</a>');
+							}else if(obj[i][2] == "หน้าร้าน"){						
+								$('#b').append('<a class="dropdown-item text-center" href="#" onclick="setware('+field.shop_id+',\''+field.shop_name+'\',\'หน้าร้าน\')">'+field.shop_name+'</a>');
+							}										
 						}); 
 					}
 				}               
-			}); 		
+			}); 	
 		}
 
 		arr_place = [];
 		function get_place(){
+			var dataStr;
+			if(localStorage.type_im == "โกดัง"){
+				dataStr = {'prod_id' : prod_id,"ware_id":localStorage.ware_id_im};
+			}else if(localStorage.type_im == "หน้าร้าน"){
+				dataStr = {'prod_id' : prod_id,"shop_id":localStorage.ware_id_im};
+			}
 			$.ajax({
 				type: "POST",
 				url:"php/get_place.php",    
-				data:{'prod_id' : prod_id,"ware_id":localStorage.ware_id_im},  			                                 
+				data: dataStr,  			                                 
 				success: function(data){				
 					var obj = jQuery.parseJSON(data);                    
 					if(obj){                        
@@ -333,11 +335,10 @@
 			popup.classList.toggle("show");
 		}
 
-		// var ware_id;
-		function setware(arg,arg2){
-			localStorage.ware_id_im = arg;
-			// ware_id = arg;
+		function setware(arg,arg2,arg3){
+			localStorage.ware_id_im = arg;			
 			localStorage.ware_name_im = arg2;
+			localStorage.type_im = arg3;
 			$('#btn-b').text(arg2);
 			get_place();
 		}
@@ -392,10 +393,10 @@
 		}  
 		
 		function add(){
-			if($('#btn-b').text() == "เลือกโกดัง"){
+			if($('#btn-b').text() == "เลือกโกดัง/หน้าร้าน"){
 				$.confirm({
 					title: 'พบข้อผิดพลาด',
-					content: 'กรุณาเลือกโกดังก่อนทำรายการ',
+					content: 'กรุณาเลือกโกดัง/หน้าร้านก่อนทำรายการ',
 					backgroundDismiss: true,
 					buttons: {
 						formSubmit: {
@@ -671,15 +672,7 @@
 		function set_default(){
 			$('#at').attr("placeholder","");
 			$('#barcode').val("");
-			$('#name').val("");
-			//$("#name").attr('data-img',"");
-			/*$('#name[rel=popover]').popover({
-				html: true, 
-				trigger: 'hover',
-				placement: 'left',
-				content: function(){
-				return '<img src='+$(this).data('img')+'>';}
-			});*/ 		
+			$('#name').val("");	
 			$('#fund').val("");
 			$('#whole').val("");
 			$('#retail').val("");
@@ -806,7 +799,7 @@
 			var datetime = d.getFullYear() + "-" + (d.getMonth()+1) + "-" + d.getDate() + " " + d.getHours() + ":" + d.getMinutes() + ":" + d.getSeconds(); 
 			json_string = JSON.stringify(arr_data);
 			var dataString =  "JSON=" + json_string + "&ware_id=" + localStorage.ware_id_im + "&date=" + datetime
-			+ "&sum=" + sum + "&user_id=" + localStorage.user_id;
+			+ "&sum=" + sum + "&user_id=" + localStorage.user_id + "&type=" + localStorage.type_im;
 			//alert(dataString);			
 
 			var WinPrint  = window.open();
@@ -863,6 +856,7 @@
 			localStorage.arr_prod_i = "";
 			localStorage.ware_name_im = "";
 			localStorage.ware_id_im = "";
+			localStorage.type_im = "";
 			location.reload();
 		}
 
@@ -883,10 +877,9 @@
       		<div class="row" style="margin-top: 2px;">
       			<div class="col-12 text-center">
 					<a href="web_sale.html" class="mgr-20">ขายสินค้า</a>
-					<a href="web_import.html" class="mgr-20 active">นำสินค้าเข้าโกดัง</a>
+					<a href="web_import.html" class="mgr-20 active">นำสินค้าเข้า</a>
 					<a href="web_stock.html" class="mgr-20">เช็คสต๊อก</a>
-					<a href="web_export.html" class="mgr-20">สินค้าออกโกดัง</a>
-					<a href="web_transfer_in.html" class="mgr-20">นำสินค้าเข้าหน้าร้าน</a>
+					<a href="web_export.html" class="mgr-20">สินค้าออกโกดัง</a>				
 					<a href="web_select.html" class="mgr-20">รายการย้อนหลัง</a>
 					<a href="web_qrprint.html" class="mgr-20">พิมพ์คิวอาร์</a>
 					<a href="" class="mgr-20" onclick="logout()">ออกจากระบบ</a>
@@ -909,7 +902,7 @@
       			<div class="col-3"></div>
       			<div class="col-2 text-center">
       				<div id="select-ware" class="dropdown">
-						<button id="btn-b" class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="background-color: #666; width: 111px;">เลือกโกดัง</button>
+						<button id="btn-b" class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="background-color: #666; width: 111px;">เลือกโกดัง/หน้าร้าน</button>
       				  <div id="b" class="dropdown-menu" aria-labelledby="dropdownMenuButton">      				    
 						
       				  </div>
