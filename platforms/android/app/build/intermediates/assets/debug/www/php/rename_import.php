@@ -82,14 +82,26 @@
                 mysqli_rollback($conn);
                 echo "fail";
                 exit;
-            }       
-            $query = "UPDATE warehouse SET amount=amount+'$amt' WHERE ware_id = '$ware_id' AND prod_id = '$prod_id'";
+            }    
+            $query = "SELECT * FROM warehouse WHERE ware_id = '$ware_id' AND prod_id = '$prod_id'";  
             $result = mysqli_query($conn, $query);
-            if(!$result){
-                mysqli_rollback($conn);
-                echo "fail";
-                exit;
-            }                     
+            if(mysqli_num_rows($result) > 0){      
+                $query = "UPDATE warehouse SET amount=amount+'$amt' WHERE ware_id = '$ware_id' AND prod_id = '$prod_id'";
+                $result = mysqli_query($conn, $query);
+                if(!$result){
+                    mysqli_rollback($conn);
+                    echo "fail";
+                    exit;
+                } 
+            }else{
+                $query = "INSERT INTO warehouse(ware_id,prod_id,amount) VALUES ('$ware_id','$prod_id','$amt')";
+                $result = mysqli_query($conn, $query);
+                if(!$result){
+                    mysqli_rollback($conn);
+                    echo "fail";
+                    exit;
+                } 
+            }                   
         }       
 
         if($ch == 1){

@@ -153,9 +153,12 @@
                 }            
             }       
         }
+        mysqli_commit($conn); 
+        echo "success"; 
+        mysqli_close($conn);
     }else if($type == "หน้าร้าน"){
         mysqli_begin_transaction($conn);
-        $sql = "SELECT tran_number,count FROM tranfer_in ORDER BY tran_id DESC LIMIT 1"; 
+        $sql = "SELECT tran_number,count FROM transfer_in ORDER BY tran_id DESC LIMIT 1"; 
         $result = mysqli_query($conn, $sql);   
       
         if(mysqli_num_rows($result) > 0){    
@@ -296,11 +299,10 @@
                 }  
             }  
         }
+        mysqli_commit($conn); 
+        echo "success"; 
+        mysqli_close($conn);
     }else{
-        echo "fail";
-        exit;
-    }
-    mysqli_commit($conn); 
-    echo "success"; 
-    mysqli_close($conn);
+        echo "fail";        
+    }    
 ?>

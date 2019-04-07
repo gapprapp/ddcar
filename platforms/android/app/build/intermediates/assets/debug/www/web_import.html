@@ -813,7 +813,8 @@
 					});
 				},             
 				success: function(data){  
-					EasyLoading.hide();    
+					EasyLoading.hide();
+					console.log(data);    
 					if(data == "success"){ 
 						var ele =  document.getElementById('show_qr').innerHTML;			
 						WinPrint.document.write("<html><head><link href='https://fonts.googleapis.com/css?family=Maitree' rel='stylesheet'></head><body>");
