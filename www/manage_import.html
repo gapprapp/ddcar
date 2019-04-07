@@ -75,10 +75,8 @@
       get_import();
 
       //scroll to bottom
-      $(window).on("scroll", function() {
-        var scrollHeight = $(document).height();
-        var scrollPosition = $(window).height() + $(window).scrollTop();
-        if ((scrollHeight - scrollPosition) / scrollHeight === 0) {          
+      $(window).scroll(function() {            
+        if($(window).scrollTop() + $(window).height() > $(document).height()-50) { 
           if(!$("#myUL").prop('hidden')){
             if(bool){
               return 0;

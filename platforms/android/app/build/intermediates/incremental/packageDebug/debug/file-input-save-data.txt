@@ -1,5 +1,5 @@
 #Internal package file, do not edit.
-#Sun Apr 07 14:39:43 ICT 2019
+#Sun Apr 07 16:17:09 ICT 2019
 20.base=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\res\\debug\\resources-debug.ap_
 143.base=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\assets\\debug
 340.file=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\assets\\debug\\html-de\\scanning.html
