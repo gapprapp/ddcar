@@ -29,12 +29,7 @@
     <style>
         #title {
             color: #666666;
-            letter-spacing: 2px;
-        }
-
-        .pdlr {
-            padding-left: 10%;
-            padding-right: 10%;
+            font-weight: bold;
         }
     </style>
 
@@ -62,7 +57,7 @@
                     $('#type').val(obj[0].cus_type);                       
                     $.each(obj, function(i, field){
                         if(i > 0){
-                            $('#cusprice-collapse').append("<div class='row' style='margin-bottom: 5%;'>" +
+                            $('#cusprice-collapse').append("<div class='row mgem1o5'>" +
                             "<div class='col-7 text-center'>" +
                                 "<input type='text' class='w3-input2 text-center' value='"+obj[i].prod_name+"' disabled>" +
                             "</div>" +
@@ -72,10 +67,10 @@
                             "</div>");
                         }                       
                     });   
-                    $('#cusprice-collapse').append("<hr style='margin-bottom: 10%;'>");                       
+                    $('#cusprice-collapse').append("<hr style='margin-top: 0; widht: 90%;'>");                       
                 }               
             });
-
+            
             if(edit == "true"){                
                 $('#h5-title').text("แก้ไข");
                 $('#name').prop('disabled', false);
@@ -199,75 +194,80 @@
             $("#type").val(arg);
         }
 
+        function doresize() {
+            switch (window.orientation) {
+                case 90: case -90:
+                    $("#in-ctn").css('max-height', $(window).height() - 100);
+                    break;
+                default:
+                    $("#in-ctn").css('max-height', $(window).height() - 100);
+                    break;
+            }
+        }
+        window.addEventListener('resize', doresize);
+
     </script>
 </head>
 
-<body style="overflow: auto;">
+<body>
     <!-- Loading -->
-    <div class="overlay" hidden><div class="loading"></div></div>
+    <div class="overlay" hidden><div class="loading"></div></div> 
 
-    <!-- Nav menu top -->
-    <div class="row fixed-top navs align-items-center">
-        <div class="col-1 text-center" onclick="transition_page_back('customer.html'); window.location = 'customer.html';">
-            <i id="i-back" class="fas fa-angle-left"></i>
+    <div id="big-ctn" class="container-fullwidth justify-content-center">
+        <!-- Nav menu top -->
+        <div class="row navs align-items-center mgem1o5 fixed-top">
+            <div class="col-2 text-center" onclick="transition_page_back('customer.html'); window.location = 'customer.html';">
+                <i id="i-back" class="fas fa-angle-left"></i>
+            </div>
+            <div class="col-8 text-center">
+                <h5 id="h5-title">เพิ่มลูกค้า</h5>
+            </div>
         </div>
-        <div class="col-10 text-center">
-            <h5 id="h5-title"></h5>
-        </div>
-        <div class="col-1">
-        </div>
-    </div>
-    <br>
-
-    <!-- End big container -->
-    <div class="container justify-content-center" style="margin-top: 20%;">
-        <div class="container">
-            <div class="row mg-10">
-                <div class="col-12 text-center pdlr">
+        <div id="in-ctn" class="container-fullwidth" style="height: calc(100vh - 80px);">
+            <div class="row mgem1o5 justify-content-center">
+                <div class="col-8 text-center">
                     <label for="name">ชื่อ</label>
                     <input id="name" type="text" class="w3-input" disabled data-index="1">
                 </div>
             </div>
-            <div class="row mg-10">
-                <div class="col-12 text-center pdlr">
+            <div class="row mgem1o5 justify-content-center">
+                <div class="col-8 text-center">
                     <label for="addr">ที่อยู่</label>
                     <input id="addr" type="text" class="w3-input" disabled data-index="2">
                 </div>
             </div>
-            <div class="row mg-10">
-                <div class="col-12 text-center pdlr">
+            <div class="row mgem1o5 justify-content-center">
+                <div class="col-8 text-center">
                     <label for="tel">เบอร์โทร</label>
                     <input id="tel" type="tel" class="w3-input" disabled data-index="3">
                 </div>
             </div>
-            <div class="row" style="margin-bottom: 16%;">
-                <div class="col-12 text-center pdlr">
+            <div class="row justify-content-center mgem2">
+                <div class="col-8 text-center">
                     <label for="type">ประเภท</label>
                     <input id="type" type="text" class="w3-input" readonly>
                 </div>
             </div>
 
-            <div class="row mg-10">
-                <div class="col-12 text-center">
+            <div class="row justify-content-center mgem1">
+                <div class="col-7 text-center">
                     <button id="btn-cusprice" class="mbtn-green" href="#cusprice-collapse" data-toggle="collapse">สินค้าราคาพิเศษ</button>
                 </div>
             </div>
 
-            <div id="cusprice-collapse" class="container collapse">
-                <div class="row"> 
+            <div id="cusprice-collapse" class="container collapse mgem1o5">
+                <div class="row justify-content-center"> 
                     <div class="col-7 text-center">
-                        <h5 class="title">สินค้า</h5>
+                        <p class="title">สินค้า</p>
                     </div>
                     <div class="col-4 text-center">
-                        <h5 class="title">ราคา</h5>
+                        <p class="title">ราคา</p>
                     </div>
-                </div> <hr style="width: 100%;">   
-               
-                
+                </div> <hr style="width: 90%; margin-top: 0px;">  
             </div>
 
-            <div class="row">
-                <div class="col-12 text-center">
+            <div class="row justify-content-center mgem1o5">
+                <div class="col-9 text-center">
                     <button id="btn-update" class="mbtn" onclick="update_cus();">บันทึก</button>
                 </div>
             </div>
@@ -321,6 +321,10 @@
             }else{
                 return false;
             }
+        });
+        
+        $('#btn-cusprice').click(function (e) { 
+            $("html, body").animate({ scrollTop: $(document).height() - $(window).height() });
         });
     </script>
 </body>

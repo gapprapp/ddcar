@@ -31,7 +31,7 @@
   <style>
     hr{
       margin-top: 0;
-      height: 90%;
+      width: 80%;
     }
     .pdr{
       padding-right: 10%;
@@ -77,13 +77,12 @@
           var txt2 = txt[0].split("-");
           var date = txt2[2] + "/" + txt2[1] + "/" + txt2[0].substr(2) + " " + txt[1].substr(0,5);
           $('#date').text(date);
-          $('#sum').text(obj[0].total_stock);
-          $('#user').text("ผู้ทำรายการ: " + obj[0].user_name);
+          
           ware_id_o = obj[0].ware_id;
           ware_id = obj[0].ware_id;
           $.each(obj, function(i, field){
-            $('#ctn-show').append('<div id="prod-'+field.item_id+'" class="row">'+
-              '<div class="col-1 text-center" ">' +
+            $('#in-ctn').append('<div id="prod-'+field.item_id+'" class="row mgemo5">'+
+              '<div class="col-1 text-center">' +
                 '<p id="amt-'+field.item_id+'" class="amount">'+field.amount+'</p>' +
               '</div>' +
               '<div class="col-7 text-center no-pd">' +
@@ -95,9 +94,21 @@
               '<div class="col-3 text-right no-pd">' +
                 '<p id="total-'+field.item_id+'">'+field.amount*field.stock_cost+'</p>' +
               '</div>' +
-              '</div>');
+            '</div>');
             arr.push(field.amount);
-          });                                             
+          }); 
+          $('#in-ctn').append('<div class="row"><hr style="width 100%;">'+
+          '<div class="col-4 text-center" style="padding-left: 0;"><h5 class="bold">รวม</h5></div>'+
+          '<div class="col-7 text-right" style="padding-right: 0;"><h5 id="sum" class="bold"></h5></div>'+
+          '</div><hr style="margin-top: 1em;">'+
+          '<div id="btm-row" class="row" style="margin-bottom: 4.5em;">'+
+          '<div class="col-12 text-center">'+
+              '<h5 id="user">ชื่อผู้บันทึก</h5>'+
+          '</div>'+
+        '</div>');   
+            
+          $('#sum').text(obj[0].total_stock);
+          $('#user').text("ผู้ทำรายการ: " + obj[0].user_name);                                         
         }               
       });  
     });   
@@ -333,58 +344,40 @@
   </script>
 </head>
 
-<body style="overflow: auto;">
+<body>
   <!-- Loading -->
-  <div class="overlay" hidden><div class="loading"></div></div>
+  <div class="overlay" hidden><div class="loading"></div></div> 
 
-  <!-- Nav menu top -->
-  <div class="row fixed-top navs align-items-center">
-    <div class="col-1 text-center" onclick="transition_page_back('manage_import.html'); window.location = 'manage_import.html';">
-      <i id="i-back" class="fas fa-angle-left"></i>
-    </div>
-    <div class="col-9 text-right" style="margin-right: 2%;">
-      <h5 id="h5-title">S18-00001</h5>
-    </div>
-    <div class="col-1 text-right">
-      <i id="i-save" class="fa fa-save" style="font-size: 135%; color: #e57f7f; margin-top: 3px;"></i>
-    </div>
-  </div><br>
-
-  <!-- End big container -->
-  <div class="container justify-content-center" style="margin-top: 15%;">
-    <div class="row">
-      <div class="col-12 text-center pdl pdr"><h5 id="warehouse">โกดัง A</h5></div>
-    </div>
-    <div class="row">
-      <div class="col-12 text-center pdl pdr"><h5 id="date">12/01/18 15:00</h5></div>
-    </div><hr style="width: 75%;">
-
-    <div class="row" style="margin-bottom: 2%;">
-      <div class="col-12 text-center pdl pdr">
-        <h5>รายการ</h5>
+  <!-- big container -->
+  <div id="big-ctn" class="container justify-content-center">
+    <!-- Nav menu top -->
+    <div class="row navs align-items-center mgem1o5 fixed-top">
+      <div class="col-2 text-center" onclick="transition_page_back('manage_import.html'); window.location = 'manage_import.html';">
+        <i id="i-back" class="fas fa-angle-left"></i>
+      </div>
+      <div class="col-8 text-center">
+        <h5 id="h5-title">S18-00001</h5>
+      </div>
+      <div class="col-1 text-right">
+        <i id="i-save" class="fa fa-save" style="font-size: 135%; color: #e57f7f; margin-top: 3px;"></i>
       </div>
     </div>
-    <div class="container-fullwidth">     
-      <div id="ctn-show" style="margin-bottom: 5%;">
 
-      </div>  
-      <hr style="width: 75%; margin-top: 5%">   
-      <div id="bill-bttm" class="container" style="margin-top: 5%;">
-        <div class="row">
-          <div class="col-4" style="padding-left: 10%;"><h5 class="bold">รวม</h5></div>
-          <div class="col-7 text-right"><h5 id="sum" class="bold">150</h5></div>
-        </div><hr style="width: 75%; margin-top: 5%">
-        <div class="row" style="margin-top: 5%;">
-          <div class="col-12 text-center">
-            <h5 id="user">ชื่อผู้บันทึก</h5>
-          </div>
-        </div>
-      </div>
+
+    <div class="row fixed-top" style="margin-top: 4.5em;">
+      <div class="col-12 text-center"><h5 id="warehouse">โกดัง A</h5></div>
+      <div class="col-12 text-center"><h5 id="date">12/01/18 15:00</h5></div>
+      <hr>
+      <div class="col-12 text-center"><h5 class="underline">รายการ</h5></div>
     </div>
+
+    <div id="in-ctn" class="container-fullwidth" style="height: calc(100vh - (12em+120px)) !important; margin-top: 12em !important;">
+    </div>
+  </div>
   <!-- End big container -->
 
   <!-- Nav menu bottom -->
-  <div class="row fixed-bottom" style="background: #d63232;">
+  <div class="row fixed-bottom navs">
     <div class="col-4 text-center" onclick="transition_page_back('index.html'); window.location = 'index.html';">
       <i id="i-home" class="fas fa-home menu"></i>
     </div>

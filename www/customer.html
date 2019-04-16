@@ -27,7 +27,8 @@
   <style>
     #title {
       color: #666666;
-      letter-spacing: 2px;
+      letter-spacing: 1px;
+      font-weight: bold;
     }
     .no-pd {
       padding-right: 0px;
@@ -39,7 +40,7 @@
   </style>
 
   <script>
-    $(document).ready(function () { 
+    $(document).ready(function () {   
       $.ajax({
         type: "GET",
         url:"http://ddaccessory.trueddns.com:24330/dd-shop/php/get_cus.php",
@@ -51,25 +52,36 @@
           var obj = jQuery.parseJSON(data);
           if(obj){
             $.each(obj, function(i, field){                   
-              $('#show_cus').append( "<div id='cus-"+i+"' class='row'>" +              
-                "<div class='col-1 text-left'>" +
+              $('#in-ctn').append( "<div id='cus-"+i+"' class='row justify-content-center'>" +              
+                "<div class='col-2 text-center'>" +
                   "<i class='fa fa-trash-alt i-del' onclick='edit_del("+obj[i].cus_id+","+i+");' style='color: #666666;' hidden></i>" +
                   "<i class='fa fa-edit i-edit' onclick='edit_cus("+obj[i].cus_id+");' style='color: #666666;' hidden></i>" +
                 "</div>" +
-                "<div class='col-6 text-center no-pd' onclick='show_cus("+obj[i].cus_id+");'>" +
+                "<div class='col-5 text-center' onclick='show_cus("+obj[i].cus_id+");'>" +
                   "<p id='cus_name-"+i+"'>"+obj[i].cus_name+"</p>" +
                 "</div>" +
-                "<div class='col-4 text-center no-pd' onclick='show_cus("+obj[i].cus_id+");'>" +
+                "<div class='col-5 text-center nopd' onclick='show_cus("+obj[i].cus_id+");'>" +
                   "<p>"+obj[i].cus_tel+"</p>" +
                 "</div>" +
-                "<div class='col-1'></div>" +
-                "</div>" +   
-                "<hr id='hr-"+i+"'>");                                                  
-            });   
+                "</div><hr id='hr-"+i+" class='mgem1'>");                                                  
+            });  
           }                                
         }               
       });
     });
+    
+    function doresize() {
+      switch (window.orientation) {
+        case 90: case -90:
+          $("#in-ctn").css('height', $(window).height() - 115);
+          break;
+        default:
+          $("#in-ctn").css('height', $(window).height() - 115);
+          break;
+      }
+    }
+      window.addEventListener('resize', doresize);
+
 
     function disactive(arg) {
       nav_menu = ['home', 'add', 'edit', 'del'];
@@ -185,58 +197,44 @@
 
 <body>
   <!-- Loading -->
-  <div class="overlay" hidden><div class="loading"></div></div>
+  <div class="overlay" hidden><div class="loading"></div></div> 
 
-  <!-- Nav menu top -->
-  <div class="row fixed-top navs align-items-center">
-    <div class="col-1 text-center" onclick="transition_page_back('index.html'); window.location = 'index.html';">
-      <i id="i-back" class="fas fa-angle-left"></i>
-    </div>
-    <div class="col-10 text-center" style="padding-left: 0;">
-      <h5 id="h5-title">ลูกค้า</h5>
-    </div>
-    <div class="col-1">
-    </div>
-  </div>
-  <br>
-
-  <!-- End big container -->
-  <div class="container justify-content-center" style="margin-top: 15%; margin-bottom: 10%;">
-    <div id="show_cus" class="container">
-      <div class="row">
-        <div class="col-1"></div>
-        <div class="col-6 text-center no-pd">
-          <h5 id="title">ชื่อ</h5>
-        </div>
-        <div class="col-4 text-center no-pd">
-          <h5 id="title">เบอร์โทร</h5>
-        </div>
-        <div class="col-1"></div>
+  <div id="big-ctn" class="container-fullwidth justify-content-center">
+    <!-- Nav menu top -->
+    <div class="row navs align-items-center mgem1o5 fixed-top">
+      <div class="col-2 text-center" onclick="transition_page_back('index.html'); window.location = 'index.html';">
+        <i id="i-back" class="fas fa-angle-left"></i>
       </div>
-      <hr>
+      <div class="col-8 text-center">
+        <h5 id="h5-title">ลูกค้า</h5>
+      </div>
+    </div>
 
+    <div class="row fixed-top" style="margin-top: 4.5em;">
+      <div class="col-2"></div>
+      <div id="title" class="col-5 text-center">ชื่อลูกค้า</div>
+      <div id="title" class="col-5 text-center nopd">เบอร์โทร</div> 
+    </div><hr class="mgem1" style="margin-top: 6.3em; width: 98%;">
+
+    <div id="in-ctn" class="container-fullwidth" style="margin-top: 1.5em !important; height: calc(100vh - (4em + 100px)) !important;">
       <!-- Show -->
-     
+    </div>
+    <div class="row fixed-bottom navs">
+      <div class="col-3 text-center" onclick="transition_page_back('index.html'); window.location = 'index.html';">
+        <i id="i-home" class="fas fa-home menu"></i>
+      </div>
+      <div class="col-3 text-center" onclick="menu('add')">
+        <i id="i-add" class="fas fa-plus menu"></i>
+      </div>
+      <div class="col-3 text-center" onclick="menu('edit')">
+        <i id="i-edit" class="fas fa-edit menu"></i>
+      </div>
+      <div class="col-3 text-center" onclick="menu('del')">
+        <i id="i-del" class="fa fa-trash-alt menu"></i>
+      </div>
     </div>
   </div>
   <!-- End big container -->
-
-  <!-- Nav menu bottom -->
-  <div class="row fixed-bottom navs">
-    <div class="col-3 text-center" onclick="transition_page_back('index.html'); window.location = 'index.html';">
-      <i id="i-home" class="fas fa-home menu"></i>
-    </div>
-    <div class="col-3 text-center" onclick="menu('add')">
-      <i id="i-add" class="fas fa-plus menu"></i>
-    </div>
-    <div class="col-3 text-center" onclick="menu('edit')">
-      <i id="i-edit" class="fas fa-edit menu"></i>
-    </div>
-    <div class="col-3 text-center" onclick="menu('del')">
-      <i id="i-del" class="fa fa-trash-alt menu"></i>
-    </div>
-  </div>
-  <!-- End Nav menu bottom -->
 </body>
 
 </html>
