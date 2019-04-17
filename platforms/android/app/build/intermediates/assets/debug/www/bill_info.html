@@ -30,14 +30,8 @@
 
   <style>
     hr{
-      margin-top: 0;
-      height: 90%;
-    }
-    .pdr{
-    	padding-right: 10%;
-    }
-    .pdl{
-    	padding-left: 10%;
+      margin-top: -10px;
+      width: 80%;
     }
 
     .nopd{
@@ -52,18 +46,6 @@
     .bold{
       font-weight: bold;
     }
-    
-    p[id*="price-"] {
-      font-size: 95%;
-      margin-top: 2px;
-      letter-spacing: -1px;
-    }
-    
-    p[id*="total-"] {
-      font-size: 95%;
-      margin-top: 2px;
-      letter-spacing: -1px;
-    }
 
   </style>
 
@@ -73,6 +55,45 @@
     $(document).ready(function(){
       url = new URL(window.location.href);
       bill_id = url.searchParams.get("id"); 
+
+      /*$('#in-ctn').append('<div id="prod-1" class="row mgemo5">' +
+        '<div class="col-2 text-center">' +
+          '<p id="amt-1" class="amount">10</p>' +
+        '</div>' +
+        '<div class="col-6 text-center nopd">' +
+          '<p id="name-1">name</p>' +
+          '</div>' +
+          '<div class="col-1 text-center">' +
+            '<p id="price-1">100</p>' +
+          '</div>' +
+            '<div class="col-3 text-center nopd">' +
+              '<p id="total-1">1000</p>' +
+            '</div>' +
+        '</div>');
+      $('#in-ctn').append('<div class="row mgemo5"><hr style="width: 100%;">'+
+              '<div class="col-4 text-center" style="padding-left: 0;"><h5 class="bold">รวม</h5></div>'+
+              '<div class="col-7 text-right" style="padding-right: 0;"><h5 id="sum" class="bold">15,000</h5></div>'+
+            '</div>'+
+            '<div class="row mgemo5">'+
+              '<div class="col-4 text-center" style="padding-left: 0;"><h5 class="bold">ลด</h5></div>'+
+              '<div class="col-7 text-right" style="padding-right: 0;"><h5 id="discount" class="bold">1,000</h5></div>'+
+            '</div>'+
+            '<div class="row mgemo5">'+
+              '<div class="col-4 text-center" style="padding-left: 0;"><h5 class="bold">สุทธิ</h5></div>'+
+              '<div class="col-7 text-right" style="padding-right: 0;"><h5 id="total" class="bold">14,000</h5></div>'+
+            '</div>'+
+            '<div class="row mgemo5">'+
+              '<div class="col-5 text-center" style="padding-left: 0;"><h5 class="bold">รับ / ทอน</h5></div>'+
+              '<div class="col-3 text-right" style="padding-right: 0;"><h5 id="get" class="bold">100,000</h5></div>'+
+              '<div class="col-3 text-right" style="padding-right: 0;"><h5 id="chng" class="bold">5000</h5></div>'+
+            '</div>'+
+            '<hr style="margin-top: 1em;">'+
+            '<div id="btm-row" class="row" style="margin-bottom: 4.5em;">'+
+            '<div class="col-12 text-center">'+
+                '<h5 id="user">ชื่อผู้บันทึก</h5>'+
+            '</div>'+
+          '</div>');
+        */ 
 
       $.ajax({
         type: "POST",
@@ -111,11 +132,11 @@
           dis = obj[0].total_discount;
           get = obj[0].get_price;
           $.each(obj, function(i, field){
-            $('#ctn-show').append('<div id="prod-'+field.item_id+'" class="row">' +
-              '<div class="col-1 text-center" ">' +
+            $('#in-ctn').append('<div id="prod-'+field.item_id+'" class="row mgemo5">' +
+              '<div class="col-2 text-center">' +
                 '<p id="amt-'+field.item_id+'" class="amount">'+field.prod_amount+'</p>' +
               '</div>' +
-              '<div class="col-7 text-center nopd">' +
+              '<div class="col-6 text-center nopd">' +
                 '<p id="name-'+field.item_id+'">'+field.prod_name+'</p>' +
                 '</div>' +
                 '<div class="col-1 text-center">' +
@@ -126,10 +147,54 @@
                   '</div>' +
               '</div>');
             arr.push(field.prod_amount);
-          });                                             
+          }); 
+
+          $('#in-ctn').append('<div class="row"><hr style="width 100%;">'+
+              '<div class="col-4 text-center" style="padding-left: 0;"><h5 class="bold">รวม</h5></div>'+
+              '<div class="col-7 text-right" style="padding-right: 0;"><h5 id="sum" class="bold"></h5></div>'+
+            '</div>'+
+            '<div class="row">'+
+              '<div class="col-4 text-center" style="padding-left: 0;"><h5 class="bold">ลด</h5></div>'+
+              '<div class="col-7 text-right" style="padding-right: 0;"><h5 id="discount" class="bold"></h5></div>'+
+            '</div>'+
+            '<div class="row">'+
+              '<div class="col-4 text-center" style="padding-left: 0;"><h5 class="bold">สุทธิ</h5></div>'+
+              '<div class="col-7 text-right" style="padding-right: 0;"><h5 id="total" class="bold"></h5></div>'+
+            '</div>'+
+            '<div class="row">'+
+              '<div class="col-4 text-center" style="padding-left: 0;"><h5 class="bold">รับ / ทอน</h5></div>'+
+              '<div class="col-4 text-right" style="padding-right: 0;"><h5 id="get" class="bold"></h5></div>'+
+              '<div class="col-4 text-right" style="padding-right: 0;"><h5 id="chng" class="bold"></h5></div>'+
+            '</div>'+
+            '<hr style="margin-top: 1em;">'+
+            '<div id="btm-row" class="row" style="margin-bottom: 4.5em;">'+
+            '<div class="col-12 text-center">'+
+                '<h5 id="user">ชื่อผู้บันทึก</h5>'+
+            '</div>'+
+          '</div>');  
+          
+          $('#sum').text(obj[0].sum_price);
+          $('#discount').text(obj[0].total_discount);
+          $('#total').text(obj[0].total_price);
+          $('#get').text(obj[0].get_price);
+          $('#chng').text(obj[0].chng);
+          $('#user').text("ผู้ทำรายการ: " + obj[0].user_name);                                        
         }               
       });
     });   
+
+    /*function doresize() {
+      switch (window.orientation) {
+        case 90: case -90:
+          $("#in-ctn").css('height', $(window).height() - 110);
+          break;
+        default:
+          $("#in-ctn").css('height', $(window).height() - 110);
+          break;
+      }
+    }
+    window.addEventListener('resize', doresize);
+    */
 
     function disactive(arg) {
         nav_menu = ['home', 'add', 'edit', 'del'];
@@ -536,73 +601,76 @@
   </script>
 </head>
 
-<body style="overflow: auto;">
+<body>
   <!-- Loading -->
-  <div class="overlay" hidden><div class="loading"></div></div>
+  <div class="overlay" hidden><div class="loading"></div></div>  
 
-  <!-- Nav menu top -->
-  <div class="row fixed-top navs align-items-center">
-    <div class="col-1 text-center" onclick="transition_page_back(window.history.back())">
-      <i id="i-back" class="fa fa-angle-left"></i>
-    </div>
-    <div class="col-9 text-center" style="margin-left: 3%;">
-      <h5 id="h5-title">S18-00001</h5>
-    </div>
-    <div class="col-1 text-center">
-      <i id="i-save" class="fa fa-save" style="font-size: 135%; color: #e57f7f; margin-top: 3px;"></i>
-    </div>
-  </div><br>
-
-  <!-- End big container -->
-  <div class="container justify-content-center" style="margin-top: 15%;">
-    <div class="row">
-      <div class="col-12 text-center pdl pdr"><h5 id="warehouse">โกดัง A</h5></div>
-    </div>
-  	<div class="row">
-      <div class="col-12 text-center pdl pdr"><h5 id="cus">สมพงศ์ สะอาด<span> (เครดิต 30)</span></h5></div>
-  	</div>
-  	<div class="row">
-  		<div class="col-12 text-center pdl pdr"><h5 id="date">12/01/18 15:00</h5></div>
-  	</div><hr style="width: 75%;">
-
-    <div class="row" style="margin-bottom: 2%;">
-    	<div class="col-12 text-center pdl pdr">
-    		<h5>รายการ</h5>
-    	</div>
-    </div>
-    <div class="container-fullwidth">    
-      <div id="ctn-show">
+  <!-- big container -->
+  <div id="big-ctn" class="container justify-content-center">
+    <!-- Nav menu top -->
+    <div class="row navs align-items-center mgem1o5 fixed-top">
+      <div class="col-2 text-center" onclick="transition_page_back(window.history.back())">
+        <i id="i-back" class="fas fa-angle-left"></i>
       </div>
-      <hr style="width: 75%; margin-top: 5%">
-    	<div id="bill-bttm" class="container" style="margin-top: 5%;">
-    		<div class="row">
-    			<div class="col-6 text-center"><h5 class="bold">รวม</h5></div>
-    			<div class="col-3 text-right nopd"><h5 class="bold" id="sum">150</h5></div>
+      <div class="col-8 text-center">
+        <h5 id="h5-title">S18-00001</h5>
+      </div>
+      <div class="col-1 text-right">
+        <i id="i-save" class="fa fa-save" style="font-size: 135%; margin-top: 3px; color: #e57f7f;"></i>
+      </div>
+    </div>
+
+    <div class="row fixed-top" style="margin-top: 4.5em;">
+      <div class="col-12 text-center"><h5 id="warehouse">โกดัง A</h5></div>
+      <div class="col-12 text-center"><h5 id="date">12/01/18 15:00</h5></div>
+      <div class="col-12 text-center" style="margin-top: -5px;"><p id="cus" style="font-size: 105%;">สมพงศ์ สะอาด<span> (เครดิต 30)</span></p></div>
+      <hr>
+    </div>
+
+    <div id="in-ctn" class="container-fullwidth" style="height: calc(100vh - (12em+120px)) !important; margin-top: 11em !important;">
+      <div class="row mgemo5">
+        <div class="col-12 text-center"><h5 class="underline">รายการ</h5></div>
+      </div>
+    </div>
+  </div>
+
+      
+      <!--Test scroll -->
+      
+      <!--<div class="row mgemo5">
+        <div class="col-12 text-center">12</div>
+      </div>-->
+
+      <!-- Scroll OK! 
+      
+      <hr style="width: 75%; margin-top: 5px;">
+    	<div id="bill-bttm" class="container" style="margin-top: 15px;">
+    		<div class="row" style="margin-bottom: -10px;">
+    			<div class="col-6 text-center"><p class="bold">รวม</p></div>
+    			<div class="col-3 text-right nopd"><p id="sum">150</p></div>
     		</div>
-    		<div class="row">
-    			<div class="col-6 text-center"><h5 class="bold">ลด</h5></div>
-    			<div class="col-3 text-right nopd"><h5 class="bold" id="discount">150</h5></div>
+    		<div class="row" style="margin-bottom: -10px;">
+    			<div class="col-6 text-center"><p class="bold">ลด</p></div>
+    			<div class="col-3 text-right nopd"><p id="discount">150</p></div>
     		</div>
-    		<div class="row">
-    			<div class="col-6 text-center"><h5 class="bold">สุทธิ  </h5></div>
-    			<div class="col-3 text-right nopd"><h5 class="bold" id="total">100000</h5></div>
+    		<div class="row" style="margin-bottom: -10px;">
+    			<div class="col-6 text-center"><p class="bold">สุทธิ  </p></div>
+    			<div class="col-3 text-right nopd"><p id="total">100000</p></div>
     		</div>
-    		<div class="row">
-    			<div class="col-6 text-center nopd"><h5 class="bold">รับ / ทอน</h5></div>
-    			<div class="col-3 text-right nopd"><h5 class="bold" id="get">150000</h5></div>
-    			<div class="col-3 text-right nopd"><h5 class="bold" id="chng">1000</h5></div>
+    		<div class="row" style="margin-bottom: -10px;">
+    			<div class="col-6 text-center nopd"><p class="bold">รับ / ทอน</p></div>
+    			<div class="col-3 text-right nopd"><p id="get">150000</p></div>
+    			<div class="col-3 text-center nopd"><p id="chng">1000</p></div>
     		</div><hr style="width: 75%; margin-top: 5%">
-    		<div class="row" style="margin-top: 5%;">
+    		<div class="row" style="margin-top: 10px;">
     			<div class="col-12 text-center">
-    				<h5 id="user">ชื่อผู้บันทึก</h5>
+    				<p id="user">ชื่อผู้บันทึก</p>
     			</div>
     		</div>
-    	</div>
-    </div>
-  <!-- End big container -->
+      </div> -->
 
   <!-- Nav menu bottom -->
-  <div class="row fixed-bottom" style="background: #d63232;">
+  <div class="row fixed-bottom navs">
     <div class="col-4 text-center" onclick="transition_page_back('index.html'); window.location = 'index.html';">
       <i id="i-home" class="fa fa-home menu"></i>
     </div>
@@ -613,7 +681,8 @@
       <i id="i-del" class="fa fa-trash-alt menu"></i>
     </div>
   </div>
-  <!-- End Nav menu bottom -->
+  <!-- End big container -->
+
   <script>
     //Touch animation
     $(".mbtn").on("touchstart", function() {

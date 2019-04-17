@@ -31,9 +31,10 @@
        box-shadow: none;
        border-color: #d63232;
     }
-    .title {
-      color: #666666;
-      letter-spacing: 2px;
+    #title{
+      color: #666;
+      letter-spacing: 1px;
+      font-weight: bold;
     }
     hr{
       margin-top: 0;
@@ -58,7 +59,7 @@
               var obj = jQuery.parseJSON(data);
               if(obj){
                 $.each(obj, function(i, field){                   
-                  $('#myUL').append("<li>" +                
+                  $('#myUL').append("<li class='mgemo5'>" +                
                   "<div id='cus-"+i+"' class='row' onclick='select_cus("+field.cus_id+",\""+field.cus_name+"\",\""+field.cus_type+"\",\""+field.cus_addr+"\",\""+field.cus_tel+"\");'>" +         
                     "<div class='col-7 text-center'>" +
                       "<p id='cus_name-"+i+"'>"+field.cus_name+"</p>" +
@@ -67,7 +68,7 @@
                       "<p>"+field.cus_type+"</p>" +
                     "</div>" +
                   "</div>" +                   
-                  "<hr id='hr-2'>" + 
+                  "<hr>" + 
                   "</li>");
                }); 
               }else{
@@ -118,37 +119,34 @@
   <!-- Loading -->
   <div class="overlay" hidden><div class="loading"></div></div>               
 
-  <!-- Nav menu top -->
-  <div class="row fixed-top navs align-items-center">
-    <div class="col-1 text-center" onclick="transition_page_back('sale.html');window.location = 'sale.html';">
-      <i id="i-back" class="fas fa-angle-left"></i>
-    </div>
-    <div class="col-10 text-center">
-      <h5 id="h5-title">ลูกค้า</h5>
-    </div>
-    <div class="col-1">
-    </div>
-  </div><br>
+  <!-- big container -->
+  <div id="big-ctn" class="container-fullwidth justify-content-center">
+    <!-- Nav menu top -->
+    <div class="row navs align-items-center mgem1o5 fixed-top">
+      <div class="col-2 text-center" onclick="transition_page_back('sale.html'); window.location = 'sale.html';">
+        <i id="i-back" class="fas fa-angle-left"></i>
+      </div>
+      <div class="col-8 text-center">
+        <h5 id="h5-title">ลูกค้า</h5>
+      </div>
+    </div> 
 
-  <!-- End big container -->
-  <div id="add-ctn" class="container justify-content-center" style="margin-top: 20%;">
-    <div class="container">
-      <div class="row mg-10">
+    <div class="row mgem1o5 fixed-top" style="margin-top: 4.5em; padding-left: 1.5em; padding-right: 1.5em;">
         <div class="col-12 text-center">
-          <input id="search_cus" type="text" onkeyup="search()" class="form-control form-control-lg" placeholder="ค้นหาลูกค้า">
+          <input id="search_cus" type="text" onkeyup="search()" class="form-control form-control-lg text-center" placeholder="ค้นหาลูกค้า">
         </div>
       </div>
-      <div class="row">
+      <div class="row fixed-top" style="margin-top: 8.7em;">
         <div class="col-7 text-center">
-          <h5 class="title">ชื่อ</h5>
+          <p id="title">ชื่อ</p>
         </div>
         <div class="col-4 text-center">
-          <h5 class="title">ประเภท</h5>
+          <p id="title">ประเภท</p>
         </div>
-      </div><hr>
-      <ul id="myUL">
+      </div><hr id="title-hr" class="mgem1" style="margin-top: 10.3em; width: 90%;">
 
-      </ul>         
+    <div id="in-ctn" class="container-fullwidth" style="margin-top: 0; height: calc(100vh - 80px);">
+      <ul id="myUL"> </ul>         
     </div>
   </div>
   <!-- End big container -->

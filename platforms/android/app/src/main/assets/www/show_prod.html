@@ -26,7 +26,7 @@
     <style>
         .title {
             color: #515151;
-            letter-spacing: 2px;
+            letter-spacing: 1px;
         }
         .no-pd{
             padding-right: 5px;
@@ -92,54 +92,54 @@
     <!-- Loading -->
     <div class="overlay" hidden><div class="loading"></div></div>
 
-    <!-- Nav menu top -->
-    <div class="row fixed-top navs align-items-center">
-        <div id="col-back" class="col-1 text-center" onclick="page_back()">
-            <i id="i-back" class="fas fa-angle-left"></i>
-        </div>
-        <div class="col-10 text-center" style="padding-left: 0;">
-            <h5 id="h5-title">รายละเอียด</h5>
-        </div>
-    </div>
-    <br>
-
     <!-- big container -->
-    <div id="big-ctn" class="container justify-content-center" style="margin-top: 15%;">
-        <div class="row mg-10">
-          <div class="col-12 text-center">
-            <h5 id="name" class="title">ชื่อสินค้า</h5>
+    <div id="big-ctn" class="container-fullwidth justify-content-center">
+        <!-- Nav menu top -->
+        <div class="row navs align-items-center mgem1o5 fixed-top">
+          <div class="col-2 text-center" onclick="page_back();">
+            <i id="i-back" class="fas fa-angle-left"></i>
+          </div>
+          <div class="col-8 text-center">
+            <h5 id="h5-title">รายละเอียด</h5>
           </div>
         </div>
-        <div class="row mg-10">
-            <div class="col-5 text-center">
-                <label for="barcode">รหัส</label>
-                <input readonly id="barcode" type="text" class="w3-input">
-            </div>
-            <div class="col-4 text-center">
-                <label for="cost" style="font-size: 110%;">ทุน</label>
-                <input readonly id="cost" type="number" class="w3-input">
-            </div>
-            <div class="col-3 text-center">
-                <label for="min">ขั้นต่ำ</label>
-                <input readonly id="min" type="text" class="w3-input">
-            </div>
-        </div>
-       <div class="row mg-15">
-            <div class="col-1"> </div>
-            <div class="col-5 text-center">
-                <label for="wholesale" style="font-size: 110%;">ขายส่ง</label>
-                <input readonly id="wholesale" type="number" class="w3-input">
-            </div>
-            <div class="col-5 text-center">
-                <label for="retail" style="font-size: 110%;">ขายปลีก</label>
-                <input readonly id="retail" type="number" class="w3-input">
-            </div>
-            <div class="col-1"> </div>
-        </div>
-        <div id="row-img" class="row">
-            <div class="col-12 text-center">
-             <img id="img" class="square" alt="" src="https://www.bzh.be/img.php?src=https://www.sortir-en-bretagne.fr/images/no-image.png&w=330&h=200&zc=1" onclick="show_pic();">
-            </div>
+        <div id="in-ctn" class="container" style="height: calc(100vh - 60px);"> 
+             <div class="row mgem1">
+               <div class="col-12 text-center">
+                 <h5 id="name" class="title">ชื่อสินค้า</h5>
+               </div>
+             </div>
+             <div class="row mgem1">
+                 <div class="col-5 text-center">
+                     <label for="barcode">รหัส</label>
+                     <input readonly id="barcode" type="text" class="w3-input">
+                 </div>
+                 <div class="col-4 text-center">
+                     <label for="cost" style="font-size: 110%;">ทุน</label>
+                     <input readonly id="cost" type="number" class="w3-input">
+                 </div>
+                 <div class="col-3 text-center">
+                     <label for="min">ขั้นต่ำ</label>
+                     <input readonly id="min" type="text" class="w3-input">
+                 </div>
+             </div>
+            <div class="row mgem2">
+                 <div class="col-1"> </div>
+                 <div class="col-5 text-center">
+                     <label for="wholesale" style="font-size: 110%;">ขายส่ง</label>
+                     <input readonly id="wholesale" type="number" class="w3-input">
+                 </div>
+                 <div class="col-5 text-center">
+                     <label for="retail" style="font-size: 110%;">ขายปลีก</label>
+                     <input readonly id="retail" type="number" class="w3-input">
+                 </div>
+                 <div class="col-1"> </div>
+             </div>
+             <div id="row-img" class="row mgem2">
+                 <div class="col-12 text-center">
+                  <img id="img" class="square" alt="" src="https://www.bzh.be/img.php?src=https://www.sortir-en-bretagne.fr/images/no-image.png&w=330&h=200&zc=1" onclick="show_pic();">
+                 </div>
+             </div>
         </div>
     </div>
     <!-- End big container -->

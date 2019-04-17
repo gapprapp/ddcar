@@ -16,7 +16,6 @@
   <script src="http://ajax.googleapis.com/ajax/libs/jquerymobile/1.4.5/jquery.mobile.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
   <script defer src="https://use.fontawesome.com/releases/v5.0.8/js/all.js"></script>
-  <script type="text/javascript" src="js/jquery.touchSwipe.min.js"></script>
   <script src="cordova.js"></script>
   <script type="text/javascript" src="js/scanqr.js"></script>
 
@@ -27,19 +26,16 @@
   <!-- Font -->
   <link href="https://fonts.googleapis.com/css?family=Prompt" rel="stylesheet">
   <style>
-    .nopd{
-      padding-right: 5px;
-      padding-left: 5px;
+    .scroll{
+      height: calc(100vh - 180px);
+      overflow-x: hidden !important;
+      overflow-y: auto; 
+      margin-bottom: 1.5em;
+      margin-top: 1em;
     }
-    .dot {
-        position: absolute;
-        margin-top: -3px;
-        right: 30%;
-        font-size: 18px;
-        height: 10px;
-        width: 10px;
-        border-radius: 50%;
-        background-color: #fff;
+
+    div[id *= "tabs"]{
+      font-size: 90%
     }
   </style>
   <script>
@@ -85,7 +81,7 @@
       //   $("#main-collapse").slideToggle('collapse');
       // }
 
-      //Slide tabs
+      /*//Slide tabs
       $("#admin").swipe( {swipe:function(event, direction, distance, duration, fingerCount, fingerData) {
         if(direction == "left"){ 
           $("#tabs-admin").removeClass('tabs'); $("#tabs-admin").addClass('non'); 
@@ -121,13 +117,30 @@
           sessionStorage.menu = "main";
         }
         },threshold:75
-      }); 
+      });*/
     });
+
+    function doresize() {
+      switch (window.orientation) {
+        case 90: case -90:
+          $("#admin").css('max-height',  $(window).height()-180);
+          $("#main").css('max-height',  $(window).height()-180);
+          $("#log").css('max-height',  $(window).height()-180);
+          console.log($(window).height());
+          break;
+        default:
+          $("#admin").css('max-height',  $(window).height()-180);
+          $("#main").css('max-height',  $(window).height()-180);
+          $("#log").css('max-height',  $(window).height()-180);
+          break;
+      }
+    }
+    window.addEventListener('resize', doresize);
 
     function onLoad(){
       if(!localStorage.user_id){                      
-        transition_page_back('login.html');
-        window.location = 'login.html';
+        //transition_page_back('login.html');
+        //window.location = 'login.html';
       }
          
       $.ajax({ 
@@ -254,46 +267,46 @@
   </script>
 </head>
 
-<body onload="onLoad();" style="overflow: hidden;">
+<body onload="onLoad();">
    <!-- Loading -->
    <div class="overlay" hidden><div class="loading"></div></div>
 
-  <!-- Nav menu top -->
-  <div class="row fixed-top navs">
-    <div class="col-1 text-center" onclick="">
-      <i class="fas fa-angle-left" hidden></i>
-    </div>
-    <div class="col-10 text-center" style="padding-left: 0;">
-      <h5 id="h5-title">หน้าแรก</h5>
-    </div>
-    <div class="col-1"></div>
-  </div><br>
   
-  <div id="big-ctn" class="container justify-content-center" style="margin-top: 7%;">
-    <div class="row navs justify-content-center" style="background: #fafafa !important;">
-      <div id="tabs-admin" class="col-4 text-center tabs" onclick="tabs('admin');">แอดมิน</div>
-      <div id="tabs-main" class="col-4 text-center non" onclick="tabs('main');">ฟังชั่น</div>
-      <div id="tabs-log" class="col-4 text-center non" onclick="tabs('log');">รายการ</div>
+  
+  <div id="big-ctn" class="container-fullwidth justify-content-center">
+    <!-- Nav menu top -->
+    <div class="row navs align-items-center">
+      <div class="col-2 text-center" onclick="page_back()">
+        <i id="i-back" class="fas fa-angle-left" hidden></i>
+      </div>
+      <div class="col-8 text-center">
+        <h5 id="h5-title">หน้าแรก</h5>
+      </div>
+    </div>
+    <div class="row navs justify-content-center menu" style="background: #fafafa !important;">
+      <div id="tabs-admin" class="col-3 text-center tabs" onclick="tabs('admin');">แอดมิน</div>
+      <div id="tabs-main" class="col-3 text-center non" onclick="tabs('main');">ฟังชั่น</div>
+      <div id="tabs-log" class="col-3 text-center non" onclick="tabs('log');">รายการ</div>
     </div><br>
     <!-- Admin -->
-    <div id="admin" class="container" style="margin-top: 10%; padding-bottom: 50%;" hidden>
-      <div class="row mg-10">
-        <div class="col-12 text-center nopd">
+    <div id="admin" class="scroll container-fullwidth">
+      <div class="row justify-content-center mgem1o5">
+        <div class="col-9 text-center">
           <button id="mng-member" class="mbtn" onclick="transition_page_next('member.html'); window.location ='member.html';">ผู้ใช้</button>
         </div>
       </div>
-      <div class="row mg-10">
-        <div class="col-12 text-center nopd">
+      <div class="row justify-content-center mgem1o5">
+        <div class="col-9 text-center">
           <button id="add-cus" class="mbtn" onclick="transition_page_next('customer.html'); window.location ='customer.html';">ลูกค้า</button>
         </div>
       </div>
-      <div class="row mg-10">
-        <div class="col-12 text-center nopd">
+      <div class="row justify-content-center mgem1o5">
+        <div class="col-9 text-center">
           <button id="add-prod" class="mbtn" onclick="transition_page_next('select_folder.html?from=add'); window.location ='select_folder.html?from=add';">สินค้า</button>
         </div>
       </div>
-      <div class="row mg-10">
-        <div class="col-12 text-center nopd">
+      <div class="row justify-content-center mgem1o5">
+        <div class="col-9 text-center">
           <button id="add-ware" class="mbtn" onclick="transition_page_next('warehouse.html'); window.location ='warehouse.html';">หน้าร้าน / โกดัง</button>
         </div>
       </div>
@@ -304,80 +317,81 @@
       </div>-->
     </div>
     <!-- Main -->
-    <div id="main" class="container" style="margin-top: 10%; padding-bottom: 50%;">
-      <div class="row mg-10">
-        <div class="col-12 text-center nopd">
+    <div id="main" class="scroll container-fullwidth" hidden>
+      <div class="row justify-content-center mgem1o5">
+        <div class="col-9 text-center">
           <button class="mbtn" onclick="transition_page_next('sale.html'); window.location = 'sale.html';">ขาย</button>
         </div>
       </div>
-      <div class="row mg-10">
-        <div class="col-12 text-center nopd">
+      <div class="row justify-content-center mgem1o5">
+        <div class="col-9 text-center">
           <button class="mbtn" onclick="transition_page_next('stock.html'); window.location = 'stock.html';">เช็คสต๊อก</button>
         </div>
-      </div>     
-      <div class="row mg-10">
-        <div class="col-12 text-center nopd">       
+      </div>
+      <div class="row justify-content-center mgem1o5">
+        <div class="col-9 text-center">
           <button class="mbtn" onclick="transition_page_next('import.html'); window.location = 'import.html';">สินค้าเข้า</button>
         </div>
       </div>
-      <div class="row mg-10">
-        <div class="col-12 text-center nopd">
+      <div class="row justify-content-center mgem1o5">
+        <div class="col-9 text-center">
           <button class="mbtn" onclick="transition_page_next('export.html'); window.location = 'export.html';">สินค้าออกโกดัง</button>
         </div>
       </div>
     </div>
     <!-- Log -->
-    <div id="log" class="container" style="margin-top: 10%; padding-bottom: 50%;" hidden>
-      <div class="row mg-10">
-        <div class="col-12 text-center nopd">
+    <div id="log" class="scroll container-fullwidth" hidden>
+      <div class="row justify-content-center mgem1o5">
+        <div class="col-9 text-center">
           <button class="mbtn" onclick="transition_page_next('manage_bill.html'); window.location = 'manage_bill.html';">รายการบิล</button>
         </div>
       </div>
-      <div class="row mg-10">
-        <div class="col-12 text-center nopd">
+      <div class="row justify-content-center mgem1o5">
+        <div class="col-9 text-center">
           <button class="mbtn" onclick="transition_page_next('manage_import.html'); window.location = 'manage_import.html';">รายการสินค้าเข้าโกดัง</button>
         </div>
       </div>
-      <div class="row mg-10">
-        <div class="col-12 text-center nopd">
+      <div class="row justify-content-center mgem1o5">
+        <div class="col-9 text-center">
           <button class="mbtn" onclick="transition_page_next('manage_transfer_in.html'); window.location = 'manage_transfer_in.html';">รายการสินค้าเข้าหน้าร้าน</button>
         </div>
-      </div>      
-      <div class="row mg-10">
-        <div class="col-12 text-center nopd">
+      </div>
+      <div class="row justify-content-center mgem1o5">
+        <div class="col-9 text-center">
           <button class="mbtn" onclick="transition_page_next('manage_export.html'); window.location = 'manage_export.html';">รายการสินค้าออก</button>
         </div>
       </div>
-      <div class="row mg-10">
-        <div class="col-12 text-center nopd">
+      <div class="row justify-content-center mgem1o5">
+        <div class="col-9 text-center">
           <button class="mbtn" onclick="transition_page_next('manage_salesum.html'); window.location = 'manage_salesum.html';">สรุปรายการขาย</button>
         </div>
       </div>
-      <div class="row mg-10">
-        <div class="col-12 text-center nopd">
+      <div class="row justify-content-center mgem1o5">
+        <div class="col-9 text-center">
           <button class="mbtn" onclick="transition_page_next('manage_credit.html'); window.location = 'manage_credit.html';">รายการเครดิต</button>
         </div>
       </div>
     </div>
   </div>
-
-  <!-- Nav menu bottom -->
-  <div class="row fixed-bottom navs">
-    <div class="col-3 text-center" onclick="return 0;">
-      <i id="i-home" class="fas fa-home menu active"></i>
-    </div>
-    <div class="col-3 text-center" onclick="transition_page_next('bell.html'); window.location = 'bell.html';">
-      <div class="dot" hidden></div>
-      <i id="i-bell" class="fas fa-bell menu"></i>
-    </div>
-    <div class="col-3 text-center" onclick="scan('index');">
-      <i id="i-qrcode" class="fas fa-qrcode menu"></i>
-    </div>
-    <div class="col-3 text-center" onclick="transition_page_next('other.html'); window.location = 'other.html';">
-      <i class="fa fa-bars menu"></i>
-    </div>
+    <!-- Nav menu bottom -->
+    <div class="row fixed-bottom navs">
+      <div class="col-3 text-center" onclick="return 0;">
+        <i id="i-home" class="fas fa-home menu active"></i>
+      </div>
+      <div class="col-3 text-center" onclick="transition_page_next('bell.html'); window.location = 'bell.html';">
+        <div class="dot" hidden></div>
+        <i id="i-bell" class="fas fa-bell menu"></i>
+      </div>
+      <div class="col-3 text-center" onclick="scan('index');">
+        <i id="i-qrcode" class="fas fa-qrcode menu"></i>
+      </div>
+      <div class="col-3 text-center" onclick="transition_page_next('other.html'); window.location = 'other.html';">
+        <i class="fa fa-bars menu"></i>
+      </div>
+    </div><br>
   </div>
-  <!-- End Nav menu bottom -->
+
+  
   <script type="text/javascript" src="js/transition.js"></script>
   <script>
     //Touch animation

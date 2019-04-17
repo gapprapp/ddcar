@@ -3,9 +3,17 @@
 }
 body{
 	font-family: 'Prompt', sans-serif !important;
-	font-size: 110%;
+	font-size: 100%;
 	background: #f3f3f3;
-	overflow: hidden;
+	overflow-y: hidden !important;
+}
+
+#big-ctn{
+	overflow: hidden; overflow-x: hidden !important; height: 100%;
+}
+
+#in-ctn{
+	overflow-x: hidden !important; overflow-y: auto; height: calc(100vh - 120px); margin-top: 4.5em;
 }
 
 .dot {
@@ -38,11 +46,15 @@ body{
 }
 
 .navs {
-  height: 8% !important;
   background: #d63232 !important;
-  padding-left: 20px !important;
-  padding-right: 20px !important;
-  padding-top: 20px !important;
+  padding-top: 10px !important;
+  height: 50px;
+}
+
+.fixed-bottom{
+	height: 45px;
+	padding-left: 20px;
+	padding-right: 20px;
 }
 
 .tabs{
@@ -55,7 +67,7 @@ body{
 
 #h5-title{
 	font-weight: bold;
-	font-size: 145% !important;
+	font-size: 140% !important;
 	color: white;
 	letter-spacing: 1px;
 	margin-left: 3%;
@@ -69,7 +81,7 @@ body{
 }
 
 #i-back{
-	font-size: 145%;
+	font-size: 110%;
 	color: white;
 }
 
@@ -86,6 +98,26 @@ body{
 
 .active{
   color: white !important;
+}
+
+.mgem5{
+	margin-bottom: 5em;
+}
+
+.mgemo5{
+	margin-bottom: 0.5em;
+}
+
+.mgem1o5{
+	margin-bottom: 1.5em;
+}
+
+.mgem1{
+	margin-bottom: 1em;
+}
+
+.mgem2{
+	margin-bottom: 2em;
 }
 
 .mg-10{
@@ -115,9 +147,8 @@ body{
 .mbtn{
 	background-color: #da4646;
 	border: 1px solid #da4646;
-	height: 145%;
+	height: 110%;
 	width: 100%;
-	font-weight: bold;
 	font-size: 120%;
 	color: white;
 	letter-spacing: 1px;
@@ -128,9 +159,8 @@ body{
 .mbtn-touch{
 	background-color: #c43f3f;
 	border: 1px solid #c43f3f;
-	height: 145%;
+	height: 110%;
 	width: 100%;
-	font-weight: bold;
 	font-size: 120%;
 	color: white;
 	letter-spacing: 1px;
@@ -146,9 +176,8 @@ body{
 .mbtn-green{
 	background-color: #66b266;
 	border: 1px solid #66b266;
-	height: 145%;
+	height: 110%;
 	width: 100%;
-	font-weight: bold;
 	font-size: 120%;
 	color: white;
 	letter-spacing: 1px;
@@ -159,9 +188,8 @@ body{
 .mbtn-green-touch{
 	background-color: #659865;
 	border: 1px solid #659865;
-	height: 145%;
+	height: 110%;
 	width: 100%;
-	font-weight: bold;
 	font-size: 120%;
 	color: white;
 	letter-spacing: 1px;
@@ -172,9 +200,8 @@ body{
 .mbtn-cancle{
 	background-color: #bcc0c0;
 	border: 1px solid #bcc0c0;
-	height: 145%;
+	height: 110%;
 	width: 100%;
-	font-weight: bold;
 	font-size: 120%;
 	color: white;
 	letter-spacing: 1px;
@@ -185,9 +212,8 @@ body{
 .mbtn-cancle-touch{
 	background-color: #a9acac;
 	border: 1px solid #a9acac;
-	height: 145%;
+	height: 110%;
 	width: 100%;
-	font-weight: bold;
 	font-size: 120%;
 	color: white;
 	letter-spacing: 1px;
@@ -198,9 +224,8 @@ body{
 .select_folder{
 	background-color: #fdfdfd;
 	border: 1px solid #e5e5e5;
-	height: 145%;
+	height: 110%;
 	width: 100%;
-	font-weight: bold;
 	font-size: 120%;
 	color: #666666;
 	letter-spacing: 1px;
@@ -211,9 +236,8 @@ body{
 .select_folder-touch{
 	background-color: #fcfcfc;
 	border: 1px solid #fcfcfc;
-	height: 145%;
+	height: 110%;
 	width: 100%;
-	font-weight: bold;
 	font-size: 120%;
 	color: #666666;
 	letter-spacing: 1px;
@@ -232,7 +256,7 @@ body{
 label{
 	color: #666666;
 	letter-spacing: 1px;
-	font-size: 120%;
+	font-size: 100%;
 }
 
 .w3-input{
@@ -262,11 +286,6 @@ label{
 	width:100%;
 	background-color: #f3f3f3;
 	text-align: center;
-}
-
-.fixed-bottom{
-	height: 7% !important; 
-	padding-top: 12px !important;
 }
 
 .circle-text {

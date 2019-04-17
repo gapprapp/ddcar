@@ -140,36 +140,45 @@
     <div class="col-1"></div>
   </div><br>
 
-  <!-- End big container -->
-  <div class="container justify-content-center" style="margin-top: 20%;">
+  <div id="big-ctn" class="container-fullwidth justify-content-center">
+    <!-- Nav menu top -->
+    <div class="row navs align-items-center mgem1o5 fixed-top">
+      <div class="col-2 text-center" onclick="transition_page_back('member.html'); window.location = 'member.html';">
+        <i id="i-back" class="fas fa-angle-left"></i>
+      </div>
+      <div class="col-8 text-center">
+        <h5 id="h5-title">สมัครสมาชิก</h5>
+      </div>
+    </div>
+
     <!-- Register -->
-    <div class="container">
-      <div class="row" style="margin-bottom: 10%;">
+    <div id="in-ctn" class="container">
+      <div class="row mgem1o5">
         <div class="col-12 text-center pdlr">
           <label for="name">ชื่อ</label>
           <input id="name" type="text" class="w3-input" autofocus data-index="1">
         </div>
       </div>
-      <div class="row" style="margin-bottom: 10%;">
+      <div class="row mgem1o5">
         <div class="col-12 text-center pdlr">
           <label for="email">พาสเวิร์ด</label>
           <input id="pass" type="password" class="w3-input" data-index="2">
         </div>
       </div>
-      <div class="row" style="margin-bottom: 10%;">
+      <div class="row mgem1o5">
         <div class="col-12 text-center pdlr">
           <label for="phone">เบอร์โทรศัพท์</label>
           <input id="phone" type="tel" class="w3-input" data-index="3">
         </div>
       </div>
-      <div class="row" style="margin-bottom: 18%;">
+      <div class="row mgem5">
         <div class="col-12 text-center pdlr">
           <label for="role">บทบาท</label>
           <input id="role" type="text" class="w3-input" data-toggle="dropdown" readonly>
         </div>
       </div>
-      <div class="row" style="margin-bottom: 15%;">
-        <div class="col-12 text-center">
+      <div class="row justify-content-center mgem1o5">
+        <div class="col-10 text-center">
           <button class="mbtn" onclick="register();">สมัคร</button>
         </div>
       </div>

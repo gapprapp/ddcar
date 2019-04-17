@@ -39,6 +39,15 @@
       list-style-type: none;
       margin: 0;
       padding: 0;
+    }
+    #title{
+      color: #666;
+      letter-spacing: 1px;
+      font-weight: bold;
+    }
+    .nopd{
+      padding-left: 0;
+      padding-right: 0;
     }       
   </style>
 
@@ -54,6 +63,10 @@
         var txt = e.date.split("/");
         var date = "20" + txt[2] + "-" + txt[1] + "-" + txt[0];
         search_date(date);
+
+        $("#row-title").css("margin-top", "7.5em");
+        $("#title-hr").css("margin-top", "9.3em");
+        $("#in-ctn").css("height", "calc(100vh - (7.5em + 150px))");
       });
 
       margin = $("#navs-menu").outerHeight()*2;
@@ -67,7 +80,7 @@
     });
 
     function search_date(datetime){
-      $('#myUL').empty();
+      //$('#myUL').empty();
       $.ajax({
         type: "POST",
         url:"http://ddaccessory.trueddns.com:24330/dd-shop/php/get_shift_bill.php",
@@ -81,14 +94,14 @@
           if(obj){
             var net = 0;                           
             $.each(obj, function(i, field){             
-              $('#myUL').append('<li><div class="row">'+
-                '<div class="col-4 text-center no-pd">'+
+              $('#myUL').append('<li class="mgemo5"><div class="row">'+
+                '<div class="col-4 text-center nopd">'+
                   '<p>'+field.order_number+'</p>'+
                 '</div>'+
-                '<div class="col-5 text-center no-pd">'+
+                '<div class="col-4 text-center nopd">'+
                   '<p>'+field.user_name+'</p>'+
                 '</div>'+
-                '<div class="col-3 text-center no-pd">'+
+                '<div class="col-4 text-center nopd">'+
                   '<p>'+field.total_price+'</p>'+
                 '</div>'+
                 '</div></li>');
@@ -103,47 +116,90 @@
   </script>
 </head>
 
-<body style="overflow: auto;">
-  <!-- Loading -->
-  <div class="overlay" hidden><div class="loading"></div></div>
-
-  <!-- Nav menu top -->
-  <div class="row fixed-top navs align-items-center">
-    <div class="col-1 text-center" onclick="transition_page_back('index.html?menu=3'); window.location = 'index.html?menu=3';">
-      <i id="i-back" class="fas fa-angle-left"></i>
-    </div>
-    <div class="col-9 text-center" style="padding-left: 10%; margin-right: 3%;">
-      <h5 id="h5-title">สรุปรายการขาย</h5>
-    </div>
-    <div class="col-1 text-right" onclick="$('#datepicker').trigger('click');">
-      <i class="far fa-calendar-alt" style="color: white; font-size: 120%;"></i>
-    </div>
-  </div><br>
+<body>
+  <!-- Loading --> 
+  <div class="overlay" hidden><div class="loading"></div></div> 
 
   <!-- End big container -->
-  <div class="container justify-content-center" style="margin-top: 15%; margin-bottom: 10%;">
-    <div id="date_row" class="row mg-5" hidden>
+  <div id="big-ctn" class="container-fullwidth justify-content-center">
+    <!-- Nav menu top -->
+    <div class="row navs align-items-center mgem1o5 fixed-top">
+      <div class="col-2 text-center" onclick="transition_page_back('index.html?menu=3'); window.location ='index.html?menu=3';">
+        <i id="i-back" class="fas fa-angle-left"></i>
+      </div>
+      <div class="col-8 text-center">
+        <h5 id="h5-title">สรุปรายการขาย</h5>
+      </div>
+      <div class="col-1 text-right" onclick="$('#datepicker').trigger('click');">
+        <i class="far fa-calendar-alt" style="color: white; font-size: 120%; margin-top: 2px;"></i>
+      </div>
+    </div>
+
+    <div id="date_row" class="row mgem1o5 fixed-top" style="margin-top: 4.5em;" hidden>
       <button id="datepicker" hidden></button>
       <div class="col-12 text-center">
         <h5 id="date"></h5>
       </div>
     </div>
 
-    <div class="row">
-      <div class="col-4 text-center no-pd">
-        <h5 id="title">เลขที่</h5>
-      </div>
-      <div class="col-5 text-center no-pd">
-        <h5 id="title">ผู้ทำรายการ</h5>
-      </div>
-      <div class="col-3 text-center no-pd">
-        <h5 id="title">รวม</h5>
-      </div>
-    </div>
-    <hr>
-    <ul id="myUL">
+    <div id="row-title" class="row fixed-top" style="margin-top: 4.5em;">
+      <div id="title" class="col-4 text-center">เลขที่</div>
+      <div id="title" class="col-4 text-center nopd">ผู้ทำรายการ</div>
+      <div id="title" class="col-4 text-center nopd">รวม</div> 
+    </div><hr id="title-hr" class="mgem1" style="margin-top: 6.3em; width: 98%;">
 
-    </ul>  
+    <div id="in-ctn" class="container-fullwidth" style="margin-top: 0!important; height: calc(100vh - (4.5em + 150px));">
+      <ul id="myUL"> 
+        <li class="mgemo5"><div class="row"><div class="col-4 text-center">PX-0001</div><div class="col-4 text-center">Phoenix</div><div class="col-4 text-center">20,000</div></div></li>
+        <li class="mgemo5"><div class="row"><div class="col-4 text-center">PX-0001</div><div class="col-4 text-center">Phoenix</div><div class="col-4 text-center">20,000</div></div></li>
+        <li class="mgemo5"><div class="row"><div class="col-4 text-center">PX-0001</div><div class="col-4 text-center">Phoenix</div><div class="col-4 text-center">20,000</div></div></li>
+        <li class="mgemo5"><div class="row"><div class="col-4 text-center">PX-0001</div><div class="col-4 text-center">Phoenix</div><div class="col-4 text-center">20,000</div></div></li>
+        <li class="mgemo5"><div class="row"><div class="col-4 text-center">PX-0001</div><div class="col-4 text-center">Phoenix</div><div class="col-4 text-center">20,000</div></div></li>
+        <li class="mgemo5"><div class="row"><div class="col-4 text-center">PX-0001</div><div class="col-4 text-center">Phoenix</div><div class="col-4 text-center">20,000</div></div></li>
+        <li class="mgemo5"><div class="row"><div class="col-4 text-center">PX-0001</div><div class="col-4 text-center">Phoenix</div><div class="col-4 text-center">20,000</div></div></li>
+        <li class="mgemo5"><div class="row"><div class="col-4 text-center">PX-0001</div><div class="col-4 text-center">Phoenix</div><div class="col-4 text-center">20,000</div></div></li>
+        <li class="mgemo5"><div class="row"><div class="col-4 text-center">PX-0001</div><div class="col-4 text-center">Phoenix</div><div class="col-4 text-center">20,000</div></div></li>
+        <li class="mgemo5"><div class="row"><div class="col-4 text-center">PX-0001</div><div class="col-4 text-center">Phoenix</div><div class="col-4 text-center">20,000</div></div></li>
+        <li class="mgemo5"><div class="row"><div class="col-4 text-center">PX-0001</div><div class="col-4 text-center">Phoenix</div><div class="col-4 text-center">20,000</div></div></li>
+        <li class="mgemo5"><div class="row"><div class="col-4 text-center">PX-0001</div><div class="col-4 text-center">Phoenix</div><div class="col-4 text-center">20,000</div></div></li>
+        <li class="mgemo5"><div class="row"><div class="col-4 text-center">PX-0001</div><div class="col-4 text-center">Phoenix</div><div class="col-4 text-center">20,000</div></div></li>
+        <li class="mgemo5"><div class="row"><div class="col-4 text-center">PX-0001</div><div class="col-4 text-center">Phoenix</div><div class="col-4 text-center">20,000</div></div></li>
+        <li class="mgemo5"><div class="row"><div class="col-4 text-center">PX-0001</div><div class="col-4 text-center">Phoenix</div><div class="col-4 text-center">20,000</div></div></li>
+        <li class="mgemo5"><div class="row"><div class="col-4 text-center">PX-0001</div><div class="col-4 text-center">Phoenix</div><div class="col-4 text-center">20,000</div></div></li>
+        <li class="mgemo5"><div class="row"><div class="col-4 text-center">PX-0001</div><div class="col-4 text-center">Phoenix</div><div class="col-4 text-center">20,000</div></div></li>
+        <li class="mgemo5"><div class="row"><div class="col-4 text-center">PX-0001</div><div class="col-4 text-center">Phoenix</div><div class="col-4 text-center">20,000</div></div></li>
+        <li class="mgemo5"><div class="row"><div class="col-4 text-center">PX-0001</div><div class="col-4 text-center">Phoenix</div><div class="col-4 text-center">20,000</div></div></li>
+        <li class="mgemo5"><div class="row"><div class="col-4 text-center">PX-0001</div><div class="col-4 text-center">Phoenix</div><div class="col-4 text-center">20,000</div></div></li>
+        <li class="mgemo5"><div class="row"><div class="col-4 text-center">PX-0001</div><div class="col-4 text-center">Phoenix</div><div class="col-4 text-center">20,000</div></div></li>
+        <li class="mgemo5"><div class="row"><div class="col-4 text-center">PX-0001</div><div class="col-4 text-center">Phoenix</div><div class="col-4 text-center">20,000</div></div></li>
+        <li class="mgemo5"><div class="row"><div class="col-4 text-center">PX-0001</div><div class="col-4 text-center">Phoenix</div><div class="col-4 text-center">20,000</div></div></li>
+        <li class="mgemo5"><div class="row"><div class="col-4 text-center">PX-0001</div><div class="col-4 text-center">Phoenix</div><div class="col-4 text-center">20,000</div></div></li>
+        <li class="mgemo5"><div class="row"><div class="col-4 text-center">PX-0001</div><div class="col-4 text-center">Phoenix</div><div class="col-4 text-center">20,000</div></div></li>
+        <li class="mgemo5"><div class="row"><div class="col-4 text-center">PX-0001</div><div class="col-4 text-center">Phoenix</div><div class="col-4 text-center">20,000</div></div></li>
+        <li class="mgemo5"><div class="row"><div class="col-4 text-center">PX-0001</div><div class="col-4 text-center">Phoenix</div><div class="col-4 text-center">20,000</div></div></li>
+        <li class="mgemo5"><div class="row"><div class="col-4 text-center">PX-0001</div><div class="col-4 text-center">Phoenix</div><div class="col-4 text-center">20,000</div></div></li>
+        <li class="mgemo5"><div class="row"><div class="col-4 text-center">PX-0001</div><div class="col-4 text-center">Phoenix</div><div class="col-4 text-center">20,000</div></div></li>
+        <li class="mgemo5"><div class="row"><div class="col-4 text-center">PX-0001</div><div class="col-4 text-center">Phoenix</div><div class="col-4 text-center">20,000</div></div></li>
+        <li class="mgemo5"><div class="row"><div class="col-4 text-center">PX-0001</div><div class="col-4 text-center">Phoenix</div><div class="col-4 text-center">20,000</div></div></li>
+        <li class="mgemo5"><div class="row"><div class="col-4 text-center">PX-0001</div><div class="col-4 text-center">Phoenix</div><div class="col-4 text-center">20,000</div></div></li>
+        <li class="mgemo5"><div class="row"><div class="col-4 text-center">PX-0001</div><div class="col-4 text-center">Phoenix</div><div class="col-4 text-center">20,000</div></div></li>
+        <li class="mgemo5"><div class="row"><div class="col-4 text-center">PX-0001</div><div class="col-4 text-center">Phoenix</div><div class="col-4 text-center">20,000</div></div></li>
+        <li class="mgemo5"><div class="row"><div class="col-4 text-center">PX-0001</div><div class="col-4 text-center">Phoenix</div><div class="col-4 text-center">20,000</div></div></li>
+        <li class="mgemo5"><div class="row"><div class="col-4 text-center">PX-0001</div><div class="col-4 text-center">Phoenix</div><div class="col-4 text-center">20,000</div></div></li>
+        <li class="mgemo5"><div class="row"><div class="col-4 text-center">PX-0001</div><div class="col-4 text-center">Phoenix</div><div class="col-4 text-center">20,000</div></div></li>
+        <li class="mgemo5"><div class="row"><div class="col-4 text-center">PX-0001</div><div class="col-4 text-center">Phoenix</div><div class="col-4 text-center">20,000</div></div></li>
+        <li class="mgemo5"><div class="row"><div class="col-4 text-center">PX-0001</div><div class="col-4 text-center">Phoenix</div><div class="col-4 text-center">20,000</div></div></li>
+        <li class="mgemo5"><div class="row"><div class="col-4 text-center">PX-0001</div><div class="col-4 text-center">Phoenix</div><div class="col-4 text-center">20,000</div></div></li>
+        <li class="mgemo5"><div class="row"><div class="col-4 text-center">PX-0001</div><div class="col-4 text-center">Phoenix</div><div class="col-4 text-center">20,000</div></div></li>
+        <li class="mgemo5"><div class="row"><div class="col-4 text-center">PX-0001</div><div class="col-4 text-center">Phoenix</div><div class="col-4 text-center">20,000</div></div></li>
+        <li class="mgemo5"><div class="row"><div class="col-4 text-center">PX-0001</div><div class="col-4 text-center">Phoenix</div><div class="col-4 text-center">20,000</div></div></li>
+        <li class="mgemo5"><div class="row"><div class="col-4 text-center">PX-0001</div><div class="col-4 text-center">Phoenix</div><div class="col-4 text-center">20,000</div></div></li>
+        <li class="mgemo5"><div class="row"><div class="col-4 text-center">PX-0001</div><div class="col-4 text-center">Phoenix</div><div class="col-4 text-center">202,000</div></div></li>
+        <li class="mgemo5"><div class="row"><div class="col-4 text-center">PX-0001</div><div class="col-4 text-center">Phoenix</div><div class="col-4 text-center">20,000</div></div></li>
+        <li class="mgemo5"><div class="row"><div class="col-4 text-center">PX-0001</div><div class="col-4 text-center">Phoenix</div><div class="col-4 text-center">20,000</div></div></li>
+        <li class="mgemo5"><div class="row"><div class="col-4 text-center">PX-0001</div><div class="col-4 text-center">Phoenix</div><div class="col-4 text-center">201,000</div></div></li>
+      </ul>
+    </div>  
   </div> 
   <!-- End big container -->
 

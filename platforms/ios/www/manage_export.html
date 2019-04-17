@@ -40,6 +40,11 @@
       margin: 0;
       padding: 0;
     }    
+    #title{
+      color: #666;
+      letter-spacing: 1px;
+      font-weight: bold;
+    } 
   </style>
 
   <script>
@@ -132,14 +137,14 @@
               var txt = field.date_time.split(" ");
               var txt2 = txt[0].split("-");
               var date = txt2[2] + "/" + txt2[1] + "/" + txt2[0].substr(2);
-              $('#myUL').append('<li> <div class="row" onclick="export_info('+field.stock_out_id+')">'+
-                '<div class="col-4 text-center no-pd">' +
+              $('#myUL').append('<li class="mgemo5"> <div class="row" onclick="export_info('+field.stock_out_id+')">'+
+                '<div class="col-5 text-center no-pd">' +
                   '<p>'+field.stock_out_number+'</p>' +
                 '</div>' +
                 '<div class="col-3 text-center no-pd">' +
                   '<p>'+date+'</p>' +
                 '</div>' +
-                '<div class="col-5 text-center no-pd">' +
+                '<div class="col-4 text-center no-pd">' +
                   '<p>'+field.ware_name+'</p>' +
                 '</div>' +
               '</div><hr></li>');   
@@ -161,19 +166,27 @@
         if(!$("#myD").prop('hidden')){
           $("#date_row").prop('hidden', false);
         }
+
+        $("#row-title").css("margin-top", "4.5em");
+        $("#title-hr").css("margin-top", "6.3em");
+        $("#in-ctn").css("height", "calc(100vh - (4.5em + 120px))");
       }else{
         $("#search_row").prop('hidden', false);
         $("#date_row").prop('hidden', true);
+
+        $("#row-title").css("margin-top", "8.5em");
+        $("#title-hr").css("margin-top", "10.3em");
+        $("#in-ctn").css("height", "calc(100vh - (8.9em + 120px))");
       }
     }
 
     var val;
     function search(){
-      if($('#search_import').val() == ""){
+      if($('#search_export').val() == ""){
         return 0;
       }
-      $('#search_import').blur();
-      val = $('#search_import').val();
+      $('#search_export').blur();
+      val = $('#search_export').val();
       start_s = 0;
       bool_s = false;
       $("#myS").prop('hidden', false);
@@ -203,14 +216,14 @@
               var txt = field.date_time.split(" ");
               var txt2 = txt[0].split("-");
               var date = txt2[2] + "/" + txt2[1] + "/" + txt2[0].substr(2);
-              $('#myS').append('<li> <div class="row" onclick="export_info('+field.stock_out_id+')">'+
-                '<div class="col-4 text-center no-pd">' +
+              $('#myS').append('<li class="mgemo5"> <div class="row" onclick="export_info('+field.stock_out_id+')">'+
+                '<div class="col-5 text-center no-pd">' +
                   '<p>'+field.stock_out_number+'</p>' +
                 '</div>' +
                 '<div class="col-3 text-center no-pd">' +
                   '<p>'+date+'</p>' +
                 '</div>' +
-                '<div class="col-5 text-center no-pd">' +
+                '<div class="col-4 text-center no-pd">' +
                   '<p>'+field.ware_name+'</p>' +
                 '</div>' +
               '</div><hr></li>');     
@@ -251,14 +264,14 @@
               var txt = field.date_time.split(" ");
               var txt2 = txt[0].split("-");
               var date = txt2[2] + "/" + txt2[1] + "/" + txt2[0].substr(2);
-              $('#myD').append('<li> <div class="row" onclick="export_info('+field.stock_out_id+')">'+
-                '<div class="col-4 text-center no-pd">' +
+              $('#myD').append('<li class="mgemo5"> <div class="row" onclick="export_info('+field.stock_out_id+')">'+
+                '<div class="col-5 text-center no-pd">' +
                   '<p>'+field.stock_out_number+'</p>' +
                 '</div>' +
                 '<div class="col-3 text-center no-pd">' +
                   '<p>'+date+'</p>' +
                 '</div>' +
-                '<div class="col-5 text-center no-pd">' +
+                '<div class="col-4 text-center no-pd">' +
                   '<p>'+field.ware_name+'</p>' +
                 '</div>' +
               '</div><hr></li>'); 
@@ -272,34 +285,35 @@
   </script>
 </head>
 
-<body style="overflow: auto;">
+<body>
   <!-- Loading -->
-  <div class="overlay" hidden><div class="loading"></div></div>
-
-  <!-- Nav menu top -->
-  <div class="row fixed-top navs">
-    <div id="i-back" class="col-1 text-center" onclick="transition_page_back('index.html'); window.location = 'index.html';">
-      <i  class="fas fa-angle-left"></i>
-    </div>
-    <div class="col-9 text-center" style="padding-left: 10%; margin-right: 3%;">
-      <h5 id="h5-title">รายการสินค้าออก</h5>
-    </div>
-    <div class="col-1 text-right" onclick="show_search();">
-      <i class="fas fa-search" style="color: white; font-size: 120%; margin-top: 5px;"></i>
-    </div>
-  </div><br>
+  <div class="overlay" hidden><div class="loading"></div></div> 
 
   <!-- End big container -->
-  <div class="container justify-content-center" style="margin-top: 15%; margin-bottom: 10%;">
-    <div id="date_row" class="row mg-5" style="margin-left: 5%;" hidden>
-      <div class="col-11 text-center">
-        <h5 id="date">date</h5>
+  <div id="big-ctn" class="container-fullwidth justify-content-center">
+    <!-- Nav menu top -->
+    <div class="row navs align-items-center mgem1o5 fixed-top">
+      <div class="col-2 text-center" onclick="transition_page_back('index.html?menu=3'); window.location ='index.html?menu=3';">
+        <i id="i-back" class="fas fa-angle-left"></i>
+      </div>
+      <div class="col-8 text-center">
+        <h5 id="h5-title">รายการสินค้าออก</h5>
+      </div>
+      <div class="col-1 text-right" onclick="show_search();">
+        <i class="fas fa-search" style="color: white; font-size: 120%; margin-top: 2px;"></i>
       </div>
     </div>
-    <div id="search_row" class="row mg-10" hidden>
+
+    <div id="date_row" class="row mgem1o5 fixed-top" style="margin-top: 4.5em;" hidden>
+      <div class="col-12 text-center">
+        <h5 id="date"></h5>
+      </div>
+    </div>
+
+    <div id="search_row" class="row mgem1o5 fixed-top" style="margin-top: 4.5em; padding-left: 1.5em; padding-right: 1.5em;" hidden>
       <div class="col-9">
-        <input id="search_import" type="search" class="form-control form-control-lg text-center" placeholder="เลขที่ / โกดัง">
-      </div>      
+        <input id="search_export" type="search" class="form-control form-control-lg text-center" placeholder="เลขที่ / โกดัง">
+      </div> 
       <div class="col-3">
         <button id="datepicker-from" class="mbtn" style="height: 90%; margin-top: 2px;">
           <i class="far fa-calendar-alt"></i>
@@ -308,28 +322,24 @@
       </div> 
     </div>
 
-    <div class="row">
-      <div class="col-4 text-center no-pd">
-        <h5 id="title">เลขที่</h5>
-      </div>
-      <div class="col-3 text-center no-pd">
-        <h5 id="title">วันที่</h5>
-      </div>
-      <div class="col-5 text-center no-pd">
-        <h5 id="title">โกดัง</h5>
-      </div>
+    <div id="row-title" class="row fixed-top" style="margin-top: 4.5em;">
+      <div id="title" class="col-5 text-center">เลขที่</div>
+      <div id="title" class="col-3 text-center nopd">วันที่</div>
+      <div id="title" class="col-4 text-center nopd">โกดัง</div> 
+    </div><hr id="title-hr" class="mgem1" style="margin-top: 6.3em; width: 98%;">
+    
+    <div id="in-ctn" class="container-fullwidth" style="margin-top: 0!important; height: calc(100vh - (4.5em + 120px));">
+      <ul id="myUL">
+
+      </ul>
+      <ul id="myD" hidden>
+
+      </ul>
+      <ul id="myS" hidden>
+
+      </ul>
     </div>
-    <hr> 
-    <ul id="myUL">
-
-    </ul>
-    <ul id="myD" hidden>
-
-    </ul>
-    <ul id="myS" hidden>
-
-    </ul>
-    </div>
+  </div>
   <!-- End big container -->
 
   <!-- Nav menu bottom -->
