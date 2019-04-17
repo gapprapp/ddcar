@@ -67,6 +67,9 @@
         list-style-type: none;
         margin: 0;
         padding: 0;
+      }
+      #search-ctn{
+        overflow: hidden; overflow-x: hidden !important; height: 100%;
       }    
     </style>
     <script>
@@ -103,13 +106,10 @@
             var obj = jQuery.parseJSON(data);              
             if(obj != ""){                
               $.each(obj, function(i, field){
-                  price = obj[i].prod_price;
-                  pricesend = obj[i].prod_pricesend;
-                  cost = obj[i].prod_cost;
                   img = obj[i].img; 
                   name = obj[i].prod_name; 
                   id = obj[i].id;
-                  if(obj[i][8] == "ware"){
+                  if(obj[i][5] == "ware"){
                     datastr = {'prod_id':prod_id,'ware_id':id};
                   }else{
                     datastr = {'prod_id':prod_id,'shop_id':id};
@@ -134,13 +134,7 @@
                   });	   
                   msg = msg + '<div class="row" style="margin-bottom: 3%"><div class="col-6 text-right" style="margin-right: 5%;">'+obj[i][0]+' :'+'</div><div class="col-5 text-left">'+obj[i].amount+' | '+addr+'</div></div>';
               });
-              var msg_price;					
-              if(localStorage.user_role == "พนักงาน"){
-                msg_price = '<p>ส่ง : '+pricesend+'  ปลีก : '+price+'</p>';
-              }else{
-                msg_price = '<p>ทุน : '+cost+'  ส่ง : '+pricesend+'  ปลีก : '+price+'</p>';
-              }	
-              var top_msg = '<div class="row" style="margin-top: 2%; margin-bottom: 2%;"><div class="col-12 text-center">'+msg_price+'<br><img src="'+img+'" id="img" alt="" onclick="show_pic()" style="width: 300px; height: 300px;"></div></div><br>'; 
+              var top_msg = '<div class="row" style="margin-top: 2%; margin-bottom: 2%;"><div class="col-12 text-center"><img src="'+img+'" id="img" alt="" style="width: 300px; height: 300px;"></div></div><br>'; 
               $.confirm({
                   title: name,
                   content: top_msg + msg,
@@ -175,13 +169,6 @@
         }); 
       }
 
-      function show_pic(){
-        localStorage.img = $('#img').attr('src');           
-        goto = "show_pic.html";
-        transition_page_next(goto);
-        window.location = goto;
-      }
-
       function search_prod(){
         var val = $('#search_prod').val();
         if(val == ""){
@@ -201,7 +188,7 @@
             var obj = jQuery.parseJSON(data);
             if(obj){
               $.each(obj, function(i, field){ 
-                $('#myUL').append('<li><div id="prod-1" class="row" onclick="get_amt('+field.prod_id+')">' +
+                $('#myUL').append('<li class="mgemo5"><div id="prod-1" class="row" onclick="get_amt('+field.prod_id+')">' +
                   '<div class="col-4 text-center p">'+field.prod_code+'</div>' +
                   '<div class="col-8 text-center p">'+field.prod_name+'</div>' +
                   '</div><hr></li>');        
@@ -234,70 +221,66 @@
     </script>
 </head>
 
-<body onload="onLoad()" style="overflow-y: auto;">
+<body>
   <!-- Loading -->
   <div class="overlay" hidden><div class="loading"></div></div>
 
-    <!-- Nav menu top -->
-    <div class="row fixed-top navs align-items-center">
-        <div id="col-back" class="col-1 text-center" onclick="transition_page_back('index.html'); window.location = 'index.html';">
-            <i id="i-back" class="fas fa-angle-left"></i>
-        </div>
-        <div class="col-10 text-center" style="padding-left: 0;">
-            <h5 id="h5-title">เช็กสต๊อก</h5>
-        </div>
-    </div>
-    <br>
-
      <!-- Search ctn -->
-     <div id="search-ctn" class="container justify-content-center" style="margin-top: 15%;" hidden>
-      <div class="row mg-10">
-          <div class="col-12 text-center">          
-              <input id="search_prod" type="search" class="form-control form-control-lg text-center" placeholder="ค้นหาสินค้า">          
-          </div>        
+    <div id="search-ctn" class="container justify-content-center" hidden>
+      <div class="row mgem1o5" style="margin-top: 15px;">
+        <div class="col-12 text-center">
+            <input id="search_prod" type="search" class="form-control form-control-lg text-center" placeholder="ค้นหาสินค้า" autofocus data-index="1">
+        </div>  
       </div>
-      <div id="add_ctn" class="container">
+      <div id="add_ctn" class="container" style="overflow-x: hidden !important; overflow-y: auto; height: calc(100vh - 140px) !important;">
           <ul id="myUL">
-
           </ul>            
       </div>
     </div>
     
     <!-- big container -->
-    <div id="big-ctn" class="container justify-content-center" style="margin-top: 35%;">
-        <div class="container">
-          <div class="row mg-10">
-            <div class="col-12 text-center">             
-              <input id="name" type="text"  class="form-control form-control-lg text-center" placeholder="ค้นหาสินค้า" onclick="search();">
-            </div>
-          </div>         
-          <div class="or_section">
-            <div class="content_box mg-10">
-                <div class="or_line_1"></div>
-                <div class="or_txt">หรือ</div>
-                <div class="or_line_2"></div>
-            </div>
+    <div id="big-ctn" class="container-fullwidth justify-content-center">
+      <!-- Nav menu top -->
+      <div class="row navs align-items-center mgem1o5 fixed-top">
+        <div id="col-back" class="col-2 text-center" onclick="transition_page_back('index.html'); window.location ='index.html';">
+          <i id="i-back" class="fas fa-angle-left"></i>
+        </div>
+        <div class="col-8 text-center">
+          <h5 id="h5-title">เช็กสต๊อก</h5>
+        </div>
+      </div>
+
+      <div id="in-ctn" class="container" style="margin-top: 6.5em;">
+        <div class="row justify-content-center mgem2">
+          <div class="col-10 text-center">             
+            <input id="name" type="text"  class="form-control form-control-lg text-center" placeholder="ค้นหาสินค้า" onclick="search();">
           </div>
-          <div class="row mg-10" id="row-search">
-            <div class="col-1"></div>
-            <div class="col-10 text-center" style="padding-left: 0; padding-right: 0;">
-              <button class="mbtn" onclick="scan();">สแกน</button>
-            </div>
-            <div class="col-1"></div>
+        </div>         
+        <div class="or_section">
+          <div class="content_box mgem2">
+              <div class="or_line_1"></div>
+              <div class="or_txt">หรือ</div>
+              <div class="or_line_2"></div>
           </div>
-          <div class="or_section">
-            <div class="content_box">
-                <div class="or_line_1"></div>
-                <div class="or_txt">หรือ</div>
-                <div class="or_line_2"></div>
-            </div>
-          </div><br>
-          <div class="row mg-10">
-            <div class="col-12 text-center">
-              <button class="select_folder" onclick="selectfolder()">เลือกสินค้า</button>
-            </div>  
+        </div>
+        <div class="row justify-content-center mgem2" id="row-search">
+          <div class="col-10 text-center">
+            <button class="mbtn" onclick="scan();">สแกน</button>
           </div>
-        </div>                   
+        </div>
+        <div class="or_section">
+          <div class="content_box">
+              <div class="or_line_1"></div>
+              <div class="or_txt">หรือ</div>
+              <div class="or_line_2"></div>
+          </div>
+        </div><br>
+        <div class="row justify-content-center mgem2">
+          <div class="col-10 text-center">
+            <button class="select_folder" onclick="selectfolder()">เลือกสินค้า</button>
+          </div>  
+        </div>
+      </div>                   
     </div>
     <!-- End big container -->
     <script>

@@ -27,9 +27,9 @@
   <style>
     #title {
       color: #666666;
-      letter-spacing: 2px;
+      letter-spacing: 1px;
     }
-    .no-pd {
+    .nopd {
       padding-right: 0px;
       padding-left: 0px;
     }
@@ -51,37 +51,37 @@
           var obj = jQuery.parseJSON(data);                      
           $.each(obj, function(i, field){     
             if(obj[i][2] == "โกดัง"){
-              $('#show').append( "<div id='cus-"+i+"' class='row'>" +
+              $('#in-ctn').append( "<div id='cus-"+i+"' class='row'>" +
               "<span id='id-ware-"+i+"' hidden>"+obj[i].ware_id+"</span>" +              
               "<div class='col-1 text-left'>" +
                 "<i class='fa fa-trash-alt i-del' onclick='edit_del("+i+");' style='color: #666666;' hidden></i>" +
                 "<i class='fa fa-edit i-edit' onclick='edit_ware("+i+");' style='color: #666666;' hidden></i>" +
               "</div>" +
-              "<div class='col-6 text-center no-pd'>" +
+              "<div class='col-6 text-center nopd'>" +
                 "<p id='name-ware-"+i+"'>"+obj[i].ware_name+"</p>" +
               "</div>" +
-              "<div class='col-4 text-center no-pd'>" +
+              "<div class='col-4 text-center nopd'>" +
                 "<p id='type-ware-"+i+"'>โกดัง</p>" +
               "</div>" +
               "<div class='col-1'></div>" +
               "</div>" +   
-              "<hr id='hr-"+i+"'>");  
+              "<hr id='hr-"+i+"'> class='mgemo5'");  
             }else if(obj[i][2] == "หน้าร้าน"){
-              $('#show').append( "<div id='cus-"+i+"' class='row'>" +
+              $('#in-ctn').append( "<div id='cus-"+i+"' class='row'>" +
               "<span id='id-ware-"+i+"' hidden>"+obj[i].shop_id+"</span>" +              
               "<div class='col-1 text-left'>" +
                 "<i class='fa fa-trash-alt i-del' onclick='edit_del("+i+");' style='color: #666666;' hidden></i>" +
                 "<i class='fa fa-edit i-edit' onclick='edit_ware("+i+");' style='color: #666666;' hidden></i>" +
               "</div>" +
-              "<div class='col-6 text-center no-pd'>" +
+              "<div class='col-6 text-center nopd'>" +
                 "<p id='name-ware-"+i+"'>"+obj[i].shop_name+"</p>" +
               "</div>" +
-              "<div class='col-4 text-center no-pd'>" +
+              "<div class='col-4 text-center nopd'>" +
                 "<p id='type-ware-"+i+"'>หน้าร้าน</p>" +
               "</div>" +
               "<div class='col-1'></div>" +
               "</div>" +   
-              "<hr id='hr-"+i+"'>");  
+              "<hr id='hr-"+i+"'> class='mgemo5'");  
             }                                                    
           });                        
         }               
@@ -263,35 +263,26 @@
   <!-- Loading -->
   <div class="overlay" hidden><div class="loading"></div></div>    
 
-  <!-- Nav menu top -->
-  <div class="row fixed-top navs align-items-center">
-    <div class="col-1 text-center" onclick="transition_page_back('index.html'); window.location = 'index.html';">
-      <i id="i-back" class="fas fa-angle-left"></i>
-    </div>
-    <div class="col-10 text-center">
-      <h5 id="h5-title">หน้าร้าน / โกดัง</h5>
-    </div>
-    <div class="col-1">
-    </div>
-  </div>
-  <br>
-
   <!-- End big container -->
-  <div class="container justify-content-center" style="margin-top: 20%;">
-    <div id="show" class="container">
-      <div class="row">
-        <div class="col-1"></div>
-        <div class="col-6 text-center no-pd">
-          <h5 id="title">ชื่อ</h5>
-        </div>
-        <div class="col-4 text-center no-pd">
-          <h5 id="title">ประเภท</h5>
-        </div>
-        <div class="col-1"></div>
+  <div id="big-ctn" class="container-fullwidth justify-content-center">
+    <!-- Nav menu top -->
+    <div class="row navs align-items-center mgem1o5 fixed-top">
+      <div class="col-2 text-center" onclick="transition_page_back('index.html'); window.location = 'index.html';">
+        <i id="i-back" class="fas fa-angle-left"></i>
       </div>
-      <hr>
+      <div class="col-8 text-center">
+        <h5 id="h5-title">หน้าร้าน / โกดัง</h5>
+      </div>
+    </div>
 
-      <!-- Show -->
+    <div id="row-title" class="row fixed-top" style="margin-top: 4.5em;">
+      <div class="col-1"></div>
+      <div id="title" class="col-6 text-center nopd">ชื่อ</div>
+      <div id="title" class="col-4 text-center nopd">ประเภท</div>
+      <div class="col-1"></div>
+    </div><hr id="title-hr" class="mgem1" style="margin-top: 6.3em; width: 98%;">
+
+    <div id="in-ctn" class="container">
      
     </div>
   </div>
