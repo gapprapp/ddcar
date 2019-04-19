@@ -29,7 +29,8 @@
     <style>
         #title {
             color: #666666;
-            letter-spacing: 2px;
+            letter-spacing: 1px;
+            font-weight: bold;
         }
         .no-pd{
             padding-right: 5px;
@@ -50,6 +51,9 @@
         @-webkit-keyframes fade {
             from {opacity: 0.55; } 
             to {opacity: 1;}
+        }
+        #search-ctn{
+            overflow: hidden; overflow-x: hidden !important; height: 100%;
         }
     </style>
 
@@ -697,35 +701,34 @@
     <div class="overlay" hidden><div class="loading"></div></div>
 
     <!-- Search ctn -->
-    <div id="search-ctn" class="container justify-content-center" style="margin-top: 20%;" hidden>
-        <div class="row mg-10">
+    <div id="search-ctn" class="container justify-content-center" hidden>
+        <div class="row mgem1o5" style="margin-top: 15px;">
             <div class="col-12 text-center">
                 <input id="search_prod" type="search" class="form-control form-control-lg text-center" placeholder="ค้นหาสินค้า" autofocus data-index="1">
             </div>  
         </div>
-        <div id="add_ctn" class="container">
+        <div id="add_ctn" class="container" style="overflow-x: hidden !important; overflow-y: auto; height: calc(100vh - 140px) !important;">
             <ul id="myUL">
-
             </ul>            
         </div>
     </div>
 
-    <!-- Nav menu top -->
-    <div class="row fixed-top navs align-items-center">
-        <div id="col-back" class="col-1 text-center" onclick="transition_page_back('index.html'); window.location = 'index.html';">
-            <i id="i-back" class="fas fa-angle-left"></i>
-        </div>
-        <div class="col-9 text-right" style="margin-right: 2%;">
-            <h5 id="h5-title" class="fade" onclick="showware();">เลือกโกดัง/หน้าร้าน</h5>
-        </div>
-        <div class="col-1 text-right" onclick="report();"><div id="check-import"class="circle-text">0</div></div>
-    </div>
-    <br>
-
     <!-- big container -->
-    <div id="big-ctn" class="container justify-content-center" style="margin-top: 15%;">
-        <div class="container">
-            <div class="row mg-10">
+    <div id="big-ctn" class="container-fullwidth justify-content-center">
+        <!-- Nav menu top -->
+        <div class="row navs align-items-center fixed-top">
+          <div id="col-back" class="col-2 text-center" onclick="transition_page_back('index.html'); window.location = 'index.html';">
+            <i id="i-back" class="fas fa-angle-left"></i>
+          </div>
+          <div class="col-8 text-center">
+            <h5 id="h5-title" class="fade" onclick="showware();">เลือกโกดัง(เข้า)</h5>
+          </div>
+          <div class="col-1 text-right" onclick="report();">
+            <div id="check-import"class="circle-text">0</div>
+          </div>
+        </div>
+        <div id="in-ctn" class="container">
+            <div class="row mgem1o5">
                 <div class="col-5 text-center">
                     <label for="barcode">รหัส</label>
                     <input readonly id="barcode" type="text" class="w3-input">
@@ -735,7 +738,7 @@
                     <input id="name" type="text" class="w3-input" onclick="search();" readonly>
                 </div>
             </div>
-            <div class="row mg-10">
+            <div class="row mgem1o5">
                 <div class="col-9 text-center">
                     <label for="prod-addr">ที่อยู่สินค้า</label>
                     <input id="prod-addr" type="text" class="w3-input" data-index="2">
@@ -745,7 +748,7 @@
                     <input id="amount" type="number" min="1" value="1" class="w3-input" onchange="cal_avg('amt')" data-index="3">
                 </div>
             </div>
-            <div class="row" style="margin-bottom: 20%;">
+            <div class="row mgem2">
                 <div class="col-4 text-center">
                     <label for="cost" class="popup" style="font-size: 110%;">ทุน
                         <span class="popuptext" id="myPopup">เฉลี่ย: <span id="avg-rate"></span></span>
@@ -761,16 +764,13 @@
                     <input id="retail" type="number" class="w3-input" data-index="6">
                 </div>
             </div>
-            <div class="row mg-10" style="padding-right: 5%; padding-left: 5%;">
-                <div class="col-4 text-center" style="padding-left: 0; padding-right: 0;">
-                    <button id="btn-addpic" class="mbtn-green" onclick="scanqr();">สแกน</button>
-                </div>
-                <div class="col-8 text-center" style="padding-right: 0;">
-                    <button id="btn-folder" class="select_folder" onclick="selectfolder();">เลือกสินค้า</button>
+            <div class="row justify-content-center mgem1">
+                <div class="col-8 text-center" onclick="selectfolder();">
+                    <button id="btn-folder" class="select_folder">เลือกสินค้า</button>
                 </div>
             </div>
-            <div class="row">
-                <div class="col-12 text-center">
+            <div class="row justify-content-center mgem1o5">
+                <div class="col-10 text-center">
                     <button class="mbtn" onclick="add_import();">เพิ่มสินค้า</button>
                 </div>
             </div>
