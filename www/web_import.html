@@ -72,6 +72,10 @@
 			if(!localStorage.user_id){
 				window.location = 'web_login.html';
 			}
+			if(localStorage.user_role == "พนักงาน"){
+				$("#fund").prop('hidden', true);
+				$("#head-fund").text(" ");
+      }
 			get_header();		
 			setTimeout(function() {$("#name").focus();}, 100);
 
@@ -517,6 +521,10 @@
 				$("#cnt-add").css('max-height', $("#cnt-add").height());
 				$("#cnt-add").animate({scrollTop: $('#cnt-add').prop('scrollHeight')});
 			}   
+			msg = "";
+			if(localStorage.user_role != "พนักงาน"){
+				msg = '<input id="fundd" type="number" value="'+$('#fund').val()+'" class="form-control text-center no-spin" min="0" readonly>';
+			}
 
 			$("#cnt-add").append('<div id="add-'+count+'" class="row mgb-5">'+
 					'<div class="col-1"></div>'+
@@ -536,7 +544,7 @@
             '<input id="amount-'+count+'" value="'+$('#amount').val()+'" type="number" class="form-control text-center no-spin" min="1" readonly>'+
           '</div>'+
           '<div class="col-1 nopd-8">'+
-            '<input id="fundd" type="number" value="'+$('#fund').val()+'" class="form-control text-center no-spin" min="0" readonly>'+
+            msg+
           '</div>'+          
           '<div class="col-1 nopd-8">'+
             '<input id="wholee" type="number" value="'+$('#whole').val()+'" class="form-control text-center no-spin" min="0" readonly>'+
@@ -620,6 +628,10 @@
 					$("#cnt-add").css('max-height', $("#cnt-add").height());
 					$("#cnt-add").animate({scrollTop: $('#cnt-add').prop('scrollHeight')});
 				}   
+				msg = "";
+				if(localStorage.user_role != "พนักงาน"){
+					msg = '<input id="fundd" type="number" value="'+arr_data[i].cost+'" class="form-control text-center no-spin" min="0" readonly>';
+				}
 
 				$("#cnt-add").append('<div id="add-'+arr_data[i].count+'" class="row mgb-5">'+
 						'<div class="col-1"></div>'+
@@ -639,7 +651,7 @@
 					'<input id="amount-'+arr_data[i].count+'" value="'+arr_data[i].amt+'" type="number" class="form-control text-center no-spin" min="1" readonly>'+
 				'</div>'+
 				'<div class="col-1 nopd-8">'+
-					'<input id="fundd" type="number" value="'+arr_data[i].cost+'" class="form-control text-center no-spin" min="0" readonly>'+
+					msg+
 				'</div>'+          
 				'<div class="col-1 nopd-8">'+
 					'<input id="wholee" type="number" value="'+arr_data[i].price_s+'" class="form-control text-center no-spin" min="0" readonly>'+
@@ -922,7 +934,7 @@
       		  <div class="col-1 text-center nopd-8">ที่อยู่สินค้า</div>
       		  <div class="col-3 text-center nopd">ชื่อสินค้า</div>
       		  <div class="col-1 text-center nopd-8">จำนวน</div>
-      		  <div class="col-1 text-center nopd-8">ทุน</div>
+      		  <div class="col-1 text-center nopd-8" id="head-fund">ทุน</div>
       		  <div class="col-1 text-center nopd-8">ราคาส่ง</div>
       		  <div class="col-1 text-center nopd-8">ราคาปลีก</div>
       		</div>

@@ -66,6 +66,10 @@
             url = new URL(window.location.href);
             prod_id = url.searchParams.get("product");  
 
+            if(localStorage.user_role == "พนักงาน"){
+				$("#div-cost").prop('hidden', true);				
+            }
+
             if(localStorage.ware_id_ex){
                 
                     $("#h5-title").removeClass('fade'); 
@@ -594,7 +598,7 @@
                     <label for="amount">จำนวน</label>
                     <input id="amount" onkeyup="edit_amt()" type="number" min="1" value="1" class="w3-input" data-index="2">
                 </div>
-                <div class="col-3 text-center">
+                <div id="div-cost" class="col-3 text-center">
                     <label for="cost">ทุน</label>
                     <input readonly id="cost" type="number" class="w3-input">
                 </div>

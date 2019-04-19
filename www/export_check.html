@@ -63,7 +63,12 @@
             var retrievedObject = localStorage.getItem('arr_ex');
             arr_data = JSON.parse(retrievedObject);
             var sum = 0;
-            for(var i = 0 ; i < arr_data.length ; i ++){                              
+            for(var i = 0 ; i < arr_data.length ; i ++){ 
+                msg = "";
+                if(localStorage.user_role != "พนักงาน"){
+                    msg =  "<div id='price-"+i+"' class='col-3 text-center no-pd'>"+arr_data[i].cost+"</div>\
+                            <span>x</span>"
+                }                             
                 var sum_prod = arr_data[i].cost*arr_data[i].amt;
                 sum += parseInt(sum_prod);
                 $('#in-ctn').append("<div id='prod-"+i+"' class='row mgemo5'>\
@@ -73,8 +78,7 @@
                     <i id='i-edit-"+i+"' class='fa fa-edit i-edit' onclick='edit_prod("+i+");' style='color: #666;' hidden></i>\
                 </div>\
                 <div id='name-"+i+"' class='col-6 text-center no-pd' onclick='collapse("+i+");'>"+arr_data[i].name+"</div>\
-                <div id='price-"+i+"' class='col-3 text-center no-pd'>"+arr_data[i].cost+"</div>\
-                <span>x</span>\
+               "+msg+"\
                 <div id='amount-"+i+"' class='col-1 text-center no-pd'>"+arr_data[i].amt+"</div>\
             </div>\
             <!-- Collapse-1 -->\
@@ -116,6 +120,10 @@
             var datetime = d.getFullYear() + "-" + (d.getMonth()+1) + "-" + d.getDate() + " " + d.getHours() + ":" + d.getMinutes() + ":" + d.getSeconds(); 
             json_string = JSON.stringify(arr_data); 
             var dataString =  "JSON=" + json_string + "&ware_id=" + localStorage.ware_id_ex + "&date=" + datetime + "&user_id=" + localStorage.user_id;                        
+            var msg_alert = "";
+            for(var i = 0 ; i < arr_data.length;i++){
+                msg_alert += arr_data[i].name + " คงเหลือ " + (arr_data[i].min-arr_data[i].amt) + '<br>';
+            }	
 
             $.ajax({
                 type: "POST",
@@ -127,7 +135,20 @@
                 success: function(data){  
                     $(".overlay").prop('hidden', true);                    
                     if(data == "success"){
-                       clearAll();          
+                        // $.confirm({
+                        //     title: 'จำนวนคงเหลือใน'+ localStorage.ware_name_ex,
+                        //     content: msg_alert,
+                        //     backgroundDismiss: false,
+                        //     buttons: {
+                        //         formSubmit: {
+                        //         text: 'ตกลง',
+                        //         btnClass: 'btn-regis',
+                        //         action: function () {
+						// 			clearAll();
+                        //         }
+                        //         }
+                        //     }
+                        // });
                     }else{
                         $.confirm({
                             title: 'พบข้อผิดพลาด',

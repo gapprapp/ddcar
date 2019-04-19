@@ -80,26 +80,28 @@
       get_import();
 
       //scroll to bottom
-      $(window).scroll(function() {            
-        if($(window).scrollTop() + $(window).height() > $(document).height()-50) {            
-            if(!$("#myUL").prop('hidden')){
-              if(bool){
-                return 0;
-              }
-              get_import();            
-            }else if(!$("#myD").prop('hidden')){
-              if(bool_d){
-                return 0;
-              }
-              search_date();
-            }else if(!$("#myS").prop('hidden')){
-              if(bool_s){
-                return 0;
-              }
-              get_import_s();
+      $(window).on("scroll", function() {
+        var scrollHeight = $(document).height();
+        var scrollPosition = $(window).height() + $(window).scrollTop();
+        if ((scrollHeight - scrollPosition) / scrollHeight === 0) {          
+          if(!$("#myUL").prop('hidden')){
+            if(bool){
+              return 0;
             }
+            get_import();            
+          }else if(!$("#myD").prop('hidden')){
+            if(bool_d){
+              return 0;
+            }
+            search_date();
+          }else if(!$("#myS").prop('hidden')){
+            if(bool_s){
+              return 0;
+            }
+            get_import_s();
+          }
         }
-      });
+      });      
     });
     
     $(document).keydown(function(objEvent) {
@@ -118,7 +120,7 @@
       $("#i-back").attr("onclick","transition_page_back('index.html'); window.location = 'index.html';");
     }
 
-    function get_import(){     
+    function get_import(){
       $.ajax({
         type: "POST",
         url:"http://ddaccessory.trueddns.com:24330/dd-shop/php/get_transfer.php",
@@ -289,6 +291,7 @@
   <!-- Loading -->
   <div class="overlay" hidden><div class="loading"></div></div> 
 
+<<<<<<< HEAD
   <!-- End big container -->
   <div id="big-ctn" class="container-fullwidth justify-content-center">
     <!-- Nav menu top -->
@@ -302,6 +305,18 @@
       <div class="col-1 text-right" onclick="show_search();">
         <i class="fas fa-search" style="color: white; font-size: 120%; margin-top: 2px;"></i>
       </div>
+=======
+  <!-- Nav menu top -->
+  <div class="row fixed-top navs">
+    <div id="i-back" class="col-1 text-center" onclick="transition_page_back('index.html?menu=3'); window.location = 'index.html?menu=3';">
+      <i  class="fas fa-angle-left"></i>
+    </div>
+    <div class="col-9 text-center" style="padding-left: 10%; margin-right: 3%;">
+      <h5 id="h5-title">รายการสินค้าเข้า</h5>
+    </div>
+    <div class="col-1 text-right" onclick="show_search();">
+      <i class="fas fa-search" style="color: white; font-size: 120%; margin-top: 5px;"></i>
+>>>>>>> parent of a9b330f1... edit scroll to btm
     </div>
 
     <div id="date_row" class="row mgem1o5 fixed-top" style="margin-top: 4.5em;" hidden>

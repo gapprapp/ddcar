@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 #Wed Apr 17 14:54:00 ICT 2019
+=======
+#Sun Apr 07 14:39:41 ICT 2019
+>>>>>>> parent of a9b330f1... edit scroll to btm
 base.0=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\transforms\\dexMerger\\debug\\0
 renamed.0=classes.dex
 file.0=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\transforms\\dexMerger\\debug\\0\\classes.dex

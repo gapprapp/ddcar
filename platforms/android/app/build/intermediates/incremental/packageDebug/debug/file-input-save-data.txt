@@ -1,5 +1,9 @@
 #Internal package file, do not edit.
+<<<<<<< HEAD
 #Wed Apr 17 14:54:20 ICT 2019
+=======
+#Sun Apr 07 14:39:43 ICT 2019
+>>>>>>> parent of a9b330f1... edit scroll to btm
 20.base=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\res\\debug\\resources-debug.ap_
 143.base=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\res\\debug\\resources-debug.ap_
 340.file=D\:\\GitHub\\ddcar2\\platforms\\android\\app\\build\\intermediates\\res\\debug\\resources-debug.ap_\\res\\layout\\notification_template_part_chronometer.xml

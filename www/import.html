@@ -66,6 +66,10 @@
             url = new URL(window.location.href);
             prod_id = url.searchParams.get("product");
 
+            if(localStorage.user_role == "พนักงาน"){
+				$("#div-cost").prop('hidden', true);				
+            }
+
             if(localStorage.ware_id_im){
                 $("#h5-title").removeClass('fade');  
                 $("#h5-title").css('padding-left', '15%');
@@ -614,7 +618,7 @@
                 </div>
             </div>
             <div class="row mgem2">
-                <div class="col-4 text-center">
+                <div class="col-4 text-center" id="div-cost">
                     <label for="cost" class="popup" style="font-size: 110%;">ทุน
                         <span class="popuptext" id="myPopup">เฉลี่ย: <span id="avg-rate"></span></span>
                     </label>
