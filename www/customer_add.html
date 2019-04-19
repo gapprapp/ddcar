@@ -29,11 +29,8 @@
   <style>
     #title {
       color: #666666;
-      letter-spacing: 2px;
-    }
-    .pdlr {
-      padding-left: 10%;
-      padding-right: 10%;
+      letter-spacing: 1px;
+      font-weight: bold;
     }
   </style>
 
@@ -50,23 +47,6 @@
         }                       
       }         
     })
-
-    /*function disactive(arg) {
-      nav_menu = ['home', 'bell', 'qrcode', 'bars'];
-      for (i = 0; i < 4; i++) {
-        if (nav_menu[i] != arg) {
-          if ($("#i-" + nav_menu[i]).hasClass('active')) $("#i-" + nav_menu[i]).removeClass('active');
-        }
-      }
-    }
-
-    function menu(arg) {
-      // Animate
-      disactive(arg);
-      $("#i-" + arg).fadeOut(100).fadeIn(100, function() {
-        $("#i-" + arg).addClass('active');
-      });
-    }*/
 
     function add_cus(){
       var name = $('#name').val();  
@@ -153,49 +133,45 @@
 
 <body>
   <!-- Loading -->
-  <div class="overlay" hidden><div class="loading"></div></div>
+  <div class="overlay" hidden><div class="loading"></div></div> 
 
-  <!-- Nav menu top -->
-  <div class="row fixed-top navs align-items-center">
-    <div class="col-1 text-center" onclick="transition_page_back('customer.html'); window.location = 'customer.html';">
-      <i id="i-back" class="fas fa-angle-left"></i>
+  <div id="big-ctn" class="container-fullwidth justify-content-center">
+    <!-- Nav menu top -->
+    <div class="row navs align-items-center mgem1o5 fixed-top">
+      <div class="col-2 text-center" onclick="transition_page_back('customer.html'); window.location = 'customer.html';">
+        <i id="i-back" class="fas fa-angle-left"></i>
+      </div>
+      <div class="col-8 text-center">
+        <h5 id="h5-title">เพิ่มลูกค้า</h5>
+      </div>
     </div>
-    <div class="col-10 text-center">
-      <h5 id="h5-title">เพิ่มลูกค้า</h5>
-    </div>
-    <div class="col-1">
-    </div>
-  </div><br>
-
-  <!-- End big container -->
-  <div class="container justify-content-center" style="margin-top: 20%;">
-    <div class="container">
-      <div class="row" style="margin-bottom: 10%;">
-        <div class="col-12 text-center pdlr">
+    <div id="in-ctn" class="container-fullwidth" style="height: calc(100vh - 80px);">
+      <div class="row justify-content-center mgem1o5">
+        <div class="col-8 text-center ">
           <label for="name">ชื่อ</label>
           <input id="name" type="text" class="w3-input" autofocus data-index="1">
         </div>
       </div>
-      <div class="row" style="margin-bottom: 10%;">
-        <div class="col-12 text-center pdlr">
+      <div class="row justify-content-center mgem1o5">
+        <div class="col-8 text-center ">
           <label for="addr">ที่อยู่</label>
           <input id="addr" type="text" class="w3-input" data-index="2">
         </div>
       </div>
-      <div class="row" style="margin-bottom: 10%;">
-        <div class="col-12 text-center pdlr">
+      <div class="row justify-content-center mgem1o5">
+        <div class="col-8 text-center ">
           <label for="phone">เบอร์โทร</label>
           <input id="phone" type="tel" class="w3-input" data-index="3">
         </div>
       </div>
-      <div class="row" style="margin-bottom: 18%;">
-        <div class="col-12 text-center pdlr">
+      <div class="row justify-content-center mgem2">
+        <div class="col-8 text-center ">
           <label for="type">ประเภท</label>
           <input id="type" type="text" class="w3-input" data-toggle="dropdown" readonly>
         </div>
       </div>
-      <div class="row" style="margin-bottom: 15%;">
-        <div class="col-12 text-center">
+      <div class="row justify-content-center mgem1o5">
+        <div class="col-7 text-center">
           <button class="mbtn" onclick="add_cus();">เพิ่ม</button>
         </div>
       </div>
