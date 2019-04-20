@@ -80,8 +80,8 @@
       get_export();
 
       //scroll to bottom
-      $(window).scroll(function() {            
-        if($(window).scrollTop() + $(window).height() > $(document).height()-100) {   
+      $("#in-ctn").scroll(function() {            
+        if($("#in-ctn").scrollTop() > $("#in-ctn").height()) {   
           if(!$("#myUL").prop('hidden')){
             if(bool){
               return 0;

@@ -79,6 +79,6 @@
     <preference name="PaginationBreakingMode" value="page" />
     <preference name="PaginationMode" value="unpaginated" />
     <preference name="CameraUsesGeolocation" value="false" />
-    <preference name="Orientation" value="portrait" />
+    <preference name="Orientation" value="default" />
     <preference name="Fullscreen" value="true" />
 </widget>

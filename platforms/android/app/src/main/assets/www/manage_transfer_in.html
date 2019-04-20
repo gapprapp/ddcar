@@ -80,38 +80,27 @@
       get_import();
 
       //scroll to bottom
-      // window.onscroll = function(ev) {
-      // var lft = window.innerHeight + window.scrollY
-      // alert(lft + " : " + document.body.offsetHeight)
-      // if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight) {           
-      //       if(!$("#myUL").prop('hidden')){
-      //         if(bool){
-      //           return 0;
-      //         }
-      //         get_import();            
-      //       }else if(!$("#myD").prop('hidden')){
-      //         if(bool_d){
-      //           return 0;
-      //         }
-      //         search_date();
-      //       }else if(!$("#myS").prop('hidden')){
-      //         if(bool_s){
-      //           return 0;
-      //         }
-      //         get_import_s();
-      //       }
-      //   }
-      // };
-    });
-
-    window.onscroll = function(ev) {
-      // var lft = window.innerHeight + window.scrollY
-      // alert(lft + " : " + document.body.offsetHeight)
-      alert("before if")
-      if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight) {           
-            alert("btm")
+       $("#in-ctn").scroll(function() {            
+        if($("#in-ctn").scrollTop() > $("#in-ctn").height()) { 
+          if(!$("#myUL").prop('hidden')){
+            if(bool){
+              return 0;
+            }
+            get_import();            
+          }else if(!$("#myD").prop('hidden')){
+            if(bool_d){
+              return 0;
+            }
+            search_date();
+          }else if(!$("#myS").prop('hidden')){
+            if(bool_s){
+              return 0;
+            }
+            get_import_s();
+          }
         }
-      };
+      });
+    });   
     
     $(document).keydown(function(objEvent) {
       if (objEvent.keyCode == 13) {  //enter pressed
