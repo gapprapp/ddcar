@@ -81,7 +81,7 @@
 
       //scroll to bottom
        $("#in-ctn").scroll(function() {            
-        if($("#in-ctn").scrollTop() > $("#in-ctn").height()-100) { 
+        if($("#in-ctn").scrollTop() > $("#in-ctn").height()) { 
           if(!$("#myUL").prop('hidden')){
             if(bool){
               return 0;
@@ -100,18 +100,7 @@
           }
         }
       });
-    });
-
-    /* DELETE แปลว่า ลบ
-    window.onscroll = function(ev) {
-      // var lft = window.innerHeight + window.scrollY
-      // alert(lft + " : " + document.body.offsetHeight)
-      alert("before if")
-      if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight) {           
-            alert("btm")
-        }
-      };
-    */
+    });   
     
     $(document).keydown(function(objEvent) {
       if (objEvent.keyCode == 13) {  //enter pressed
