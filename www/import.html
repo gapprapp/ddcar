@@ -86,7 +86,7 @@
             if(localStorage.arr_prod_i){
                 $("#btn-folder").attr('disabled',true);
                 $("#name").attr('disabled',true);           
-                //$("#btn-addpic").attr('disabled',true);
+                $("#btn-addpic").attr('disabled',true);
                 var retrievedObject = localStorage.getItem('arr_prod_i');
                 var arr_data = JSON.parse(retrievedObject); 
                 prod_id = arr_data[0].prod_id;            
@@ -537,7 +537,7 @@
             }else{                   
                 $("#btn-folder").removeAttr('disabled'); 
                 $("#name").removeAttr('disabled');          
-                //$("#btn-addpic").removeAttr('disabled');
+                $("#btn-addpic").removeAttr('disabled');
             }                      
         }  
 
@@ -721,7 +721,7 @@
             <i id="i-back" class="fas fa-angle-left"></i>
           </div>
           <div class="col-8 text-center">
-            <h5 id="h5-title" class="fade" onclick="showware();">เลือกโกดัง(เข้า)</h5>
+            <h5 id="h5-title" class="fade" onclick="showware();">เลือกโกดัง/หน้าร้าน</h5>
           </div>
           <div class="col-1 text-right" onclick="report();">
             <div id="check-import"class="circle-text">0</div>
@@ -765,7 +765,10 @@
                 </div>
             </div>
             <div class="row justify-content-center mgem1">
-                <div class="col-8 text-center" onclick="selectfolder();">
+                <div class="col-3 text-center" style="padding-right: 0;">
+                    <button id="btn-addpic" class="mbtn-green" onclick="scanqr();">สแกน</button>
+                </div>
+                <div class="col-7 text-center" onclick="selectfolder();">
                     <button id="btn-folder" class="select_folder">เลือกสินค้า</button>
                 </div>
             </div>
