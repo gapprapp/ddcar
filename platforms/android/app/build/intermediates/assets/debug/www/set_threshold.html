@@ -35,6 +35,9 @@
             margin: 0;
             padding: 0;
         } 
+        #search-ctn{
+            overflow: hidden; overflow-x: hidden !important; height: 100%;
+        }
     </style>
     <script>       
         var prod_id,product;
@@ -289,38 +292,35 @@
 
 <body>
     <!-- Loading -->
-    <div class="overlay" hidden><div class="loading"></div></div>
+    <div class="overlay" hidden><div class="loading"></div></div> 
 
     <!-- Search ctn -->
-    <div id="search-ctn" class="container justify-content-center" style="margin-top: 20%;" hidden>
-        <div class="row mg-10">
+    <div id="search-ctn" class="container justify-content-center" hidden>
+        <div class="row mgem1o5" style="margin-top: 15px;">
             <div class="col-12 text-center">
-                <input id="search_prod" type="text" onkeyup="search()" class="form-control form-control-lg text-center" placeholder="ค้นหาสินค้า" autofocus>
+                <input id="search_prod" type="search" class="form-control form-control-lg text-center" placeholder="ค้นหาสินค้า" autofocus data-index="1">
             </div>  
         </div>
-        <div id="add_ctn" class="container">
+        <div id="add_ctn" class="container" style="overflow-x: hidden !important; overflow-y: auto; height: calc(100vh - 140px) !important;">
             <ul id="myUL">
-
             </ul>            
         </div>
     </div>
 
-    <!-- Nav menu top -->
-    <div class="row fixed-top navs align-items-center" >
-        <div id="col-back" class="col-1 text-center" onclick="transition_page_back('threshold.html'); window.location = 'threshold.html';">
-            <i id="i-back" class="fas fa-angle-left"></i>
-        </div>
-        <div class="col-10 text-center">
-            <h5 id="h5-title">เพิ่มสต๊อกขั้นต่ำ</h5>
-        </div>
-        <div class="col-2"></div>
-    </div>
-    <br>
-
     <!-- Start big container -->
-    <div id="big-ctn" class="container justify-content-center" style="margin-top: 20%;">
-        <div class="container">
-            <div class="row mg-10">
+    <div id="big-ctn" class="container-fullwidth justify-content-center">
+        <!-- Nav menu top -->
+        <div class="row navs align-items-center mgem1o5 fixed-top">
+          <div id="col-back" class="col-2 text-center" onclick="transition_page_back('threshold.html'); window.location ='threshold.html';">
+            <i id="i-back" class="fas fa-angle-left"></i>
+          </div>
+          <div class="col-8 text-center">
+            <h5 id="h5-title">เพิ่มสต๊อกขั้นต่ำ</h5>
+          </div>
+        </div>
+
+        <div id="in-ctn" class="container-fullwidth" style="padding-left: 1.5em; padding-right: 1.5em; height: calc(100vh - 80px);">
+            <div class="row mgem2">
                 <div class="col-1"></div>
                 <div class="col-10 text-center pdlr">
                     <label for="name">ชื่อสินค้า</label>
@@ -328,7 +328,7 @@
                 </div>
                 <div class="col-1"></div>
             </div>
-            <div class="row" style="margin-bottom: 20%;">
+            <div class="row mgem5">
                 <div class="col-5 text-center nopd">
                     <label for="barcode">รหัส</label>
                     <input readonly id="barcode" type="text" class="w3-input">
@@ -342,16 +342,16 @@
                     <input id="amount" type="number" min="1" value="1" class="w3-input">
                 </div>
             </div>
-            <div class="row mg-10" style="padding-right: 5%; padding-left: 5%;">
-                <div class="col-4 text-center" style="padding-left: 0; padding-right: 0;">
+            <div class="row justify-content-center mgem1">
+                <div class="col-3 text-center" style="padding-left: 0; padding-right: 0;">
                     <button class="mbtn-green" onclick="scanqr();">สแกน</button>
                 </div>
-                <div class="col-8 text-center" style="padding-right: 0;">
+                <div class="col-7 text-center" style="padding-right: 0;">
                     <button class="select_folder" onclick="selectfolder()">เลือกสินค้า</button>
                 </div>
             </div>
-            <div class="row">
-              <div class="col-12 text-center">
+            <div class="row justify-content-center mgem1o5">
+              <div class="col-10 text-center">
                 <button id="btn-addprod" class="mbtn" onclick="save();">บันทึก</button>
               </div>
             </div>

@@ -43,7 +43,7 @@
       font-weight: bold;
       font-size: 120%;
       color: white;
-      letter-spacing: 2px;
+      letter-spacing: 1px;
       border-radius: 5px;
       box-shadow: 0 1px 2px  #de5a5a, 0 1px 1px #de5a5a;
     } 
@@ -67,7 +67,12 @@
       list-style-type: none;
       margin: 0;
       padding: 0;
-    }    
+    }
+    #title{
+      color: #666;
+      letter-spacing: 1px;
+      font-weight: bold;
+    }     
   </style>
 
   <script>
@@ -121,21 +126,21 @@
             });
             for(var k = 0; k < arr.length;k++){  
               if(arr[k].cd <= 3 && arr[k].cd > 1){
-                $('#myUL').append('<li><div id="cus-1" class="row" onclick="show_credit('+arr[k].cus_id+',\''+arr[k].cd+'\',\''+arr[k].cus+'\')">'+
+                $('#myUL').append('<li class="mgemo5"><div id="cus-1" class="row" onclick="show_credit('+arr[k].cus_id+',\''+arr[k].cd+'\',\''+arr[k].cus+'\')">'+
                   '<div class="col-1"><i class="fas fa-circle yellow"></i></div>' +
                   '<div class="col-5 text-center">'+arr[k].cus+'</div>'+
                   '<div class="col-3 text-center">'+arr[k].cd+' วัน</div>'+
                   '<div class="col-3 text-center">'+arr[k].total+'</div>'+
                   '</div><hr style="margin-top: 4%"></li>');   
               }else if(arr[k].cd <= 1 || arr[k].cd == "เลย"){
-                $('#myUL').append('<li><div id="cus-1" class="row" onclick="show_credit('+arr[k].cus_id+',\''+arr[k].cd+'\',\''+arr[k].cus+'\')">'+
+                $('#myUL').append('<li class="mgemo5"><div id="cus-1" class="row" onclick="show_credit('+arr[k].cus_id+',\''+arr[k].cd+'\',\''+arr[k].cus+'\')">'+
                   '<div class="col-1"><i class="fas fa-circle red"></i></div>' +
                   '<div class="col-5 text-center">'+arr[k].cus+'</div>'+
                   '<div class="col-3 text-center">'+arr[k].cd+' วัน</div>'+
                   '<div class="col-3 text-center">'+arr[k].total+'</div>'+
                   '</div><hr style="margin-top: 4%"></li>');  
               }else{
-                $('#myUL').append('<li><div id="cus-1" class="row" onclick="show_credit('+arr[k].cus_id+',\''+arr[k].cd+'\',\''+arr[k].cus+'\')">'+
+                $('#myUL').append('<li class="mgemo5"><div id="cus-1" class="row" onclick="show_credit('+arr[k].cus_id+',\''+arr[k].cd+'\',\''+arr[k].cus+'\')">'+
                   '<div class="col-1"><i class="fas fa-circle green"></i></div>' +
                   '<div class="col-5 text-center">'+arr[k].cus+'</div>'+
                   '<div class="col-3 text-center">'+arr[k].cd+' วัน</div>'+
@@ -156,8 +161,16 @@
     function show_search(){
       if($("#search_row").is(':visible')){
         $("#search_row").prop('hidden', true);
+
+        $("#row-title").css("margin-top", "4.5em");
+        $("#title-hr").css("margin-top", "6.3em");
+        $("#in-ctn").css("height", "calc(100vh - (4.5em + 120px))");
       }else{
         $("#search_row").prop('hidden', false);
+
+        $("#row-title").css("margin-top", "8.5em");
+        $("#title-hr").css("margin-top", "10.3em");
+        $("#in-ctn").css("height", "calc(100vh - (8.9em + 120px))");
       }
     }
 
@@ -180,48 +193,41 @@
   </script>
 </head>
 
-<body style="overflow: auto;">
+<body>
   <!-- Loading -->
-  <div class="overlay" hidden><div class="loading"></div></div>
-  <!-- SEarch -->
+  <div class="overlay" hidden><div class="loading"></div></div> 
 
-  <!-- Nav menu top -->
-  <div class="row fixed-top navs">
-    <div id="i-back" class="col-1 text-center" onclick="transition_page_back('index.html?menu=3'); window.location = 'index.html?menu=3';">
-      <i class="fas fa-angle-left"></i>
+  <!-- big container -->
+  <div id="big-ctn" class="container-fullwidth justify-content-center">
+    <!-- Nav menu top -->
+    <div class="row navs align-items-center mgem1o5 fixed-top">
+      <div class="col-2 text-center" onclick="transition_page_back('index.html?menu=3'); window.location = 'index.html?menu=3';">
+        <i id="i-back" class="fas fa-angle-left"></i>
+      </div>
+      <div class="col-8 text-center">
+        <h5 id="h5-title">รายการเครดิต</h5>
+      </div>
+      <div class="col-1 text-right" onclick="show_search();">
+        <i class="fas fa-search" style="color: white; font-size: 120%; margin-top: 2px;"></i>
+      </div>
     </div>
-    <div class="col-9 text-center" style="padding-left: 10%; margin-right: 3%;">
-      <h5 id="h5-title">รายการเครดิต</h5>
-    </div>
-    <div class="col-1 text-right" onclick="show_search();">
-      <i class="fas fa-search" style="color: white; font-size: 120%; margin-top: 5px;"></i>
-    </div>
-  </div><br>
 
-  <!-- End big container -->
-  <div class="container justify-content-center" style="margin-top: 15%; margin-bottom: 10%;">
-    <div id="search_row" class="row mg-10" hidden>
+    <div id="search_row" class="row mgem1o5 fixed-top" style="margin-top: 4.5em; padding-left: 1.5em; padding-right: 1.5em;" hidden>
       <div class="col-12">
         <input id="search_credit" type="text" onkeyup="search()" class="form-control form-control-lg text-center" placeholder="ค้นหาลูกค้า">
       </div>      
     </div>
 
-    <div class="row">
+    <div id="row-title" class="row fixed-top" style="margin-top: 4.5em;">
       <div class="col-1"></div>
-      <div class="col-5 text-center nopd">
-        <h5 id="title">ลูกค้า</h5>
-      </div>
-      <div id="title" class="col-3 text-center nopd">
-        <h5 id="title">วางบิล</h5>
-      </div>
-      <div class="col-3 text-center nopd">
-        <h5 id="title">รวม</h5>
-      </div>
-    </div>
-    <hr>
-    <ul id="myUL">
-     
-    </ul>   
+      <div id="title" class="col-5 text-center nopd">ลูกค้า</div>
+      <div id="title" class="col-3 text-center nopd">วางบิล</div>
+      <div id="title" class="col-3 text-center nopd">รวม</div>
+    </div><hr id="title-hr" class="mgem1" style="margin-top: 6.3em; width: 98%;">
+
+    <div id="in-ctn" class="container-fullwidth" style="margin-top: 0!important; height: calc(100vh - (4.5em + 120px));">
+      <ul id="myUL"> </ul> 
+    </div>  
   </div>
   <!-- End big container -->
 

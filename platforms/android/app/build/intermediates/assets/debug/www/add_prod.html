@@ -32,7 +32,7 @@
   <style>
     #title {
       color: #666666;
-      letter-spacing: 2px;
+      letter-spacing: 1px;
     }
     .pdlr {
       padding-left: 10%;
@@ -325,36 +325,36 @@
   </script>
 </head>
 
-<body style="overflow: auto;">
+<body>
   <!-- Loading -->
   <div class="overlay" hidden><div class="loading"></div></div>
 
-  <!-- Nav menu top -->
-  <div class="row fixed-top navs align-items-center">
-    <div class="col-1 text-center" onclick="page_back()">
-      <i id="i-back" class="fas fa-angle-left"></i>
-    </div>
-    <div class="col-10 text-center" style="padding-left: 0;">
-      <h5 id="h5-title">เพิ่มสินค้า</h5>
-    </div>
-  </div><br>
-
   <!-- End big container -->
-  <div class="container justify-content-center" style="margin-top: 15%; margin-bottom: 25%;">
-    <div class="container">
-      <div class="row mg-10">
+  <div id="big-ctn" class="container justify-content-center">
+    <!-- Nav menu top -->
+    <div class="row navs align-items-center mgem1o5 fixed-top">
+      <div class="col-2 text-center" onclick="page_back()">
+        <i id="i-back" class="fas fa-angle-left"></i>
+      </div>
+      <div class="col-8 text-center">
+        <h5 id="h5-title">เพิ่มสินค้า</h5>
+      </div>
+    </div>
+    
+    <div id="in-ctn" class="container-fullwidth">
+      <div class="row mgem1">
         <div class="col-12 text-center">
           <h5 id="folder-title"></h5>
         </div>
       </div>
-      <div class="row mg-10">
-        <div class="col-12 text-center pdlr">
+      <div class="row justify-content-center mgem1o5">
+        <div class="col-10 text-center">
           <label for="name">ชื่อสินค้า</label>
           <input id="name" type="text" class="w3-input" data-index="1" autofocus>
         </div>
       </div>
-      <div class="row" style="margin-bottom: 18%">
-        <div class="col-6 text-center" style="margin-left: 4%;">
+      <div class="row justify-content-center mgem2">
+        <div class="col-6 text-center">
           <label for="barcode">รหัส</label>
           <input id="barcode" type="text" class="w3-input"  data-index="2">
         </div>
@@ -363,41 +363,41 @@
           <input id="min" type="number" class="w3-input"  data-index="3">
         </div>
       </div>
-      <div id="row-img" class="row mg-7">
+      <div id="row-img" class="row mgem2">
         <div class="col-12 text-center">
-          <img id="img" class="square" alt="" onclick="show_pic()" src="">
+          <img id="img" class="square" alt="" onclick="show_pic()" src="https://www.bzh.be/img.php?src=https://www.sortir-en-bretagne.fr/images/no-image.png&w=330&h=200&zc=1">
         </div>
       </div>
-      <div class="row mg-10">
-        <div class="col-12 text-center">
+      <div class="row justify-content-center mgem1">
+        <div class="col-9 text-center">
           <button id="btn-addpic" class="mbtn-green" onclick="addpic();">เพิ่มรูปภาพ</button>
         </div>
       </div>
-      <div class="row">
-        <div class="col-12 text-center">
+      <div class="row justify-content-center" style="margin-bottom: 3em;">
+        <div class="col-9 text-center">
           <button class="mbtn" onclick="add_prod();">เพิ่มสินค้า</button>
         </div>
       </div>
     </div>
-  <!-- End big container -->
-
-  <!-- Nav menu bottom -->
-  <div class="row fixed-bottom navs">
-    <div class="col-3 text-center" onclick="transition_page_back('index.html'); window.location = 'index.html';">
-      <i id="i-home" class="fas fa-home menu"></i>
+    <!-- Nav menu bottom -->
+    <div class="row fixed-bottom navs">
+      <div class="col-3 text-center" onclick="transition_page_back('index.html'); window.location = 'index.html';">
+        <i id="i-home" class="fas fa-home menu"></i>
+      </div>
+      <div class="col-3 text-center" onclick="transition_page_next('bell.html'); window.location ='bell.html';">
+        <div class="dot" hidden></div>
+        <i id="i-bell" class="fas fa-bell menu"></i>
+      </div>
+      <div class="col-3 text-center" onclick="scan();">
+        <i id="i-qrcode" class="fas fa-qrcode menu"></i>
+      </div>
+      <div class="col-3 text-center" onclick="transition_page_next('other.html'); window.location = 'other.html';">
+        <i id="i-bars" class="fa fa-bars menu"></i>
+      </div>
     </div>
-    <div class="col-3 text-center" onclick="transition_page_next('bell.html'); window.location ='bell.html';">
-      <div class="dot" hidden></div>
-      <i id="i-bell" class="fas fa-bell menu"></i>
-    </div>
-    <div class="col-3 text-center" onclick="scan();">
-      <i id="i-qrcode" class="fas fa-qrcode menu"></i>
-    </div>
-    <div class="col-3 text-center" onclick="transition_page_next('other.html'); window.location = 'other.html';">
-      <i id="i-bars" class="fa fa-bars menu"></i>
-    </div>
+    <!-- End Nav menu bottom -->
   </div>
-  <!-- End Nav menu bottom -->
+  <!-- End big container -->
   <script>
     //Touch animation
     $(".mbtn").on("touchstart", function() {

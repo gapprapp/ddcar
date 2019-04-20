@@ -25,11 +25,12 @@
   <link href="https://fonts.googleapis.com/css?family=Prompt" rel="stylesheet">
 
   <style>
-    #title {
-      color: #666666;
-      letter-spacing: 2px;
+    #title{
+      color: #666;
+      letter-spacing: 1px;
+      font-weight: bold;
     }
-    .no-pd{
+    .nopd{
       padding-right: 0px;
       padding-left: 0px;
     }
@@ -51,16 +52,16 @@
           var obj = jQuery.parseJSON(data);
           if(obj){
               $.each(obj, function(i, field){
-              $('#show_user').append(" <div id='cus-"+i+"' class='row'>" +
+              $('#in-ctn').append(" <div id='cus-"+i+"' class='row'>" +
                 "<span id='user-"+i+"' hidden>"+obj[i].user_id+"</span>" +
                 "<div class='col-1 text-left'>" + 
                   "<i class='fa fa-trash-alt i-del' onclick='edit_del("+i+");' style='color: #666666;' hidden></i>" +
                   "<i class='fa fa-edit i-edit' onclick='edit_mem("+i+");' style='color: #666666;' hidden></i>" +
                 "</div>" +
-                "<div class='col-6 text-center no-pd'>" +
+                "<div class='col-6 text-center nopd'>" +
                   "<p id='name-"+i+"'>"+obj[i].user_name+"</p>" +
                 "</div>" +
-                "<div class='col-4 text-center no-pd'>" +
+                "<div class='col-4 text-center nopd'>" +
                   "<p id='role-"+i+"'>"+obj[i].user_role+"</p>" +
                 "</div>" +
                 "<div class='col-1'></div>" +
@@ -238,35 +239,28 @@
 
 <body>
   <!-- Loading -->
-  <div class="overlay" hidden><div class="loading"></div></div>
+  <div class="overlay" hidden><div class="loading"></div></div> 
 
-  <!-- Nav menu top -->
-  <div class="row fixed-top navs align-items-center">
-    <div class="col-1 text-center" onclick="transition_page_back('index.html'); window.location = 'index.html';">
-      <i id="i-back" class="fas fa-angle-left"></i>
-    </div>
-    <div class="col-10 text-center" style="padding-left: 0;">
-      <h5 id="h5-title">ผู้ใช้</h5>
-    </div>
-    <div class="col-1">
-    </div>
-  </div><br>
-
-  <!-- End big container -->
-  <div class="container justify-content-center" style="margin-top: 20%; margin-bottom: 10%;">
-    <div id="show_user" class="container">
-      <div class="row">
-        <div class="col-1"></div>
-        <div class="col-6 text-center no-pd">
-          <h5 id="title">ชื่อ</h5>
-        </div>
-        <div class="col-4 text-center no-pd">
-          <h5 id="title">บทบาท</h5>
-        </div>
-        <div class="col-1"></div>
+  <!-- big container -->
+  <div id="big-ctn" class="container justify-content-center">
+    <!-- Nav menu top -->
+    <div class="row navs align-items-center mgem1o5 fixed-top">
+      <div class="col-2 text-center" onclick="transition_page_back('index.html'); window.location = 'index.html';">
+        <i id="i-back" class="fas fa-angle-left"></i>
       </div>
-      <hr>
-      
+      <div class="col-8 text-center">
+        <h5 id="h5-title">ผู้ใช้</h5>
+      </div>
+    </div>
+
+    <div id="row-title" class="row fixed-top" style="margin-top: 4.5em;">
+      <div class="col-1"></div>
+      <div id="title" class="col-6 text-center nopd">ชื่อ</div>
+      <div id="title" class="col-4 text-center nopd">บทบาท</div>
+      <div class="col-1"></div>
+    </div><hr id="title-hr" class="mgem1" style="margin-top: 6.3em; width: 98%;">
+
+    <div id="in-ctn" class="container-fullwidth" style="margin-top: 0!important; height: calc(100vh - (4.5em + 120px));">
       <!-- Show -->
   
     </div>

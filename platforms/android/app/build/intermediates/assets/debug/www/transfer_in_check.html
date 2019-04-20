@@ -27,7 +27,8 @@
     <style>
         #title {
             color: #666666;
-            letter-spacing: 2px;
+            letter-spacing: 1px;
+            font-weight: bold;
         }
 
         .no-pd {
@@ -247,29 +248,28 @@
     </script>
 </head>
 
-<body style="overflow: auto;">
+<body>
     <!-- Loading -->
     <div class="overlay" hidden><div class="loading"></div></div>
-    <!-- Nav menu top -->
-    <div class="row fixed-top navs align-items-center">
-        <div class="col-1 text-center" onclick="transition_page_back('transfer_in.html'); window.location = 'transfer_in.html';
-">
-            <i id="i-back" class="fas fa-angle-left"></i>
-        </div>
-        <div class="col-10 text-center">
-            <h5 id="h5-title">ตรวจสอบ</h5>
-        </div>
-        <div class="col-1">
-        </div>
-    </div>
-    <br>
 
-    <!-- End big container -->
-    <div id="big-ctn" class="container justify-content-center" style="margin-top: 15%;">
-        <div class="row mg-7">
+    <!-- big container -->
+    <div id="big-ctn" class="container-fullwidth justify-content-center">
+        <!-- Nav menu top -->
+        <div class="row navs align-items-center mgem1 fixed-top">
+          <div class="col-2 text-center" onclick="transition_page_back('transfer_in.html'); window.location = 'transfer_in.html';">
+            <i id="i-back" class="fas fa-angle-left"></i>
+          </div>
+          <div class="col-8 text-center">
+            <h5 id="h5-title">ตรวจสอบ</h5>
+          </div>
+        </div>
+        <div class="row mgem1 fixed-top" style="margin-top: 4.5em;">
             <div class="col-12 text-center">
                 <h5 id="store-title">ชื่อหน้าร้าน</h5>
             </div>
+        </div>
+        
+        <div id="in-ctn" class="container" style="height: calc(100vh - (7em + 140px)) !important; margin-top: 7em;">
         </div>
     </div>
     <!-- End big container -->

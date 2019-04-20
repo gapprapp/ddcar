@@ -26,7 +26,8 @@
     <style>
         #title {
             color: #666666;
-            letter-spacing: 2px;
+            letter-spacing: 1px;
+            font-weight: bold;
         }
 
         .no-pd {
@@ -92,13 +93,13 @@
                             "<img id='img' src='"+arr_data[i].img+"' alt='' onclick='show_pic()' class='collapse-square'>" +
                         "</div>" +
                     "</div>" +
-                    "<div class='row' style='margin-bottom: 4%; margin-top: 4%;'>" +
+                    "<div class='row' style='margin-bottom: 2em; margin-top: 2em;'>" +
                         "<div class='col-2'></div>" +
                         "<div class='col-4 text-center no-pd'>รหัส : </div>" +
                         "<div class='col-4 text-center no-pd'>"+arr_data[i].qr+"</div>" +
                         "<div class='col-2'></div>" +
                     "</div>" +
-                    "<div class='row' style='margin-bottom: 4%;'>" +
+                    "<div class='row' style='margin-bottom: 2em;'>" +
                         "<div class='col-2'></div>" +
                         "<div class='col-4 text-center no-pd'>รวม : </div>" +
                         "<div id='sum-"+i+"' class='col-4 text-center no-pd'>"+sum_prod+"</div>" +
@@ -110,7 +111,7 @@
                         "<div class='col-4 text-center no-pd'>15</div>" +
                         "<div class='col-2'></div>" +
                     "</div>-->" +
-                "</div><hr id='hr-"+i+"' style='margin-top: 5%;'>");                    
+                "</div><hr id='hr-"+i+"' style='margin-top: 2em;'>");                    
             }            
             $("#net").text(sum.toLocaleString()); // 50000 -> 50,000;    
         });
@@ -353,28 +354,26 @@
     </script>
 </head>
 
-<body style="overflow: auto;">
-    <!-- Nav menu top -->
-    <div class="row fixed-top navs align-items-center">
-        <div class="col-1 text-center" onclick="transition_page_back('sale.html'); window.location = 'sale.html';">
+<body>
+    <!-- big container -->
+    <div id="big-ctn" class="container-fullwidth justify-content-center">
+        <!-- Nav menu top -->
+        <div class="row navs align-items-center mgem1o5 fixed-top">
+          <div class="col-2 text-center" onclick="transition_page_back('sale.html'); window.location = 'sale.html';">
             <i id="i-back" class="fas fa-angle-left"></i>
-        </div>
-        <div class="col-10 text-center">
+          </div>
+          <div class="col-8 text-center">
             <h5 id="h5-title">ตรวจสอบ</h5>
-        </div>
-        <div class="col-1">
-        </div>
-    </div>
-    <br>
-
-    <!-- End big container -->
-    <div id="big-ctn" class="container justify-content-center" style="margin-top: 15%;">       
+          </div>
+        </div>     
         <div class="row mg-7">
             <div class="col-12 text-center">
                 <h5 id="cus-title"></h5>
             </div>
         </div>
-        <!-- Show -->     
+        <div id="in-ctn" class="container" style="height: calc(100vh - (4.5em + 150px)) !important; margin-top: 4.5em;">
+            <!-- Show --> 
+        </div>    
     </div>
     <!-- End big container -->
 

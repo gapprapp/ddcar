@@ -28,7 +28,7 @@
     #title {
       color: #666666;
       letter-spacing: 1px;
-      font-size: 110%;
+      font-weight: bold;
     }
     .no-pd {
       padding-right: 0px;
@@ -52,7 +52,7 @@
           var obj = jQuery.parseJSON(data);
           if(obj){
             $.each(obj, function(i, field){                   
-            $('#show_thre').append( "<div id='prod-"+i+"' class='row mg-5'>" +               
+            $('#in-ctn').append( "<div id='prod-"+i+"' class='row mgemo5'>" +               
               "<div class='col-1 text-left'>" +
                 "<i class='fa fa-trash-alt i-del' onclick='remove("+i+","+field.prod_id+");' style='color: #666;' hidden></i>" +
                 "<i class='fa fa-edit i-edit' onclick='edit("+i+","+field.prod_id+","+field.min_amount+","+field.day_transport+",\""+field.prod_code+"\");' style='color: #666;' hidden></i>" +
@@ -175,39 +175,29 @@
 
 <body>
   <!-- Loading -->
-  <div class="overlay" hidden><div class="loading"></div></div>
-
-  <!-- Nav menu top -->
-  <div class="row fixed-top navs align-items-center">
-    <div class="col-1 text-center" onclick="transition_page_back('index.html'); window.location = 'index.html';">
-      <i id="i-back" class="fas fa-angle-left"></i>
-    </div>
-    <div class="col-10 text-center" style="padding-left: 0;">
-      <h5 id="h5-title">สต๊อกขั้นต่ำ</h5>
-    </div>
-    <div class="col-1">
-    </div>
-  </div>
-  <br>
+  <div class="overlay" hidden><div class="loading"></div></div> 
 
   <!-- End big container -->
-  <div id="big-ctn" class="container justify-content-center" style="margin-top: 15%;">
-      <div id="show_thre" class="container">
-      <div class="row mg-5">
-        <div class="col-1"></div>
-        <div class="col-5 text-center" style="padding-left: 0;">
-          <h5 id="title">ชื่อสินค้า</h5>
-        </div>
-        <div class="col-3 text-center">
-          <h5 id="title">จัดส่ง</h5>
-        </div>
-        <div class="col-2 text-center">
-          <h5 id="title">จน.</h5>
-        </div>
+  <div id="big-ctn" class="container-fullwidth justify-content-center">
+    <!-- Nav menu top -->
+    <div class="row navs align-items-center mgem1o5 fixed-top">
+      <div class="col-2 text-center" onclick="transition_page_back('index.html'); window.location ='index.html';">
+        <i id="i-back" class="fas fa-angle-left"></i>
       </div>
-      <hr>
+      <div class="col-8 text-center">
+        <h5 id="h5-title">สต๊อกขั้นต่ำ</h5>
+      </div>
+    </div>
 
-      <!-- Show -->
+    <div id="row-title" class="row fixed-top" style="margin-top: 4.5em;">
+      <div class="col-1"></div>
+      <div id="title" class="col-5 text-center">ชื่อสินค้า</div>
+      <div id="title" class="col-3 text-center nopd">จัดส่ง</div>
+      <div id="title" class="col-2 text-center nopd">จน.</div> 
+    </div><hr id="title-hr" class="mgem1" style="margin-top: 6.3em; width: 98%;">
+
+    <div id="in-ctn" class="container-fullwidth">
+      
     </div>    
   </div>
   <!-- End big container -->

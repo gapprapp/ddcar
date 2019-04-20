@@ -676,27 +676,24 @@
     </script>    
 </head>
 
-<body style="overflow: auto;">
+<body>
     <!-- Loading -->
     <div class="overlay" hidden><div class="loading"></div></div>    
 
-    <!-- Nav menu top -->
-    <div class="row fixed-top navs align-items-center">
-        <div class="col-1 text-center" onclick="transition_page_back('sale_check.html'); window.location = 'sale_check.html';">
+    <!-- big container -->
+    <div id="big-ctn" class="container-fullwidth justify-content-center">
+        <!-- Nav menu top -->
+        <div class="row navs align-items-center mgem1o5 fixed-top">
+          <div class="col-2 text-center" onclick="transition_page_back('sale_check.html'); window.location = 'sale_check.html';">
             <i id="i-back" class="fas fa-angle-left"></i>
-        </div>
-        <div class="col-10 text-center">
+          </div>
+          <div class="col-8 text-center">
             <h5 id="h5-title">รายละเอียด</h5>
-        </div>
-        <div class="col-1">
-        </div>
-    </div>
-    <br>
+          </div>
+        </div> 
 
-    <!-- End big container -->
-    <div id="big-ctn" class="container justify-content-center" style="margin-top: 45%;">
-        <div class="container">
-            <div class="row mg-10">
+        <div id="in-ctn" class="container" style="margin-top: 5.5em; height: calc(100vh - 80px);">
+            <div class="row mgem1o5">
                 <div class="col-6 text-center">
                     <label for="pay">ชำระเงิน</label>
                     <input id="pay" type="text" class="w3-input" readonly onclick="showpay();" value="เงินสด">
@@ -706,13 +703,13 @@
                     <input id="bill" type="text" class="w3-input" readonly onclick="showbill();" value="ใบรายงานการขาย (A4)">
                 </div>
             </div>
-            <div class="row" style="margin-bottom: 18%;" id="showvat">               
+            <div class="row mgem5" id="showvat">               
                 <div class="col-12 text-center">
                     <label for="vat">vat</label>
                     <input id="vat" type="text" class="w3-input" readonly onclick="showvat();" value="ไม่รวม vat">
                 </div>
             </div>
-            <div class="row" style="margin-bottom: 18%;" id="novat" hidden>
+            <div class="row" id="novat" hidden>
               <div class="col-1"></div>
                 <div class="col-10 text-center">
                     <label for="ware">ขายจาก</label>
@@ -720,8 +717,8 @@
                 </div>
                 <div class="col-1"></div>
             </div>
-            <div class="row">
-                <div class="col-12">
+            <div class="row justify-content-center">
+                <div class="col-10">
                     <button class="mbtn" onclick="save()">คิดเงิน</button>
                 </div>
             </div>  
