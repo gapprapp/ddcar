@@ -89,58 +89,73 @@
         success: function(data){ 
           $(".overlay").prop('hidden', true);  
           var obj = jQuery.parseJSON(data);
-          if(obj){           
+          if(obj){
+            arr = [];
             var d = new Date($.now());
             $.each(obj, function(i, field){
               var txt = field.date_time.split(" ");
               var date = txt[0].split("-");
-              var credit_id = field.credit_id;
               var cus = field.cus_name;              
-              var total = field.credit_price;
-              var cus_id = field.cus_id;                    
+              var total = field.total_price;
+              var cus_id = field.customer_id;                    
               var last_d = new Date(d.getFullYear(),d.getMonth()+1, 0).getDate();              
               var cd = last_d - d.getDate();
               if(d.getMonth()+1 != date[1]){
                 cd = "เลย";
-              }                                        
-            });           
-              if(cd <= 3 && cd > 1){
-                $('#myUL').append('<li class="mgemo5"><div id="cus-1" class="row" onclick="show_credit('+credit_id+',\''+cd+'\')">'+
+              }
+              item = {}              
+              item ["cus"] =  cus;
+              item ["cus_id"] = cus_id;
+              item ["total"] = total;
+              item ["cd"] = cd;             
+              if(i == 0){                
+                arr.push(item);
+              }else{
+                var bool = false;
+                for(var j = 0; j < arr.length ;j++){                  
+                  if(cus == arr[j].cus && cd == arr[j].cd){
+                    bool = true;                    
+                    arr[j].total = parseFloat(arr[j].total) + parseFloat(total);
+                    break;
+                  }
+                }                 
+                if(!bool){
+                  arr.push(item);
+                }
+              }                              
+            });
+            for(var k = 0; k < arr.length;k++){  
+              if(arr[k].cd <= 3 && arr[k].cd > 1){
+                $('#myUL').append('<li class="mgemo5"><div id="cus-1" class="row" onclick="show_credit('+arr[k].cus_id+',\''+arr[k].cd+'\',\''+arr[k].cus+'\')">'+
                   '<div class="col-1"><i class="fas fa-circle yellow"></i></div>' +
-                  '<div class="col-5 text-center">'+cus+'</div>'+
-                  '<div class="col-3 text-center">'+cd+' วัน</div>'+
-                  '<div class="col-3 text-center">'+total+'</div>'+
+                  '<div class="col-5 text-center">'+arr[k].cus+'</div>'+
+                  '<div class="col-3 text-center">'+arr[k].cd+' วัน</div>'+
+                  '<div class="col-3 text-center">'+arr[k].total+'</div>'+
                   '</div><hr style="margin-top: 4%"></li>');   
-              }else if(cd <= 1 || cd == "เลย"){
-                $('#myUL').append('<li class="mgemo5"><div id="cus-1" class="row" onclick="show_credit('+credit_id+',\''+cd+'\')">'+
+              }else if(arr[k].cd <= 1 || arr[k].cd == "เลย"){
+                $('#myUL').append('<li class="mgemo5"><div id="cus-1" class="row" onclick="show_credit('+arr[k].cus_id+',\''+arr[k].cd+'\',\''+arr[k].cus+'\')">'+
                   '<div class="col-1"><i class="fas fa-circle red"></i></div>' +
-                  '<div class="col-5 text-center">'+cus+'</div>'+
-                  '<div class="col-3 text-center">'+cd+' วัน</div>'+
-                  '<div class="col-3 text-center">'+total+'</div>'+
+                  '<div class="col-5 text-center">'+arr[k].cus+'</div>'+
+                  '<div class="col-3 text-center">'+arr[k].cd+' วัน</div>'+
+                  '<div class="col-3 text-center">'+arr[k].total+'</div>'+
                   '</div><hr style="margin-top: 4%"></li>');  
               }else{
-                $('#myUL').append('<li class="mgemo5"><div id="cus-1" class="row" onclick="show_credit('+credit_id+',\''+cd+'\')">'+
+                $('#myUL').append('<li class="mgemo5"><div id="cus-1" class="row" onclick="show_credit('+arr[k].cus_id+',\''+arr[k].cd+'\',\''+arr[k].cus+'\')">'+
                   '<div class="col-1"><i class="fas fa-circle green"></i></div>' +
-                  '<div class="col-5 text-center">'+cus+'</div>'+
-                  '<div class="col-3 text-center">'+cd+' วัน</div>'+
-                  '<div class="col-3 text-center">'+total+'</div>'+
+                  '<div class="col-5 text-center">'+arr[k].cus+'</div>'+
+                  '<div class="col-3 text-center">'+arr[k].cd+' วัน</div>'+
+                  '<div class="col-3 text-center">'+arr[k].total+'</div>'+
                   '</div><hr style="margin-top: 4%"></li>');  
-              }                    
+              }             
+            }           
           }                                
         }               
       });
     });
 
-    $(document).keydown(function(objEvent) {
-      if (objEvent.keyCode == 13) {  //enter pressed
-        objEvent.preventDefault();           
-        search();        
-      }         
-    })
-
-    function show_credit(arg,arg2){
-      transition_page_next('show_credit.html?credit_id='+arg+'&cd='+arg2);
-      window.location = 'show_credit.html?credit_id='+arg+'&cd='+arg2;
+    function show_credit(arg,arg2,name){
+      transition_page_next('show_credit.html?cus='+arg+'&cd='+arg2+'&cus_name='+name);
+      window.location = 'show_credit.html?cus='+arg+'&cd='+arg2+'&cus_name='+name;
     }
 
     function show_search(){
@@ -159,79 +174,22 @@
       }
     }
 
-    var val;
     function search(){
-      if($('#search_credit').val() == ""){
-        return 0;
-      }
-      $('#search_credit').blur();
-      val = $('#search_credit').val();   
-      $("#myS").prop('hidden', false);
-      $("#myUL").prop('hidden', true);     
-      $("#myS").empty();
-      $("#i-back").attr("onclick","showUL()");
-      get_credit_s();
+      $('#myUL li').each(function(){
+          $(this).attr('data-search-term', $(this).text().toLowerCase());
+      });      
+
+      var searchTerm = $('#search_credit').val().toLowerCase();
+
+        $('#myUL li').each(function(){
+          if ($(this).filter('[data-search-term *= ' + searchTerm + ']').length > 0 || searchTerm.length < 1) {
+            $(this).show();                                                     
+          } else {
+            $(this).hide();                               
+          }
+        });                    
     }
 
-    function showUL(){
-      $("#myS").prop('hidden', true);
-      $("#myUL").prop('hidden', false);      
-      $("#search_row").prop('hidden', true);     
-      $("#i-back").attr("onclick","transition_page_back('index.html'); window.location = 'index.html';");
-    }
-
-    function get_credit_s(){
-      $.ajax({
-        type: "GET",
-        url:"http://ddaccessory.trueddns.com:24330/dd-shop/php/get_credit.php",
-        data: {'value':val},
-        beforeSend: function(){
-            $(".overlay").prop('hidden', false);
-        },                       
-        success: function(data){ 
-          $(".overlay").prop('hidden', true);  
-          var obj = jQuery.parseJSON(data);
-          if(obj){           
-            var d = new Date($.now());
-            $.each(obj, function(i, field){
-              var txt = field.date_time.split(" ");
-              var date = txt[0].split("-");
-              var credit_id = field.credit_id;
-              var cus = field.cus_name;              
-              var total = field.credit_price;
-              var cus_id = field.cus_id;                    
-              var last_d = new Date(d.getFullYear(),d.getMonth()+1, 0).getDate();              
-              var cd = last_d - d.getDate();
-              if(d.getMonth()+1 != date[1]){
-                cd = "เลย";
-              }                                        
-            });           
-              if(cd <= 3 && cd > 1){
-                $('#myUL').append('<li class="mgemo5"><div id="cus-1" class="row" onclick="show_credit('+credit_id+',\''+cd+'\')">'+
-                  '<div class="col-1"><i class="fas fa-circle yellow"></i></div>' +
-                  '<div class="col-5 text-center">'+cus+'</div>'+
-                  '<div class="col-3 text-center">'+cd+' วัน</div>'+
-                  '<div class="col-3 text-center">'+total+'</div>'+
-                  '</div><hr style="margin-top: 4%"></li>');   
-              }else if(cd <= 1 || cd == "เลย"){
-                $('#myUL').append('<li class="mgemo5"><div id="cus-1" class="row" onclick="show_credit('+credit_id+',\''+cd+'\')">'+
-                  '<div class="col-1"><i class="fas fa-circle red"></i></div>' +
-                  '<div class="col-5 text-center">'+cus+'</div>'+
-                  '<div class="col-3 text-center">'+cd+' วัน</div>'+
-                  '<div class="col-3 text-center">'+total+'</div>'+
-                  '</div><hr style="margin-top: 4%"></li>');  
-              }else{
-                $('#myUL').append('<li class="mgemo5"><div id="cus-1" class="row" onclick="show_credit('+credit_id+',\''+cd+'\')">'+
-                  '<div class="col-1"><i class="fas fa-circle green"></i></div>' +
-                  '<div class="col-5 text-center">'+cus+'</div>'+
-                  '<div class="col-3 text-center">'+cd+' วัน</div>'+
-                  '<div class="col-3 text-center">'+total+'</div>'+
-                  '</div><hr style="margin-top: 4%"></li>');  
-              }                    
-          }                                
-        }               
-      });     
-    }
   </script>
 </head>
 
@@ -243,8 +201,8 @@
   <div id="big-ctn" class="container-fullwidth justify-content-center">
     <!-- Nav menu top -->
     <div class="row navs align-items-center mgem1o5 fixed-top">
-      <div id="i-back" class="col-2 text-center" onclick="transition_page_back('index.html'); window.location = 'index.html';">
-        <i  class="fas fa-angle-left"></i>
+      <div class="col-2 text-center" onclick="transition_page_back('index.html?menu=3'); window.location = 'index.html?menu=3';">
+        <i id="i-back" class="fas fa-angle-left"></i>
       </div>
       <div class="col-8 text-center">
         <h5 id="h5-title">รายการเครดิต</h5>
@@ -252,11 +210,11 @@
       <div class="col-1 text-right" onclick="show_search();">
         <i class="fas fa-search" style="color: white; font-size: 120%; margin-top: 2px;"></i>
       </div>
-    </div>   
+    </div>
 
     <div id="search_row" class="row mgem1o5 fixed-top" style="margin-top: 4.5em; padding-left: 1.5em; padding-right: 1.5em;" hidden>
       <div class="col-12">
-        <input id="search_credit" type="search" class="form-control form-control-lg text-center" placeholder="ค้นหาลูกค้า/ตัวเลขเดือน">
+        <input id="search_credit" type="text" onkeyup="search()" class="form-control form-control-lg text-center" placeholder="ค้นหาลูกค้า">
       </div>      
     </div>
 
@@ -269,7 +227,6 @@
 
     <div id="in-ctn" class="container-fullwidth" style="margin-top: 0!important; height: calc(100vh - (4.5em + 120px));">
       <ul id="myUL"> </ul> 
-      <ul id="myS" hidden> </ul>
     </div>  
   </div>
   <!-- End big container -->
