@@ -139,8 +139,8 @@
 
     function onLoad(){
       if(!localStorage.user_id){                      
-        //transition_page_back('login.html');
-        //window.location = 'login.html';
+        transition_page_back('login.html');
+        window.location = 'login.html';
       }
          
       $.ajax({ 
@@ -184,28 +184,7 @@
         localStorage.last_m = 1;
       }else{
         localStorage.last_m = 0;
-      }
-
-      if(d.getDate() == 3){
-        if(localStorage.ch_ucredit == 1){
-          return 0;
-        }  
-        $.ajax({ 
-          type: "GET",
-          url:"http://ddaccessory.trueddns.com:24330/dd-shop/php/update_credit_auto.php",
-          beforeSend: function(){
-              $(".overlay").prop('hidden', false);
-          },                       
-          success: function(data){ 
-            $(".overlay").prop('hidden', true); 
-            if(data == "success"){
-              localStorage.ch_ucredit = 1;    
-            }                     
-          }               
-        });       
-      }else{
-        localStorage.ch_ucredit == 0;
-      }
+      }  
     }
 
     function tabs(arg){

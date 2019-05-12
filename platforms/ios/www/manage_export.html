@@ -182,11 +182,11 @@
 
     var val;
     function search(){
-      if($('#search_import').val() == ""){
+      if($('#search_export').val() == ""){
         return 0;
       }
-      $('#search_import').blur();
-      val = $('#search_import').val();
+      $('#search_export').blur();
+      val = $('#search_export').val();
       start_s = 0;
       bool_s = false;
       $("#myS").prop('hidden', false);
@@ -279,7 +279,8 @@
           });                                         
         }               
       });  
-      start_d += 20;          
+      start_d += 20; 
+      $("#i-back").attr("onclick","showUL()");         
     }
 
   </script>
@@ -293,8 +294,8 @@
   <div id="big-ctn" class="container-fullwidth justify-content-center">
     <!-- Nav menu top -->
     <div class="row navs align-items-center mgem1o5 fixed-top">
-      <div class="col-2 text-center" onclick="transition_page_back('index.html?menu=3'); window.location ='index.html?menu=3';">
-        <i id="i-back" class="fas fa-angle-left"></i>
+      <div id="i-back" class="col-2 text-center" onclick="transition_page_back('index.html'); window.location ='index.html';">
+        <i class="fas fa-angle-left"></i>
       </div>
       <div class="col-8 text-center">
         <h5 id="h5-title">รายการสินค้าออก</h5>

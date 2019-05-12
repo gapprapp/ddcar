@@ -326,6 +326,7 @@
 					texta4 = "";
 				}
 				text = text + " <div class='left'>"+arr_data[i].amt+"</div> <div class='mid'>"+arr_data[i].name+"</div> <div class='right'>"+arr_data[i].price+"</div>";
+                msg_alert += arr_data[i].name + " คงเหลือ " + (arr_data[i].min-arr_data[i].amt) + '<br>';
 			} 	
             json_string = JSON.stringify(arr_data); 
             json_detail = JSON.stringify(arr_detail);           
@@ -335,7 +336,7 @@
             //alert(dataString);
             $.ajax({
                 type: "POST",
-                url:"http://ddaccessory.trueddns.com:24330/dd-shop/php/save_order.php",           
+                url:"http://ddaccessory.trueddns.com:24330/dd-shop-test/php/save_order.php",           
                 data: dataString,
                 beforeSend: function(){
                     $(".overlay").prop('hidden', false);
@@ -606,7 +607,20 @@
                                 // response cancle res = false
                             });  
                         }
-                        finish(ch);           
+                        $.confirm({
+                            title: 'จำนวนคงเหลือใน'+ localStorage.ware_name_s,
+                            content: msg_alert,
+                            backgroundDismiss: false,
+                            buttons: {
+                                formSubmit: {
+                                text: 'ตกลง',
+                                btnClass: 'btn-regis',
+                                action: function () {
+									finish(ch);
+                                }
+                                }
+                            }
+                        });                         
                     }else{
                         $.confirm({
                             title: 'พบข้อผิดพลาด',
