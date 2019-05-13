@@ -119,7 +119,8 @@
             var d = new Date($.now());           
             var datetime = d.getFullYear() + "-" + (d.getMonth()+1) + "-" + d.getDate() + " " + d.getHours() + ":" + d.getMinutes() + ":" + d.getSeconds(); 
             json_string = JSON.stringify(arr_data); 
-            var dataString =  "JSON=" + json_string + "&ware_id=" + localStorage.ware_id_ex + "&date=" + datetime + "&user_id=" + localStorage.user_id;                        
+            var dataString =  "JSON=" + json_string + "&ware_id=" + localStorage.ware_id_ex + "&date=" + datetime + "&user_id=" + localStorage.user_id;
+            var msg_alert = "";
             for(var i = 0 ; i < arr_data.length;i++){
                 msg_alert += arr_data[i].name + " คงเหลือ " + (arr_data[i].min-arr_data[i].amt) + '<br>';
             }
