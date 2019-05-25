@@ -96,10 +96,10 @@
 				$("#name").attr('readonly',true);
                 var retrievedObject = localStorage.getItem('arr_prod_e');
                 var arr_data2 = JSON.parse(retrievedObject); 
-                prod_id = arr_data2[0].prod_id;            
+                prod_id = arr_data2[0].prod_id;								
 				get_prod(prod_id);
 				setTimeout(function() {$("#amount").focus();}, 100);
-            }    
+      }    
 
 			var options = {
 				url: function(phrase) {
