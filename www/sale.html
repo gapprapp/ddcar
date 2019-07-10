@@ -203,7 +203,7 @@
                             img = obj[i].img;   
                             old_price = $('#price').val();  
                             min = obj[i].min_amount;
-                                if(min == 0){
+                                if(min <= 0){
                                     $.confirm({
                                         title: 'เตือน',
                                         content: 'สินค้าไม่มีใน' + $('#h5-title').text(),
@@ -376,7 +376,7 @@
                                     var arr_data = JSON.parse(retrievedObject); 
                                     bool = true;
                                     for(var b = 0; b < arr_data.length; b++){
-                                        if(prod_id == arr_data[b].prod_id){
+                                        if(value == arr_data[b].qr){
                                             $.confirm({
                                                 title: 'เตือน',
                                                 content: 'มีการเพิ่มสินค้า ' + arr_data[b].name + ' กรุณาแก้ไขที่จำนวนของสินค้าที่ได้เพิ่มแล้ว',
@@ -422,7 +422,7 @@
                                                 old_price = $('#price').val(); 
                                                 prod_id = obj[i].prod_id;  
                                                 min = obj[i].min_amount;
-                                                if(min == 0){
+                                                if(min <= 0){
                                                     $.confirm({
                                                         title: 'เตือน',
                                                         content: 'สินค้าไม่มีใน' + $('#h5-title').text(),
