@@ -268,6 +268,8 @@
       });
     }
 
+    arr_a4 = [];
+		arr_dat =[];
     function print(credit_id,cd){ 
       var index = 0;
       var text = ""; 
@@ -287,6 +289,7 @@
           var obj = jQuery.parseJSON(data);          
           cus_name = obj[0].cus_name;
           credit_num = obj[0].credit_num;
+          var c = 1;
           $.each(obj, function(i, field){            
             var txt = field.date_time.split(" ");
             var date = txt[0].split("-");
@@ -306,18 +309,39 @@
               '</div>'            
             sum += parseFloat(field.total_price); 
             index = (i+1);
+            if(c < 20){								
+              if(i == obj.length-1){
+                for(var j = 0 ; j < 20-c;j++){
+                  text = text +  '<div>'+
+                    '<div class="fl-spc tb-st inner no-bdt no-bdbtm">&emsp;</div>'+
+                    '<div class="fl-15 tb inner no-bdt no-bdbtm">&emsp;</div>'+
+                    '<div class="fl-12 tb inner no-bdt no-bdbtm">&emsp;</div>'+
+                    '<div class="fl-12 tb inner no-bdt no-bdbtm">&emsp;</div>'+
+                    '<div class="fl-20 tb inner no-bdt no-bdbtm">&emsp;</div>'+
+                    '<div class="fl-15 tb inner no-bdt no-bdbtm">&emsp;</div>'+
+                    '<div class="fl-15 tb inner no-bdt no-bdbtm">&emsp;</div>'+
+                  '</div>' 
+                }						
+                arr_a4.push(text);
+              }
+              c++;
+            }else if(c == 20){				
+              arr_a4.push(text);
+              c = 1;
+              text = "";
+            }
           }); 
-          for(var j = 0;j < 20-index;j++){
-            text = text +  '<div>'+
-              '<div class="fl-spc tb-st inner no-bdt no-bdbtm">&emsp;</div>'+
-              '<div class="fl-15 tb inner no-bdt no-bdbtm">&emsp;</div>'+
-              '<div class="fl-12 tb inner no-bdt no-bdbtm">&emsp;</div>'+
-              '<div class="fl-12 tb inner no-bdt no-bdbtm">&emsp;</div>'+
-              '<div class="fl-20 tb inner no-bdt no-bdbtm">&emsp;</div>'+
-              '<div class="fl-15 tb inner no-bdt no-bdbtm">&emsp;</div>'+
-              '<div class="fl-15 tb inner no-bdt no-bdbtm">&emsp;</div>'+
-            '</div>' 
-          } 
+          // for(var j = 0;j < 20-index;j++){
+          //   text = text +  '<div>'+
+          //     '<div class="fl-spc tb-st inner no-bdt no-bdbtm">&emsp;</div>'+
+          //     '<div class="fl-15 tb inner no-bdt no-bdbtm">&emsp;</div>'+
+          //     '<div class="fl-12 tb inner no-bdt no-bdbtm">&emsp;</div>'+
+          //     '<div class="fl-12 tb inner no-bdt no-bdbtm">&emsp;</div>'+
+          //     '<div class="fl-20 tb inner no-bdt no-bdbtm">&emsp;</div>'+
+          //     '<div class="fl-15 tb inner no-bdt no-bdbtm">&emsp;</div>'+
+          //     '<div class="fl-15 tb inner no-bdt no-bdbtm">&emsp;</div>'+
+          //   '</div>' 
+          // } 
           print2db(cus_name,sum,cd,text,credit_num);               
         }               
       });     
@@ -330,9 +354,10 @@
       var dt = datetime.split(" ");           
       var d = dt[0].split("-");
       var date = d[2] + "/" + d[1] + "/" + d[0];
-      WinPrint.document.write("<html><head><link href='https://fonts.googleapis.com/css?family=Maitree' rel='stylesheet'></head><body>");
-      WinPrint.document.write("<style>@media print {body {-webkit-print-color-adjust: exact;}} @page {size: auto; margin: 0;}.fl-spc{float: left; width: 5%;}.fl-10{float: left; width: 10.25%;}.fl-12{float: left; width: 12.752%;}.fl-14{float: left; width: 15.1%;}.fl-15{float: left; width: 15%;}.fl-20{float: left; width: 20%; text-align: center;}.fl-25{float: left; width: 25%; text-align: center;}.fl-33{float: left; width: 33%; text-align: center;}.fl-35{float: left; width: 35%; text-align: center;}.fl-45{float: left; width: 45%; text-align: center;}.fl-83{float: left; width: 83.55%; text-align: center;}.ctn{position: relative; width: 297mm; height: 210mm; padding: 10mm 15mm 5mm 10mm; font-family: 'Maitree';}.tb-st{border: 1px solid black; text-align: center; padding: 3px;}.tb{border: 1px solid black; text-align: center; padding: 3px; border-left: none;}.no-bdt{border-top: none;}.no-bdbtm{border-bottom: none;}.bold{font-weight: bold;}.head{font-size: 1.3em; padding-top: 10px; padding-bottom: 10px;}.inner{font-size: 1.15em; padding-top: 8px; padding-bottom: 8px;}</style>" +
-      '<div class="ctn" style="margin-top: -8mm;">'+
+      WinPrint.document.write("<html><head><link href='https://fonts.googleapis.com/css?family=Maitree' rel='stylesheet'>");
+      WinPrint.document.write("<style>@media print {body {-webkit-print-color-adjust: exact;}} @page {size: auto; margin: 0;}.fl-spc{float: left; width: 5%;}.fl-10{float: left; width: 10.25%;}.fl-12{float: left; width: 12.752%;}.fl-14{float: left; width: 15.1%;}.fl-15{float: left; width: 15%;}.fl-20{float: left; width: 20%; text-align: center;}.fl-25{float: left; width: 25%; text-align: center;}.fl-33{float: left; width: 33%; text-align: center;}.fl-35{float: left; width: 35%; text-align: center;}.fl-45{float: left; width: 45%; text-align: center;}.fl-83{float: left; width: 83.55%; text-align: center;}.ctn{position: relative; width: 297mm; height: 210mm; padding: 10mm 15mm 5mm 10mm; font-family: 'Maitree';}.tb-st{border: 1px solid black; text-align: center; padding: 3px;}.tb{border: 1px solid black; text-align: center; padding: 3px; border-left: none;}.no-bdt{border-top: none;}.no-bdbtm{border-bottom: none;}.bold{font-weight: bold;}.head{font-size: 1.3em; padding-top: 10px; padding-bottom: 10px;}.inner{font-size: 1.15em; padding-top: 8px; padding-bottom: 8px;}</style></head><body>");
+      for(var m = 0;m < arr_a4.length;m++){
+        WinPrint.document.write('<div class="ctn" style="margin-top: -8mm;">'+
       '<div class="fl-35">&emsp;</div> '+
       '<div class="fl-spc">&emsp;</div>'+
       ' <div class="fl-25" style="margin-top: 30px;"">'+
@@ -359,7 +384,7 @@
         '<div class="fl-15 tb head bold">ชำระแล้ว</div>'+
         '<div class="fl-15 tb head bold">เงินตกค้าง</div>'+
       '</div>'+
-      text +
+      arr_a4[m] +
       '<div>'+
         '<div class="fl-spc tb-st inner no-bdt">&emsp;</div>'+
         '<div class="fl-15 tb inner no-bdt">&emsp;</div>'+
@@ -390,6 +415,7 @@
         '<div class="fl-33">&emsp;</div>'+
       ' </div>'+
       '</div>');
+      }
       WinPrint.document.write('</body></html>');
       WinPrint.document.close();
       WinPrint.focus();
