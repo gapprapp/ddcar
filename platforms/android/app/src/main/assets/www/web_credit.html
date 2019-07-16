@@ -81,114 +81,196 @@
             $.each(obj, function(i, field){
               var txt = field.date_time.split(" ");
               var date = txt[0].split("-");
+              var credit_id = field.credit_id;
               var cus = field.cus_name;              
-              var total = field.total_price;
-              var cus_id = field.customer_id;                    
+              var total = field.credit_price;
+              var cus_id = field.cus_id;                    
               var last_d = new Date(d.getFullYear(),d.getMonth()+1, 0).getDate();              
               var cd = last_d - d.getDate();
               if(d.getMonth()+1 != date[1]){
                 cd = "เลย";
               }
-              item = {}              
-              item ["cus"] =  cus;
-              item ["cus_id"] = cus_id;
-              item ["total"] = total;
-              item ["cd"] = cd;             
-              if(i == 0){                
-                arr.push(item);
-              }else{
-                var bool = false;
-                for(var j = 0; j < arr.length ;j++){                  
-                  if(cus == arr[j].cus && cd == arr[j].cd){
-                    bool = true;                    
-                    arr[j].total = parseFloat(arr[j].total) + parseFloat(total);
-                    break;
-                  }
-                }                 
-                if(!bool){
-                  arr.push(item);
-                }
-              }                              
-            });
-            for(var k = 0; k < arr.length;k++){  
-              if(arr[k].cd <= 3 && arr[k].cd > 1){
-                if(k % 2 == 0){
+              if(cd <= 3 && cd > 1){
+                if(i % 2 == 0){
                   $('#myUL').append('<li> <div class="row justify-content-center cus-odd">'+
                     '<div class="col-1"><i class="fas fa-circle yellow"></i></div>'+
-                    '<div class="col-4 text-center"><h5>'+arr[k].cus+'</h5></div>'+
-                    '<div class="col-3" style="padding-left: 8%;"><h5>'+arr[k].cd+' วัน</h5></div>'+
-                    '<div class="col-2 text-center"><h5>'+arr[k].total+'</h5></div>'+
-                    '<div onclick="print('+arr[k].cus_id+',\''+arr[k].cd+'\')" class="col-1 text-right"><h5><i class="fa fa-print" style="color: #ffd17c;"></i></h5></div>'+
+                    '<div class="col-4 text-center"><h5>'+cus+'</h5></div>'+
+                    '<div class="col-3" style="padding-left: 8%;"><h5>'+cd+' วัน</h5></div>'+
+                    '<div class="col-2 text-center"><h5>'+total+'</h5></div>'+
+                    '<div onclick="print('+credit_id+',\''+cd+'\')" class="col-1 text-right"><h5><i class="fa fa-print" style="color: #ffd17c;"></i></h5></div>'+
                   '</div></li>');   
                 }else{
                   $('#myUL').append('<li> <div class="row justify-content-center cus-even">'+
                     '<div class="col-1"><i class="fas fa-circle yellow"></i></div>'+
-                    '<div class="col-4 text-center"><h5>'+arr[k].cus+'</h5></div>'+
-                    '<div class="col-3" style="padding-left: 8%;"><h5>'+arr[k].cd+' วัน</h5></div>'+
-                    '<div class="col-2 text-center"><h5>'+arr[k].total+'</h5></div>'+
-                    '<div onclick="print('+arr[k].cus_id+',\''+arr[k].cd+'\')" class="col-1 text-right"><h5><i class="fa fa-print" style="color: #ffd17c;"></i></h5></div>'+
+                    '<div class="col-4 text-center"><h5>'+cus+'</h5></div>'+
+                    '<div class="col-3" style="padding-left: 8%;"><h5>'+cd+' วัน</h5></div>'+
+                    '<div class="col-2 text-center"><h5>'+total+'</h5></div>'+
+                    '<div onclick="print('+credit_id+',\''+cd+'\')" class="col-1 text-right"><h5><i class="fa fa-print" style="color: #ffd17c;"></i></h5></div>'+
                   '</div></li>');
                 }                
-              }else if(arr[k].cd <= 1 || arr[k].cd == "เลย"){
-                if(k % 2 == 0){
+              }else if(cd <= 1 || cd == "เลย"){
+                if(i % 2 == 0){
                   $('#myUL').append('<li> <div class="row justify-content-center cus-odd">'+
                     '<div class="col-1"><i class="fas fa-circle red"></i></div>'+
-                    '<div class="col-4 text-center"><h5>'+arr[k].cus+'</h5></div>'+
-                    '<div class="col-3" style="padding-left: 8%;"><h5>'+arr[k].cd+' วัน</h5></div>'+
-                    '<div class="col-2 text-center"><h5>'+arr[k].total+'</h5></div>'+
-                    '<div onclick="print('+arr[k].cus_id+',\''+arr[k].cd+'\')" class="col-1 text-right"><h5><i class="fa fa-print" style="color: #ffd17c;"></i></h5></div>'+
+                    '<div class="col-4 text-center"><h5>'+cus+'</h5></div>'+
+                    '<div class="col-3" style="padding-left: 8%;"><h5>'+cd+' วัน</h5></div>'+
+                    '<div class="col-2 text-center"><h5>'+total+'</h5></div>'+
+                    '<div onclick="print('+credit_id+',\''+cd+'\')" class="col-1 text-right"><h5><i class="fa fa-print" style="color: #ffd17c;"></i></h5></div>'+
                   '</div></li>');   
                 }else{
                   $('#myUL').append('<li> <div class="row justify-content-center cus-even">'+
                     '<div class="col-1"><i class="fas fa-circle red"></i></div>'+
-                    '<div class="col-4 text-center"><h5>'+arr[k].cus+'</h5></div>'+
-                    '<div class="col-3" style="padding-left: 8%;"><h5>'+arr[k].cd+' วัน</h5></div>'+
-                    '<div class="col-2 text-center"><h5>'+arr[k].total+'</h5></div>'+
-                    '<div onclick="print('+arr[k].cus_id+',\''+arr[k].cd+'\')" class="col-1 text-right"><h5><i class="fa fa-print" style="color: #ffd17c;"></i></h5></div>'+
+                    '<div class="col-4 text-center"><h5>'+cus+'</h5></div>'+
+                    '<div class="col-3" style="padding-left: 8%;"><h5>'+cd+' วัน</h5></div>'+
+                    '<div class="col-2 text-center"><h5>'+total+'</h5></div>'+
+                    '<div onclick="print('+credit_id+',\''+cd+'\')" class="col-1 text-right"><h5><i class="fa fa-print" style="color: #ffd17c;"></i></h5></div>'+
                   '</div></li>');
                 }    
               }else{
-                if(k % 2 == 0){
+                if(i % 2 == 0){
                   $('#myUL').append('<li> <div class="row justify-content-center cus-odd">'+
                     '<div class="col-1"><i class="fas fa-circle green"></i></div>'+
-                    '<div class="col-4 text-center"><h5>'+arr[k].cus+'</h5></div>'+
-                    '<div class="col-3" style="padding-left: 8%;"><h5>'+arr[k].cd+' วัน</h5></div>'+
-                    '<div class="col-2 text-center"><h5>'+arr[k].total+'</h5></div>'+
-                    '<div onclick="print('+arr[k].cus_id+',\''+arr[k].cd+'\')" class="col-1 text-right"><h5><i class="fa fa-print" style="color: #ffd17c;"></i></h5></div>'+
+                    '<div class="col-4 text-center"><h5>'+cus+'</h5></div>'+
+                    '<div class="col-3" style="padding-left: 8%;"><h5>'+cd+' วัน</h5></div>'+
+                    '<div class="col-2 text-center"><h5>'+total+'</h5></div>'+
+                    '<div onclick="print('+credit_id+',\''+cd+'\')" class="col-1 text-right"><h5><i class="fa fa-print" style="color: #ffd17c;"></i></h5></div>'+
                   '</div></li>');   
                 }else{
                   $('#myUL').append('<li> <div class="row justify-content-center cus-even">'+
                     '<div class="col-1"><i class="fas fa-circle green"></i></div>'+
-                    '<div class="col-4 text-center"><h5>'+arr[k].cus+'</h5></div>'+
-                    '<div class="col-3" style="padding-left: 8%;"><h5>'+arr[k].cd+' วัน</h5></div>'+
-                    '<div class="col-2 text-center"><h5>'+arr[k].total+'</h5></div>'+
-                    '<div onclick="print('+arr[k].cus_id+',\''+arr[k].cd+'\')" class="col-1 text-right"><h5><i class="fa fa-print" style="color: #ffd17c;"></i></h5></div>'+
+                    '<div class="col-4 text-center"><h5>'+cus+'</h5></div>'+
+                    '<div class="col-3" style="padding-left: 8%;"><h5>'+cd+' วัน</h5></div>'+
+                    '<div class="col-2 text-center"><h5>'+total+'</h5></div>'+
+                    '<div onclick="print('+credit_id+',\''+cd+'\')" class="col-1 text-right"><h5><i class="fa fa-print" style="color: #ffd17c;"></i></h5></div>'+
                   '</div></li>');
                 }    
-              }             
-            }           
+              }                                        
+            });                
           }                                
         }               
       });
     });
 
+    $(document).keydown(function(objEvent) {
+      if (objEvent.keyCode == 13) {  //enter pressed
+        objEvent.preventDefault();           
+        search();        
+      }         
+    })
+
+    var val;
     function search(){
-      $('#myUL li').each(function(){
-          $(this).attr('data-search-term', $(this).text().toLowerCase());
-      });      
-
-      var searchTerm = $('#input-search').val().toLowerCase();
-
-        $('#myUL li').each(function(){
-          if ($(this).filter('[data-search-term *= ' + searchTerm + ']').length > 0 || searchTerm.length < 1) {
-            $(this).show();                                                     
-          } else {
-            $(this).hide();                               
-          }
-        });                    
+      if($('#input-search').val() == ""){
+        return 0;
+      }
+      $('#input-search').blur();
+      val = $('#input-search').val();   
+      $("#myS").prop('hidden', false);
+      $("#myUL").prop('hidden', true);     
+      $("#myS").empty();
+      $("#i-back").attr("onclick","showUL()");
+      $("#i-back").prop('hidden', false);
+      get_credit_s();          
     }
 
-    function print(cus_id,cd){ 
+    function showUL(){
+      $("#myS").prop('hidden', true);
+      $("#myUL").prop('hidden', false);       
+      $("#i-back").prop('hidden', true);      
+    }
+
+    function get_credit_s(){
+      $.ajax({
+        type: "POST",
+        url:"php/get_credit.php",
+        data:{"value":val},
+        beforeSend: function(){
+          EasyLoading.show({                           
+						text: "กำลังโหลด"                            
+					});	
+        },                       
+        success: function(data){ 
+          EasyLoading.hide();  
+          var obj = jQuery.parseJSON(data);
+          if(obj){
+            arr = [];
+            var d = new Date($.now());
+            $.each(obj, function(i, field){
+              var txt = field.date_time.split(" ");
+              var date = txt[0].split("-");
+              var credit_id = field.credit_id;
+              var cus = field.cus_name;              
+              var total = field.credit_price;
+              var cus_id = field.cus_id;                    
+              var last_d = new Date(d.getFullYear(),d.getMonth()+1, 0).getDate();              
+              var cd = last_d - d.getDate();
+              if(d.getMonth()+1 != date[1]){
+                cd = "เลย";
+              }
+              if(cd <= 3 && cd > 1){
+                if(i % 2 == 0){
+                  $('#myS').append('<li> <div class="row justify-content-center cus-odd">'+
+                    '<div class="col-1"><i class="fas fa-circle yellow"></i></div>'+
+                    '<div class="col-4 text-center"><h5>'+cus+'</h5></div>'+
+                    '<div class="col-3" style="padding-left: 8%;"><h5>'+cd+' วัน</h5></div>'+
+                    '<div class="col-2 text-center"><h5>'+total+'</h5></div>'+
+                    '<div onclick="print('+credit_id+',\''+cd+'\')" class="col-1 text-right"><h5><i class="fa fa-print" style="color: #ffd17c;"></i></h5></div>'+
+                  '</div></li>');   
+                }else{
+                  $('#myS').append('<li> <div class="row justify-content-center cus-even">'+
+                    '<div class="col-1"><i class="fas fa-circle yellow"></i></div>'+
+                    '<div class="col-4 text-center"><h5>'+cus+'</h5></div>'+
+                    '<div class="col-3" style="padding-left: 8%;"><h5>'+cd+' วัน</h5></div>'+
+                    '<div class="col-2 text-center"><h5>'+total+'</h5></div>'+
+                    '<div onclick="print('+credit_id+',\''+cd+'\')" class="col-1 text-right"><h5><i class="fa fa-print" style="color: #ffd17c;"></i></h5></div>'+
+                  '</div></li>');
+                }                
+              }else if(cd <= 1 || cd == "เลย"){
+                if(i % 2 == 0){
+                  $('#myS').append('<li> <div class="row justify-content-center cus-odd">'+
+                    '<div class="col-1"><i class="fas fa-circle red"></i></div>'+
+                    '<div class="col-4 text-center"><h5>'+cus+'</h5></div>'+
+                    '<div class="col-3" style="padding-left: 8%;"><h5>'+cd+' วัน</h5></div>'+
+                    '<div class="col-2 text-center"><h5>'+total+'</h5></div>'+
+                    '<div onclick="print('+credit_id+',\''+cd+'\')" class="col-1 text-right"><h5><i class="fa fa-print" style="color: #ffd17c;"></i></h5></div>'+
+                  '</div></li>');   
+                }else{
+                  $('#myS').append('<li> <div class="row justify-content-center cus-even">'+
+                    '<div class="col-1"><i class="fas fa-circle red"></i></div>'+
+                    '<div class="col-4 text-center"><h5>'+cus+'</h5></div>'+
+                    '<div class="col-3" style="padding-left: 8%;"><h5>'+cd+' วัน</h5></div>'+
+                    '<div class="col-2 text-center"><h5>'+total+'</h5></div>'+
+                    '<div onclick="print('+credit_id+',\''+cd+'\')" class="col-1 text-right"><h5><i class="fa fa-print" style="color: #ffd17c;"></i></h5></div>'+
+                  '</div></li>');
+                }    
+              }else{
+                if(i % 2 == 0){
+                  $('#myS').append('<li> <div class="row justify-content-center cus-odd">'+
+                    '<div class="col-1"><i class="fas fa-circle green"></i></div>'+
+                    '<div class="col-4 text-center"><h5>'+cus+'</h5></div>'+
+                    '<div class="col-3" style="padding-left: 8%;"><h5>'+cd+' วัน</h5></div>'+
+                    '<div class="col-2 text-center"><h5>'+total+'</h5></div>'+
+                    '<div onclick="print('+credit_id+',\''+cd+'\')" class="col-1 text-right"><h5><i class="fa fa-print" style="color: #ffd17c;"></i></h5></div>'+
+                  '</div></li>');   
+                }else{
+                  $('#myS').append('<li> <div class="row justify-content-center cus-even">'+
+                    '<div class="col-1"><i class="fas fa-circle green"></i></div>'+
+                    '<div class="col-4 text-center"><h5>'+cus+'</h5></div>'+
+                    '<div class="col-3" style="padding-left: 8%;"><h5>'+cd+' วัน</h5></div>'+
+                    '<div class="col-2 text-center"><h5>'+total+'</h5></div>'+
+                    '<div onclick="print('+credit_id+',\''+cd+'\')" class="col-1 text-right"><h5><i class="fa fa-print" style="color: #ffd17c;"></i></h5></div>'+
+                  '</div></li>');
+                }    
+              }                                         
+            });                
+          }                                
+        }               
+      });
+    }
+
+    arr_a4 = [];
+		arr_dat =[];
+    function print(credit_id,cd){ 
       var index = 0;
       var text = ""; 
       var sum = 0;  
@@ -196,7 +278,7 @@
       $.ajax({
         type: "POST",
         url:"php/get_credit_info.php", 
-        data: {'cus_id':cus_id, 'cd':cd},         
+        data: {'credit_id':credit_id},         
         beforeSend: function(){
           EasyLoading.show({                           
 						text: "กำลังโหลด"                            
@@ -205,7 +287,9 @@
         success: function(data){ 
           EasyLoading.hide();
           var obj = jQuery.parseJSON(data);          
-          cus_name = obj[0].cus_name;          
+          cus_name = obj[0].cus_name;
+          credit_num = obj[0].credit_num;
+          var c = 1;
           $.each(obj, function(i, field){            
             var txt = field.date_time.split(" ");
             var date = txt[0].split("-");
@@ -225,127 +309,121 @@
               '</div>'            
             sum += parseFloat(field.total_price); 
             index = (i+1);
+            if(c < 20){								
+              if(i == obj.length-1){
+                for(var j = 0 ; j < 20-c;j++){
+                  text = text +  '<div>'+
+                    '<div class="fl-spc tb-st inner no-bdt no-bdbtm">&emsp;</div>'+
+                    '<div class="fl-15 tb inner no-bdt no-bdbtm">&emsp;</div>'+
+                    '<div class="fl-12 tb inner no-bdt no-bdbtm">&emsp;</div>'+
+                    '<div class="fl-12 tb inner no-bdt no-bdbtm">&emsp;</div>'+
+                    '<div class="fl-20 tb inner no-bdt no-bdbtm">&emsp;</div>'+
+                    '<div class="fl-15 tb inner no-bdt no-bdbtm">&emsp;</div>'+
+                    '<div class="fl-15 tb inner no-bdt no-bdbtm">&emsp;</div>'+
+                  '</div>' 
+                }						
+                arr_a4.push(text);
+              }
+              c++;
+            }else if(c == 20){				
+              arr_a4.push(text);
+              c = 1;
+              text = "";
+            }
           }); 
-          for(var j = 0;j < 20-index;j++){
-            text = text +  '<div>'+
-              '<div class="fl-spc tb-st inner no-bdt no-bdbtm">&emsp;</div>'+
-              '<div class="fl-15 tb inner no-bdt no-bdbtm">&emsp;</div>'+
-              '<div class="fl-12 tb inner no-bdt no-bdbtm">&emsp;</div>'+
-              '<div class="fl-12 tb inner no-bdt no-bdbtm">&emsp;</div>'+
-              '<div class="fl-20 tb inner no-bdt no-bdbtm">&emsp;</div>'+
-              '<div class="fl-15 tb inner no-bdt no-bdbtm">&emsp;</div>'+
-              '<div class="fl-15 tb inner no-bdt no-bdbtm">&emsp;</div>'+
-            '</div>' 
-          } 
-          print2db(cus_name,sum,cus_id,cd,text);               
+          // for(var j = 0;j < 20-index;j++){
+          //   text = text +  '<div>'+
+          //     '<div class="fl-spc tb-st inner no-bdt no-bdbtm">&emsp;</div>'+
+          //     '<div class="fl-15 tb inner no-bdt no-bdbtm">&emsp;</div>'+
+          //     '<div class="fl-12 tb inner no-bdt no-bdbtm">&emsp;</div>'+
+          //     '<div class="fl-12 tb inner no-bdt no-bdbtm">&emsp;</div>'+
+          //     '<div class="fl-20 tb inner no-bdt no-bdbtm">&emsp;</div>'+
+          //     '<div class="fl-15 tb inner no-bdt no-bdbtm">&emsp;</div>'+
+          //     '<div class="fl-15 tb inner no-bdt no-bdbtm">&emsp;</div>'+
+          //   '</div>' 
+          // } 
+          print2db(cus_name,sum,cd,text,credit_num);               
         }               
       });     
     }
 
-    function print2db(cus_name,sum,cus_id,cd,text){
+    function print2db(cus_name,sum,cd,text,credit_num){
       var d = new Date($.now());
 			var datetime = d.getFullYear() + "-" + (d.getMonth()+1) + "-" + d.getDate() + " " + d.getHours() + ":" + d.getMinutes() + ":" + d.getSeconds();	
-      var WinPrint  = window.open();
-      $.ajax({
-        type: "POST",
-        url:"php/save_credit.php", 
-        data: {'cus_id':cus_id, 'total':sum, 'dt':datetime,'user_id':localStorage.user_id},         
-        beforeSend: function(){
-          EasyLoading.show({                           
-						text: "กำลังโหลด"                            
-					});	
-        },                       
-        success: function(data){ 
-          EasyLoading.hide();
-          if(data != "fail"){
-            var dt = datetime.split(" ");           
-            var d = dt[0].split("-");
-            var date = d[2] + "/" + d[1] + "/" + d[0];
-            WinPrint.document.write("<html><head><link href='https://fonts.googleapis.com/css?family=Maitree' rel='stylesheet'></head><body>");
-            WinPrint.document.write("<style>@media print {body {-webkit-print-color-adjust: exact;}} @page {size: auto; margin: 0;}.fl-spc{float: left; width: 5%;}.fl-10{float: left; width: 10.25%;}.fl-12{float: left; width: 12.752%;}.fl-14{float: left; width: 15.1%;}.fl-15{float: left; width: 15%;}.fl-20{float: left; width: 20%; text-align: center;}.fl-25{float: left; width: 25%; text-align: center;}.fl-33{float: left; width: 33%; text-align: center;}.fl-35{float: left; width: 35%; text-align: center;}.fl-45{float: left; width: 45%; text-align: center;}.fl-83{float: left; width: 83.55%; text-align: center;}.ctn{position: relative; width: 297mm; height: 210mm; padding: 10mm 15mm 5mm 10mm; font-family: 'Maitree';}.tb-st{border: 1px solid black; text-align: center; padding: 3px;}.tb{border: 1px solid black; text-align: center; padding: 3px; border-left: none;}.no-bdt{border-top: none;}.no-bdbtm{border-bottom: none;}.bold{font-weight: bold;}.head{font-size: 1.3em; padding-top: 10px; padding-bottom: 10px;}.inner{font-size: 1.15em; padding-top: 8px; padding-bottom: 8px;}</style>" +
-            '<div class="ctn" style="margin-top: -8mm;">'+
-            '<div class="fl-35">&emsp;</div> '+
-            '<div class="fl-spc">&emsp;</div>'+
-           ' <div class="fl-25" style="margin-top: 30px;"">'+
-              '<h1 style="border: 1px solid #555; border-radius: 10px; padding-top: 10px; padding-bottom: 10px; background-color: #555 !important; color: white; font-size: 210%;">ใบวางบิล</h1>'+
-            '</div>'+
-            '<div class="fl-20">&emsp;</div>'+
-            '<div class="fl-15" style="text-align: center;"">&emsp;</div>'+
-          
-           ' <div style=" text-align: left;">'+
-              '<p style="width: 60%;"><span class="bold">ชื่อลูกค้า  : </span><span>&emsp; '+cus_name+'</span></p>'+
-            '</div>'+
-            '<div style="text-align: right; margin-top: -50px;">'+
-              '<p style="width: 99%;"><span class="bold">เลขที่  : </span><span>&emsp;'+data+'</span></p>'+
-              '<p style="width: 99%;"><span class="bold">วันที่  : </span>&emsp;&emsp; <span>'+date+'</span></p>'+
-              '<p style="width: 99%;"><span class="bold">เครดิต : </span><span style="margin-left: 44px;">'+cd+' &emsp;&emsp;วัน</span></p>'+
-           ' </div>'+
+      var WinPrint  = window.open();          
+      var dt = datetime.split(" ");           
+      var d = dt[0].split("-");
+      var date = d[2] + "/" + d[1] + "/" + d[0];
+      WinPrint.document.write("<html><head><link href='https://fonts.googleapis.com/css?family=Maitree' rel='stylesheet'>");
+      WinPrint.document.write("<style>@media print {body {-webkit-print-color-adjust: exact;}} @page {size: auto; margin: 0;}.fl-spc{float: left; width: 5%;}.fl-10{float: left; width: 10.25%;}.fl-12{float: left; width: 12.752%;}.fl-14{float: left; width: 15.1%;}.fl-15{float: left; width: 15%;}.fl-20{float: left; width: 20%; text-align: center;}.fl-25{float: left; width: 25%; text-align: center;}.fl-33{float: left; width: 33%; text-align: center;}.fl-35{float: left; width: 35%; text-align: center;}.fl-45{float: left; width: 45%; text-align: center;}.fl-83{float: left; width: 83.55%; text-align: center;}.ctn{position: relative; width: 297mm; height: 210mm; padding: 10mm 15mm 5mm 10mm; font-family: 'Maitree';}.tb-st{border: 1px solid black; text-align: center; padding: 3px;}.tb{border: 1px solid black; text-align: center; padding: 3px; border-left: none;}.no-bdt{border-top: none;}.no-bdbtm{border-bottom: none;}.bold{font-weight: bold;}.head{font-size: 1.3em; padding-top: 10px; padding-bottom: 10px;}.inner{font-size: 1.15em; padding-top: 8px; padding-bottom: 8px;}</style></head><body>");
+      for(var m = 0;m < arr_a4.length;m++){
+        WinPrint.document.write('<div class="ctn" style="margin-top: -8mm;">'+
+      '<div class="fl-35">&emsp;</div> '+
+      '<div class="fl-spc">&emsp;</div>'+
+      ' <div class="fl-25" style="margin-top: 30px;"">'+
+        '<h1 style="border: 1px solid #555; border-radius: 10px; padding-top: 10px; padding-bottom: 10px; background-color: #555 !important; color: white; font-size: 210%;">ใบวางบิล</h1>'+
+      '</div>'+
+      '<div class="fl-20">&emsp;</div>'+
+      '<div class="fl-15" style="text-align: center;"">&emsp;</div>'+
+    
+      ' <div style=" text-align: left;">'+
+        '<p style="width: 60%;"><span class="bold">ชื่อลูกค้า  : </span><span>&emsp; '+cus_name+'</span></p>'+
+      '</div>'+
+      '<div style="text-align: right; margin-top: -50px;">'+
+        '<p style="width: 99%;"><span class="bold">เลขที่  : </span><span>&emsp;'+credit_num+'</span></p>'+
+        '<p style="width: 99%;"><span class="bold">วันที่  : </span>&emsp;&emsp; <span>'+date+'</span></p>'+
+        '<p style="width: 99%;"><span class="bold">เครดิต : </span><span style="margin-left: 44px;">'+cd+' &emsp;&emsp;วัน</span></p>'+
+      ' </div>'+
 
-            '<div>'+
-              '<div class="fl-spc tb-st head bold">ที่</div>'+
-              '<div class="fl-15 tb head bold">เลขที่บิล</div>'+
-              '<div class="fl-12 tb head bold">วันที่</div>'+
-              '<div class="fl-12 tb head bold">ครบกำหนด</div>'+
-              '<div class="fl-20 tb head bold">จำนวนเงิน</div>'+
-              '<div class="fl-15 tb head bold">ชำระแล้ว</div>'+
-              '<div class="fl-15 tb head bold">เงินตกค้าง</div>'+
-            '</div>'+
-            text +
-            '<div>'+
-              '<div class="fl-spc tb-st inner no-bdt">&emsp;</div>'+
-              '<div class="fl-15 tb inner no-bdt">&emsp;</div>'+
-              '<div class="fl-12 tb inner no-bdt">&emsp;</div>'+
-              '<div class="fl-12 tb inner no-bdt">&emsp;</div>'+
-              '<div class="fl-20 tb inner no-bdt">&emsp;</div>'+
-              '<div class="fl-15 tb inner no-bdt">&emsp;</div>'+
-              '<div class="fl-15 tb inner no-bdt">&emsp;</div>'+
-            '</div>'+
+      '<div>'+
+        '<div class="fl-spc tb-st head bold">ที่</div>'+
+        '<div class="fl-15 tb head bold">เลขที่บิล</div>'+
+        '<div class="fl-12 tb head bold">วันที่</div>'+
+        '<div class="fl-12 tb head bold">ครบกำหนด</div>'+
+        '<div class="fl-20 tb head bold">จำนวนเงิน</div>'+
+        '<div class="fl-15 tb head bold">ชำระแล้ว</div>'+
+        '<div class="fl-15 tb head bold">เงินตกค้าง</div>'+
+      '</div>'+
+      arr_a4[m] +
+      '<div>'+
+        '<div class="fl-spc tb-st inner no-bdt">&emsp;</div>'+
+        '<div class="fl-15 tb inner no-bdt">&emsp;</div>'+
+        '<div class="fl-12 tb inner no-bdt">&emsp;</div>'+
+        '<div class="fl-12 tb inner no-bdt">&emsp;</div>'+
+        '<div class="fl-20 tb inner no-bdt">&emsp;</div>'+
+        '<div class="fl-15 tb inner no-bdt">&emsp;</div>'+
+        '<div class="fl-15 tb inner no-bdt">&emsp;</div>'+
+      '</div>'+
 
-            '<div>'+
-              '<div class="fl-83 tb-st inner no-bdt" style="text-align: right;">รวมทั้งสิ้น&emsp;&emsp;</div>'+
-              '<div class="fl-14 tb inner no-bdt">'+parseFloat(sum).toFixed(2).toLocaleString()+'</div>'+
-            '</div>'+
-            '<div style="margin-top: 1150px;">'+
-              '<div class="fl-33">_________________________</div>'+
-              '<div class="fl-33">_________________________</div>'+
-              '<div class="fl-33">________/________/_________</div>'+
-            '</div>'+
-            '<div>'+
-              '<div class="fl-33 inner">ชื่อผู้วางบิล</div>'+
-              '<div class="fl-33 inner">ชื่อผู้รับวางบิล</div>'+
-              '<div class="fl-33 inner">นัดรับเช็ควันที่</div>'+
-            '</div>'+
-            '<div style="margin-top: 1240px;">'+
-              '<div class="fl-33">________/________/_________</div>'+
-              '<div class="fl-33">________/________/_________</div>'+
-              '<div class="fl-33">&emsp;</div>'+
-           ' </div>'+
-            '</div>');
-            WinPrint.document.write('</body></html>');
-            WinPrint.document.close();
-            WinPrint.focus();
-            setTimeout(function() {
-              WinPrint.print();
-              WinPrint.close();		
-              location.reload(true);
-            }, 250);	
-          }else{
-            $.confirm({
-              title: 'พบข้อผิดพลาด',
-              content: 'ลองอีกครั้ง',
-              backgroundDismiss: true,
-              buttons: {
-                  formSubmit: {
-                  text: 'ตกลง',
-                  btnClass: 'btn-regis',
-                  action: function () {
-                  }
-                  }
-              }
-            });
-          }              
-        }               
-      });
+      '<div>'+
+        '<div class="fl-83 tb-st inner no-bdt" style="text-align: right;">รวมทั้งสิ้น&emsp;&emsp;</div>'+
+        '<div class="fl-14 tb inner no-bdt">'+parseFloat(sum).toFixed(2).toLocaleString()+'</div>'+
+      '</div>'+
+      '<div style="margin-top: 1150px;">'+
+        '<div class="fl-33">_________________________</div>'+
+        '<div class="fl-33">_________________________</div>'+
+        '<div class="fl-33">________/________/_________</div>'+
+      '</div>'+
+      '<div>'+
+        '<div class="fl-33 inner">ชื่อผู้วางบิล</div>'+
+        '<div class="fl-33 inner">ชื่อผู้รับวางบิล</div>'+
+        '<div class="fl-33 inner">นัดรับเช็ควันที่</div>'+
+      '</div>'+
+      '<div style="margin-top: 1240px;">'+
+        '<div class="fl-33">________/________/_________</div>'+
+        '<div class="fl-33">________/________/_________</div>'+
+        '<div class="fl-33">&emsp;</div>'+
+      ' </div>'+
+      '</div>');
+      }
+      WinPrint.document.write('</body></html>');
+      WinPrint.document.close();
+      WinPrint.focus();
+      setTimeout(function() {
+        WinPrint.print();
+        WinPrint.close();		
+        location.reload(true);
+      }, 250); 
     }
 
     function logout(){
@@ -376,7 +454,10 @@
     </div><br><br>
     <div class="container-fullwidth">
       <div class="input-group row justify-content-center" style="margin-bottom: 4%; margin-left: 0.5%">
-        <input id="input-search" onkeyup="search();" type="text" class="form-control-lg text-center" placeholder="ค้นหาลูกค้า" style="width: 60%;">
+        <button id="i-back" class="btn btn-outline-secondary" type="button" style="margin-right: 10px;" hidden>
+          <i class="fa fa-angle-left"></i>
+      </button>
+        <input id="input-search" type="text" class="form-control-lg text-center" placeholder="ค้นหาลูกค้า/เลขที่เดือน" style="width: 60%;">
           <!-- <button  class="btn btn-outline-secondary" type="button" style="margin-left: 10px;">
               <i class="fa fa-search"></i>
           </button> -->
@@ -390,9 +471,8 @@
       </div>
     </div><hr style="width: 75%; margin-top: 0;"> <br>
     <div id="ctn-append" class="container-fullwidth">
-      <ul id="myUL">
-     
-      </ul>      
+      <ul id="myUL"> </ul>
+      <ul id="myS"> </ul>            
     </div>
   </div>
 </body>
