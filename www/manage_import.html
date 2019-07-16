@@ -113,9 +113,10 @@
       $("#myS").prop('hidden', true);
       $("#myUL").prop('hidden', false);
       $("#myD").prop('hidden', true);
-      $("#search_row").prop('hidden', true);
-      $("#date_row").prop('hidden', true);
-      $("#i-back").attr("onclick","transition_page_back('index.html?menu=3'); window.location = 'index.html?menu=3';");
+      // $("#search_row").prop('hidden', true);
+      // $("#date_row").prop('hidden', true);
+      $("#i-back").attr("onclick","transition_page_back('index.html'); window.location = 'index.html';");
+      show_search();
     }
 
     function get_import(){
@@ -293,8 +294,8 @@
   <div id="big-ctn" class="container-fullwidth justify-content-center">
     <!-- Nav menu top -->
     <div class="row navs align-items-center mgem1o5 fixed-top">
-      <div class="col-2 text-center" onclick="transition_page_back('index.html?menu=3'); window.location ='index.html?menu=3';">
-        <i id="i-back" class="fas fa-angle-left"></i>
+      <div id="i-back" class="col-2 text-center" onclick="transition_page_back('index.html'); window.location ='index.html';">
+        <i class="fas fa-angle-left"></i>
       </div>
       <div class="col-8 text-center nopd">
         <h5 id="h5-title">รายการสินค้าเข้าโกดัง</h5>
