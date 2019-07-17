@@ -143,7 +143,7 @@
                                     var arr_data = JSON.parse(retrievedObject);
                                     bool = true;
                                     for(var b = 0; b < arr_data.length; b++){
-                                        if(prod_id == arr_data[b].prod_id){
+                                        if(value == arr_data[b].qr){
                                             $.confirm({
                                                 title: 'เตือน',
                                                 content: 'มีการเพิ่มสินค้า ' + arr_data[b].name + ' กรุณาแก้ไขที่จำนวนของสินค้าที่ได้เพิ่มแล้ว',

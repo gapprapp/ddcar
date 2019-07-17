@@ -61,7 +61,8 @@
 
     <script>
         var prod_id;     
-        var img,min;    
+        var img,min; 
+        var bool = true;   
         $(document).ready(function () { 
             url = new URL(window.location.href);
             prod_id = url.searchParams.get("product");  
@@ -115,46 +116,75 @@
 
         function get_prod(id){
             prod_id = id;
-            $.ajax({
-                type: "POST",
-                url:"http://ddaccessory.trueddns.com:24330/dd-shop/php/get_prod.php",    
-                data:{'prod_id' : id, 'ware_id' : localStorage.ware_id_ex},
-                //async: false,                       
-                beforeSend: function(){
-                    $(".overlay").prop('hidden', false);
-                },             
-                success: function(data){  
-                    $(".overlay").prop('hidden', true);
-                    var obj = jQuery.parseJSON(data);                                         
-                    $.each(obj, function(i, field){
-                        $('#name').val(obj[i].prod_name);
-                        $('#barcode').val(obj[i].prod_code); 
-                        $('#cost').val(obj[i].prod_cost);                       
-                        img = obj[i].img;    
-                        min = obj[i].min_amount;
-                        if(min == 0){
-                            $.confirm({
-                                title: 'เตือน',
-                                content: 'สินค้าไม่มีใน' + $('#h5-title').text(),
-                                backgroundDismiss: true,
-                                buttons: {
-                                    formSubmit: {
-                                    text: 'ตกลง',
-                                    btnClass: 'btn-regis',
-                                    action: function () {
-                                    }
-                                    }
+            bool = true;
+            if(localStorage.arr_ex){
+                var retrievedObject = localStorage.getItem('arr_ex');
+                var arr_data = JSON.parse(retrievedObject);                 
+                for(var b = 0; b < arr_data.length; b++){
+                    if(prod_id == arr_data[b].prod_id){
+                        $.confirm({
+                            title: 'เตือน',
+                            content: 'มีการเพิ่มสินค้า ' + arr_data[b].name + ' กรุณาแก้ไขที่จำนวนของสินค้าที่ได้เพิ่มแล้ว',
+                            backgroundDismiss: true,
+                            buttons: {
+                                formSubmit: {
+                                text: 'ตกลง',
+                                btnClass: 'btn-regis',
+                                action: function () {
                                 }
-                            });  
-                            set_default();
-                            if(localStorage.arr_prod_e){
-                               add_export('dup');
-                            }  
-                        }	                           
-                    });
-                    show();                                        
-                }               
-            });                       
+                                }
+                            }
+                        });  
+                        bool = false;                               
+                        break;           
+                    }
+                }                 
+            }
+            if(bool){
+                $.ajax({
+                    type: "POST",
+                    url:"http://ddaccessory.trueddns.com:24330/dd-shop/php/get_prod.php",    
+                    data:{'prod_id' : id, 'ware_id' : localStorage.ware_id_ex},
+                    //async: false,                       
+                    beforeSend: function(){
+                        $(".overlay").prop('hidden', false);
+                    },             
+                    success: function(data){  
+                        $(".overlay").prop('hidden', true);
+                        var obj = jQuery.parseJSON(data);                                         
+                        $.each(obj, function(i, field){
+                            $('#name').val(obj[i].prod_name);
+                            $('#barcode').val(obj[i].prod_code); 
+                            $('#cost').val(obj[i].prod_cost);                       
+                            img = obj[i].img;    
+                            min = obj[i].min_amount;
+                            if(min <= 0){
+                                $.confirm({
+                                    title: 'เตือน',
+                                    content: 'สินค้าไม่มีใน' + $('#h5-title').text(),
+                                    backgroundDismiss: true,
+                                    buttons: {
+                                        formSubmit: {
+                                        text: 'ตกลง',
+                                        btnClass: 'btn-regis',
+                                        action: function () {
+                                        }
+                                        }
+                                    }
+                                });  
+                                set_default();
+                                if(localStorage.arr_prod_e){
+                                    bool = false;                       
+                                    add_export('dup');
+                                }  
+                            }	                           
+                        });
+                        show();                                        
+                    }               
+                }); 
+            }else{
+                add_export('dup');
+            }                        
         }
 
         function scanqr(){
@@ -181,43 +211,69 @@
                         if(result.format == "QR_CODE"){
                                 var value = result.text;
                                 // This is the retrieved content of the qr code
-                                //alert(value);                        
-                                $.ajax({
-                                    type: "POST",
-                                    url: "http://ddaccessory.trueddns.com:24330/dd-shop/php/get_prod.php",                
-                                    data: {'qr' : value,'ware_id': localStorage.ware_id_ex},             
-                                    beforeSend: function(){
-                                        $(".overlay").prop('hidden', false);
-                                    },             
-                                    success: function(data){  
-                                        $(".overlay").prop('hidden', true);                             
-                                        var obj = jQuery.parseJSON(data); 
-                                        $.each(obj, function(i, field){                                           
-                                            $('#name').val(obj[i].prod_name);
-                                            $('#barcode').val(obj[i].prod_code); 
-                                            $('#cost').val(obj[i].prod_cost);                       
-                                            img = obj[i].img;                                             
-                                            prod_id = obj[i].prod_id;      
-                                            min = obj[i].min_amount;
-                                            if(min == 0){
-                                                $.confirm({
-                                                    title: 'เตือน',
-                                                    content: 'สินค้าไม่มีใน' + $('#h5-title').text(),
-                                                    backgroundDismiss: true,
-                                                    buttons: {
-                                                        formSubmit: {
-                                                        text: 'ตกลง',
-                                                        btnClass: 'btn-regis',
-                                                        action: function () {
-                                                        }
-                                                        }
+                                //alert(value);  
+                                if(localStorage.arr_ex){
+                                    var retrievedObject = localStorage.getItem('arr_ex');
+                                    var arr_data = JSON.parse(retrievedObject);
+                                    bool = true;
+                                    for(var b = 0; b < arr_data.length; b++){
+                                        if(value == arr_data[b].qr){
+                                            $.confirm({
+                                                title: 'เตือน',
+                                                content: 'มีการเพิ่มสินค้า ' + arr_data[b].name + ' กรุณาแก้ไขที่จำนวนของสินค้าที่ได้เพิ่มแล้ว',
+                                                backgroundDismiss: true,
+                                                buttons: {
+                                                    formSubmit: {
+                                                    text: 'ตกลง',
+                                                    btnClass: 'btn-regis',
+                                                    action: function () {
                                                     }
-                                                });  
-                                                set_default();                                                
-                                            }	 
-                                        });                                                                                      
-                                    }               
-                                });
+                                                    }
+                                                }
+                                            });  
+                                            bool = false;                               
+                                            break;           
+                                        }
+                                    }                 
+                                }  
+                                if(bool){                    
+                                    $.ajax({
+                                        type: "POST",
+                                        url: "http://ddaccessory.trueddns.com:24330/dd-shop/php/get_prod.php",                
+                                        data: {'qr' : value,'ware_id': localStorage.ware_id_ex},             
+                                        beforeSend: function(){
+                                            $(".overlay").prop('hidden', false);
+                                        },             
+                                        success: function(data){  
+                                            $(".overlay").prop('hidden', true);                             
+                                            var obj = jQuery.parseJSON(data); 
+                                            $.each(obj, function(i, field){                                           
+                                                $('#name').val(obj[i].prod_name);
+                                                $('#barcode').val(obj[i].prod_code); 
+                                                $('#cost').val(obj[i].prod_cost);                       
+                                                img = obj[i].img;                                             
+                                                prod_id = obj[i].prod_id;      
+                                                min = obj[i].min_amount;
+                                                if(min <= 0){
+                                                    $.confirm({
+                                                        title: 'เตือน',
+                                                        content: 'สินค้าไม่มีใน' + $('#h5-title').text(),
+                                                        backgroundDismiss: true,
+                                                        buttons: {
+                                                            formSubmit: {
+                                                            text: 'ตกลง',
+                                                            btnClass: 'btn-regis',
+                                                            action: function () {
+                                                            }
+                                                            }
+                                                        }
+                                                    });  
+                                                    set_default();                                                
+                                                }	 
+                                            });                                                                                      
+                                        }               
+                                    });
+                                }
                                 var temp = $('#amount').val();           
                                 $("#amount").focus().val("").val(temp);
                         }else{
