@@ -12,7 +12,8 @@
     }else if(isset($_POST['value'])){
         $val = $_POST['value'];     
         $query = "SELECT s.stock_id,s.stock_number,w.ware_name,s.date_time FROM stock_in s INNER JOIN warehouse_detail w
-        ON s.ware_id = w.ware_id WHERE (s.stock_number LIKE '%$val%' OR w.ware_name LIKE '%$val%') 
+        ON s.ware_id = w.ware_id INNER JOIN stock_in_item i ON s.stock_id = i.stock_id INNER JOIN product p 
+        ON i.prod_id = p.prod_id WHERE (s.stock_number LIKE '%$val%' OR w.ware_name LIKE '%$val%' OR p.prod_name LIKE '%$val%') 
         AND s.stock_number NOT LIKE '%$txt%' ORDER BY s.stock_id DESC LIMIT $start,20";
     }else{
         $query = "SELECT s.stock_id,s.stock_number,w.ware_name,s.date_time FROM stock_in s INNER JOIN warehouse_detail w
