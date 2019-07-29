@@ -297,51 +297,79 @@
             var credit = parseInt(field.payment_type.substr(8,2)); 
             var tomorrow = new Date(date[0],parseInt(date[1])-1,date[2]);
             tomorrow.setDate(tomorrow.getDate() + credit); 
-            var date_ex = tomorrow.getDate() + "/" + (tomorrow.getMonth()+1) + "/" +   tomorrow.getFullYear();           
-            text = text +  '<div>'+
-                '<div class="fl-spc tb-st inner no-bdt no-bdbtm">'+(i+1)+'</div>'+
-                '<div class="fl-15 tb inner no-bdt no-bdbtm">'+field.order_number+'</div>'+
-                '<div class="fl-12 tb inner no-bdt no-bdbtm">'+dateformat+'</div>'+
-                '<div class="fl-12 tb inner no-bdt no-bdbtm">'+date_ex+'</div>'+
-                '<div class="fl-20 tb inner no-bdt no-bdbtm">'+parseFloat(field.total_price).toFixed(2).toLocaleString()+'</div>'+
-                '<div class="fl-15 tb inner no-bdt no-bdbtm">&emsp;</div>'+
-                '<div class="fl-15 tb inner no-bdt no-bdbtm">'+parseFloat(field.total_price).toFixed(2).toLocaleString()+'</div>'+
-              '</div>'            
+            var date_ex = tomorrow.getDate() + "/" + (tomorrow.getMonth()+1) + "/" +   tomorrow.getFullYear(); 
             sum += parseFloat(field.total_price); 
             index = (i+1);
             if(c < 20){								
               if(i == obj.length-1){
                 for(var j = 0 ; j < 20-c;j++){
-                  text = text +  '<div>'+
-                    '<div class="fl-spc tb-st inner no-bdt no-bdbtm">&emsp;</div>'+
-                    '<div class="fl-15 tb inner no-bdt no-bdbtm">&emsp;</div>'+
-                    '<div class="fl-12 tb inner no-bdt no-bdbtm">&emsp;</div>'+
-                    '<div class="fl-12 tb inner no-bdt no-bdbtm">&emsp;</div>'+
-                    '<div class="fl-20 tb inner no-bdt no-bdbtm">&emsp;</div>'+
-                    '<div class="fl-15 tb inner no-bdt no-bdbtm">&emsp;</div>'+
-                    '<div class="fl-15 tb inner no-bdt no-bdbtm">&emsp;</div>'+
-                  '</div>' 
+                  if(j == 19-c){
+                    text = text +  '<div class="row justify-content-center">'+
+                      '<div class="fl-spc tb-st inner no-bdt">&emsp;</div>'+
+                      '<div class="fl-15 tb inner no-bdt">&emsp;</div>'+
+                      '<div class="fl-12 tb inner no-bdt">&emsp;</div>'+
+                      '<div class="fl-12 tb inner no-bdt">&emsp;</div>'+
+                      '<div class="fl-20 tb inner no-bdt">&emsp;</div>'+
+                      '<div class="fl-15 tb inner no-bdt">&emsp;</div>'+
+                      '<div class="fl-15 tb inner no-bdt">&emsp;</div>'+
+                    '</div>'
+                  }else{
+                    text = text +  '<div class="row justify-content-center">'+
+                      '<div class="fl-spc tb-st inner no-bdt no-bdbtm">&emsp;</div>'+
+                      '<div class="fl-15 tb inner no-bdt no-bdbtm">&emsp;</div>'+
+                      '<div class="fl-12 tb inner no-bdt no-bdbtm">&emsp;</div>'+
+                      '<div class="fl-12 tb inner no-bdt no-bdbtm">&emsp;</div>'+
+                      '<div class="fl-20 tb inner no-bdt no-bdbtm">&emsp;</div>'+
+                      '<div class="fl-15 tb inner no-bdt no-bdbtm">&emsp;</div>'+
+                      '<div class="fl-15 tb inner no-bdt no-bdbtm">&emsp;</div>'+
+                    '</div>'
+                  }
+                   
                 }						
                 arr_a4.push(text);
+              }else{
+                text = text +  '<div class="row justify-content-center">'+
+                  '<div class="fl-spc tb-st inner no-bdt no-bdbtm">'+(i+1)+'</div>'+
+                  '<div class="fl-15 tb inner no-bdt no-bdbtm">'+field.order_number+'</div>'+
+                  '<div class="fl-12 tb inner no-bdt no-bdbtm">'+dateformat+'</div>'+
+                  '<div class="fl-12 tb inner no-bdt no-bdbtm">'+date_ex+'</div>'+
+                  '<div class="fl-20 tb inner no-bdt no-bdbtm">'+parseFloat(field.total_price).toFixed(2).toLocaleString()+'</div>'+
+                  '<div class="fl-15 tb inner no-bdt no-bdbtm">&emsp;</div>'+
+                  '<div class="fl-15 tb inner no-bdt no-bdbtm">'+parseFloat(field.total_price).toFixed(2).toLocaleString()+'</div>'+
+                '</div>'
               }
               c++;
-            }else if(c == 20){				
+            }else if(c == 20){
+              text = text +  '<div class="row justify-content-center">'+
+                '<div class="fl-spc tb-st inner no-bdt">'+(i+1)+'</div>'+
+                '<div class="fl-15 tb inner no-bdt">'+field.order_number+'</div>'+
+                '<div class="fl-12 tb inner no-bdt">'+dateformat+'</div>'+
+                '<div class="fl-12 tb inner no-bdt">'+date_ex+'</div>'+
+                '<div class="fl-20 tb inner no-bdt">'+parseFloat(field.total_price).toFixed(2).toLocaleString()+'</div>'+
+                '<div class="fl-15 tb inner no-bdt">&emsp;</div>'+
+                '<div class="fl-15 tb inner no-bdt">'+parseFloat(field.total_price).toFixed(2).toLocaleString()+'</div>'+
+              '</div>'			
               arr_a4.push(text);
               c = 1;
               text = "";
             }
           }); 
-          // for(var j = 0;j < 20-index;j++){
-          //   text = text +  '<div>'+
-          //     '<div class="fl-spc tb-st inner no-bdt no-bdbtm">&emsp;</div>'+
-          //     '<div class="fl-15 tb inner no-bdt no-bdbtm">&emsp;</div>'+
-          //     '<div class="fl-12 tb inner no-bdt no-bdbtm">&emsp;</div>'+
-          //     '<div class="fl-12 tb inner no-bdt no-bdbtm">&emsp;</div>'+
-          //     '<div class="fl-20 tb inner no-bdt no-bdbtm">&emsp;</div>'+
-          //     '<div class="fl-15 tb inner no-bdt no-bdbtm">&emsp;</div>'+
-          //     '<div class="fl-15 tb inner no-bdt no-bdbtm">&emsp;</div>'+
-          //   '</div>' 
-          // } 
+          for(var a = 0;a < arr_a4.length;a++){
+            text = ""
+            if(a == arr_a4.length-1){
+              text = text +  '<div class="row justify-content-center">'+
+                                '<div class="fl-83 tb-st inner no-bdt" style="text-align: right;">รวมทั้งสิ้น&emsp;&emsp;</div>'+
+                                '<div class="fl-14 tb inner no-bdt">'+parseFloat(sum).toFixed(2).toLocaleString()+'</div>'+
+                              '</div>'
+              arr_dat.push(text);
+            }else{
+              text = text +  '<div class="row justify-content-center">'+
+                                '<div class="fl-83 tb-st inner no-bdt" style="text-align: right;">&emsp;&emsp;</div>'+
+                                '<div class="fl-14 tb inner no-bdt"></div>'+
+                              '</div>'
+              arr_dat.push(text);
+            }
+          }         
           print2db(cus_name,sum,cd,text,credit_num);               
         }               
       });     
@@ -354,67 +382,68 @@
       var dt = datetime.split(" ");           
       var d = dt[0].split("-");
       var date = d[2] + "/" + d[1] + "/" + d[0];
-      WinPrint.document.write("<html><head><link href='https://fonts.googleapis.com/css?family=Maitree' rel='stylesheet'>");
-      WinPrint.document.write("<style>@media print {body {-webkit-print-color-adjust: exact;}} @page {size: auto; margin: 0;}.fl-spc{float: left; width: 5%;}.fl-10{float: left; width: 10.25%;}.fl-12{float: left; width: 12.752%;}.fl-14{float: left; width: 15.1%;}.fl-15{float: left; width: 15%;}.fl-20{float: left; width: 20%; text-align: center;}.fl-25{float: left; width: 25%; text-align: center;}.fl-33{float: left; width: 33%; text-align: center;}.fl-35{float: left; width: 35%; text-align: center;}.fl-45{float: left; width: 45%; text-align: center;}.fl-83{float: left; width: 83.55%; text-align: center;}.ctn{position: relative; width: 297mm; height: 210mm; padding: 10mm 15mm 5mm 10mm; font-family: 'Maitree';}.tb-st{border: 1px solid black; text-align: center; padding: 3px;}.tb{border: 1px solid black; text-align: center; padding: 3px; border-left: none;}.no-bdt{border-top: none;}.no-bdbtm{border-bottom: none;}.bold{font-weight: bold;}.head{font-size: 1.3em; padding-top: 10px; padding-bottom: 10px;}.inner{font-size: 1.15em; padding-top: 8px; padding-bottom: 8px;}</style></head><body>");
+      WinPrint.document.write("<html><head><link href='https://fonts.googleapis.com/css?family=Maitree' rel='stylesheet'>"+'<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">');
+      WinPrint.document.write("<style>@media print {body,html {-webkit-print-color-adjust: exact;}}  @page {size: auto; margin: 0;}.fl-spc{float: left; width: 5%;}.fl-10{float: left; width: 10.25%;}.fl-12{float: left; width: 12.752%;}.fl-14{float: left; width: 15%;}.fl-15{float: left; width: 15%;}.fl-20{float: left; width: 20%; text-align: center;}.fl-25{float: left; width: 25%; text-align: center;}.fl-33{float: left; width: 33%; text-align: center;}.fl-35{float: left; width: 35%; text-align: center;}.fl-45{float: left; width: 45%; text-align: center;}.fl-83{float: left; width: 80.50%; text-align: center;}.container{width: 297mm; height: 210mm; padding: 10mm 10mm 5mm 10mm; font-family: 'Maitree';}.tb-st{border: 1px solid black; text-align: center; padding: 3px;}.tb{border: 1px solid black; text-align: center; padding: 3px; border-left: none;}.no-bdt{border-top: none;}.no-bdbtm{border-bottom: none;}.bold{font-weight: bold;}.head{font-size: 1.3em; padding-top: 5px; padding-bottom: 5px;}.inner{font-size: 1.15em; padding-top: 6px; padding-bottom: 6px;}.pagebreak_after{page-break-after: always;}.nopd{padding-left: 0; padding-right: 0;}</style></head><body>");
       for(var m = 0;m < arr_a4.length;m++){
-        WinPrint.document.write('<div class="ctn" style="margin-top: -8mm;">'+
-      '<div class="fl-35">&emsp;</div> '+
-      '<div class="fl-spc">&emsp;</div>'+
-      ' <div class="fl-25" style="margin-top: 30px;"">'+
-        '<h1 style="border: 1px solid #555; border-radius: 10px; padding-top: 10px; padding-bottom: 10px; background-color: #555 !important; color: white; font-size: 210%;">ใบวางบิล</h1>'+
-      '</div>'+
-      '<div class="fl-20">&emsp;</div>'+
-      '<div class="fl-15" style="text-align: center;"">&emsp;</div>'+
-    
-      ' <div style=" text-align: left;">'+
-        '<p style="width: 60%;"><span class="bold">ชื่อลูกค้า  : </span><span>&emsp; '+cus_name+'</span></p>'+
-      '</div>'+
-      '<div style="text-align: right; margin-top: -50px;">'+
-        '<p style="width: 99%;"><span class="bold">เลขที่  : </span><span>&emsp;'+credit_num+'</span></p>'+
-        '<p style="width: 99%;"><span class="bold">วันที่  : </span>&emsp;&emsp; <span>'+date+'</span></p>'+
-        '<p style="width: 99%;"><span class="bold">เครดิต : </span><span style="margin-left: 44px;">'+cd+' &emsp;&emsp;วัน</span></p>'+
-      ' </div>'+
+        // Loop each container ...
+        WinPrint.document.write('<div class="container pagebreak_after">'+
+        '<div class="row justify-content-center" style="margin-bottom: 5mm;">'+
+          '<div class="col-4 text-center" style="">'+
+            '<h1 style="border: 1px solid #555; border-radius: 10px; padding-top: 10px; padding-bottom: 10px; background-color: #555 !important; color: white; font-size: 210%;">ใบวางบิล</h1>'+
+          '</div>'+
+        '</div>'+
 
-      '<div>'+
-        '<div class="fl-spc tb-st head bold">ที่</div>'+
-        '<div class="fl-15 tb head bold">เลขที่บิล</div>'+
-        '<div class="fl-12 tb head bold">วันที่</div>'+
-        '<div class="fl-12 tb head bold">ครบกำหนด</div>'+
-        '<div class="fl-20 tb head bold">จำนวนเงิน</div>'+
-        '<div class="fl-15 tb head bold">ชำระแล้ว</div>'+
-        '<div class="fl-15 tb head bold">เงินตกค้าง</div>'+
-      '</div>'+
-      arr_a4[m] +
-      '<div>'+
-        '<div class="fl-spc tb-st inner no-bdt">&emsp;</div>'+
-        '<div class="fl-15 tb inner no-bdt">&emsp;</div>'+
-        '<div class="fl-12 tb inner no-bdt">&emsp;</div>'+
-        '<div class="fl-12 tb inner no-bdt">&emsp;</div>'+
-        '<div class="fl-20 tb inner no-bdt">&emsp;</div>'+
-        '<div class="fl-15 tb inner no-bdt">&emsp;</div>'+
-        '<div class="fl-15 tb inner no-bdt">&emsp;</div>'+
-      '</div>'+
+        '<div class="row">'+
+          '<div class="col-9"><span class="bold">ชื่อลูกค้า : </span> <span>&emsp; '+cus_name+'</span></div>'+
+          '<div class="col-1 text-right nopd"><span class="bold">เลขที่ : </span></div>'+
+          '<div class="col-2 text-right"><span>'+credit_num+'</span></div>'+
+        '</div>'+
 
-      '<div>'+
-        '<div class="fl-83 tb-st inner no-bdt" style="text-align: right;">รวมทั้งสิ้น&emsp;&emsp;</div>'+
-        '<div class="fl-14 tb inner no-bdt">'+parseFloat(sum).toFixed(2).toLocaleString()+'</div>'+
-      '</div>'+
-      '<div style="margin-top: 1150px;">'+
-        '<div class="fl-33">_________________________</div>'+
-        '<div class="fl-33">_________________________</div>'+
-        '<div class="fl-33">________/________/_________</div>'+
-      '</div>'+
-      '<div>'+
-        '<div class="fl-33 inner">ชื่อผู้วางบิล</div>'+
-        '<div class="fl-33 inner">ชื่อผู้รับวางบิล</div>'+
-        '<div class="fl-33 inner">นัดรับเช็ควันที่</div>'+
-      '</div>'+
-      '<div style="margin-top: 1240px;">'+
-        '<div class="fl-33">________/________/_________</div>'+
-        '<div class="fl-33">________/________/_________</div>'+
-        '<div class="fl-33">&emsp;</div>'+
-      ' </div>'+
-      '</div>');
+        '<div class="row justify-content-end">'+
+          '<div class="col-1 text-right nopd"><span class="bold">วันที่ : </span></div>'+
+          '<div class="col-2 text-right"><span>'+date+'</span></div>'+
+        '</div>'+
+
+        '<div class="row justify-content-end">'+
+          '<div class="col-1 text-right nopd"><span class="bold">เครดิต : </span></div>'+
+          '<div class="col-2 text-right"><span>'+cd+' &emsp;วัน</span></div>'+
+        '</div>'+
+
+        '<div class="row justify-content-center" style="margin-top: 1cm;">'+
+          '<div class="fl-spc tb-st head bold">ที่</div>'+
+          '<div class="fl-15 tb head bold">เลขที่บิล</div>'+
+          '<div class="fl-12 tb head bold">วันที่</div>'+
+          '<div class="fl-12 tb head bold">ครบกำหนด</div>'+
+          '<div class="fl-20 tb head bold">จำนวนเงิน</div>'+
+          '<div class="fl-15 tb head bold">ชำระแล้ว</div>'+
+          '<div class="fl-15 tb head bold">เงินตกค้าง</div>'+
+        '</div>'+
+        
+        arr_a4[m] +
+
+        arr_dat[m] +  
+        
+        // Space ... 
+        '<div class="row justify-content-center"><div style="float: left; width: 100%;">&emsp;</div><div style="float: left; width: 100%;">&emsp;</div><div style="float: left; width: 100%;">&emsp;</div></div>'+
+        
+        // Bottom ...
+        '<div class="row justify-content-center">'+
+          '<div class="col-4 text-center">_________________________</div>'+
+          '<div class="col-4 text-center">_________________________</div>'+
+          '<div class="col-4 text-center">________/________/_________</div>'+
+        '</div>'+
+        '<div class="row justify-content-center">'+
+          '<div class="col-4 text-center inner">ชื่อผู้วางบิล</div>'+
+          '<div class="col-4 text-center inner">ชื่อผู้รับวางบิล</div>'+
+          '<div class="col-4 text-center inner">นัดรับเช็ควันที่</div>'+
+        '</div>'+
+        '<div class="row justify-content-center pagebreak_after">'+
+          '<div class="col-4 text-center">________/________/_________</div>'+
+          '<div class="col-4 text-center">________/________/_________</div>'+
+          '<div class="col-4 text-center">&emsp;</div>'+
+        ' </div>'+
+        // End container ... 
+        '</div>');
       }
       WinPrint.document.write('</body></html>');
       WinPrint.document.close();

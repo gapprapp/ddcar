@@ -26,7 +26,7 @@
         $sql = "SELECT * FROM detail_cus WHERE prod_id = '$prod_id' AND cus_id = '$cus'"; 
         $result = mysqli_query($conn, $sql);    
         if(mysqli_num_rows($result) > 0){   
-            $sql = "UPDATE detail_cus SET prod_id = '$prod_id',cus_id = '$cus',cus_price = '$price')"; 
+            $sql = "UPDATE detail_cus SET cus_price = '$price' WHERE prod_id = '$prod_id' AND cus_id = '$cus'"; 
         }else{
             $sql = "INSERT INTO detail_cus(prod_id,cus_id,cus_price) VALUE ('$prod_id','$cus','$price')"; 
         }        

@@ -58,22 +58,17 @@
 
     <script>
         arr_detail = [];
-        $(document).ready(function () {
-            /*var retrievedObject = localStorage.getItem('arr_sale');
-            var arr_data = JSON.parse(retrievedObject);
-            for(var i = 0 ; i < arr_data.length ; i ++){                
-                if(arr_data[i].old_price != arr_data[i].price){
-                    item = {};                 
-                    item ["prod_id"] = arr_data[i].prod_id;                  
-                    item ["price"] =  arr_data[i].price;          
-
-                    arr_detail.push(item); 
-                }
-            } */
+        $(document).ready(function () {           
             if(localStorage.type == "ขายปลีก"){
                 $("#bill").val('ใบเสร็จ');
                 $('#vat').attr('disabled',true);
-            }           
+            }else if(localStorage.type == "ขายส่ง(1)"){
+                $("#pay").val('เครดิต (30)');
+            }else if(localStorage.type == "ขายส่ง(2)"){
+                $("#pay").val('เครดิต (60)')
+            }else if(localStorage.type == "ขายส่ง(3)"){
+                $("#pay").val('เครดิต (90)')
+            }	          
         });
 
         $(document).keydown(function(objEvent) {

@@ -245,7 +245,14 @@
 								cus_tel = "-";
 								localStorage.cus_tel = cus_tel;
 							}
-							//console.log(cus_addr + cus_tel);
+							if(cus_type == "ขายส่ง(1)"){
+								setpay('เครดิต (30)')
+							}else if(cus_type == "ขายส่ง(2)"){
+								setpay('เครดิต (60)')
+							}else if(cus_type == "ขายส่ง(3)"){
+								setpay('เครดิต (90)')
+							}
+							
 						},
 						onChooseEvent: function() {                
 							cus_id = $("#cus").getSelectedItemData().cus_id;						
@@ -264,6 +271,13 @@
 							if(cus_tel == ""){
 								cus_tel = "-";
 								localStorage.cus_tel = cus_tel;
+							}
+							if(cus_type == "ขายส่ง(1)"){
+								setpay('เครดิต (30)')
+							}else if(cus_type == "ขายส่ง(2)"){
+								setpay('เครดิต (60)')
+							}else if(cus_type == "ขายส่ง(3)"){
+								setpay('เครดิต (90)')
 							}						
 						}
 				},
