@@ -471,6 +471,61 @@
 			localStorage.clear();
 		}
 
+    function appendCollapse(index){
+        if($("#detail-"+index).length){
+            //
+        }else{
+            var text = '<div class="collapse" id="detail-'+index+'">'+
+            '<div class="card card-body">'+
+              '<div class="row justify-content-center">'+
+                  '<h3 style="text-decoration: underline;">รายการ</h3>'+
+              '</div>'+
+              '<div id="item-1" class="row justify-content-center">'+
+                  '<div class="col-1 text-center items">500</div>'+
+                  '<div class="col-7 text-center items">กันรอยขอบกระบะท้าย revo logo ROCCO</div>'+
+                  '<div class="col-2 text-center items">120,000</div>'+
+                  '<div class="col-2 text-center items">600,000</div>'+
+              '</div>'+
+              '<div id="item-2" class="row justify-content-center">'+
+                  '<div class="col-1 text-center items">500</div>'+
+                  '<div class="col-7 text-center items">กันรอยขอบกระบะท้าย revo logo ROCCO</div>'+
+                  '<div class="col-2 text-center items">120,000</div>'+
+                  '<div class="col-2 text-center items">600,000</div>'+
+              '</div>'+
+              '<div id="item-3" class="row justify-content-center">'+
+                  '<div class="col-1 text-center items">500</div>'+
+                  '<div class="col-7 text-center items">กันรอยขอบกระบะท้าย revo logo ROCCO</div>'+
+                  '<div class="col-2 text-center items">120,000</div>'+
+                  '<div class="col-2 text-center items">600,000</div>'+
+              '</div>'+
+              '<hr style="width: 50%; margin: auto; margin-top: 1em;">'+
+              '<div class="row" style="margin-top: 1em;">'+
+                  '<div class="col-4 text-right"><h4>รวม</h4></div>'+
+                  '<div class="col-4 text-right"><h4>100,000</h4></div>'+
+              '</div>'+
+              '<div class="row">'+
+                  '<div class="col-4 text-right"><h4>ลด</h4></div>'+
+                  '<div class="col-4 text-right"><h4>10,000</h4></div>'+
+              '</div>'+
+              '<div class="row">'+
+                  '<div class="col-4 text-right"><h4>รับ / ทอน</h4></div>'+
+                  '<div class="col-4 text-right"><h4>120,000</h4></div>'+
+                  '<div class="col-4 text-center"><h4>1,000</h4></div>'+
+              '</div>'+
+              '<div class="row justify-content-center" style="margin-top: 1em;">'+
+                  '<div class="col-4 text-center">'+
+                  '<button class="btn btn-lg btn-warning" style="color: white;">พิมพ์รายการ  <i class="fas fa-print"></i></button>'+
+                  '</div>'+
+              '</div>'+
+            '</div>'+
+          '</div>';
+
+          $("#cus-"+index).append(text);
+        }
+        $('html, body').animate({
+              scrollTop: $("#cus-"+index).offset().top
+          }, 1100);
+    }
   </script>
 </head>
 <body>
@@ -515,6 +570,27 @@
       <ul id="myUL"> </ul>
       <ul id="myS"> </ul>            
     </div>
+
+    <!-- 
+      <div id="ctn-append" class="container-fullwidth">
+        <ul id="myUL">
+          <li id="cus-1">
+            <div class="row justify-content-center cus-odd" data-toggle="collapse" href="#detail-1" role="button" aria-expanded="false" aria-controls="detail-1" onclick="appendCollapse(1);">
+                <div class="col-4 text-center"><h5>S18-00329</h5></div>
+                <div class="col-3 text-center"><h5>03/10/18</h5></div>
+                <div class="col-4 text-center"><h5>Phoenix</h5></div>
+            </div>
+          </li>
+          <li id="cus-2">
+            <div class="row justify-content-center cus-even" data-toggle="collapse" href="#detail-2" role="button" aria-expanded="false" aria-controls="detail-2" onclick="appendCollapse(2);">
+                <div class="col-4 text-center"><h5>S18-00329</h5></div>
+                <div class="col-3 text-center"><h5>03/10/18</h5></div>
+                <div class="col-4 text-center"><h5>Phoenix</h5></div>
+            </div>
+          </li>
+        </ul>
+      </div>
+    -->
   </div>
 </body>
 </html>
