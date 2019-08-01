@@ -300,8 +300,19 @@
             var date_ex = tomorrow.getDate() + "/" + (tomorrow.getMonth()+1) + "/" +   tomorrow.getFullYear(); 
             sum += parseFloat(field.total_price); 
             index = (i+1);
+            console.log(obj.length + " " + c + " " + i)
             if(c < 20){								
-              if(i == obj.length-1){
+              if(c == obj.length){
+                // The last item ??
+                text = text +  '<div class="row justify-content-center">'+
+                  '<div class="fl-spc tb-st inner no-bdt no-bdbtm">'+(i+1)+'</div>'+
+                  '<div class="fl-15 tb inner no-bdt no-bdbtm">'+field.order_number+'</div>'+
+                  '<div class="fl-12 tb inner no-bdt no-bdbtm">'+dateformat+'</div>'+
+                  '<div class="fl-12 tb inner no-bdt no-bdbtm">'+date_ex+'</div>'+
+                  '<div class="fl-20 tb inner no-bdt no-bdbtm">'+parseFloat(field.total_price).toFixed(2).toLocaleString()+'</div>'+
+                  '<div class="fl-15 tb inner no-bdt no-bdbtm">&emsp;</div>'+
+                  '<div class="fl-15 tb inner no-bdt no-bdbtm">'+parseFloat(field.total_price).toFixed(2).toLocaleString()+'</div>'+
+                '</div>'
                 for(var j = 0 ; j < 20-c;j++){
                   if(j == 19-c){
                     text = text +  '<div class="row justify-content-center">'+
@@ -327,7 +338,7 @@
                    
                 }						
                 arr_a4.push(text);
-              }else{
+              }else{             
                 text = text +  '<div class="row justify-content-center">'+
                   '<div class="fl-spc tb-st inner no-bdt no-bdbtm">'+(i+1)+'</div>'+
                   '<div class="fl-15 tb inner no-bdt no-bdbtm">'+field.order_number+'</div>'+
@@ -337,7 +348,8 @@
                   '<div class="fl-15 tb inner no-bdt no-bdbtm">&emsp;</div>'+
                   '<div class="fl-15 tb inner no-bdt no-bdbtm">'+parseFloat(field.total_price).toFixed(2).toLocaleString()+'</div>'+
                 '</div>'
-              }
+                
+                }
               c++;
             }else if(c == 20){
               text = text +  '<div class="row justify-content-center">'+
