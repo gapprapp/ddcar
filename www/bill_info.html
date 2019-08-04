@@ -31,7 +31,7 @@
   <style>
     hr{
       margin-top: 0;
-      height: 90%;
+      width: 80%;
     }
     .pdr{
     	padding-right: 10%;
@@ -64,7 +64,6 @@
       margin-top: 2px;
       letter-spacing: -1px;
     }
-
   </style>
 
   <script>
@@ -126,29 +125,29 @@
             arr.push(field.prod_amount);
           });
 
-          $('#in-ctn').append('<div class="row"><hr style="width 100%;">'+
-              '<div class="col-4 text-center" style="padding-left: 0;"><h5 class="bold">รวม</h5></div>'+
-              '<div class="col-7 text-right" style="padding-right: 0;"><h5 id="sum" class="bold"></h5></div>'+
+          $('#in-ctn').append('<div class="row"><hr style="margin-top: 1em;">'+
+              '<div class="col-6 text-center" style="padding-left: 0;"><h5 class="bold">รวม</h5></div>'+
+              '<div class="col-6 text-center" style="padding-right: 0;"><h5 id="sum" class="bold"></h5></div>'+
             '</div>'+
             '<div class="row">'+
-              '<div class="col-4 text-center" style="padding-left: 0;"><h5 class="bold">ลด</h5></div>'+
-              '<div class="col-7 text-right" style="padding-right: 0;"><h5 id="discount" class="bold"></h5></div>'+
+              '<div class="col-6 text-center" style="padding-left: 0;"><h5 class="bold">ลด</h5></div>'+
+              '<div class="col-6 text-center" style="padding-right: 0;"><h5 id="discount" class="bold"></h5></div>'+
             '</div>'+
             '<div class="row">'+
-              '<div class="col-4 text-center" style="padding-left: 0;"><h5 class="bold">สุทธิ</h5></div>'+
-              '<div class="col-7 text-right" style="padding-right: 0;"><h5 id="total" class="bold"></h5></div>'+
+              '<div class="col-6 text-center" style="padding-left: 0;"><h5 class="bold">สุทธิ</h5></div>'+
+              '<div class="col-6 text-center" style="padding-right: 0;"><h5 id="total" class="bold"></h5></div>'+
             '</div>'+
             '<div class="row">'+
-              '<div class="col-4 text-center" style="padding-left: 0;"><h5 class="bold">รับ / ทอน</h5></div>'+
-              '<div class="col-4 text-right" style="padding-right: 0;"><h5 id="get" class="bold"></h5></div>'+
-              '<div class="col-4 text-right" style="padding-right: 0;"><h5 id="chng" class="bold"></h5></div>'+
+              '<div class="col-5 text-right"><h5 class="bold">รับ / ทอน</h5></div>'+
+              '<div class="col-5 text-center" style="padding-right: 0;"><h5 id="get" class="bold"></h5></div>'+
+              '<div class="col-2 text-center" style="padding-right: 0;"><h5 id="chng" class="bold"></h5></div>'+
             '</div>'+
             '<hr style="margin-top: 1em;">'+
             '<div id="btm-row" class="row" style="margin-bottom: 4.5em;">'+
             '<div class="col-12 text-center">'+
                 '<h5 id="user">ชื่อผู้บันทึก</h5>'+
             '</div>'+
-          '</div>');  
+          '</div>'); 
           
           $('#sum').text(obj[0].sum_price);
           $('#discount').text(obj[0].total_discount);
@@ -161,12 +160,39 @@
     });   
 
     function disactive(arg) {
-        nav_menu = ['home', 'add', 'edit', 'del'];
+        nav_menu = ['home', 'print', 'edit', 'del'];
+        
+        if($("#warehouse").hasClass('underline')) {
+          $(".i-del").attr('hidden', true);
+          $(".amount").removeClass('underline');
+          $("#discount").removeClass('underline');
+          $("#type").removeClass('underline');
+          $("#get").removeClass('underline');
+          $("#warehouse").removeClass('underline');
+          $("#warehouse").attr('onclick', '');
+          $("#discount").attr('onclick', '');
+          $("#type").attr('onclick', '');
+          $("#get").attr('onclick', '');
+          $("#i-save").attr('onclick', '');
+          $("#i-save").css('color', "#e57f7f");
+          // if has 3 prod then index = 3
+          for(i = 1; i <= 3; i++){ $("#amt-"+i).attr('onclick', ''); }
+        }
+
+
         for (i = 0; i < 4; i++) {
             if (nav_menu[i] != arg) {
                 if ($("#i-" + nav_menu[i]).hasClass('active')) $("#i-" + nav_menu[i]).removeClass('active');
             }
         }
+    }
+
+    function print(arg){
+      if(arg == 1){
+        alert("พิมพ์ใบวางบิล");
+      }else if(arg == 2){
+        alert("พิมพ์ใบเสร็จ");
+      }
     }
 
     function menu(arg) {
@@ -261,6 +287,29 @@
                   },ยกเลิก: function () {}, 
                 }  
             });
+        }else if (arg == "print"){
+          $("style").append('.jconfirm .jconfirm-box{max-height: 420px;}');
+            var text_html = "";
+            button1 = '<button type="button" onclick="print(1)" class="btn btn-choice">ใบวางบิล A4</button>';
+            button2 = '<button type="button" onclick="print(2)" class="btn btn-choice">ใบเสร็จ</button>';
+
+            text_html = button1 + button2;
+
+              $.confirm({
+                title: 'เลือกรูปแบบการพิมพ์',
+                content: '<hr style="width: 80%; margin-bottom: 0;">',
+                backgroundDismiss: true,
+                onOpenBefore: function () {
+                $(".jconfirm-buttons .btn-default").remove();
+                $(".jconfirm-buttons").append(text_html);
+                },
+                onDestroy: function () {
+                $("style").append('.jconfirm .jconfirm-box{margin-bottom: 5%;}');
+                $("style").append('.jconfirm .jconfirm-box{max-height: 100%;}');
+
+                disactive(print);
+                }              
+              });                                       
         }
     } 
 
@@ -639,13 +688,16 @@
 
   <!-- Nav menu bottom -->
   <div class="row fixed-bottom navs">
-    <div class="col-4 text-center" onclick="transition_page_back('index.html'); window.location = 'index.html';">
+    <div class="col-3 text-center" onclick="transition_page_back('index.html'); window.location = 'index.html';">
       <i id="i-home" class="fa fa-home menu"></i>
     </div>
-    <div class="col-4 text-center" onclick="menu('edit')">
+    <div class="col-3 text-center" onclick="menu('edit')">
       <i id="i-edit" class="fa fa-edit menu"></i>
     </div>
-    <div class="col-4 text-center" onclick="menu('del')">
+    <div class="col-3 text-center" onclick="menu('print')">
+      <i id="i-print" class="fas fa-print menu"></i>
+    </div>
+    <div class="col-3 text-center" onclick="menu('del')">
       <i id="i-del" class="fa fa-trash-alt menu"></i>
     </div>
   </div>
