@@ -63,6 +63,120 @@
   </style>
 
   <script>
+    var start = start_s = 0;
+    var bool = bool_s = false;
+    $(document).ready(function(){    
+      get_bill();
+
+      $(window).scroll(function() {
+        if($(window).scrollTop() + $(window).height() == $(document).height()) {
+          if(!$("#myUL").prop('hidden')){
+            if(bool){
+              return 0;
+            }
+            get_bill();            
+          }else if(!$("#myS").prop('hidden')){
+            if(bool_s){
+              return 0;
+            }
+            get_bill_s();
+          }
+        }
+      });    
+    });
+
+    $(document).keydown(function(objEvent) {
+      if (objEvent.keyCode == 13) {  //enter pressed
+        objEvent.preventDefault();        
+          search();       
+      }         
+    })
+
+    var val;
+    function search(){
+      if($('#input-search').val() == ""){
+        return 0;
+      }
+      // $('#search_bill').blur();
+      val = $('#input-search').val()
+      start_s = 0;
+      bool_s = false;
+      $("#myS").prop('hidden', false);
+      $("#myUL").prop('hidden', true);     
+      $("#myS").empty();
+      // $("#i-back").attr("onclick","showUL()");
+      get_bill_s();
+    }
+
+    function get_bill(){
+      $.ajax({
+        type: "POST",
+        url:"php/get_bill.php",
+        data: {'start': start},
+        beforeSend: function(){
+          EasyLoading.show({                           
+						text: "กำลังโหลด"
+					});
+        },                       
+        success: function(data){ 
+          EasyLoading.hide();
+          var obj = jQuery.parseJSON(data);
+          if(obj[0] == "last"){
+            bool = true
+          }
+          $.each(obj, function(i, field){
+            if(i > 0){
+              var txt = field.date_time.split(" ");
+              var txt2 = txt[0].split("-");
+              var date = txt2[2] + "/" + txt2[1] + "/" + txt2[0].substr(2);
+              $('#myUL').append(' <li id="bill-'+field.order_id+'">' +
+                    '<div class="row justify-content-center bill-even" data-toggle="collapse" href="#detail-'+field.order_id+'" role="button" aria-expanded="false" aria-controls="detail-'+field.order_id+'" onclick="appendCollapse('+field.order_id+');">' +
+                        '<div class="col-4 text-center"><h5>'+field.order_number+'</h5></div>' +
+                        '<div class="col-3 text-center"><h5>'+date+'</h5></div>' +
+                        '<div class="col-4 text-center"><h5>'+field.cus_name+'</h5></div>' +
+                    '</div>' +
+                '</li>');               
+            }                                                
+          });                                         
+        }               
+      });
+      start += 20;
+    }
+
+    function get_bill_s(){
+      $.ajax({
+        type: "POST",
+        url:"php/get_bill.php",
+        data: {'start': start_s, 'value' : val},
+        beforeSend: function(){
+          EasyLoading.show({                           
+						text: "กำลังโหลด"
+					});
+        },                       
+        success: function(data){ 
+          EasyLoading.hide();
+          var obj = jQuery.parseJSON(data);
+          if(obj[0] == "last"){
+            bool_s = true
+          }
+          $.each(obj, function(i, field){
+            if(i > 0){
+              var txt = field.date_time.split(" ");
+              var txt2 = txt[0].split("-");
+              var date = txt2[2] + "/" + txt2[1] + "/" + txt2[0].substr(2);
+              $('#myS').append(' <li id="bills-'+field.order_id+'">' +
+                    '<div class="row justify-content-center bill-even" data-toggle="collapse" href="#details-'+field.order_id+'" role="button" aria-expanded="false" aria-controls="details-'+field.order_id+'" onclick="appendCollapses('+field.order_id+');">' +
+                        '<div class="col-4 text-center"><h5>'+field.order_number+'</h5></div>' +
+                        '<div class="col-3 text-center"><h5>'+date+'</h5></div>' +
+                        '<div class="col-4 text-center"><h5>'+field.cus_name+'</h5></div>' +
+                    '</div>' +
+                '</li>');    
+            }                                                
+          });                                         
+        }               
+      });
+      start_s += 20;
+    }
 
     var last_collapse_index = 0;
 
@@ -83,43 +197,52 @@
         if(last_collapse_index){
           $("div").closest("#detail-"+last_collapse_index).collapse('hide');
         }
-
-        var text = '<div class="collapse" id="detail-'+index+'">'+
-          '<div class="card card-body">'+
-            '<div class="row justify-content-center">'+
-                '<h3 style="text-decoration: underline;">รายการ</h3>'+
-            '</div>'+
-            '<div id="item-1" class="row justify-content-center">'+
-                '<div class="col-1 text-center items">500</div>'+
-                '<div class="col-7 text-center items">กันรอยขอบกระบะท้าย revo logo ROCCO</div>'+
-                '<div class="col-2 text-center items">120,000</div>'+
-                '<div class="col-2 text-center items">600,000</div>'+
-            '</div>'+
-            '<div id="item-2" class="row justify-content-center">'+
-                '<div class="col-1 text-center items">500</div>'+
-                '<div class="col-7 text-center items">กันรอยขอบกระบะท้าย revo logo ROCCO</div>'+
-                '<div class="col-2 text-center items">120,000</div>'+
-                '<div class="col-2 text-center items">600,000</div>'+
-            '</div>'+
-            '<div id="item-3" class="row justify-content-center">'+
-                '<div class="col-1 text-center items">500</div>'+
-                '<div class="col-7 text-center items">กันรอยขอบกระบะท้าย revo logo ROCCO</div>'+
-                '<div class="col-2 text-center items">120,000</div>'+
-                '<div class="col-2 text-center items">600,000</div>'+
-            '</div>'+
+        var text = ""
+        $.ajax({
+          type: "POST",
+          url:"php/get_bill_info4print.php",    
+          data:{'bill_id' : index},
+          async:false,                            
+          beforeSend: function(){
+            EasyLoading.show({                           
+              text: "กำลังโหลด"
+            });
+          },             
+          success: function(data){  
+            EasyLoading.hide();
+            var obj = jQuery.parseJSON(data); 
+            text = text + '<div class="collapse" id="detail-'+index+'">'+
+            '<div class="card card-body">'+
+              '<div class="row justify-content-center">'+
+                  '<h3 style="text-decoration: underline;">รายการ</h3>'+
+              '</div>'
+            $.each(obj, function(i, field){
+              text = text + 
+              '<div id="item-'+field.item_id+'" class="row justify-content-center">'+
+                '<div class="col-1 text-center items">'+field.prod_amount+'</div>'+
+                '<div class="col-7 text-center items">'+field.prod_name+'</div>'+
+                '<div class="col-2 text-center items">'+field.prod_price+'</div>'+
+                '<div class="col-2 text-center items">'+field.prod_price*field.prod_amount+'</div>'+
+              '</div>'
+            });
+            text = text + 
             '<hr style="width: 50%; margin: auto; margin-top: 1em;">'+
             '<div class="row" style="margin-top: 1em;">'+
                 '<div class="col-4 text-right"><h4>รวม</h4></div>'+
-                '<div class="col-4 text-right"><h4>100,000</h4></div>'+
+                '<div class="col-4 text-right"><h4>'+obj[0].sum_price+'</h4></div>'+
             '</div>'+
             '<div class="row">'+
                 '<div class="col-4 text-right"><h4>ลด</h4></div>'+
-                '<div class="col-4 text-right"><h4>10,000</h4></div>'+
+                '<div class="col-4 text-right"><h4>'+obj[0].total_discount+'</h4></div>'+
+            '</div>'+
+            '<div class="row">'+
+                '<div class="col-4 text-right"><h4>สุทธิ</h4></div>'+
+                '<div class="col-4 text-right"><h4>'+obj[0].total_price+'</h4></div>'+
             '</div>'+
             '<div class="row">'+
                 '<div class="col-4 text-right"><h4>รับ / ทอน</h4></div>'+
-                '<div class="col-4 text-right"><h4>120,000</h4></div>'+
-                '<div class="col-4 text-center"><h4>1,000</h4></div>'+
+                '<div class="col-4 text-right"><h4>'+obj[0].get_price+'</h4></div>'+
+                '<div class="col-4 text-center"><h4>'+obj[0].chng+'</h4></div>'+
             '</div>'+
             '<div class="row justify-content-center" style="margin-top: 1em;">'+
                 '<div class="col-4 text-center">'+
@@ -128,27 +251,543 @@
             '</div>'+
           '</div>'+
         '</div>';
-
+        }               
+        });       
+       
         $("#bill-"+index).append(text);
-
         $("#btn-a4").attr('onclick', 'printA4('+index+")");
         $("#btn-recep").attr('onclick', 'printRecep('+index+")");
 
         if(last_collapse_index != index){
           last_collapse_index = index;
-        }
+        } 
       }
       $('html, body').animate({
             scrollTop: $("#bill-"+index).offset().top
         }, 1100);
     }
 
+    var last_collapse_indexs = 0;
+
+    function appendCollapses(index){
+      if($("#details-"+index).length){
+        if(last_collapse_indexs){
+          $("div").closest("#details-"+last_collapse_indexs).collapse('hide');
+        }
+
+        $("#btn-a4").attr('onclick', 'printA4('+index+")");
+        $("#btn-recep").attr('onclick', 'printRecep('+index+")");
+
+        if(last_collapse_indexs != index){
+          last_collapse_indexs = index;
+        }
+      }else{
+
+        if(last_collapse_indexs){
+          $("div").closest("#details-"+last_collapse_indexs).collapse('hide');
+        }
+        var text = ""
+        $.ajax({
+          type: "POST",
+          url:"php/get_bill_info4print.php",    
+          data:{'bill_id' : index},
+          async:false,                            
+          beforeSend: function(){
+            EasyLoading.show({                           
+              text: "กำลังโหลด"
+            });
+          },             
+          success: function(data){  
+            EasyLoading.hide();
+            var obj = jQuery.parseJSON(data); 
+            text = text + '<div class="collapse" id="details-'+index+'">'+
+            '<div class="card card-body">'+
+              '<div class="row justify-content-center">'+
+                  '<h3 style="text-decoration: underline;">รายการ</h3>'+
+              '</div>'
+            $.each(obj, function(i, field){
+              text = text + 
+              '<div id="item-'+field.item_id+'" class="row justify-content-center">'+
+                '<div class="col-1 text-center items">'+field.prod_amount+'</div>'+
+                '<div class="col-7 text-center items">'+field.prod_name+'</div>'+
+                '<div class="col-2 text-center items">'+field.prod_price+'</div>'+
+                '<div class="col-2 text-center items">'+field.prod_price*field.prod_amount+'</div>'+
+              '</div>'
+            });
+            text = text + 
+            '<hr style="width: 50%; margin: auto; margin-top: 1em;">'+
+            '<div class="row" style="margin-top: 1em;">'+
+                '<div class="col-4 text-right"><h4>รวม</h4></div>'+
+                '<div class="col-4 text-right"><h4>'+obj[0].sum_price+'</h4></div>'+
+            '</div>'+
+            '<div class="row">'+
+                '<div class="col-4 text-right"><h4>ลด</h4></div>'+
+                '<div class="col-4 text-right"><h4>'+obj[0].total_discount+'</h4></div>'+
+            '</div>'+
+            '<div class="row">'+
+                '<div class="col-4 text-right"><h4>สุทธิ</h4></div>'+
+                '<div class="col-4 text-right"><h4>'+obj[0].total_price+'</h4></div>'+
+            '</div>'+
+            '<div class="row">'+
+                '<div class="col-4 text-right"><h4>รับ / ทอน</h4></div>'+
+                '<div class="col-4 text-right"><h4>'+obj[0].get_price+'</h4></div>'+
+                '<div class="col-4 text-center"><h4>'+obj[0].chng+'</h4></div>'+
+            '</div>'+
+            '<div class="row justify-content-center" style="margin-top: 1em;">'+
+                '<div class="col-4 text-center">'+
+                '<button class="btn btn-lg btn-warning" data-toggle="modal" data-target="#printModal" style="color: white;">พิมพ์รายการ  <i class="fas fa-print"></i></button>'+
+                '</div>'+
+            '</div>'+
+          '</div>'+
+        '</div>';
+        }               
+        });      
+      
+        $("#bills-"+index).append(text);
+        $("#btn-a4").attr('onclick', 'printA4('+index+")");
+        $("#btn-recep").attr('onclick', 'printRecep('+index+")");
+
+        if(last_collapse_indexs != index){
+          last_collapse_indexs = index;
+        } 
+      }
+      $('html, body').animate({
+            scrollTop: $("#bills-"+index).offset().top
+        }, 1100);
+    }
+    
     function printA4(index){
-      alert("Print A4 @ index = " + index);
+      arr_a4 = [];		 
+      var text = ""     
+      var texta4 = "";
+      var c = 1;
+      $.ajax({
+          type: "POST",
+          url:"php/get_bill_info4print.php",    
+          data:{'bill_id' : index},
+          async:false,                            
+          beforeSend: function(){
+            EasyLoading.show({                           
+              text: "กำลังโหลด"
+            });
+          },             
+          success: function(data){  
+            EasyLoading.hide();
+            var obj = jQuery.parseJSON(data);
+            var dt = obj[0].date_time.split(" ");
+            var time = dt[1];
+            var day = dt[0].split("-");
+            var date = day[2] + "/" + day[1] + "/" + day[0];           
+            var credit = obj[0].payment_type.substr(8,2);           
+            var d = new Date(day[0],day[1],day[2]);          
+            d.setDate(d.getDate() + parseInt(credit));
+            var date_ex = d.getDate() + "/" + (d.getMonth()+1) + "/" +   d.getFullYear();           
+            text = text + "<html><head><link href='https://fonts.googleapis.com/css?family=Maitree' rel='stylesheet'>" +
+              "<style>@media print {body {-webkit-print-color-adjust: exact;}} @page {size: auto; margin: 0;}.fl-spc{float: left; width: 5%;}.fl-9{float: left; width: 9%;}.fl-12{float: left; width: 12.752%;}.fl-13{float: left; width: 13.05%;}.fl-14{float: left; width: 13.88%;}.fl-15{float: left; width: 15%;}.fl-20{float: left; width: 20%; text-align: center;}.fl-25{float: left; width: 25%; text-align: center;}.fl-35{float: left; width: 35%; text-align: center;}.fl-45{float: left; width: 45%; text-align: center;}.fl-80{float: left; width: 80%; text-align: center;}.ctn{position: relative; width: 297mm; height: 10%; padding: 10mm 15mm 0mm 10mm; font-family: 'Maitree';}.tb-st{border: 1px solid black; text-align: center; padding: 3px;}.tb{border: 1px solid black; text-align: center; padding: 3px; border-left: none;}.no-bdt{border-top: none;}.no-bdbtm{border-bottom: none;}.bold{font-weight: bold;}.ccc{background-color: #ccc;}.pd-15{padding-top: 15px;}.pd-16{padding-top: 16px;}.mg-5{margin-top: 5px;}</style></head><body>"
+            $.each(obj, function(i, field){
+              texta4 = texta4 + '<div>'+
+                  '<div class="fl-spc tb-st no-bdt">'+(i+1)+'</div>' +
+                  '<div class="fl-15 tb no-bdt">'+field.prod_code+'</div>' +
+                  '<div class="fl-45 tb no-bdt">'+field.prod_name+'</div>' +
+                  '<div class="fl-spc tb no-bdt">'+field.prod_amount+'</div>' +
+                  '<div class="fl-13 tb no-bdt">'+parseFloat(field.prod_price).toFixed(2)+'</div>' +
+                  '<div class="fl-13 tb no-bdt">'+parseFloat(field.prod_price*field.prod_amount).toFixed(2)+'</div>' +
+                '</div>';	
+                if(c < 7){
+                  if(i == obj.length-1){
+                    for(var j = 0 ; j < 7-c;j++){
+                      texta4 = texta4 + '<div>'+
+                        '<div class="fl-spc tb-st no-bdt">&emsp;</div>' +
+                        '<div class="fl-15 tb no-bdt">&emsp;</div>' +
+                        '<div class="fl-45 tb no-bdt">&emsp;</div>' +
+                        '<div class="fl-spc tb no-bdt">&emsp;</div>' +
+                        '<div class="fl-13 tb no-bdt">&emsp;</div>' +
+                        '<div class="fl-13 tb no-bdt">&emsp;</div>' +
+                      '</div>';	
+                    }						
+                    arr_a4.push(texta4);
+                  }
+                  c++;
+                }else if(c == 7){				
+                  arr_a4.push(texta4);
+                  c = 1;
+                  texta4 = "";
+                }
+            });
+            for(var a = 0;a < arr_a4.length;a++){
+              text = text + "<div class='ctn' style='margin-top: -8mm;'>" +
+                "<div class='fl-35'>" +
+                  "<img style='width: 250px; height: 150px;' src='img/logo.jpg'>" +
+                "</div>" +
+                '<div class="fl-spc">&emsp;</div>' +
+                "<div class='fl-25' style='margin-top: 30px;'>" +
+                '<h1 style="border: 1px solid #555; border-radius: 10px; padding-top: 10px; padding-bottom: 10px; background-color: #555 !important; color: white; font-size: 210%;">ใบรายการขาย</h1>' +
+                '</div>' +
+                '<div class="fl-20">&emsp;</div>' +
+                "<div class='fl-15' style='text-align: center; margin-bottom: 30px;'>" +
+                  '<h4 style="border: 1px solid black; background-color: #cccccc; padding-top: 5px; padding-bottom: 5px; width: 90%;">ต้นฉบับ</h4>' +
+                '</div>' +
+
+                '<div style=" text-align: right;">' +
+                  '<p style="width: 99%;"><span class="bold">เลขที่  : </span><span>&emsp;'+obj[0].order_number+'</span></p>' +
+                  '<p style="width: 99%; margin-top: -15px;"><span class="bold">วันที่  : </span>&emsp;&emsp; <span>'+date+'</span></p>' +
+                  '<p style="width: 99%; margin-top: -15px;"><span class="bold">เครดิต : </span><span style="margin-left: 98px;">'+credit+'</span></p>' +
+                '</div>'+
+                
+                '<div style=" text-align: left; margin-top: -41px;">'+
+                  '&emsp; <span class="bold">สถานที่ส่งสินค้า : </span><span>&emsp;รถบริษัท DD MOTOR SPORT B-24, B-28 อาคารศรีวรจักร ถ.หลวงป้อมปราบศัตรูพ่าย</span>'+
+                '</div>' +
+
+                '<div style="margin-top: 5px;">' +
+                  '<div class="fl-80 tb-st no-bdbtm" style="text-align: left;">&emsp; <span class="bold">ชื่อลูกค้า : </span><span>&emsp;'+obj[0].cus_name+'</span> &emsp;&emsp;&emsp; <span class="bold">โทร : </span><span>&emsp;'+obj[0].cus_tel+'</span></div>' +
+                  '<div class="fl-9 tb no-bdbtm ccc bold">วันครบกำหนด</div>' +
+                  '<div class="fl-9 tb no-bdbtm ccc bold">ทำรายการโดย</div>' +
+                '</div>'+
+
+                '<div style="margin-top: 5px;">' +
+                  '<div class="fl-80 tb-st no-bdt" style="text-align: left;">&emsp; <span class="bold">ที่อยู่ : </span><span>&emsp;'+obj[0].cus_addr+'</span></div>'+
+                  '<div class="fl-9 tb" style="margin-top: -1px;">'+date_ex+'</div>'+
+                  '<div class="fl-9 tb" style="margin-top: -1px;">'+obj[0].user_name+'</div>'+
+                '</div>' +
+
+                '<div>'+
+                  '<div class="fl-spc tb-st no-bdt ccc bold">ที่</div>'+
+                  '<div class="fl-15 tb no-bdt ccc bold">รหัสสินค้า</div>'+
+                  '<div class="fl-45 tb no-bdt ccc bold">รายการ</div>'+
+                  '<div class="fl-spc tb no-bdt ccc bold">จำนวน</div>'+
+                  '<div class="fl-13 tb no-bdt ccc bold">ราคา / หน่วย</div>'+
+                  '<div class="fl-13 tb no-bdt ccc bold">จำนวนเงิน</div>' +
+                '</div>'+
+								arr_a4[a]
+              if(a == arr_a4.length-1){
+                text = text + '<div>' +
+                    '<div class="fl-spc tb-st no-bdt pd-15">จำนวน</div>' +
+                    '<div class="fl-12 tb no-bdt pd-15">................ กล่อง</div>' +
+                    '<div class="fl-12 tb no-bdt pd-15">................... ลัง</div>' +
+                    '<div class="fl-12 tb no-bdt pd-15">................... มัด</div>' +
+                    '<div class="fl-12 tb no-bdt pd-15">................ ม้วน</div>' +
+                    '<div class="fl-12 tb no-bdt pd-15">................... ชิ้น</div>' +
+                    '<div class="fl-13 tb no-bdt pd-15">รวม / Total</div>' +
+                    '<div class="fl-13 tb no-bdt pd-15">'+parseFloat(obj[0].sum_price).toFixed(2)+'</div>' +
+                  '</div>' +
+
+                  '<div>' +
+                    '<div class="fl-14 tb-st no-bdt no-bdbtm pd-16">&emsp;</div>' +
+                    '<div class="fl-14 tb no-bdt no-bdbtm pd-16">&emsp;</div>' +
+                    '<div class="fl-14 tb no-bdt no-bdbtm pd-16">&emsp;</div>' +
+                    '<div class="fl-14 tb no-bdt no-bdbtm pd-16">&emsp;</div>' +
+                    '<div class="fl-14 tb no-bdt no-bdbtm pd-16">&emsp;</div>' +
+                    '<div class="fl-13 tb no-bdt pd-15">ส่วนลด / Discount</div>' +
+                    '<div class="fl-13 tb no-bdt pd-15">'+parseFloat(obj[0].total_discount).toFixed(2)+'</div>' +
+                  '</div>'+
+
+                  '<div>'+
+                    '<div class="fl-14 tb-st no-bdt no-bdbtm pd-16">&emsp;</div>'+
+                    '<div class="fl-14 tb no-bdt no-bdbtm pd-16">&emsp;</div>'+
+                    '<div class="fl-14 tb no-bdt no-bdbtm pd-16">&emsp;</div>'+
+                    '<div class="fl-14 tb no-bdt no-bdbtm pd-16">&emsp;</div>'+
+                    '<div class="fl-14 tb no-bdt no-bdbtm pd-16">&emsp;</div>'+
+                    '<div class="fl-13 tb no-bdt pd-15">สุทธิ / Net</div>'+
+                    '<div class="fl-13 tb no-bdt pd-15">'+parseFloat(obj[0].total_price).toFixed(2)+'</div>'+
+                  '</div>'+
+
+                  '<div>'+
+                    '<div class="fl-14 tb-st no-bdt no-bdbtm pd-16 ">................................</div>'+
+                    '<div class="fl-14 tb no-bdt no-bdbtm pd-16">................................</div>'+
+                    '<div class="fl-14 tb no-bdt no-bdbtm pd-16">................................</div>'+
+                    '<div class="fl-14 tb no-bdt no-bdbtm pd-16">................................</div>'+
+                    '<div class="fl-14 tb no-bdt no-bdbtm pd-16">................................</div>'+
+                    '<div class="fl-13 tb no-bdt pd-15">ภาษีมูลค่าเพิ่ม / Vat</div>'+
+                    '<div class="fl-13 tb no-bdt pd-15">0.00</div>'+
+                  '</div>'+
+
+                  '<div>'+
+                    '<div class="fl-14 tb-st no-bdt pd-15">ผู้ขายของ</div>'+
+                    '<div class="fl-14 tb no-bdt pd-15">คลังสินค้า/ผู้ตรวจสอบ</div>'+
+                    '<div class="fl-14 tb no-bdt pd-15">ผู้ส่งของ</div>'+
+                    '<div class="fl-14 tb no-bdt pd-15">ผู้รับของ</div>'+
+                    '<div class="fl-14 tb no-bdt pd-15">ผู้มีอำนาจลงนาม</div>'+
+                    '<div class="fl-13 tb no-bdt pd-15">ทั้งสิ้น / Grand Total</div>'+
+                    '<div class="fl-13 tb no-bdt pd-15">'+parseFloat(obj[0].total_price).toFixed(2)+'</div>'+
+                  '</div>'                
+              }else{
+                text = text + '<div>' +
+                    '<div class="fl-spc tb-st no-bdt pd-15">จำนวน</div>' +
+                    '<div class="fl-12 tb no-bdt pd-15">................ กล่อง</div>' +
+                    '<div class="fl-12 tb no-bdt pd-15">................... ลัง</div>' +
+                    '<div class="fl-12 tb no-bdt pd-15">................... มัด</div>' +
+                    '<div class="fl-12 tb no-bdt pd-15">................ ม้วน</div>' +
+                    '<div class="fl-12 tb no-bdt pd-15">................... ชิ้น</div>' +
+                    '<div class="fl-13 tb no-bdt pd-15">รวม / Total</div>' +
+                    '<div class="fl-13 tb no-bdt pd-15">-</div>' +
+                  '</div>' +
+
+                  '<div>' +
+                    '<div class="fl-14 tb-st no-bdt no-bdbtm pd-16">&emsp;</div>' +
+                    '<div class="fl-14 tb no-bdt no-bdbtm pd-16">&emsp;</div>' +
+                    '<div class="fl-14 tb no-bdt no-bdbtm pd-16">&emsp;</div>' +
+                    '<div class="fl-14 tb no-bdt no-bdbtm pd-16">&emsp;</div>' +
+                    '<div class="fl-14 tb no-bdt no-bdbtm pd-16">&emsp;</div>' +
+                    '<div class="fl-13 tb no-bdt pd-15">ส่วนลด / Discount</div>' +
+                    '<div class="fl-13 tb no-bdt pd-15">-</div>' +
+                  '</div>'+
+
+                  '<div>'+
+                    '<div class="fl-14 tb-st no-bdt no-bdbtm pd-16">&emsp;</div>'+
+                    '<div class="fl-14 tb no-bdt no-bdbtm pd-16">&emsp;</div>'+
+                    '<div class="fl-14 tb no-bdt no-bdbtm pd-16">&emsp;</div>'+
+                    '<div class="fl-14 tb no-bdt no-bdbtm pd-16">&emsp;</div>'+
+                    '<div class="fl-14 tb no-bdt no-bdbtm pd-16">&emsp;</div>'+
+                    '<div class="fl-13 tb no-bdt pd-15">สุทธิ / Net</div>'+
+                    '<div class="fl-13 tb no-bdt pd-15">-</div>'+
+                  '</div>'+
+
+                  '<div>'+
+                    '<div class="fl-14 tb-st no-bdt no-bdbtm pd-16 ">................................</div>'+
+                    '<div class="fl-14 tb no-bdt no-bdbtm pd-16">................................</div>'+
+                    '<div class="fl-14 tb no-bdt no-bdbtm pd-16">................................</div>'+
+                    '<div class="fl-14 tb no-bdt no-bdbtm pd-16">................................</div>'+
+                    '<div class="fl-14 tb no-bdt no-bdbtm pd-16">................................</div>'+
+                    '<div class="fl-13 tb no-bdt pd-15">ภาษีมูลค่าเพิ่ม / Vat</div>'+
+                    '<div class="fl-13 tb no-bdt pd-15">-</div>'+
+                  '</div>'+
+
+                  '<div>'+
+                    '<div class="fl-14 tb-st no-bdt pd-15">ผู้ขายของ</div>'+
+                    '<div class="fl-14 tb no-bdt pd-15">คลังสินค้า/ผู้ตรวจสอบ</div>'+
+                    '<div class="fl-14 tb no-bdt pd-15">ผู้ส่งของ</div>'+
+                    '<div class="fl-14 tb no-bdt pd-15">ผู้รับของ</div>'+
+                    '<div class="fl-14 tb no-bdt pd-15">ผู้มีอำนาจลงนาม</div>'+
+                    '<div class="fl-13 tb no-bdt pd-15">ทั้งสิ้น / Grand Total</div>'+
+                    '<div class="fl-13 tb no-bdt pd-15">-</div>'+
+                  '</div>'               
+              }
+              text = text + '</div>' +
+											"<div class='ctn' style='margin-top: 155mm; page-break-after: always;'>" +
+												'<div>--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------</div>'+
+												"<div class='fl-35'>" +
+													"<img style='width: 250px; height: 150px;' src='img/logo.jpg'>" +
+												"</div>" +
+												'<div class="fl-spc">&emsp;</div>' +
+												"<div class='fl-25' style='margin-top: 30px;'>" +
+												'<h1 style="border: 1px solid #555; border-radius: 10px; padding-top: 10px; padding-bottom: 10px; background-color: #555 !important; color: white; font-size: 210%;">ใบรายการขาย</h1>' +
+												'</div>' +
+												'<div class="fl-20">&emsp;</div>' +
+												"<div class='fl-15' style='text-align: center; margin-bottom: 30px;'>" +
+													'<h4 style="border: 1px solid black; background-color: #cccccc; padding-top: 5px; padding-bottom: 5px; width: 90%;">สำเนา</h4>' +
+												'</div>' +
+
+												'<div style=" text-align: right;">' +
+													'<p style="width: 99%;"><span class="bold">เลขที่  : </span><span>&emsp;'+obj[0].order_number+'</span></p>' +
+													'<p style="width: 99%; margin-top: -15px;"><span class="bold">วันที่  : </span>&emsp;&emsp; <span>'+date+'</span></p>' +
+													'<p style="width: 99%; margin-top: -15px;"><span class="bold">เครดิต : </span><span style="margin-left: 98px;">'+credit+'</span></p>' +
+												'</div>'+
+												
+												'<div style=" text-align: left; margin-top: -41px;">'+
+													'&emsp; <span class="bold">สถานที่ส่งสินค้า : </span><span>&emsp;รถบริษัท DD MOTOR SPORT B-24, B-28 อาคารศรีวรจักร ถ.หลวงป้อมปราบศัตรูพ่าย</span>'+
+												'</div>' +
+
+												'<div style="margin-top: 5px;">' +
+													'<div class="fl-80 tb-st no-bdbtm" style="text-align: left;">&emsp; <span class="bold">ชื่อลูกค้า : </span><span>&emsp;'+obj[0].cus_name+'</span> &emsp;&emsp;&emsp; <span class="bold">โทร : </span><span>&emsp;'+obj[0].cus_tel+'</span></div>' +
+													'<div class="fl-9 tb no-bdbtm ccc bold">วันครบกำหนด</div>' +
+													'<div class="fl-9 tb no-bdbtm ccc bold">ทำรายการโดย</div>' +
+												'</div>'+
+
+												'<div style="margin-top: 5px;">' +
+													'<div class="fl-80 tb-st no-bdt" style="text-align: left;">&emsp; <span class="bold">ที่อยู่ : </span><span>&emsp;'+obj[0].cus_addr+'</span></div>'+
+													'<div class="fl-9 tb" style="margin-top: -1px;">'+date_ex+'</div>'+
+													'<div class="fl-9 tb" style="margin-top: -1px;">'+obj[0].user_name+'</div>'+
+												'</div>' +
+
+												'<div>'+
+													'<div class="fl-spc tb-st no-bdt ccc bold">ที่</div>'+
+													'<div class="fl-15 tb no-bdt ccc bold">รหัสสินค้า</div>'+
+													'<div class="fl-45 tb no-bdt ccc bold">รายการ</div>'+
+													'<div class="fl-spc tb no-bdt ccc bold">จำนวน</div>'+
+													'<div class="fl-13 tb no-bdt ccc bold">ราคา / หน่วย</div>'+
+													'<div class="fl-13 tb no-bdt ccc bold">จำนวนเงิน</div>' +
+												'</div>' +
+													arr_a4[a]
+              if(a == arr_a4.length-1){
+                text = text + '<div>' +
+                    '<div class="fl-spc tb-st no-bdt pd-15">จำนวน</div>' +
+                    '<div class="fl-12 tb no-bdt pd-15">................ กล่อง</div>' +
+                    '<div class="fl-12 tb no-bdt pd-15">................... ลัง</div>' +
+                    '<div class="fl-12 tb no-bdt pd-15">................... มัด</div>' +
+                    '<div class="fl-12 tb no-bdt pd-15">................ ม้วน</div>' +
+                    '<div class="fl-12 tb no-bdt pd-15">................... ชิ้น</div>' +
+                    '<div class="fl-13 tb no-bdt pd-15">รวม / Total</div>' +
+                    '<div class="fl-13 tb no-bdt pd-15">'+parseFloat(obj[0].sum_price).toFixed(2)+'</div>' +
+                  '</div>' +
+
+                  '<div>' +
+                    '<div class="fl-14 tb-st no-bdt no-bdbtm pd-16">&emsp;</div>' +
+                    '<div class="fl-14 tb no-bdt no-bdbtm pd-16">&emsp;</div>' +
+                    '<div class="fl-14 tb no-bdt no-bdbtm pd-16">&emsp;</div>' +
+                    '<div class="fl-14 tb no-bdt no-bdbtm pd-16">&emsp;</div>' +
+                    '<div class="fl-14 tb no-bdt no-bdbtm pd-16">&emsp;</div>' +
+                    '<div class="fl-13 tb no-bdt pd-15">ส่วนลด / Discount</div>' +
+                    '<div class="fl-13 tb no-bdt pd-15">'+parseFloat(obj[0].total_discount).toFixed(2)+'</div>' +
+                  '</div>'+
+
+                  '<div>'+
+                    '<div class="fl-14 tb-st no-bdt no-bdbtm pd-16">&emsp;</div>'+
+                    '<div class="fl-14 tb no-bdt no-bdbtm pd-16">&emsp;</div>'+
+                    '<div class="fl-14 tb no-bdt no-bdbtm pd-16">&emsp;</div>'+
+                    '<div class="fl-14 tb no-bdt no-bdbtm pd-16">&emsp;</div>'+
+                    '<div class="fl-14 tb no-bdt no-bdbtm pd-16">&emsp;</div>'+
+                    '<div class="fl-13 tb no-bdt pd-15">สุทธิ / Net</div>'+
+                    '<div class="fl-13 tb no-bdt pd-15">'+parseFloat(obj[0].total_price).toFixed(2)+'</div>'+
+                  '</div>'+
+
+                  '<div>'+
+                    '<div class="fl-14 tb-st no-bdt no-bdbtm pd-16 ">................................</div>'+
+                    '<div class="fl-14 tb no-bdt no-bdbtm pd-16">................................</div>'+
+                    '<div class="fl-14 tb no-bdt no-bdbtm pd-16">................................</div>'+
+                    '<div class="fl-14 tb no-bdt no-bdbtm pd-16">................................</div>'+
+                    '<div class="fl-14 tb no-bdt no-bdbtm pd-16">................................</div>'+
+                    '<div class="fl-13 tb no-bdt pd-15">ภาษีมูลค่าเพิ่ม / Vat</div>'+
+                    '<div class="fl-13 tb no-bdt pd-15">0.00</div>'+
+                  '</div>'+
+
+                  '<div>'+
+                    '<div class="fl-14 tb-st no-bdt pd-15">ผู้ขายของ</div>'+
+                    '<div class="fl-14 tb no-bdt pd-15">คลังสินค้า/ผู้ตรวจสอบ</div>'+
+                    '<div class="fl-14 tb no-bdt pd-15">ผู้ส่งของ</div>'+
+                    '<div class="fl-14 tb no-bdt pd-15">ผู้รับของ</div>'+
+                    '<div class="fl-14 tb no-bdt pd-15">ผู้มีอำนาจลงนาม</div>'+
+                    '<div class="fl-13 tb no-bdt pd-15">ทั้งสิ้น / Grand Total</div>'+
+                    '<div class="fl-13 tb no-bdt pd-15">'+parseFloat(obj[0].total_price).toFixed(2)+'</div>'+
+                  '</div>'                
+              }else{
+                text = text + '<div>' +
+                    '<div class="fl-spc tb-st no-bdt pd-15">จำนวน</div>' +
+                    '<div class="fl-12 tb no-bdt pd-15">................ กล่อง</div>' +
+                    '<div class="fl-12 tb no-bdt pd-15">................... ลัง</div>' +
+                    '<div class="fl-12 tb no-bdt pd-15">................... มัด</div>' +
+                    '<div class="fl-12 tb no-bdt pd-15">................ ม้วน</div>' +
+                    '<div class="fl-12 tb no-bdt pd-15">................... ชิ้น</div>' +
+                    '<div class="fl-13 tb no-bdt pd-15">รวม / Total</div>' +
+                    '<div class="fl-13 tb no-bdt pd-15">-</div>' +
+                  '</div>' +
+
+                  '<div>' +
+                    '<div class="fl-14 tb-st no-bdt no-bdbtm pd-16">&emsp;</div>' +
+                    '<div class="fl-14 tb no-bdt no-bdbtm pd-16">&emsp;</div>' +
+                    '<div class="fl-14 tb no-bdt no-bdbtm pd-16">&emsp;</div>' +
+                    '<div class="fl-14 tb no-bdt no-bdbtm pd-16">&emsp;</div>' +
+                    '<div class="fl-14 tb no-bdt no-bdbtm pd-16">&emsp;</div>' +
+                    '<div class="fl-13 tb no-bdt pd-15">ส่วนลด / Discount</div>' +
+                    '<div class="fl-13 tb no-bdt pd-15">-</div>' +
+                  '</div>'+
+
+                  '<div>'+
+                    '<div class="fl-14 tb-st no-bdt no-bdbtm pd-16">&emsp;</div>'+
+                    '<div class="fl-14 tb no-bdt no-bdbtm pd-16">&emsp;</div>'+
+                    '<div class="fl-14 tb no-bdt no-bdbtm pd-16">&emsp;</div>'+
+                    '<div class="fl-14 tb no-bdt no-bdbtm pd-16">&emsp;</div>'+
+                    '<div class="fl-14 tb no-bdt no-bdbtm pd-16">&emsp;</div>'+
+                    '<div class="fl-13 tb no-bdt pd-15">สุทธิ / Net</div>'+
+                    '<div class="fl-13 tb no-bdt pd-15">-</div>'+
+                  '</div>'+
+
+                  '<div>'+
+                    '<div class="fl-14 tb-st no-bdt no-bdbtm pd-16 ">................................</div>'+
+                    '<div class="fl-14 tb no-bdt no-bdbtm pd-16">................................</div>'+
+                    '<div class="fl-14 tb no-bdt no-bdbtm pd-16">................................</div>'+
+                    '<div class="fl-14 tb no-bdt no-bdbtm pd-16">................................</div>'+
+                    '<div class="fl-14 tb no-bdt no-bdbtm pd-16">................................</div>'+
+                    '<div class="fl-13 tb no-bdt pd-15">ภาษีมูลค่าเพิ่ม / Vat</div>'+
+                    '<div class="fl-13 tb no-bdt pd-15">-</div>'+
+                  '</div>'+
+
+                  '<div>'+
+                    '<div class="fl-14 tb-st no-bdt pd-15">ผู้ขายของ</div>'+
+                    '<div class="fl-14 tb no-bdt pd-15">คลังสินค้า/ผู้ตรวจสอบ</div>'+
+                    '<div class="fl-14 tb no-bdt pd-15">ผู้ส่งของ</div>'+
+                    '<div class="fl-14 tb no-bdt pd-15">ผู้รับของ</div>'+
+                    '<div class="fl-14 tb no-bdt pd-15">ผู้มีอำนาจลงนาม</div>'+
+                    '<div class="fl-13 tb no-bdt pd-15">ทั้งสิ้น / Grand Total</div>'+
+                    '<div class="fl-13 tb no-bdt pd-15">-</div>'+
+                  '</div></div>'               
+              }
+            }
+            text = text + '</body></html>'
+        }               
+        }); 
+        var WinPrint  = window.open();
+        WinPrint.document.write(text)       
+        WinPrint.document.close();
+        WinPrint.focus();
+        setTimeout(function() {
+          WinPrint.print();
+          WinPrint.close();
+        }, 250);  
     }
 
     function printRecep(index){
-      alert("Print Recep @ index = " + index); 
+      var text = ""
+      var text2 = ""
+      var text3 = ""
+      $.ajax({
+          type: "POST",
+          url:"php/get_bill_info4print.php",    
+          data:{'bill_id' : index},
+          async:false,                            
+          beforeSend: function(){
+            EasyLoading.show({                           
+              text: "กำลังโหลด"
+            });
+          },             
+          success: function(data){  
+            EasyLoading.hide();
+            var obj = jQuery.parseJSON(data);
+            var dt = obj[0].date_time.split(" ");
+            var time = dt[1];
+            var d = dt[0].split("-");
+            var date = d[2] + "/" + d[1] + "/" + d[0]; 
+            text = text + "<html><head><link href='https://fonts.googleapis.com/css?family=Maitree' rel='stylesheet'></head><body>" +
+              "<style>@page {size: auto; margin: 0mm;} body{font-family: 'Maitree'; line-height: 1.5; font-size: 0.9em;} .txt-right{ margin-right: 0.5cm; text-align:right; float: right; } .txt-left{ margin-left: 0.5cm; float: left; width: 50%; }.txt-left-100{ margin-left: 0.5cm; float: left; width: 100%; } .txt-ct{ float: center; text-align: center; margin-bottom: 0.2em} .mid{float: left; width: 3.5cm; text-align: right;} .left{margin-left: 0.5cm; float: left; width: 0.3cm; text-align: center;} .right{margin-right: 0.5cm; float: left; width: 2.7cm; text-align: right;}.bold{font-weight: bold;}</style>" +
+              "<div style='width: 7.5cm;'>"+
+											"<div class='txt-ct'>DD MOTOR SPORT</div>"+
+											"<div class='txt-ct'>B-24, B-28 อาคารศรีวรจักร ถ.หลวงป้อมปราบศัตรูพ่าย</div>"+
+											"<div class='txt-ct'>โทร. 065-5028828 , 097-0631169</div>"+
+											"<div class='txt-ct bold' style='margin-top: 0.5em; margin-bottom: 0.5em;'>ใบเสร็จรับเงิน</div>"+						
+											"<div class='txt-left-100'>ลูกค้า : "+obj[0].cus_name+"</div>"+
+											"<div class='txt-left-100'>ประเภท : "+obj[0].payment_type+"</div>"+
+											"<div class='txt-left-100'>เลขที่บิล :  "+obj[0].order_number+"</div>"+
+											"<div class='txt-left' style='letter-spacing: -0.5px;'>วันที่ขาย : "+date+"</div>"+
+											"<div class='txt-right' style='margin-bottom: 5px;'>เวลา : "+time+"</div>"+
+											
+											"<hr style='width: 90%; border-top: 1px dashed; border-bottom: none;'>"+
+											"<div class='left bold'>จน.</div> <div class='mid bold'>รายการ</div> <div class='right bold'>ราคา</div>"
+            $.each(obj, function(i, field){             
+              text2 = text2 + "<div class='left'>"+field.prod_amount+"</div><div class='mid'>"+field.prod_name+"</div><div class='right'>"+field.prod_price+"</div>"              
+            });
+            text3 = text3 + "<hr style='width: 90%; border-top: 5px; border-top: 1px dashed; border-bottom: none;'>"+
+											"<div class='txt-left'>ราคารวม : </div>"+
+											"<div class='txt-right'>"+obj[0].sum_price+" บาท</div><br>"+
+											"<div class='txt-left'>ส่วนลด : </div>"+
+											"<div class='txt-right'>"+obj[0].total_discount+" บาท</div><br>"+
+											"<div class='txt-left'>สุทธิ : </div>"+
+											"<div class='txt-right'>"+obj[0].total_price+" บาท</div><br>"+
+											"<div class='txt-left' style='width: 30%;'>รับ / ทอน : </div>"+
+											"<div class='txt-right'><span style='margin-right: 20px'>"+obj[0].get_price+" บาท</span><span> "+obj[0].chng+" บาท</span></div><br><br>"+
+											"<div class='txt-ct' style='margin-bottom: 0.5em;'>ขอบคุณที่ใช้บริการ</div>"+
+											"<div class='txt-ct'>พนักงานขาย : "+obj[0].user_name+"</div>"+
+										"</div></body></html>"
+        }               
+        });
+        var WinPrint  = window.open();
+        WinPrint.document.write(text)
+        WinPrint.document.write(text2)
+        WinPrint.document.write(text3)
+        WinPrint.document.close();
+        WinPrint.focus();
+        setTimeout(function() {
+          WinPrint.print();
+          WinPrint.close();
+        }, 250);
     }
   </script>
 </head>
@@ -173,9 +812,9 @@
                 </div>
             </div>
         </div><br><br>
-        <div class="container-fullwidth">
-            <div class="input-group row justify-content-center" style="margin-bottom: 4%; margin-left: 0.5%">
-                <input id="input-search" onkeyup="search();" type="text" class="form-control-lg text-center"
+        <div class="container-fullwidth">          
+            <div class="input-group row justify-content-center" style="margin-bottom: 4%; margin-left: 0.5%">              
+                <input id="input-search" type="text" class="form-control-lg text-center"
                     placeholder="ค้นหา เลขที่บิล / ลูกค้า" style="width: 60%;">
             </div>
         </div>
@@ -195,7 +834,7 @@
         <hr style="width: 75%; margin-top: 0;"> <br>
         <div id="ctn-append" class="container-fullwidth">
             <ul id="myUL">
-                <li id="bill-1">
+                <!--<li id="bill-1">
                     <div class="row justify-content-center bill-odd" data-toggle="collapse" href="#detail-1" role="button" aria-expanded="false" aria-controls="detail-1" onclick="appendCollapse(1);">
                         <div class="col-4 text-center"><h5>S18-00329</h5></div>
                         <div class="col-3 text-center"><h5>03/10/18</h5></div>
@@ -222,7 +861,9 @@
                         <div class="col-3 text-center"><h5>03/10/18</h5></div>
                         <div class="col-4 text-center"><h5>Phoenix</h5></div>
                     </div>
-                </li>
+                </li>-->
+            </ul>
+            <ul id="myS" hidden>
             </ul>
         </div>
     </div>

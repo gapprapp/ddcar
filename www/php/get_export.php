@@ -11,7 +11,7 @@
         ON s.ware_id = w.ware_id WHERE s.date_time BETWEEN '$date' AND '$date_to' AND s.stock_out_number NOT LIKE '%$txt%' LIMIT $start,20";
     }else if(isset($_POST['value'])){
         $val = $_POST['value'];     
-        $query = "SELECT s.stock_out_id,s.stock_out_number,w.ware_name,s.date_time FROM stock_out s INNER JOIN warehouse_detail w
+        $query = "SELECT DISTINCT s.stock_out_id,s.stock_out_number,w.ware_name,s.date_time FROM stock_out s INNER JOIN warehouse_detail w
         ON s.ware_id = w.ware_id INNER JOIN stock_out_item i ON s.stock_out_id = i.stock_out_id INNER JOIN product p 
         ON i.prod_id = p.prod_id WHERE (s.stock_out_number LIKE '%$val%' OR w.ware_name LIKE '%$val%' OR p.prod_name LIKE '%$val%') 
         AND s.stock_out_number NOT LIKE '%$txt%' ORDER BY s.stock_out_id DESC LIMIT $start,20";
