@@ -609,7 +609,7 @@
 
     function printA4(index){
       arr_a4 = [];		 
-      var text = ""     
+      var contentP = ""    
       var texta4 = "";
       var c = 1;
       $.ajax({
@@ -618,12 +618,10 @@
           data:{'bill_id' : index},
           async:false,                            
           beforeSend: function(){
-            EasyLoading.show({                           
-              text: "กำลังโหลด"
-            });
+            $(".overlay").prop('hidden', false);
           },             
           success: function(data){  
-            EasyLoading.hide();
+            $(".overlay").prop('hidden', true);
             var obj = jQuery.parseJSON(data);
             var dt = obj[0].date_time.split(" ");
             var time = dt[1];
@@ -633,7 +631,7 @@
             var d = new Date(day[0],day[1],day[2]);          
             d.setDate(d.getDate() + parseInt(credit));
             var date_ex = d.getDate() + "/" + (d.getMonth()+1) + "/" +   d.getFullYear();           
-            text = text + "<html><head><link href='https://fonts.googleapis.com/css?family=Maitree' rel='stylesheet'>" +
+            contentP = contentP + "<html><head><link href='https://fonts.googleapis.com/css?family=Maitree' rel='stylesheet'>" +
               "<style>@media print {body {-webkit-print-color-adjust: exact;}} @page {size: auto; margin: 0;}.fl-spc{float: left; width: 5%;}.fl-9{float: left; width: 9%;}.fl-12{float: left; width: 12.752%;}.fl-13{float: left; width: 13.05%;}.fl-14{float: left; width: 13.88%;}.fl-15{float: left; width: 15%;}.fl-20{float: left; width: 20%; text-align: center;}.fl-25{float: left; width: 25%; text-align: center;}.fl-35{float: left; width: 35%; text-align: center;}.fl-45{float: left; width: 45%; text-align: center;}.fl-80{float: left; width: 80%; text-align: center;}.ctn{position: relative; width: 297mm; height: 10%; padding: 10mm 15mm 0mm 10mm; font-family: 'Maitree';}.tb-st{border: 1px solid black; text-align: center; padding: 3px;}.tb{border: 1px solid black; text-align: center; padding: 3px; border-left: none;}.no-bdt{border-top: none;}.no-bdbtm{border-bottom: none;}.bold{font-weight: bold;}.ccc{background-color: #ccc;}.pd-15{padding-top: 15px;}.pd-16{padding-top: 16px;}.mg-5{margin-top: 5px;}</style></head><body>"
             $.each(obj, function(i, field){
               texta4 = texta4 + '<div>'+
@@ -666,7 +664,7 @@
                 }
             });
             for(var a = 0;a < arr_a4.length;a++){
-              text = text + "<div class='ctn' style='margin-top: -8mm;'>" +
+              contentP = contentP + "<div class='ctn' style='margin-top: -8mm;'>" +
                 "<div class='fl-35'>" +
                   "<img style='width: 250px; height: 150px;' src='img/logo.jpg'>" +
                 "</div>" +
@@ -711,7 +709,7 @@
                 '</div>'+
 								arr_a4[a]
               if(a == arr_a4.length-1){
-                text = text + '<div>' +
+                contentP = contentP + '<div>' +
                     '<div class="fl-spc tb-st no-bdt pd-15">จำนวน</div>' +
                     '<div class="fl-12 tb no-bdt pd-15">................ กล่อง</div>' +
                     '<div class="fl-12 tb no-bdt pd-15">................... ลัง</div>' +
@@ -762,7 +760,7 @@
                     '<div class="fl-13 tb no-bdt pd-15">'+parseFloat(obj[0].total_price).toFixed(2)+'</div>'+
                   '</div>'                
               }else{
-                text = text + '<div>' +
+                contentP = contentP + '<div>' +
                     '<div class="fl-spc tb-st no-bdt pd-15">จำนวน</div>' +
                     '<div class="fl-12 tb no-bdt pd-15">................ กล่อง</div>' +
                     '<div class="fl-12 tb no-bdt pd-15">................... ลัง</div>' +
@@ -813,7 +811,7 @@
                     '<div class="fl-13 tb no-bdt pd-15">-</div>'+
                   '</div>'               
               }
-              text = text + '</div>' +
+              contentP = contentP + '</div>' +
 											"<div class='ctn' style='margin-top: 155mm; page-break-after: always;'>" +
 												'<div>--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------</div>'+
 												"<div class='fl-35'>" +
@@ -860,7 +858,7 @@
 												'</div>' +
 													arr_a4[a]
               if(a == arr_a4.length-1){
-                text = text + '<div>' +
+                contentP = contentP + '<div>' +
                     '<div class="fl-spc tb-st no-bdt pd-15">จำนวน</div>' +
                     '<div class="fl-12 tb no-bdt pd-15">................ กล่อง</div>' +
                     '<div class="fl-12 tb no-bdt pd-15">................... ลัง</div>' +
@@ -911,7 +909,7 @@
                     '<div class="fl-13 tb no-bdt pd-15">'+parseFloat(obj[0].total_price).toFixed(2)+'</div>'+
                   '</div>'                
               }else{
-                text = text + '<div>' +
+                contentP = contentP + '<div>' +
                     '<div class="fl-spc tb-st no-bdt pd-15">จำนวน</div>' +
                     '<div class="fl-12 tb no-bdt pd-15">................ กล่อง</div>' +
                     '<div class="fl-12 tb no-bdt pd-15">................... ลัง</div>' +
@@ -963,41 +961,31 @@
                   '</div></div>'               
               }
             }
-            text = text + '</body></html>'
+            contentP = contentP + '</body></html>'            
         }               
         }); 
-        var WinPrint  = window.open();
-        WinPrint.document.write(text)       
-        WinPrint.document.close();
-        WinPrint.focus();
-        setTimeout(function() {
-          WinPrint.print();
-          WinPrint.close();
-        }, 250);  
+        cordova.plugins.printer.print(contentP, { duplex: 'none', border: false}, function (res) {        
+        });
     }
 
-    function printRecep(index){
-      var text = ""
-      var text2 = ""
-      var text3 = ""
+    function printRecap(index){      
+      var contentP = ""
       $.ajax({
           type: "POST",
           url:"http://ddaccessory.trueddns.com:24330/dd-shop/php/get_bill_info4print.php",    
           data:{'bill_id' : index},
           async:false,                            
           beforeSend: function(){
-            EasyLoading.show({                           
-              text: "กำลังโหลด"
-            });
+            $(".overlay").prop('hidden', false);
           },             
           success: function(data){  
-            EasyLoading.hide();
+            $(".overlay").prop('hidden', true);
             var obj = jQuery.parseJSON(data);
             var dt = obj[0].date_time.split(" ");
             var time = dt[1];
             var d = dt[0].split("-");
             var date = d[2] + "/" + d[1] + "/" + d[0]; 
-            text = text + "<html><head><meta charset='utf-8'><link href='https://fonts.googleapis.com/css?family=Maitree' rel='stylesheet'><link rel='stylesheet' href='https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css' integrity='sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T' crossorigin='anonymous'>" +
+            contentP = contentP + "<html><head><meta charset='utf-8'><link href='https://fonts.googleapis.com/css?family=Maitree' rel='stylesheet'><link rel='stylesheet' href='https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css' integrity='sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T' crossorigin='anonymous'>" +
               "<style>@page {size: auto; margin: 0mm;} body{line-height: 1.5; font-size: 0.9em; } .title{margin-bottom: 0.1em;} .line{text-decoration: underline;} .price, .no{letter-spacing: -0.05em;} .items{margin-bottom: 5px;}</style></head><body>" +
               "<div style='width: 7cm;'>"+
 											"<div class='col-12 text-center'>DD MOTOR SPORT</div>"+
@@ -1029,13 +1017,13 @@
                         "<div class='col-4 text-center line'>ราคา</div>" +
                       "</div>"
             $.each(obj, function(i, field){             
-              text2 = text2 +  "<div class='row items'>" +
+              contentP = contentP +  "<div class='row items'>" +
                                 "<div class='col-2 no text-center'>"+field.prod_amount+"</div>" +
                                 "<div class='col-6 text-center'>"+field.prod_name+"</div>" +
                                 "<div class='col-4 price text-center'>"+field.prod_price+"</div>" +
                               "</div>"              
             });
-            text3 = text3 + "<hr style='width: 90%; border-top: 1px; border-top: 1px dashed; border-bottom: none; margin-top: 0;'>"+
+            contentP = contentP + "<hr style='width: 90%; border-top: 1px; border-top: 1px dashed; border-bottom: none; margin-top: 0;'>"+
 											"<div class='row justify-content-center title'>"+
                         "<div class='col-4 text-right'>ราคารวม : </div>" +
 											  "<div class='col-6 text-center'>"+obj[0].sum_price+" บาท</div>"+
@@ -1054,19 +1042,11 @@
                         "<div class='col-4 text-right'>"+obj[0].chng+" บาท</div>"+
 											"</div>"+
 											"<div class='col-12 text-center'>พนักงานขาย : "+obj[0].user_name+"</div>"+
-										"</div></body></html>"
+                    "</div></body></html>"                    
         }               
         });
-        var WinPrint  = window.open();
-        WinPrint.document.write(text)
-        WinPrint.document.write(text2)
-        WinPrint.document.write(text3)
-        WinPrint.document.close();
-        WinPrint.focus();
-        setTimeout(function() {
-          WinPrint.print();
-          WinPrint.close();
-        }, 250);
+        cordova.plugins.printer.print(contentP, { duplex: 'none', border: false}, function (res) {        
+        });       
     }
 
   </script>

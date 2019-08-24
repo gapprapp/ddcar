@@ -11,7 +11,7 @@
         ON s.customer_id = c.cus_id WHERE date_time BETWEEN '$date' AND '$date_to' AND s.order_number NOT LIKE '%$txt%' LIMIT $start,20";
     }elseif(isset($_POST['value'])){
         $val = $_POST['value'];     
-        $query = "SELECT s.order_id,s.order_number,c.cus_name,s.date_time FROM sale_order s INNER JOIN customer c
+        $query = "SELECT DISTINCT s.order_id,s.order_number,c.cus_name,s.date_time FROM sale_order s INNER JOIN customer c
         ON s.customer_id = c.cus_id INNER JOIN sale_order_item i ON s.order_id = i.order_id INNER JOIN product p 
         ON i.prod_id = p.prod_id WHERE (s.order_number LIKE '%$val%' OR c.cus_name LIKE '%$val%' OR p.prod_name LIKE '%$val%') 
         AND s.order_number NOT LIKE '%$txt%' ORDER BY s.order_id DESC LIMIT $start,20";

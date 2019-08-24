@@ -275,6 +275,7 @@
       var text = ""; 
       var sum = 0;  
       var cus_name;  
+      var credit;
       $.ajax({
         type: "POST",
         url:"php/get_credit_info.php", 
@@ -294,7 +295,7 @@
             var txt = field.date_time.split(" ");
             var date = txt[0].split("-");
             var dateformat = date[2] + "/" + date[1] + "/" + date[0];  
-            var credit = parseInt(field.payment_type.substr(8,2)); 
+            credit = parseInt(field.payment_type.substr(8,2)); 
             var tomorrow = new Date(date[0],parseInt(date[1])-1,date[2]);
             tomorrow.setDate(tomorrow.getDate() + credit); 
             var date_ex = tomorrow.getDate() + "/" + (tomorrow.getMonth()+1) + "/" +   tomorrow.getFullYear(); 
@@ -309,9 +310,9 @@
                   '<div class="fl-15 tb inner no-bdt no-bdbtm">'+field.order_number+'</div>'+
                   '<div class="fl-12 tb inner no-bdt no-bdbtm">'+dateformat+'</div>'+
                   '<div class="fl-12 tb inner no-bdt no-bdbtm">'+date_ex+'</div>'+
-                  '<div class="fl-20 tb inner no-bdt no-bdbtm">'+parseFloat(field.total_price).toFixed(2).toLocaleString()+'</div>'+
+                  '<div class="fl-20 tb inner no-bdt no-bdbtm">'+decimalWithComma(field.total_price)+'</div>'+
                   '<div class="fl-15 tb inner no-bdt no-bdbtm">&emsp;</div>'+
-                  '<div class="fl-15 tb inner no-bdt no-bdbtm">'+parseFloat(field.total_price).toFixed(2).toLocaleString()+'</div>'+
+                  '<div class="fl-15 tb inner no-bdt no-bdbtm">'+decimalWithComma(field.total_price)+'</div>'+
                 '</div>'
                 for(var j = 0 ; j < 20-c;j++){
                   if(j == 19-c){
@@ -344,9 +345,9 @@
                   '<div class="fl-15 tb inner no-bdt no-bdbtm">'+field.order_number+'</div>'+
                   '<div class="fl-12 tb inner no-bdt no-bdbtm">'+dateformat+'</div>'+
                   '<div class="fl-12 tb inner no-bdt no-bdbtm">'+date_ex+'</div>'+
-                  '<div class="fl-20 tb inner no-bdt no-bdbtm">'+parseFloat(field.total_price).toFixed(2).toLocaleString()+'</div>'+
+                  '<div class="fl-20 tb inner no-bdt no-bdbtm">'+decimalWithComma(field.total_price)+'</div>'+
                   '<div class="fl-15 tb inner no-bdt no-bdbtm">&emsp;</div>'+
-                  '<div class="fl-15 tb inner no-bdt no-bdbtm">'+parseFloat(field.total_price).toFixed(2).toLocaleString()+'</div>'+
+                  '<div class="fl-15 tb inner no-bdt no-bdbtm">'+decimalWithComma(field.total_price)+'</div>'+
                 '</div>'
                 
                 }
@@ -357,9 +358,9 @@
                 '<div class="fl-15 tb inner no-bdt">'+field.order_number+'</div>'+
                 '<div class="fl-12 tb inner no-bdt">'+dateformat+'</div>'+
                 '<div class="fl-12 tb inner no-bdt">'+date_ex+'</div>'+
-                '<div class="fl-20 tb inner no-bdt">'+parseFloat(field.total_price).toFixed(2).toLocaleString()+'</div>'+
+                '<div class="fl-20 tb inner no-bdt">'+decimalWithComma(field.total_price)+'</div>'+
                 '<div class="fl-15 tb inner no-bdt">&emsp;</div>'+
-                '<div class="fl-15 tb inner no-bdt">'+parseFloat(field.total_price).toFixed(2).toLocaleString()+'</div>'+
+                '<div class="fl-15 tb inner no-bdt">'+decimalWithComma(field.total_price)+'</div>'+
               '</div>'			
               arr_a4.push(text);
               c = 1;
@@ -371,7 +372,7 @@
             if(a == arr_a4.length-1){
               text = text +  '<div class="row justify-content-center">'+
                                 '<div class="fl-83 tb-st inner no-bdt" style="text-align: right;">รวมทั้งสิ้น&emsp;&emsp;</div>'+
-                                '<div class="fl-14 tb inner no-bdt">'+parseFloat(sum).toFixed(2).toLocaleString()+'</div>'+
+                                '<div class="fl-14 tb inner no-bdt">'+decimalWithComma(sum)+'</div>'+
                               '</div>'
               arr_dat.push(text);
             }else{
@@ -382,12 +383,19 @@
               arr_dat.push(text);
             }
           }         
-          print2db(cus_name,sum,cd,text,credit_num);               
+          print2db(cus_name,sum,cd,text,credit_num,credit);               
         }               
       });     
     }
 
-    function print2db(cus_name,sum,cd,text,credit_num){
+    function decimalWithComma(num){
+      var x = parseFloat(num).toFixed(2)
+      var parts = x.toString().split(".");
+      parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+      return parts.join(".");
+    }
+
+    function print2db(cus_name,sum,cd,text,credit_num,credit){
       var d = new Date($.now());
 			var datetime = d.getFullYear() + "-" + (d.getMonth()+1) + "-" + d.getDate() + " " + d.getHours() + ":" + d.getMinutes() + ":" + d.getSeconds();	
       var WinPrint  = window.open();          
@@ -418,7 +426,7 @@
 
         '<div class="row justify-content-end">'+
           '<div class="col-1 text-right nopd"><span class="bold">เครดิต : </span></div>'+
-          '<div class="col-2 text-right"><span>'+cd+' &emsp;วัน</span></div>'+
+          '<div class="col-2 text-right"><span>'+credit+' &emsp;วัน</span></div>'+
         '</div>'+
 
         '<div class="row justify-content-center" style="margin-top: 1cm;">'+

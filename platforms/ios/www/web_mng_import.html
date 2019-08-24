@@ -7,7 +7,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>รายงานบิล</title>
+    <title>รายงานสินค้าเข้า</title>
 
     <!-- Bootstrap Import -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
@@ -30,7 +30,7 @@
     <!-- Main -->
     <link href="css/untitled.css" rel="stylesheet">
     <style>
-        body{color: #666;}
+    body{color: #666;}
     a{ color: #999;}
     a:hover{color: #666;}
     .active{color: #666;}
@@ -51,51 +51,29 @@
       margin: 0;
       padding: 0;
     }
+    div[id^="detail"]{
+        margin-bottom: 0.8em;
+    }
+    .items{
+        font-size: 120%;
+    }
+    div[id^="item-"]{
+        margin-top: 0.5em;
+    }
   </style>
   <script>
-    var start = start_d = start_s = 0;
-    var bool = bool_d = bool_s = false;
-    $(document).ready(function(){       
-      $('#datepicker-from').duDatepicker(({format: 'dd/mm/yy', theme: 'red', cancelBtn: true, maxDate: "today"})).on('datechanged', function(e){
-        console.log(e.date);
-        $("#date").text(e.date);
-        if(e.date != null){
-          e.date = new Date();
-        }
-        $("#datepicker-to").trigger('click');
-      });
-
-      $('#datepicker-to').duDatepicker(({format: 'dd/mm/yy', theme: 'red', cancelBtn: true, maxDate: "today"})).on('datechanged', function(e){
-        console.log(e.date);
-        $("#date").append(" - " + e.date);
-        $("#date_row").prop('hidden', false);
-        $("#search_row").prop('hidden', true);
-        start_d = 0;
-        bool_d = false;
-        $("#myS").prop('hidden', true);
-        $("#myUL").prop('hidden', true);
-        $("#myD").prop('hidden', false);
-        $("#myD").empty();
-        $("#i-back").attr("onclick","showUL()");
-        search_date();
-      });
+    var start = start_s = 0;
+    var bool = bool_s = false;
+    $(document).ready(function(){
       get_import();
 
-      //scroll to bottom
-      $(window).on("scroll", function() {
-        var scrollHeight = $(document).height();
-        var scrollPosition = $(window).height() + $(window).scrollTop();
-        if ((scrollHeight - scrollPosition) / scrollHeight === 0) {          
+      $(window).scroll(function() {
+        if($(window).scrollTop() + $(window).height() == $(document).height()) {
           if(!$("#myUL").prop('hidden')){
             if(bool){
               return 0;
             }
-            get_import();            
-          }else if(!$("#myD").prop('hidden')){
-            if(bool_d){
-              return 0;
-            }
-            search_date();
+            get_import();           
           }else if(!$("#myS").prop('hidden')){
             if(bool_s){
               return 0;
@@ -103,7 +81,7 @@
             get_import_s();
           }
         }
-      });      
+      });
     });
     
     $(document).keydown(function(objEvent) {
@@ -112,26 +90,19 @@
         search();        
       }         
     })
-
-    function showUL(){
-      $("#myS").prop('hidden', true);
-      $("#myUL").prop('hidden', false);
-      $("#myD").prop('hidden', true);
-      $("#search_row").prop('hidden', true);
-      $("#date_row").prop('hidden', true);
-      $("#i-back").attr("onclick","transition_page_back('index.html?menu=3'); window.location = 'index.html?menu=3';");
-    }
-
+   
     function get_import(){
       $.ajax({
         type: "POST",
-        url:"http://ddaccessory.trueddns.com:24330/dd-shop/php/get_import.php",
+        url:"php/get_transfer.php",
         data: {'start': start},       
         beforeSend: function(){
-            $(".overlay").prop('hidden', false);
+          EasyLoading.show({                           
+						text: "กำลังโหลด"
+					});
         },                       
         success: function(data){ 
-          $(".overlay").prop('hidden', true);  
+          EasyLoading.hide();
           var obj = jQuery.parseJSON(data);
           if(obj[0] == "last"){
             bool = true
@@ -141,88 +112,62 @@
               var txt = field.date_time.split(" ");
               var txt2 = txt[0].split("-");
               var date = txt2[2] + "/" + txt2[1] + "/" + txt2[0].substr(2);
-              $('#myUL').append('<li> <div class="row" onclick="import_info('+field.stock_id+')">'+
-                '<div class="col-4 text-center no-pd">' +
-                  '<p>'+field.stock_number+'</p>' +
-                '</div>' +
-                '<div class="col-3 text-center no-pd">' +
-                  '<p>'+date+'</p>' +
-                '</div>' +
-                '<div class="col-5 text-center no-pd">' +
-                  '<p>'+field.ware_name+'</p>' +
-                '</div>' +
-              '</div><hr></li>');   
+              $('#myUL').append('<li id="ipt-'+field.tran_id+'">' +
+              '<div class="row justify-content-center ipt-even" data-toggle="collapse" href="#detail-'+field.tran_id+'" role="button" aria-expanded="false" aria-controls="detail-'+field.tran_id+'" onclick="appendCollapse('+field.tran_id+');">'+
+                  '<div class="col-4 text-center"><h5>'+field.tran_number+'</h5></div>' +
+                  '<div class="col-3 text-center"><h5>'+date+'</h5></div>' +
+                  '<div class="col-4 text-center"><h5>'+field.shop_name+'</h5></div>' +
+              '</div>' +
+            '</li>');   
             }                                               
           });                                          
         }               
       });
       start += 20;
-    }
-
-    function import_info(arg){
-      transition_page_next('import_info.html?id='+arg);
-      window.location = 'import_info.html?id='+arg;
-    }
-
-    function show_search(){
-      if($("#search_row").is(':visible')){
-        $("#search_row").prop('hidden', true);
-        if(!$("#myD").prop('hidden')){
-          $("#date_row").prop('hidden', false);
-        }
-      }else{
-        $("#search_row").prop('hidden', false);
-        $("#date_row").prop('hidden', true);
-      }
-    }
+    }   
 
     var val;
     function search(){
-      if($('#search_import').val() == ""){
+      if($('#input-search').val() == ""){
         return 0;
-      }
-      $('#search_import').blur();
-      val = $('#search_import').val();
+      }     
+      val = $('#input-search').val()
       start_s = 0;
       bool_s = false;
       $("#myS").prop('hidden', false);
-      $("#myUL").prop('hidden', true);
-      $("#myD").prop('hidden', true);
+      $("#myUL").prop('hidden', true);     
       $("#myS").empty();
-      $("#i-back").attr("onclick","showUL()");
       get_import_s();
     }
 
     function get_import_s(){
       $.ajax({
         type: "POST",
-        url:"http://ddaccessory.trueddns.com:24330/dd-shop/php/get_import.php",
+        url:"php/get_transfer.php",
         data: {'start': start_s, 'value' : val},
         beforeSend: function(){
-            $(".overlay").prop('hidden', false);
+          EasyLoading.show({                           
+						text: "กำลังโหลด"
+					});
         },                       
         success: function(data){ 
-          $(".overlay").prop('hidden', true);  
+          EasyLoading.hide();
           var obj = jQuery.parseJSON(data);
           if(obj[0] == "last"){
             bool_s = true
-          }
+          }                        
           $.each(obj, function(i, field){
             if(i > 0){
               var txt = field.date_time.split(" ");
               var txt2 = txt[0].split("-");
               var date = txt2[2] + "/" + txt2[1] + "/" + txt2[0].substr(2);
-              $('#myS').append('<li> <div class="row" onclick="import_info('+field.stock_id+')">'+
-                '<div class="col-4 text-center no-pd">' +
-                  '<p>'+field.stock_number+'</p>' +
-                '</div>' +
-                '<div class="col-3 text-center no-pd">' +
-                  '<p>'+date+'</p>' +
-                '</div>' +
-                '<div class="col-5 text-center no-pd">' +
-                  '<p>'+field.ware_name+'</p>' +
-                '</div>' +
-              '</div><hr></li>');     
+              $('#myS').append('<li id="ipts-'+field.tran_id+'">' +
+              '<div class="row justify-content-center ipt-even" data-toggle="collapse" href="#details-'+field.tran_id+'" role="button" aria-expanded="false" aria-controls="details-'+field.tran_id+'" onclick="appendCollapses('+field.tran_id+');">'+
+                  '<div class="col-4 text-center"><h5>'+field.tran_number+'</h5></div>' +
+                  '<div class="col-3 text-center"><h5>'+date+'</h5></div>' +
+                  '<div class="col-4 text-center"><h5>'+field.shop_name+'</h5></div>' +
+              '</div>' +
+            '</li>');    
             }                                                
           });                                         
         }               
@@ -278,6 +223,111 @@
       start_d += 20;          
     }
 
+    function appendCollapse(index){
+        if($("#detail-"+index).length){
+            //
+        }else{
+
+          var text = ""
+          $.ajax({
+            type: "POST",
+            url:"php/get_transfer_info.php",    
+            data:{'imp_id' : index},
+            async:false,                          
+            beforeSend: function(){
+              EasyLoading.show({                           
+                text: "กำลังโหลด"
+              });
+            },             
+            success: function(data){  
+              EasyLoading.hide();
+              var obj = jQuery.parseJSON(data); 
+              text = text + '<div class="collapse" id="detail-'+index+'">'+
+                '<div class="card card-body">'+
+                  '<div class="row justify-content-center">'+
+                      '<h3 style="text-decoration: underline;">รายการ</h3>'+
+                  '</div>'             
+              $.each(obj, function(i, field){
+                text = text + '<div id="item-'+field.item_id+'" class="row justify-content-center">'+
+                  '<div class="col-1 text-center items">'+field.amount+'</div>'+
+                  '<div class="col-7 text-center items">'+field.prod_name+'</div>'+
+                  '<div class="col-2 text-center items">'+field.tran_cost+'</div>'+
+                  '<div class="col-2 text-center items">'+field.amount*field.tran_cost+'</div>'+
+                '</div>'               
+              });
+              text = text + '<hr style="width: 50%; margin: auto; margin-top: 1em;">'+
+                  '<div class="row" style="margin-top: 1em;">'+
+                      '<div class="col-4 text-right"><h4>รวม</h4></div>'+
+                      '<div class="col-4 text-right"><h4>'+obj[0].total_tran+'</h4></div>'+
+                  '</div>'+
+                  '<div class="row">'+
+                      '<div class="col-4 text-right"><h4>ผู้ทำรายการ</h4></div>'+
+                      '<div class="col-4 text-right"><h4>'+obj[0].user_name+'</h4></div>'+
+                  '</div>'+          
+                '</div>'+
+              '</div>';                   
+            }               
+          });
+
+          $("#ipt-"+index).append(text);
+        }
+        $('html, body').animate({
+              scrollTop: $("#ipt-"+index).offset().top
+          }, 1100);
+    }
+
+    function appendCollapses(index){
+        if($("#details-"+index).length){
+            //
+        }else{
+
+          var text = ""
+          $.ajax({
+            type: "POST",
+            url:"php/get_transfer_info.php",    
+            data:{'imp_id' : index},
+            async:false,                          
+            beforeSend: function(){
+              EasyLoading.show({                           
+                text: "กำลังโหลด"
+              });
+            },             
+            success: function(data){  
+              EasyLoading.hide();
+              var obj = jQuery.parseJSON(data); 
+              text = text + '<div class="collapse" id="details-'+index+'">'+
+                '<div class="card card-body">'+
+                  '<div class="row justify-content-center">'+
+                      '<h3 style="text-decoration: underline;">รายการ</h3>'+
+                  '</div>'             
+              $.each(obj, function(i, field){
+                text = text + '<div id="item-'+field.item_id+' class="row justify-content-center">'+
+                  '<div class="col-1 text-center items">'+field.amount+'</div>'+
+                  '<div class="col-7 text-center items">'+field.prod_name+'</div>'+
+                  '<div class="col-2 text-center items">'+field.tran_cost+'</div>'+
+                  '<div class="col-2 text-center items">'+field.amount*field.tran_cost+'</div>'+
+                '</div>'               
+              });
+              text = text + '<hr style="width: 50%; margin: auto; margin-top: 1em;">'+
+                  '<div class="row" style="margin-top: 1em;">'+
+                      '<div class="col-4 text-right"><h4>รวม</h4></div>'+
+                      '<div class="col-4 text-right"><h4>'+obj[0].total_tran+'</h4></div>'+
+                  '</div>'+
+                  '<div class="row">'+
+                      '<div class="col-4 text-right"><h4>ผู้ทำรายการ</h4></div>'+
+                      '<div class="col-4 text-right"><h4>'+obj[0].user_name+'</h4></div>'+
+                  '</div>'+          
+                '</div>'+
+              '</div>';                   
+            }               
+          });
+
+          $("#ipts-"+index).append(text);
+        }
+        $('html, body').animate({
+              scrollTop: $("#ipts-"+index).offset().top
+          }, 1100);
+    }
   </script>
 </head>
 
@@ -285,7 +335,7 @@
     <div class="container-fullwidth justify-content-center">
         <nav class="navbar navbar-expand-md navbar-dark">
             <div class="collapse navbar-collapse justify-content-md-center" id="navbarCollapse">
-                <h3 id="nav-title">รายงานบิล</h3>
+                <h3 id="nav-title">รายงานสินค้าเข้า</h3>
             </div>
         </nav>
         <div class="container">
@@ -303,9 +353,9 @@
         </div><br><br>
         <div class="container-fullwidth">
             <div class="input-group row justify-content-center" style="margin-bottom: 4%; margin-left: 0.5%">
-                <input id="input-search" onkeyup="search();" type="text" class="form-control-lg text-center"
-                    placeholder="ค้าหา เลขที่นำเข้า / โกดัง" style="width: 60%;">
-                <button  class="btn btn-outline-secondary" type="button" style="margin-left: 10px;">
+                <input id="input-search" type="text" class="form-control-lg text-center"
+                    placeholder="ค้าหา เลขที่นำเข้า / สินค้า" style="width: 60%;">
+                <button  class="btn btn-outline-secondary" type="button" style="margin-left: 10px;" hidden>
                     <i class="fa fa-calendar-alt"></i>
                 </button>
             </div>
@@ -319,14 +369,14 @@
                     <h4>วันที่</h4>
                 </div>
                 <div class="col-3 text-center">
-                    <h4>โกดัง</h4>
+                    <h4>หน้าร้าน</h4>
                 </div>
             </div>
         </div>
         <hr style="width: 75%; margin-top: 0;"> <br>
         <div id="ctn-append" class="container-fullwidth">
             <ul id="myUL">
-                <li>
+                <!-- <li>
                     <div class="row justify-content-center ipt-odd">
                         <div class="col-4 text-center">
                             <h5>IMP18-00054</h5>
@@ -351,9 +401,35 @@
                             <h5>โกดัง B</h5>
                         </div>
                     </div>
-                </li>
+                </li> -->
+            </ul>
+            <ul id="myS" hidden>
             </ul>
         </div>
+
+
+        <!--- // New ctn-append using with appendCollapse() function ...
+        
+        <div id="ctn-append" class="container-fullwidth">
+          <ul id="myUL">
+            <li id="ipt-1">
+              <div class="row justify-content-center ipt-odd" data-toggle="collapse" href="#detail-1" role="button" aria-expanded="false" aria-controls="detail-1" onclick="appendCollapse(1);">
+                  <div class="col-4 text-center"><h5>S18-00329</h5></div>
+                  <div class="col-3 text-center"><h5>03/10/18</h5></div>
+                  <div class="col-4 text-center"><h5>Phoenix</h5></div>
+              </div>
+            </li>
+            <li id="ipt-2">
+              <div class="row justify-content-center ipt-even" data-toggle="collapse" href="#detail-2" role="button" aria-expanded="false" aria-controls="detail-2" onclick="appendCollapse(2);">
+                  <div class="col-4 text-center"><h5>S18-00329</h5></div>
+                  <div class="col-3 text-center"><h5>03/10/18</h5></div>
+                  <div class="col-4 text-center"><h5>Phoenix</h5></div>
+              </div>
+            </li>
+          </ul>
+        </div>
+
+        --->
     </div>
 </body>
 
