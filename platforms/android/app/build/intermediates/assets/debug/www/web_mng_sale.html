@@ -102,11 +102,14 @@
                 });
             },                       
             success: function(data){ 
-                EasyLoading.hide();
+                EasyLoading.hide();                
                 var obj = jQuery.parseJSON(data);
                 if(obj){
                     var net = 0;                           
-                    $.each(obj, function(i, field){             
+                    $.each(obj, function(i, field){
+                        if(i == obj.length-1){
+                            cost = field.count
+                        }             
                     $('#myUL').append('<li id="sale-'+field.order_id+'">' +
                         '<div class="row justify-content-center sale-even" data-toggle="collapse" href="#detail-'+field.order_id+'" role="button" aria-expanded="false" aria-controls="detail-'+field.order_id+'">' +
                             '<div class="col-4 text-center"><h5>'+field.order_number+'</h5></div>' +
@@ -115,9 +118,13 @@
                         '</div>' +
                     '</li>');
                         net += parseFloat(field.total_price);
-                    }); 
-                    $('#ctn-top').append('<div class="col-12 text-center">' +
-                                            '<h4>รวมทั้งหมด : '+net+'</h4>' +
+                    });
+                    profit = parseFloat(net) - parseFloat(cost)
+                    $('#ctn-top').append('<div class="col-6 text-right">' +
+                                            '<h4>ทั้งหมด : '+net+'</h4>' +
+                                        '</div>' +
+                                        '<div class="col-6 text-left">' +
+                                            '<h4>กำไรสุทธิ : '+profit+'</h4>' +
                                         '</div>');  
                 }                                
             }               

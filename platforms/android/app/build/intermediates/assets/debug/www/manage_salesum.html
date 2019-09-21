@@ -93,7 +93,10 @@
           var obj = jQuery.parseJSON(data);
           if(obj){
             var net = 0;                           
-            $.each(obj, function(i, field){             
+            $.each(obj, function(i, field){ 
+              if(i == obj.length-1){
+                cost = field.count
+              }              
               $('#myUL').append('<li class="mgemo5"><div class="row">'+
                 '<div class="col-4 text-center nopd">'+
                   '<p>'+field.order_number+'</p>'+
@@ -107,7 +110,9 @@
                 '</div></li>');
                 net += parseFloat(field.total_price);
             }); 
-            $('#net').text(net);  
+            profit = parseFloat(net) - parseFloat(cost)
+            $('#net').text(net);
+            $('#profit').text(profit);
           }                                
         }               
       });
@@ -156,13 +161,18 @@
   </div> 
   <!-- End big container -->
 
-  <div id="ctn-btm" class="container fixed-bottom" style="background: #f3f3f3;">
+  <div id="ctn-btm" class="container fixed-bottom" style="background: #f3f3f3; margin-bottom: 2%">
     <div class="row">
         <div class="col-12 text-center">
             <h5 class="h5-title" style="font-size: 130%;">รวม :
-                <span  style="color: red;"id="net">0</span>
+                <span  style="color: black;"id="net">0</span>
             </h5>
         </div>
+        <div class="col-12 text-center">
+          <h5 class="h5-title" style="font-size: 130%;">กำไร :
+              <span  style="color: red;"id="profit">0</span>
+          </h5>
+      </div>
     </div>
   </div>
 
