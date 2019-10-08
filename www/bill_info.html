@@ -85,9 +85,9 @@
           var obj = jQuery.parseJSON(data); 
           $('#h5-title').text(obj[0].order_number);
           if(obj[0].type == "โกดัง"){
-            $('#warehouse').text(obj[0][17].ware_name);           
+            $('#warehouse').text(obj[0][18].ware_name);           
           }else if(obj[0].type == "หน้าร้าน"){
-            $('#warehouse').text(obj[0][17].shop_name);           
+            $('#warehouse').text(obj[0][18].shop_name);           
           }          
           $('#cus').text(obj[0].cus_name + " ");
           $("#cus").append('<span id="type">'+obj[0].payment_type+'</span>');
