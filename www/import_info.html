@@ -63,7 +63,7 @@
 
       $.ajax({
         type: "POST",
-        url:"http://ddaccessory.trueddns.com:24330/dd-shop/php/get_import_info.php",    
+        url:localStorage.pathServer + "php/get_import_info.php",    
         data:{'imp_id' : imp_id},                            
         beforeSend: function(){
             $(".overlay").prop('hidden', false);
@@ -174,7 +174,7 @@
                         // delete bill
                         $.ajax({
                           type: "POST",
-                          url:"http://ddaccessory.trueddns.com:24330/dd-shop/php/delete_import.php",         
+                          url:localStorage.pathServer + "php/delete_import.php",         
                           data:{'imp_id' : imp_id,'ware_id' : ware_id_o},
                           beforeSend: function(){
                             $(".overlay").prop('hidden', false);
@@ -253,7 +253,7 @@
             //ajax and apeend
             $.ajax({
               type: "GET",
-              url:"http://ddaccessory.trueddns.com:24330/dd-shop/php/get_ware.php",                            
+              url:localStorage.pathServer + "php/get_ware.php",                            
               beforeSend: function(){
                   $(".overlay").prop('hidden', false);
               },             
@@ -316,7 +316,7 @@
       //alert(dataString);
       $.ajax({
         type: "POST",
-        url:"http://ddaccessory.trueddns.com:24330/dd-shop/php/rename_import.php",         
+        url:localStorage.pathServer + "php/rename_import.php",         
         data: dataString,
         beforeSend: function(){
           $(".overlay").prop('hidden', false);

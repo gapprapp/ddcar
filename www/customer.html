@@ -43,7 +43,7 @@
     $(document).ready(function () { 
       $.ajax({
         type: "GET",
-        url:"http://ddaccessory.trueddns.com:24330/dd-shop/php/get_cus.php",
+        url:localStorage.pathServer + "php/get_cus.php",
         beforeSend: function(){
             $(".overlay").prop('hidden', false);
         },
@@ -147,7 +147,7 @@
               action: function () {
                   $.ajax({
                     type: "POST",
-                    url:"http://ddaccessory.trueddns.com:24330/dd-shop/php/delete_cus.php",           
+                    url:localStorage.pathServer + "php/delete_cus.php",           
                     data: {'cus_id' : arg},     
                     beforeSend: function(){
                       $(".overlay").prop('hidden', false);

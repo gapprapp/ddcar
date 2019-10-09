@@ -72,7 +72,7 @@
       }
       $.ajax({
           type: "POST",
-          url:"http://ddaccessory.trueddns.com:24330/dd-shop/php/add_cus.php",           
+          url:localStorage.pathServer + "php/add_cus.php",           
           data: {'cus_name':name,
               'phone':phone,
               'addr':addr,
