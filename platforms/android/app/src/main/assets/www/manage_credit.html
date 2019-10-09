@@ -82,7 +82,7 @@
       }  
       $.ajax({
         type: "GET",
-        url:"http://ddaccessory.trueddns.com:24330/dd-shop/php/get_credit.php",          
+        url:localStorage.pathServer + "php/get_credit.php",          
         beforeSend: function(){
             $(".overlay").prop('hidden', false);
         },                       
@@ -183,7 +183,7 @@
     function get_credit_s(){
       $.ajax({
         type: "POST",
-        url:"http://ddaccessory.trueddns.com:24330/dd-shop/php/get_credit.php",
+        url:localStorage.pathServer + "php/get_credit.php",
         data: {'value':val},
         beforeSend: function(){
             $(".overlay").prop('hidden', false);

@@ -42,7 +42,7 @@
     $(document).ready(function () { 
       $.ajax({
         type: "GET",
-        url:"http://ddaccessory.trueddns.com:24330/dd-shop/php/get_ware_shop.php",   
+        url:localStorage.pathServer + "php/get_ware_shop.php",   
         beforeSend: function(){
             $(".overlay").prop('hidden', false);
         },                           
@@ -174,7 +174,7 @@
               }
               $.ajax({
                 type: "POST",
-                url:"http://ddaccessory.trueddns.com:24330/dd-shop/php/rename_ware_shop.php",           
+                url:localStorage.pathServer + "php/rename_ware_shop.php",           
                 data: {'id' : id,
                         'type' : type,
                         'name' : txt}, 
@@ -223,7 +223,7 @@
             action: function () {
               $.ajax({
                 type: "POST",
-                url:"http://ddaccessory.trueddns.com:24330/dd-shop/php/delete_ware_shop.php",           
+                url:localStorage.pathServer + "php/delete_ware_shop.php",           
                 data: {'id' : id,
                        'type' : type},
                 beforeSend: function(){

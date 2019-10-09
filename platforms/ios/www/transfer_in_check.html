@@ -89,7 +89,7 @@
                       
             $.ajax({
                 type: "POST",
-                url:"http://ddaccessory.trueddns.com:24330/dd-shop/php/transfer_in.php",           
+                url:localStorage.pathServer + "php/transfer_in.php",           
                 data: dataString,               
                 beforeSend: function(){
                     $(".overlay").prop('hidden', false);

@@ -52,7 +52,7 @@
         }  
         $.ajax({
           type: "GET",
-          url:"http://ddaccessory.trueddns.com:24330/dd-shop/php/get_status_prod.php",          
+          url:localStorage.pathServer + "php/get_status_prod.php",          
           beforeSend: function(){
             $(".overlay").prop('hidden', false);
           },             
@@ -89,7 +89,7 @@
       function update_bell(){
         $.ajax({ 
           type: "GET",
-          url:"http://ddaccessory.trueddns.com:24330/dd-shop/php/update_bell.php",
+          url:localStorage.pathServer + "php/update_bell.php",
           beforeSend: function(){
               $(".overlay").prop('hidden', false);
           },                       
@@ -164,7 +164,7 @@
         
         <!-- Nav menu bottom -->
       <div class="row fixed-bottom navs">
-        <div class="col-3 text-center" onclick="transition_page_back('index.html')index.html'); window.location = 'index.html';">
+        <div class="col-3 text-center" onclick="transition_page_back('index.html'); window.location = 'index.html';">
           <i id="i-home" class="fas fa-home menu"></i>
         </div>
         <div class="col-3 text-center" onclick="transition_page_next('bell.html'); window.location ='bell.html';">

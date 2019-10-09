@@ -205,7 +205,7 @@
           var imgb64 = $('#img').attr('src');              
           $.ajax({
             type: "POST",
-            url:"http://ddaccessory.trueddns.com:24330/dd-shop/php/add_prod.php",           
+            url:localStorage.pathServer + "php/add_prod.php",           
             data: {'name_prod' : name,
                   'code' : code,
                   'parent' : folder,
@@ -252,7 +252,7 @@
         }else{
           $.ajax({
             type: "POST",
-            url:"http://ddaccessory.trueddns.com:24330/dd-shop/php/add_prod.php",           
+            url:localStorage.pathServer + "php/add_prod.php",           
             data: {'name_prod' : name,
                   'code' : code,
                   'parent' : folder,                  

@@ -122,7 +122,7 @@
     function get_import(){
       $.ajax({
         type: "POST",
-        url:"http://ddaccessory.trueddns.com:24330/dd-shop/php/get_import.php",
+        url:localStorage.pathServer + "php/get_import.php",
         data: {'start': start},       
         beforeSend: function(){
             $(".overlay").prop('hidden', false);
@@ -201,7 +201,7 @@
     function get_import_s(){
       $.ajax({
         type: "POST",
-        url:"http://ddaccessory.trueddns.com:24330/dd-shop/php/get_import.php",
+        url:localStorage.pathServer + "php/get_import.php",
         data: {'start': start_s, 'value' : val},
         beforeSend: function(){
             $(".overlay").prop('hidden', false);
@@ -249,7 +249,7 @@
 
       $.ajax({
         type: "POST",
-        url:"http://ddaccessory.trueddns.com:24330/dd-shop/php/get_import.php",         
+        url:localStorage.pathServer + "php/get_import.php",         
         data:{'date' : date, 'date_to' : date_to ,'start' : start_d},
         beforeSend: function(){
           $(".overlay").prop('hidden', false);

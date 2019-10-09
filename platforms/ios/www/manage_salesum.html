@@ -83,7 +83,7 @@
       $('#myUL').empty();
       $.ajax({
         type: "POST",
-        url:"http://ddaccessory.trueddns.com:24330/dd-shop/php/get_shift_bill.php",
+        url:localStorage.pathServer + "php/get_shift_bill.php",
         data:{'date':datetime},
         beforeSend: function(){
             $(".overlay").prop('hidden', false);

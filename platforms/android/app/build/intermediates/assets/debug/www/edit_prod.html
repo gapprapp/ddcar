@@ -72,7 +72,7 @@
         function get_prod(id){
             $.ajax({
                 type: "POST",
-                url:"http://ddaccessory.trueddns.com:24330/dd-shop/php/get_prod.php",    
+                url:localStorage.pathServer + "php/get_prod.php",    
                 data:{'prod_id' : id},                                  
                 beforeSend: function(){
                     $(".overlay").prop('hidden', false);
@@ -217,7 +217,7 @@
             }
             $.ajax({
                 type: "POST",
-                url:"http://ddaccessory.trueddns.com:24330/dd-shop/php/rename_prod.php",           
+                url:localStorage.pathServer + "php/rename_prod.php",           
                 data: {'prod_id' : prod_id,
                     'name_prod' : name,
                     'code' : code,

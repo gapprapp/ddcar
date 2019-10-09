@@ -75,7 +75,7 @@
 
       $.ajax({
         type: "POST",
-        url:"http://ddaccessory.trueddns.com:24330/dd-shop/php/get_bill_info.php",    
+        url:localStorage.pathServer + "php/get_bill_info.php",    
         data:{'bill_id' : bill_id},                            
         beforeSend: function(){
             $(".overlay").prop('hidden', false);
@@ -85,9 +85,9 @@
           var obj = jQuery.parseJSON(data); 
           $('#h5-title').text(obj[0].order_number);
           if(obj[0].type == "โกดัง"){
-            $('#warehouse').text(obj[0][17].ware_name);           
+            $('#warehouse').text(obj[0][18].ware_name);           
           }else if(obj[0].type == "หน้าร้าน"){
-            $('#warehouse').text(obj[0][17].shop_name);           
+            $('#warehouse').text(obj[0][18].shop_name);           
           }          
           $('#cus').text(obj[0].cus_name + " ");
           $("#cus").append('<span id="type">'+obj[0].payment_type+'</span>');
@@ -248,7 +248,7 @@
                       // delete bill
                       $.ajax({
                         type: "POST",
-                        url:"http://ddaccessory.trueddns.com:24330/dd-shop/php/delete_bill.php",         
+                        url:localStorage.pathServer + "php/delete_bill.php",         
                         data:{'bill_id' : bill_id,'b_id' : ware_id_o,'type' : type_o,'pay' : pay,'total' : total,'credit_id': credit_id},
                         beforeSend: function(){
                           $(".overlay").prop('hidden', false);
@@ -488,7 +488,7 @@
             //ajax and apeend
             $.ajax({
               type: "GET",
-              url:"http://ddaccessory.trueddns.com:24330/dd-shop/php/get_ware_shop.php",     
+              url:localStorage.pathServer + "php/get_ware_shop.php",     
               beforeSend: function(){
                   $(".overlay").prop('hidden', false);
               },                        
@@ -579,7 +579,7 @@
       //alert(dataString);
       $.ajax({
         type: "POST",
-        url:"http://ddaccessory.trueddns.com:24330/dd-shop/php/rename_bill.php",         
+        url:localStorage.pathServer + "php/rename_bill.php",         
         data: dataString,
         beforeSend: function(){
           $(".overlay").prop('hidden', false);
@@ -614,7 +614,7 @@
       var c = 1;
       $.ajax({
           type: "POST",
-          url:"http://ddaccessory.trueddns.com:24330/dd-shop/php/get_bill_info4print.php",    
+          url:localStorage.pathServer + "php/get_bill_info4print.php",    
           data:{'bill_id' : index},
           async:false,                            
           beforeSend: function(){
@@ -972,7 +972,7 @@
       var contentP = ""
       $.ajax({
           type: "POST",
-          url:"http://ddaccessory.trueddns.com:24330/dd-shop/php/get_bill_info4print.php",    
+          url:localStorage.pathServer + "php/get_bill_info4print.php",    
           data:{'bill_id' : index},
           async:false,                            
           beforeSend: function(){

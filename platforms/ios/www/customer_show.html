@@ -44,7 +44,7 @@
 
             $.ajax({
                 type: "POST",
-                url:"http://ddaccessory.trueddns.com:24330/dd-shop/php/get_detail_cus.php",  
+                url:localStorage.pathServer + "php/get_detail_cus.php",  
                 data: {'cus_id' : cus_id}, 
                 beforeSend: function(){
                     $(".overlay").prop('hidden', false);
@@ -124,7 +124,7 @@
             }  
                 $.ajax({
                     type: "POST",
-                    url:"http://ddaccessory.trueddns.com:24330/dd-shop/php/rename_cus.php",           
+                    url:localStorage.pathServer + "php/rename_cus.php",           
                     data: {'cus_id' : cus_id,
                         'cus_name':name,
                         'phone':tel,

@@ -86,7 +86,7 @@
       }
       $.ajax({
           type: "POST",
-          url:"http://ddaccessory.trueddns.com:24330/dd-shop/php/register.php",           
+          url:localStorage.pathServer + "php/register.php",           
           data: {'user':name,
               'pass':pass,
               'phone':phone,
