@@ -1,8 +1,9 @@
 <?php
     include "db.php";
+    $start = $_POST['start'];
     $output = array();     
 
-    $query = "SELECT prod_name,prod_id,status FROM product WHERE status != 'normal' ORDER BY status ASC";
+    $query = "SELECT prod_name,prod_id,status FROM product WHERE status != 'normal' ORDER BY status ASC LIMIT $start,20";
     $result = mysqli_query($conn, $query);
 
     if(mysqli_num_rows($result) > 0){    
