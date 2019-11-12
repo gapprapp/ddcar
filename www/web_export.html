@@ -104,7 +104,7 @@
 
 			var options = {
 				url: function(phrase) {
-					return "php/search_prod.php?ware_id="+ware_id;
+					return "php/search_prod.php?ware_id="+ware_id+"&type=โกดัง";
 				},
 				getValue: function(element) {
 					//console.log(element);
@@ -247,7 +247,7 @@
 							$.ajax({
 								type: "POST",
 								url:"php/get_prod.php",    
-								data:{'qr' : barcode, 'ware_id' : ware_id},
+								data:{'qr' : barcode, 'ware_id' : ware_id, 'type' : "โกดัง"},
 								//async: false,                       
 								beforeSend: function(){
 									EasyLoading.show({                           
@@ -325,7 +325,7 @@
                 $.ajax({
                     type: "POST",
                     url:"php/get_prod.php",    
-                    data:{'prod_id' : id, 'ware_id' : ware_id},
+                    data:{'prod_id' : id, 'ware_id' : ware_id, 'type' : "โกดัง"},
                     //async: false,                       
                     beforeSend: function(){
 						EasyLoading.show({                           
@@ -465,7 +465,7 @@
 				$.ajax({
 					type: "POST",
 					url:"php/get_prod.php",    
-					data:{'prod_id' : prod_id, 'ware_id' : ware_id},
+					data:{'prod_id' : prod_id, 'ware_id' : ware_id, 'type' : "โกดัง"},
 					//async: false,                       
 					beforeSend: function(){
 						EasyLoading.show({                           
