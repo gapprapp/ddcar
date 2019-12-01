@@ -51,9 +51,27 @@
 		}	
   </style>	
   <script>
-	  function next(){
-		sessionStorage.test = $('html').html();
-	  }
+	 $(document).ready(function () {
+		$.ajax({
+			type: "POST",
+			url:"php/get_prod.php",    
+			data:{'qr' : "TYVG050001", 'ware_id' : "2"},
+			//async: false,                       
+			beforeSend: function(){
+				EasyLoading.show({                           
+					text: "กำลังโหลด"                            
+				});
+			},             
+			success: function(data){  
+				EasyLoading.hide();
+				var obj = jQuery.parseJSON(data); 
+				console.log(obj)                                        
+				$.each(obj, function(i, field){
+					console.log(obj[i].prod_id)	                                                 
+				});                                                   
+			}               
+		});   
+	 });
 	  
   </script>
 </head>

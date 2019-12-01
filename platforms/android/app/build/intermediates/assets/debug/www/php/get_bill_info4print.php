@@ -4,7 +4,7 @@
 
     $query = "SELECT s.order_number,c.cus_name,c.cus_tel,c.cus_addr,s.date_time,s.payment_type,s.sum_price,
     s.total_discount,s.total_price,s.get_price,s.chng,u.user_name,p.prod_name,p.prod_code,i.prod_price,
-    i.prod_amount,i.item_id
+    i.prod_amount,i.item_id,s.comment
     FROM sale_order s INNER JOIN customer c ON s.customer_id = c.cus_id INNER JOIN user u ON s.user_id = u.user_id 
     INNER JOIN sale_order_item i ON s.order_id = i.order_id INNER JOIN product p ON i.prod_id = p.prod_id 
     WHERE s.order_id = '$bill_id'";

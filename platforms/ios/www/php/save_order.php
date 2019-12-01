@@ -14,9 +14,9 @@
     $get  = $_POST['get_price'];
     $change  = $_POST['chng'];
     $total  = $_POST['total'];
-    //$comment  = $_POST['comment'];
-    //$name_cus = $_POST['name_cus'];
+    $comment  = $_POST['comment'];   
     $user_id = $_POST['user_id'];
+    $online_name = $_POST['online'];
 
     mysqli_begin_transaction($conn);
     foreach ($obj_d as $data){
@@ -120,8 +120,8 @@
                 $year = "S" . $year_cur . "-";
                 $order_number = $year . str_pad($count, 5, "0",STR_PAD_LEFT);
                 $sql2 = "INSERT INTO sale_order (order_number,customer_id,date_time,sum_price,
-                payment_type,branch_id,type,total_discount,total_price,get_price,chng,user_id,credit_id,count) 
-                VALUE ('$order_number','$cus','$dt','$sum','$pay','$b','$type','$dis','$total','$get','$change','$user_id','$credit_id','$count')"; 
+                payment_type,branch_id,type,total_discount,total_price,get_price,chng,user_id,credit_id,comment,count) 
+                VALUE ('$order_number','$cus','$dt','$sum','$pay','$b','$type','$dis','$total','$get','$change','$user_id','$credit_id','$comment','$count')"; 
                 $result2 = mysqli_query($conn, $sql2);
                 if(!$result2){
                     mysqli_rollback($conn);
@@ -133,8 +133,8 @@
                 $year = "S" . $year_cur . "-";
                 $order_number = $year . str_pad(1, 5, "0",STR_PAD_LEFT);
                 $sql3 = "INSERT INTO sale_order (order_number,customer_id,date_time,sum_price,
-                payment_type,branch_id,type,total_discount,total_price,get_price,chng,user_id,credit_id,count) 
-                VALUE ('$order_number','$cus','$dt','$sum','$pay','$b','$type','$dis','$total','$get','$change','$user_id','$credit_id',1)"; 
+                payment_type,branch_id,type,total_discount,total_price,get_price,chng,user_id,credit_id,comment,count) 
+                VALUE ('$order_number','$cus','$dt','$sum','$pay','$b','$type','$dis','$total','$get','$change','$user_id','$credit_id','$comment',1)"; 
                 $result3 = mysqli_query($conn, $sql3);
                 if(!$result3){
                     mysqli_rollback($conn);
@@ -148,8 +148,8 @@
         $year = "S" . date("y") . "-";
         $order_number = $year . str_pad(1, 5, "0",STR_PAD_LEFT);
         $sql1 = "INSERT INTO sale_order (order_number,customer_id,date_time,sum_price,
-        payment_type,branch_id,type,total_discount,total_price,get_price,chng,user_id,credit_id,count) 
-        VALUE ('$order_number','$cus','$dt','$sum','$pay','$b','$type','$dis','$total','$get','$change','$user_id','$credit_id',1)"; 
+        payment_type,branch_id,type,total_discount,total_price,get_price,chng,user_id,credit_id,comment,count) 
+        VALUE ('$order_number','$cus','$dt','$sum','$pay','$b','$type','$dis','$total','$get','$change','$user_id','$credit_id','$comment',1)"; 
         $result1 = mysqli_query($conn, $sql1);
         if(!$result1){
             mysqli_rollback($conn);

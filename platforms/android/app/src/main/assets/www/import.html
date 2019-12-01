@@ -61,7 +61,7 @@
         var prod_id;       
         var cost_o; 
         var flag = 0; 
-        var img;   
+        var img,min;   
         var bool = true; 
         $(document).ready(function () { 
             url = new URL(window.location.href);
@@ -166,7 +166,7 @@
                                     $.ajax({
                                         type: "POST",
                                         url:localStorage.pathServer + "php/get_prod.php",    
-                                        data:{'qr' : value},
+                                        data:{'qr' : value,'ware_id' : localStorage.ware_id_im,'type' : localStorage.ware_type_im},
                                         //async: false,                       
                                         beforeSend: function(){
                                             $(".overlay").prop('hidden', false);
@@ -179,7 +179,8 @@
                                                 $('#barcode').val(obj[i].prod_code); 
                                                 prod_id = obj[i].prod_id;
                                                 cost_o = obj[i].prod_cost;                       
-                                                img = obj[i].img;   
+                                                img = obj[i].img;
+                                                min = obj[i].min_amount;  
                                                 if(obj[i].prod_cost == 0 && obj[i].prod_price == 0 && obj[i].prod_pricesend == 0){
                                                     $('#cost').val("");
                                                     $('#wholesale').val("");
@@ -286,7 +287,7 @@
                 $.ajax({
                     type: "POST",
                     url:localStorage.pathServer + "php/get_prod.php",    
-                    data:{'prod_id' : id},
+                    data:{'prod_id' : id,'ware_id' : localStorage.ware_id_im,'type' : localStorage.ware_type_im},
                     //async: false,                       
                     beforeSend: function(){
                         $(".overlay").prop('hidden', false);
@@ -298,7 +299,8 @@
                             $('#name').val(obj[i].prod_name);
                             $('#barcode').val(obj[i].prod_code); 
                             cost_o = obj[i].prod_cost;                       
-                            img = obj[i].img;   
+                            img = obj[i].img;
+                            min = obj[i].min_amount;  
                             if(obj[i].prod_cost == 0 && obj[i].prod_price == 0 && obj[i].prod_pricesend == 0){
                                 $('#cost').val("");
                                 $('#wholesale').val("");
@@ -499,7 +501,8 @@
                 item ["cost"] =  cost;               
                 item ["amt"] =  $('#amount').val();
                 item ["img"] =  img; 
-                item ["addr"] = $('#prod-addr').val();    
+                item ["addr"] = $('#prod-addr').val();
+                item ["min"] =  min;    
 
                 arr_data.push(item); 
                 localStorage.setItem('arr_prod', JSON.stringify(arr_data));         

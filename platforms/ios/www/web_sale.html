@@ -99,7 +99,7 @@
 					data: {}
 				},
 				preparePostData: function(data) {
-						prod_id = 0;
+						//prod_id = 0;
 						data.phrase = $("#name").val();
 						return data;
 				},
@@ -541,36 +541,16 @@
 					var obj = jQuery.parseJSON(data); 
 					if(obj){
 						$.each(obj, function(i, field){							
-							if(obj[i][2] == "โกดัง"){  
-								// if(!localStorage.ware_id_s){
-								// 	if(i == 0){
-								// 		localStorage.ware_id_s =  field.ware_id;
-								// 		localStorage.ware_name_s =  field.ware_name;
-								// 		b_id = field.ware_id;
-								// 		type = "โกดัง";
-								// 		localStorage.type =  type;
-								// 		$('#btn-b').text(field.ware_name);								
-								// 	}
-								// }
+							if(obj[i][2] == "โกดัง"){
 								$('#b').append('<a class="dropdown-item text-center" href="#" onclick="setware('+field.ware_id+',\''+field.ware_name+'\',\'โกดัง\')">'+field.ware_name+'</a>');
-							}else if(obj[i][2] == "หน้าร้าน"){ 
-								// if(!localStorage.ware_id_s){
-								// 	if(i == 0){
-								// 		localStorage.ware_id_s =  field.shop_id;
-								// 		localStorage.ware_name_s =  field.shop_name;
-								// 		b_id = field.shop_id;
-								// 		type = "หน้าร้าน";
-								// 		localStorage.type =  type;
-								// 		$('#btn-b').text(field.shop_name);								
-								// 	}
-								// }
+							}else if(obj[i][2] == "หน้าร้าน"){
 								$('#b').append('<a class="dropdown-item text-center" href="#" onclick="setware('+field.shop_id+',\''+field.shop_name+'\',\'หน้าร้าน\')">'+field.shop_name+'</a>');
 							}										
 						}); 
 					}
 				}               
-			}); 
-		}
+			});			
+		}	
 
 		var b_id,type;
 		function setware(arg,arg2,arg3){
@@ -1116,7 +1096,8 @@
 			json_detail = JSON.stringify(arr_detail);           
 			var dataString =  "JSON=" + json_string + "&JSOND=" + json_detail + "&ware_id=" + b_id + "&date=" + datetime + "&type=" + type
 			+ "&cus_id=" + cus_id + "&pay=" + $("#btn-p").text() + "&net=" + $('#net-price').val() + "&dis=" + dis
-			+ "&total=" + $('#final-price').val() + "&get_price=" + $('#get-money').val() + "&chng=" + $('#change-money').val() + "&user_id=" + localStorage.user_id;
+			+ "&total=" + $('#final-price').val() + "&get_price=" + $('#get-money').val() + "&chng=" + $('#change-money').val() + "&user_id=" + localStorage.user_id
+			+ "&comment=" + $('#comment').val();
 			//alert(dataString);
 			var msg_alert = "";
 			for(var i = 0 ; i < arr_data.length;i++){
@@ -1443,7 +1424,7 @@
 			localStorage.ware_id_s = "";
 			localStorage.ware_name_s = "";
 			localStorage.type = "";
-			localStorage.pay = "";
+			localStorage.pay = "";			
 			location.reload();
 		}
 
@@ -1487,8 +1468,8 @@
   	}
   	#btn-b:focus{
   		outline: 0;
-  	}
-		#btn-p{
+  	}	
+	#btn-p{
   		width: 50%; background-color: #666; border-color: #666; color: white;
   	}
   	#btn-p:focus{
@@ -1530,7 +1511,7 @@
       		<div id="head" class="row mgb-5" style="padding-left: 2%; padding-right: 2%;">
       		  <div class="col-2 text-center" style="color: #666;">วันที่</div>
       		  <div class="col-2 text-center" style="color: #666;">ลูกค้า</div>
-      		  <div class="col-3 text-center" style="color: #666;">ขายจาก</div>
+			  <div class="col-3 text-center" style="color: #666;">ขายจาก</div>		
       		  <div class="col-3 text-center" style="color: #666;">รูปแบบการชำระเงิน</div>
       		  <div class="col-2 text-center" style="color: #666;">ผู้ทำรายการ</div>
       		</div>
@@ -1549,7 +1530,7 @@
       				<div id="b" class="dropdown-menu" aria-labelledby="dropdownMenuButton">
 
       				</div>
-      			</div>
+				  </div>				
       			<div class="col-3 text-center">
       				<button id="btn-p" type="button" class="btn dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="background-color: #666;">เงินสด</button>
 
@@ -1625,14 +1606,12 @@
 		      <input id="total-price" type="number" value="0" class="form-control form-control-lg text-center no-spin no-border conclu-price-input" style="background: #767676; color: #5dbe5d" readonly>
 		    </div>
 		    <div class="col-1 text-center nopd">
-		    
-		    </div>
-		    <div class="col-1 text-center nopd">
-		     
-		    </div>
-		    <div class="col-1 text-center nopd">
-		     
-		    </div>		    
+				<h6>หมายเหตุ </h6>
+			</div>
+			<div class="col-2 text-center nopd">
+				<textarea class="form-control" id="comment" rows="2"></textarea>
+			</div>		
+		   	    
 		    <div class="col-3 text-right nopd" style="padding-top: 10px;">
 						<button id="btn_checkbill" class="btn btn-danger" data-toggle="modal" data-target="#myModal" onclick="check_bill()">คิดเงิน (F8)</button>
 						<button class="btn btn-danger" onclick="cancel()">ยกเลิก (F9)</button>

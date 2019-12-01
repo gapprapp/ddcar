@@ -143,7 +143,7 @@
             if(bool){
                 $.ajax({
                     type: "POST",
-                    url:localStorage.pathServer + "php/get_prod.php",    
+                    url:localStorage.pathServer + "php/get_prod_bk.php",    
                     data:{'prod_id' : id, 'ware_id' : localStorage.ware_id_ex},
                     //async: false,                       
                     beforeSend: function(){
@@ -239,7 +239,7 @@
                                 if(bool){                    
                                     $.ajax({
                                         type: "POST",
-                                        url: localStorage.pathServer + "php/get_prod.php",                
+                                        url: localStorage.pathServer + "php/get_prod_bk.php",                
                                         data: {'qr' : value,'ware_id': localStorage.ware_id_ex},             
                                         beforeSend: function(){
                                             $(".overlay").prop('hidden', false);
@@ -454,7 +454,7 @@
             if($('#name').val() != ""){
                 $.ajax({
                     type: "POST",
-                    url:localStorage.pathServer + "php/get_prod.php",    
+                    url:localStorage.pathServer + "php/get_prod_bk.php",    
                     data:{'prod_id' : prod_id, 'ware_id' : localStorage.ware_id_ex},
                     //async: false,                       
                     beforeSend: function(){
