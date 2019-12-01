@@ -17,6 +17,10 @@
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.1/css/all.css" integrity="sha384-O8whS3fhG2OnA5Kas0Y9l3cfpmYjapjI0E4theH4iuMD+pLhbf6JI0jIMfYcK3yZ"
         crossorigin="anonymous">
 
+    <!-- QRcode -->
+    <script type="text/javascript" src="js/qrcode.min.js"></script>
+    <script type="text/javascript" src="js/jQuery.print.js"></script>
+
     <!-- Super cool dialog-->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.0/jquery-confirm.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.0/jquery-confirm.min.js"></script>
@@ -174,60 +178,12 @@
       });
       start_s += 20;
     }
-
-    function search_date(){
-      txt = $("#date").text().split("-");
-      temp = txt[0].split("/");
-      date =  "20" + temp[2] + "-" + temp[1] + "-" + temp[0];
-      date = date.replace(/\s+/g, '');
-      date = date + " 00:00:00";
-
-      temp = txt[1].split("/");
-      date_to =  "20" + temp[2] + "-" + temp[1] + "-" + temp[0];
-      date_to = date_to.replace(/\s+/g, '');
-      date_to = date_to + " 23:59:59";
-
-      $.ajax({
-        type: "POST",
-        url:"http://ddaccessory.trueddns.com:24330/dd-shop/php/get_import.php",         
-        data:{'date' : date, 'date_to' : date_to ,'start' : start_d},
-        beforeSend: function(){
-          $(".overlay").prop('hidden', false);
-        },                       
-        success: function(data){ 
-          $(".overlay").prop('hidden', true);  
-          var obj = jQuery.parseJSON(data);
-          if(obj[0] == "last"){
-            bool_d = true;
-          }                              
-          $.each(obj, function(i, field){
-            if(i > 0){
-              var txt = field.date_time.split(" ");
-              var txt2 = txt[0].split("-");
-              var date = txt2[2] + "/" + txt2[1] + "/" + txt2[0].substr(2);
-              $('#myD').append('<li> <div class="row" onclick="import_info('+field.stock_id+')">'+
-                '<div class="col-4 text-center no-pd">' +
-                  '<p>'+field.stock_number+'</p>' +
-                '</div>' +
-                '<div class="col-3 text-center no-pd">' +
-                  '<p>'+date+'</p>' +
-                '</div>' +
-                '<div class="col-5 text-center no-pd">' +
-                  '<p>'+field.ware_name+'</p>' +
-                '</div>' +
-              '</div><hr></li>'); 
-            }                                      
-          });                                         
-        }               
-      });  
-      start_d += 20;          
-    }
-
+  
     function appendCollapse(index){
         if($("#detail-"+index).length){
             //
         }else{
-
+          arr_data = [];
           var text = ""
           $.ajax({
             type: "POST",
@@ -253,7 +209,14 @@
                   '<div class="col-7 text-center items">'+field.prod_name+'</div>'+
                   '<div class="col-2 text-center items">'+field.tran_cost+'</div>'+
                   '<div class="col-2 text-center items">'+field.amount*field.tran_cost+'</div>'+
-                '</div>'               
+                '</div>'
+                
+                item = {}
+                item ["qr"] =  field.prod_code
+                item ["name"] =  field.prod_name
+                item ["amt"] =  field.amount
+                item ["price"] = field.prod_price
+                arr_data.push(item);
               });
               text = text + '<hr style="width: 50%; margin: auto; margin-top: 1em;">'+
                   '<div class="row" style="margin-top: 1em;">'+
@@ -263,8 +226,13 @@
                   '<div class="row">'+
                       '<div class="col-4 text-right"><h4>ผู้ทำรายการ</h4></div>'+
                       '<div class="col-4 text-right"><h4>'+obj[0].user_name+'</h4></div>'+
-                  '</div>'+          
-                '</div>'+
+                  '</div>'+
+                  '<div class="row justify-content-center" style="margin-top: 1em;">'+
+                  '<div class="col-4 text-center">'+                   
+                    '<button onclick="print.apply(this,arr_data)" class="btn btn-lg btn-warning" style="color: white;">พิมพ์รายการ  <i class="fas fa-print"></i></button>'+
+                '</div>'+        
+                '</div>'+                
+            '</div>'+
               '</div>';                   
             }               
           });
@@ -280,7 +248,7 @@
         if($("#details-"+index).length){
             //
         }else{
-
+          arr_data = [];
           var text = ""
           $.ajax({
             type: "POST",
@@ -300,13 +268,20 @@
                   '<div class="row justify-content-center">'+
                       '<h3 style="text-decoration: underline;">รายการ</h3>'+
                   '</div>'             
-              $.each(obj, function(i, field){
-                text = text + '<div id="item-'+field.item_id+' class="row justify-content-center">'+
+              $.each(obj, function(i, field){               
+                text = text + '<div id="item-'+field.item_id+'"" class="row justify-content-center">'+
                   '<div class="col-1 text-center items">'+field.amount+'</div>'+
                   '<div class="col-7 text-center items">'+field.prod_name+'</div>'+
                   '<div class="col-2 text-center items">'+field.tran_cost+'</div>'+
                   '<div class="col-2 text-center items">'+field.amount*field.tran_cost+'</div>'+
-                '</div>'               
+                '</div>'
+
+                item = {}
+                item ["qr"] =  field.prod_code
+                item ["name"] =  field.prod_name
+                item ["amt"] =  field.amount
+                item ["price"] = field.prod_price
+                arr_data.push(item);               
               });
               text = text + '<hr style="width: 50%; margin: auto; margin-top: 1em;">'+
                   '<div class="row" style="margin-top: 1em;">'+
@@ -316,7 +291,12 @@
                   '<div class="row">'+
                       '<div class="col-4 text-right"><h4>ผู้ทำรายการ</h4></div>'+
                       '<div class="col-4 text-right"><h4>'+obj[0].user_name+'</h4></div>'+
-                  '</div>'+          
+                  '</div>'+
+                  '<div class="row justify-content-center" style="margin-top: 1em;">'+
+                  '<div class="col-4 text-center">'+                   
+                    '<button onclick="print.apply(this,arr_data)" class="btn btn-lg btn-warning" style="color: white;">พิมพ์รายการ  <i class="fas fa-print"></i></button>'+
+                '</div>'+        
+                '</div>'+                           
                 '</div>'+
               '</div>';                   
             }               
@@ -328,6 +308,58 @@
               scrollTop: $("#ipts-"+index).offset().top
           }, 1100);
     }
+    
+    function print(...arr_data){
+      $('#show_qr').empty();
+      var qrcode;
+      var sum = 0;
+			var index_qr = 1;
+			$.each(arr_data, function(i, field){				
+				for(var j = 0 ; j < arr_data[i].amt; j++){					
+					if(index_qr % 2 != 0){						
+						$('#show_qr').append('<div id="ctn'+index_qr+'" class="ctn">' +
+						'<div class="left">' +
+							'<div class="name">'+arr_data[i].name+'</div>' +
+							'<div style="display: inline-block; float: left; margin-left: 5%;">'+
+								'<div class="qr-l" id="qrcode'+index_qr+'"></div>' +
+								'<div class="code-l">'+arr_data[i].qr+'</div>'+
+							'</div>'+
+							'<div class="price-l">ราคา '+arr_data[i].price+' บาท</div>' +
+						'</div>' +						
+						'</div>');		
+					}else{						
+						$('#ctn'+(index_qr-1)).append('<div class="right">' +
+							'<div class="name">'+arr_data[i].name+'</div>' +
+							'<div style="display: inline-block; float: left; margin-left: 5%;">'+
+								'<div class="qr-l" id="qrcode'+index_qr+'"></div>' +
+								'<div class="code-l">'+arr_data[i].qr+'</div>'+
+							'</div>'+
+							'<div class="price-l">ราคา '+arr_data[i].price+' บาท</div>' +
+						'</div>');
+					}											
+					qrcode = new QRCode("qrcode"+index_qr,{width: 57, height: 57});
+					qrcode.makeCode(arr_data[i].qr);
+					index_qr++;
+				}				                                                           
+			});	
+
+			var WinPrint  = window.open();
+			window.setTimeout(function() {
+				var ele =  document.getElementById('show_qr').innerHTML;			
+				WinPrint.document.write("<html><head><link href='https://fonts.googleapis.com/css?family=Maitree' rel='stylesheet'></head><body>");
+				WinPrint.document.write("<style>@media print {body {-webkit-print-color-adjust: exact;}} @page {size: auto; margin: 0mm;} .name{line-height: 1.2; font-size: 0.9em; word-wrap:break-word; height: 3.5em; margin-top: 0%;}.ctn{width: 10.1cm; height: 3.79cm; margin-top: -2.1mm; margin-left: 0mm;} .left{float: left; width: 5.05cm; height: 3.97cm; text-align: center;} .right{float: left; width: 5.05cm; height: 3.97cm; text-align: center;} .qr-r{width: 15mm; height: 15mm; margin-right: 2%; float: right; background-color: black; color: white;} .code-r{margin-right: 8%; margin-top: 3%;font-size: 0.7em} .price-r{margin-top: 8%;font-size: 1em;} .qr-l{width: 15mm; height: 15mm; margin-right: 2%; float: left; background-color: black; color: white;} .code-l{margin-right: 8%; margin-top: 3%;font-size: 0.7em} .price-l{margin-top: 8%;font-size: 1em;} </style>" +
+					ele);
+				WinPrint.document.write('</body></html>');
+				WinPrint.document.close();
+				WinPrint.focus();
+				window.setTimeout(function() {
+					WinPrint.print();
+					WinPrint.close();
+					//cancel();		
+				}, 250);
+			}, 500);
+    }
+
   </script>
 </head>
 
@@ -406,6 +438,9 @@
             <ul id="myS" hidden>
             </ul>
         </div>
+        <div id="show_qr" hidden>
+
+        </div>	
 
 
         <!--- // New ctn-append using with appendCollapse() function ...
