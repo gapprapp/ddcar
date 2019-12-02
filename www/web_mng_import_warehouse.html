@@ -98,7 +98,7 @@
     function get_import(){
       $.ajax({
         type: "POST",
-        url:"php/get_transfer.php",
+        url:"php/get_import.php",
         data: {'start': start},       
         beforeSend: function(){
           EasyLoading.show({                           
@@ -116,11 +116,11 @@
               var txt = field.date_time.split(" ");
               var txt2 = txt[0].split("-");
               var date = txt2[2] + "/" + txt2[1] + "/" + txt2[0].substr(2);
-              $('#myUL').append('<li id="ipt-'+field.tran_id+'">' +
-              '<div class="row justify-content-center ipt-even" data-toggle="collapse" href="#detail-'+field.tran_id+'" role="button" aria-expanded="false" aria-controls="detail-'+field.tran_id+'" onclick="appendCollapse('+field.tran_id+');">'+
-                  '<div class="col-4 text-center"><h5>'+field.tran_number+'</h5></div>' +
+              $('#myUL').append('<li id="ipt-'+field.stock_id+'">' +
+              '<div class="row justify-content-center ipt-even" data-toggle="collapse" href="#detail-'+field.stock_id+'" role="button" aria-expanded="false" aria-controls="detail-'+field.stock_id+'" onclick="appendCollapse('+field.stock_id+');">'+
+                  '<div class="col-4 text-center"><h5>'+field.stock_number+'</h5></div>' +
                   '<div class="col-3 text-center"><h5>'+date+'</h5></div>' +
-                  '<div class="col-4 text-center"><h5>'+field.shop_name+'</h5></div>' +
+                  '<div class="col-4 text-center"><h5>'+field.ware_name+'</h5></div>' +
               '</div>' +
             '</li>');   
             }                                               
@@ -147,7 +147,7 @@
     function get_import_s(){
       $.ajax({
         type: "POST",
-        url:"php/get_transfer.php",
+        url:"php/get_import.php",
         data: {'start': start_s, 'value' : val},
         beforeSend: function(){
           EasyLoading.show({                           
@@ -165,11 +165,11 @@
               var txt = field.date_time.split(" ");
               var txt2 = txt[0].split("-");
               var date = txt2[2] + "/" + txt2[1] + "/" + txt2[0].substr(2);
-              $('#myS').append('<li id="ipts-'+field.tran_id+'">' +
-              '<div class="row justify-content-center ipt-even" data-toggle="collapse" href="#details-'+field.tran_id+'" role="button" aria-expanded="false" aria-controls="details-'+field.tran_id+'" onclick="appendCollapses('+field.tran_id+');">'+
-                  '<div class="col-4 text-center"><h5>'+field.tran_number+'</h5></div>' +
+              $('#myS').append('<li id="ipts-'+field.stock_id+'">' +
+              '<div class="row justify-content-center ipt-even" data-toggle="collapse" href="#details-'+field.stock_id+'" role="button" aria-expanded="false" aria-controls="details-'+field.stock_id+'" onclick="appendCollapses('+field.stock_id+');">'+
+                  '<div class="col-4 text-center"><h5>'+field.stock_number+'</h5></div>' +
                   '<div class="col-3 text-center"><h5>'+date+'</h5></div>' +
-                  '<div class="col-4 text-center"><h5>'+field.shop_name+'</h5></div>' +
+                  '<div class="col-4 text-center"><h5>'+field.ware_name+'</h5></div>' +
               '</div>' +
             '</li>');    
             }                                                
@@ -187,7 +187,7 @@
           var text = ""
           $.ajax({
             type: "POST",
-            url:"php/get_transfer_info.php",    
+            url:"php/get_import_info.php",    
             data:{'imp_id' : index},
             async:false,                          
             beforeSend: function(){
@@ -207,8 +207,8 @@
                 text = text + '<div id="item-'+field.item_id+'" class="row justify-content-center">'+
                   '<div class="col-1 text-center items">'+field.amount+'</div>'+
                   '<div class="col-7 text-center items">'+field.prod_name+'</div>'+
-                  '<div class="col-2 text-center items">'+field.tran_cost+'</div>'+
-                  '<div class="col-2 text-center items">'+field.amount*field.tran_cost+'</div>'+
+                  '<div class="col-2 text-center items">'+field.stock_cost+'</div>'+
+                  '<div class="col-2 text-center items">'+field.amount*field.stock_cost+'</div>'+
                 '</div>'
                 
                 item = {}
@@ -221,7 +221,7 @@
               text = text + '<hr style="width: 50%; margin: auto; margin-top: 1em;">'+
                   '<div class="row" style="margin-top: 1em;">'+
                       '<div class="col-4 text-right"><h4>รวม</h4></div>'+
-                      '<div class="col-4 text-right"><h4>'+obj[0].total_tran+'</h4></div>'+
+                      '<div class="col-4 text-right"><h4>'+obj[0].total_stock+'</h4></div>'+
                   '</div>'+
                   '<div class="row">'+
                       '<div class="col-4 text-right"><h4>ผู้ทำรายการ</h4></div>'+
@@ -252,7 +252,7 @@
           var text = ""
           $.ajax({
             type: "POST",
-            url:"php/get_transfer_info.php",    
+            url:"php/get_import_info.php",    
             data:{'imp_id' : index},
             async:false,                          
             beforeSend: function(){
@@ -272,8 +272,8 @@
                 text = text + '<div id="item-'+field.item_id+'"" class="row justify-content-center">'+
                   '<div class="col-1 text-center items">'+field.amount+'</div>'+
                   '<div class="col-7 text-center items">'+field.prod_name+'</div>'+
-                  '<div class="col-2 text-center items">'+field.tran_cost+'</div>'+
-                  '<div class="col-2 text-center items">'+field.amount*field.tran_cost+'</div>'+
+                  '<div class="col-2 text-center items">'+field.stock_cost+'</div>'+
+                  '<div class="col-2 text-center items">'+field.amount*field.stock_cost+'</div>'+
                 '</div>'
 
                 item = {}
@@ -286,7 +286,7 @@
               text = text + '<hr style="width: 50%; margin: auto; margin-top: 1em;">'+
                   '<div class="row" style="margin-top: 1em;">'+
                       '<div class="col-4 text-right"><h4>รวม</h4></div>'+
-                      '<div class="col-4 text-right"><h4>'+obj[0].total_tran+'</h4></div>'+
+                      '<div class="col-4 text-right"><h4>'+obj[0].total_stock+'</h4></div>'+
                   '</div>'+
                   '<div class="row">'+
                       '<div class="col-4 text-right"><h4>ผู้ทำรายการ</h4></div>'+
@@ -371,7 +371,7 @@
     <div class="container-fullwidth justify-content-center">
         <nav class="navbar navbar-expand-md navbar-dark">
             <div class="collapse navbar-collapse justify-content-md-center" id="navbarCollapse">
-                <h3 id="nav-title">รายงานสินค้าเข้าหน้าร้าน</h3>
+                <h3 id="nav-title">รายงานสินค้าเข้าโกดัง</h3>
             </div>
         </nav>
         <div class="container">
