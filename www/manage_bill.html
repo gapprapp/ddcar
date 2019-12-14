@@ -81,13 +81,14 @@
         $("#i-back").attr("onclick","showUL()");
         search_date();
       });  
-      //get_bill();
+      get_bill();
       
       //scroll to bottom
       $("#in-ctn").scroll(function() {
         
         //alert(lft + " " + realHigh)
-        if($("#in-ctn").scrollTop() > ($("#in-ctn").height()-$("#btm-navs").height()-$("#top-navs").height()-$("#row-title").height())) { 
+        //if($("#in-ctn").scrollTop() > ($("#in-ctn").height()-$("#btm-navs").height()-$("#top-navs").height()-$("#row-title").height())) { 
+        if($("#in-ctn").scrollTop() > $("#in-ctn").height()) {  
           if(!$("#myUL").prop('hidden')){
             if(bool){
               return 0;

@@ -87,7 +87,8 @@
       $("#in-ctn").scroll(function() {
         
         //alert(lft + " " + realHigh)
-        if($("#in-ctn").scrollTop() > ($("#in-ctn").height()-$("#btm-navs").height()-$("#top-navs").height()-$("#row-title").height())) { 
+        //if($("#in-ctn").scrollTop() > ($("#in-ctn").height()-$("#btm-navs").height()-$("#top-navs").height()-$("#row-title").height())) { 
+        if($("#in-ctn").scrollTop() > $("#in-ctn").height()) {  
           if(!$("#myUL").prop('hidden')){
             if(bool){
               return 0;
@@ -336,7 +337,7 @@
 
     <div id="in-ctn" class="container-fullwidth" style="margin-top: 0!important; height: calc(100vh - (4.5em + 120px));">
       <ul id="myUL">
-
+        
       </ul>
       <ul id="myD" hidden>
 
