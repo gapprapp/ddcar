@@ -81,7 +81,7 @@
 
       //scroll to bottom
       $("#in-ctn").scroll(function() {            
-        if($("#in-ctn").scrollTop() > $("#in-ctn").height()) { 
+        if($("#in-ctn").scrollTop() > ($("#in-ctn").height()-$("#btm-navs").height()-$("#top-navs").height())) { 
           if(!$("#myUL").prop('hidden')){
             if(bool){
               return 0;
@@ -293,7 +293,7 @@
   <!-- End big container -->
   <div id="big-ctn" class="container-fullwidth justify-content-center">
     <!-- Nav menu top -->
-    <div class="row navs align-items-center mgem1o5 fixed-top">
+    <div id="top-navs" class="row navs align-items-center mgem1o5 fixed-top">
       <div id="i-back" class="col-2 text-center" onclick="transition_page_back('index.html'); window.location ='index.html';">
         <i class="fas fa-angle-left"></i>
       </div>
@@ -344,7 +344,7 @@
   <!-- End big container -->
 
   <!-- Nav menu bottom -->
-  <div class="row fixed-bottom navs">
+  <div id="btm-navs" class="row fixed-bottom navs">
     <div class="col-3 text-center" onclick="transition_page_back('index.html?menu=3'); window.location = 'index.html?menu=3';">
       <i id="i-home" class="fas fa-home menu"></i>
     </div>
