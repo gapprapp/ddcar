@@ -553,8 +553,8 @@ public final class R {
      * @see #CoordinatorLayout_statusBarBackground
      */
     public static final int[] CoordinatorLayout={
-        0x7f02000a, 0x7f020011
-      };
+      0x7f02000a, 0x7f020011
+    };
     /**
      * <p>This symbol is the offset where the {@link com.gitmew.ddcar.R.attr#keylines}
      * attribute's value can be found in the {@link #CoordinatorLayout} array.
@@ -606,9 +606,9 @@ public final class R {
      * @see #CoordinatorLayout_Layout_layout_keyline
      */
     public static final int[] CoordinatorLayout_Layout={
-        0x010100b3, 0x7f02000b, 0x7f02000c, 0x7f02000d, 
-        0x7f02000e, 0x7f02000f, 0x7f020010
-      };
+      0x010100b3, 0x7f02000b, 0x7f02000c, 0x7f02000d, 
+      0x7f02000e, 0x7f02000f, 0x7f020010
+    };
     /**
      * <p>This symbol is the offset where the {@link android.R.attr#layout_gravity}
      * attribute's value can be found in the {@link #CoordinatorLayout_Layout} array.
@@ -765,9 +765,9 @@ public final class R {
      * @see #FontFamily_fontProviderQuery
      */
     public static final int[] FontFamily={
-        0x7f020002, 0x7f020003, 0x7f020004, 0x7f020005, 
-        0x7f020006, 0x7f020007
-      };
+      0x7f020002, 0x7f020003, 0x7f020004, 0x7f020005, 
+      0x7f020006, 0x7f020007
+    };
     /**
      * <p>This symbol is the offset where the {@link com.gitmew.ddcar.R.attr#fontProviderAuthority}
      * attribute's value can be found in the {@link #FontFamily} array.
@@ -866,9 +866,9 @@ public final class R {
      * @see #FontFamilyFont_fontWeight
      */
     public static final int[] FontFamilyFont={
-        0x01010532, 0x01010533, 0x0101053f, 0x7f020001, 
-        0x7f020008, 0x7f020009
-      };
+      0x01010532, 0x01010533, 0x0101053f, 0x7f020001, 
+      0x7f020008, 0x7f020009
+    };
     /**
      * <p>This symbol is the offset where the {@link android.R.attr#font}
      * attribute's value can be found in the {@link #FontFamilyFont} array.
