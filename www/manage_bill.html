@@ -84,11 +84,20 @@
       get_bill();
       
       //scroll to bottom
+<<<<<<< HEAD
       $("#in-ctn").scroll(function() {
         
         //alert(lft + " " + realHigh)
         //if($("#in-ctn").scrollTop() > ($("#in-ctn").height()-$("#btm-navs").height()-$("#top-navs").height()-$("#row-title").height())) { 
         if($("#in-ctn").scrollTop() > $("#in-ctn").height()) {  
+=======
+      $("#in-ctn").scroll(function() {  
+        //console.log("in-ctn _. scoll_top : " + $("#in-ctn").scrollTop())
+        //console.log("document _. height : " + $(window).height())
+        //console.log("in-ctn _. height : " + $("#in-ctn").height())
+
+        if($("#in-ctn").scrollTop() > $("#in-ctn").height()) { 
+>>>>>>> parent of b3c0cf5c... Update manage_bill.html
           if(!$("#myUL").prop('hidden')){
             if(bool){
               return 0;
@@ -337,7 +346,11 @@
 
     <div id="in-ctn" class="container-fullwidth" style="margin-top: 0!important; height: calc(100vh - (4.5em + 120px));">
       <ul id="myUL">
+<<<<<<< HEAD
         
+=======
+
+>>>>>>> parent of b3c0cf5c... Update manage_bill.html
       </ul>
       <ul id="myD" hidden>
 
