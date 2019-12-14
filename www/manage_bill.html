@@ -83,13 +83,14 @@
       });  
       get_bill();
       
-      //scroll to bottom
+      //scroll to bottom 
+      var total_height = $("#in-ctn").height();
       $("#in-ctn").scroll(function() {  
-        //console.log("in-ctn _. scoll_top : " + $("#in-ctn").scrollTop())
-        //console.log("document _. height : " + $(window).height())
-        //console.log("in-ctn _. height : " + $("#in-ctn").height())
+        
+        if($("#in-ctn").scrollTop() > total_height) { 
 
-        if($("#in-ctn").scrollTop() > $("#in-ctn").height()) { 
+          total_height = total_height + $("#in-ctn").scrollTop();
+
           if(!$("#myUL").prop('hidden')){
             if(bool){
               return 0;
