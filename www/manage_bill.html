@@ -84,8 +84,10 @@
       //get_bill();
       
       //scroll to bottom
-      $("#in-ctn").scroll(function() { 
-        if($("#in-ctn").scrollTop() > $("#in-ctn").height()) { 
+      $("#in-ctn").scroll(function() {
+        
+        //alert(lft + " " + realHigh)
+        if($("#in-ctn").scrollTop() > ($("#in-ctn").height()-$("#btm-navs").height()-$("#top-navs").height()-$("#row-title").height())) { 
           if(!$("#myUL").prop('hidden')){
             if(bool){
               return 0;
@@ -295,7 +297,7 @@
 
   <div id="big-ctn" class="container-fullwidth justify-content-center">
     <!-- Nav menu top -->
-    <div class="row navs align-items-center mgem1o5 fixed-top">
+    <div id="top-navs" class="row navs align-items-center mgem1o5 fixed-top">
       <div id="i-back" class="col-2 text-center" onclick="transition_page_back('index.html'); window.location ='index.html';">
         <i  class="fas fa-angle-left"></i>
       </div>
@@ -334,62 +336,7 @@
 
     <div id="in-ctn" class="container-fullwidth" style="margin-top: 0!important; height: calc(100vh - (4.5em + 120px));">
       <ul id="myUL">
-        <li style="margin-bottom: 3em;">abc</li>
-        <li style="margin-bottom: 3em;">abc</li>
-        <li style="margin-bottom: 3em;">abc</li>
-        <li style="margin-bottom: 3em;">abc</li>
-        <li style="margin-bottom: 3em;">abc</li>
-        <li style="margin-bottom: 3em;">abc</li>
-        <li style="margin-bottom: 3em;">abc</li>
-        <li style="margin-bottom: 3em;">abc</li>
-        <li style="margin-bottom: 3em;">abc</li>
-        <li style="margin-bottom: 3em;">abc</li>
-        <li style="margin-bottom: 3em;">abc</li>
-
-        <li style="margin-bottom: 3em;">abc</li>
-        <li style="margin-bottom: 3em;">abc</li>
-        <li style="margin-bottom: 3em;">abc</li>
-        <li style="margin-bottom: 3em;">abc</li>
-        <li style="margin-bottom: 3em;">abc</li>
-        <li style="margin-bottom: 3em;">abc</li>
-        <li style="margin-bottom: 3em;">abc</li>
-        <li style="margin-bottom: 3em;">abc</li>
-        <li style="margin-bottom: 3em;">abc</li>
-        <li style="margin-bottom: 3em;">abc</li>
-        <li style="margin-bottom: 3em;">abc</li>
-        <li style="margin-bottom: 3em;">abc</li>
-        <li style="margin-bottom: 3em;">abc</li>
-        <li style="margin-bottom: 3em;">abc</li>
-        <li style="margin-bottom: 3em;">abc</li>
-        <li style="margin-bottom: 3em;">abc</li>
-        <li style="margin-bottom: 3em;">abc</li>
-        <li style="margin-bottom: 3em;">abc</li>
-        <li style="margin-bottom: 3em;">abc</li>
-        <li style="margin-bottom: 3em;">abc</li>
-        <li style="margin-bottom: 3em;">abc</li>
-        <li style="margin-bottom: 3em;">abc</li>
-        <li style="margin-bottom: 3em;">abc</li>
-        <li style="margin-bottom: 3em;">abc</li>
-        <li style="margin-bottom: 3em;">abc</li>
-        <li style="margin-bottom: 3em;">abc</li>
-        <li style="margin-bottom: 3em;">abc</li>
-        <li style="margin-bottom: 3em;">abc</li>
-        <li style="margin-bottom: 3em;">abc</li>
-        <li style="margin-bottom: 3em;">abc</li>
-        <li style="margin-bottom: 3em;">abc</li>
-        <li style="margin-bottom: 3em;">abc</li>
-        <li style="margin-bottom: 3em;">abc</li>
-        <li style="margin-bottom: 3em;">abc</li>
-        <li style="margin-bottom: 3em;">abc</li>
-        <li style="margin-bottom: 3em;">abc</li>
-        <li style="margin-bottom: 3em;">abc</li>
-        <li style="margin-bottom: 3em;">abc</li>
-        <li style="margin-bottom: 3em;">abc</li>
-        <li style="margin-bottom: 3em;">abc</li>
-        <li style="margin-bottom: 3em;">abc</li>
-        <li style="margin-bottom: 3em;">abc</li>
-        <li style="margin-bottom: 3em;">abc</li>
-        <li style="margin-bottom: 3em;">abc</li>
+        
       </ul>
       <ul id="myD" hidden>
 
@@ -402,7 +349,7 @@
   <!-- End big container -->
 
   <!-- Nav menu bottom -->
-  <div class="row fixed-bottom navs">
+  <div id="btm-navs" class="row fixed-bottom navs">
     <div class="col-3 text-center" onclick="transition_page_back('index.html?menu=3');  window.location ='index.html?menu=3';">
       <i id="i-home" class="fas fa-home menu"></i>
     </div>

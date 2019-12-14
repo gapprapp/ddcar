@@ -17,7 +17,7 @@
         AND s.order_number NOT LIKE '%$txt%' ORDER BY s.order_id DESC LIMIT $start,20";
     }else{
         $query = "SELECT s.order_id,s.order_number,c.cus_name,s.date_time FROM sale_order s INNER JOIN customer c
-        ON s.customer_id = c.cus_id WHERE s.order_number NOT LIKE '%$txt%' ORDER BY s.order_id DESC LIMIT $start,20";
+        ON s.customer_id = c.cus_id WHERE s.order_number NOT LIKE '%$txt%' ORDER BY s.order_id DESC LIMIT $start,30";
     }    
     $result = mysqli_query($conn, $query);
 
