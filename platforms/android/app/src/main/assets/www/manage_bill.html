@@ -53,7 +53,7 @@
 
   <script>
     var start = start_d = start_s = 0;
-    var bool = bool_d = bool_s = false;
+    var bool = bool_d = bool_s = false;    
     $(document).ready(function(){
       if(localStorage.bell){
           $('.dot').prop('hidden',false);
@@ -84,11 +84,14 @@
       get_bill();
       
       //scroll to bottom
-      $("#in-ctn").scroll(function() {
+      var total_height = $("#in-ctn").height();      
+      $("#in-ctn").scroll(function() {  
         
-        //alert(lft + " " + realHigh)
-        //if($("#in-ctn").scrollTop() > ($("#in-ctn").height()-$("#btm-navs").height()-$("#top-navs").height()-$("#row-title").height())) { 
-        if($("#in-ctn").scrollTop() > $("#in-ctn").height()) {  
+        if($("#in-ctn").scrollTop() > total_height) { 
+
+          //total_height = total_height + $("#in-ctn").scrollTop();
+          //total_height += total_height;
+
           if(!$("#myUL").prop('hidden')){
             if(bool){
               return 0;
@@ -337,7 +340,7 @@
 
     <div id="in-ctn" class="container-fullwidth" style="margin-top: 0!important; height: calc(100vh - (4.5em + 120px));">
       <ul id="myUL">
-        
+
       </ul>
       <ul id="myD" hidden>
 
