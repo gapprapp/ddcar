@@ -84,13 +84,13 @@
       get_bill();
       
       //scroll to bottom
-      var total_height = $("#in-ctn").height();      
-      $("#in-ctn").scroll(function() {  
-        
-        if($("#in-ctn").scrollTop() > total_height) { 
+      var total_height = $("#in-ctn").height();
+      var temp_hight = $("#in-ctn").height();
+      $("#in-ctn").scroll(function() {
+        if($("#in-ctn").scrollTop() > total_height) {  
 
           //total_height = total_height + $("#in-ctn").scrollTop();
-          //total_height += total_height;
+          total_height += temp_hight;
 
           if(!$("#myUL").prop('hidden')){
             if(bool){
@@ -163,7 +163,7 @@
           });                                         
         }               
       });
-      start += 20;
+      start += 30;
     }
 
     function bill_info(arg){
@@ -242,7 +242,7 @@
           });                                         
         }               
       });
-      start_s += 20;
+      start_s += 30;
     }
 
     function search_date(){
@@ -290,7 +290,7 @@
           });                                          
         }               
       });
-      start_d += 20;
+      start_d += 30;
     }
   </script>
 </head>

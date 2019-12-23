@@ -80,8 +80,11 @@
       get_import();
 
       //scroll to bottom
-       $("#in-ctn").scroll(function() {            
-        if($("#in-ctn").scrollTop() > ($("#in-ctn").height()-$("#btm-navs").height()-$("#top-navs").height())) { 
+      var total_height = $("#in-ctn").height();
+      var temp_hight = $("#in-ctn").height();
+      $("#in-ctn").scroll(function() {            
+        if($("#in-ctn").scrollTop() > total_height) {
+          total_height += temp_hight;
           if(!$("#myUL").prop('hidden')){
             if(bool){
               return 0;
@@ -153,7 +156,7 @@
           });                                          
         }               
       });
-      start += 20;
+      start += 30;
     }
 
     function import_info(arg){
@@ -232,7 +235,7 @@
           });                                         
         }               
       });
-      start_s += 20;
+      start_s += 30;
     }
 
     function search_date(){
@@ -280,7 +283,7 @@
           });                                         
         }               
       });  
-      start_d += 20;          
+      start_d += 30;          
     }
 
   </script>
