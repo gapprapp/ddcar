@@ -245,13 +245,15 @@
 								cus_tel = "-";
 								localStorage.cus_tel = cus_tel;
 							}
-							if(cus_type == "ขายส่ง(1)"){
-								setpay('เครดิต (30)')
-							}else if(cus_type == "ขายส่ง(2)"){
-								setpay('เครดิต (60)')
-							}else if(cus_type == "ขายส่ง(3)"){
-								setpay('เครดิต (90)')
-							}
+							// if(cus_type == "ขายส่ง(1)"){
+							// 	setpay('เครดิต (30)')
+							// }else if(cus_type == "ขายส่ง(2)"){
+							// 	setpay('เครดิต (60)')
+							// }else if(cus_type == "ขายส่ง(3)"){
+							// 	setpay('เครดิต (90)')
+							// }else{
+							// 	setpay('เงินสด')
+							// }							
 							
 						},
 						onChooseEvent: function() {                
@@ -278,7 +280,9 @@
 								setpay('เครดิต (60)')
 							}else if(cus_type == "ขายส่ง(3)"){
 								setpay('เครดิต (90)')
-							}						
+							}else{
+								setpay('เงินสด')
+							}
 						}
 				},
 				requestDelay: 300,  
