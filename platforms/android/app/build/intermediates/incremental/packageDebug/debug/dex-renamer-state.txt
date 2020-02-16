@@ -1,4 +1,4 @@
-#Thu Dec 19 21:52:27 ICT 2019
-base.0=D\:\\pp\\ddcar\\platforms\\android\\app\\build\\intermediates\\transforms\\dexMerger\\debug\\0
+#Thu Jan 02 10:28:41 ICT 2020
+base.0=/Users/phoenix/Documents/GitHub/ddcar/platforms/android/app/build/intermediates/transforms/dexMerger/debug/0
 renamed.0=classes.dex
-file.0=D\:\\pp\\ddcar\\platforms\\android\\app\\build\\intermediates\\transforms\\dexMerger\\debug\\0\\classes.dex
+file.0=/Users/phoenix/Documents/GitHub/ddcar/platforms/android/app/build/intermediates/transforms/dexMerger/debug/0/classes.dex

@@ -5,6 +5,18 @@
   },
   "config_munge": {
     "files": {
+      "*-Info.plist": {
+        "parents": {
+          "NSCameraUsageDescription": [
+            {
+              "xml": "<string>To scan barcodes</string>",
+              "count": 1,
+              "mode": "merge",
+              "id": "config.xml"
+            }
+          ]
+        }
+      },
       "config.xml": {
         "parents": {
           "/*": [
@@ -42,51 +54,39 @@
             }
           ]
         }
-      },
-      "*-Info.plist": {
-        "parents": {
-          "NSCameraUsageDescription": [
-            {
-              "xml": "<string>To scan barcodes</string>",
-              "count": 1,
-              "mode": "merge",
-              "id": "config.xml"
-            }
-          ]
-        }
       }
     }
   },
   "installed_plugins": {
     "com.telerik.plugins.nativepagetransitions": {
-      "PACKAGE_NAME": "com.gitmew.ddcar"
+      "PACKAGE_NAME": "$(PRODUCT_BUNDLE_IDENTIFIER)"
     },
     "cordova-plugin-camera": {
-      "PACKAGE_NAME": "com.gitmew.ddcar"
+      "PACKAGE_NAME": "$(PRODUCT_BUNDLE_IDENTIFIER)"
     },
     "cordova-plugin-datepicker": {
-      "PACKAGE_NAME": "com.gitmew.ddcar"
+      "PACKAGE_NAME": "$(PRODUCT_BUNDLE_IDENTIFIER)"
     },
     "cordova-plugin-device": {
-      "PACKAGE_NAME": "com.gitmew.ddcar"
+      "PACKAGE_NAME": "$(PRODUCT_BUNDLE_IDENTIFIER)"
     },
     "cordova-plugin-fullscreen": {
-      "PACKAGE_NAME": "com.gitmew.ddcar"
+      "PACKAGE_NAME": "$(PRODUCT_BUNDLE_IDENTIFIER)"
     },
     "cordova-plugin-printer": {
-      "PACKAGE_NAME": "com.gitmew.ddcar"
+      "PACKAGE_NAME": "$(PRODUCT_BUNDLE_IDENTIFIER)"
     },
     "cordova-plugin-screen-orientation": {
-      "PACKAGE_NAME": "com.gitmew.ddcar"
+      "PACKAGE_NAME": "$(PRODUCT_BUNDLE_IDENTIFIER)"
     },
     "cordova-plugin-whitelist": {
-      "PACKAGE_NAME": "com.gitmew.ddcar"
+      "PACKAGE_NAME": "$(PRODUCT_BUNDLE_IDENTIFIER)"
     },
     "es6-promise-plugin": {
-      "PACKAGE_NAME": "com.gitmew.ddcar"
+      "PACKAGE_NAME": "$(PRODUCT_BUNDLE_IDENTIFIER)"
     },
     "phonegap-plugin-barcodescanner": {
-      "PACKAGE_NAME": "com.gitmew.ddcar"
+      "PACKAGE_NAME": "$(PRODUCT_BUNDLE_IDENTIFIER)"
     }
   },
   "dependent_plugins": {},
