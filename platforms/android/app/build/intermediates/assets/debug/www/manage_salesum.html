@@ -92,31 +92,42 @@
           $(".overlay").prop('hidden', true);  
           var obj = jQuery.parseJSON(data);
           if(obj){
-            var net = 0;                           
+            var net = 0,profit = 0;
             $.each(obj, function(i, field){ 
-              if(i == obj.length-1){
-                cost = field.count
-              }              
-              $('#myUL').append('<li class="mgemo5"><div class="row">'+
+              if(field.total_price == 0){
+                  sum = 0;
+              }else{
+                  sum = field.total_price - field.count;
+              }               
+              $('#myUL').append('<li class="mgemo5"><div class="row" onclick="bill_info('+field.order_id+')">'+
                 '<div class="col-4 text-center nopd">'+
                   '<p>'+field.order_number+'</p>'+
                 '</div>'+
-                '<div class="col-4 text-center nopd">'+
+                '<div class="col-2 text-center nopd">'+
                   '<p>'+field.user_name+'</p>'+
                 '</div>'+
-                '<div class="col-4 text-center nopd">'+
+                '<div class="col-3 text-center nopd">'+
                   '<p>'+field.total_price+'</p>'+
+                '</div>'+
+                '<div class="col-3 text-center nopd">'+
+                  '<p>'+sum+'</p>'+
                 '</div>'+
                 '</div></li>');
                 net += parseFloat(field.total_price);
-            }); 
-            profit = parseFloat(net) - parseFloat(cost)
+                profit += parseFloat(sum)
+            });             
             $('#net').text(net);
             $('#profit').text(profit);
           }                                
         }               
       });
     }
+
+    function bill_info(arg){
+      transition_page_next('bill_info.html?id='+arg);
+      window.location = 'bill_info.html?id='+arg;
+    }
+
 
   </script>
 </head>
@@ -149,8 +160,9 @@
 
     <div id="row-title" class="row fixed-top" style="margin-top: 4.5em;">
       <div id="title" class="col-4 text-center">เลขที่</div>
-      <div id="title" class="col-4 text-center nopd">ผู้ทำรายการ</div>
-      <div id="title" class="col-4 text-center nopd">รวม</div> 
+      <div id="title" class="col-2 text-center nopd">ผู้ทำรายการ</div>
+      <div id="title" class="col-3 text-center nopd">รวม</div> 
+      <div id="title" class="col-3 text-center nopd">กำไร</div> 
     </div><hr id="title-hr" class="mgem1" style="margin-top: 6.3em; width: 98%;">
 
     <div id="in-ctn" class="container-fullwidth" style="margin-top: 0!important; height: calc(100vh - (4.5em + 150px));">

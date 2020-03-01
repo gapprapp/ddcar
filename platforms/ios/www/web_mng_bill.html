@@ -197,7 +197,7 @@
         if(last_collapse_index){
           $("div").closest("#detail-"+last_collapse_index).collapse('hide');
         }
-        var text = ""
+        var text = ""        
         $.ajax({
           type: "POST",
           url:"php/get_bill_info4print.php",    
@@ -210,7 +210,7 @@
           },             
           success: function(data){  
             EasyLoading.hide();
-            var obj = jQuery.parseJSON(data); 
+            var obj = jQuery.parseJSON(data);            
             text = text + '<div class="collapse" id="detail-'+index+'">'+
             '<div class="card card-body">'+
               '<div class="row justify-content-center">'+
