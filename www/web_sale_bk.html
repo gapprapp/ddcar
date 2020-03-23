@@ -11,7 +11,6 @@
   <!-- Bootstrap Import -->
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.devbridge-autocomplete/1.2.27/jquery.autocomplete.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.6/umd/popper.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js"></script>
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.1/css/all.css" integrity="sha384-O8whS3fhG2OnA5Kas0Y9l3cfpmYjapjI0E4theH4iuMD+pLhbf6JI0jIMfYcK3yZ" crossorigin="anonymous">
@@ -40,12 +39,6 @@
 		height: 200px;
 		width: 200px;
 	}
-	.autocomplete-suggestions { border: 1px solid #999; background: #FFF; overflow: auto; }
-	.autocomplete-suggestion { padding: 2px 5px; white-space: nowrap; overflow: hidden; }
-	.autocomplete-selected { background: #F0F0F0; }
-	.autocomplete-suggestions strong { font-weight: normal; color: rgb(51, 82, 255); }
-	.autocomplete-group { padding: 2px 5px; }
-	.autocomplete-group strong { display: block; border-bottom: 1px solid #000; }
   </style>
 
   <script>
@@ -91,134 +84,115 @@
 				prod_id = arr_data2[0].prod_id;            
 				get_sale(prod_id);
 				setTimeout(function() {$("#amount").focus();}, 100);
-      		}
+      		}    
 
-			var arrayReturn = [];
-			$.ajax({
-				url: "php/get_autoprod.php",
-				async: true,
-				dataType: 'json',
-				success: function (data) {
-					for (var i = 0, len = data.length; i < len; i++) {
-						var id = (data[i].prod_id).toString();
-						arrayReturn.push({'value' : data[i].prod_name, 'id' : id, 'code' : data[i].prod_code,
-						'price' : data[i].prod_price, 'pricesend' : data[i].prod_pricesend});
-					}					
-					loadSuggestions(arrayReturn);						
-					//console.log(arrayReturn);
-				}
-			});
-			function loadSuggestions(options) {
-				$('#name').autocomplete({
-					lookup: options,
-					onSelect: function (suggestion) {
-						$('#name').val(suggestion.value);							
-						if($("#cus").val() == ""){
-							$.alert({
-							icon: 'fa fa-warning',
-							title: 'เตือน',
-							content: "กรุณาใส่ชื่อลูกค้าก่อนทำรายการ"
-							});
-							$("#cus").focus();
-							$("#name").val("");
-							return 0;
-						}else if($('#btn-b').text() == "เลือกโกดัง/หน้าร้าน"){
-							$.confirm({
-								title: 'พบข้อผิดพลาด',
-								content: 'กรุณาเลือกโกดัง/หน้าร้านก่อนทำรายการ',
-								backgroundDismiss: true,
-								buttons: {
-									formSubmit: {
+			var options = {
+				url: function(phrase) {				
+					return "php/search_sale.php?cus_id="+cus_id+"&ware_id="+b_id+"&type="+type;
+				},
+				getValue: function(element) {
+					//console.log(element);
+					return element.prod_name;
+				},
+				ajaxSettings: {
+					method: "POST",
+					data: {}
+				},
+				preparePostData: function(data) {
+						//prod_id = 0;
+						data.phrase = $("#name").val();
+						return data;
+				},
+				minCharNumber: 3,
+				list: {
+						maxNumberOfElements: 30,
+
+						showAnimation: {
+								type: "slide",
+								time: 100
+						},
+						hideAnimation: {
+								type: "slide",
+								time: 100
+						},
+						onChooseEvent: function() {
+							if($("#cus").val() == ""){
+								$.alert({
+								icon: 'fa fa-warning',
+								title: 'เตือน',
+								content: "กรุณาใส่ชื่อลูกค้าก่อนทำรายการ"
+								});
+								$("#cus").focus();
+								$("#name").val("");
+								return 0;
+							}else if($('#btn-b').text() == "เลือกโกดัง/หน้าร้าน"){
+								$.confirm({
+									title: 'พบข้อผิดพลาด',
+									content: 'กรุณาเลือกโกดัง/หน้าร้านก่อนทำรายการ',
+									backgroundDismiss: true,
+									buttons: {
+										formSubmit: {
+											text: 'ตกลง',
+											btnClass: 'btn-regis',
+											action: function () {
+											}
+										}
+									}
+								});  
+								$("#name").val("");
+								return 0;
+							}
+							for(var b = 0; b < count; b++){
+								if($("#name").val() == $("#name-"+b).val()){
+									$.alert({
+										icon: 'fa fa-warning',
+										title: 'เตือน',
+										content: "มีการเพิ่มสินค้า " + $("#name").val() + "กรุณาแก้ไขที่จำนวนของสินค้าที่ได้เพิ่มแล้ว",
+									});
+									set_default();
+									return 0;                
+								}
+							}
+							var barcode = $("#name").getSelectedItemData().prod_code;						
+							prod_id = $("#name").getSelectedItemData().prod_id;
+							img = $("#name").getSelectedItemData().img;	
+
+							if($("#name").getSelectedItemData()[9]){
+									$('#price').val($("#name").getSelectedItemData()[9]);  
+							}else{                                
+								if(cus_type == "ขายปลีก"){
+										$('#price').val($("#name").getSelectedItemData().prod_price);  
+								}else{
+										$('#price').val($("#name").getSelectedItemData().prod_pricesend);  
+								}                                
+							}
+							old_price = $('#price').val();
+							min = $("#name").getSelectedItemData().min_amount;        
+							$('#barcode').val(barcode);							
+							$('#amount').val("1");		
+							$('#total').val(old_price);
+							if(min <= 0){
+								$.confirm({
+									title: 'เตือน',
+									content: 'สินค้าไม่มีใน' + $('#btn-b').text(),
+									backgroundDismiss: true,
+									buttons: {
+										formSubmit: {
 										text: 'ตกลง',
 										btnClass: 'btn-regis',
 										action: function () {
 										}
+										}
 									}
-								}
-							});  
-							$("#name").val("");
-							return 0;
-						}
-						for(var b = 0; b < count; b++){
-							if($("#name").val() == $("#name-"+b).val()){
-								$.alert({
-									icon: 'fa fa-warning',
-									title: 'เตือน',
-									content: "มีการเพิ่มสินค้า " + $("#name").val() + "กรุณาแก้ไขที่จำนวนของสินค้าที่ได้เพิ่มแล้ว",
-								});
+								});  
 								set_default();
-								return 0;                
-							}
+							}	
 						}
-						prod_id = suggestion.id;						
-						$.ajax({
-							url: "php/search_amount.php",
-							async: false,
-							dataType: 'json',
-							type: 'POST',
-							data:{'prod_id' : prod_id,'ware_id':b_id,'type':type},
-							success: function (data) {									
-								if(data.length > 0){
-									min = data[0].amount;
-								}else{
-									min = 0;
-								}																
-							}
-						});
-						if(min <= 0){
-							$.confirm({
-								title: 'เตือน',
-								content: 'สินค้าไม่มีใน' + $('#btn-b').text(),
-								backgroundDismiss: true,
-								buttons: {
-									formSubmit: {
-									text: 'ตกลง',
-									btnClass: 'btn-regis',
-									action: function () {
-									}
-									}
-								}
-							});  
-							set_default();
-							return;
-						}	
-						$.ajax({
-							url: "php/search_cusprice.php",
-							async: false,
-							dataType: 'json',
-							type: 'POST',
-							data:{'prod_id' : prod_id,'cus_id' : cus_id},
-							success: function (data) {									
-								if(data.length > 0){
-									$('#price').val(data[0].cus_price);
-								}else{
-									if(cus_type == "ขายปลีก"){
-										$('#price').val(suggestion.pricesend);  
-									}else{
-										$('#price').val(suggestion.price);
-									}    
-								}									  
-																														
-							}
-						});
-						$.ajax({
-							url: "php/search_img.php",
-							async: false,
-							dataType: 'json',
-							type: 'POST',
-							data:{'prod_id' : prod_id},
-							success: function (data) {									
-								img = data[0].img;
-							}
-						});
-						old_price = $('#price').val();
-							
-						$('#barcode').val(suggestion.code);
-						$('#amount').val("1");
-						$('#total').val(old_price);
-					}
-				});
-			}				
+				},
+				requestDelay: 300,
+				theme: "blue-light",
+				};
+			$("#name").easyAutocomplete(options);	
 
 			var options_cus = {
 
