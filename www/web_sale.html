@@ -111,6 +111,8 @@
 			function loadSuggestions(options) {
 				$('#name').autocomplete({
 					lookup: options,
+					showNoSuggestionNotice:true,
+					triggerSelectOnValidInput:false,
 					onSelect: function (suggestion) {
 						$('#name').val(suggestion.value);							
 						if($("#cus").val() == ""){

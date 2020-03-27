@@ -123,6 +123,8 @@
 			function loadSuggestions(options) {
 				$('#name').autocomplete({
 					lookup: options,
+					showNoSuggestionNotice:true,
+					triggerSelectOnValidInput:false,					
 					onSelect: function (suggestion) {
 						$('#name').val(suggestion.value);
 						if($('#btn-b').text() == "เลือกโกดัง/หน้าร้าน"){
@@ -185,12 +187,12 @@
 						if(cost_o == 0 && price == 0 && price_s == 0){
 							$('#retail').val("");
 							$('#fund').val("");						
-							$('#whole').val("");	 
+							$('#whole').val("");							
 						}else{
 							$('#retail').val(price);
 							$('#fund').val(cost_o);						
 							$('#whole').val(price_s);                
-							flag = 1;
+							flag = 1;													
 						}				
 						$('#barcode').val(suggestion.code);
 						$('#amount').val("1");					
@@ -347,12 +349,12 @@
                             if(obj[i].prod_cost == 0 && obj[i].prod_price == 0 && obj[i].prod_pricesend == 0){
                                 $('#fund').val("");
                                 $('#whole').val("");
-                                $('#retail').val("");  
+								$('#retail').val("");
                             }else{
                                 $('#fund').val(cost_o);
                                 $('#whole').val(obj[i].prod_pricesend);
                                 $('#retail').val(obj[i].prod_price);                     
-                                flag = 1;
+								flag = 1;
                             }                        
 						});  
 						get_place();                                                           
@@ -539,8 +541,8 @@
 			var code = $('#barcode').val();
 			var cost = $('#fund').val();
 			var price_s = $('#whole').val();
-			var price_w = $('#retail').val(); 
-			var name = $('#name').val(); 
+			var price_w = $('#retail').val();			
+			var name = $('#name').val();			
 			var amt = $('#amount').val(); 
 			if(!$('#at').prop('placeholder') && $('#at').val() == ""){ 
 				$('#name').focus(); 
@@ -632,7 +634,7 @@
 						}
 					});
 			}
-			$('#name').focus();			          
+			//$('#name').focus();			          
 		}     
 		
 		var count = 0;
@@ -644,7 +646,7 @@
 				$("#cnt-add").css('max-height', $("#cnt-add").height());
 				$("#cnt-add").animate({scrollTop: $('#cnt-add').prop('scrollHeight')});
 			}   
-
+			
 			$("#cnt-add").append('<div id="add-'+count+'" class="row mgb-5">'+
 					'<div class="col-1"></div>'+
           '<div class="col-2">'+
@@ -704,12 +706,12 @@
 			arr_data.push(item);	
 			localStorage.setItem('arr_prod', JSON.stringify(arr_data));	
 			$("#btn-b").attr('disabled',true);
-			count++;			
+			count++;					
 		}
 			$('#at').attr("placeholder","");
 			$('#barcode').val("");
 			$('#name').val("");			
-			$('#fund').val("");
+			$('#fund').val("");			
 			$('#whole').val("");
 			$('#retail').val("");
 			$('#amount').val("1");
@@ -737,7 +739,8 @@
 				$("#btn-folder").removeAttr('disabled');
 				$("#btn-def").removeAttr('disabled');
 				$("#name").removeAttr('readonly');
-            }    	
+			}
+			$('#name').focus();
 		}
 		
 		function add_previous(){
