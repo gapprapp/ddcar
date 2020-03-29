@@ -19,7 +19,6 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.0/jquery-confirm.min.css">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.0/jquery-confirm.min.js"></script>
 
-  <script src="js/jquery.scannerdetection.js"></script>
 	<!-- Easy-autocomplete -->
 	<script src="js/jquery.easy-autocomplete.js"></script>
 	<link rel="stylesheet" href="css/easy-autocomplete.min.css">
@@ -68,7 +67,7 @@
   <script>	
 		var prod_id,img,min;		
 		arr_data = [];		
-		$(document).ready(function () {		
+		$(document).ready(function () {
 			if(!localStorage.user_id){
 				window.location = 'web_login.html';
             }   	
@@ -97,14 +96,14 @@
 				$("#name").attr('readonly',true);
                 var retrievedObject = localStorage.getItem('arr_prod_e');
                 var arr_data2 = JSON.parse(retrievedObject); 
-                prod_id = arr_data2[0].prod_id;								
+                prod_id = arr_data2[0].prod_id;            
 				get_prod(prod_id);
 				setTimeout(function() {$("#amount").focus();}, 100);
-      }    
+            }    
 
 			var options = {
 				url: function(phrase) {
-					return "php/search_prod.php?ware_id="+ware_id+"&type=โกดัง";
+					return "php/search_prod.php?ware_id="+ware_id;
 				},
 				getValue: function(element) {
 					//console.log(element);
@@ -114,10 +113,28 @@
 					method: "POST",
 					data: {}
 				},
-				preparePostData: function(data) {
-					//prod_id = 0;     
-					data.phrase = $("#name").val();
-					return data;	
+				preparePostData: function(data) {     
+					if($('#btn-b').text() == "เลือกโกดัง"){
+						$.confirm({
+							title: 'พบข้อผิดพลาด',
+							content: 'กรุณาเลือกโกดังก่อนทำรายการ',
+							backgroundDismiss: true,
+							buttons: {
+								formSubmit: {
+									text: 'ตกลง',
+									btnClass: 'btn-regis',
+									action: function () {
+									}
+								}
+							}
+						});  
+						$("#name").val("");
+						return 0;
+					}else{
+						prod_id = 0;     
+						data.phrase = $("#name").val();
+						return data;
+					}					
 				},
 				minCharNumber: 3,
 				list: {
@@ -133,23 +150,6 @@
 						},
 
 						onChooseEvent: function() {
-							if($('#btn-b').text() == "เลือกโกดัง"){
-								$.confirm({
-									title: 'พบข้อผิดพลาด',
-									content: 'กรุณาเลือกโกดังก่อนทำรายการ',
-									backgroundDismiss: true,
-									buttons: {
-										formSubmit: {
-											text: 'ตกลง',
-											btnClass: 'btn-regis',
-											action: function () {
-											}
-										}
-									}
-								});  
-								$("#name").val("");
-								return 0;
-							}
 							for(var b = 0; b < count; b++){
 								if($("#name").val() == $("#name-"+b).val()){
 									$.alert({
@@ -164,13 +164,12 @@
 							var barcode = $("#name").getSelectedItemData().prod_code;							
 							var cost = $("#name").getSelectedItemData().prod_cost;
 							prod_id = $("#name").getSelectedItemData().prod_id;
-							console.log(prod_id)
 							img = $("#name").getSelectedItemData().img;
 							min = $("#name").getSelectedItemData().min_amount;							
 							$('#fund').val(cost);	
 							$('#barcode').val(barcode);							
 							$('#amount').val("1");	
-							if(min <= 0){
+							if(min == 0){
 								$.confirm({
 									title: 'เตือน',
 									content: 'สินค้าไม่มีใน' + $('#btn-b').text(),
@@ -194,114 +193,8 @@
 			$("#name").easyAutocomplete(options);	
 		});	
 		
-		$(document).scannerDetection({
-	   
-			//https://github.com/kabachello/jQuery-Scanner-Detection
-		
-			timeBeforeScanTest: 200, // wait for the next character for upto 200ms
-			avgTimeByChar: 40, // it's not a barcode if a character takes longer than 100ms
-			//  preventDefault: true,
-		
-			endChar: [13],
-				onComplete: function(barcode, qty){
-					validScan = true;
-					if($('#btn-b').text() == "เลือกโกดัง"){
-						$.confirm({
-							title: 'พบข้อผิดพลาด',
-							content: 'กรุณาเลือกโกดังก่อนทำรายการ',
-							backgroundDismiss: true,
-							buttons: {
-								formSubmit: {
-									text: 'ตกลง',
-									btnClass: 'btn-regis',
-									action: function () {
-									}
-								}
-							}
-						});  
-						return 0;
-					}
-					if(!$('#btn-folder').prop('disabled')){						
-						var bool = true;
-						if(arr_data.length > 0){                 
-							for(var b = 0; b < arr_data.length; b++){
-								if(barcode == arr_data[b].qr){
-									$.confirm({
-										title: 'เตือน',
-										content: 'มีการเพิ่มสินค้า ' + arr_data[b].name + ' กรุณาแก้ไขที่จำนวนของสินค้าที่ได้เพิ่มแล้ว',
-										backgroundDismiss: true,
-										buttons: {
-											formSubmit: {
-											text: 'ตกลง',
-											btnClass: 'btn-regis',
-											action: function () {
-											}
-											}
-										}
-									});  
-									bool = false;                               
-									break;           
-								}
-							}                 
-						}
-						if(bool){
-							$.ajax({
-								type: "POST",
-								url:"php/get_prod_bk.php",    
-								data:{'qr' : barcode, 'ware_id' : ware_id},
-								//async: false,                       
-								beforeSend: function(){
-									EasyLoading.show({                           
-										text: "กำลังโหลด"                            
-									});
-								},             
-								success: function(data){  
-									EasyLoading.hide();
-									var obj = jQuery.parseJSON(data);                                         
-									$.each(obj, function(i, field){
-										$('#name').val(obj[i].prod_name);
-										$('#barcode').val(obj[i].prod_code); 
-										$('#amount').val("1");                                               
-										img = obj[i].img; 
-										prod_id = obj[i].prod_id;
-										console.log(prod_id)
-										$('#fund').val(obj[i].prod_cost);
-										min = obj[i].min_amount;
-										if(min <= 0){
-											$.confirm({
-												title: 'เตือน',
-												content: 'สินค้าไม่มีใน' + $('#btn-b').text(),
-												backgroundDismiss: true,
-												buttons: {
-													formSubmit: {
-													text: 'ตกลง',
-													btnClass: 'btn-regis',
-													action: function () {
-													}
-													}
-												}
-											});  
-											add('dup');
-										}	                                                 
-									});                                                   
-								}               
-							});                    
-						}else{
-							add('dup');
-						}      
-					}		
-					
-			
-				} // main callback function	,
-			,
-			onError: function(string, qty) {		
-				// alert(string)
-			}
-		});
-
 		function get_prod(id){
             prod_id = id;
-			console.log(prod_id)
             var bool = true;
             if(arr_data.length > 0){                 
                 for(var b = 0; b < arr_data.length; b++){
@@ -327,7 +220,7 @@
             if(bool){
                 $.ajax({
                     type: "POST",
-                    url:"php/get_prod_bk.php",    
+                    url:"php/get_prod.php",    
                     data:{'prod_id' : id, 'ware_id' : ware_id},
                     //async: false,                       
                     beforeSend: function(){
@@ -345,7 +238,7 @@
                             img = obj[i].img; 
                             $('#fund').val(obj[i].prod_cost);
 							min = obj[i].min_amount;
-							if(min <= 0){
+							if(min == 0){
 								$.confirm({
 									title: 'เตือน',
 									content: 'สินค้าไม่มีใน' + $('#btn-b').text(),
@@ -467,7 +360,7 @@
 			if($('#name').val() != ""){
 				$.ajax({
 					type: "POST",
-					url:"php/get_prod_bk.php",    
+					url:"php/get_prod.php",    
 					data:{'prod_id' : prod_id, 'ware_id' : ware_id},
 					//async: false,                       
 					beforeSend: function(){
@@ -537,12 +430,11 @@
 			if(bottom < 200){
 				$("#cnt-add").css('max-height', $("#cnt-add").height());
 				$("#cnt-add").animate({scrollTop: $('#cnt-add').prop('scrollHeight')});
-			} 
+			}   
 			msg = "";
 			if(localStorage.user_role != "พนักงาน"){
 				msg = '<input id="fundd" type="number" value="'+$('#fund').val()+'" class="form-control text-center no-spin" min="0" readonly>';
-			}  
-
+			}
 			$("#cnt-add").append('<div id="add-'+count+'" class="row mgb-5">'+
 					'<div class="col-1"></div>'+
           '<div class="col-3">'+
@@ -558,7 +450,7 @@
             '<input id="amount-'+count+'" value="'+$('#amount').val()+'" type="number" class="form-control text-center no-spin" min="1" readonly>'+
           '</div>'+
           '<div class="col-2 nopd-8">'+
-						msg+
+            msg+
           '</div>'+ 
           '<div class="col-1 nopd text-center">'+
           '<button id="btn-edit-'+count+'" class="btn btn-sm btn-primary mgr-5" onclick="edit('+count+');"> <i class="fas fa-pencil-alt"></i></button>'+
@@ -574,7 +466,7 @@
 						"return '<img src='+$(this).data('img')+'>';}" +
 						"});" +
 					"</" + "script>" +
-				'</div>');
+				'</div>');				
 				
 			item = {}           
 			item ["count"] =  count; 
@@ -584,8 +476,7 @@
 			item ["cost"] =  $('#fund').val();               
 			item ["amt"] =  $('#amount').val();	  
 			item ["img"] = img;   
-			item ["min"] = min;
-			console.log(prod_id)
+			item ["min"] = min;   
 			
 			arr_data.push(item);	
 			localStorage.setItem('arr_ex', JSON.stringify(arr_data));			
@@ -618,18 +509,19 @@
             $('#name').focus();	
 		}
 		
-		function add_previous(){
+		function add_previous(){		
 			for(var i = 0;i < arr_data.length; i++){
 				var bottom = $(window).height() - $("#cnt-add").offset().top - $("#cnt-add").height();
 				// Always scroll to the bottom
 				if(bottom < 200){
 					$("#cnt-add").css('max-height', $("#cnt-add").height());
 					$("#cnt-add").animate({scrollTop: $('#cnt-add').prop('scrollHeight')});
-				}   
+				} 
 				msg = "";
 				if(localStorage.user_role != "พนักงาน"){
 					msg = '<input id="fundd" type="number" value="'+arr_data[i].cost+'" class="form-control text-center no-spin" min="0" readonly>';
 				}
+
 				$("#cnt-add").append('<div id="add-'+arr_data[i].count+'" class="row mgb-5">'+
 						'<div class="col-1"></div>'+
 				'<div class="col-3">'+
@@ -661,8 +553,9 @@
 							"return '<img src='+$(this).data('img')+'>';}" +
 							"});" +
 						"</" + "script>" +
-					'</div>');				
+					'</div>');						
 			}
+			
 			$("#btn-b").attr('disabled',true);		
 		}
 
@@ -770,10 +663,11 @@
             var datetime = d.getFullYear() + "-" + (d.getMonth()+1) + "-" + d.getDate() + " " + d.getHours() + ":" + d.getMinutes() + ":" + d.getSeconds(); 
             json_string = JSON.stringify(arr_data); 
             var dataString =  "JSON=" + json_string + "&ware_id=" + ware_id + "&date=" + datetime + "&user_id=" + localStorage.user_id;                        
-			var msg_alert = "";
-			for(var i = 0 ; i < arr_data.length;i++){
-				msg_alert += arr_data[i].name + " คงเหลือ " + (arr_data[i].min-arr_data[i].amt) + '<br>';
-			}				 
+						var msg_alert = "";
+						for(var i = 0 ; i < arr_data.length;i++){
+							msg_alert += arr_data[i].name + " คงเหลือ " + (arr_data[i].min-arr_data[i].amt) + '<br>';
+						}				  		
+
             $.ajax({
                 type: "POST",
                 url:"php/stock_out.php",           
@@ -786,7 +680,7 @@
                 success: function(data){  
                     EasyLoading.hide();                
                     if(data == "success"){
-                      $.confirm({
+											$.confirm({
                             title: 'จำนวนคงเหลือใน'+ $('#btn-b').text(),
                             content: msg_alert,
                             backgroundDismiss: false,
@@ -799,7 +693,7 @@
                                 }
                                 }
                             }
-                        });     
+                        });                            
                     }else{
                         $.confirm({
                             title: 'พบข้อผิดพลาด',

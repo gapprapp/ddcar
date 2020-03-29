@@ -101,7 +101,7 @@
 			item["img"] = arr_prod[i].img;          
             json.push(item);               
         }
-      }		
+      }
       if(from == "import"){
           localStorage.setItem('arr_prod_i', JSON.stringify(json)); 
           window.location = "web_import.html";
@@ -269,34 +269,34 @@
 		arg = $('#prod-'+arg2).find('input[type=checkbox]');
 		name = $('#span-name-'+arg2).text();
 		prod_id = $('#id-'+arg2).text();
-		img = $('#prod-'+arg2).data('img');		
+		img = $('#prod-'+arg2).data('img');
+		console.log(name)
 		check = arg.prop('checked');	
 		isenable = !arg.is(":disabled");
-		if(check == false && isenable){			
+		if(check == false && isenable){
+			arg.prop('checked', true);
 			var ch = false;
 			for(var i = 0 ; i < arr_prod.length ; i++){
-				if(arr_prod[i].prod_id == prod_id){
-					// arr_prod[i].prod_id = 0;
-					alert("เลือกไปแล้ว");
+				if(arr_prod[i].arg == arg2){
+					arr_prod[i].prod_id = arg2;
 					ch = true;
 					break;
 				}
 			}
-			if(!ch){         
-				arg.prop('checked', true); 
+			if(!ch){          
 				item = {};   
 				item ["arg"] = arg2;        
 				item ["prod_id"] = prod_id; 
 				item ["name"] = name;   
 				item ["img"] = img;        
-				arr_prod.push(item); 
-				num_prod++;				
-			$('#btn-next').text("เลือกสินค้า("+num_prod+")");           
-			}
+				arr_prod.push(item);          
+			}   
+			num_prod++;				
+			$('#btn-next').text("เลือกสินค้า("+num_prod+")");  
 		}else if(isenable){
 			arg.prop('checked', false);
 			for(var i = 0 ; i < arr_prod.length ; i++){
-				if(arr_prod[i].prod_id == prod_id){
+				if(arr_prod[i].arg == arg2){
 					arr_prod[i].prod_id = 0;
 					break;
 				}

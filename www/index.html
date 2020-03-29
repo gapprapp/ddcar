@@ -18,7 +18,6 @@
   <script defer src="https://use.fontawesome.com/releases/v5.0.8/js/all.js"></script>
   <script src="cordova.js"></script>
   <script type="text/javascript" src="js/scanqr.js"></script>
-  <script type="text/javascript" src="js/config.js"></script>
 
   <link rel="stylesheet" href="css/index.css">
   <link rel="stylesheet" href="css/jquery-confirm.css">
@@ -36,11 +35,13 @@
     }
 
     div[id *= "tabs"]{
-      font-size: 100%
+      font-size: 90%
     }
   </style>
   <script>
     $(document).ready(function() {
+      // url = new URL(window.location.href);
+      // u = url.searchParams.get("u");
 
       if(sessionStorage.menu != ""){
         //Back from function
@@ -48,17 +49,75 @@
       }else if(sessionStorage.menu == undefined){
         $("#tabs-main").trigger('click');
       }
-      
-      if(localStorage.user_role == "เจ้าของร้าน"){
-        $('#tabs-admin').prop('hidden',true);         
-      }else if(localStorage.user_role == "พนักงาน"){
-        $('#tabs-admin').prop('hidden',true);
-        $('#tabs-log').prop('hidden',true);          
-      }
-           
+      // if(u){
+      //   if(localStorage.user_role == "เจ้าของร้าน"){
+      //     $('#tabs-admin').prop('hidden',true);
+      //     $("#tabs-main").trigger('click');
+      //   }else if(localStorage.user_role == "พนักงาน"){
+      //     $('#tabs-admin').prop('hidden',true);
+      //     $('#tabs-log').prop('hidden',true);
+      //     $("#tabs-main").trigger('click');
+      //   }
+      // }else{
+        if(localStorage.user_role == "เจ้าของร้าน"){
+          $('#tabs-admin').prop('hidden',true);         
+        }else if(localStorage.user_role == "พนักงาน"){
+          $('#tabs-admin').prop('hidden',true);
+          $('#tabs-log').prop('hidden',true);          
+        }
+      // }      
 
       localStorage.stack_folder = "";
       localStorage.img = "";
+     
+      // if(u == "owner"){
+      //   //loging in?? else login.html
+      //   $("#row-admin").prop('hidden', true);
+      // }else if(u == "member"){
+      //   //loging in?? else login.html
+      //   $("#big-ctn").css('margin-top', '30%');
+      //   $("#row-admin").prop('hidden', true);
+      //   $("#row-log").prop('hidden', true);
+      //   $("#main-collapse").slideToggle('collapse');
+      // }
+
+      /*//Slide tabs
+      $("#admin").swipe( {swipe:function(event, direction, distance, duration, fingerCount, fingerData) {
+        if(direction == "left"){ 
+          $("#tabs-admin").removeClass('tabs'); $("#tabs-admin").addClass('non'); 
+          $("#tabs-main").removeClass('non'); $("#tabs-main").addClass('tabs');
+          $("#admin").prop('hidden', true);
+          $("#main").prop('hidden',false);
+          sessionStorage.menu = "main";
+        }
+        },threshold:75
+      });
+      $("#main").swipe( {swipe:function(event, direction, distance, duration, fingerCount, fingerData) {
+        if(direction == "right" && localStorage.user_role == "แอดมิน"){
+          $("#tabs-main").removeClass('tabs'); $("#tabs-main").addClass('non'); 
+          $("#tabs-admin").removeClass('non'); $("#tabs-admin").addClass('tabs');
+          $("#main").prop('hidden', true);
+          $("#admin").prop('hidden', false);
+          sessionStorage.menu = "admin";
+        }else if(direction == "left" && localStorage.user_role != "พนักงาน"){ 
+          $("#tabs-main").removeClass('tabs'); $("#tabs-main").addClass('non'); 
+          $("#tabs-log").removeClass('non'); $("#tabs-log").addClass('tabs');
+          $("#main").prop('hidden', true);
+          $("#log").prop('hidden', false);
+          sessionStorage.menu = "log";
+        }
+        },threshold:75
+      }); 
+      $("#log").swipe( {swipe:function(event, direction, distance, duration, fingerCount, fingerData) {
+        if(direction == "right"){ 
+          $("#tabs-log").removeClass('tabs'); $("#tabs-log").addClass('non'); 
+          $("#tabs-main").removeClass('non'); $("#tabs-main").addClass('tabs');
+          $("#log").prop('hidden',true);
+          $("#main").prop('hidden', false);
+          sessionStorage.menu = "main";
+        }
+        },threshold:75
+      });*/
     });
 
     function doresize() {
@@ -79,15 +138,14 @@
     window.addEventListener('resize', doresize);
 
     function onLoad(){
-      getConfig();
       if(!localStorage.user_id){                      
-        transition_page_back('login.html');
-        window.location = 'login.html';
+        //transition_page_back('login.html');
+        //window.location = 'login.html';
       }
          
       $.ajax({ 
         type: "GET",
-        url:localStorage.pathServer + "php/get_bell.php",
+        url:"http://ddaccessory.trueddns.com:24330/dd-shop/php/get_bell.php",
         beforeSend: function(){
             $(".overlay").prop('hidden', false);
         },                       
@@ -126,7 +184,28 @@
         localStorage.last_m = 1;
       }else{
         localStorage.last_m = 0;
-      }  
+      }
+
+      if(d.getDate() == 3){
+        if(localStorage.ch_ucredit == 1){
+          return 0;
+        }  
+        $.ajax({ 
+          type: "GET",
+          url:"http://ddaccessory.trueddns.com:24330/dd-shop/php/update_credit_auto.php",
+          beforeSend: function(){
+              $(".overlay").prop('hidden', false);
+          },                       
+          success: function(data){ 
+            $(".overlay").prop('hidden', true); 
+            if(data == "success"){
+              localStorage.ch_ucredit = 1;    
+            }                     
+          }               
+        });       
+      }else{
+        localStorage.ch_ucredit == 0;
+      }
     }
 
     function tabs(arg){

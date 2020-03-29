@@ -46,15 +46,14 @@
       }
     </style>
     <script>
-      start = 0;
       $(document).ready(function () {
+        
         if(localStorage.bell){
           $('.dot').prop('hidden',false);
-        }
+        }  
         $.ajax({
-          type: "POST",
-          url:localStorage.pathServer + "php/get_status_prod.php", 
-          data: {'start': start},         
+          type: "GET",
+          url:"http://ddaccessory.trueddns.com:24330/dd-shop/php/get_status_prod.php",          
           beforeSend: function(){
             $(".overlay").prop('hidden', false);
           },             
@@ -85,53 +84,26 @@
               update_bell();
             }
           }               
-        });
-        start += 20;
-
-        $("#in-ctn").scroll(function() {
-          if($("#in-ctn").scrollTop() > $("#in-ctn").height()) { 
-            $.ajax({
-              type: "POST",
-              url:localStorage.pathServer + "php/get_status_prod.php", 
-              data: {'start': start},         
-              beforeSend: function(){
-                $(".overlay").prop('hidden', false);
-              },             
-              success: function(data){  
-                $(".overlay").prop('hidden', true); 
-                var obj = jQuery.parseJSON(data); 
-                if(obj.length > 0){
-                  $.each(obj, function(i, field){ 
-                    if(field.status == "warning"){
-                      $('#in-ctn').append('<div class="row info">' +
-                          '<div class="col-1 text-center">' +
-                            '<i class="fas fa-circle yellow"></i>' +
-                          '</div>' +
-                          '<div class="col-8 text-center">'+field.prod_name+'</div>' +
-                          '<div class="col-3 text-center nopd">'+obj[i][3]+'</div>' +
-                        '</div><hr class="mgem1">');
-                    }else if(field.status == "danger"){
-                      $('#in-ctn').append('<div class="row info">' +
-                          '<div class="col-1">' +
-                            '<i class="fas fa-circle red"></i>' +
-                          '</div>' +
-                          '<div class="col-8 text-center">'+field.prod_name+'</div>' +
-                          '<div class="col-3 text-center nopd">'+obj[i][3]+'</div>' +
-                        '</div><hr class="mgem1">');
-                    }                                                                                 
-                  });
-                }
-              }               
-            });
-            start += 20;
-          }
-        });               
+        });           
       });
+
+      /*function doresize() {
+          switch (window.orientation) {
+            case 90: case -90:
+              $("#in-ctn").css('height', $(window).height() - 110);
+              break;
+            default:
+              $("#in-ctn").css('height', $(window).height() - 110);
+              break;
+          }
+        }
+        window.addEventListener('resize', doresize);
+        */
 
       function update_bell(){
         $.ajax({ 
           type: "GET",
-          url:localStorage.pathServer + "php/update_bell.php",
+          url:"http://ddaccessory.trueddns.com:24330/dd-shop/php/update_bell.php",
           beforeSend: function(){
               $(".overlay").prop('hidden', false);
           },                       
@@ -145,7 +117,28 @@
           }               
         }); 
       }
-      
+
+      /*function tabs(arg){
+        arr = ['prod', 'credit'];
+        if($("#tabs-"+arg).hasClass('tabs')){
+          return 0;
+        }else{
+          // Get from
+          for(var j = 0; j < 2; j++){
+            if($("#tabs-"+arr[j]).hasClass('tabs')){
+              from = arr[j];
+            }
+          }
+          // Clear old tabs , Add class, Remove class
+          for(var i = 0; i < 2; i++){
+            if(arr[i] != arg){
+              $("#tabs-"+arr[i]).removeClass('tabs');
+              $("#tabs-"+arr[i]).addClass('non');
+              $("#ctn-"+arr[i]).prop('hidden', true);
+            }
+          }$("#tabs-"+arg).addClass('tabs'); $("#tabs-"+arg).removeClass('non'); $("#ctn-"+arg).prop('hidden', false);
+        }
+      }*/
     </script>
 </head>
 
@@ -185,7 +178,7 @@
         
         <!-- Nav menu bottom -->
       <div class="row fixed-bottom navs">
-        <div class="col-3 text-center" onclick="transition_page_back('index.html'); window.location = 'index.html';">
+        <div class="col-3 text-center" onclick="transition_page_back('index.html')index.html'); window.location = 'index.html';">
           <i id="i-home" class="fas fa-home menu"></i>
         </div>
         <div class="col-3 text-center" onclick="transition_page_next('bell.html'); window.location ='bell.html';">
@@ -200,7 +193,50 @@
         </div>
       </div>
     </div>
-    <!-- End big container -->  
+    <!-- End big container -->
+  <script>
+    /*$("html").swipe( {swipe:function(event, direction, distance, duration, fingerCount, fingerData) {
+        if(direction == "right"){ 
+          $("#tabs-credit").removeClass('tabs'); $("#tabs-credit").addClass('non'); 
+          $("#tabs-prod").removeClass('non'); $("#tabs-prod").addClass('tabs');
+          $("#ctn-credit").prop('hidden', true);
+          $("#in-ctn").prop('hidden', false);
+        }else if(direction == "left"){ 
+          $("#tabs-prod").removeClass('tabs'); $("#tabs-prod").addClass('non'); 
+          $("#tabs-credit").removeClass('non'); $("#tabs-credit").addClass('tabs');
+          $("#in-ctn").prop('hidden', true);
+          $("#ctn-credit").prop('hidden', false);
+        }
+        },threshold:75
+      }); */
+  </script>
+  <!--<div id="ctn-credit" class="container-full-width" hidden>
+    <div class="row mg-10">
+      <div class="col-1"></div>
+      <div id="title" class="col-5 text-center">ลูกค้า</div>
+      <div id="title" class="col-2 text-center nopd">เครดิต</div>
+      <div id="title" class="col-2 text-center nopd">วางบิล</div>
+      <div id="title" class="col-2 text-center nopd">รวม</div>
+    </div>
+    <div class="row">
+      <div class="col-1">
+        <i class="fas fa-circle yellow"></i>
+      </div>
+      <div class="col-5 text-center nopd">ลูกค้า A</div>
+      <div class="col-2 text-center nopd">30</div>
+      <div class="col-2 text-center nopd">5 วัน</div>
+      <div class="col-2 text-center nopd">50000</div>
+    </div><hr class="mg-5">
+    <div class="row">
+      <div class="col-1">
+        <i class="fas fa-circle red"></i>
+      </div>
+      <div class="col-5 text-center nopd">ลูกค้า B</div>
+      <div class="col-2 text-center nopd">60</div>
+      <div class="col-2 text-center nopd">30 วัน</div>
+      <div class="col-2 text-center nopd">1</div>
+    </div><hr class="mg-5">
+  </div>-->
 </body>
 
 </html>

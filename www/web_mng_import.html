@@ -7,7 +7,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>รายงานสินค้าเข้า</title>
+    <title>รายงานบิล</title>
 
     <!-- Bootstrap Import -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
@@ -16,10 +16,6 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js"></script>
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.1/css/all.css" integrity="sha384-O8whS3fhG2OnA5Kas0Y9l3cfpmYjapjI0E4theH4iuMD+pLhbf6JI0jIMfYcK3yZ"
         crossorigin="anonymous">
-
-    <!-- QRcode -->
-    <script type="text/javascript" src="js/qrcode.min.js"></script>
-    <script type="text/javascript" src="js/jQuery.print.js"></script>
 
     <!-- Super cool dialog-->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.0/jquery-confirm.min.css">
@@ -34,7 +30,7 @@
     <!-- Main -->
     <link href="css/untitled.css" rel="stylesheet">
     <style>
-    body{color: #666;}
+        body{color: #666;}
     a{ color: #999;}
     a:hover{color: #666;}
     .active{color: #666;}
@@ -48,339 +44,30 @@
       background-color: #858585;
     }
     h5{
-      letter-spacing: 2px;
+      letter-spacing: 1px;
     }
     ul {
       list-style-type: none;
       margin: 0;
       padding: 0;
     }
-    div[id^="detail"]{
-        margin-bottom: 0.8em;
-    }
-    .items{
-        font-size: 120%;
-    }
-    div[id^="item-"]{
-        margin-top: 0.5em;
-    }
   </style>
-  <script>
-    var start = start_s = 0;
-    var bool = bool_s = false;
-    $(document).ready(function(){
-      get_import();
-
-      $(window).scroll(function() {
-        if($(window).scrollTop() + $(window).height() == $(document).height()) {
-          if(!$("#myUL").prop('hidden')){
-            if(bool){
-              return 0;
-            }
-            get_import();           
-          }else if(!$("#myS").prop('hidden')){
-            if(bool_s){
-              return 0;
-            }
-            get_import_s();
-          }
-        }
-      });
-    });
-    
-    $(document).keydown(function(objEvent) {
-      if (objEvent.keyCode == 13) {  //enter pressed
-        objEvent.preventDefault();           
-        search();        
-      }         
-    })
-   
-    function get_import(){
-      $.ajax({
-        type: "POST",
-        url:"php/get_transfer.php",
-        data: {'start': start},       
-        beforeSend: function(){
-          EasyLoading.show({                           
-						text: "กำลังโหลด"
-					});
-        },                       
-        success: function(data){ 
-          EasyLoading.hide();
-          var obj = jQuery.parseJSON(data);
-          if(obj[0] == "last"){
-            bool = true
-          }                        
-          $.each(obj, function(i, field){
-            if(i > 0){
-              var txt = field.date_time.split(" ");
-              var txt2 = txt[0].split("-");
-              var date = txt2[2] + "/" + txt2[1] + "/" + txt2[0].substr(2);
-              $('#myUL').append('<li id="ipt-'+field.tran_id+'">' +
-              '<div class="row justify-content-center ipt-even" data-toggle="collapse" href="#detail-'+field.tran_id+'" role="button" aria-expanded="false" aria-controls="detail-'+field.tran_id+'" onclick="appendCollapse('+field.tran_id+');">'+
-                  '<div class="col-4 text-center"><h5>'+field.tran_number+'</h5></div>' +
-                  '<div class="col-3 text-center"><h5>'+date+'</h5></div>' +
-                  '<div class="col-4 text-center"><h5>'+field.shop_name+'</h5></div>' +
-              '</div>' +
-            '</li>');   
-            }                                               
-          });                                          
-        }               
-      });
-      start += 30;
-    }   
-
-    var val;
-    function search(){
-      if($('#input-search').val() == ""){
-        return 0;
-      }     
-      val = $('#input-search').val()
-      start_s = 0;
-      bool_s = false;
-      $("#myS").prop('hidden', false);
-      $("#myUL").prop('hidden', true);     
-      $("#myS").empty();
-      get_import_s();
-    }
-
-    function get_import_s(){
-      $.ajax({
-        type: "POST",
-        url:"php/get_transfer.php",
-        data: {'start': start_s, 'value' : val},
-        beforeSend: function(){
-          EasyLoading.show({                           
-						text: "กำลังโหลด"
-					});
-        },                       
-        success: function(data){ 
-          EasyLoading.hide();
-          var obj = jQuery.parseJSON(data);
-          if(obj[0] == "last"){
-            bool_s = true
-          }                        
-          $.each(obj, function(i, field){
-            if(i > 0){
-              var txt = field.date_time.split(" ");
-              var txt2 = txt[0].split("-");
-              var date = txt2[2] + "/" + txt2[1] + "/" + txt2[0].substr(2);
-              $('#myS').append('<li id="ipts-'+field.tran_id+'">' +
-              '<div class="row justify-content-center ipt-even" data-toggle="collapse" href="#details-'+field.tran_id+'" role="button" aria-expanded="false" aria-controls="details-'+field.tran_id+'" onclick="appendCollapses('+field.tran_id+');">'+
-                  '<div class="col-4 text-center"><h5>'+field.tran_number+'</h5></div>' +
-                  '<div class="col-3 text-center"><h5>'+date+'</h5></div>' +
-                  '<div class="col-4 text-center"><h5>'+field.shop_name+'</h5></div>' +
-              '</div>' +
-            '</li>');    
-            }                                                
-          });                                         
-        }               
-      });
-      start_s += 30;
-    }
-  
-    function appendCollapse(index){
-        if($("#detail-"+index).length){
-            //
-        }else{
-          arr_data = [];
-          var text = ""
-          $.ajax({
-            type: "POST",
-            url:"php/get_transfer_info.php",    
-            data:{'imp_id' : index},
-            async:false,                          
-            beforeSend: function(){
-              EasyLoading.show({                           
-                text: "กำลังโหลด"
-              });
-            },             
-            success: function(data){  
-              EasyLoading.hide();
-              var obj = jQuery.parseJSON(data); 
-              text = text + '<div class="collapse" id="detail-'+index+'">'+
-                '<div class="card card-body">'+
-                  '<div class="row justify-content-center">'+
-                      '<h3 style="text-decoration: underline;">รายการ</h3>'+
-                  '</div>'             
-              $.each(obj, function(i, field){
-                text = text + '<div id="item-'+field.item_id+'" class="row justify-content-center">'+
-                  '<div class="col-1 text-center items">'+field.amount+'</div>'+
-                  '<div class="col-7 text-center items">'+field.prod_name+'</div>'+
-                  '<div class="col-2 text-center items">'+field.tran_cost+'</div>'+
-                  '<div class="col-2 text-center items">'+field.amount*field.tran_cost+'</div>'+
-                '</div>'
-                
-                item = {}
-                item ["qr"] =  field.prod_code
-                item ["name"] =  field.prod_name
-                item ["amt"] =  field.amount
-                item ["price"] = field.prod_price
-                arr_data.push(item);
-              });
-              text = text + '<hr style="width: 50%; margin: auto; margin-top: 1em;">'+
-                  '<div class="row" style="margin-top: 1em;">'+
-                      '<div class="col-4 text-right"><h4>รวม</h4></div>'+
-                      '<div class="col-4 text-right"><h4>'+obj[0].total_tran+'</h4></div>'+
-                  '</div>'+
-                  '<div class="row">'+
-                      '<div class="col-4 text-right"><h4>ผู้ทำรายการ</h4></div>'+
-                      '<div class="col-4 text-right"><h4>'+obj[0].user_name+'</h4></div>'+
-                  '</div>'+
-                  '<div class="row justify-content-center" style="margin-top: 1em;">'+
-                  '<div class="col-4 text-center">'+                   
-                    '<button onclick="print.apply(this,arr_data)" class="btn btn-lg btn-warning" style="color: white;">พิมพ์รายการ  <i class="fas fa-print"></i></button>'+
-                '</div>'+        
-                '</div>'+                
-            '</div>'+
-              '</div>';                   
-            }               
-          });
-
-          $("#ipt-"+index).append(text);
-        }
-        $('html, body').animate({
-              scrollTop: $("#ipt-"+index).offset().top
-          }, 1100);
-    }
-
-    function appendCollapses(index){
-        if($("#details-"+index).length){
-            //
-        }else{
-          arr_data = [];
-          var text = ""
-          $.ajax({
-            type: "POST",
-            url:"php/get_transfer_info.php",    
-            data:{'imp_id' : index},
-            async:false,                          
-            beforeSend: function(){
-              EasyLoading.show({                           
-                text: "กำลังโหลด"
-              });
-            },             
-            success: function(data){  
-              EasyLoading.hide();
-              var obj = jQuery.parseJSON(data); 
-              text = text + '<div class="collapse" id="details-'+index+'">'+
-                '<div class="card card-body">'+
-                  '<div class="row justify-content-center">'+
-                      '<h3 style="text-decoration: underline;">รายการ</h3>'+
-                  '</div>'             
-              $.each(obj, function(i, field){               
-                text = text + '<div id="item-'+field.item_id+'"" class="row justify-content-center">'+
-                  '<div class="col-1 text-center items">'+field.amount+'</div>'+
-                  '<div class="col-7 text-center items">'+field.prod_name+'</div>'+
-                  '<div class="col-2 text-center items">'+field.tran_cost+'</div>'+
-                  '<div class="col-2 text-center items">'+field.amount*field.tran_cost+'</div>'+
-                '</div>'
-
-                item = {}
-                item ["qr"] =  field.prod_code
-                item ["name"] =  field.prod_name
-                item ["amt"] =  field.amount
-                item ["price"] = field.prod_price
-                arr_data.push(item);               
-              });
-              text = text + '<hr style="width: 50%; margin: auto; margin-top: 1em;">'+
-                  '<div class="row" style="margin-top: 1em;">'+
-                      '<div class="col-4 text-right"><h4>รวม</h4></div>'+
-                      '<div class="col-4 text-right"><h4>'+obj[0].total_tran+'</h4></div>'+
-                  '</div>'+
-                  '<div class="row">'+
-                      '<div class="col-4 text-right"><h4>ผู้ทำรายการ</h4></div>'+
-                      '<div class="col-4 text-right"><h4>'+obj[0].user_name+'</h4></div>'+
-                  '</div>'+
-                  '<div class="row justify-content-center" style="margin-top: 1em;">'+
-                  '<div class="col-4 text-center">'+                   
-                    '<button onclick="print.apply(this,arr_data)" class="btn btn-lg btn-warning" style="color: white;">พิมพ์รายการ  <i class="fas fa-print"></i></button>'+
-                '</div>'+        
-                '</div>'+                           
-                '</div>'+
-              '</div>';                   
-            }               
-          });
-
-          $("#ipts-"+index).append(text);
-        }
-        $('html, body').animate({
-              scrollTop: $("#ipts-"+index).offset().top
-          }, 1100);
-    }
-    
-    function print(...arr_data){
-      $('#show_qr').empty();
-      var qrcode;
-      var sum = 0;
-			var index_qr = 1;
-			$.each(arr_data, function(i, field){				
-				for(var j = 0 ; j < arr_data[i].amt; j++){					
-					if(index_qr % 2 != 0){						
-						$('#show_qr').append('<div id="ctn'+index_qr+'" class="ctn">' +
-						'<div class="left">' +
-							'<div class="name">'+arr_data[i].name+'</div>' +
-							'<div style="display: inline-block; float: left; margin-left: 5%;">'+
-								'<div class="qr-l" id="qrcode'+index_qr+'"></div>' +
-								'<div class="code-l">'+arr_data[i].qr+'</div>'+
-							'</div>'+
-							'<div class="price-l">ราคา '+arr_data[i].price+' บาท</div>' +
-						'</div>' +						
-						'</div>');		
-					}else{						
-						$('#ctn'+(index_qr-1)).append('<div class="right">' +
-							'<div class="name">'+arr_data[i].name+'</div>' +
-							'<div style="display: inline-block; float: left; margin-left: 5%;">'+
-								'<div class="qr-l" id="qrcode'+index_qr+'"></div>' +
-								'<div class="code-l">'+arr_data[i].qr+'</div>'+
-							'</div>'+
-							'<div class="price-l">ราคา '+arr_data[i].price+' บาท</div>' +
-						'</div>');
-					}											
-					qrcode = new QRCode("qrcode"+index_qr,{width: 57, height: 57});
-					qrcode.makeCode(arr_data[i].qr);
-					index_qr++;
-				}				                                                           
-			});	
-
-			var WinPrint  = window.open();
-			window.setTimeout(function() {
-				var ele =  document.getElementById('show_qr').innerHTML;			
-				WinPrint.document.write("<html><head><link href='https://fonts.googleapis.com/css?family=Maitree' rel='stylesheet'></head><body>");
-				WinPrint.document.write("<style>@media print {body {-webkit-print-color-adjust: exact;}} @page {size: auto; margin: 0mm;} .name{line-height: 1.2; font-size: 0.9em; word-wrap:break-word; height: 3.5em; margin-top: 0%;}.ctn{width: 10.1cm; height: 3.79cm; margin-top: -2.1mm; margin-left: 0mm;} .left{float: left; width: 5.05cm; height: 3.97cm; text-align: center;} .right{float: left; width: 5.05cm; height: 3.97cm; text-align: center;} .qr-r{width: 15mm; height: 15mm; margin-right: 2%; float: right; background-color: black; color: white;} .code-r{margin-right: 8%; margin-top: 3%;font-size: 0.7em} .price-r{margin-top: 8%;font-size: 1em;} .qr-l{width: 15mm; height: 15mm; margin-right: 2%; float: left; background-color: black; color: white;} .code-l{margin-right: 8%; margin-top: 3%;font-size: 0.7em} .price-l{margin-top: 8%;font-size: 1em;} </style>" +
-					ele);
-				WinPrint.document.write('</body></html>');
-				WinPrint.document.close();
-				WinPrint.focus();
-				window.setTimeout(function() {
-					WinPrint.print();
-					WinPrint.close();
-					//cancel();		
-				}, 250);
-			}, 500);
-    }
-
-    function logout(){
-			localStorage.clear();
-		}
-
-  </script>
 </head>
 
 <body>
     <div class="container-fullwidth justify-content-center">
         <nav class="navbar navbar-expand-md navbar-dark">
             <div class="collapse navbar-collapse justify-content-md-center" id="navbarCollapse">
-                <h3 id="nav-title">รายงานสินค้าเข้าหน้าร้าน</h3>
+                <h3 id="nav-title">รายงานบิล</h3>
             </div>
         </nav>
         <div class="container">
             <div class="row" style="margin-top: 2px;">
                 <div class="col-12 text-center">
                     <a href="web_sale.html" class="mgr-20">ขายสินค้า</a>
-                    <a href="web_import.html" class="mgr-20">นำสินค้าเข้า</a>
+                    <a href="web_import.html" class="mgr-20">นำสินค้าเข้าโกดัง</a>
                     <a href="web_stock.html" class="mgr-20">เช็คสต๊อก</a>
-                    <a href="web_export.html" class="mgr-20">สินค้าออกโกดัง</a>                   
+                    <a href="web_export.html" class="mgr-20">สินค้าออกโกดัง</a>
                     <a href="web_select.html" class="mgr-20 active">รายการย้อนหลัง</a>
                     <a href="web_qrprint.html" class="mgr-20">พิมพ์คิวอาร์</a>
                     <a href="" class="mgr-20" onclick="logout()">ออกจากระบบ</a>
@@ -389,9 +76,9 @@
         </div><br><br>
         <div class="container-fullwidth">
             <div class="input-group row justify-content-center" style="margin-bottom: 4%; margin-left: 0.5%">
-                <input id="input-search" type="text" class="form-control-lg text-center"
-                    placeholder="ค้าหา เลขที่นำเข้า / สินค้า" style="width: 60%;">
-                <button  class="btn btn-outline-secondary" type="button" style="margin-left: 10px;" hidden>
+                <input id="input-search" onkeyup="search();" type="text" class="form-control-lg text-center"
+                    placeholder="ค้าหา เลขที่นำเข้า / โกดัง" style="width: 60%;">
+                <button  class="btn btn-outline-secondary" type="button" style="margin-left: 10px;">
                     <i class="fa fa-calendar-alt"></i>
                 </button>
             </div>
@@ -405,14 +92,14 @@
                     <h4>วันที่</h4>
                 </div>
                 <div class="col-3 text-center">
-                    <h4>หน้าร้าน</h4>
+                    <h4>โกดัง</h4>
                 </div>
             </div>
         </div>
         <hr style="width: 75%; margin-top: 0;"> <br>
         <div id="ctn-append" class="container-fullwidth">
             <ul id="myUL">
-                <!-- <li>
+                <li>
                     <div class="row justify-content-center ipt-odd">
                         <div class="col-4 text-center">
                             <h5>IMP18-00054</h5>
@@ -437,38 +124,9 @@
                             <h5>โกดัง B</h5>
                         </div>
                     </div>
-                </li> -->
-            </ul>
-            <ul id="myS" hidden>
+                </li>
             </ul>
         </div>
-        <div id="show_qr" hidden>
-
-        </div>	
-
-
-        <!--- // New ctn-append using with appendCollapse() function ...
-        
-        <div id="ctn-append" class="container-fullwidth">
-          <ul id="myUL">
-            <li id="ipt-1">
-              <div class="row justify-content-center ipt-odd" data-toggle="collapse" href="#detail-1" role="button" aria-expanded="false" aria-controls="detail-1" onclick="appendCollapse(1);">
-                  <div class="col-4 text-center"><h5>S18-00329</h5></div>
-                  <div class="col-3 text-center"><h5>03/10/18</h5></div>
-                  <div class="col-4 text-center"><h5>Phoenix</h5></div>
-              </div>
-            </li>
-            <li id="ipt-2">
-              <div class="row justify-content-center ipt-even" data-toggle="collapse" href="#detail-2" role="button" aria-expanded="false" aria-controls="detail-2" onclick="appendCollapse(2);">
-                  <div class="col-4 text-center"><h5>S18-00329</h5></div>
-                  <div class="col-3 text-center"><h5>03/10/18</h5></div>
-                  <div class="col-4 text-center"><h5>Phoenix</h5></div>
-              </div>
-            </li>
-          </ul>
-        </div>
-
-        --->
     </div>
 </body>
 

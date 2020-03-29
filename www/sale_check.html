@@ -61,7 +61,7 @@
             margin = $("#ctn-btm").outerHeight();
             $("#big-ctn").css('margin-bottom', margin); 
             
-            // $("style").append('.jconfirm .jconfirm-box{margin-bottom: 60%;}');
+            $("style").append('.jconfirm .jconfirm-box{margin-bottom: 60%;}');
 
             margin = $("#ctn-btn").outerHeight() + $("#navs-menu").outerHeight() -15;
             $("#navs-net").css('margin-bottom', margin); 
@@ -93,13 +93,13 @@
                             "<img id='img' src='"+arr_data[i].img+"' alt='' onclick='show_pic()' class='collapse-square'>" +
                         "</div>" +
                     "</div>" +
-                    "<div class='row' style='margin-bottom: 2em; margin-top: 2em;'>" +
+                    "<div class='row' style='margin-bottom: 4%; margin-top: 4%;'>" +
                         "<div class='col-2'></div>" +
                         "<div class='col-4 text-center no-pd'>รหัส : </div>" +
                         "<div class='col-4 text-center no-pd'>"+arr_data[i].qr+"</div>" +
                         "<div class='col-2'></div>" +
                     "</div>" +
-                    "<div class='row' style='margin-bottom: 2em;'>" +
+                    "<div class='row' style='margin-bottom: 4%;'>" +
                         "<div class='col-2'></div>" +
                         "<div class='col-4 text-center no-pd'>รวม : </div>" +
                         "<div id='sum-"+i+"' class='col-4 text-center no-pd'>"+sum_prod+"</div>" +
@@ -111,7 +111,7 @@
                         "<div class='col-4 text-center no-pd'>15</div>" +
                         "<div class='col-2'></div>" +
                     "</div>-->" +
-                "</div><hr id='hr-"+i+"' style='margin-top: 2em;'>");                    
+                "</div><hr id='hr-"+i+"' style='margin-top: 5%;'>");                    
             }            
             $("#net").text(sum.toLocaleString()); // 50000 -> 50,000;    
         });

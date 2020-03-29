@@ -80,11 +80,10 @@
       get_import();
 
       //scroll to bottom
-      var total_height = $("#in-ctn").height();
-      var temp_hight = $("#in-ctn").height();
-      $("#in-ctn").scroll(function() {            
-        if($("#in-ctn").scrollTop() > total_height) {
-          total_height += temp_hight;
+      $(window).on("scroll", function() {
+        var scrollHeight = $(document).height();
+        var scrollPosition = $(window).height() + $(window).scrollTop();
+        if ((scrollHeight - scrollPosition) / scrollHeight === 0) {          
           if(!$("#myUL").prop('hidden')){
             if(bool){
               return 0;
@@ -116,16 +115,15 @@
       $("#myS").prop('hidden', true);
       $("#myUL").prop('hidden', false);
       $("#myD").prop('hidden', true);
-      // $("#search_row").prop('hidden', true);
-      // $("#date_row").prop('hidden', true);
-      $("#i-back").attr("onclick","transition_page_back('index.html'); window.location = 'index.html';");
-      show_search();
+      $("#search_row").prop('hidden', true);
+      $("#date_row").prop('hidden', true);
+      $("#i-back").attr("onclick","transition_page_back('index.html?menu=3'); window.location = 'index.html?menu=3';");
     }
 
     function get_import(){
       $.ajax({
         type: "POST",
-        url:localStorage.pathServer + "php/get_import.php",
+        url:"http://ddaccessory.trueddns.com:24330/dd-shop/php/get_import.php",
         data: {'start': start},       
         beforeSend: function(){
             $(".overlay").prop('hidden', false);
@@ -156,7 +154,7 @@
           });                                          
         }               
       });
-      start += 30;
+      start += 20;
     }
 
     function import_info(arg){
@@ -204,7 +202,7 @@
     function get_import_s(){
       $.ajax({
         type: "POST",
-        url:localStorage.pathServer + "php/get_import.php",
+        url:"http://ddaccessory.trueddns.com:24330/dd-shop/php/get_import.php",
         data: {'start': start_s, 'value' : val},
         beforeSend: function(){
             $(".overlay").prop('hidden', false);
@@ -235,7 +233,7 @@
           });                                         
         }               
       });
-      start_s += 30;
+      start_s += 20;
     }
 
     function search_date(){
@@ -252,7 +250,7 @@
 
       $.ajax({
         type: "POST",
-        url:localStorage.pathServer + "php/get_import.php",         
+        url:"http://ddaccessory.trueddns.com:24330/dd-shop/php/get_import.php",         
         data:{'date' : date, 'date_to' : date_to ,'start' : start_d},
         beforeSend: function(){
           $(".overlay").prop('hidden', false);
@@ -283,7 +281,7 @@
           });                                         
         }               
       });  
-      start_d += 30;          
+      start_d += 20;          
     }
 
   </script>
@@ -296,9 +294,9 @@
   <!-- End big container -->
   <div id="big-ctn" class="container-fullwidth justify-content-center">
     <!-- Nav menu top -->
-    <div id="top-navs" class="row navs align-items-center mgem1o5 fixed-top">
-      <div id="i-back" class="col-2 text-center" onclick="transition_page_back('index.html'); window.location ='index.html';">
-        <i class="fas fa-angle-left"></i>
+    <div class="row navs align-items-center mgem1o5 fixed-top">
+      <div class="col-2 text-center" onclick="transition_page_back('index.html?menu=3'); window.location ='index.html?menu=3';">
+        <i id="i-back" class="fas fa-angle-left"></i>
       </div>
       <div class="col-8 text-center nopd">
         <h5 id="h5-title">รายการสินค้าเข้าโกดัง</h5>
@@ -347,7 +345,7 @@
   <!-- End big container -->
 
   <!-- Nav menu bottom -->
-  <div id="btm-navs" class="row fixed-bottom navs">
+  <div class="row fixed-bottom navs">
     <div class="col-3 text-center" onclick="transition_page_back('index.html?menu=3'); window.location = 'index.html?menu=3';">
       <i id="i-home" class="fas fa-home menu"></i>
     </div>

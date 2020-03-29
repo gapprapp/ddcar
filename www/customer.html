@@ -40,10 +40,10 @@
   </style>
 
   <script>
-    $(document).ready(function () { 
+    $(document).ready(function () {   
       $.ajax({
         type: "GET",
-        url:localStorage.pathServer + "php/get_cus.php",
+        url:"http://ddaccessory.trueddns.com:24330/dd-shop/php/get_cus.php",
         beforeSend: function(){
             $(".overlay").prop('hidden', false);
         },
@@ -63,12 +63,25 @@
                 "<div class='col-5 text-center nopd' onclick='show_cus("+obj[i].cus_id+");'>" +
                   "<p>"+obj[i].cus_tel+"</p>" +
                 "</div>" +
-                "</div><hr id='hr-"+i+" class='mgem1'>");                                               
-            });   
+                "</div><hr id='hr-"+i+" class='mgem1'>");                                                  
+            });  
           }                                
         }               
       });
     });
+    
+    function doresize() {
+      switch (window.orientation) {
+        case 90: case -90:
+          $("#in-ctn").css('height', $(window).height() - 115);
+          break;
+        default:
+          $("#in-ctn").css('height', $(window).height() - 115);
+          break;
+      }
+    }
+      window.addEventListener('resize', doresize);
+
 
     function disactive(arg) {
       nav_menu = ['home', 'add', 'edit', 'del'];
@@ -147,7 +160,7 @@
               action: function () {
                   $.ajax({
                     type: "POST",
-                    url:localStorage.pathServer + "php/delete_cus.php",           
+                    url:"http://ddaccessory.trueddns.com:24330/dd-shop/php/delete_cus.php",           
                     data: {'cus_id' : arg},     
                     beforeSend: function(){
                       $(".overlay").prop('hidden', false);

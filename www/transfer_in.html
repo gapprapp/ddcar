@@ -116,7 +116,7 @@
         function get_place(){
             $.ajax({
                 type: "POST",
-                url:localStorage.pathServer + "php/get_place.php",    
+                url:"http://ddaccessory.trueddns.com:24330/dd-shop/php/get_place.php",    
                 data:{'prod_id' : prod_id,"shop_id":localStorage.shop_id},                                      
                 // beforeSend: function(){
                 //     $(".overlay").prop('hidden', false);
@@ -142,7 +142,7 @@
             prod_id = id;
             $.ajax({
                 type: "POST",
-                url:localStorage.pathServer + "php/get_prod.php",    
+                url:"http://ddaccessory.trueddns.com:24330/dd-shop/php/get_prod.php",    
                 data:{'prod_id' : id},
                 //async: false,                       
                 beforeSend: function(){
@@ -196,7 +196,7 @@
                                 //alert(value);                        
                                 $.ajax({
                                     type: "POST",
-                                    url: localStorage.pathServer + "php/get_prod.php",                
+                                    url: "http://ddaccessory.trueddns.com:24330/dd-shop/php/get_prod.php",                
                                     data: {'qr' : value},             
                                     beforeSend: function(){
                                         $(".overlay").prop('hidden', false);
@@ -353,7 +353,7 @@
                 //ajax and apeend
                 $.ajax({
                     type: "GET",
-                    url:localStorage.pathServer + "php/get_shop.php",                            
+                    url:"http://ddaccessory.trueddns.com:24330/dd-shop/php/get_shop.php",                            
                     beforeSend: function(){
                         $(".overlay").prop('hidden', false);
                     },             
@@ -387,7 +387,7 @@
             $('#myUL').empty();
             $.ajax({
                 type: "POST",
-                url: localStorage.pathServer + "php/search_prod.php",
+                url: "http://ddaccessory.trueddns.com:24330/dd-shop/php/search_prod.php",
                 data: {'phrase' : val},
                 beforeSend: function(){
                     $(".overlay").prop('hidden', false);

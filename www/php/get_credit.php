@@ -1,18 +1,10 @@
 <?php
     include "db.php";
-    $output = array();   
-    $dt = date('Y-m-d');
-    $lastday = date("Y-m-t", strtotime($dt));
-    $firstday = date("Y-m-01", strtotime($dt)); 
+    $output = array();    
    
-    if(isset($_POST['value'])){
-      $val = $_POST['value'];     
-      $query = "SELECT d.credit_id,d.cus_id,c.cus_name,d.credit_price,d.date_time FROM credit d INNER JOIN customer c
-      ON d.cus_id = c.cus_id WHERE c.cus_name LIKE '%$val%' OR d.date_time LIKE '%$val%'";
-    }else{
-      $query = "SELECT d.credit_id,d.cus_id,c.cus_name,d.credit_price,d.date_time FROM credit d INNER JOIN customer c
-      ON d.cus_id = c.cus_id WHERE date_time BETWEEN '$firstday' AND '$lastday'";     
-    }
+    $query = "SELECT s.customer_id,c.cus_name,s.total_price,s.date_time FROM sale_order s INNER JOIN customer c
+    ON s.customer_id = c.cus_id WHERE s.order_number NOT LIKE '%(cancel)%' AND s.payment_type LIKE '%เครดิต%' 
+    AND s.payment_type NOT LIKE '%หมดอายุ%'";
     $result = mysqli_query($conn, $query);
 
     if(mysqli_num_rows($result) > 0){     

@@ -28,7 +28,6 @@
         .title {
             color: #515151;
             letter-spacing: 1px;
-            font-weight: bold;
         }
         .no-pd{
             padding-right: 5px;
@@ -72,7 +71,7 @@
         function get_prod(id){
             $.ajax({
                 type: "POST",
-                url:localStorage.pathServer + "php/get_prod.php",    
+                url:"http://ddaccessory.trueddns.com:24330/dd-shop/php/get_prod.php",    
                 data:{'prod_id' : id},                                  
                 beforeSend: function(){
                     $(".overlay").prop('hidden', false);
@@ -217,7 +216,7 @@
             }
             $.ajax({
                 type: "POST",
-                url:localStorage.pathServer + "php/rename_prod.php",           
+                url:"http://ddaccessory.trueddns.com:24330/dd-shop/php/rename_prod.php",           
                 data: {'prod_id' : prod_id,
                     'name_prod' : name,
                     'code' : code,
@@ -284,8 +283,8 @@
 </head>
 
 <body>
-    <!-- Loading 
-    <div class="overlay" hidden><div class="loading"></div></div> -->
+    <!-- Loading -->
+    <div class="overlay" hidden><div class="loading"></div></div> 
 
     <!-- big container -->
     <div id="big-ctn" class="container justify-content-center">
@@ -298,7 +297,7 @@
             <h5 id="h5-title">แก้ไขสินค้า</h5>
           </div>
         </div>
-        <div id="in-ctn" class="container-fullwidth" style="height: calc(100vh - 80px);"> 
+        <div id="in-ctn" class="container-fullwidth" style="height: calc(100vh - 60px);"> 
             <div class="row justify-content-center mgem1">
               <div class="col-10 text-center">
                 <!--<h5 id="name" class="title">ชื่อสินค้า</h5>-->

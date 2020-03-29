@@ -29,7 +29,6 @@
     <style>
         #title {
             color: #666666;
-            letter-spacing: 1px;
             font-weight: bold;
         }
     </style>
@@ -44,7 +43,7 @@
 
             $.ajax({
                 type: "POST",
-                url:localStorage.pathServer + "php/get_detail_cus.php",  
+                url:"http://ddaccessory.trueddns.com:24330/dd-shop/php/get_detail_cus.php",  
                 data: {'cus_id' : cus_id}, 
                 beforeSend: function(){
                     $(".overlay").prop('hidden', false);
@@ -68,10 +67,10 @@
                             "</div>");
                         }                       
                     });   
-                    $('#cusprice-collapse').append("<hr style='margin-top: 0; widht: 90%;'>");                         
+                    $('#cusprice-collapse').append("<hr style='margin-top: 0; widht: 90%;'>");                       
                 }               
             });
-
+            
             if(edit == "true"){                
                 $('#h5-title').text("แก้ไข");
                 $('#name').prop('disabled', false);
@@ -100,6 +99,23 @@
             }         
         })
 
+        /*function disactive(arg) {
+            nav_menu = ['home', 'bell', 'qrcode', 'bars'];
+            for (i = 0; i < 4; i++) {
+                if (nav_menu[i] != arg) {
+                    if ($("#i-" + nav_menu[i]).hasClass('active')) $("#i-" + nav_menu[i]).removeClass('active');
+                }
+            }
+        }
+
+        function menu(arg) {
+            // Animate
+            disactive(arg);
+            $("#i-" + arg).fadeOut(100).fadeIn(100, function () {
+                $("#i-" + arg).addClass('active');
+            });
+        }*/
+
         function update_cus() {
             // save to db
             var name = $('#name').val();
@@ -124,7 +140,7 @@
             }  
                 $.ajax({
                     type: "POST",
-                    url:localStorage.pathServer + "php/rename_cus.php",           
+                    url:"http://ddaccessory.trueddns.com:24330/dd-shop/php/rename_cus.php",           
                     data: {'cus_id' : cus_id,
                         'cus_name':name,
                         'phone':tel,
@@ -177,6 +193,18 @@
         function setrole(arg){
             $("#type").val(arg);
         }
+
+        function doresize() {
+            switch (window.orientation) {
+                case 90: case -90:
+                    $("#in-ctn").css('max-height', $(window).height() - 100);
+                    break;
+                default:
+                    $("#in-ctn").css('max-height', $(window).height() - 100);
+                    break;
+            }
+        }
+        window.addEventListener('resize', doresize);
 
     </script>
 </head>
@@ -261,34 +289,27 @@
                     backgroundDismiss: true,
                     buttons: {
                       form1: {
-                        text: 'ขายส่ง',
-                        btnClass: 'btn-choice',
-                        action: function () {
-                          setrole('ขายส่ง');
-                        }
-                      },
-                      form2: {
                         text: 'ขายส่ง(1)',
                         btnClass: 'btn-choice',
                         action: function () {
                           setrole('ขายส่ง(1)');
                         }
                       },
-                      form3: {
+                      form2: {
                         text: 'ขายส่ง(2)',
                         btnClass: 'btn-choice',
                         action: function () {
                           setrole('ขายส่ง(2)');
                         }
                       },
-                      form4: {
+                      form3: {
                         text: 'ขายส่ง(3)',
                         btnClass: 'btn-choice',
                         action: function () {
                           setrole('ขายส่ง(3)');
                         }
                       },
-                      form5: {
+                      form4: {
                         text: 'ขายปลีก',
                         btnClass: 'btn-choice',
                         action: function () {
@@ -302,11 +323,9 @@
             }
         });
         
-        /*
         $('#btn-cusprice').click(function (e) { 
             $("html, body").animate({ scrollTop: $(document).height() - $(window).height() });
         });
-        */
     </script>
 </body>
 

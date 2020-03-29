@@ -11,7 +11,6 @@
     $chng = $_POST['chng'];
     $b_id = $_POST['b_id'];
     $type = $_POST['type'];
-    $credit_id = $_POST['credit_id'];
 
     $query = "SELECT * FROM sale_order WHERE order_id = '$bill_id'";  
     $result = mysqli_query($conn, $query);
@@ -25,13 +24,12 @@
             $chngg = $row['chng'];
             $b_idd = $row['branch_id'];
             $type_b = $row['type'];
-            $credit_idd = $row['credit_id'];
         }   
     }
 
     mysqli_begin_transaction($conn);
-    $query = "INSERT INTO order_record(order_id,sum_price,total_discount,total_price,get_price,chng,payment_type,branch_id,type,credit_id) 
-    VALUES ('$bill_id','$summ','$diss','$totall','$gett','$chngg','$payy','$b_idd','$type_b','$credit_idd')";  
+    $query = "INSERT INTO order_record(order_id,sum_price,total_discount,total_price,get_price,chng,payment_type,branch_id,type) 
+    VALUES ('$bill_id','$summ','$diss','$totall','$gett','$chngg','$payy','$b_idd','$type_b')";  
     $result = mysqli_query($conn, $query);  
     if(!$result){
         mysqli_rollback($conn);
@@ -41,33 +39,14 @@
     $record_id = mysqli_insert_id($conn);
 
     $query = "UPDATE sale_order SET sum_price = '$sum',payment_type = '$pay',total_discount = '$dis',
-    total_price = '$total',get_price = '$get',chng = '$chng',branch_id = '$b_id',type = '$type',credit_id = '$credit_id' 
+    total_price = '$total',get_price = '$get',chng = '$chng',branch_id = '$b_id',type = '$type' 
     WHERE order_id = '$bill_id'";  
     $result = mysqli_query($conn, $query);
     if(!$result){
         mysqli_rollback($conn);
         echo "fail";
         exit;
-    }
-
-    if($payy == "เงินสด" && $pay != "เงินสด"){
-        $sql = "UPDATE credit SET credit_price = credit_price+'$totall' WHERE credit_id = '$credit_id'";  
-        $result = mysqli_query($conn, $sql); 
-        if(!$result){
-            mysqli_rollback($conn);
-            echo "fail";
-            exit;
-        }
     } 
-    if($payy != "เงินสด" && $pay == "เงินสด"){
-        $sql = "UPDATE credit SET credit_price = credit_price-'$totall' WHERE credit_id = '$credit_idd'";  
-        $result = mysqli_query($conn, $sql); 
-        if(!$result){
-            mysqli_rollback($conn);
-            echo "fail";
-            exit;
-        }
-    }
 
     foreach ($obj as $data){
         $no = $data['item_id'];

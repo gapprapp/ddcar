@@ -7,7 +7,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>รายงานการขาย</title>
+    <title>รายงานบิล</title>
 
     <!-- Bootstrap Import -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
@@ -49,148 +49,31 @@
       background-color: #858585;
     }
     h5{
-      letter-spacing: 2px;
+      letter-spacing: 1px;
     }
     ul {
       list-style-type: none;
       margin: 0;
       padding: 0;
     }
-    div[id^="detail"]{
-        margin-bottom: 0.8em;
-    }
-    .items{
-        font-size: 120%;
-    }
-    div[id^="item-"]{
-        margin-top: 0.5em;
-    }
   </style>
   <script>
       $(document).ready(function () {
         // datepicker
-        $('[data-toggle="datepicker"]').datepicker({
-            language: 'th-TH',
-            format: 'yyyy-mm-dd',
-            autoHide: true
-        }).on('pick.datepicker', function (e) {
-            arr = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
-            edate = e.date.toString()
-            d = edate.split(" ")
-            day = d[2]
-            year = d[3]
-            month = arr.indexOf(d[1])
-            date = year + "-" + (month+1) + "-" + day
-            search_date(date); 
-        });
-
-        var d = new Date($.now());
-        var datetime = d.getFullYear() + "-" + (d.getMonth()+1) + "-" + d.getDate(); 
-        search_date(datetime); 
+          $('[data-toggle="datepicker"]').datepicker({
+              language: 'th-TH',
+              format: 'yyyy-mm-dd',
+              autoHide: true
+          }).change(function (event) {
+              var date = $('#dpicker').val();
+              var split = date.split("-");// yyyy[0] mm[1] dd[2] 
+              var days = ['อา.', 'จ.', 'อ.', 'พ.', 'พฤ.', 'ศ.', 'ส.'];
+              var d = new Date(split[0], split[1] - 1, split[2]);
+              var first = days[d.getDay()];
+              $('#dpicker').val(first + " " + date);
+              dt = split[0] + "-" + split[1] + "-" + split[2];
+          }); 
       });
-
-      function search_date(datetime){
-        $('#ctn-top').empty()
-        $('#myUL').empty();
-        $.ajax({
-            type: "POST",
-            url:"php/get_shift_bill.php",
-            data:{'date':datetime},
-            beforeSend: function(){
-                EasyLoading.show({                           
-                    text: "กำลังโหลด"
-                });
-            },                       
-            success: function(data){ 
-                EasyLoading.hide();                
-                var obj = jQuery.parseJSON(data);
-                if(obj){
-                    var net = 0;                           
-                    $.each(obj, function(i, field){
-                        if(i == obj.length-1){
-                            cost = field.count
-                        }             
-                    $('#myUL').append('<li id="sale-'+field.order_id+'">' +
-                        '<div class="row justify-content-center sale-even" data-toggle="collapse" href="#detail-'+field.order_id+'" role="button" aria-expanded="false" aria-controls="detail-'+field.order_id+'">' +
-                            '<div class="col-4 text-center"><h5>'+field.order_number+'</h5></div>' +
-                            '<div class="col-3 text-center"><h5>'+field.user_name+'</h5></div>' +
-                            '<div class="col-4 text-center"><h5>'+field.total_price+'</h5></div>' +
-                        '</div>' +
-                    '</li>');
-                        net += parseFloat(field.total_price);
-                    });
-                    profit = parseFloat(net) - parseFloat(cost)
-                    $('#ctn-top').append('<div class="col-6 text-right">' +
-                                            '<h4>ทั้งหมด : '+net+'</h4>' +
-                                        '</div>' +
-                                        '<div class="col-6 text-left">' +
-                                            '<h4>กำไรสุทธิ : '+profit+'</h4>' +
-                                        '</div>');  
-                }                                
-            }               
-        });
-    }
-
-      function appendCollapse(index){
-          if($("#detail-"+index).length){
-              //
-          }else{
-              var text = '<div class="collapse" id="detail-'+index+'">'+
-              '<div class="card card-body">'+
-                '<div class="row justify-content-center">'+
-                    '<h3 style="text-decoration: underline;">รายการ</h3>'+
-                '</div>'+
-                '<div id="item-1" class="row justify-content-center">'+
-                    '<div class="col-1 text-center items">500</div>'+
-                    '<div class="col-7 text-center items">กันรอยขอบกระบะท้าย revo logo ROCCO</div>'+
-                    '<div class="col-2 text-center items">120,000</div>'+
-                    '<div class="col-2 text-center items">600,000</div>'+
-                '</div>'+
-                '<div id="item-2" class="row justify-content-center">'+
-                    '<div class="col-1 text-center items">500</div>'+
-                    '<div class="col-7 text-center items">กันรอยขอบกระบะท้าย revo logo ROCCO</div>'+
-                    '<div class="col-2 text-center items">120,000</div>'+
-                    '<div class="col-2 text-center items">600,000</div>'+
-                '</div>'+
-                '<div id="item-3" class="row justify-content-center">'+
-                    '<div class="col-1 text-center items">500</div>'+
-                    '<div class="col-7 text-center items">กันรอยขอบกระบะท้าย revo logo ROCCO</div>'+
-                    '<div class="col-2 text-center items">120,000</div>'+
-                    '<div class="col-2 text-center items">600,000</div>'+
-                '</div>'+
-                '<hr style="width: 50%; margin: auto; margin-top: 1em;">'+
-                '<div class="row" style="margin-top: 1em;">'+
-                    '<div class="col-4 text-right"><h4>รวม</h4></div>'+
-                    '<div class="col-4 text-right"><h4>100,000</h4></div>'+
-                '</div>'+
-                '<div class="row">'+
-                    '<div class="col-4 text-right"><h4>ลด</h4></div>'+
-                    '<div class="col-4 text-right"><h4>10,000</h4></div>'+
-                '</div>'+
-                '<div class="row">'+
-                    '<div class="col-4 text-right"><h4>รับ / ทอน</h4></div>'+
-                    '<div class="col-4 text-right"><h4>120,000</h4></div>'+
-                    '<div class="col-4 text-center"><h4>1,000</h4></div>'+
-                '</div>'+
-                //'<div class="row justify-content-center" style="margin-top: 1em;">'+
-                    //'<div class="col-4 text-center">'+
-                    //'<button class="btn btn-lg btn-warning" style="color: white;">พิมพ์รายการ  <i class="fas fa-print"></i></button>'+
-                    //'</div>'+
-                //'</div>'+
-              '</div>'+
-            '</div>';
-
-            $("#sale-"+index).append(text);
-          }
-          $('html, body').animate({
-                scrollTop: $("#sale-"+index).offset().top
-            }, 1100);
-      }
-
-      function logout(){
-			localStorage.clear();
-		}
-        
   </script>
 </head>
 
@@ -205,9 +88,9 @@
             <div class="row" style="margin-top: 2px;">
                 <div class="col-12 text-center">
                     <a href="web_sale.html" class="mgr-20">ขายสินค้า</a>
-                    <a href="web_import.html" class="mgr-20">นำสินค้าเข้า</a>
+                    <a href="web_import.html" class="mgr-20">นำสินค้าเข้าโกดัง</a>
                     <a href="web_stock.html" class="mgr-20">เช็คสต๊อก</a>
-                    <a href="web_export.html" class="mgr-20">สินค้าออกโกดัง</a>                  
+                    <a href="web_export.html" class="mgr-20">สินค้าออกโกดัง</a>
                     <a href="web_select.html" class="mgr-20 active">รายการย้อนหลัง</a>
                     <a href="web_qrprint.html" class="mgr-20">พิมพ์คิวอาร์</a>
                     <a href="" class="mgr-20" onclick="logout()">ออกจากระบบ</a>
@@ -220,11 +103,6 @@
                 <button id="dpicker"  class="btn btn-outline-secondary" type="button" style="margin-left: 10px;" data-toggle="datepicker">
                     <i class="fa fa-calendar-alt"></i>
                 </button>
-            </div>
-        </div>
-        <div class="container-fullwidth">
-            <div id="ctn-top" class="row justify-content-center" style="margin-bottom: 4%;">               
-                              
             </div>
         </div>
         <div class="container-fullwidth">
@@ -243,20 +121,32 @@
         <hr style="width: 75%; margin-top: 0;"> <br>
         <div id="ctn-append" class="container-fullwidth">
             <ul id="myUL">
-                <!-- <li id="sale-1">
-                    <div class="row justify-content-center sale-odd" data-toggle="collapse" href="#detail-1" role="button" aria-expanded="false" aria-controls="detail-1" onclick="appendCollapse(1);">
-                        <div class="col-4 text-center"><h5>S18-00329</h5></div>
-                        <div class="col-3 text-center"><h5>03/10/18</h5></div>
-                        <div class="col-4 text-center"><h5>Phoenix</h5></div>
+                <li>
+                    <div class="row justify-content-center sale-odd">
+                        <div class="col-4 text-center">
+                            <h5>S18-00054</h5>
+                        </div>
+                        <div class="col-3 text-center">
+                            <h5>มิว</h5>
+                        </div>
+                        <div class="col-3 text-center">
+                            <h5>3400</h5>
+                        </div>
                     </div>
                 </li>
-                <li id="sale-2">
-                    <div class="row justify-content-center sale-even" data-toggle="collapse" href="#detail-2" role="button" aria-expanded="false" aria-controls="detail-2" onclick="appendCollapse(2);">
-                        <div class="col-4 text-center"><h5>S18-00329</h5></div>
-                        <div class="col-3 text-center"><h5>03/10/18</h5></div>
-                        <div class="col-4 text-center"><h5>Phoenix</h5></div>
+                <li>
+                    <div class="row justify-content-center sale-even">
+                        <div class="col-4 text-center">
+                            <h5>IMP19-00054</h5>
+                        </div>
+                        <div class="col-3 text-center">
+                            <h5>กฤต</h5>
+                        </div>
+                        <div class="col-3 text-center">
+                            <h5>200</h5>
+                        </div>
                     </div>
-                </li> -->
+                </li>
             </ul>
         </div>
     </div>

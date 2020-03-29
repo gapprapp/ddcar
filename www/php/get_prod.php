@@ -15,27 +15,14 @@
         $prod_id = $row['prod_id'];
         if(isset($_POST['ware_id'])){
             $ware_id = $_POST['ware_id'];
-            $type = $_POST['type'];
-            if($type == "หน้าร้าน"){
-                $query = "SELECT amount FROM shop WHERE prod_id = '$prod_id' AND shop_id = '$ware_id'";
-                $result1 = mysqli_query($conn, $query);
-                if(mysqli_num_rows($result1) > 0){    
-                    while($row1 = mysqli_fetch_array($result1)){      
-                        $row['min_amount'] = $row1['amount'];
-                    }   
-                }else{
-                    $row['min_amount'] = 0;
-                }
-            }else if($type == "โกดัง"){
-                $query = "SELECT amount FROM warehouse WHERE prod_id = '$prod_id' AND ware_id = '$ware_id'";
-                $result1 = mysqli_query($conn, $query);
-                if(mysqli_num_rows($result1) > 0){    
-                    while($row1 = mysqli_fetch_array($result1)){      
-                        $row['min_amount'] = $row1['amount'];
-                    }   
-                }else{
-                    $row['min_amount'] = 0;
-                }
+            $query = "SELECT amount FROM warehouse WHERE prod_id = '$prod_id' AND ware_id = '$ware_id'";
+            $result1 = mysqli_query($conn, $query);
+            if(mysqli_num_rows($result1) > 0){    
+                while($row1 = mysqli_fetch_array($result1)){      
+                    $row['min_amount'] = $row1['amount'];
+                }   
+            }else{
+                $row['min_amount'] = 0;
             }
         }             
         $output[] = $row;  

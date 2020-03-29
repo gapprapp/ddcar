@@ -61,7 +61,7 @@
             if(name && pass){
                 $.ajax({
                     type: "POST",
-                    url: localStorage.pathServer + "php/login.php",
+                    url: "http://ddaccessory.trueddns.com:24330/dd-shop/php/login.php",
                     data: {'name': name,
                         'pass' : pass},    
                     beforeSend: function(){

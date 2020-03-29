@@ -179,7 +179,7 @@
             if(bool){
                 $.ajax({
                     type: "POST",
-                    url:localStorage.pathServer + "php/get_sale.php",    
+                    url:"http://ddaccessory.trueddns.com:24330/dd-shop/php/get_sale.php",    
                     data:{'prod_id' : id,'cus_id':cus_id,'ware_id': localStorage.ware_id_s,'type':localStorage.ware_type},
                     //async: false,                       
                     beforeSend: function(){
@@ -203,26 +203,26 @@
                             img = obj[i].img;   
                             old_price = $('#price').val();  
                             min = obj[i].min_amount;
-                                if(min <= 0){
-                                    $.confirm({
-                                        title: 'เตือน',
-                                        content: 'สินค้าไม่มีใน' + $('#h5-title').text(),
-                                        backgroundDismiss: true,
-                                        buttons: {
-                                            formSubmit: {
-                                            text: 'ตกลง',
-                                            btnClass: 'btn-regis',
-                                            action: function () {
-                                            }
-                                            }
-                                        }
-                                    });  
-                                    set_default();
+								if(min == 0){
+									$.confirm({
+										title: 'เตือน',
+										content: 'สินค้าไม่มีใน' + $('#h5-title').text(),
+										backgroundDismiss: true,
+										buttons: {
+											formSubmit: {
+											text: 'ตกลง',
+											btnClass: 'btn-regis',
+											action: function () {
+											}
+											}
+										}
+									});  
+									set_default();
                                     if(localStorage.arr_prod_s){
                                         bool = false;
                                         add_prod();
                                     }  
-                                }                                                                     
+								}	                                                                  
                         });
                         show();                                             
                     }               
@@ -233,7 +233,7 @@
         }
 
         function edit_amt(){
-            var amount = parseInt($('#amount').val());      
+            var amount = parseInt($('#amount').val());		
             if(amount > parseInt(min)){
                 $.confirm({
                     title: 'เตือน',
@@ -251,7 +251,7 @@
                 $("#btn-addprod").attr('disabled',true);
             }else{
                 $("#btn-addprod").attr('disabled',false);
-            }   
+            }	
         }   
 
         function showware(){
@@ -265,7 +265,7 @@
                 //ajax and apeend
                 $.ajax({
                     type: "GET",
-                    url:localStorage.pathServer + "php/get_ware_shop.php",     
+                    url:"http://ddaccessory.trueddns.com:24330/dd-shop/php/get_ware_shop.php",     
                     beforeSend: function(){
                         $(".overlay").prop('hidden', false);
                     },                        
@@ -307,7 +307,7 @@
             if($('#name').val() != ""){
                 $.ajax({
                     type: "POST",
-                    url:localStorage.pathServer + "php/get_sale.php",    
+                    url:"http://ddaccessory.trueddns.com:24330/dd-shop/php/get_sale.php",    
                     data:{'prod_id' : prod_id,'cus_id':cus_id,'ware_id': localStorage.ware_id_s,'type':localStorage.ware_type},
                     //async: false,                       
                     beforeSend: function(){
@@ -333,12 +333,12 @@
                                     }
                                 });                            
                                 if(localStorage.arr_prod_s){
-                                    bool = false;
-                                    add_prod();
-                                }else{
-                                    set_default();
-                                }
-                            }                              
+									bool = false;
+									add_prod();
+								}else{
+									set_default();
+								}
+                            }	                           
                         });
                         show();                                        
                     }               
@@ -376,7 +376,7 @@
                                     var arr_data = JSON.parse(retrievedObject); 
                                     bool = true;
                                     for(var b = 0; b < arr_data.length; b++){
-                                        if(value == arr_data[b].qr){
+                                        if(prod_id == arr_data[b].prod_id){
                                             $.confirm({
                                                 title: 'เตือน',
                                                 content: 'มีการเพิ่มสินค้า ' + arr_data[b].name + ' กรุณาแก้ไขที่จำนวนของสินค้าที่ได้เพิ่มแล้ว',
@@ -398,7 +398,7 @@
                                 if(bool){
                                     $.ajax({
                                         type: "POST",
-                                        url: localStorage.pathServer + "php/get_sale.php",                
+                                        url: "http://ddaccessory.trueddns.com:24330/dd-shop/php/get_sale.php",                
                                         data: {'qr' : value,'cus_id':cus_id,'ware_id': localStorage.ware_id_s,'type': localStorage.ware_type},             
                                         beforeSend: function(){
                                             $(".overlay").prop('hidden', false);
@@ -422,7 +422,7 @@
                                                 old_price = $('#price').val(); 
                                                 prod_id = obj[i].prod_id;  
                                                 min = obj[i].min_amount;
-                                                if(min <= 0){
+                                                if(min == 0){
                                                     $.confirm({
                                                         title: 'เตือน',
                                                         content: 'สินค้าไม่มีใน' + $('#h5-title').text(),
@@ -437,7 +437,7 @@
                                                         }
                                                     });  
                                                     set_default();                                                
-                                                }    
+                                                }	 
                                             });                                                                                        
                                         }               
                                     });
@@ -648,7 +648,7 @@
             $('#myUL').empty();
             $.ajax({
                 type: "POST",
-                url: localStorage.pathServer + "php/search_prod.php",
+                url: "http://ddaccessory.trueddns.com:24330/dd-shop/php/search_prod.php",
                 data: {'phrase' : val},
                 beforeSend: function(){
                     $(".overlay").prop('hidden', false);
@@ -709,12 +709,12 @@
         } 
 
         function set_default(){
-            $('#barcode').val("");
-            $('#name').val("");     
-            $('#price').val("");                
-            $('#amount').val("1");      
-            $('#name').focus();
-        }
+			$('#barcode').val("");
+			$('#name').val("");		
+			$('#price').val("");				
+			$('#amount').val("1");		
+			$('#name').focus();
+		}
 
     </script>
 </head>
@@ -746,7 +746,7 @@
           <div class="col-8 text-center">
             <h5 id="h5-title" class="fade" onclick="showware();">เลือกโกดัง/หน้าร้าน</h5>
           </div>
-          <div class="col-1 text-right" onclick="check();"><div id="check-sale"class="circle-text">0</div></div>
+          <div class="col-1 text-right" onclick="check();"><div id="check-export"class="circle-text">0</div></div>
         </div>
 
         <div id="in-ctn" class="container">
