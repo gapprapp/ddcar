@@ -11,6 +11,7 @@
   <!-- Bootstrap Import -->
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.devbridge-autocomplete/1.2.27/jquery.autocomplete.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.6/umd/popper.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js"></script>
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.1/css/all.css" integrity="sha384-O8whS3fhG2OnA5Kas0Y9l3cfpmYjapjI0E4theH4iuMD+pLhbf6JI0jIMfYcK3yZ" crossorigin="anonymous">
@@ -19,6 +20,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.0/jquery-confirm.min.css">
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.0/jquery-confirm.min.js"></script>
 	
+	<script src="js/jquery.scannerdetection.js"></script>
 	<!-- Easy-autocomplete -->
 	<script src="js/jquery.easy-autocomplete.js"></script>
 	<link rel="stylesheet" href="css/easy-autocomplete.min.css">
@@ -38,6 +40,12 @@
 		height: 200px;
 		width: 200px;
 	}
+	.autocomplete-suggestions { border: 1px solid #999; background: #FFF; overflow: auto; }
+	.autocomplete-suggestion { padding: 2px 5px; white-space: nowrap; overflow: hidden; }
+	.autocomplete-selected { background: #F0F0F0; }
+	.autocomplete-suggestions strong { font-weight: normal; color: rgb(51, 82, 255); }
+	.autocomplete-group { padding: 2px 5px; }
+	.autocomplete-group strong { display: block; border-bottom: 1px solid #000; }
   </style>
 
   <script>
@@ -53,7 +61,11 @@
                 $('#btn-b').text(localStorage.ware_name_s);
 				b_id = localStorage.ware_id_s;
 				type = localStorage.type;
-            }	
+            }
+
+			if(localStorage.pay){
+				$('#btn-p').text(localStorage.pay);			
+            }
 
 			if(localStorage.cus_id){
 				cus_id = localStorage.cus_id;
@@ -79,116 +91,136 @@
 				prod_id = arr_data2[0].prod_id;            
 				get_sale(prod_id);
 				setTimeout(function() {$("#amount").focus();}, 100);
-      		}    
+      		}
 
-			var options = {
-				url: function(phrase) {				
-					return "php/search_sale.php?cus_id="+cus_id+"&ware_id="+b_id+"&type="+type;
-				},
-				getValue: function(element) {
-					//console.log(element);
-					return element.prod_name;
-				},
-				ajaxSettings: {
-					method: "POST",
-					data: {}
-				},
-				preparePostData: function(data) {     
-					if($("#cus").val() == ""){
-						$.alert({
-						icon: 'fa fa-warning',
-						title: 'เตือน',
-						content: "กรุณาใส่ชื่อลูกค้าก่อนทำรายการ"
-						});
-						$("#cus").focus();
-						$("#name").val("");
-						return 0;
-         			}else if($('#btn-b').text() == "เลือกโกดัง/หน้าร้าน"){
-						$.confirm({
-							title: 'พบข้อผิดพลาด',
-							content: 'กรุณาเลือกโกดัง/หน้าร้านก่อนทำรายการ',
-							backgroundDismiss: true,
-							buttons: {
-								formSubmit: {
-									text: 'ตกลง',
-									btnClass: 'btn-regis',
-									action: function () {
-									}
-								}
-							}
-						});  
-						$("#name").val("");
-						return 0;
-					}else{
-						prod_id = 0;
-						data.phrase = $("#name").val();
-						return data;
-          			}
-				},
-				minCharNumber: 3,
-				list: {
-						maxNumberOfElements: 1000,
-
-						showAnimation: {
-								type: "slide",
-								time: 100
-						},
-						hideAnimation: {
-								type: "slide",
-								time: 100
-						},
-						onChooseEvent: function() {
-							for(var b = 0; b < count; b++){
-								if($("#name").val() == $("#name-"+b).val()){
-									$.alert({
-										icon: 'fa fa-warning',
-										title: 'เตือน',
-										content: "มีการเพิ่มสินค้า " + $("#name").val() + "กรุณาแก้ไขที่จำนวนของสินค้าที่ได้เพิ่มแล้ว",
-									});
-									set_default();
-									return 0;                
-								}
-							}
-							var barcode = $("#name").getSelectedItemData().prod_code;						
-							prod_id = $("#name").getSelectedItemData().prod_id;
-							img = $("#name").getSelectedItemData().img;	
-
-							if($("#name").getSelectedItemData()[9]){
-									$('#price').val($("#name").getSelectedItemData()[9]);  
-							}else{                                
-								if(cus_type == "ขายปลีก"){
-										$('#price').val($("#name").getSelectedItemData().prod_price);  
-								}else{
-										$('#price').val($("#name").getSelectedItemData().prod_pricesend);  
-								}                                
-							}
-							old_price = $('#price').val();
-							min = $("#name").getSelectedItemData().min_amount;        
-							$('#barcode').val(barcode);							
-							$('#amount').val("1");		
-							$('#total').val(old_price);
-							if(min == 0){
-								$.confirm({
-									title: 'เตือน',
-									content: 'สินค้าไม่มีใน' + $('#btn-b').text(),
-									backgroundDismiss: true,
-									buttons: {
-										formSubmit: {
+			var arrayReturn = [];
+			$.ajax({
+				url: "php/get_autoprod.php",
+				async: true,
+				dataType: 'json',
+				success: function (data) {
+					for (var i = 0, len = data.length; i < len; i++) {
+						var id = (data[i].prod_id).toString();
+						arrayReturn.push({'value' : data[i].prod_name, 'id' : id, 'code' : data[i].prod_code,
+						'price' : data[i].prod_price, 'pricesend' : data[i].prod_pricesend});
+					}					
+					loadSuggestions(arrayReturn);						
+					//console.log(arrayReturn);
+				}
+			});
+			function loadSuggestions(options) {
+				$('#name').autocomplete({
+					lookup: options,
+					showNoSuggestionNotice:true,
+					triggerSelectOnValidInput:false,
+					onSelect: function (suggestion) {
+						$('#name').val(suggestion.value);							
+						if($("#cus").val() == ""){
+							$.alert({
+							icon: 'fa fa-warning',
+							title: 'เตือน',
+							content: "กรุณาใส่ชื่อลูกค้าก่อนทำรายการ"
+							});
+							$("#cus").focus();
+							$("#name").val("");
+							return 0;
+						}else if($('#btn-b').text() == "เลือกโกดัง/หน้าร้าน"){
+							$.confirm({
+								title: 'พบข้อผิดพลาด',
+								content: 'กรุณาเลือกโกดัง/หน้าร้านก่อนทำรายการ',
+								backgroundDismiss: true,
+								buttons: {
+									formSubmit: {
 										text: 'ตกลง',
 										btnClass: 'btn-regis',
 										action: function () {
 										}
-										}
 									}
-								});  
-								set_default();
-							}	
+								}
+							});  
+							$("#name").val("");
+							return 0;
 						}
-				},
-				requestDelay: 300,
-				theme: "blue-light",
-				};
-			$("#name").easyAutocomplete(options);	
+						for(var b = 0; b < count; b++){
+							if($("#name").val() == $("#name-"+b).val()){
+								$.alert({
+									icon: 'fa fa-warning',
+									title: 'เตือน',
+									content: "มีการเพิ่มสินค้า " + $("#name").val() + "กรุณาแก้ไขที่จำนวนของสินค้าที่ได้เพิ่มแล้ว",
+								});
+								set_default();
+								return 0;                
+							}
+						}
+						prod_id = suggestion.id;						
+						$.ajax({
+							url: "php/search_amount.php",
+							async: false,
+							dataType: 'json',
+							type: 'POST',
+							data:{'prod_id' : prod_id,'ware_id':b_id,'type':type},
+							success: function (data) {									
+								if(data.length > 0){
+									min = data[0].amount;
+								}else{
+									min = 0;
+								}																
+							}
+						});
+						if(min <= 0){
+							$.confirm({
+								title: 'เตือน',
+								content: 'สินค้าไม่มีใน' + $('#btn-b').text(),
+								backgroundDismiss: true,
+								buttons: {
+									formSubmit: {
+									text: 'ตกลง',
+									btnClass: 'btn-regis',
+									action: function () {
+									}
+									}
+								}
+							});  
+							set_default();
+							return;
+						}	
+						$.ajax({
+							url: "php/search_cusprice.php",
+							async: false,
+							dataType: 'json',
+							type: 'POST',
+							data:{'prod_id' : prod_id,'cus_id' : cus_id},
+							success: function (data) {									
+								if(data.length > 0){
+									$('#price').val(data[0].cus_price);
+								}else{
+									if(cus_type == "ขายปลีก"){
+										$('#price').val(suggestion.price);  
+									}else{
+										$('#price').val(suggestion.pricesend);
+									}    
+								}									  
+																														
+							}
+						});
+						$.ajax({
+							url: "php/search_img.php",
+							async: false,
+							dataType: 'json',
+							type: 'POST',
+							data:{'prod_id' : prod_id},
+							success: function (data) {									
+								img = data[0].img;
+							}
+						});
+						old_price = $('#price').val();
+							
+						$('#barcode').val(suggestion.code);
+						$('#amount').val("1");
+						$('#total').val(old_price);
+					}
+				});
+			}				
 
 			var options_cus = {
 
@@ -223,26 +255,35 @@
 								type: "slide",
 								time: 100
 						},
-						onSelectItemEvent: function() {                
-							cus_id = $("#cus").getSelectedItemData().cus_id;						
-							cus_addr = $("#cus").getSelectedItemData().cus_addr;
-							cus_type = $("#cus").getSelectedItemData().cus_type;
-							localStorage.cus_name = $("#cus").getSelectedItemData().cus_name;
-              localStorage.cus_id = cus_id;
-							localStorage.cus_type = cus_type;
-							localStorage.cus_addr = cus_addr;
-							if(cus_addr == ""){
-								cus_addr = "-";
-								localStorage.cus_addr = cus_addr;
-							}
-							cus_tel = $("#cus").getSelectedItemData().cus_tel;
-							localStorage.cus_tel = cus_tel;
-							if(cus_tel == ""){
-								cus_tel = "-";
-								localStorage.cus_tel = cus_tel;
-							}
-							//console.log(cus_addr + cus_tel);
-						},
+			// 			onSelectItemEvent: function() {                
+			// 				cus_id = $("#cus").getSelectedItemData().cus_id;						
+			// 				cus_addr = $("#cus").getSelectedItemData().cus_addr;
+			// 				cus_type = $("#cus").getSelectedItemData().cus_type;
+			// 				localStorage.cus_name = $("#cus").getSelectedItemData().cus_name;
+            //   localStorage.cus_id = cus_id;
+			// 				localStorage.cus_type = cus_type;
+			// 				localStorage.cus_addr = cus_addr;
+			// 				if(cus_addr == ""){
+			// 					cus_addr = "-";
+			// 					localStorage.cus_addr = cus_addr;
+			// 				}
+			// 				cus_tel = $("#cus").getSelectedItemData().cus_tel;
+			// 				localStorage.cus_tel = cus_tel;
+			// 				if(cus_tel == ""){
+			// 					cus_tel = "-";
+			// 					localStorage.cus_tel = cus_tel;
+			// 				}
+			// 				// if(cus_type == "ขายส่ง(1)"){
+			// 				// 	setpay('เครดิต (30)')
+			// 				// }else if(cus_type == "ขายส่ง(2)"){
+			// 				// 	setpay('เครดิต (60)')
+			// 				// }else if(cus_type == "ขายส่ง(3)"){
+			// 				// 	setpay('เครดิต (90)')
+			// 				// }else{
+			// 				// 	setpay('เงินสด')
+			// 				// }							
+							
+			// 			},
 						onChooseEvent: function() {                
 							cus_id = $("#cus").getSelectedItemData().cus_id;						
 							cus_addr = $("#cus").getSelectedItemData().cus_addr;
@@ -260,13 +301,143 @@
 							if(cus_tel == ""){
 								cus_tel = "-";
 								localStorage.cus_tel = cus_tel;
-							}						
+							}
+							if(cus_type == "ขายส่ง(1)"){
+								setpay('เครดิต (30)')
+							}else if(cus_type == "ขายส่ง(2)"){
+								setpay('เครดิต (60)')
+							}else if(cus_type == "ขายส่ง(3)"){
+								setpay('เครดิต (90)')
+							}else{
+								setpay('เงินสด')
+							}
 						}
 				},
 				requestDelay: 300,  
 				theme: "blue-light",          
 				};
 			$("#cus").easyAutocomplete(options_cus);
+		});
+
+		$(document).scannerDetection({
+	   
+			//https://github.com/kabachello/jQuery-Scanner-Detection
+		
+			timeBeforeScanTest: 200, // wait for the next character for upto 200ms
+			avgTimeByChar: 40, // it's not a barcode if a character takes longer than 100ms
+			//  preventDefault: true,
+		
+			endChar: [13],
+				onComplete: function(barcode, qty){
+					validScan = true;
+					if(cus_id == -1 || $('#cus').val() == ""){
+						$.alert({
+						icon: 'fa fa-warning',
+						title: 'เตือน',
+						content: "กรุณาใส่ชื่อลูกค้าก่อนทำรายการ"
+						});
+						$("#cus").focus();
+						$("#name").val("");
+						return 0;
+					}else if($('#btn-b').text() == "เลือกโกดัง/หน้าร้าน"){
+						$.confirm({
+							title: 'พบข้อผิดพลาด',
+							content: 'กรุณาเลือกโกดัง/หน้าร้านก่อนทำรายการ',
+							backgroundDismiss: true,
+							buttons: {
+								formSubmit: {
+									text: 'ตกลง',
+									btnClass: 'btn-regis',
+									action: function () {
+									}
+								}
+							}
+						});  
+						return 0;
+					}
+					if(!$('#btn-folder').prop('disabled')){
+						bool = true;
+						for(var b = 0; b < arr_data.length; b++){
+							if(barcode == arr_data[b].qr){
+								$.confirm({
+									title: 'เตือน',
+									content: 'มีการเพิ่มสินค้า ' + arr_data[b].name + ' กรุณาแก้ไขที่จำนวนของสินค้าที่ได้เพิ่มแล้ว',
+									backgroundDismiss: true,
+									buttons: {
+										formSubmit: {
+										text: 'ตกลง',
+										btnClass: 'btn-regis',
+										action: function () {
+										}
+										}
+									}
+								});  
+								bool = false;                               
+								break;           
+							}
+						}			
+						if(bool){
+								$.ajax({
+									type: "POST",
+									url:"php/get_sale.php",    
+									data:{'qr' : barcode,'cus_id':cus_id,'ware_id':b_id,'type':type},
+									//async: false,                       
+									beforeSend: function(){
+										EasyLoading.show({                           
+											text: "กำลังโหลด"                            
+										});
+									},             
+									success: function(data){  
+										EasyLoading.hide();
+										var obj = jQuery.parseJSON(data);                                                           
+										$.each(obj, function(i, field){                           
+											if(obj[i][9]){
+												$('#price').val(obj[i][9]);  
+											}else{                                
+												if(cus_type == "ขายปลีก"){
+													$('#price').val(obj[i].prod_price);  
+												}else{
+													$('#price').val(obj[i].prod_pricesend);  
+												}                                
+											}  
+											$('#name').val(obj[i].prod_name);
+											$('#barcode').val(obj[i].prod_code);                                                       
+											img = obj[i].img;   
+											old_price = $('#price').val();
+											prod_id = obj[i].prod_id;
+											$('#amount').val("1");		
+											$('#total').val(old_price);  
+											min = obj[i].min_amount;
+											if(min <= 0){
+												$.confirm({
+													title: 'เตือน',
+													content: 'สินค้าไม่มีใน' + $('#btn-b').text(),
+													backgroundDismiss: true,
+													buttons: {
+														formSubmit: {
+														text: 'ตกลง',
+														btnClass: 'btn-regis',
+														action: function () {
+														}
+														}
+													}
+												});  
+												bool = false; 
+												add();
+											}	                                                                     
+										});									                                          
+									}               
+								});     
+						}else{
+								add();
+						}
+					}          
+			
+				} // main callback function	,
+			,
+			onError: function(string, qty) {		
+				// alert(string)
+			}
 		});
 
 		var bool = true;
@@ -323,7 +494,7 @@
 								$('#amount').val("1");		
 								$('#total').val(old_price);  
 								min = obj[i].min_amount;
-								if(min == 0){
+								if(min <= 0){
 									$.confirm({
 										title: 'เตือน',
 										content: 'สินค้าไม่มีใน' + $('#btn-b').text(),
@@ -402,36 +573,16 @@
 					var obj = jQuery.parseJSON(data); 
 					if(obj){
 						$.each(obj, function(i, field){							
-							if(obj[i][2] == "โกดัง"){  
-								// if(!localStorage.ware_id_s){
-								// 	if(i == 0){
-								// 		localStorage.ware_id_s =  field.ware_id;
-								// 		localStorage.ware_name_s =  field.ware_name;
-								// 		b_id = field.ware_id;
-								// 		type = "โกดัง";
-								// 		localStorage.type =  type;
-								// 		$('#btn-b').text(field.ware_name);								
-								// 	}
-								// }
+							if(obj[i][2] == "โกดัง"){
 								$('#b').append('<a class="dropdown-item text-center" href="#" onclick="setware('+field.ware_id+',\''+field.ware_name+'\',\'โกดัง\')">'+field.ware_name+'</a>');
-							}else if(obj[i][2] == "หน้าร้าน"){ 
-								// if(!localStorage.ware_id_s){
-								// 	if(i == 0){
-								// 		localStorage.ware_id_s =  field.shop_id;
-								// 		localStorage.ware_name_s =  field.shop_name;
-								// 		b_id = field.shop_id;
-								// 		type = "หน้าร้าน";
-								// 		localStorage.type =  type;
-								// 		$('#btn-b').text(field.shop_name);								
-								// 	}
-								// }
+							}else if(obj[i][2] == "หน้าร้าน"){
 								$('#b').append('<a class="dropdown-item text-center" href="#" onclick="setware('+field.shop_id+',\''+field.shop_name+'\',\'หน้าร้าน\')">'+field.shop_name+'</a>');
 							}										
 						}); 
 					}
 				}               
-			}); 
-		}
+			});			
+		}	
 
 		var b_id,type;
 		function setware(arg,arg2,arg3){
@@ -487,7 +638,8 @@
 		}
 
 		function setpay(arg){
-			$('#btn-p').text(arg);			
+			$('#btn-p').text(arg);
+			localStorage.pay = arg;
 		}
 
 		function set_default(){
@@ -800,6 +952,7 @@
     }   
 
 		arr_a4 = [];
+		arr_dat =[];
 		function save2db(){
 			if(arr_data.length == 0 || cus_id == -1){
 					return 0;
@@ -851,8 +1004,121 @@
 					c = 1;
 					texta4 = "";
 				}
-				text = text + " <div class='left'>"+arr_data[i].amt+"</div> <div class='mid'>"+arr_data[i].name+"</div> <div class='right'>"+arr_data[i].price+"</div>";
-			} 	
+				text = text + "<div class='row items'>" +
+                                "<div class='col-2 no text-center'>"+arr_data[i].amt+"</div>" +
+                                "<div class='col-6 text-center'>"+arr_data[i].name+"</div>" +
+                                "<div class='col-4 price text-center'>"+arr_data[i].price+"</div>" +
+                              "</div>"
+			}			
+			for(var a = 0;a < arr_a4.length;a++){
+				texta4 = ""
+				if(a == arr_a4.length-1){
+					texta4 = texta4 + '<div>' +
+							'<div class="fl-spc tb-st no-bdt pd-15">จำนวน</div>' +
+							'<div class="fl-12 tb no-bdt pd-15">................ กล่อง</div>' +
+							'<div class="fl-12 tb no-bdt pd-15">................... ลัง</div>' +
+							'<div class="fl-12 tb no-bdt pd-15">................... มัด</div>' +
+							'<div class="fl-12 tb no-bdt pd-15">................ ม้วน</div>' +
+							'<div class="fl-12 tb no-bdt pd-15">................... ชิ้น</div>' +
+							'<div class="fl-13 tb no-bdt pd-15">รวม / Total</div>' +
+							'<div class="fl-13 tb no-bdt pd-15">'+parseFloat($('#net-price').val()).toFixed(2)+'</div>' +
+						'</div>' +
+
+						'<div>' +
+							'<div class="fl-14 tb-st no-bdt no-bdbtm pd-16">&emsp;</div>' +
+							'<div class="fl-14 tb no-bdt no-bdbtm pd-16">&emsp;</div>' +
+							'<div class="fl-14 tb no-bdt no-bdbtm pd-16">&emsp;</div>' +
+							'<div class="fl-14 tb no-bdt no-bdbtm pd-16">&emsp;</div>' +
+							'<div class="fl-14 tb no-bdt no-bdbtm pd-16">&emsp;</div>' +
+							'<div class="fl-13 tb no-bdt pd-15">ส่วนลด / Discount</div>' +
+							'<div class="fl-13 tb no-bdt pd-15">'+parseFloat(dis).toFixed(2)+'</div>' +
+						'</div>'+
+
+						'<div>'+
+							'<div class="fl-14 tb-st no-bdt no-bdbtm pd-16">&emsp;</div>'+
+							'<div class="fl-14 tb no-bdt no-bdbtm pd-16">&emsp;</div>'+
+							'<div class="fl-14 tb no-bdt no-bdbtm pd-16">&emsp;</div>'+
+							'<div class="fl-14 tb no-bdt no-bdbtm pd-16">&emsp;</div>'+
+							'<div class="fl-14 tb no-bdt no-bdbtm pd-16">&emsp;</div>'+
+							'<div class="fl-13 tb no-bdt pd-15">สุทธิ / Net</div>'+
+							'<div class="fl-13 tb no-bdt pd-15">'+parseFloat($('#final-price').val()).toFixed(2)+'</div>'+
+						'</div>'+
+
+						'<div>'+
+							'<div class="fl-14 tb-st no-bdt no-bdbtm pd-16 ">................................</div>'+
+							'<div class="fl-14 tb no-bdt no-bdbtm pd-16">................................</div>'+
+							'<div class="fl-14 tb no-bdt no-bdbtm pd-16">................................</div>'+
+							'<div class="fl-14 tb no-bdt no-bdbtm pd-16">................................</div>'+
+							'<div class="fl-14 tb no-bdt no-bdbtm pd-16">................................</div>'+
+							'<div class="fl-13 tb no-bdt pd-15">ภาษีมูลค่าเพิ่ม / Vat</div>'+
+							'<div class="fl-13 tb no-bdt pd-15">0.00</div>'+
+						'</div>'+
+
+						'<div>'+
+							'<div class="fl-14 tb-st no-bdt pd-15">ผู้ขายของ</div>'+
+							'<div class="fl-14 tb no-bdt pd-15">คลังสินค้า/ผู้ตรวจสอบ</div>'+
+							'<div class="fl-14 tb no-bdt pd-15">ผู้ส่งของ</div>'+
+							'<div class="fl-14 tb no-bdt pd-15">ผู้รับของ</div>'+
+							'<div class="fl-14 tb no-bdt pd-15">ผู้มีอำนาจลงนาม</div>'+
+							'<div class="fl-13 tb no-bdt pd-15">ทั้งสิ้น / Grand Total</div>'+
+							'<div class="fl-13 tb no-bdt pd-15">'+parseFloat($('#final-price').val()).toFixed(2)+'</div>'+
+						'</div>'
+					arr_dat.push(texta4);
+				}else{
+					texta4 = texta4 + '<div>' +
+							'<div class="fl-spc tb-st no-bdt pd-15">จำนวน</div>' +
+							'<div class="fl-12 tb no-bdt pd-15">................ กล่อง</div>' +
+							'<div class="fl-12 tb no-bdt pd-15">................... ลัง</div>' +
+							'<div class="fl-12 tb no-bdt pd-15">................... มัด</div>' +
+							'<div class="fl-12 tb no-bdt pd-15">................ ม้วน</div>' +
+							'<div class="fl-12 tb no-bdt pd-15">................... ชิ้น</div>' +
+							'<div class="fl-13 tb no-bdt pd-15">รวม / Total</div>' +
+							'<div class="fl-13 tb no-bdt pd-15">-</div>' +
+						'</div>' +
+
+						'<div>' +
+							'<div class="fl-14 tb-st no-bdt no-bdbtm pd-16">&emsp;</div>' +
+							'<div class="fl-14 tb no-bdt no-bdbtm pd-16">&emsp;</div>' +
+							'<div class="fl-14 tb no-bdt no-bdbtm pd-16">&emsp;</div>' +
+							'<div class="fl-14 tb no-bdt no-bdbtm pd-16">&emsp;</div>' +
+							'<div class="fl-14 tb no-bdt no-bdbtm pd-16">&emsp;</div>' +
+							'<div class="fl-13 tb no-bdt pd-15">ส่วนลด / Discount</div>' +
+							'<div class="fl-13 tb no-bdt pd-15">-</div>' +
+						'</div>'+
+
+						'<div>'+
+							'<div class="fl-14 tb-st no-bdt no-bdbtm pd-16">&emsp;</div>'+
+							'<div class="fl-14 tb no-bdt no-bdbtm pd-16">&emsp;</div>'+
+							'<div class="fl-14 tb no-bdt no-bdbtm pd-16">&emsp;</div>'+
+							'<div class="fl-14 tb no-bdt no-bdbtm pd-16">&emsp;</div>'+
+							'<div class="fl-14 tb no-bdt no-bdbtm pd-16">&emsp;</div>'+
+							'<div class="fl-13 tb no-bdt pd-15">สุทธิ / Net</div>'+
+							'<div class="fl-13 tb no-bdt pd-15">-</div>'+
+						'</div>'+
+
+						'<div>'+
+							'<div class="fl-14 tb-st no-bdt no-bdbtm pd-16 ">................................</div>'+
+							'<div class="fl-14 tb no-bdt no-bdbtm pd-16">................................</div>'+
+							'<div class="fl-14 tb no-bdt no-bdbtm pd-16">................................</div>'+
+							'<div class="fl-14 tb no-bdt no-bdbtm pd-16">................................</div>'+
+							'<div class="fl-14 tb no-bdt no-bdbtm pd-16">................................</div>'+
+							'<div class="fl-13 tb no-bdt pd-15">ภาษีมูลค่าเพิ่ม / Vat</div>'+
+							'<div class="fl-13 tb no-bdt pd-15">-</div>'+
+						'</div>'+
+
+						'<div>'+
+							'<div class="fl-14 tb-st no-bdt pd-15">ผู้ขายของ</div>'+
+							'<div class="fl-14 tb no-bdt pd-15">คลังสินค้า/ผู้ตรวจสอบ</div>'+
+							'<div class="fl-14 tb no-bdt pd-15">ผู้ส่งของ</div>'+
+							'<div class="fl-14 tb no-bdt pd-15">ผู้รับของ</div>'+
+							'<div class="fl-14 tb no-bdt pd-15">ผู้มีอำนาจลงนาม</div>'+
+							'<div class="fl-13 tb no-bdt pd-15">ทั้งสิ้น / Grand Total</div>'+
+							'<div class="fl-13 tb no-bdt pd-15">-</div>'+
+						'</div>'
+					arr_dat.push(texta4);
+				}
+			}
+			
 			var d = new Date($.now());
 			var datetime = d.getFullYear() + "-" + (d.getMonth()+1) + "-" + d.getDate() + " " + d.getHours() + ":" + d.getMinutes() + ":" + d.getSeconds();	
 			var print = $('input[name=print-radio]:checked').val();
@@ -862,7 +1128,8 @@
 			json_detail = JSON.stringify(arr_detail);           
 			var dataString =  "JSON=" + json_string + "&JSOND=" + json_detail + "&ware_id=" + b_id + "&date=" + datetime + "&type=" + type
 			+ "&cus_id=" + cus_id + "&pay=" + $("#btn-p").text() + "&net=" + $('#net-price').val() + "&dis=" + dis
-			+ "&total=" + $('#final-price').val() + "&get_price=" + $('#get-money').val() + "&chng=" + $('#change-money').val() + "&user_id=" + localStorage.user_id;
+			+ "&total=" + $('#final-price').val() + "&get_price=" + $('#get-money').val() + "&chng=" + $('#change-money').val() + "&user_id=" + localStorage.user_id
+			+ "&comment=" + $('#comment').val();
 			//alert(dataString);
 			var msg_alert = "";
 			for(var i = 0 ; i < arr_data.length;i++){
@@ -893,34 +1160,58 @@
 									var time = dt[1];
 									var d = dt[0].split("-");
 									var date = d[2] + "/" + d[1] + "/" + d[0];
-									WinPrint.document.write("<html><head><link href='https://fonts.googleapis.com/css?family=Maitree' rel='stylesheet'></head><body>");
-									WinPrint.document.write("<style>@page {size: auto; margin: 0mm;} body{font-family: 'Maitree'; line-height: 1.5; font-size: 0.9em;} .txt-right{ margin-right: 0.5cm; text-align:right; float: right; } .txt-left{ margin-left: 0.5cm; float: left; width: 50%; }.txt-left-100{ margin-left: 0.5cm; float: left; width: 100%; } .txt-ct{ float: center; text-align: center; margin-bottom: 0.2em} .mid{float: left; width: 3.5cm; text-align: right;} .left{margin-left: 0.5cm; float: left; width: 0.3cm; text-align: center;} .right{margin-right: 0.5cm; float: left; width: 2.7cm; text-align: right;}.bold{font-weight: bold;}</style>" +
-										"<div style='width: 7.5cm;'>"+
-											"<div class='txt-ct'>DD MOTOR SPORT</div>"+
-											"<div class='txt-ct'>B-24, B-28 อาคารศรีวรจักร ถ.หลวงป้อมปราบศัตรูพ่าย</div>"+
-											"<div class='txt-ct'>โทร. 065-5028828 , 097-0631169</div>"+
-											"<div class='txt-ct bold' style='margin-top: 0.5em; margin-bottom: 0.5em;'>ใบเสร็จรับเงิน</div>"+						
-											"<div class='txt-left-100'>ลูกค้า : "+$('#cus').val()+"</div>"+
-											"<div class='txt-left-100'>ประเภท : "+$('#btn-p').text()+"</div>"+
-											"<div class='txt-left-100'>เลขที่บิล :  "+order_num+"</div>"+
-											"<div class='txt-left' style='letter-spacing: -0.5px;'>วันที่ขาย : "+date+"</div>"+
-											"<div class='txt-right' style='margin-bottom: 5px;'>เวลา : "+time+"</div>"+
-											
-											"<hr style='width: 90%; border-top: 1px dashed; border-bottom: none;'>"+
-											"<div class='left bold'>จน.</div> <div class='mid bold'>รายการ</div> <div class='right bold'>ราคา</div>"+
-											""+text+""+
-											"<hr style='width: 90%; border-top: 5px; border-top: 1px dashed; border-bottom: none;'>"+
-											"<div class='txt-left'>ราคารวม : </div>"+
-											"<div class='txt-right'>"+$('#net-price').val()+" บาท</div><br>"+
-											"<div class='txt-left'>ส่วนลด : </div>"+
-											"<div class='txt-right'>"+dis+" บาท</div><br>"+
-											"<div class='txt-left'>สุทธิ : </div>"+
-											"<div class='txt-right'>"+$('#final-price').val()+" บาท</div><br>"+
-											"<div class='txt-left' style='width: 30%;'>รับ / ทอน : </div>"+
-											"<div class='txt-right'><span style='margin-right: 20px'>"+$('#get-money').val()+" บาท</span><span> "+$('#change-money').val()+" บาท</span></div><br><br>"+
-											"<div class='txt-ct' style='margin-bottom: 0.5em;'>ขอบคุณที่ใช้บริการ</div>"+
-											"<div class='txt-ct'>พนักงานขาย : "+localStorage.user_name+"</div>"+
-										"</div>");
+									WinPrint.document.write("<html><head><meta charset='utf-8'><link href='https://fonts.googleapis.com/css?family=Maitree' rel='stylesheet'><link rel='stylesheet' href='https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css' integrity='sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T' crossorigin='anonymous'>");
+									WinPrint.document.write("<style>@page {size: auto; margin: 0mm;} body{line-height: 1.5; font-size: 0.9em; } .title{margin-bottom: 0.1em;} .line{text-decoration: underline;} .price, .no{letter-spacing: -0.05em;} .items{margin-bottom: 5px;}</style></head><body>" +
+										"<div style='width: 7cm;'>"+
+											"<div class='col-12 text-center'>DD MOTOR SPORT</div>"+
+											"<div class='col-12 text-center'>B-24, B-28 อาคารศรีวรจักร ถ.หลวงป้อมปราบศัตรูพ่าย</div>"+
+											"<div class='col-12 text-center'>โทร. 02-2265280 , 02-2222437</div>"+
+											"<div class='col-12 text-center line' style='margin-top: 0.5em; margin-bottom: 0.5em;'>ใบเสร็จรับเงิน</div>"+						
+												"<div class='row justify-content-center title'>" +
+												"<div class='col-4 text-right'>ลูกค้า : </div>" +
+												"<div class='col-6 text-center'>"+$('#cus').val()+"</div>" +
+												"</div>" +
+												"<div class='row justify-content-center title'>" +
+												"<div class='col-4 text-right'>ประเภท : </div>" +
+												"<div class='col-6 text-center'>"+$('#btn-p').text()+"</div>" +
+												"</div>" +
+												"<div class='row justify-content-center title'>" +
+												"<div class='col-4 text-right'>เลขที่บิล : </div>" +
+												"<div class='col-6 text-center'>"+order_num+"</div>" +
+												"</div>" +
+												"<div class='row justify-content-center title'>" +
+												"<div class='col-4 text-right'>วันที่ : </div>" +
+												"<div class='col-3 text-right'>"+date+"  </div>" +
+												"<div class='col-3'>"+time+"</div>" +
+												"</div>" +								
+																	
+												"<hr style='width: 90%; border-top: 1px dashed; border-bottom: none; margin-top: 5px;'>"+
+												"<div class='row justify-content-center' style='margin-bottom: 5px;'>" +
+												"<div class='col-2 text-center line'>จำนวน</div>" +
+												"<div class='col-6 text-center line'>รายการ</div>" +
+												"<div class='col-4 text-center line'>ราคา</div>" +
+											"</div>"+
+											text+
+											"<hr style='width: 90%; border-top: 1px; border-top: 1px dashed; border-bottom: none; margin-top: 0;'>"+
+											"<div class='row justify-content-center title'>"+
+												"<div class='col-4 text-right'>ราคารวม : </div>" +
+												"<div class='col-6 text-center'>"+$('#net-price').val()+" บาท</div>"+
+											"</div>"+
+											"<div class='row justify-content-center title'>"+
+												"<div class='col-4 text-right'>ส่วนลด : </div>" +
+												"<div class='col-6 text-center'>"+dis+" บาท</div>"+
+											"</div>"+
+											"<div class='row justify-content-center title'>"+
+												"<div class='col-4 text-right'>สุทธิ : </div>" +
+												"<div class='col-6 text-center'>"+$('#final-price').val()+" บาท</div>"+
+											"</div>"+
+											"<div class='row justify-content-center title'>"+
+												"<div class='col-4 text-right'>รับ / ทอน : </div>" +
+												"<div class='col-4 text-right'>"+$('#get-money').val()+" บาท</div>"+
+												"<div class='col-4 text-right'>"+$('#change-money').val()+" บาท</div>"+
+											"</div>"+
+											"<div class='col-12 text-center'>พนักงานขาย : "+localStorage.user_name+"</div>"+
+											"</div>");
 									WinPrint.document.write('</body></html>');
 									WinPrint.document.close();
 									WinPrint.focus();
@@ -940,7 +1231,7 @@
                                 }
                                 }
                             }
-                        });    
+                        }); 
 									}, 250);										
 								}
 									else if(print_type == "a4"){
@@ -999,57 +1290,8 @@
 													'<div class="fl-13 tb no-bdt ccc bold">จำนวนเงิน</div>' +
 												'</div>' +
 													arr_a4[m] +
-												'<div>' +
-													'<div class="fl-spc tb-st no-bdt pd-15">จำนวน</div>' +
-													'<div class="fl-12 tb no-bdt pd-15">................ กล่อง</div>' +
-													'<div class="fl-12 tb no-bdt pd-15">................... ลัง</div>' +
-													'<div class="fl-12 tb no-bdt pd-15">................... มัด</div>' +
-													'<div class="fl-12 tb no-bdt pd-15">................ ม้วน</div>' +
-													'<div class="fl-12 tb no-bdt pd-15">................... ชิ้น</div>' +
-													'<div class="fl-13 tb no-bdt pd-15">รวม / Total</div>' +
-													'<div class="fl-13 tb no-bdt pd-15">'+parseFloat($('#net-price').val()).toFixed(2)+'</div>' +
-												'</div>' +
-
-												'<div>' +
-													'<div class="fl-14 tb-st no-bdt no-bdbtm pd-16">&emsp;</div>' +
-													'<div class="fl-14 tb no-bdt no-bdbtm pd-16">&emsp;</div>' +
-													'<div class="fl-14 tb no-bdt no-bdbtm pd-16">&emsp;</div>' +
-													'<div class="fl-14 tb no-bdt no-bdbtm pd-16">&emsp;</div>' +
-													'<div class="fl-14 tb no-bdt no-bdbtm pd-16">&emsp;</div>' +
-													'<div class="fl-13 tb no-bdt pd-15">ส่วนลด / Discount</div>' +
-													'<div class="fl-13 tb no-bdt pd-15">'+parseFloat(dis).toFixed(2)+'</div>' +
-												'</div>'+
-
-												'<div>'+
-													'<div class="fl-14 tb-st no-bdt no-bdbtm pd-16">&emsp;</div>'+
-													'<div class="fl-14 tb no-bdt no-bdbtm pd-16">&emsp;</div>'+
-													'<div class="fl-14 tb no-bdt no-bdbtm pd-16">&emsp;</div>'+
-													'<div class="fl-14 tb no-bdt no-bdbtm pd-16">&emsp;</div>'+
-													'<div class="fl-14 tb no-bdt no-bdbtm pd-16">&emsp;</div>'+
-													'<div class="fl-13 tb no-bdt pd-15">สุทธิ / Net</div>'+
-													'<div class="fl-13 tb no-bdt pd-15">'+parseFloat($('#final-price').val()).toFixed(2)+'</div>'+
-												'</div>'+
-
-												'<div>'+
-													'<div class="fl-14 tb-st no-bdt no-bdbtm pd-16 ">................................</div>'+
-													'<div class="fl-14 tb no-bdt no-bdbtm pd-16">................................</div>'+
-													'<div class="fl-14 tb no-bdt no-bdbtm pd-16">................................</div>'+
-													'<div class="fl-14 tb no-bdt no-bdbtm pd-16">................................</div>'+
-													'<div class="fl-14 tb no-bdt no-bdbtm pd-16">................................</div>'+
-													'<div class="fl-13 tb no-bdt pd-15">ภาษีมูลค่าเพิ่ม / Vat</div>'+
-													'<div class="fl-13 tb no-bdt pd-15">0.00</div>'+
-												'</div>'+
-
-												'<div>'+
-													'<div class="fl-14 tb-st no-bdt pd-15">ผู้ขายของ</div>'+
-													'<div class="fl-14 tb no-bdt pd-15">คลังสินค้า/ผู้ตรวจสอบ</div>'+
-													'<div class="fl-14 tb no-bdt pd-15">ผู้ส่งของ</div>'+
-													'<div class="fl-14 tb no-bdt pd-15">ผู้รับของ</div>'+
-													'<div class="fl-14 tb no-bdt pd-15">ผู้มีอำนาจลงนาม</div>'+
-													'<div class="fl-13 tb no-bdt pd-15">ทั้งสิ้น / Grand Total</div>'+
-													'<div class="fl-13 tb no-bdt pd-15">'+parseFloat($('#final-price').val()).toFixed(2)+'</div>'+
-												'</div>'+
-											'</div>'+
+													arr_dat[m] +
+											'</div>' +
 
 											"<div class='ctn' style='margin-top: 155mm; page-break-after: always;'>" +
 												'<div>--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------</div>'+
@@ -1096,56 +1338,7 @@
 													'<div class="fl-13 tb no-bdt ccc bold">จำนวนเงิน</div>' +
 												'</div>' +
 													arr_a4[m] +						
-												'<div>' +
-													'<div class="fl-spc tb-st no-bdt pd-15">จำนวน</div>' +
-													'<div class="fl-12 tb no-bdt pd-15">................ กล่อง</div>' +
-													'<div class="fl-12 tb no-bdt pd-15">................... ลัง</div>' +
-													'<div class="fl-12 tb no-bdt pd-15">................... มัด</div>' +
-													'<div class="fl-12 tb no-bdt pd-15">................ ม้วน</div>' +
-													'<div class="fl-12 tb no-bdt pd-15">................... ชิ้น</div>' +
-													'<div class="fl-13 tb no-bdt pd-15">รวม / Total</div>' +
-													'<div class="fl-13 tb no-bdt pd-15">'+parseFloat($('#net-price').val()).toFixed(2)+'</div>' +
-												'</div>' +
-
-												'<div>' +
-													'<div class="fl-14 tb-st no-bdt no-bdbtm pd-16">&emsp;</div>' +
-													'<div class="fl-14 tb no-bdt no-bdbtm pd-16">&emsp;</div>' +
-													'<div class="fl-14 tb no-bdt no-bdbtm pd-16">&emsp;</div>' +
-													'<div class="fl-14 tb no-bdt no-bdbtm pd-16">&emsp;</div>' +
-													'<div class="fl-14 tb no-bdt no-bdbtm pd-16">&emsp;</div>' +
-													'<div class="fl-13 tb no-bdt pd-15">ส่วนลด / Discount</div>' +
-													'<div class="fl-13 tb no-bdt pd-15">'+parseFloat(dis).toFixed(2)+'</div>' +
-												'</div>'+
-
-												'<div>'+
-													'<div class="fl-14 tb-st no-bdt no-bdbtm pd-16">&emsp;</div>'+
-													'<div class="fl-14 tb no-bdt no-bdbtm pd-16">&emsp;</div>'+
-													'<div class="fl-14 tb no-bdt no-bdbtm pd-16">&emsp;</div>'+
-													'<div class="fl-14 tb no-bdt no-bdbtm pd-16">&emsp;</div>'+
-													'<div class="fl-14 tb no-bdt no-bdbtm pd-16">&emsp;</div>'+
-													'<div class="fl-13 tb no-bdt pd-15">สุทธิ / Net</div>'+
-													'<div class="fl-13 tb no-bdt pd-15">'+parseFloat($('#final-price').val()).toFixed(2)+'</div>'+
-												'</div>'+
-
-												'<div>'+
-													'<div class="fl-14 tb-st no-bdt no-bdbtm pd-16 ">................................</div>'+
-													'<div class="fl-14 tb no-bdt no-bdbtm pd-16">................................</div>'+
-													'<div class="fl-14 tb no-bdt no-bdbtm pd-16">................................</div>'+
-													'<div class="fl-14 tb no-bdt no-bdbtm pd-16">................................</div>'+
-													'<div class="fl-14 tb no-bdt no-bdbtm pd-16">................................</div>'+
-													'<div class="fl-13 tb no-bdt pd-15">ภาษีมูลค่าเพิ่ม / Vat</div>'+
-													'<div class="fl-13 tb no-bdt pd-15">0.00</div>'+
-												'</div>'+
-
-												'<div>'+
-													'<div class="fl-14 tb-st no-bdt pd-15">ผู้ขายของ</div>'+
-													'<div class="fl-14 tb no-bdt pd-15">คลังสินค้า/ผู้ตรวจสอบ</div>'+
-													'<div class="fl-14 tb no-bdt pd-15">ผู้ส่งของ</div>'+
-													'<div class="fl-14 tb no-bdt pd-15">ผู้รับของ</div>'+
-													'<div class="fl-14 tb no-bdt pd-15">ผู้มีอำนาจลงนาม</div>'+
-													'<div class="fl-13 tb no-bdt pd-15">ทั้งสิ้น / Grand Total</div>'+
-													'<div class="fl-13 tb no-bdt pd-15">'+parseFloat($('#final-price').val()).toFixed(2)+'</div>'+
-												'</div>'+
+													arr_dat[m] +
 											'</div>');
 										}				
 										WinPrint.document.write('</body></html>');
@@ -1184,7 +1377,7 @@
 													}
 													}
 											}
-									});    
+									}); 
 								}						
 							}else{
 									$.confirm({
@@ -1263,6 +1456,7 @@
 			localStorage.ware_id_s = "";
 			localStorage.ware_name_s = "";
 			localStorage.type = "";
+			localStorage.pay = "";			
 			location.reload();
 		}
 
@@ -1306,8 +1500,8 @@
   	}
   	#btn-b:focus{
   		outline: 0;
-  	}
-		#btn-p{
+  	}	
+	#btn-p{
   		width: 50%; background-color: #666; border-color: #666; color: white;
   	}
   	#btn-p:focus{
@@ -1349,7 +1543,7 @@
       		<div id="head" class="row mgb-5" style="padding-left: 2%; padding-right: 2%;">
       		  <div class="col-2 text-center" style="color: #666;">วันที่</div>
       		  <div class="col-2 text-center" style="color: #666;">ลูกค้า</div>
-      		  <div class="col-3 text-center" style="color: #666;">ขายจาก</div>
+			  <div class="col-3 text-center" style="color: #666;">ขายจาก</div>		
       		  <div class="col-3 text-center" style="color: #666;">รูปแบบการชำระเงิน</div>
       		  <div class="col-2 text-center" style="color: #666;">ผู้ทำรายการ</div>
       		</div>
@@ -1368,7 +1562,7 @@
       				<div id="b" class="dropdown-menu" aria-labelledby="dropdownMenuButton">
 
       				</div>
-      			</div>
+				  </div>				
       			<div class="col-3 text-center">
       				<button id="btn-p" type="button" class="btn dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="background-color: #666;">เงินสด</button>
 
@@ -1376,7 +1570,7 @@
 						<a class="dropdown-item text-center" href="#" onclick="setpay('เงินสด')">เงินสด</a>
 						<a class="dropdown-item text-center" href="#" onclick="setpay('เครดิต (30)')">เครดิต (30)</a>
 						<a class="dropdown-item text-center" href="#" onclick="setpay('เครดิต (60)')">เครดิต (60)</a>
-						<a class="dropdown-item text-center" href="#" onclick="setpay('เครดิต (90)')">เครดิต (30)</a>
+						<a class="dropdown-item text-center" href="#" onclick="setpay('เครดิต (90)')">เครดิต (90)</a>
       				</div>
       			</div>
       			<div id="user" class="col-2 text-center nopd" style="margin-top: 5px; color: #666;">
@@ -1444,14 +1638,12 @@
 		      <input id="total-price" type="number" value="0" class="form-control form-control-lg text-center no-spin no-border conclu-price-input" style="background: #767676; color: #5dbe5d" readonly>
 		    </div>
 		    <div class="col-1 text-center nopd">
-		    
-		    </div>
-		    <div class="col-1 text-center nopd">
-		     
-		    </div>
-		    <div class="col-1 text-center nopd">
-		     
-		    </div>		    
+				<h6>หมายเหตุ </h6>
+			</div>
+			<div class="col-2 text-center nopd">
+				<textarea class="form-control" id="comment" rows="2"></textarea>
+			</div>		
+		   	    
 		    <div class="col-3 text-right nopd" style="padding-top: 10px;">
 						<button id="btn_checkbill" class="btn btn-danger" data-toggle="modal" data-target="#myModal" onclick="check_bill()">คิดเงิน (F8)</button>
 						<button class="btn btn-danger" onclick="cancel()">ยกเลิก (F9)</button>

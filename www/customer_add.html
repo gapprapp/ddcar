@@ -30,6 +30,7 @@
     #title {
       color: #666666;
       letter-spacing: 1px;
+      font-weight: bold;
     }
   </style>
 
@@ -46,35 +47,6 @@
         }                       
       }         
     })
-
-    /*function disactive(arg) {
-      nav_menu = ['home', 'bell', 'qrcode', 'bars'];
-      for (i = 0; i < 4; i++) {
-        if (nav_menu[i] != arg) {
-          if ($("#i-" + nav_menu[i]).hasClass('active')) $("#i-" + nav_menu[i]).removeClass('active');
-        }
-      }
-    }
-
-    function menu(arg) {
-      // Animate
-      disactive(arg);
-      $("#i-" + arg).fadeOut(100).fadeIn(100, function() {
-        $("#i-" + arg).addClass('active');
-      });
-    }*/
-
-    function doresize() {
-      switch (window.orientation) {
-        case 90: case -90:
-          $("#in-ctn").css('max-height',  $(window).height()-110);
-          break;
-        default:
-          $("#in-ctn").css('max-height',  $(window).height()-110);
-          break;
-      }
-    }
-    window.addEventListener('resize', doresize);
 
     function add_cus(){
       var name = $('#name').val();  
@@ -100,7 +72,7 @@
       }
       $.ajax({
           type: "POST",
-          url:"http://ddaccessory.trueddns.com:24330/dd-shop/php/add_cus.php",           
+          url:localStorage.pathServer + "php/add_cus.php",           
           data: {'cus_name':name,
               'phone':phone,
               'addr':addr,
@@ -221,6 +193,27 @@
                 }
               },
               form2: {
+                text: 'ขายส่ง(1)',
+                btnClass: 'btn-choice',
+                action: function () {
+                  setrole('ขายส่ง(1)');
+                }
+              },
+              form3: {
+                text: 'ขายส่ง(2)',
+                btnClass: 'btn-choice',
+                action: function () {
+                  setrole('ขายส่ง(2)');
+                }
+              },
+              form4: {
+                text: 'ขายส่ง(3)',
+                btnClass: 'btn-choice',
+                action: function () {
+                  setrole('ขายส่ง(3)');
+                }
+              },
+              form5: {
                 text: 'ขายปลีก',
                 btnClass: 'btn-choice',
                 action: function () {

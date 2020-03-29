@@ -29,7 +29,7 @@
       color: #666666;
       letter-spacing: 1px;
     }
-    .nopd {
+    .no-pd {
       padding-right: 0px;
       padding-left: 0px;
     }
@@ -42,7 +42,7 @@
     $(document).ready(function () { 
       $.ajax({
         type: "GET",
-        url:"http://ddaccessory.trueddns.com:24330/dd-shop/php/get_ware_shop.php",   
+        url:localStorage.pathServer + "php/get_ware_shop.php",   
         beforeSend: function(){
             $(".overlay").prop('hidden', false);
         },                           
@@ -57,15 +57,15 @@
                 "<i class='fa fa-trash-alt i-del' onclick='edit_del("+i+");' style='color: #666666;' hidden></i>" +
                 "<i class='fa fa-edit i-edit' onclick='edit_ware("+i+");' style='color: #666666;' hidden></i>" +
               "</div>" +
-              "<div class='col-6 text-center nopd'>" +
+              "<div class='col-6 text-center no-pd'>" +
                 "<p id='name-ware-"+i+"'>"+obj[i].ware_name+"</p>" +
               "</div>" +
-              "<div class='col-4 text-center nopd'>" +
+              "<div class='col-4 text-center no-pd'>" +
                 "<p id='type-ware-"+i+"'>โกดัง</p>" +
               "</div>" +
               "<div class='col-1'></div>" +
               "</div>" +   
-              "<hr id='hr-"+i+"'> class='mgemo5'");  
+              "<hr id='hr-"+i+"' class='mgemo5>");  
             }else if(obj[i][2] == "หน้าร้าน"){
               $('#in-ctn').append( "<div id='cus-"+i+"' class='row'>" +
               "<span id='id-ware-"+i+"' hidden>"+obj[i].shop_id+"</span>" +              
@@ -73,15 +73,15 @@
                 "<i class='fa fa-trash-alt i-del' onclick='edit_del("+i+");' style='color: #666666;' hidden></i>" +
                 "<i class='fa fa-edit i-edit' onclick='edit_ware("+i+");' style='color: #666666;' hidden></i>" +
               "</div>" +
-              "<div class='col-6 text-center nopd'>" +
+              "<div class='col-6 text-center no-pd'>" +
                 "<p id='name-ware-"+i+"'>"+obj[i].shop_name+"</p>" +
               "</div>" +
-              "<div class='col-4 text-center nopd'>" +
+              "<div class='col-4 text-center no-pd'>" +
                 "<p id='type-ware-"+i+"'>หน้าร้าน</p>" +
               "</div>" +
               "<div class='col-1'></div>" +
               "</div>" +   
-              "<hr id='hr-"+i+"'> class='mgemo5'");  
+              "<hr id='hr-"+i+"' class='mgemo5>");  
             }                                                    
           });                        
         }               
@@ -174,7 +174,7 @@
               }
               $.ajax({
                 type: "POST",
-                url:"http://ddaccessory.trueddns.com:24330/dd-shop/php/rename_ware_shop.php",           
+                url:localStorage.pathServer + "php/rename_ware_shop.php",           
                 data: {'id' : id,
                         'type' : type,
                         'name' : txt}, 
@@ -223,7 +223,7 @@
             action: function () {
               $.ajax({
                 type: "POST",
-                url:"http://ddaccessory.trueddns.com:24330/dd-shop/php/delete_ware_shop.php",           
+                url:localStorage.pathServer + "php/delete_ware_shop.php",           
                 data: {'id' : id,
                        'type' : type},
                 beforeSend: function(){

@@ -1,20 +1,11 @@
 <?php
     include "db.php";
-    $cus_id = $_POST['cus_id'];
-    $cd = $_POST['cd'];
-    $date = date("Y-m");
-
-    if($cd == "เลย"){
-        $query = "SELECT s.order_id,s.order_number,c.cus_name,s.total_price,s.date_time,s.payment_type 
-        FROM sale_order s INNER JOIN customer c ON s.customer_id = c.cus_id WHERE s.order_number NOT LIKE '%(cancel)%' 
-        AND s.payment_type LIKE '%เครดิต%' AND s.payment_type NOT LIKE '%หมดอายุ%' 
-        AND s.customer_id = '$cus_id' AND s.date_time NOT LIKE '%$date%'";
-    }else{
-        $query = "SELECT s.order_id,s.order_number,c.cus_name,s.total_price,s.date_time,s.payment_type 
-        FROM sale_order s INNER JOIN customer c ON s.customer_id = c.cus_id WHERE s.order_number NOT LIKE '%(cancel)%' 
-        AND s.payment_type LIKE '%เครดิต%' AND s.payment_type NOT LIKE '%หมดอายุ%' 
-        AND s.customer_id = '$cus_id' AND s.date_time LIKE '%$date%'";
-    }  
+    $credit_id = $_POST['credit_id'];
+    $txt = "(cancel)";
+    
+    $query = "SELECT s.order_id,s.order_number,c.cus_name,s.total_price,s.date_time,s.payment_type,d.credit_num 
+    FROM sale_order s INNER JOIN customer c ON s.customer_id = c.cus_id INNER JOIN credit d ON s.credit_id = d.credit_id
+    WHERE s.credit_id = '$credit_id' AND s.order_number NOT LIKE '%$txt%'";
     $result = mysqli_query($conn, $query);
 
     if(mysqli_num_rows($result) > 0){     

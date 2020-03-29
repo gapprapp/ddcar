@@ -19,6 +19,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.0/jquery-confirm.min.css">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.0/jquery-confirm.min.js"></script>
 
+  <script src="js/jquery.scannerdetection.js"></script>
 	<!-- Easy-autocomplete -->
 	<script src="js/jquery.easy-autocomplete.js"></script>
 	<link rel="stylesheet" href="css/easy-autocomplete.min.css">
@@ -154,6 +155,71 @@
 			$("#name").easyAutocomplete(options);	
 		});	
 		
+		$(document).scannerDetection({
+	   
+			//https://github.com/kabachello/jQuery-Scanner-Detection
+		
+			timeBeforeScanTest: 200, // wait for the next character for upto 200ms
+			avgTimeByChar: 40, // it's not a barcode if a character takes longer than 100ms
+			//  preventDefault: true,
+		
+			endChar: [13],
+				onComplete: function(barcode, qty){
+					validScan = true;					
+					var bool = true;
+					if(arr_data.length > 0){
+							for(var b = 0; b < arr_data.length; b++){
+									if(barcode == arr_data[b].qr){
+											$.confirm({
+													title: 'เตือน',
+													content: 'มีการเพิ่มสินค้า ' + arr_data[b].name + ' กรุณาแก้ไขที่จำนวนของสินค้าที่ได้เพิ่มแล้ว',
+													backgroundDismiss: true,
+													buttons: {
+															formSubmit: {
+															text: 'ตกลง',
+															btnClass: 'btn-regis',
+															action: function () {
+															}
+															}
+													}
+											});  
+											bool = false;                               
+											break;           
+									}
+							}                 
+					}
+					if(bool){
+							$.ajax({
+									type: "POST",
+									url:"php/get_prod.php",    
+									data:{'qr' : barcode},
+									//async: false,                       
+									beforeSend: function(){
+										EasyLoading.show({                           
+											text: "กำลังโหลด"                            
+									});
+									},             
+									success: function(data){  
+											EasyLoading.hide();
+											var obj = jQuery.parseJSON(data);                                         
+											$.each(obj, function(i, field){
+												prod_id =  obj[i].prod_id;												
+												$('#barcode').val(barcode);										
+												$('#name').val(obj[i].prod_name);										
+												$('#amount').val("1");
+												price = obj[i].prod_price;   
+												img =  obj[i].img;                         										      
+											});
+									}
+							});
+					}
+				} // main callback function	,
+			,
+			onError: function(string, qty) {		
+				// alert(string)
+			}
+		});
+
 		function get_prod(id){
 				prod_id = id;
 				var bool = true;
@@ -247,11 +313,11 @@
 		function add(){
 			var code = $('#barcode').val();		
 			var name = $('#name').val(); 
-			var amt = $('#amount').val(); 
+			var amt = $('#amount').val();			
 		
 			if(name != "" && amt != "" && code != "" && prod_id != 0){
 				show();
-			}else{
+			}else{			
 					$.confirm({
 						title: 'พบข้อผิดพลาด',
 						content: 'กรุณากรอกข้อมูลให้ครบ',

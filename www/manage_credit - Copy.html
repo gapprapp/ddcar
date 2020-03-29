@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>Home</title>
+  <!-- Bootstrap Import -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+  <script type="text/javascript" src="js/jquery-3.3.1.min.js"></script>
+  <script type="text/javascript" src="js/jquery-ui.min.js"></script>
+  <script type="text/javascript" src="js/jquery.easing.1.3.min.js"></script>
+  <script type="text/javascript" src="js/transition.js"></script>
+  <script type="text/javascript" src="js/jquery-confirm.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.6/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+  <script defer src="https://use.fontawesome.com/releases/v5.0.8/js/all.js"></script>
+  <script src="cordova.js"></script>
+  <script type="text/javascript" src="js/scanqr.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.0/jquery-confirm.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.0/jquery-confirm.min.js"></script>
+ 
+  <link rel="stylesheet" href="css/index.css">
+  <link rel="stylesheet" href="css/jquery-confirm.css">
+  <link rel="stylesheet" href="css/loading.css">
+
+  <!-- Font -->
+  <link href="https://fonts.googleapis.com/css?family=Prompt" rel="stylesheet">
+
+  <!-- DatePicker -->
+  <link rel="stylesheet" href="css/duDatepicker.css">
+  <script src="js/duDatepicker.js"></script>
+
+  <style>
+    hr{
+      margin-top: 0;
+    }
+    .mbtn-credit{
+      background-color: #da4646;
+      border: 1px solid #da4646;
+      height: 95%;
+      width: 85%;
+      font-weight: bold;
+      font-size: 120%;
+      color: white;
+      letter-spacing: 1px;
+      border-radius: 5px;
+      box-shadow: 0 1px 2px  #de5a5a, 0 1px 1px #de5a5a;
+    } 
+    .yellow{
+        color: #ffbb33;
+    }
+    .red{
+      color: #d63232;
+    }
+    .green{
+      color: #3dd12a;
+    }
+    #title{
+      color: #666;
+    } 
+    .nopd{
+      padding-right: 0;
+      padding-left: 0;
+    } 
+    ul {
+      list-style-type: none;
+      margin: 0;
+      padding: 0;
+    }
+    #title{
+      color: #666;
+      letter-spacing: 1px;
+      font-weight: bold;
+    }     
+  </style>
+
+  <script>
+    $(document).ready(function(){
+      if(localStorage.bell){
+          $('.dot').prop('hidden',false);
+      }  
+      $.ajax({
+        type: "GET",
+        url:"http://ddaccessory.trueddns.com:24330/dd-shop/php/get_credit.php",          
+        beforeSend: function(){
+            $(".overlay").prop('hidden', false);
+        },                       
+        success: function(data){ 
+          $(".overlay").prop('hidden', true);  
+          var obj = jQuery.parseJSON(data);
+          if(obj){
+            arr = [];
+            var d = new Date($.now());
+            $.each(obj, function(i, field){
+              var txt = field.date_time.split(" ");
+              var date = txt[0].split("-");
+              var cus = field.cus_name;              
+              var total = field.total_price;
+              var cus_id = field.customer_id;                    
+              var last_d = new Date(d.getFullYear(),d.getMonth()+1, 0).getDate();              
+              var cd = last_d - d.getDate();
+              if(d.getMonth()+1 != date[1]){
+                cd = "เลย";
+              }
+              item = {}              
+              item ["cus"] =  cus;
+              item ["cus_id"] = cus_id;
+              item ["total"] = total;
+              item ["cd"] = cd;             
+              if(i == 0){                
+                arr.push(item);
+              }else{
+                var bool = false;
+                for(var j = 0; j < arr.length ;j++){                  
+                  if(cus == arr[j].cus && cd == arr[j].cd){
+                    bool = true;                    
+                    arr[j].total = parseFloat(arr[j].total) + parseFloat(total);
+                    break;
+                  }
+                }                 
+                if(!bool){
+                  arr.push(item);
+                }
+              }                              
+            });
+            for(var k = 0; k < arr.length;k++){  
+              if(arr[k].cd <= 3 && arr[k].cd > 1){
+                $('#myUL').append('<li class="mgemo5"><div id="cus-1" class="row" onclick="show_credit('+arr[k].cus_id+',\''+arr[k].cd+'\',\''+arr[k].cus+'\')">'+
+                  '<div class="col-1"><i class="fas fa-circle yellow"></i></div>' +
+                  '<div class="col-5 text-center">'+arr[k].cus+'</div>'+
+                  '<div class="col-3 text-center">'+arr[k].cd+' วัน</div>'+
+                  '<div class="col-3 text-center">'+arr[k].total+'</div>'+
+                  '</div><hr style="margin-top: 4%"></li>');   
+              }else if(arr[k].cd <= 1 || arr[k].cd == "เลย"){
+                $('#myUL').append('<li class="mgemo5"><div id="cus-1" class="row" onclick="show_credit('+arr[k].cus_id+',\''+arr[k].cd+'\',\''+arr[k].cus+'\')">'+
+                  '<div class="col-1"><i class="fas fa-circle red"></i></div>' +
+                  '<div class="col-5 text-center">'+arr[k].cus+'</div>'+
+                  '<div class="col-3 text-center">'+arr[k].cd+' วัน</div>'+
+                  '<div class="col-3 text-center">'+arr[k].total+'</div>'+
+                  '</div><hr style="margin-top: 4%"></li>');  
+              }else{
+                $('#myUL').append('<li class="mgemo5"><div id="cus-1" class="row" onclick="show_credit('+arr[k].cus_id+',\''+arr[k].cd+'\',\''+arr[k].cus+'\')">'+
+                  '<div class="col-1"><i class="fas fa-circle green"></i></div>' +
+                  '<div class="col-5 text-center">'+arr[k].cus+'</div>'+
+                  '<div class="col-3 text-center">'+arr[k].cd+' วัน</div>'+
+                  '<div class="col-3 text-center">'+arr[k].total+'</div>'+
+                  '</div><hr style="margin-top: 4%"></li>');  
+              }             
+            }           
+          }                                
+        }               
+      });
+    });
+
+    function show_credit(arg,arg2,name){
+      transition_page_next('show_credit.html?cus='+arg+'&cd='+arg2+'&cus_name='+name);
+      window.location = 'show_credit.html?cus='+arg+'&cd='+arg2+'&cus_name='+name;
+    }
+
+    function show_search(){
+      if($("#search_row").is(':visible')){
+        $("#search_row").prop('hidden', true);
+
+        $("#row-title").css("margin-top", "4.5em");
+        $("#title-hr").css("margin-top", "6.3em");
+        $("#in-ctn").css("height", "calc(100vh - (4.5em + 120px))");
+      }else{
+        $("#search_row").prop('hidden', false);
+
+        $("#row-title").css("margin-top", "8.5em");
+        $("#title-hr").css("margin-top", "10.3em");
+        $("#in-ctn").css("height", "calc(100vh - (8.9em + 120px))");
+      }
+    }
+
+    function search(){
+      $('#myUL li').each(function(){
+          $(this).attr('data-search-term', $(this).text().toLowerCase());
+      });      
+
+      var searchTerm = $('#search_credit').val().toLowerCase();
+
+        $('#myUL li').each(function(){
+          if ($(this).filter('[data-search-term *= ' + searchTerm + ']').length > 0 || searchTerm.length < 1) {
+            $(this).show();                                                     
+          } else {
+            $(this).hide();                               
+          }
+        });                    
+    }
+
+  </script>
+</head>
+
+<body>
+  <!-- Loading -->
+  <div class="overlay" hidden><div class="loading"></div></div> 
+
+  <!-- big container -->
+  <div id="big-ctn" class="container-fullwidth justify-content-center">
+    <!-- Nav menu top -->
+    <div class="row navs align-items-center mgem1o5 fixed-top">
+      <div class="col-2 text-center" onclick="transition_page_back('index.html?menu=3'); window.location = 'index.html?menu=3';">
+        <i id="i-back" class="fas fa-angle-left"></i>
+      </div>
+      <div class="col-8 text-center">
+        <h5 id="h5-title">รายการเครดิต</h5>
+      </div>
+      <div class="col-1 text-right" onclick="show_search();">
+        <i class="fas fa-search" style="color: white; font-size: 120%; margin-top: 2px;"></i>
+      </div>
+    </div>
+
+    <div id="search_row" class="row mgem1o5 fixed-top" style="margin-top: 4.5em; padding-left: 1.5em; padding-right: 1.5em;" hidden>
+      <div class="col-12">
+        <input id="search_credit" type="text" onkeyup="search()" class="form-control form-control-lg text-center" placeholder="ค้นหาลูกค้า">
+      </div>      
+    </div>
+
+    <div id="row-title" class="row fixed-top" style="margin-top: 4.5em;">
+      <div class="col-1"></div>
+      <div id="title" class="col-5 text-center nopd">ลูกค้า</div>
+      <div id="title" class="col-3 text-center nopd">วางบิล</div>
+      <div id="title" class="col-3 text-center nopd">รวม</div>
+    </div><hr id="title-hr" class="mgem1" style="margin-top: 6.3em; width: 98%;">
+
+    <div id="in-ctn" class="container-fullwidth" style="margin-top: 0!important; height: calc(100vh - (4.5em + 120px));">
+      <ul id="myUL"> </ul> 
+    </div>  
+  </div>
+  <!-- End big container -->
+
+  <!-- Nav menu bottom -->
+  <div class="row fixed-bottom navs">
+    <div class="col-3 text-center" onclick="transition_page_back('index.html?menu=3'); window.location = 'index.html?menu=3';">
+      <i id="i-home" class="fas fa-home menu"></i>
+    </div>
+    <div class="col-3 text-center" onclick="transition_page_next('bell.html'); window.location = 'bell.html';">
+      <div class="dot" hidden></div>
+      <i id="i-bell" class="fas fa-bell menu"></i>
+    </div>
+    <div class="col-3 text-center" onclick="scan();">
+      <i id="i-qrcode" class="fas fa-qrcode menu"></i>
+    </div>
+    <div class="col-3 text-center" onclick="transition_page_next('other.html'); window.location = 'other.html';">
+      <i id="i-bars" class="fa fa-bars menu"></i>
+    </div>
+  </div>
+  <!-- End Nav menu bottom -->
+  <script>
+    //Touch animation
+    $(".mbtn").on("touchstart", function() {
+      $(this).addClass('mbtn-touch');
+    });
+    $(".mbtn").on("touchend", function() {
+      $(this).removeClass('mbtn-touch');
+    });
+  </script>
+</body>
+
+</html>

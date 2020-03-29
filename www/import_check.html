@@ -78,26 +78,26 @@
                 <div id='amount-"+i+"' class='col-1 text-center no-pd'>"+arr_data[i].amt+"</div>\
             </div>\
             <!-- Collapse-1 -->\
-            <div id='collapse-"+i+"' class='container collapse' style='margin-top: 5%;'>\
+            <div id='collapse-"+i+"' class='container collapse' style='margin-top: 2em;'>\
                 <div class='row'>\
                     <div class='col-12 text-center'>\
                         <img id='img' src='"+arr_data[i].img+"' alt='' onclick='show_pic()' class='collapse-square'>\
                     </div>\
                 </div>\
-                <div class='row' style='margin-bottom: 4%; margin-top: 4%;'>\
+                <div class='row' style='margin-bottom: 2em; margin-top: 2em;'>\
                     <div class='col-2'></div>\
                     <div class='col-4 text-center no-pd'>รหัส : </div>\
                     <div class='col-4 text-center no-pd'>"+arr_data[i].qr+"</div>\
                     <div class='col-2'></div>\
                 </div>\
-                <div class='row' style='margin-bottom: 4%;'>\
+                <div class='row' style='margin-bottom: 2em;'>\
                     <div class='col-2'></div>\
                     <div class='col-4 text-center no-pd'>รวม : </div>\
                     <div id='sum-"+i+"' class='col-4 text-center no-pd'>"+sum_prod+"</div>\
                     <div class='col-2'></div>\
                 </div>\
             </div>\
-            <hr id='hr-"+i+"' style='margin-top: 5%;'>");                    
+            <hr id='hr-"+i+"' style='margin-top: 2em;'>");                    
             }            
             $("#net").text(sum.toLocaleString()); // 50000 -> 50,000;
         });
@@ -110,11 +110,15 @@
             var datetime = d.getFullYear() + "-" + (d.getMonth()+1) + "-" + d.getDate() + " " + d.getHours() + ":" + d.getMinutes() + ":" + d.getSeconds(); 
             json_string = JSON.stringify(arr_data);
             var dataString =  "JSON=" + json_string + "&ware_id=" + localStorage.ware_id_im + "&date=" + datetime
-            + "&sum=" + sum + "&user_id=" + localStorage.user_id;
+            + "&sum=" + sum + "&user_id=" + localStorage.user_id + "&type=" + localStorage.ware_type_im;
+            var msg_alert = "";
+            for(var i = 0 ; i < arr_data.length;i++){
+                msg_alert += arr_data[i].name + " คงเหลือ " + (parseInt(arr_data[i].min)+parseInt(arr_data[i].amt)) + '<br>';
+            }
 
             $.ajax({
                 type: "POST",
-                url:"http://ddaccessory.trueddns.com:24330/dd-shop/php/stock_in.php",           
+                url:localStorage.pathServer + "php/stock_in.php",           
                 data: dataString,               
                 beforeSend: function(){
                     $(".overlay").prop('hidden', false);
@@ -122,7 +126,20 @@
                 success: function(data){  
                 $(".overlay").prop('hidden', true);              
                     if(data == "success"){                       
-                        clearAll();         
+                        $.confirm({
+                            title: 'จำนวนคงเหลือใน'+ localStorage.ware_name_im,
+                            content: msg_alert,
+                            backgroundDismiss: false,
+                            buttons: {
+                                formSubmit: {
+                                text: 'ตกลง',
+                                btnClass: 'btn-regis',
+                                action: function () {
+									clearAll();
+                                }
+                                }
+                            }
+                        });
                     }else{
                         $.confirm({
                             title: 'พบข้อผิดพลาด',
@@ -290,10 +307,11 @@
         }
 
         function clearAll(){
-            localStorage.arr_prod = "";          
-            localStorage.arr_prod_i =  "";  
+            localStorage.arr_prod = "";
+            localStorage.arr_prod_i =  "";
             localStorage.ware_id_im = "";
-            localStorage.ware_name_im = "";        
+            localStorage.ware_name_im = "";
+            localStorage.ware_type_im = "";
             transition_page_back('import.html');
             window.location = 'import.html'
         }

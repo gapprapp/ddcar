@@ -45,13 +45,13 @@
 
     #folder-title {
       color: #515151;
-      letter-spacing: 1px;
+      letter-spacing: 2px;
     }    
   </style>
 
   <script>
     var folder;
-    $(document).ready(function() {;
+    $(document).ready(function() {
       url = new URL(window.location.href);
       folder = url.searchParams.get("folder");     
       $("#folder-title").text(folder);
@@ -91,18 +91,6 @@
         $("#i-" + arg).addClass('active');
       });
     }*/
-
-    function doresize() {
-      switch (window.orientation) {
-        case 90: case -90:
-          $("#in-ctn").css('height', $(window).height() - 115);
-          break;
-        default:
-          $("#in-ctn").css('height', $(window).height() - 115);
-          break;
-      }
-    }
-      window.addEventListener('resize', doresize);
 
     function addpic(){
       $.confirm({
@@ -217,7 +205,7 @@
           var imgb64 = $('#img').attr('src');              
           $.ajax({
             type: "POST",
-            url:"http://ddaccessory.trueddns.com:24330/dd-shop/php/add_prod.php",           
+            url:localStorage.pathServer + "php/add_prod.php",           
             data: {'name_prod' : name,
                   'code' : code,
                   'parent' : folder,
@@ -264,7 +252,7 @@
         }else{
           $.ajax({
             type: "POST",
-            url:"http://ddaccessory.trueddns.com:24330/dd-shop/php/add_prod.php",           
+            url:localStorage.pathServer + "php/add_prod.php",           
             data: {'name_prod' : name,
                   'code' : code,
                   'parent' : folder,                  

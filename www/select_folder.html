@@ -45,9 +45,11 @@
     var last_node = 0;
     var from;
     $(document).ready(function() {
-      url = new URL(window.location.href);
-      folder = url.searchParams.get("folder");  
-      from = url.searchParams.get("from");
+      // url = new URL(window.location.href);
+      // folder = url.searchParams.get("folder");  
+      // from = url.searchParams.get("from");      
+      folder = QueryString.folder;
+      from = QueryString.from;
       
       if(folder){
         $("#h5-title").text(folder);
@@ -70,7 +72,7 @@
 
       $.ajax({
         type: "POST",
-        url:"http://ddaccessory.trueddns.com:24330/dd-shop/php/get_folder.php",
+        url:localStorage.pathServer + "php/get_folder.php",
         crossDomain: true,
         data: {'parent' : parent},  
         beforeSend: function(){
@@ -100,13 +102,20 @@
                       $("#show-box").prop('hidden',true); 
                     }                                      
                   } 
+                  obj.sort(function(a,b) {
+                    if ( a.prod_code < b.prod_code)
+                      return -1;
+                    if ( a.prod_code > b.prod_code)
+                      return 1;
+                    return 0;
+                  } );			
                   $.each(obj, function(i, field){
                     if(obj.length-1 > i){
                       text_html = "<div id='row-title-"+i+"' class='row'>" +
-                        "<span id='span-"+i+"' hidden>" + obj[i].title + "</span>" +
+                        "<span id='span-"+i+"' hidden>" + obj[i].prod_id + "</span>" +
                         "<div class='col-2 text-center'><i id='box-"+i+"' class='far fa-check-square six box' onclick='check("+i+")' hidden></i><i class='fa fa-trash-alt i-trash' onclick='remove("+i+")' style='color: #666;' hidden></i><i class='fa fa-edit i-edit' onclick='edit("+i+")' style='color: #666;' hidden></i></div>" +                        
-                        "<div id='getin-"+i+"' class='col-8 text-center title' onclick='getIn(\"" + obj[i].title + "\", "+i+")'>" +
-                        "<h5 id='title-"+i+"'>" + obj[i][2] + "</h5>" +
+                        "<div id='getin-"+i+"' class='col-8 text-center title' onclick='getIn(\"" + obj[i].prod_id + "\", "+i+")'>" +
+                        "<h5 id='title-"+i+"'>" + obj[i].prod_name + "</h5>" +
                         "</div>" +
                         "<div class='col-2'></div>" +
                         "</div >"+
@@ -141,6 +150,29 @@
         // index = i;
     });   
     
+    var QueryString = function () {
+      // This function is anonymous, is executed immediately and
+      // the return value is assigned to QueryString!
+      var query_string = {};
+      var query = window.location.search.substring(1);
+      var vars = query.split("&");
+      for (var i=0;i<vars.length;i++) {
+          var pair = vars[i].split("=");
+              // If first entry with this name
+          if (typeof query_string[pair[0]] === "undefined") {
+          query_string[pair[0]] = decodeURIComponent(pair[1]);
+              // If second entry with this name
+          } else if (typeof query_string[pair[0]] === "string") {
+          var arr = [ query_string[pair[0]],decodeURIComponent(pair[1]) ];
+          query_string[pair[0]] = arr;
+              // If third or later entry with this name
+          } else {
+          query_string[pair[0]].push(decodeURIComponent(pair[1]));
+          }
+      } 
+      return query_string;
+    }();
+
     function show_box(){
       if ($(".box").is(":visible")) {
           $(".box").attr('hidden', true);        
@@ -348,7 +380,7 @@
         if(input != ""){
           $.ajax({
             type: "POST",
-            url: "http://ddaccessory.trueddns.com:24330/dd-shop/php/add_folder.php",
+            url: localStorage.pathServer + "php/add_folder.php",
             data: {
               'title': input,
               'parent': parent
@@ -409,7 +441,7 @@
         if(input != "") {
           $.ajax({
             type: "POST",
-            url: "http://ddaccessory.trueddns.com:24330/dd-shop/php/add_folder.php",
+            url: localStorage.pathServer + "php/add_folder.php",
             data: {
               'title': input,
               'parent': parent
@@ -496,7 +528,7 @@
       // h5 hidden true
       $.ajax({
         type: "POST",
-        url:"http://ddaccessory.trueddns.com:24330/dd-shop/php/rename_folder.php",           
+        url:localStorage.pathServer + "php/rename_folder.php",           
         data: {'old_name' : old_name,
                'name' : name},               
         beforeSend: function(){
@@ -543,7 +575,7 @@
               action: function () {
                 $.ajax({
                   type: "POST",
-                  url:"http://ddaccessory.trueddns.com:24330/dd-shop/php/delete_folder.php",           
+                  url:localStorage.pathServer + "php/delete_folder.php",           
                   data: {'title' : title},               
                   beforeSend: function(){
                       $(".overlay").prop('hidden', false);
@@ -599,7 +631,7 @@
               action: function () {
                 $.ajax({
                   type: "POST",
-                  url:"http://ddaccessory.trueddns.com:24330/dd-shop/php/delete_prod.php",           
+                  url:localStorage.pathServer + "php/delete_prod.php",           
                   data: {'title' : prod_id},               
                   beforeSend: function(){
                       $(".overlay").prop('hidden', false);

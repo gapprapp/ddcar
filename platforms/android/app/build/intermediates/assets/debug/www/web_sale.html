@@ -227,33 +227,35 @@
 								type: "slide",
 								time: 100
 						},
-						onSelectItemEvent: function() {                
-							cus_id = $("#cus").getSelectedItemData().cus_id;						
-							cus_addr = $("#cus").getSelectedItemData().cus_addr;
-							cus_type = $("#cus").getSelectedItemData().cus_type;
-							localStorage.cus_name = $("#cus").getSelectedItemData().cus_name;
-              localStorage.cus_id = cus_id;
-							localStorage.cus_type = cus_type;
-							localStorage.cus_addr = cus_addr;
-							if(cus_addr == ""){
-								cus_addr = "-";
-								localStorage.cus_addr = cus_addr;
-							}
-							cus_tel = $("#cus").getSelectedItemData().cus_tel;
-							localStorage.cus_tel = cus_tel;
-							if(cus_tel == ""){
-								cus_tel = "-";
-								localStorage.cus_tel = cus_tel;
-							}
-							if(cus_type == "ขายส่ง(1)"){
-								setpay('เครดิต (30)')
-							}else if(cus_type == "ขายส่ง(2)"){
-								setpay('เครดิต (60)')
-							}else if(cus_type == "ขายส่ง(3)"){
-								setpay('เครดิต (90)')
-							}
+			// 			onSelectItemEvent: function() {                
+			// 				cus_id = $("#cus").getSelectedItemData().cus_id;						
+			// 				cus_addr = $("#cus").getSelectedItemData().cus_addr;
+			// 				cus_type = $("#cus").getSelectedItemData().cus_type;
+			// 				localStorage.cus_name = $("#cus").getSelectedItemData().cus_name;
+            //   localStorage.cus_id = cus_id;
+			// 				localStorage.cus_type = cus_type;
+			// 				localStorage.cus_addr = cus_addr;
+			// 				if(cus_addr == ""){
+			// 					cus_addr = "-";
+			// 					localStorage.cus_addr = cus_addr;
+			// 				}
+			// 				cus_tel = $("#cus").getSelectedItemData().cus_tel;
+			// 				localStorage.cus_tel = cus_tel;
+			// 				if(cus_tel == ""){
+			// 					cus_tel = "-";
+			// 					localStorage.cus_tel = cus_tel;
+			// 				}
+			// 				// if(cus_type == "ขายส่ง(1)"){
+			// 				// 	setpay('เครดิต (30)')
+			// 				// }else if(cus_type == "ขายส่ง(2)"){
+			// 				// 	setpay('เครดิต (60)')
+			// 				// }else if(cus_type == "ขายส่ง(3)"){
+			// 				// 	setpay('เครดิต (90)')
+			// 				// }else{
+			// 				// 	setpay('เงินสด')
+			// 				// }							
 							
-						},
+			// 			},
 						onChooseEvent: function() {                
 							cus_id = $("#cus").getSelectedItemData().cus_id;						
 							cus_addr = $("#cus").getSelectedItemData().cus_addr;
@@ -278,7 +280,9 @@
 								setpay('เครดิต (60)')
 							}else if(cus_type == "ขายส่ง(3)"){
 								setpay('เครดิต (90)')
-							}						
+							}else{
+								setpay('เงินสด')
+							}
 						}
 				},
 				requestDelay: 300,  

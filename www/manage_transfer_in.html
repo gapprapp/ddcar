@@ -80,10 +80,11 @@
       get_import();
 
       //scroll to bottom
-      $(window).on("scroll", function() {
-        var scrollHeight = $(document).height();
-        var scrollPosition = $(window).height() + $(window).scrollTop();
-        if ((scrollHeight - scrollPosition) / scrollHeight === 0) {          
+      var total_height = $("#in-ctn").height();
+      var temp_hight = $("#in-ctn").height();
+      $("#in-ctn").scroll(function() {            
+        if($("#in-ctn").scrollTop() > total_height) {
+          total_height += temp_hight;
           if(!$("#myUL").prop('hidden')){
             if(bool){
               return 0;
@@ -101,8 +102,8 @@
             get_import_s();
           }
         }
-      });      
-    });
+      });
+    });   
     
     $(document).keydown(function(objEvent) {
       if (objEvent.keyCode == 13) {  //enter pressed
@@ -115,15 +116,16 @@
       $("#myS").prop('hidden', true);
       $("#myUL").prop('hidden', false);
       $("#myD").prop('hidden', true);
-      $("#search_row").prop('hidden', true);
-      $("#date_row").prop('hidden', true);
+      // $("#search_row").prop('hidden', true);
+      // $("#date_row").prop('hidden', true);
       $("#i-back").attr("onclick","transition_page_back('index.html'); window.location = 'index.html';");
+      show_search();
     }
 
-    function get_import(){
+    function get_import(){     
       $.ajax({
         type: "POST",
-        url:"http://ddaccessory.trueddns.com:24330/dd-shop/php/get_transfer.php",
+        url:localStorage.pathServer + "php/get_transfer.php",
         data: {'start': start},       
         beforeSend: function(){
             $(".overlay").prop('hidden', false);
@@ -154,7 +156,7 @@
           });                                          
         }               
       });
-      start += 20;
+      start += 30;
     }
 
     function import_info(arg){
@@ -202,7 +204,7 @@
     function get_import_s(){
       $.ajax({
         type: "POST",
-        url:"http://ddaccessory.trueddns.com:24330/dd-shop/php/get_transfer.php",
+        url:localStorage.pathServer + "php/get_transfer.php",
         data: {'start': start_s, 'value' : val},
         beforeSend: function(){
             $(".overlay").prop('hidden', false);
@@ -233,7 +235,7 @@
           });                                         
         }               
       });
-      start_s += 20;
+      start_s += 30;
     }
 
     function search_date(){
@@ -250,7 +252,7 @@
 
       $.ajax({
         type: "POST",
-        url:"http://ddaccessory.trueddns.com:24330/dd-shop/php/get_transfer.php",         
+        url:localStorage.pathServer + "php/get_transfer.php",         
         data:{'date' : date, 'date_to' : date_to ,'start' : start_d},
         beforeSend: function(){
           $(".overlay").prop('hidden', false);
@@ -281,7 +283,7 @@
           });                                         
         }               
       });  
-      start_d += 20;          
+      start_d += 30;          
     }
 
   </script>
@@ -291,13 +293,12 @@
   <!-- Loading -->
   <div class="overlay" hidden><div class="loading"></div></div> 
 
-<<<<<<< HEAD
   <!-- End big container -->
   <div id="big-ctn" class="container-fullwidth justify-content-center">
     <!-- Nav menu top -->
-    <div class="row navs align-items-center mgem1o5 fixed-top">
-      <div class="col-2 text-center" onclick="transition_page_back('index.html?menu=3'); window.location ='index.html?menu=3';">
-        <i id="i-back" class="fas fa-angle-left"></i>
+    <div id="top-navs" class="row navs align-items-center mgem1o5 fixed-top">
+      <div id="i-back" class="col-2 text-center" onclick="transition_page_back('index.html'); window.location ='index.html';">
+        <i class="fas fa-angle-left"></i>
       </div>
       <div class="col-8 text-center">
         <h5 id="h5-title">รายการสินค้าเข้าร้าน</h5>
@@ -305,18 +306,6 @@
       <div class="col-1 text-right" onclick="show_search();">
         <i class="fas fa-search" style="color: white; font-size: 120%; margin-top: 2px;"></i>
       </div>
-=======
-  <!-- Nav menu top -->
-  <div class="row fixed-top navs">
-    <div id="i-back" class="col-1 text-center" onclick="transition_page_back('index.html?menu=3'); window.location = 'index.html?menu=3';">
-      <i  class="fas fa-angle-left"></i>
-    </div>
-    <div class="col-9 text-center" style="padding-left: 10%; margin-right: 3%;">
-      <h5 id="h5-title">รายการสินค้าเข้า</h5>
-    </div>
-    <div class="col-1 text-right" onclick="show_search();">
-      <i class="fas fa-search" style="color: white; font-size: 120%; margin-top: 5px;"></i>
->>>>>>> parent of a9b330f1... edit scroll to btm
     </div>
 
     <div id="date_row" class="row mgem1o5 fixed-top" style="margin-top: 4.5em;" hidden>
@@ -358,7 +347,7 @@
   <!-- End big container -->
 
   <!-- Nav menu bottom -->
-  <div class="row fixed-bottom navs">
+  <div id="btm-navs" class="row fixed-bottom navs">
     <div class="col-3 text-center" onclick="transition_page_back('index.html?menu=3'); window.location = 'index.html?menu=3';">
       <i id="i-home" class="fas fa-home menu"></i>
     </div>

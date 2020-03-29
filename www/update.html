@@ -46,7 +46,7 @@
 
       $.ajax({ 
         type: "GET",
-        url:"http://ddaccessory.trueddns.com:24330/dd-shop/php/get_lastV.php",
+        url:localStorage.pathServer + "php/get_lastV.php",
         beforeSend: function(){
             $(".overlay").prop('hidden', false);
         },                       
