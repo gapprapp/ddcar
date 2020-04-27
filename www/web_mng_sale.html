@@ -68,6 +68,9 @@
   </style>
   <script>
       $(document).ready(function () {
+        if(!localStorage.user_id){
+				window.location = 'web_login.html';
+			}
         // datepicker
         $('[data-toggle="datepicker"]').datepicker({
             language: 'th-TH',

@@ -80,6 +80,9 @@
 			if(!localStorage.user_id){
 				window.location = 'web_login.html';
 			}
+			if(localStorage.user_role == "พนักงาน"){
+				$("#fund").prop('hidden', true);				
+            }
 			get_header();		
 			setTimeout(function() {$("#name").focus();}, 100);
 
@@ -645,7 +648,11 @@
 			if(bottom < 200){
 				$("#cnt-add").css('max-height', $("#cnt-add").height());
 				$("#cnt-add").animate({scrollTop: $('#cnt-add').prop('scrollHeight')});
-			}   
+			}
+			msg = "";
+			if(localStorage.user_role != "พนักงาน"){
+				msg = '<input id="fundd" type="number" value="'+$('#fund').val()+'" class="form-control text-center no-spin" min="0" readonly>';
+			}  
 			
 			$("#cnt-add").append('<div id="add-'+count+'" class="row mgb-5">'+
 					'<div class="col-1"></div>'+
@@ -665,7 +672,7 @@
             '<input id="amount-'+count+'" value="'+$('#amount').val()+'" type="number" class="form-control text-center no-spin" min="1" readonly>'+
           '</div>'+
           '<div class="col-1 nopd-8">'+
-            '<input id="fundd" type="number" value="'+$('#fund').val()+'" class="form-control text-center no-spin" min="0" readonly>'+
+            msg+
           '</div>'+          
           '<div class="col-1 nopd-8">'+
             '<input id="wholee" type="number" value="'+$('#whole').val()+'" class="form-control text-center no-spin" min="0" readonly>'+

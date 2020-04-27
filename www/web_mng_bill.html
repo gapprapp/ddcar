@@ -65,7 +65,10 @@
   <script>
     var start = start_s = 0;
     var bool = bool_s = false;
-    $(document).ready(function(){    
+    $(document).ready(function(){
+      if(!localStorage.user_id){
+				window.location = 'web_login.html';
+			}
       get_bill();
 
       $(window).scroll(function() {
