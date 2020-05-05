@@ -52,8 +52,16 @@
       if(localStorage.user_role == "เจ้าของร้าน"){
         $('#tabs-admin').prop('hidden',true);         
       }else if(localStorage.user_role == "พนักงาน"){
+        $("#tabs-main").trigger('click');
         $('#tabs-admin').prop('hidden',true);
         $('#tabs-log').prop('hidden',true);          
+      }else if(localStorage.user_role == "ดูคลังสินค้า"){
+        $("#tabs-main").trigger('click');
+        $('#tabs-admin').prop('hidden',true);
+        $('#tabs-log').prop('hidden',true);
+        $("#btn_sale").attr('disabled',true);
+        $("#btn_import").attr('disabled',true);
+        $("#btn_export").attr('disabled',true);
       }
            
 
@@ -241,7 +249,7 @@
     <div id="main" class="scroll container-fullwidth" hidden>
       <div class="row justify-content-center mgem1o5">
         <div class="col-9 text-center">
-          <button class="mbtn" onclick="transition_page_next('sale.html'); window.location = 'sale.html';">ขาย</button>
+          <button id="btn_sale" class="mbtn" onclick="transition_page_next('sale.html'); window.location = 'sale.html';">ขาย</button>
         </div>
       </div>
       <div class="row justify-content-center mgem1o5">
@@ -251,12 +259,12 @@
       </div>
       <div class="row justify-content-center mgem1o5">
         <div class="col-9 text-center">
-          <button class="mbtn" onclick="transition_page_next('import.html'); window.location = 'import.html';">สินค้าเข้า</button>
+          <button id="btn_import" class="mbtn" onclick="transition_page_next('import.html'); window.location = 'import.html';">สินค้าเข้า</button>
         </div>
       </div>
       <div class="row justify-content-center mgem1o5">
         <div class="col-9 text-center">
-          <button class="mbtn" onclick="transition_page_next('export.html'); window.location = 'export.html';">สินค้าออกโกดัง</button>
+          <button id="btn_export" class="mbtn" onclick="transition_page_next('export.html'); window.location = 'export.html';">สินค้าออกโกดัง</button>
         </div>
       </div>
     </div>

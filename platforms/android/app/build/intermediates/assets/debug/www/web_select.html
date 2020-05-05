@@ -71,6 +71,9 @@
     $(document).ready(function() {
       if(!localStorage.user_id){
         window.location = 'web_login.html';
+      }
+      if(localStorage.user_role == "พนักงาน"){
+				$("#mng_sale").prop('hidden', true);
       } 
     });
 
@@ -114,7 +117,7 @@
         <button class="btn btn-lg btn-outline-secondary" onclick="window.location = 'web_mng_export.html'">รายงานสินค้าออกโกดัง</button>
       </div></div>
       <div class="row" style="margin-bottom: 20px;"><div class="col-12 text-center">
-        <button class="btn btn-lg btn-outline-secondary" onclick="window.location = 'web_mng_sale.html'">รายงานสรุปยอดขาย</button>
+        <button id="mng_sale" class="btn btn-lg btn-outline-secondary" onclick="window.location = 'web_mng_sale.html'">รายงานสรุปยอดขาย</button>
       </div></div>
       <div class="row" style="margin-bottom: 20px;"><div class="col-12 text-center">
         <button class="btn btn-lg btn-outline-secondary" onclick="window.location = 'web_credit.html'">รายงานเครดิตลูกค้า</button>

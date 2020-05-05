@@ -5,7 +5,8 @@
     $query = "SELECT * FROM product ORDER BY prod_name ASC";     
     $result = mysqli_query($conn, $query);
 
-    if(mysqli_num_rows($result) > 0){    
+    if(mysqli_num_rows($result) > 0){
+      ini_set('memory_limit', '-1');
       while($row = mysqli_fetch_array($result)){      
         $output[] = $row;  
       }   

@@ -69,6 +69,9 @@
     var start = start_s = 0;
     var bool = bool_s = false;
     $(document).ready(function(){
+      if(!localStorage.user_id){
+				window.location = 'web_login.html';
+			}
       get_import();
 
       $(window).scroll(function() {
@@ -204,10 +207,14 @@
                       '<h3 style="text-decoration: underline;">รายการ</h3>'+
                   '</div>'             
               $.each(obj, function(i, field){
+                cost = ""
+                if(localStorage.user_role != "พนักงาน"){
+                  cost = field.tran_cost
+                }
                 text = text + '<div id="item-'+field.item_id+'" class="row justify-content-center">'+
                   '<div class="col-1 text-center items">'+field.amount+'</div>'+
                   '<div class="col-7 text-center items">'+field.prod_name+'</div>'+
-                  '<div class="col-2 text-center items">'+field.tran_cost+'</div>'+
+                  '<div class="col-2 text-center items">'+cost+'</div>'+
                   '<div class="col-2 text-center items">'+field.amount*field.tran_cost+'</div>'+
                 '</div>'
                 
@@ -268,11 +275,15 @@
                   '<div class="row justify-content-center">'+
                       '<h3 style="text-decoration: underline;">รายการ</h3>'+
                   '</div>'             
-              $.each(obj, function(i, field){               
+              $.each(obj, function(i, field){
+                cost = ""
+                if(localStorage.user_role != "พนักงาน"){
+                  cost = field.tran_cost
+                }
                 text = text + '<div id="item-'+field.item_id+'"" class="row justify-content-center">'+
                   '<div class="col-1 text-center items">'+field.amount+'</div>'+
                   '<div class="col-7 text-center items">'+field.prod_name+'</div>'+
-                  '<div class="col-2 text-center items">'+field.tran_cost+'</div>'+
+                  '<div class="col-2 text-center items">'+cost+'</div>'+
                   '<div class="col-2 text-center items">'+field.amount*field.tran_cost+'</div>'+
                 '</div>'
 

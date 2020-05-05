@@ -11,6 +11,7 @@
   <!-- Bootstrap Import -->
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.devbridge-autocomplete/1.2.27/jquery.autocomplete.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.6/umd/popper.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js"></script>
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.1/css/all.css" integrity="sha384-O8whS3fhG2OnA5Kas0Y9l3cfpmYjapjI0E4theH4iuMD+pLhbf6JI0jIMfYcK3yZ" crossorigin="anonymous">
@@ -62,7 +63,13 @@
   	}
 	.active{
 		color: #666;
-	}	
+	}
+	.autocomplete-suggestions { border: 1px solid #999; background: #FFF; overflow: auto; }
+	.autocomplete-suggestion { padding: 2px 5px; white-space: nowrap; overflow: hidden; }
+	.autocomplete-selected { background: #F0F0F0; }
+	.autocomplete-suggestions strong { font-weight: normal; color:rgb(51, 82, 255); }
+	.autocomplete-group { padding: 2px 5px; }
+	.autocomplete-group strong { display: block; border-bottom: 1px solid #000; }
   </style>
 
   <script>	
@@ -73,6 +80,9 @@
 			if(!localStorage.user_id){
 				window.location = 'web_login.html';
 			}
+			if(localStorage.user_role == "พนักงาน"){
+				$("#fund").prop('hidden', true);				
+            }
 			get_header();		
 			setTimeout(function() {$("#name").focus();}, 100);
 
@@ -98,101 +108,101 @@
 				setTimeout(function() {$("#amount").focus();}, 100);
             }    
 
-			var options = {
-				url: function(phrase) {
-					return "php/search_prod.php?ware_id="+localStorage.ware_id_im+"&type="+localStorage.type_im;
-				},
-				getValue: function(element) {
-					//console.log(element);
-					return element.prod_name;
-				},
-				ajaxSettings: {
-					method: "POST",
-					data: {}
-				},
-				preparePostData: function(data) {     
-					//prod_id = 0;     
-					data.phrase = $("#name").val();
-					return data;
-				},
-				minCharNumber: 3,
-				list: {
-						maxNumberOfElements: 1000,
-
-						showAnimation: {
-								type: "slide",
-								time: 100
-						},
-						hideAnimation: {
-								type: "slide",
-								time: 100
-						},
-
-						onChooseEvent: function() {
-							if($('#btn-b').text() == "เลือกโกดัง/หน้าร้าน"){
-								$.confirm({
-									title: 'พบข้อผิดพลาด',
-									content: 'กรุณาเลือกโกดัง/หน้าร้านก่อนทำรายการ',
-									backgroundDismiss: true,
-									buttons: {
-										formSubmit: {
-											text: 'ตกลง',
-											btnClass: 'btn-regis',
-											action: function () {
-											}
+			var arrayReturn = [];
+			$.ajax({
+				url: "php/get_autoprod.php",
+				async: true,
+				dataType: 'json',
+				success: function (data) {
+					for (var i = 0, len = data.length; i < len; i++) {
+						var id = (data[i].prod_id).toString();
+						arrayReturn.push({'value' : data[i].prod_name, 'id' : id, 'code' : data[i].prod_code,
+						'price' : data[i].prod_price, 'pricesend' : data[i].prod_pricesend, 'cost' : data[i].prod_cost});
+					}					
+					loadSuggestions(arrayReturn);						
+					//console.log(arrayReturn);
+				}
+			});
+			function loadSuggestions(options) {
+				$('#name').autocomplete({
+					lookup: options,
+					showNoSuggestionNotice:true,
+					triggerSelectOnValidInput:false,					
+					onSelect: function (suggestion) {
+						$('#name').val(suggestion.value);
+						if($('#btn-b').text() == "เลือกโกดัง/หน้าร้าน"){
+							$.confirm({
+								title: 'พบข้อผิดพลาด',
+								content: 'กรุณาเลือกโกดัง/หน้าร้านก่อนทำรายการ',
+								backgroundDismiss: true,
+								buttons: {
+									formSubmit: {
+										text: 'ตกลง',
+										btnClass: 'btn-regis',
+										action: function () {
 										}
 									}
-								});  
-								$("#name").val("");
-								return 0;
-							}
-							for(var b = 0; b < count; b++){
-								if($("#name").val() == $("#name-"+b).val()){
-									$.alert({
-										icon: 'fa fa-warning',
-										title: 'เตือน',
-										content: "มีการเพิ่มสินค้า " + $("#name").val() + "กรุณาแก้ไขที่จำนวนของสินค้าที่ได้เพิ่มแล้ว",
-									});
-									set_default();
-									return 0;                
 								}
-							}							
-							var barcode = $("#name").getSelectedItemData().prod_code;
-							var price = $("#name").getSelectedItemData().prod_price;
-							var price_s = $("#name").getSelectedItemData().prod_pricesend;
-							cost_o = $("#name").getSelectedItemData().prod_cost;
-							prod_id = $("#name").getSelectedItemData().prod_id;
-							img = $("#name").getSelectedItemData().img;
-							min = $("#name").getSelectedItemData().min_amount;
-
-							if(cost_o == 0 && price == 0 && price_s == 0){
-								$('#retail').val("");
-								$('#fund').val("");						
-								$('#whole').val("");	 
-							}else{
-								$('#retail').val(price);
-								$('#fund').val(cost_o);						
-								$('#whole').val(price_s);                
-								flag = 1;
-							}   						
-
-							/*$("#name").attr('data-img',img);
-							$('#name[rel=popover]').popover({
-								html: true, 
-								trigger: 'hover',
-								placement: 'left',
-								content: function(){
-								return '<img src='+$(this).data('img')+'>';}
-							});*/ 						
-							$('#barcode').val(barcode);							
-							$('#amount').val("1");						
-							get_place();                   
+							});  
+							$("#name").val("");
+							return 0;
 						}
-				},
-				requestDelay: 300,
-				theme: "blue-light",
-				};
-			$("#name").easyAutocomplete(options);	
+						for(var b = 0; b < count; b++){
+							if($("#name").val() == $("#name-"+b).val()){
+								$.alert({
+									icon: 'fa fa-warning',
+									title: 'เตือน',
+									content: "มีการเพิ่มสินค้า " + $("#name").val() + "กรุณาแก้ไขที่จำนวนของสินค้าที่ได้เพิ่มแล้ว",
+								});
+								set_default();
+								return 0;                
+							}
+						}
+						prod_id = suggestion.id;						
+						$.ajax({
+							url: "php/search_amount.php",
+							async: false,
+							dataType: 'json',
+							type: 'POST',
+							data:{'prod_id' : prod_id,'ware_id': localStorage.ware_id_im,'type': localStorage.type_im},
+							success: function (data) {									
+								if(data.length > 0){
+									min = data[0].amount;
+								}else{
+									min = 0;
+								}																
+							}
+						});				
+						$.ajax({
+							url: "php/search_img.php",
+							async: false,
+							dataType: 'json',
+							type: 'POST',
+							data:{'prod_id' : prod_id},
+							success: function (data) {									
+								img = data[0].img;
+							}
+						});
+						var price = suggestion.price;
+						var price_s = suggestion.pricesend;
+						cost_o = suggestion.cost;
+
+						if(cost_o == 0 && price == 0 && price_s == 0){
+							$('#retail').val("");
+							$('#fund').val("");						
+							$('#whole').val("");							
+						}else{
+							$('#retail').val(price);
+							$('#fund').val(cost_o);						
+							$('#whole').val(price_s);                
+							flag = 1;													
+						}				
+						$('#barcode').val(suggestion.code);
+						$('#amount').val("1");					
+						get_place(); 
+					}
+				});
+			}
 		});	
 		
 		$(document).scannerDetection({
@@ -342,12 +352,12 @@
                             if(obj[i].prod_cost == 0 && obj[i].prod_price == 0 && obj[i].prod_pricesend == 0){
                                 $('#fund').val("");
                                 $('#whole').val("");
-                                $('#retail').val("");  
+								$('#retail').val("");
                             }else{
                                 $('#fund').val(cost_o);
                                 $('#whole').val(obj[i].prod_pricesend);
                                 $('#retail').val(obj[i].prod_price);                     
-                                flag = 1;
+								flag = 1;
                             }                        
 						});  
 						get_place();                                                           
@@ -423,6 +433,9 @@
 
 		arr_place = [];
 		function get_place(){
+			if($('#name').val() == ""){
+				return;
+			}
 			var dataStr;
 			if(localStorage.type_im == "โกดัง"){
 				dataStr = {'prod_id' : prod_id,"ware_id":localStorage.ware_id_im};
@@ -531,8 +544,8 @@
 			var code = $('#barcode').val();
 			var cost = $('#fund').val();
 			var price_s = $('#whole').val();
-			var price_w = $('#retail').val(); 
-			var name = $('#name').val(); 
+			var price_w = $('#retail').val();			
+			var name = $('#name').val();			
 			var amt = $('#amount').val(); 
 			if(!$('#at').prop('placeholder') && $('#at').val() == ""){ 
 				$('#name').focus(); 
@@ -624,7 +637,7 @@
 						}
 					});
 			}
-			$('#name').focus();			          
+			//$('#name').focus();			          
 		}     
 		
 		var count = 0;
@@ -635,8 +648,12 @@
 			if(bottom < 200){
 				$("#cnt-add").css('max-height', $("#cnt-add").height());
 				$("#cnt-add").animate({scrollTop: $('#cnt-add').prop('scrollHeight')});
-			}   
-
+			}
+			msg = "";
+			if(localStorage.user_role != "พนักงาน"){
+				msg = '<input id="fundd" type="number" value="'+$('#fund').val()+'" class="form-control text-center no-spin" min="0" readonly>';
+			}  
+			
 			$("#cnt-add").append('<div id="add-'+count+'" class="row mgb-5">'+
 					'<div class="col-1"></div>'+
           '<div class="col-2">'+
@@ -655,7 +672,7 @@
             '<input id="amount-'+count+'" value="'+$('#amount').val()+'" type="number" class="form-control text-center no-spin" min="1" readonly>'+
           '</div>'+
           '<div class="col-1 nopd-8">'+
-            '<input id="fundd" type="number" value="'+$('#fund').val()+'" class="form-control text-center no-spin" min="0" readonly>'+
+            msg+
           '</div>'+          
           '<div class="col-1 nopd-8">'+
             '<input id="wholee" type="number" value="'+$('#whole').val()+'" class="form-control text-center no-spin" min="0" readonly>'+
@@ -696,12 +713,12 @@
 			arr_data.push(item);	
 			localStorage.setItem('arr_prod', JSON.stringify(arr_data));	
 			$("#btn-b").attr('disabled',true);
-			count++;			
+			count++;					
 		}
 			$('#at').attr("placeholder","");
 			$('#barcode').val("");
 			$('#name').val("");			
-			$('#fund').val("");
+			$('#fund').val("");			
 			$('#whole').val("");
 			$('#retail').val("");
 			$('#amount').val("1");
@@ -729,7 +746,8 @@
 				$("#btn-folder").removeAttr('disabled');
 				$("#btn-def").removeAttr('disabled');
 				$("#name").removeAttr('readonly');
-            }    	
+			}
+			$('#name').focus();
 		}
 		
 		function add_previous(){
