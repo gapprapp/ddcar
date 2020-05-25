@@ -243,15 +243,28 @@
 
      <!-- Search ctn -->
     <div id="search-ctn" class="container justify-content-center" hidden>
-      <div class="row mgem1o5" style="margin-top: 15px;">
+      <div class="row navs align-items-center mgem1o5 fixed-top">
+        <div id="col-back" class="col-2 text-center" onclick="show()">
+          <i id="i-back" class="fas fa-angle-left"></i>
+        </div>
+        <div class="col-8 text-center">
+          <h5 id="h5-title">เช็กสต๊อก</h5>
+        </div>
+      </div>
+      <div id="in-ctn" class="container" style="margin-top: 4em;">
+      <!--<div class="in-ctn row mgem1o5" style="margin-top: 15px;">
+        <div id="col-back" class="col-2 text-center" onclick="show()">
+          <i id="i-back" class="fas fa-angle-left" style="color: black;"></i>
+        </div>-->
         <div class="col-12 text-center">
             <input id="search_prod" type="search" class="form-control form-control-lg text-center" placeholder="ค้นหาสินค้า" autofocus data-index="1">
-        </div>  
-      </div>
-      <div id="add_ctn" class="container" style="overflow-x: hidden !important; overflow-y: auto; height: calc(100vh - 140px) !important;">
+        </div> 
+        <div id="add_ctn" class="container" style="overflow-x: hidden !important; overflow-y: auto; height: calc(100vh - 140px) !important; margin-top: 1em;">
           <ul id="myUL">
           </ul>            
+        </div> 
       </div>
+      
     </div>
     
     <!-- big container -->
