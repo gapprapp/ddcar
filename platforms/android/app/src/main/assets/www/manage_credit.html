@@ -79,7 +79,7 @@
     $(document).ready(function(){
       if(localStorage.bell){
           $('.dot').prop('hidden',false);
-      }  
+      }      
       $.ajax({
         type: "GET",
         url:localStorage.pathServer + "php/get_credit.php",          
@@ -129,6 +129,17 @@
           }                                
         }               
       });
+
+      if(localStorage.myS){
+        var retrievedObject = localStorage.getItem('myS');
+        var data = JSON.parse(retrievedObject)
+        items = data[0].html        
+        show_search()
+        $("#myS").prop('hidden', false);
+        $("#myUL").prop('hidden', true);
+        $("#i-back").attr("onclick","showUL()");
+        $('#myS').append(items)
+      }
     });
 
     $(document).keydown(function(objEvent) {
@@ -139,6 +150,13 @@
     })
 
     function show_credit(arg,arg2){
+      if(!$("#myS").prop('hidden')){        
+        json = [];
+        item = {}
+        item["html"] = items;        
+        json.push(item);
+        localStorage.setItem("myS",JSON.stringify(json));
+      }
       transition_page_next('show_credit.html?credit_id='+arg+'&cd='+arg2);
       window.location = 'show_credit.html?credit_id='+arg+'&cd='+arg2;
     }
@@ -164,6 +182,8 @@
       if($('#search_credit').val() == ""){
         return 0;
       }
+      localStorage.myS = '';
+      items = "";
       $('#search_credit').blur();
       val = $('#search_credit').val();   
       $("#myS").prop('hidden', false);
@@ -174,12 +194,14 @@
     }
 
     function showUL(){
+      localStorage.myS = '';
       $("#myS").prop('hidden', true);
       $("#myUL").prop('hidden', false);
       $("#i-back").attr("onclick","transition_page_back('index.html'); window.location = 'index.html';");
       show_search();
     }
 
+    var items = "";
     function get_credit_s(){
       $.ajax({
         type: "POST",
@@ -206,6 +228,12 @@
                 cd = "เลย";
               } 
               if(cd <= 3 && cd > 1){
+                items = items + '<li class="mgemo5"><div id="cus-1" class="row" onclick="show_credit('+credit_id+',\''+cd+'\')">'+
+                  '<div class="col-1 text-right"><i class="fas fa-circle yellow"></i></div>' +
+                  '<div class="col-5 text-center">'+cus+'</div>'+
+                  '<div class="col-3 text-center">'+cd+' วัน</div>'+
+                  '<div class="col-3 text-center">'+total+'</div>'+
+                  '</div><hr style="margin-top: 4%"></li>'
                 $('#myS').append('<li class="mgemo5"><div id="cus-1" class="row" onclick="show_credit('+credit_id+',\''+cd+'\')">'+
                   '<div class="col-1 text-right"><i class="fas fa-circle yellow"></i></div>' +
                   '<div class="col-5 text-center">'+cus+'</div>'+
@@ -213,6 +241,12 @@
                   '<div class="col-3 text-center">'+total+'</div>'+
                   '</div><hr style="margin-top: 4%"></li>');   
               }else if(cd <= 1 || cd == "เลย"){
+                items = items + '<li class="mgemo5"><div id="cus-1" class="row" onclick="show_credit('+credit_id+',\''+cd+'\')">'+
+                  '<div class="col-1 text-right"><i class="fas fa-circle red"></i></div>' +
+                  '<div class="col-5 text-center">'+cus+'</div>'+
+                  '<div class="col-3 text-center">'+cd+' วัน</div>'+
+                  '<div class="col-3 text-center">'+total+'</div>'+
+                  '</div><hr style="margin-top: 4%"></li>'
                 $('#myS').append('<li class="mgemo5"><div id="cus-1" class="row" onclick="show_credit('+credit_id+',\''+cd+'\')">'+
                   '<div class="col-1 text-right"><i class="fas fa-circle red"></i></div>' +
                   '<div class="col-5 text-center">'+cus+'</div>'+
@@ -220,6 +254,12 @@
                   '<div class="col-3 text-center">'+total+'</div>'+
                   '</div><hr style="margin-top: 4%"></li>');  
               }else{
+                items = items + '<li class="mgemo5"><div id="cus-1" class="row" onclick="show_credit('+credit_id+',\''+cd+'\')">'+
+                  '<div class="col-1 text-right"><i class="fas fa-circle green"></i></div>' +
+                  '<div class="col-5 text-center">'+cus+'</div>'+
+                  '<div class="col-3 text-center">'+cd+' วัน</div>'+
+                  '<div class="col-3 text-center">'+total+'</div>'+
+                  '</div><hr style="margin-top: 4%"></li>'
                 $('#myS').append('<li class="mgemo5"><div id="cus-1" class="row" onclick="show_credit('+credit_id+',\''+cd+'\')">'+
                   '<div class="col-1 text-right"><i class="fas fa-circle green"></i></div>' +
                   '<div class="col-5 text-center">'+cus+'</div>'+

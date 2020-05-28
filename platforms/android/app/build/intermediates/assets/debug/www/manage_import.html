@@ -68,6 +68,9 @@
         $("#date").append(" - " + e.date);
         $("#date_row").prop('hidden', false);
         $("#search_row").prop('hidden', true);
+        localStorage.myS = '';
+        localStorage.myD = '';
+        items = "";
         start_d = 0;
         bool_d = false;
         $("#myS").prop('hidden', true);
@@ -78,6 +81,30 @@
         search_date();
       });
       get_import();
+
+      if(localStorage.myS){
+        var retrievedObject = localStorage.getItem('myS');
+        var data = JSON.parse(retrievedObject)
+        items = data[0].html
+        start_s = data[0].start_s
+        show_search()
+        $("#myS").prop('hidden', false);
+        $("#myUL").prop('hidden', true);
+        $("#myD").prop('hidden', true);        
+        $("#i-back").attr("onclick","showUL()");
+        $('#myS').append(items)
+      }else if(localStorage.myD){
+        var retrievedObject = localStorage.getItem('myD');
+        var data = JSON.parse(retrievedObject)
+        items = data[0].html
+        start_d = data[0].start_d
+        show_search()
+        $("#myS").prop('hidden', true);
+        $("#myUL").prop('hidden', true);
+        $("#myD").prop('hidden', false);        
+        $("#i-back").attr("onclick","showUL()");
+        $('#myD').append(items)
+      }
 
       //scroll to bottom
       var total_height = $("#in-ctn").height();
@@ -113,6 +140,8 @@
     })
 
     function showUL(){
+      localStorage.myS = '';
+      localStorage.myD = '';
       $("#myS").prop('hidden', true);
       $("#myUL").prop('hidden', false);
       $("#myD").prop('hidden', true);
@@ -160,6 +189,21 @@
     }
 
     function import_info(arg){
+      if(!$("#myS").prop('hidden')){        
+        json = [];
+        item = {}
+        item["html"] = items;
+        item["start_s"] = start_s;
+        json.push(item);
+        localStorage.setItem("myS",JSON.stringify(json));
+      }else if(!$("#myD").prop('hidden')){        
+        json = [];
+        item = {}
+        item["html"] = items;
+        item["start_d"] = start_d;
+        json.push(item);
+        localStorage.setItem("myD",JSON.stringify(json));
+      }
       transition_page_next('import_info.html?id='+arg);
       window.location = 'import_info.html?id='+arg;
     }
@@ -189,6 +233,9 @@
       if($('#search_import').val() == ""){
         return 0;
       }
+      localStorage.myS = '';
+      localStorage.myD = '';
+      items = "";
       $('#search_import').blur();
       val = $('#search_import').val();
       start_s = 0;
@@ -201,6 +248,7 @@
       get_import_s();
     }
 
+    var items = "";
     function get_import_s(){
       $.ajax({
         type: "POST",
@@ -220,6 +268,17 @@
               var txt = field.date_time.split(" ");
               var txt2 = txt[0].split("-");
               var date = txt2[2] + "/" + txt2[1] + "/" + txt2[0].substr(2);
+              items = items + '<li class="mgemo5"> <div class="row" onclick="import_info('+field.stock_id+')">'+
+                '<div class="col-5 text-center no-pd">' +
+                  '<p>'+field.stock_number+'</p>' +
+                '</div>' +
+                '<div class="col-3 text-center no-pd">' +
+                  '<p>'+date+'</p>' +
+                '</div>' +
+                '<div class="col-4 text-center no-pd">' +
+                  '<p>'+field.ware_name+'</p>' +
+                '</div>' +
+              '</div><hr></li>'
               $('#myS').append('<li class="mgemo5"> <div class="row" onclick="import_info('+field.stock_id+')">'+
                 '<div class="col-5 text-center no-pd">' +
                   '<p>'+field.stock_number+'</p>' +
@@ -268,6 +327,17 @@
               var txt = field.date_time.split(" ");
               var txt2 = txt[0].split("-");
               var date = txt2[2] + "/" + txt2[1] + "/" + txt2[0].substr(2);
+              items = items + '<li class="mgemo5"> <div class="row" onclick="import_info('+field.stock_id+')">'+
+                '<div class="col-5 text-center no-pd">' +
+                  '<p>'+field.stock_number+'</p>' +
+                '</div>' +
+                '<div class="col-3 text-center no-pd">' +
+                  '<p>'+date+'</p>' +
+                '</div>' +
+                '<div class="col-4 text-center no-pd">' +
+                  '<p>'+field.ware_name+'</p>' +
+                '</div>' +
+              '</div><hr></li>'
               $('#myD').append('<li class="mgemo5"> <div class="row" onclick="import_info('+field.stock_id+')">'+
                 '<div class="col-5 text-center no-pd">' +
                   '<p>'+field.stock_number+'</p>' +
