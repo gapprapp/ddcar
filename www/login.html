@@ -56,15 +56,32 @@
             }         
         })
 
+        function getCookie(cname) {
+            var name = cname + "=";
+            var decodedCookie = decodeURIComponent(document.cookie);
+            var ca = decodedCookie.split(';');
+            for(var i = 0; i <ca.length; i++) {
+                var c = ca[i];
+                while (c.charAt(0) == ' ') {
+                c = c.substring(1);
+                }
+                if (c.indexOf(name) == 0) {
+                return c.substring(name.length, c.length);
+                }
+            }
+            return "";
+        }
+        
         function login(){
             getConfig();
-            alert(window.localStorage.pathServer)
+            var path = getCookie("pathServer")
+            alert(path)
             var name = $('#name').val();
             var pass = $('#pass').val();
             if(name && pass){
                 $.ajax({
                     type: "POST",
-                    url: window.localStorage.pathServer + "php/login.php",
+                    url: path + "php/login.php",
                     data: {'name': name,
                         'pass' : pass},    
                     beforeSend: function(){
