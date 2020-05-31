@@ -58,12 +58,13 @@
 
         function login(){
             getConfig();
+            alert(window.localStorage.pathServer)
             var name = $('#name').val();
             var pass = $('#pass').val();
             if(name && pass){
                 $.ajax({
                     type: "POST",
-                    url: localStorage.pathServer + "php/login.php",
+                    url: window.localStorage.pathServer + "php/login.php",
                     data: {'name': name,
                         'pass' : pass},    
                     beforeSend: function(){
