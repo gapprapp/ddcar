@@ -124,10 +124,79 @@
 				}
 			});
 			function loadSuggestions(options) {
-				$('#name').autocomplete({
-					lookup: options,
+				$('#name').autocomplete({					
 					showNoSuggestionNotice:true,
-					triggerSelectOnValidInput:false,					
+					triggerSelectOnValidInput:false,
+					lookup: function(query, done) {
+						// query is what you type
+						// done is what is returned to the user
+
+						// BEGIN hasMatch() function
+						function hasMatch(key_value, match_type) {
+						// BEGIN if match_type === "start"
+						if (match_type === "start") {
+							// check if query is at the 0 index of object's 'value' string
+							var is_at_start_of_string =
+							key_value.toLowerCase().indexOf(query.toLowerCase()) === 0;
+							if (is_at_start_of_string === true) {
+							console.log("query is at start of object's 'value' string");
+							}
+							return is_at_start_of_string;
+						} else if (match_type === "anywhere") {
+							// END if match_type === "start"
+
+							// BEGIN if match_type === "anywhere"
+							// check if query is at any index of object's 'product_desc' string
+							var exists_in_string =
+							key_value.toLowerCase().indexOf(query.toLowerCase()) !== -1;
+							if (exists_in_string === true) {
+							console.log("query exists in product_desc string");
+							}
+							return exists_in_string;
+						}
+						// END if match_type === "anywhere"
+						}
+						// END hasMatch() function
+
+						// declare variables
+						// the iterator
+						var i;
+						// a result object
+						var obj;
+						// the array containing result objects
+						var matches = [];
+
+						// BEGIN if query is empty string
+						// return an empty array
+						if (query === "") {
+						console.log("this thing is happening");
+						var result = {}; 
+						result["suggestions"] = [];
+						done(result);
+						return; 
+						}
+						// END if query is empty string
+						// return an empty array
+
+						// get length of array_of_objects
+						var products_array_length = options.length;
+
+						// for each object in the array, call the hasMatch() function and pass it the object's 'value' and 'product_desc' strings
+						for (i = 0; i < products_array_length; i++) {
+						obj = options[i];
+						// if either of the below conditions return true,
+						// push the object to the matches array
+						if (
+							hasMatch(obj.value, "start") ||
+							hasMatch(obj.code, "anywhere")
+						) {
+							matches.push(obj);
+						}
+						}
+						var result = {}; 
+						result["suggestions"] = matches;
+						done(result);
+					},					
 					onSelect: function (suggestion) {
 						$('#name').val(suggestion.value);
 						if($('#btn-b').text() == "เลือกโกดัง/หน้าร้าน"){
