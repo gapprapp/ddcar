@@ -184,8 +184,8 @@
 						// if either of the below conditions return true,
 						// push the object to the matches array
 						if (
-							hasMatch(obj.value, "start") ||
-							hasMatch(obj.code, "anywhere")
+							hasMatch(obj.value, "anywhere") ||
+							hasMatch(obj.code, "start")
 						) {
 							matches.push(obj);
 						}
