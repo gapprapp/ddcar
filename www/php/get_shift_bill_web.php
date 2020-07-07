@@ -1,9 +1,10 @@
 <?php
     include "db.php";
-    $output = array();   
-    $date = $_POST['date'];
-    $date_from = $date.' 00:00:00';
-    $date_to = $date.' 23:59:59';
+    $output = array();
+    $date_f = $_POST['datefrom'];
+    $date_t = $_POST['dateto'];
+    $date_from = $date_f.' 00:00:00';
+    $date_to = $date_t.' 23:59:59';
     $txt = "(cancel)";    
 
     $query = "SELECT s.order_id,s.order_number,u.user_name,s.total_price,s.count FROM sale_order s INNER JOIN user u
