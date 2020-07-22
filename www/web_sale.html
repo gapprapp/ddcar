@@ -879,6 +879,27 @@
 			$("#btn-save-"+arg).prop('hidden', false);
 
 			$('#amount-'+arg).on("keyup input", function(){
+				if(parseInt($("#amount-"+arg).val()) > parseInt(arr_data[arg].min)){
+					$.confirm({
+						title: 'เตือน',
+						content: 'สินค้ามีจำนวนไม่พอใน' + $('#btn-b').text() + ' สินค้ามีจำนวน ' + arr_data[arg].min,
+						backgroundDismiss: true,
+						buttons: {
+							formSubmit: {
+							text: 'ตกลง',
+							btnClass: 'btn-regis',
+							action: function () {
+							}
+							}
+						}
+					}); 
+					$("#amount-" + arg).val(arr_data[arg].min);
+					var price = $('#price-'+arg).val();
+					var amt = $("#amount-" + arg).val();
+					var total = price*amt;
+					$('#total-'+arg).val(total);
+					return 0;
+				}
 				var price = $('#price-'+arg).val();
 				var amt = $("#amount-" + arg).val();
 				var total = price*amt;
