@@ -67,38 +67,69 @@
     }
   </style>
   <script>
+      var optionD
       $(document).ready(function () {
         if(!localStorage.user_id){
 				window.location = 'web_login.html';
 			}
-        // datepicker
-        $('[data-toggle="datepicker"]').datepicker({
+
+      optionD = {
             language: 'th-TH',
             format: 'yyyy-mm-dd',
-            autoHide: true
-        }).on('pick.datepicker', function (e) {
+            autoHide: true,
+            startView: 0,                     
+        }
+        $('[data-toggle="datepicker"]').datepicker(optionD)
+        // datepicker
+        $('[data-toggle="datepicker"]').on('pick.datepicker', function (e) {
+            if($('#btn-b').text() == "วัน" && (e.view == "month" || e.view == "year")){
+              return 0;
+            }else if($('#btn-b').text() == "เดือน" && e.view == "year"){
+              return 0;
+            }
+            //
             arr = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
-            edate = e.date.toString()
+            edate = e.date.toString()                                 
             d = edate.split(" ")
             day = d[2]
             year = d[3]
             month = arr.indexOf(d[1])
-            date = year + "-" + (month+1) + "-" + day
-            search_date(date); 
+            //
+            if($('#btn-b').text() != "วัน"){              
+              if($('#btn-b').text() == "ปี"){
+                if(e.view == "year"){
+                  $('[data-toggle="datepicker"]').datepicker('hide');
+                  datefrom = year + "-01-01"
+                  dateto = year + "-12-31"
+                }                
+              }else{
+                if(e.view == "month"){
+                  $('[data-toggle="datepicker"]').datepicker('hide');
+                  var lastd = new Date(year, month + 1, 0);
+                  datefrom = year + "-" + (month+1) + "-01"
+                  dateto = year + "-" + (month+1) + "-" + lastd.getDate()
+                }
+              } 
+            }else{
+              datefrom = year + "-" + (month+1) + "-" + day
+              dateto = year + "-" + (month+1) + "-" + day
+            }
+            search_date(datefrom,dateto); 
         });
 
         var d = new Date($.now());
-        var datetime = d.getFullYear() + "-" + (d.getMonth()+1) + "-" + d.getDate(); 
-        search_date(datetime); 
+        var datetime = d.getFullYear() + "-" + (d.getMonth()+1) + "-" + d.getDate();
+        var dateto = d.getFullYear() + "-" + (d.getMonth()+1) + "-" + d.getDate();
+        search_date(datetime,dateto); 
       });
 
-      function search_date(datetime){
+      function search_date(datefrom,dateto){
         $('#ctn-top').empty()
         $('#myUL').empty();
         $.ajax({
             type: "POST",
-            url:"php/get_shift_bill.php",
-            data:{'date':datetime},
+            url:"php/get_shift_bill_web.php",
+            data:{'datefrom':datefrom , 'dateto':dateto},
             beforeSend: function(){
                 EasyLoading.show({                           
                     text: "กำลังโหลด"
@@ -690,6 +721,34 @@
 			localStorage.clear();
 		}
         
+        function setview(arg){
+          $('#btn-b').text(arg);
+          if(arg == "วัน"){
+            optionD = {
+                language: 'th-TH',
+                format: 'yyyy-mm-dd',
+                autoHide: true,
+                startView: 0,            
+            }           
+          }else if(arg == "เดือน"){
+            optionD = {
+                language: 'th-TH',
+                format: 'yyyy-mm',
+                autoHide: true,
+                startView: 1,            
+            }            
+          }else if(arg == "ปี"){
+            optionD = {
+                language: 'th-TH',
+                format: 'yyyy',
+                autoHide: true,
+                startView: 2,            
+            }
+          }
+          $('[data-toggle="datepicker"]').datepicker('destroy');
+          $('[data-toggle="datepicker"]').datepicker(optionD)
+        }
+
   </script>
 </head>
 
@@ -715,7 +774,12 @@
         </div><br><br>
         <div class="container-fullwidth">
             <div class="input-group row justify-content-center" style="margin-bottom: 4%; margin-left: 0.5%">
-                <button type="text" class="btn btn-lg btn-secondary text-center" style="width: 60%;">เลือกวันที่</button>
+                <button id="btn-b" type="text" class="btn dropdown-toggle btn-lg btn-secondary text-center" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="width: 50%;">วัน</button>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                  <a class="dropdown-item text-center" href="#" onclick="setview('วัน')">วัน</a>
+                  <a class="dropdown-item text-center" href="#" onclick="setview('เดือน')">เดือน</a>
+                  <a class="dropdown-item text-center" href="#" onclick="setview('ปี')">ปี</a>                  
+                </div>
                 <button id="dpicker"  class="btn btn-outline-secondary" type="button" style="margin-left: 10px;" data-toggle="datepicker">
                     <i class="fa fa-calendar-alt"></i>
                 </button>

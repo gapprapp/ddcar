@@ -1,6 +1,6 @@
 <?php
     include "db.php";
-    $output = array();
+    $output = array();   
     $date = $_POST['date'];
     $date_from = $date.' 00:00:00';
     $date_to = $date.' 23:59:59';

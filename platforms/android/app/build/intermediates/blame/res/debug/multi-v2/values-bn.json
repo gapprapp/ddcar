@@ -76,6 +76,21 @@
             ]
         },
         {
+            "outputFile": "C:\\MewP\\ddcar\\platforms\\android\\app\\build\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values-bn\\values-bn.xml",
+            "map": [
+                {
+                    "source": "C:\\Users\\Pawarit\\.gradle\\caches\\transforms-1\\files-1.1\\support-compat-27.1.1.aar\\5a2848d469d1d668039878ea50f89b92\\res\\values-bn\\values-bn.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endColumns": "100",
+                        "endOffsets": "151"
+                    }
+                }
+            ]
+        },
+        {
             "outputFile": "D:\\Users\\phoenix\\Documents\\GitHub\\ddcar\\D:\\Users\\phoenix\\Documents\\GitHub\\ddcar\\D:\\Users\\phoenix\\Documents\\GitHub\\ddcar\\D:\\Users\\phoenix\\Documents\\ddcar\\D:\\Users\\phoenix\\Documents\\ddcar\\D:\\Users\\phoenix\\Documents\\ddcar\\D:\\GitHub\\ddcar\\platforms\\android\\app\\build\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values-bn\\values-bn.xml",
             "map": [
                 {

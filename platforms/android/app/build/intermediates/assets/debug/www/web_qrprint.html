@@ -13,6 +13,7 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.6/umd/popper.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.devbridge-autocomplete/1.2.27/jquery.autocomplete.min.js"></script>
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.1/css/all.css" integrity="sha384-O8whS3fhG2OnA5Kas0Y9l3cfpmYjapjI0E4theH4iuMD+pLhbf6JI0jIMfYcK3yZ" crossorigin="anonymous">
 
   <!-- Super cool dialog-->
@@ -61,7 +62,13 @@
   	}
 	.active{
 		color: #666;
-	}	
+	}
+	.autocomplete-suggestions { border: 1px solid #999; background: #FFF; overflow: auto; }
+	.autocomplete-suggestion { padding: 2px 5px; white-space: nowrap; overflow: hidden; }
+	.autocomplete-selected { background: #F0F0F0; }
+	.autocomplete-suggestions strong { font-weight: normal; color: rgb(51, 82, 255); }
+	.autocomplete-group { padding: 2px 5px; }
+	.autocomplete-group strong { display: block; border-bottom: 1px solid #000; }
 	</style>
 	
 	<script>	
@@ -96,40 +103,100 @@
 					count = arr_data[arr_data.length-1].count + 1;             
 					add_previous();				 	
 				}, 500);					
-      }				  		   
+      		}
 
-			var options = {
-				url: function(phrase) {
-					return "php/search_prod.php";
-				},
-				getValue: function(element) {
-					//console.log(element);
-					return element.prod_name;
-				},
-				ajaxSettings: {
-					method: "POST",
-					data: {}
-				},
-				preparePostData: function(data) {     
-					prod_id = 0;     
-					data.phrase = $("#name").val();
-					return data;
-				},
-				minCharNumber: 3,
-				list: {
-						maxNumberOfElements: 1000,
+			var arrayReturn = [];
+			$.ajax({
+				url: "php/get_autoprod.php",
+				async: true,
+				dataType: 'json',
+				success: function (data) {
+					for (var i = 0, len = data.length; i < len; i++) {
+						var id = (data[i].prod_id).toString();
+						arrayReturn.push({'value' : data[i].prod_name, 'id' : id, 'code' : data[i].prod_code,
+						'price' : data[i].prod_price, 'pricesend' : data[i].prod_pricesend, 'cost' : data[i].prod_cost});
+					}					
+					loadSuggestions(arrayReturn);						
+					//console.log(arrayReturn);
+				}
+			});	
+			function loadSuggestions(options) {
+				$('#name').autocomplete({					
+					showNoSuggestionNotice:true,
+					triggerSelectOnValidInput:false,
+					lookup: function(query, done) {
+						// query is what you type
+						// done is what is returned to the user
 
-						showAnimation: {
-								type: "slide",
-								time: 100
-						},
-						hideAnimation: {
-								type: "slide",
-								time: 100
-						},
+						// BEGIN hasMatch() function
+						function hasMatch(key_value, match_type) {
+						// BEGIN if match_type === "start"
+						if (match_type === "start") {
+							// check if query is at the 0 index of object's 'value' string
+							var is_at_start_of_string =
+							key_value.toLowerCase().indexOf(query.toLowerCase()) === 0;
+							if (is_at_start_of_string === true) {
+							console.log("query is at start of object's 'value' string");
+							}
+							return is_at_start_of_string;
+						} else if (match_type === "anywhere") {
+							// END if match_type === "start"
 
-						onChooseEvent: function() {
-							for(var b = 0; b < count; b++){
+							// BEGIN if match_type === "anywhere"
+							// check if query is at any index of object's 'product_desc' string
+							var exists_in_string =
+							key_value.toLowerCase().indexOf(query.toLowerCase()) !== -1;
+							if (exists_in_string === true) {
+							console.log("query exists in product_desc string");
+							}
+							return exists_in_string;
+						}
+						// END if match_type === "anywhere"
+						}
+						// END hasMatch() function
+
+						// declare variables
+						// the iterator
+						var i;
+						// a result object
+						var obj;
+						// the array containing result objects
+						var matches = [];
+
+						// BEGIN if query is empty string
+						// return an empty array
+						if (query === "") {
+						console.log("this thing is happening");
+						var result = {}; 
+						result["suggestions"] = [];
+						done(result);
+						return; 
+						}
+						// END if query is empty string
+						// return an empty array
+
+						// get length of array_of_objects
+						var products_array_length = options.length;
+
+						// for each object in the array, call the hasMatch() function and pass it the object's 'value' and 'product_desc' strings
+						for (i = 0; i < products_array_length; i++) {
+						obj = options[i];
+						// if either of the below conditions return true,
+						// push the object to the matches array
+						if (
+							hasMatch(obj.value, "anywhere") ||
+							hasMatch(obj.code, "start")
+						) {
+							matches.push(obj);
+						}
+						}
+						var result = {}; 
+						result["suggestions"] = matches;
+						done(result);
+					},
+					onSelect: function (suggestion) {
+						$('#name').val(suggestion.value);						
+						for(var b = 0; b < count; b++){
 								if($("#name").val() == $("#name-"+b).val()){
 									$.alert({
 										icon: 'fa fa-warning',
@@ -139,20 +206,25 @@
 									set_default();
 									return 0;                
 								}
-							}							
-							var barcode = $("#name").getSelectedItemData().prod_code;
-							price = $("#name").getSelectedItemData().prod_price;					
-							prod_id = $("#name").getSelectedItemData().prod_id;
-							img = $("#name").getSelectedItemData().img;						
-						
-							$('#barcode').val(barcode);							
-							$('#amount').val("1");					               
-						}
-				},
-				requestDelay: 300,
-				theme: "blue-light",
-				};
-			$("#name").easyAutocomplete(options);	
+							}
+						prod_id = suggestion.id;						
+						$.ajax({
+							url: "php/search_img.php",
+							async: false,
+							dataType: 'json',
+							type: 'POST',
+							data:{'prod_id' : prod_id},
+							success: function (data) {									
+								img = data[0].img;
+							}
+						});						
+						var barcode = suggestion.code;
+						price = suggestion.price;						
+						$('#barcode').val(barcode);							
+						$('#amount').val("1");
+					}
+				});
+			}
 		});	
 		
 		$(document).scannerDetection({
