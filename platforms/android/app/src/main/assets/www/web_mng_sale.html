@@ -158,11 +158,11 @@
                         profit += parseFloat(sum)
                     });                   
                     $('#ctn-top').append('<div class="col-6 text-right">' +
-                                            '<h4>ทั้งหมด : '+net+'</h4>' +
+                                            '<h4>ทั้งหมด : '+net.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")+'</h4>' +
                                         '</div>' +
                                         '<div class="col-6 text-left">' +
-                                            '<h4>กำไรสุทธิ : '+profit+'</h4>' +
-                                        '</div>');  
+                                            '<h4>กำไรสุทธิ : '+profit.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")+'</h4>' +
+                                        '</div>');
                 }                                
             }               
         });
@@ -782,6 +782,9 @@
                 </div>
                 <button id="dpicker"  class="btn btn-outline-secondary" type="button" style="margin-left: 10px;" data-toggle="datepicker">
                     <i class="fa fa-calendar-alt"></i>
+                </button>
+                <button class="btn btn-lg btn-info" onclick="window.print()" style="color: white; margin-left: 10px;">พิมพ์รายการทั้งหมด
+                  <i class="fas fa-print"></i>
                 </button>
             </div>
         </div>

@@ -4,11 +4,82 @@ function scan(arg){
             if(!result.cancelled){
                 // In this case we only want to process QR Codes
                 if(result.format == "QR_CODE"){
-                    var value = result.text;                        
-                            
-                    $.ajax({
+                    var value = result.text;
+                    
+                    if(value.includes("[transfer]")){
+                        var indexT = value.indexOf("]");
+                        indexT += 1
+                        var valueSS = value.substring(indexT)
+                        var groupStr = valueSS.split("|")
+                        var prod_id = groupStr[0].split(",")
+                        var cost = groupStr[1].split(",")
+                        var amt = groupStr[2].split(",")
+                        var ware_id = groupStr[3]
+                        var arr_data = [];
+                        var sum = 0
+                        //var msg_alert = "";
+                        for(var i = 0 ; i < prod_id.length ; i++){
+                            item = {}
+                            item ["prod_id"] =  prod_id[i];
+                            item ["cost"] =  cost[i];
+                            item ["amt"] =  amt[i]
+                            item ["addr"] = ""
+                            arr_data.push(item);
+                            var sum_prod = cost[i]*amt[i];
+                            sum += parseInt(sum_prod);
+                            //msg_alert += arr_data[i].name + " คงเหลือ " + (parseInt(arr_data[i].min)+parseInt(arr_data[i].amt)) + '<br>';                          
+                        }
+                        var d = new Date($.now());         
+                        var datetime = d.getFullYear() + "-" + (d.getMonth()+1) + "-" + d.getDate() + " " + d.getHours() + ":" + d.getMinutes() + ":" + d.getSeconds();
+                        json_string = JSON.stringify(arr_data);
+                        var dataString =  "JSON=" + json_string + "&ware_id=6" + "&date=" + datetime
+                        + "&sum=" + sum + "&user_id=" + localStorage.user_id + "&type=หน้าร้าน";
+                        $.ajax({
+                            type: "POST",
+                            url:localStorage.pathServer + "php/stock_in.php",           
+                            data: dataString,               
+                            beforeSend: function(){
+                                $(".overlay").prop('hidden', false);
+                            },             
+                            success: function(data){  
+                            $(".overlay").prop('hidden', true);              
+                                if(data == "success"){                       
+                                    $.confirm({
+                                        title: 'นำสินค้าเข้าหน้าร้าน',
+                                        content: 'สำเร็จ',
+                                        backgroundDismiss: true,
+                                        buttons: {
+                                            formSubmit: {
+                                            text: 'ตกลง',
+                                            btnClass: 'btn-regis',
+                                            action: function () {
+                                                document.elementFromPoint(0, 0).click();
+                                            }
+                                            }
+                                        }
+                                    });
+                                }else{
+                                    $.confirm({
+                                        title: 'พบข้อผิดพลาด',
+                                        content: 'ลองอีกครั้ง',
+                                        backgroundDismiss: true,
+                                        buttons: {
+                                            formSubmit: {
+                                            text: 'ตกลง',
+                                            btnClass: 'btn-regis',
+                                            action: function () {
+                                                document.elementFromPoint(0, 0).click();
+                                            }
+                                            }
+                                        }
+                                    });
+                                }
+                            }               
+                        });
+                    }else{
+                        $.ajax({
                         type: "POST",
-                        url: "http://ddaccessory.trueddns.com:24330/dd-shop/php/check_amt_prod.php",                
+                        url: localStorage.pathServer + "php/check_amt_prod.php",
                         data: {'qr': value},
                         beforeSend: function(){
                             $(".overlay").prop('hidden', false);
@@ -37,7 +108,7 @@ function scan(arg){
                                     addr = "";
                                     $.ajax({
                                         type: "POST",
-                                        url: "http://ddaccessory.trueddns.com:24330/dd-shop/php/get_place.php",
+                                        url: localStorage.pathServer + "php/get_place.php",
                                         data: datastr,
                                         async: false,
                                         beforeSend: function(){
@@ -92,7 +163,8 @@ function scan(arg){
                               });  
                             }                                                                                                                  
                         }               
-                    });         
+                        });
+                    }       
                 }else{
                     //alert("Sorry, only qr codes this time ;)");
                 }
