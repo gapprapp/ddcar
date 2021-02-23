@@ -196,11 +196,13 @@
       });
       start_s += 30;
     }
-  
+    
+    var dt,username,warename
     function appendCollapse(index){
         if($("#detail-"+index).length){
             //
-        }else{          
+        }else{    
+          arr_data = [];
           var text = ""
           $.ajax({
             type: "POST",
@@ -231,12 +233,28 @@
                   '<div class="col-2 text-center items">'+cost+'</div>'+
                   '<div class="col-2 text-center items">'+field.amount*field.stock_out_cost+'</div>'+
                 '</div>'
+
+                item = {}
+                item ["prod_id"] =  field.prod_id
+                item ["qr"] =  field.prod_code
+                item ["name"] =  field.prod_name
+                item ["amt"] =  field.amount
+                item ["cost"] =  field.stock_out_cost
+                dt = field.date_time
+                username = field.user_name
+                warename = field.ware_name
+                arr_data.push(item);
               });
               text = text + '<hr style="width: 50%; margin: auto; margin-top: 1em;">'+
                   '<div class="row" style="margin-top: 1em;">'+
                     '<div class="col-4 text-right"><h4>ผู้ทำรายการ</h4></div>'+
                       '<div class="col-4 text-right"><h4>'+obj[0].user_name+'</h4></div>'+ 
-                  '</div>'+  
+                  '</div>'+
+                  '<div class="row justify-content-center" style="margin-top: 1em;">'+
+                  '<div class="col-4 text-center">'+                   
+                    '<button onclick="print.apply(this,arr_data)" class="btn btn-lg btn-warning" style="color: white;">พิมพ์รายการ  <i class="fas fa-print"></i></button>'+
+                '</div>'+        
+                '</div>'+  
                   '</div>'+
                 '</div>';                   
             }               
@@ -249,10 +267,12 @@
           }, 1100);
     }
 
+
     function appendCollapses(index){
         if($("#details-"+index).length){
             //
-        }else{          
+        }else{
+          arr_data = [];
           var text = ""
           $.ajax({
             type: "POST",
@@ -283,12 +303,28 @@
                   '<div class="col-2 text-center items">'+cost+'</div>'+
                   '<div class="col-2 text-center items">'+field.amount*field.stock_out_cost+'</div>'+
                 '</div>'
+
+                item = {}
+                item ["prod_id"] =  field.prod_id
+                item ["qr"] =  field.prod_code
+                item ["name"] =  field.prod_name
+                item ["amt"] =  field.amount
+                item ["cost"] =  field.stock_out_cost
+                dt = field.date_time
+                username = field.user_name
+                warename = field.ware_name
+                arr_data.push(item);
               });
               text = text + '<hr style="width: 50%; margin: auto; margin-top: 1em;">'+
                   '<div class="row" style="margin-top: 1em;">'+
                     '<div class="col-4 text-right"><h4>ผู้ทำรายการ</h4></div>'+
                       '<div class="col-4 text-right"><h4>'+obj[0].user_name+'</h4></div>'+
-                  '</div>'+          
+                  '</div>'+ 
+                  '<div class="row justify-content-center" style="margin-top: 1em;">'+
+                  '<div class="col-4 text-center">'+                   
+                    '<button onclick="print.apply(this,arr_data)" class="btn btn-lg btn-warning" style="color: white;">พิมพ์รายการ  <i class="fas fa-print"></i></button>'+
+                '</div>'+        
+                '</div>'+         
                 '</div>'+
               '</div>';                   
             }               
@@ -300,6 +336,184 @@
               scrollTop: $("#ipts-"+index).offset().top
           }, 1100);
     }    
+
+    function print(...arr_data){
+      $('#show_qr').empty();
+      arr_a4 = [];
+			arr_dat =[];
+			var text = "";
+			var index = 0;
+			var total_amt = 0;		
+			var text_id = ""
+			var text_cost = ""
+			var text_amt = ""
+      var c = 1;     
+      
+			$.each(arr_data, function(i, field){				
+        text_id += "," + arr_data[i].prod_id
+				text_cost += "," + arr_data[i].cost
+				text_amt += "," + arr_data[i].amt
+				index = (i+1);
+				total_amt += parseInt(arr_data[i].amt)
+				if(c < 20){
+					if(i == arr_data.length-1){
+						text = text +  '<div class="row justify-content-center">'+
+							'<div class="fl-spc tb-st inner no-bdt no-bdbtm">'+index+'</div>'+
+							'<div class="fl-15 tb inner no-bdt no-bdbtm">'+arr_data[i].qr+'</div>'+
+							'<div class="fl-25 tb inner no-bdt no-bdbtm">'+arr_data[i].name+'</div>'+
+							'<div class="fl-10 tb inner no-bdt no-bdbtm">'+arr_data[i].amt+'</div>'+
+							'<div class="fl-25 tb inner no-bdt no-bdbtm">&emsp;</div>'+
+							'<div class="fl-12 tb inner no-bdt no-bdbtm"><div class="square"></div></div>'+
+						'</div>'
+
+						for(var j = 0 ; j < 20-c;j++){
+							if(j == 19-c){
+								text = text +  '<div class="row justify-content-center">'+
+									'<div class="fl-spc tb-st inner no-bdt">&emsp;</div>'+
+									'<div class="fl-15 tb inner no-bdt">&emsp;</div>'+
+									'<div class="fl-25 tb inner no-bdt">&emsp;</div>'+
+									'<div class="fl-10 tb inner no-bdt">&emsp;</div>'+
+									'<div class="fl-25 tb inner no-bdt">&emsp;</div>'+
+									'<div class="fl-12 tb inner no-bdt">&emsp;</div>'+								
+								'</div>'
+							}else{
+								text = text +  '<div class="row justify-content-center">'+
+									'<div class="fl-spc tb-st inner no-bdt no-bdbtm">&emsp;</div>'+
+									'<div class="fl-15 tb inner no-bdt no-bdbtm">&emsp;</div>'+
+									'<div class="fl-25 tb inner no-bdt no-bdbtm">&emsp;</div>'+
+									'<div class="fl-10 tb inner no-bdt no-bdbtm">&emsp;</div>'+
+									'<div class="fl-25 tb inner no-bdt no-bdbtm">&emsp;</div>'+
+									'<div class="fl-12 tb inner no-bdt no-bdbtm">&emsp;</div>'+								
+								'</div>'
+							}
+							
+						}						
+						arr_a4.push(text);
+					}else{
+						text = text +  '<div class="row justify-content-center">'+
+							'<div class="fl-spc tb-st inner no-bdt no-bdbtm">'+index+'</div>'+
+							'<div class="fl-15 tb inner no-bdt no-bdbtm">'+arr_data[i].qr+'</div>'+
+							'<div class="fl-25 tb inner no-bdt no-bdbtm">'+arr_data[i].name+'</div>'+
+							'<div class="fl-10 tb inner no-bdt no-bdbtm">'+arr_data[i].amt+'</div>'+
+							'<div class="fl-25 tb inner no-bdt no-bdbtm">&emsp;</div>'+
+							'<div class="fl-12 tb inner no-bdt no-bdbtm"><div class="square"></div></div>'+							
+						'</div>'
+					}
+				c++;
+				}else if(c == 20){
+					text = text +  '<div class="row justify-content-center">'+
+						'<div class="fl-spc tb-st inner no-bdt">'+index+'</div>'+
+						'<div class="fl-15 tb inner no-bdt">'+arr_data[i].qr+'</div>'+
+						'<div class="fl-25 tb inner no-bdt">'+arr_data[i].name+'</div>'+
+						'<div class="fl-10 tb inner no-bdt">'+arr_data[i].amt+'</div>'+
+						'<div class="fl-25 tb inner no-bdt">&emsp;</div>'+
+						'<div class="fl-12 tb inner no-bdt"><div class="square"></div></div>'+						
+					'</div>'
+					arr_a4.push(text);
+          c = 1;
+          text = "";	
+				}	                                                           
+			});
+      for(var a = 0;a < arr_a4.length;a++){
+				text = ""
+				if(a == arr_a4.length-1){
+				text = text +  '<div class="row justify-content-center">'+
+									'<div class="fl-83 tb-st inner no-bdt" style="text-align: right;">รวมทั้งสิ้น&emsp;&emsp;</div>'+
+									'<div class="fl-14 tb inner no-bdt">'+total_amt+'</div>'+
+								'</div>'
+				arr_dat.push(text);
+				}else{
+				text = text +  '<div class="row justify-content-center">'+
+									'<div class="fl-83 tb-st inner no-bdt" style="text-align: right;">&emsp;&emsp;</div>'+
+									'<div class="fl-14 tb inner no-bdt"></div>'+
+								'</div>'
+				arr_dat.push(text);
+				}
+			}
+			$('#show_qr').append('<div style="display: inline-block; float: left; margin-left: 5%;">'+
+									'<div class="qr-l" id="qrcode"></div>' +									
+								'</div>');
+			var text_qr = "[transfer]" + text_id.substring(1) + "|" + text_cost.substring(1) + "|" + text_amt.substring(1) + "|" + "-"
+			console.log(text_qr)
+			qrcode = new QRCode("qrcode",{width: 80, height: 80});
+			qrcode.makeCode(text_qr);	
+
+      var datetime = dt.split(" ")
+			var WinPrint  = window.open();
+      window.setTimeout(function() {
+      var ele =  document.getElementById('show_qr').innerHTML;
+      WinPrint.document.write("<html><head><link href='https://fonts.googleapis.com/css?family=Maitree' rel='stylesheet'>"+'<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">');
+          WinPrint.document.write("<style>@media print {body,html {-webkit-print-color-adjust: exact;}}  @page {size: auto; margin: 0;}.footer {clear: both; position: relative; height: 20%; margin-top: 0px;}.square {height: 25px; width: 25px; border-width: medium; border-style: solid; margin: 0 auto;}.fl-spc{float: left; width: 5%;}.fl-10{float: left; width: 10.25%;}.fl-12{float: left; width: 12.752%;}.fl-14{float: left; width: 48%;}.fl-15{float: left; width: 15%;}.fl-20{float: left; width: 20%; text-align: center;}.fl-25{float: left; width: 25%; text-align: center;}.fl-33{float: left; width: 33%; text-align: center;}.fl-35{float: left; width: 35%; text-align: center;}.fl-45{float: left; width: 45%; text-align: center;}.fl-83{float: left; width: 45%; text-align: center;}.container{width: 297mm; height: 210mm; padding: 10mm 10mm 5mm 10mm; font-family: 'Maitree';}.tb-st{border: 1px solid black; text-align: center; padding: 3px;}.tb{border: 1px solid black; text-align: center; padding: 3px; border-left: none;}.no-bdt{border-top: none;}.no-bdbtm{border-bottom: none;}.bold{font-weight: bold;}.head{font-size: 1.3em; padding-top: 5px; padding-bottom: 5px;}.inner{font-size: 1.15em; padding-top: 6px; padding-bottom: 6px;}.pagebreak_after{page-break-after: always;}.nopd{padding-left: 0; padding-right: 0;}</style></head><body>");
+      for(var m = 0;m < arr_a4.length;m++){
+        WinPrint.document.write('<div class="container pagebreak_after">'+
+        '<div class="row justify-content-center" style="margin-bottom: 5mm;">'+
+        '<div class="col-4 text-center">'+
+          '<h1 style="border: 1px solid #555; border-radius: 10px; padding-top: 10px; padding-bottom: 10px; background-color: #555 !important; color: white; font-size: 210%;">รายการออกโกดัง</h1>'+
+        '</div>'+
+        '</div>'+
+
+        '<div class="row">'+
+        '<div class="col-9"><span class="bold">ชื่อพนักงาน : </span> <span>&emsp; '+username+'</span></div>'+
+        '<div class="col-1 text-right nopd"><span class="bold">วันที่ : </span></div>'+
+        '<div class="col-2 text-right"><span>'+datetime[0]+'</span></div>'+
+        '</div>'+
+
+        '<div class="row justify-content-end">'+
+        '<div class="col-1 text-right nopd"><span class="bold">โกดัง : </span></div>'+
+        '<div class="col-2 text-right"><span>'+warename+'</span></div>'+
+        '</div>'+							
+
+        '<div class="row justify-content-center" style="margin-top: 1cm;">'+
+          '<div class="fl-spc tb-st head bold">ลำดับ</div>'+
+          '<div class="fl-15 tb head bold">รหัสสินค้า</div>'+
+          '<div class="fl-25 tb head bold">ชื่อสินค้า</div>'+
+          '<div class="fl-10 tb head bold">จำนวน</div>'+
+          '<div class="fl-25 tb head bold">Note</div>'+
+          '<div class="fl-12 tb head bold"></div>'+							
+        '</div>'+
+        
+        arr_a4[m] +
+
+        arr_dat[m] +  
+        
+        // Space ... 
+        '<div class="row justify-content-center"><div style="float: left; width: 100%;">&emsp;</div><div style="float: left; width: 100%;">&emsp;</div><div style="float: left; width: 100%;">&emsp;</div></div>'+
+        
+        // Bottom ...
+        //'<div class="footer">' +
+        '<div class="row justify-content-center">'+
+        '<div class="col-4 text-center">_________________________</div>'+
+        '<div class="col-3 text-center">_________________________</div>'+
+        '<div class="col-3 text-center">_________________________</div>'+
+        '<div class="col-2 text-center"></div>' +
+        '</div>'+
+        '<div class="row justify-content-center">'+
+        '<div class="col-4 text-center inner">ชื่อผู้นำสินค้าออก</div>'+
+        '<div class="col-3 text-center inner">ชื่อผู้เช็คสินค้า</div>'+
+        '<div class="col-3 text-center inner">ชื่อผู้นำสินค้าเข้า</div>'+
+        '<div class="col-2">' +
+        ele +
+        '</div>' +
+        '</div>'+
+        '<div class="row justify-content-center pagebreak_after">'+
+        '<div class="col-4 text-center">________/________/_________</div>'+
+        '<div class="col-3 text-center">________/________/_________</div>'+
+        '<div class="col-3 text-center">________/________/_________</div>'+
+        '<div class="col-2 text-center"></div>'+
+        ' </div>'+
+        //' </div>'+
+        // End container ... 
+        '</div>');
+      }
+      WinPrint.document.write('</body></html>');
+      WinPrint.document.close();
+      WinPrint.focus();
+      setTimeout(function() {
+      WinPrint.print();
+      WinPrint.close();
+      }, 250);
+    }, 500);
+    }
 
     function logout(){
 			localStorage.clear();
