@@ -73,6 +73,10 @@
       });     
     }
 
+    function testprint(){
+      cordova.plugins.printer.print('<b>Hello World!</b>');
+    }
+
   </script>
 </head>
 
@@ -118,6 +122,9 @@
         <div class="col-12 text-center">
           <a href="https://i.diawi.com/3taPCR" style="color: blue; text-decoration: underline;" id="a-android">คลิกเพื่อดาวน์โหลด</a>
         </div>
+      </div>
+      <div class="col-12 text-center" onclick="testprint()">
+        <i id="i-print" class="fas fa-print menu"></i>
       </div>
     </div> 
 
