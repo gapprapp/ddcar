@@ -73,6 +73,26 @@
       });     
     }
 
+    function testprint(){
+    //   cordova.plugins.pdf.htmlToPDF({
+    //   data: '<b>Hello World!</b>',
+    //   documentSize: "A4",
+    //   landscape: "portrait",
+    //   type: "base64"      
+    //   },
+    //   (sucess) => {
+    //   alert('success: ', success);
+    //   cordova.plugins.printer.print('base64://PGI+SGVsbG8gV29ybGQhPC9iPg==' );
+    //   },
+    //   (error) =>{ 
+    //    alert('error:', error)
+    //   }
+    // );      
+   
+    cordova.plugins.printer.print('base64://PGI+SGVsbG8gV29ybGQhPC9iPg==' );
+      //cordova.plugins.printer.print('<b>Hello World!</b>');
+    }
+
   </script>
 </head>
 
@@ -118,6 +138,9 @@
         <div class="col-12 text-center">
           <a href="https://i.diawi.com/3taPCR" style="color: blue; text-decoration: underline;" id="a-android">คลิกเพื่อดาวน์โหลด</a>
         </div>
+      </div>
+      <div class="col-12 text-center" onclick="testprint()">
+        <i id="i-print" class="fas fa-print menu"></i>
       </div>
     </div> 
 

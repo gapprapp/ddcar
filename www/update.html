@@ -74,7 +74,23 @@
     }
 
     function testprint(){
-      cordova.plugins.printer.print('<b>Hello World!</b>');
+    //   cordova.plugins.pdf.htmlToPDF({
+    //   data: '<b>Hello World!</b>',
+    //   documentSize: "A4",
+    //   landscape: "portrait",
+    //   type: "base64"      
+    //   },
+    //   (sucess) => {
+    //   alert('success: ', success);
+    //   cordova.plugins.printer.print('base64://PGI+SGVsbG8gV29ybGQhPC9iPg==' );
+    //   },
+    //   (error) =>{ 
+    //    alert('error:', error)
+    //   }
+    // );      
+   
+    cordova.plugins.printer.print('base64://PGI+SGVsbG8gV29ybGQhPC9iPg==' );
+      //cordova.plugins.printer.print('<b>Hello World!</b>');
     }
 
   </script>

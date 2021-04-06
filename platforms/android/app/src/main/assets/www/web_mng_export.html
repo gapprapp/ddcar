@@ -73,22 +73,37 @@
 				window.location = 'web_login.html';
 			}
       get_export();
-
-      $(window).scroll(function() {
-        if($(window).scrollTop() + $(window).height() == $(document).height()) {
-          if(!$("#myUL").prop('hidden')){
-            if(bool){
-              return 0;
+     
+      window.onscroll = function(ev) {
+          if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight) {            
+            if(!$("#myUL").prop('hidden')){              
+              if(bool){
+                return 0;
+              }
+              get_export();           
+            }else if(!$("#myS").prop('hidden')){
+              if(bool_s){
+                return 0;
+              }
+              get_export_s();
             }
-            get_export();           
-          }else if(!$("#myS").prop('hidden')){
-            if(bool_s){
-              return 0;
-            }
-            get_export_s();
           }
-        }
-      });
+      };    
+      // $(window).scroll(function() {
+      //   if($(window).scrollTop() + $(window).height() == $(document).height()) {
+      //     if(!$("#myUL").prop('hidden')){
+      //       if(bool){
+      //         return 0;
+      //       }
+      //       get_export();           
+      //     }else if(!$("#myS").prop('hidden')){
+      //       if(bool_s){
+      //         return 0;
+      //       }
+      //       get_export_s();
+      //     }
+      //   }
+      // });
     });
     
     $(document).keydown(function(objEvent) {
@@ -181,11 +196,13 @@
       });
       start_s += 30;
     }
-  
+    
+    var dt,username,warename,stock_num
     function appendCollapse(index){
         if($("#detail-"+index).length){
             //
-        }else{          
+        }else{    
+          arr_data = [];
           var text = ""
           $.ajax({
             type: "POST",
@@ -216,12 +233,29 @@
                   '<div class="col-2 text-center items">'+cost+'</div>'+
                   '<div class="col-2 text-center items">'+field.amount*field.stock_out_cost+'</div>'+
                 '</div>'
+
+                item = {}
+                item ["prod_id"] =  field.prod_id
+                item ["qr"] =  field.prod_code
+                item ["name"] =  field.prod_name
+                item ["amt"] =  field.amount
+                item ["cost"] =  field.stock_out_cost
+                stock_num = field.stock_out_number
+                dt = field.date_time
+                username = field.user_name
+                warename = field.ware_name
+                arr_data.push(item);
               });
               text = text + '<hr style="width: 50%; margin: auto; margin-top: 1em;">'+
                   '<div class="row" style="margin-top: 1em;">'+
                     '<div class="col-4 text-right"><h4>ผู้ทำรายการ</h4></div>'+
                       '<div class="col-4 text-right"><h4>'+obj[0].user_name+'</h4></div>'+ 
-                  '</div>'+  
+                  '</div>'+
+                  '<div class="row justify-content-center" style="margin-top: 1em;">'+
+                  '<div class="col-4 text-center">'+                   
+                    '<button onclick="print.apply(this,arr_data)" class="btn btn-lg btn-warning" style="color: white;">พิมพ์รายการ  <i class="fas fa-print"></i></button>'+
+                '</div>'+        
+                '</div>'+  
                   '</div>'+
                 '</div>';                   
             }               
@@ -234,10 +268,12 @@
           }, 1100);
     }
 
+
     function appendCollapses(index){
         if($("#details-"+index).length){
             //
-        }else{          
+        }else{
+          arr_data = [];
           var text = ""
           $.ajax({
             type: "POST",
@@ -268,12 +304,28 @@
                   '<div class="col-2 text-center items">'+cost+'</div>'+
                   '<div class="col-2 text-center items">'+field.amount*field.stock_out_cost+'</div>'+
                 '</div>'
+
+                item = {}
+                item ["prod_id"] =  field.prod_id
+                item ["qr"] =  field.prod_code
+                item ["name"] =  field.prod_name
+                item ["amt"] =  field.amount
+                item ["cost"] =  field.stock_out_cost
+                dt = field.date_time
+                username = field.user_name
+                warename = field.ware_name
+                arr_data.push(item);
               });
               text = text + '<hr style="width: 50%; margin: auto; margin-top: 1em;">'+
                   '<div class="row" style="margin-top: 1em;">'+
                     '<div class="col-4 text-right"><h4>ผู้ทำรายการ</h4></div>'+
                       '<div class="col-4 text-right"><h4>'+obj[0].user_name+'</h4></div>'+
-                  '</div>'+          
+                  '</div>'+ 
+                  '<div class="row justify-content-center" style="margin-top: 1em;">'+
+                  '<div class="col-4 text-center">'+                   
+                    '<button onclick="print.apply(this,arr_data)" class="btn btn-lg btn-warning" style="color: white;">พิมพ์รายการ  <i class="fas fa-print"></i></button>'+
+                '</div>'+        
+                '</div>'+         
                 '</div>'+
               '</div>';                   
             }               
@@ -285,6 +337,93 @@
               scrollTop: $("#ipts-"+index).offset().top
           }, 1100);
     }    
+
+    function print(...arr_data){
+      $('#show_qr').empty();     
+			var text = "";		
+			var total_amt = 0;		
+			var text_id = ""
+			var text_cost = ""
+			var text_amt = ""         
+      
+			$.each(arr_data, function(i, field){				
+        text_id += "," + arr_data[i].prod_id
+				text_cost += "," + arr_data[i].cost
+				text_amt += "," + arr_data[i].amt
+				text = text + "<div class='row items'>" +                                
+                        "<div class='col-8 text-center'>"+arr_data[i].name+"</div>" +
+                        "<div class='col-4 no text-left'>"+arr_data[i].amt+"</div>" +
+                      "</div>"
+				total_amt += parseInt(arr_data[i].amt)			                                                          
+			});     
+			$('#show_qr').append('<div style="display: inline-block;">'+
+									'<div class="qr-l" id="qrcode"></div>' +									
+								'</div>');
+			var text_qr = "[transfer]" + text_id.substring(1) + "|" + text_cost.substring(1) + "|" + text_amt.substring(1) + "|" + "-"
+			console.log(text_qr)
+			qrcode = new QRCode("qrcode",{width: 60, height: 60});
+			qrcode.makeCode(text_qr);	
+
+      var datetime = dt.split(" ")
+      var time = datetime[1];
+      var d = datetime[0].split("-");
+      var date = d[2] + "/" + d[1] + "/" + d[0];
+      var dat = " ____________________"
+			var WinPrint  = window.open();
+      window.setTimeout(function() {
+      var ele =  document.getElementById('show_qr').innerHTML;
+      WinPrint.document.write("<html><head><meta charset='utf-8'><link href='https://fonts.googleapis.com/css?family=Maitree' rel='stylesheet'><link rel='stylesheet' href='https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css' integrity='sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T' crossorigin='anonymous'>");
+			WinPrint.document.write("<style>@page {size: auto; margin: 0mm;} body{line-height: 1.5; font-size: 0.9em; } .title{margin-bottom: 0.1em;} .line{text-decoration: underline;} .price, .no{letter-spacing: -0.05em;} .items{margin-bottom: 5px;}</style></head><body>" +
+      "<div style='width: 7cm;'>"+
+            "<div class='col-12 text-center'>DD MOTOR SPORT</div>"+
+            "<div class='col-12 text-center'>B-24, B-28 อาคารศรีวรจักร ถ.หลวงป้อมปราบศัตรูพ่าย</div>"+
+            "<div class='col-12 text-center'>โทร. 02-2265280 , 02-2222437</div>"+
+            "<div class='col-12 text-center line' style='margin-top: 0.5em; margin-bottom: 0.5em;'>ใบรายการสินค้าออกโกดัง</div>"+						
+              "<div class='row justify-content-center title'>" +
+              "<div class='col-4 text-right'>เลขที่ : </div>" +
+              "<div class='col-6 text-center'>"+stock_num+"</div>" +
+              "</div>" +
+              "<div class='row justify-content-center title'>" +
+              "<div class='col-4 text-right'>โกดัง : </div>" +
+              "<div class='col-6 text-center'>"+warename+"</div>" +
+              "</div>" +
+              "<div class='row justify-content-center title'>" +
+              "<div class='col-4 text-right'>พนักงาน : </div>" +
+              "<div class='col-6 text-center'>"+username+"</div>" +
+              "</div>" +
+              "<div class='row justify-content-center title'>" +
+              "<div class='col-4 text-right'>วันที่ : </div>" +
+              "<div class='col-3 text-right'>"+date+"  </div>" +
+              "<div class='col-3'>"+time+"</div>" +
+              "</div>" +								
+                        
+              "<hr style='width: 90%; border-top: 1px dashed; border-bottom: none; margin-top: 5px;'>"+
+              "<div class='row justify-content-center' style='margin-bottom: 5px;'>" +								
+              "<div class='col-8 text-center line'>รายการ</div>" +
+              "<div class='col-4 text-left line'>จำนวน</div>" +
+            "</div>"+
+            text+
+            "<hr style='width: 90%; border-top: 1px; border-top: 1px dashed; border-bottom: none; margin-top: 0;'>"+
+            "<div class='row justify-content-center title'>"+
+              "<div class='col-4 text-right'>รวม : </div>" +
+              "<div class='col-6 text-center'>"+total_amt+"</div>"+
+            "</div>"+
+            "<div class='col-12 text-center'>ผู้นำสินค้าออก : "+dat+"</div>"+
+            "<div class='col-12 text-center'>ผู้เช็คสินค้า : "+dat+"</div>"+
+            "<div class='col-12 text-center'>ผู้นำสินค้าเข้า : "+dat+"</div>"+
+            "<div class='col-12 text-center' style='margin-top: 10px'>"+
+              ele+
+            "</div>"+
+            "</div>");
+      WinPrint.document.write('</body></html>');
+      WinPrint.document.close();
+      WinPrint.focus();
+      setTimeout(function() {
+      WinPrint.print();
+      WinPrint.close();
+      }, 250);
+    }, 500);
+    }
 
     function logout(){
 			localStorage.clear();
