@@ -885,7 +885,7 @@
 								'</div>');
 			var text_qr = "[transfer]" + text_id.substring(1) + "|" + text_cost.substring(1) + "|" + text_amt.substring(1) + "|" + localStorage.ware_id_ex
 			console.log(text_qr)
-			qrcode = new QRCode("qrcode",{width: 150, height: 150});
+			qrcode = new QRCode("qrcode",{width: 230, height: 230});
 			qrcode.makeCode(text_qr);			
 			
             $.ajax({
