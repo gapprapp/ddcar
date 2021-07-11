@@ -112,7 +112,7 @@
         search();        
       }         
     })
-   
+    var tempdate,no = 1
     function get_import(){
       $.ajax({
         type: "POST",
@@ -134,13 +134,19 @@
               var txt = field.date_time.split(" ");
               var txt2 = txt[0].split("-");
               var date = txt2[2] + "/" + txt2[1] + "/" + txt2[0].substr(2);
+              if(tempdate != date){
+                  tempdate = date
+                  no = 1
+              }
               $('#myUL').append('<li id="ipt-'+field.stock_id+'">' +
               '<div class="row justify-content-center ipt-even" data-toggle="collapse" href="#detail-'+field.stock_id+'" role="button" aria-expanded="false" aria-controls="detail-'+field.stock_id+'" onclick="appendCollapse('+field.stock_id+');">'+
+                  '<div class="col-2 text-center"><h5>'+no+'</h5></div>' +  
                   '<div class="col-4 text-center"><h5>'+field.stock_number+'</h5></div>' +
                   '<div class="col-3 text-center"><h5>'+date+'</h5></div>' +
-                  '<div class="col-4 text-center"><h5>'+field.ware_name+'</h5></div>' +
+                  '<div class="col-3 text-center"><h5>'+field.ware_name+'</h5></div>' +
               '</div>' +
-            '</li>');   
+            '</li>');
+            no++   
             }                                               
           });                                          
         }               
@@ -159,6 +165,8 @@
       $("#myS").prop('hidden', false);
       $("#myUL").prop('hidden', true);     
       $("#myS").empty();
+      tempdate = ""
+      no = 1
       get_import_s();
     }
 
@@ -183,13 +191,19 @@
               var txt = field.date_time.split(" ");
               var txt2 = txt[0].split("-");
               var date = txt2[2] + "/" + txt2[1] + "/" + txt2[0].substr(2);
+              if(tempdate != date){
+                  tempdate = date
+                  no = 1
+              }
               $('#myS').append('<li id="ipts-'+field.stock_id+'">' +
               '<div class="row justify-content-center ipt-even" data-toggle="collapse" href="#details-'+field.stock_id+'" role="button" aria-expanded="false" aria-controls="details-'+field.stock_id+'" onclick="appendCollapses('+field.stock_id+');">'+
+                  '<div class="col-2 text-center"><h5>'+no+'</h5></div>' +   
                   '<div class="col-4 text-center"><h5>'+field.stock_number+'</h5></div>' +
                   '<div class="col-3 text-center"><h5>'+date+'</h5></div>' +
-                  '<div class="col-4 text-center"><h5>'+field.ware_name+'</h5></div>' +
+                  '<div class="col-3 text-center"><h5>'+field.ware_name+'</h5></div>' +
               '</div>' +
-            '</li>');    
+            '</li>');
+            no++    
             }                                                
           });                                         
         }               
@@ -227,8 +241,9 @@
                   cost = field.stock_cost
                 }
                 text = text + '<div id="item-'+field.item_id+'" class="row justify-content-center">'+
+                  '<div class="col-1 text-center items">'+(i+1)+'</div>'+
                   '<div class="col-1 text-center items">'+field.amount+'</div>'+
-                  '<div class="col-7 text-center items">'+field.prod_name+'</div>'+
+                  '<div class="col-6 text-center items">'+field.prod_name+'</div>'+
                   '<div class="col-2 text-center items">'+cost+'</div>'+
                   '<div class="col-2 text-center items">'+field.amount*field.stock_cost+'</div>'+
                 '</div>'
@@ -296,8 +311,9 @@
                   cost = field.stock_cost
                 }
                 text = text + '<div id="item-'+field.item_id+'"" class="row justify-content-center">'+
+                  '<div class="col-1 text-center items">'+(i+1)+'</div>'+
                   '<div class="col-1 text-center items">'+field.amount+'</div>'+
-                  '<div class="col-7 text-center items">'+field.prod_name+'</div>'+
+                  '<div class="col-6 text-center items">'+field.prod_name+'</div>'+
                   '<div class="col-2 text-center items">'+cost+'</div>'+
                   '<div class="col-2 text-center items">'+field.amount*field.stock_cost+'</div>'+
                 '</div>'
@@ -424,6 +440,9 @@
         </div>
         <div class="container-fullwidth">
             <div class="row justify-content-center">
+                <div class="col-2 text-center">
+                    <h4>ลำดับ</h4>
+                </div>
                 <div class="col-4 text-center">
                     <h4>เลขที่นำเข้า</h4>
                 </div>

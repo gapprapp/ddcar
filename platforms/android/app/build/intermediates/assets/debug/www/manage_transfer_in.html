@@ -78,6 +78,8 @@
         $("#myD").prop('hidden', false);
         $("#myD").empty();
         $("#i-back").attr("onclick","showUL()");
+        tempdate = ""
+        no = 1
         search_date();
       });
       get_import();
@@ -150,7 +152,7 @@
       $("#i-back").attr("onclick","transition_page_back('index.html'); window.location = 'index.html';");
       show_search();
     }
-
+    var tempdate,no = 1
     function get_import(){     
       $.ajax({
         type: "POST",
@@ -170,17 +172,25 @@
               var txt = field.date_time.split(" ");
               var txt2 = txt[0].split("-");
               var date = txt2[2] + "/" + txt2[1] + "/" + txt2[0].substr(2);
+              if(tempdate != date){
+                  tempdate = date
+                  no = 1
+              }
               $('#myUL').append('<li> <div class="row" onclick="import_info('+field.tran_id+')">'+
+                '<div class="col-2 text-center no-pd">' +
+                  '<p>'+no+'</p>' +
+                '</div>' +
                 '<div class="col-4 text-center no-pd">' +
                   '<p>'+field.tran_number+'</p>' +
                 '</div>' +
                 '<div class="col-3 text-center no-pd">' +
                   '<p>'+date+'</p>' +
                 '</div>' +
-                '<div class="col-5 text-center no-pd">' +
+                '<div class="col-3 text-center no-pd">' +
                   '<p>'+field.shop_name+'</p>' +
                 '</div>' +
-              '</div><hr></li>');   
+              '</div><hr></li>');
+              no++   
             }                                               
           });                                          
         }               
@@ -245,6 +255,8 @@
       $("#myD").prop('hidden', true);
       $("#myS").empty();
       $("#i-back").attr("onclick","showUL()");
+      tempdate = ""
+      no = 1
       get_import_s();
     }
 
@@ -268,28 +280,39 @@
               var txt = field.date_time.split(" ");
               var txt2 = txt[0].split("-");
               var date = txt2[2] + "/" + txt2[1] + "/" + txt2[0].substr(2);
+              if(tempdate != date){
+                  tempdate = date
+                  no = 1
+              }
               items = items + '<li> <div class="row" onclick="import_info('+field.tran_id+')">'+
+                '<div class="col-2 text-center no-pd">' +
+                  '<p>'+no+'</p>' +
+                '</div>' +
                 '<div class="col-4 text-center no-pd">' +
                   '<p>'+field.tran_number+'</p>' +
                 '</div>' +
                 '<div class="col-3 text-center no-pd">' +
                   '<p>'+date+'</p>' +
                 '</div>' +
-                '<div class="col-5 text-center no-pd">' +
+                '<div class="col-3 text-center no-pd">' +
                   '<p>'+field.shop_name+'</p>' +
                 '</div>' +
               '</div><hr></li>'
               $('#myS').append('<li> <div class="row" onclick="import_info('+field.tran_id+')">'+
+                '<div class="col-2 text-center no-pd">' +
+                  '<p>'+no+'</p>' +
+                '</div>' +
                 '<div class="col-4 text-center no-pd">' +
                   '<p>'+field.tran_number+'</p>' +
                 '</div>' +
                 '<div class="col-3 text-center no-pd">' +
                   '<p>'+date+'</p>' +
                 '</div>' +
-                '<div class="col-5 text-center no-pd">' +
+                '<div class="col-3 text-center no-pd">' +
                   '<p>'+field.shop_name+'</p>' +
                 '</div>' +
-              '</div><hr></li>');     
+              '</div><hr></li>');
+              no++     
             }                                                
           });                                         
         }               
@@ -327,28 +350,39 @@
               var txt = field.date_time.split(" ");
               var txt2 = txt[0].split("-");
               var date = txt2[2] + "/" + txt2[1] + "/" + txt2[0].substr(2);
+              if(tempdate != date){
+                  tempdate = date
+                  no = 1
+              }
               items = items + '<li> <div class="row" onclick="import_info('+field.tran_id+')">'+
+                '<div class="col-2 text-center no-pd">' +
+                  '<p>'+no+'</p>' +
+                '</div>' +
                 '<div class="col-4 text-center no-pd">' +
                   '<p>'+field.tran_number+'</p>' +
                 '</div>' +
                 '<div class="col-3 text-center no-pd">' +
                   '<p>'+date+'</p>' +
                 '</div>' +
-                '<div class="col-5 text-center no-pd">' +
+                '<div class="col-3 text-center no-pd">' +
                   '<p>'+field.shop_name+'</p>' +
                 '</div>' +
               '</div><hr></li>'
               $('#myD').append('<li> <div class="row" onclick="import_info('+field.tran_id+')">'+
+                '<div class="col-2 text-center no-pd">' +
+                  '<p>'+no+'</p>' +
+                '</div>' +
                 '<div class="col-4 text-center no-pd">' +
                   '<p>'+field.tran_number+'</p>' +
                 '</div>' +
                 '<div class="col-3 text-center no-pd">' +
                   '<p>'+date+'</p>' +
                 '</div>' +
-                '<div class="col-5 text-center no-pd">' +
+                '<div class="col-3 text-center no-pd">' +
                   '<p>'+field.shop_name+'</p>' +
                 '</div>' +
               '</div><hr></li>'); 
+              no++
             }                                      
           });                                         
         }               
@@ -397,9 +431,10 @@
     </div>
 
     <div id="row-title" class="row fixed-top" style="margin-top: 4.5em;">
+      <div id="title" class="col-2 text-center">ที่</div>
       <div id="title" class="col-4 text-center">เลขที่</div>
       <div id="title" class="col-3 text-center nopd">วันที่</div>
-      <div id="title" class="col-5 text-center nopd">โกดัง</div> 
+      <div id="title" class="col-3 text-center nopd">โกดัง</div> 
     </div><hr id="title-hr" class="mgem1" style="margin-top: 6.3em; width: 98%;">
 
     <div id="in-ctn" class="container-fullwidth" style="margin-top: 0!important; height: calc(100vh - (4.5em + 120px));">

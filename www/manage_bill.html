@@ -82,6 +82,8 @@
         $("#myD").prop('hidden', false);
         $("#myD").empty();
         $("#i-back").attr("onclick","showUL()");
+        tempdate = ""
+        no = 1
         search_date();
       });  
       get_bill();
@@ -158,6 +160,7 @@
       show_search();
     }
 
+    var tempdate,no = 1
     function get_bill(){
       $.ajax({
         type: "POST",
@@ -177,17 +180,25 @@
               var txt = field.date_time.split(" ");
               var txt2 = txt[0].split("-");
               var date = txt2[2] + "/" + txt2[1] + "/" + txt2[0].substr(2);
+              if(tempdate != date){
+                  tempdate = date
+                  no = 1
+              }
               $('#myUL').append('<li class="mgemo5"><div class="row" onclick="bill_info('+field.order_id+')">' +
+                  '<div class="col-2 text-center no-pd">' +
+                    '<p>'+no+'</p>' +
+                  '</div>' +
                   '<div class="col-4 text-center no-pd">' +
                     '<p>'+field.order_number+'</p>' +
                   '</div>' +
-                  '<div class="col-3 text-center no-pd">' +
+                  '<div class="col-2 text-center no-pd">' +
                     '<p>'+date+'</p>' +
                   '</div>' +
-                  '<div class="col-5 text-center no-pd">' +
+                  '<div class="col-4 text-center no-pd">' +
                     '<p>'+field.cus_name+'</p>' +
                   '</div>' +
-                '</div><hr></li>');   
+                '</div><hr></li>');
+                no++   
             }                                                
           });                                         
         }               
@@ -252,6 +263,8 @@
       $("#myD").prop('hidden', true);
       $("#myS").empty();
       $("#i-back").attr("onclick","showUL()");
+      tempdate = ""
+      no = 1
       get_bill_s();
     }
     
@@ -275,28 +288,39 @@
               var txt = field.date_time.split(" ");
               var txt2 = txt[0].split("-");
               var date = txt2[2] + "/" + txt2[1] + "/" + txt2[0].substr(2);
+              if(tempdate != date){
+                  tempdate = date
+                  no = 1
+              }
               items = items + '<li class="mgemo5"><div class="row" onclick="bill_info('+field.order_id+')">' +
+                '<div class="col-2 text-center no-pd">' +
+                    '<p>'+no+'</p>' +
+                  '</div>' +
                   '<div class="col-4 text-center no-pd">' +
                     '<p>'+field.order_number+'</p>' +
                   '</div>' +
-                  '<div class="col-3 text-center no-pd">' +
+                  '<div class="col-2 text-center no-pd">' +
                     '<p>'+date+'</p>' +
                   '</div>' +
-                  '<div class="col-5 text-center no-pd">' +
+                  '<div class="col-4 text-center no-pd">' +
                     '<p>'+field.cus_name+'</p>' +
                   '</div>' +
                 '</div><hr></li>'
                 $('#myS').append('<li class="mgemo5"><div class="row" onclick="bill_info('+field.order_id+')">' +
+                  '<div class="col-2 text-center no-pd">' +
+                    '<p>'+no+'</p>' +
+                  '</div>' +
                   '<div class="col-4 text-center no-pd">' +
                     '<p>'+field.order_number+'</p>' +
                   '</div>' +
-                  '<div class="col-3 text-center no-pd">' +
+                  '<div class="col-2 text-center no-pd">' +
                     '<p>'+date+'</p>' +
                   '</div>' +
-                  '<div class="col-5 text-center no-pd">' +
+                  '<div class="col-4 text-center no-pd">' +
                     '<p>'+field.cus_name+'</p>' +
                   '</div>' +
-                '</div><hr></li>');                
+                '</div><hr></li>');
+                no++
             }                                                
           });
           
@@ -335,28 +359,39 @@
               var txt = field.date_time.split(" ");
               var txt2 = txt[0].split("-");
               var date = txt2[2] + "/" + txt2[1] + "/" + txt2[0].substr(2);
+              if(tempdate != date){
+                  tempdate = date
+                  no = 1
+              }
               items = items + '<li class="mgemo5"><div class="row" onclick="bill_info('+field.order_id+')">' +
+                '<div class="col-2 text-center no-pd">' +
+                    '<p>'+no+'</p>' +
+                  '</div>' +
                   '<div class="col-4 text-center no-pd">' +
                     '<p>'+field.order_number+'</p>' +
                   '</div>' +
-                  '<div class="col-3 text-center no-pd">' +
+                  '<div class="col-2 text-center no-pd">' +
                     '<p>'+date+'</p>' +
                   '</div>' +
-                  '<div class="col-5 text-center no-pd">' +
+                  '<div class="col-4 text-center no-pd">' +
                     '<p>'+field.cus_name+'</p>' +
                   '</div>' +
                 '</div><hr></li>'
               $('#myD').append('<li class="mgemo5"><div class="row" onclick="bill_info('+field.order_id+')">' +
+                '<div class="col-2 text-center no-pd">' +
+                    '<p>'+no+'</p>' +
+                  '</div>' +
                   '<div class="col-4 text-center no-pd">' +
                     '<p>'+field.order_number+'</p>' +
                   '</div>' +
-                  '<div class="col-3 text-center no-pd">' +
+                  '<div class="col-2 text-center no-pd">' +
                     '<p>'+date+'</p>' +
                   '</div>' +
-                  '<div class="col-5 text-center no-pd">' +
+                  '<div class="col-4 text-center no-pd">' +
                     '<p>'+field.cus_name+'</p>' +
                   '</div>' +
                 '</div><hr></li>');
+                no++
             }                                                
           });                                          
         }               
@@ -403,9 +438,10 @@
     </div>
 
     <div id="row-title" class="row fixed-top" style="margin-top: 4.5em;">
+      <div id="title" class="col-2 text-center">ที่</div>
       <div id="title" class="col-4 text-center">เลขที่</div>
-      <div id="title" class="col-3 text-center nopd">วันที่</div>
-      <div id="title" class="col-5 text-center nopd">ลูกค้า</div> 
+      <div id="title" class="col-2 text-center nopd">วันที่</div>
+      <div id="title" class="col-4 text-center nopd">ลูกค้า</div> 
     </div><hr id="title-hr" class="mgem1" style="margin-top: 6.3em; width: 98%;">
 
 

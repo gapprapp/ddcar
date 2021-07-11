@@ -108,17 +108,17 @@
           credit_id = obj[0].credit_id;
           credit_id_new = obj[0].credit_id;
           $.each(obj, function(i, field){
-            $('#in-ctn').append('<div id="prod-'+field.item_id+'" class="row mgemo5">' +
-              '<div class="col-2 text-center">' +
+            $('#in-ctn').append('<div id="prod-'+field.item_id+'" class="row mgemo5">' +              
+              '<div class="col-1 text-center">' +
                 '<p id="amt-'+field.item_id+'" class="amount">'+field.prod_amount+'</p>' +
               '</div>' +
-              '<div class="col-6 text-center nopd">' +
+              '<div class="col-7 text-center nopd">' +
                 '<p id="name-'+field.item_id+'">'+field.prod_name+'</p>' +
                 '</div>' +
-                '<div class="col-1 text-center">' +
+                '<div class="col-2 text-center">' +
                   '<p id="price-'+field.item_id+'">'+field.prod_price+'</p>' +
                 '</div>' +
-                  '<div class="col-3 text-center nopd">' +
+                  '<div class="col-2 text-center nopd">' +
                     '<p id="total-'+field.item_id+'">'+field.prod_price*field.prod_amount+'</p>' +
                   '</div>' +
               '</div>');

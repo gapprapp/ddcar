@@ -140,7 +140,7 @@
 					var obj = jQuery.parseJSON(data);										
 					if(obj.length > 0){
 						$.each(obj, function(i, field){ 
-							get_amt(field.prod_id,field.prod_name,field.img);       
+							get_amt(field.prod_id,field.prod_name,field.img,field.prod_code);       
 						}); 
 					}else{					
 						$('#append-ctn').append('<p class="display">ไม่พบสินค้า</p>');
@@ -149,7 +149,7 @@
       }); 
   	}
 
-		function get_amt(prod_id,name,img){	
+		function get_amt(prod_id,name,img,code){	
 			var addr;
 			$.ajax({
 				type: "POST",
@@ -207,33 +207,34 @@
 							msg_price = '<p>ส่ง : '+pricesend+'  ปลีก : '+price+'</p>';
 						}else{
 							msg_price = '<p>ทุน : '+cost+'  ส่ง : '+pricesend+'  ปลีก : '+price+'</p>';
-						}			
+						}
+						namedq = name.replace(/"/g, '\\"');			
 						if(img == ""){
 							$('#append-ctn').append('<div class="jumbotron text-center jumbo-center">'+
-									'<p class="display">'+name+'</p><br>'+msg_price+' <hr class="jumbohr">' +
-									'<img src="img/no_img.png" alt="pic">'+								
+									'<p data-toggle="modal" data-target="#EditModal" style="text-align: right; margin-bottom: -5%"><i id="i-'+prod_id+'" class="fas fa-pen" onclick="edit_prod('+prod_id+',\''+namedq+'\',\''+code+'\')"></i></p><br><p id="p-'+prod_id+'" class="display">'+name+'</p><br>'+msg_price+' <hr class="jumbohr">' +
+									'<img id="img-'+prod_id+'" src="img/no_img.png" alt="pic">'+								
 										msg +								
 								'</div>');
 						}else{
 							$('#append-ctn').append('<div class="jumbotron text-center jumbo-center">'+
-								'<p class="display">'+name+'</p><br>'+msg_price+' <hr class="jumbohr">' +
-								'<img src="'+img+'" alt="pic">'+								
+								'<p data-toggle="modal" data-target="#EditModal" style="text-align: right; margin-bottom: -5%"><i id="i-'+prod_id+'" class="fas fa-pen" onclick="edit_prod('+prod_id+',\''+namedq+'\',\''+code+'\')"></i></p><br><p id="p-'+prod_id+'" class="display">'+name+'</p><br>'+msg_price+' <hr class="jumbohr">' +
+								'<img id="img-'+prod_id+'" src="'+img+'" alt="pic">'+								
 									msg +								
 							'</div>');
 						}									
 					}else{													       
 						if(img == ""){
 							$('#append-ctn').append('<div class="jumbotron text-center jumbo-center">'+
-								'<p class="display">'+name+'</p> <hr class="jumbohr">' +
-								'<img src="img/no_img.png" alt="pic">'+
+								'<p data-toggle="modal" data-target="#EditModal" style="text-align: right; margin-bottom: -5%"><i id="i-'+prod_id+'" class="fas fa-pen" onclick="edit_prod('+prod_id+',\''+namedq+'\',\''+code+'\')"></i></p><br><p id="p-'+prod_id+'" class="display">'+name+'</p> <hr class="jumbohr">' +
+								'<img id="img-'+prod_id+'" src="img/no_img.png" alt="pic">'+
 								'<div class="inforow row justify-content-center">'+
 									'<p>ไม่มีสินค้าในโกดัง/หน้าร้าน</p>'+
 								'</div>'+
 							'</div>');
 						}else{
 							$('#append-ctn').append('<div class="jumbotron text-center jumbo-center">'+
-								'<p class="display">'+name+'</p> <hr class="jumbohr">' +
-								'<img src="'+img+'" alt="pic">'+
+								'<p data-toggle="modal" data-target="#EditModal" style="text-align: right; margin-bottom: -5%"><i id="i-'+prod_id+'" class="fas fa-pen" onclick="edit_prod('+prod_id+',\''+namedq+'\',\''+code+'\')"></i></p><br><p id="p-'+prod_id+'" class="display">'+name+'</p> <hr class="jumbohr">' +
+								'<img id="img-'+prod_id+'" src="'+img+'" alt="pic">'+
 								'<div class="inforow row justify-content-center">'+
 									'<p>ไม่มีสินค้าในโกดัง/หน้าร้าน</p>'+
 								'</div>'+
@@ -243,6 +244,123 @@
 				}               
 			}); 
     }
+
+		function edit_prod(prod_id,name,code){
+			$("#fileSelect").val("");
+			$('#fileSelect[rel=popover]').popover('dispose')
+			$("#name-prod").val(name)
+			$("#code-prod").val(code)
+			$("#save-edit").attr('onclick', "save_edit("+prod_id+")");
+		}
+
+		function save_edit(prod_id){
+			name = $("#name-prod").val()
+			code = $("#code-prod").val()			
+			// from an input element
+			var input = document.getElementById("fileSelect");
+        	var file = input.files[0];	
+			var b64;		
+			if (file != undefined) {
+				var tempImg = new Image();
+				tempImg.src = $("#fileSelect").data('img');
+				tempImg.onload = function() {				
+
+					var MAX_WIDTH = 960;
+					var MAX_HEIGHT = 960;
+					var width = tempImg.width;
+					var height = tempImg.height;
+
+					if (width > height) {
+					if (width > MAX_WIDTH) {
+						height *= MAX_WIDTH / width;
+						width = MAX_WIDTH;
+					}
+					} else {
+					if (height > MAX_HEIGHT) {
+						width *= MAX_HEIGHT / height;
+						height = MAX_HEIGHT;
+					}
+					}			
+
+					// Create canvas of required size.
+					var canvas = document.createElement('canvas');
+					canvas.width = width;
+					canvas.height = height;
+
+					var ctx = canvas.getContext("2d");
+					// Take image from top left corner to bottom right corner and draw the image
+					// on canvas to completely fill into.
+					ctx.drawImage(this, 0, 0, tempImg.width, tempImg.height, 0, 0, width, height);
+
+					b64 = canvas.toDataURL("image/jpeg");				
+					//console.log(b64)
+				};			
+			}
+			setTimeout(function() {
+				$.ajax({
+					type: "POST",
+					url:"php/rename_prod_web.php",           
+					data: {'prod_id' : prod_id,
+						'name_prod' : name,
+						'code' : code,
+						'img' : b64},               
+					beforeSend: function(){
+						EasyLoading.show({                           
+							text: "กำลังโหลด"                            
+						});
+					},             
+					success: function(data){
+						EasyLoading.hide();					                          
+						if(data == "success"){
+							$("#i-"+prod_id).attr('onclick', "edit_prod("+prod_id+","+name+","+code+")");							
+							$("#p-"+prod_id).text(name);							
+							if(b64){
+								$('#img-'+prod_id).attr('src', b64);
+							}			
+						}else{
+							$.confirm({
+							title: 'พบข้อผิดพลาด',
+							content: 'ลองอีกครั้ง',
+							backgroundDismiss: true,
+							buttons: {
+								formSubmit: {
+								text: 'ตกลง',
+								btnClass: 'btn-regis',
+								action: function () {
+								}
+								}
+							}
+							});
+						}
+					}               
+				});
+			}, 1000);	
+		}
+
+		function readURL() {
+			var input = document.getElementById("fileSelect");
+			if (input.files && input.files[0]) {
+			var reader = new FileReader();
+			reader.onload = function(e) {
+			$('#fileSelect').data('img', e.target.result);
+			}
+			reader.readAsDataURL(input.files[0]);
+		}
+		}
+
+		function select_img(){
+			console.log("select")	
+			readURL(); //set data-img of ch
+
+			$('#fileSelect[rel=popover]').popover({
+				html: true,
+				trigger: 'hover',
+				placement: 'right',
+				content: function() {
+				return '<img src=' + $(this).data('img') + '>';
+				}
+			});		  
+		}
 
   		function detailback(){
 	  	$("#detail-ctn").prop('hidden', true);
@@ -366,6 +484,39 @@
     		</div>
     	</div>
     </div>
+
+	<!-- Edit Modal -->
+	<div class="modal fade" id="EditModal" tabindex='-1'>
+		<div class="modal-dialog modal-lg modal-dialog-centered">
+		  <div class="modal-content">
+			<!-- Modal Header -->
+			<div class="col-12 text-center" style="margin-top: 15px;">
+			  <h4 class="modal-title">แก้ไขสินค้า</h4>
+			  <hr style="width: 70%;">
+			</div>
+  
+			<!-- Modal body -->
+			<div class="modal-body">
+			  <div class="row">			
+				  <input id="code-prod" type="text" class="form-control col-4 text-center" style="margin-right: 5px; margin-left: 4%;">				
+				  <input id="name-prod" type="text" class="form-control col-7 text-center">
+			  </div>
+			  <div class="col-12 text-center" style="margin-top: 20px; margin-left: 5%;">
+				<form id="imageUploadForm" method="post" enctype="multipart/form-data">
+					<input id="fileSelect" onchange="select_img()" type="file" name="file" accept="image/*" rel="popover" data-img="">
+				</form>
+			  </div><br>			  
+			  <!-- Modal footer -->
+			  <div class="col-12 text-center">
+					<button id="save-edit" type="button" class="btn btn-primary" data-dismiss="modal">บันทึก</button>
+					<button type="button" class="btn btn-danger" data-dismiss="modal">ยกเลิก</button>
+				</div>
+			  <br>
+			</div>
+		  </div>
+		</div>
+	  </div>
+
     <script>
     	$("#input-search").on('focusin', function(event) {
     		event.preventDefault();

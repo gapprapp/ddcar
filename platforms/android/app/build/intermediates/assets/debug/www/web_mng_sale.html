@@ -145,10 +145,11 @@
                             sum = 0;
                         }else{
                             sum = field.total_price - field.count;
-                        }                        
+                        }                                          
                     $('#myUL').append('<li id="sale-'+field.order_id+'">' +
                         '<div class="row justify-content-center sale-even" data-toggle="collapse" href="#detail-'+field.order_id+'" role="button" aria-expanded="false" aria-controls="detail-'+field.order_id+'"onclick="appendCollapse('+field.order_id+');">' +
-                            '<div class="col-4 text-center"><h5>'+field.order_number+'</h5></div>' +
+                          '<div class="col-1 text-center"><h5>'+(i+1)+'</h5></div>' +  
+                          '<div class="col-3 text-center"><h5>'+field.order_number+'</h5></div>' +
                             '<div class="col-2 text-center"><h5>'+field.user_name+'</h5></div>' +
                             '<div class="col-3 text-center"><h5>'+field.total_price+'</h5></div>' +
                             '<div class="col-3 text-center"><h5>'+sum+'</h5></div>' +
@@ -203,8 +204,9 @@
                     $.each(obj, function(i, field){
                     text = text + 
                     '<div id="item-'+field.item_id+'" class="row justify-content-center">'+
+                      '<div class="col-1 text-center items">'+(i+1)+'</div>'+
                         '<div class="col-1 text-center items">'+field.prod_amount+'</div>'+
-                        '<div class="col-7 text-center items">'+field.prod_name+'</div>'+
+                        '<div class="col-6 text-center items">'+field.prod_name+'</div>'+
                         '<div class="col-2 text-center items">'+field.prod_price+'</div>'+
                         '<div class="col-2 text-center items">'+field.prod_price*field.prod_amount+'</div>'+
                     '</div>'
@@ -795,7 +797,10 @@
         </div>
         <div class="container-fullwidth">
             <div class="row justify-content-center">
-                <div class="col-4 text-center">
+                <div class="col-1 text-center">
+                  <h4>ลำดับ</h4>
+                </div>
+                <div class="col-3 text-center">
                     <h4>เลขที่บิล</h4>
                 </div>
                 <div class="col-2 text-center">

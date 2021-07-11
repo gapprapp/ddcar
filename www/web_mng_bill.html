@@ -123,9 +123,12 @@
       $("#myUL").prop('hidden', true);     
       $("#myS").empty();
       // $("#i-back").attr("onclick","showUL()");
+      tempdate = ""
+      no = 1
       get_bill_s();
     }
 
+    var tempdate,no = 1
     function get_bill(){
       $.ajax({
         type: "POST",
@@ -147,13 +150,19 @@
               var txt = field.date_time.split(" ");
               var txt2 = txt[0].split("-");
               var date = txt2[2] + "/" + txt2[1] + "/" + txt2[0].substr(2);
+              if(tempdate != date){
+                  tempdate = date
+                  no = 1
+              }
               $('#myUL').append(' <li id="bill-'+field.order_id+'">' +
                     '<div class="row justify-content-center bill-even" data-toggle="collapse" href="#detail-'+field.order_id+'" role="button" aria-expanded="false" aria-controls="detail-'+field.order_id+'" onclick="appendCollapse('+field.order_id+');">' +
+                        '<div class="col-2 text-center"><h5>'+no+'</h5></div>' +  
                         '<div class="col-4 text-center"><h5>'+field.order_number+'</h5></div>' +
-                        '<div class="col-3 text-center"><h5>'+date+'</h5></div>' +
+                        '<div class="col-2 text-center"><h5>'+date+'</h5></div>' +
                         '<div class="col-4 text-center"><h5>'+field.cus_name+'</h5></div>' +
                     '</div>' +
-                '</li>');               
+                '</li>');
+                no++
             }                                                
           });                                         
         }               
@@ -182,13 +191,19 @@
               var txt = field.date_time.split(" ");
               var txt2 = txt[0].split("-");
               var date = txt2[2] + "/" + txt2[1] + "/" + txt2[0].substr(2);
+              if(tempdate != date){
+                  tempdate = date
+                  no = 1
+              }
               $('#myS').append(' <li id="bills-'+field.order_id+'">' +
                     '<div class="row justify-content-center bill-even" data-toggle="collapse" href="#details-'+field.order_id+'" role="button" aria-expanded="false" aria-controls="details-'+field.order_id+'" onclick="appendCollapses('+field.order_id+');">' +
+                        '<div class="col-2 text-center"><h5>'+no+'</h5></div>' +  
                         '<div class="col-4 text-center"><h5>'+field.order_number+'</h5></div>' +
-                        '<div class="col-3 text-center"><h5>'+date+'</h5></div>' +
+                        '<div class="col-2 text-center"><h5>'+date+'</h5></div>' +
                         '<div class="col-4 text-center"><h5>'+field.cus_name+'</h5></div>' +
                     '</div>' +
-                '</li>');    
+                '</li>');
+                no++
             }                                                
           });                                         
         }               
@@ -237,8 +252,9 @@
             $.each(obj, function(i, field){
               text = text + 
               '<div id="item-'+field.item_id+'" class="row justify-content-center">'+
+                '<div class="col-1 text-center items">'+(i+1)+'</div>'+
                 '<div class="col-1 text-center items">'+field.prod_amount+'</div>'+
-                '<div class="col-7 text-center items">'+field.prod_name+'</div>'+
+                '<div class="col-6 text-center items">'+field.prod_name+'</div>'+
                 '<div class="col-2 text-center items">'+field.prod_price+'</div>'+
                 '<div class="col-2 text-center items">'+field.prod_price*field.prod_amount+'</div>'+
               '</div>'
@@ -330,8 +346,9 @@
             $.each(obj, function(i, field){
               text = text + 
               '<div id="item-'+field.item_id+'" class="row justify-content-center">'+
+                '<div class="col-1 text-center items">'+(i+1)+'</div>'+
                 '<div class="col-1 text-center items">'+field.prod_amount+'</div>'+
-                '<div class="col-7 text-center items">'+field.prod_name+'</div>'+
+                '<div class="col-6 text-center items">'+field.prod_name+'</div>'+
                 '<div class="col-2 text-center items">'+field.prod_price+'</div>'+
                 '<div class="col-2 text-center items">'+field.prod_price*field.prod_amount+'</div>'+
               '</div>'
@@ -879,10 +896,13 @@
         </div>
         <div class="container-fullwidth">
             <div class="row justify-content-center">
+                <div class="col-2 text-center">
+                  <h4>ลำดับ</h4>
+                </div>
                 <div class="col-4 text-center">
                     <h4>เลขที่บิล</h4>
                 </div>
-                <div class="col-3 text-center">
+                <div class="col-2 text-center">
                     <h4>วันที่</h4>
                 </div>
                 <div class="col-4 text-center">

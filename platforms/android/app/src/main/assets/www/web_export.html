@@ -885,7 +885,7 @@
 								'</div>');
 			var text_qr = "[transfer]" + text_id.substring(1) + "|" + text_cost.substring(1) + "|" + text_amt.substring(1) + "|" + localStorage.ware_id_ex
 			console.log(text_qr)
-			qrcode = new QRCode("qrcode",{width: 60, height: 60});
+			qrcode = new QRCode("qrcode",{width: 230, height: 230});
 			qrcode.makeCode(text_qr);			
 			
             $.ajax({
@@ -904,7 +904,7 @@
 						var WinPrint  = window.open();
 						var ele =  document.getElementById('show_qr').innerHTML;
 						WinPrint.document.write("<html><head><meta charset='utf-8'><link href='https://fonts.googleapis.com/css?family=Maitree' rel='stylesheet'><link rel='stylesheet' href='https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css' integrity='sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T' crossorigin='anonymous'>");
-						WinPrint.document.write("<style>@page {size: auto; margin: 0mm;} body{line-height: 1.5; font-size: 0.9em; } .title{margin-bottom: 0.1em;} .line{text-decoration: underline;} .price, .no{letter-spacing: -0.05em;} .items{margin-bottom: 5px;}</style></head><body>" +
+						WinPrint.document.write("<style>@page {size: auto; margin: 0mm;} body{line-height: 1.5; font-size: 0.9em;} .title{margin-bottom: 0.1em;} .line{text-decoration: underline;} .price, .no{letter-spacing: -0.05em;} .items{margin-bottom: 5px;}</style></head><body>" +
 							"<div style='width: 7cm;'>"+
 							"<div class='col-12 text-center'>DD MOTOR SPORT</div>"+
 							"<div class='col-12 text-center'>B-24, B-28 อาคารศรีวรจักร ถ.หลวงป้อมปราบศัตรูพ่าย</div>"+
@@ -942,9 +942,9 @@
 							"<div class='col-12 text-center'>ผู้นำสินค้าออก : "+dat+"</div>"+
 							"<div class='col-12 text-center'>ผู้เช็คสินค้า : "+dat+"</div>"+
 							"<div class='col-12 text-center'>ผู้นำสินค้าเข้า : "+dat+"</div>"+
-							"<div class='col-12 text-center' style='margin-top: 10px'>"+
+							"<div class='col-12 text-center' style='margin-top: 15px'>"+
 								ele+
-							"</div>"+
+							"</div>"+							
 							"</div>");
 						WinPrint.document.write('</body></html>');							
 						WinPrint.document.close();
