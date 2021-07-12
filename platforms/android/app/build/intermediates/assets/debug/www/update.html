@@ -51,8 +51,13 @@
             $(".overlay").prop('hidden', false);
         },                       
         success: function(data){ 
-          $(".overlay").prop('hidden', true); 
-          if(data == "fail"){           
+          $(".overlay").prop('hidden', true);
+          var obj = jQuery.parseJSON(data);
+          if(obj){             
+            $("#version").html("เวอชั่นของแอพ. 1.0.1")
+            $("#new-version").html("เวอชั่นล่าสุด. " + obj[0].version)
+            $("#a-android").attr('href', obj[0].url);
+          }else{
             $.confirm({
               title: 'พบข้อผิดพลาด',
               content: 'กรุณาลองอีกครั้ง',
@@ -66,32 +71,10 @@
                 }
               }
             });
-          }else{           
-            $("#a-android").attr('href', data);
-          }                            
+          }                    
         }               
       });     
-    }
-
-    function testprint(){
-    //   cordova.plugins.pdf.htmlToPDF({
-    //   data: '<b>Hello World!</b>',
-    //   documentSize: "A4",
-    //   landscape: "portrait",
-    //   type: "base64"      
-    //   },
-    //   (sucess) => {
-    //   alert('success: ', success);
-    //   cordova.plugins.printer.print('base64://PGI+SGVsbG8gV29ybGQhPC9iPg==' );
-    //   },
-    //   (error) =>{ 
-    //    alert('error:', error)
-    //   }
-    // );      
-   
-    cordova.plugins.printer.print('base64://PGI+SGVsbG8gV29ybGQhPC9iPg==' );
-      //cordova.plugins.printer.print('<b>Hello World!</b>');
-    }
+    }  
 
   </script>
 </head>
@@ -126,22 +109,24 @@
     <div id="in-ctn" class="container">
       <div class="row text-center">
         <div class="col-12 text-center" style="background-color: white;">
-          <img src="https://upload.wikimedia.org/wikipedia/commons/8/8f/New-Play-Store-logo.png" alt="" style="width: 40%; height: auto">
+          <img src="img/logo.jpg" alt="" style="width: 40%; height: auto">
         </div>
       </div>
       <div class="row mg-top8">
         <div class="col-12 text-center">
-          <h4>ดาวโหลดอัพเดต</h4>
+          <h5 id="version"></h5>
         </div>
       </div>
       <div class="row mg-top8">
         <div class="col-12 text-center">
-          <a href="https://i.diawi.com/3taPCR" style="color: blue; text-decoration: underline;" id="a-android">คลิกเพื่อดาวน์โหลด</a>
+          <h5 id="new-version"></h5>
         </div>
       </div>
-      <div class="col-12 text-center" onclick="testprint()">
-        <i id="i-print" class="fas fa-print menu"></i>
-      </div>
+      <div class="row mg-top8">
+        <div class="col-12 text-center">
+          <a href="" style="color: blue; text-decoration: underline;" id="a-android">คลิกเพื่อดาวน์โหลดเวอชั่นล่าสุด</a>
+        </div>
+      </div>     
     </div> 
 
     <!--<div class="row text-center" style="margin-top: 12%;">

@@ -1,4 +1,4 @@
-function scan(arg){
+function scan(arg,type,ware_id){
         cordova.plugins.barcodeScanner.scan(
         function (result) {
             if(!result.cancelled){
@@ -32,8 +32,8 @@ function scan(arg){
                         var d = new Date($.now());         
                         var datetime = d.getFullYear() + "-" + (d.getMonth()+1) + "-" + d.getDate() + " " + d.getHours() + ":" + d.getMinutes() + ":" + d.getSeconds();
                         json_string = JSON.stringify(arr_data);
-                        var dataString =  "JSON=" + json_string + "&ware_id=6" + "&date=" + datetime
-                        + "&sum=" + sum + "&user_id=" + localStorage.user_id + "&type=หน้าร้าน";
+                        var dataString =  "JSON=" + json_string + "&ware_id=" + ware_id + "&date=" + datetime
+                        + "&sum=" + sum + "&user_id=" + localStorage.user_id + "&type=" + type;
                         $.ajax({
                             type: "POST",
                             url:localStorage.pathServer + "php/stock_in.php",           

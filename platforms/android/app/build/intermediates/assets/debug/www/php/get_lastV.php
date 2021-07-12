@@ -1,15 +1,19 @@
 <?php
     include "db.php";   
   
-    $sql = "SELECT url FROM version"; 
-    $result = mysqli_query($conn, $sql);    
+    $sql = "SELECT url,version FROM version";
+    $result = mysqli_query($conn, $sql);
    
     if(mysqli_num_rows($result) > 0){    
         while($row = mysqli_fetch_array($result)){
-            echo $row['url'];
+            $output[] = $row;
         }
+    }
+    
+    if($result){
+        echo json_encode($output);		   
     }else{
-       echo "fail";
-    } 
+        echo "fail";
+    }
     mysqli_close($conn);
 ?>

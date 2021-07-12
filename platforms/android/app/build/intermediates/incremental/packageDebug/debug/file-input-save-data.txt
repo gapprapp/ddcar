@@ -1,5 +1,5 @@
 #Internal package file, do not edit.
-#Sun Jul 11 15:33:37 ICT 2021
+#Mon Jul 12 15:21:29 ICT 2021
 20.base=C\:\\MewP\\ddcar\\platforms\\android\\app\\build\\intermediates\\assets\\debug
 143.base=C\:\\MewP\\ddcar\\platforms\\android\\app\\build\\intermediates\\res\\debug\\resources-debug.ap_
 340.file=C\:\\MewP\\ddcar\\platforms\\android\\app\\build\\intermediates\\assets\\debug\\html-zh-rHK\\about1d.html
