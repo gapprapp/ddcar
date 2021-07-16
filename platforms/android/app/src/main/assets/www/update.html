@@ -53,8 +53,8 @@
         success: function(data){ 
           $(".overlay").prop('hidden', true);
           var obj = jQuery.parseJSON(data);
-          if(obj){             
-            $("#version").html("เวอชั่นของแอพ. 1.0.1")
+          if(obj){
+            $("#version").html("เวอชั่นของแอพ. 1.0.2")
             $("#new-version").html("เวอชั่นล่าสุด. " + obj[0].version)
             $("#a-android").attr('href', obj[0].url);
           }else{

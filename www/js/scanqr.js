@@ -14,7 +14,7 @@ function scan(arg,type,ware_id){
                         var prod_id = groupStr[0].split(",")
                         var cost = groupStr[1].split(",")
                         var amt = groupStr[2].split(",")
-                        var ware_id = groupStr[3]
+                        //var ware_id = groupStr[3]
                         var arr_data = [];
                         var sum = 0
                         //var msg_alert = "";
@@ -45,7 +45,7 @@ function scan(arg,type,ware_id){
                             $(".overlay").prop('hidden', true);              
                                 if(data == "success"){                       
                                     $.confirm({
-                                        title: 'นำสินค้าเข้าหน้าร้าน',
+                                        title: 'นำสินค้าเข้า' + type,
                                         content: 'สำเร็จ',
                                         backgroundDismiss: true,
                                         buttons: {

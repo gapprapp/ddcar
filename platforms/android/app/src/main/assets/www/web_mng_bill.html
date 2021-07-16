@@ -211,22 +211,132 @@
       start_s += 30;
     }
 
+    function init_restore(bill_id,prod_id,price,total_amt,b_id,type,pay,c_id){
+      $("#btn-ok").attr('onclick','restore('+bill_id+','+prod_id+','+price+','+total_amt+','+b_id+',\''+type+'\',\''+pay+'\','+c_id+')')
+    }
+
+    function restore(bill_id,prod_id,price,total_amt,b_id,type,pay,c_id){
+      amt = $("#in-amt").val()
+      if(total_amt < amt || amt == ""){
+        $.confirm({
+            title: 'แจ้งเตือน',
+            content: 'จำนวนคืนสินค้าเกินจำนวนสินค้าทั้งหมดหรือไม่ได้กรอกจำนวนคืนสินค้า',
+            backgroundDismiss: true,
+            buttons: {
+                formSubmit: {
+                text: 'ตกลง',
+                btnClass: 'btn-danger',
+                action: function () {
+                }
+                }
+            }
+        });
+        return 0;
+      }
+      dis = parseInt(price) * amt     
+      $.ajax({
+        type: "POST",
+        url:"php/restore_product.php",    
+        data:{'bill_id' : bill_id , 'prod_id' : prod_id , 'sum' : dis , 'b_id' : b_id , 'type' : type , 'pay' : pay , 'credit_id': c_id , 'amt' : amt},              
+        beforeSend: function(){
+          EasyLoading.show({                           
+            text: "กำลังโหลด"
+          });
+        },             
+        success: function(data){  
+          EasyLoading.hide();
+          if(data != "fail"){
+            amt_prod = parseInt($("#amt-"+prod_id).text()) - amt
+            sum = parseInt($("#sum-"+bill_id).html()) - dis
+            total = parseInt($("#total-"+bill_id).html()) - dis
+
+            $("#amt-"+prod_id).text(amt_prod)
+            $("#sum-"+bill_id).html(sum)
+            $("#total-"+bill_id).html(total)
+            $("#reModal").modal('hide');
+          }else{
+            $.confirm({
+                title: 'พบข้อผิดพลาด',
+                content: 'ลองอีกครั้ง',
+                backgroundDismiss: true,
+                buttons: {
+                    formSubmit: {
+                    text: 'ตกลง',
+                    btnClass: 'btn-regis',
+                    action: function () {
+                    }
+                    }
+                }
+            });
+          }
+        }               
+      });
+    }
+
+    function delete_bill(bill_id,b_id,type,pay,total,c_id){
+      $.confirm({
+        title: 'ลบรายการ',
+        content: 'ต้องการลบบิลนี้หรือไม่?',
+        backgroundDismiss: true,
+        buttons: { 
+          formSubmit: {
+            text: 'ตกลง',
+            btnClass: 'btn-danger',
+            action: function () {
+              // delete bill
+              $.ajax({
+                type: "POST",
+                url:"php/delete_bill.php",         
+                data:{'bill_id' : bill_id , 'b_id' : b_id , 'type' : type , 'pay' : pay , 'total' : total , 'credit_id': c_id},
+                beforeSend: function(){
+                  EasyLoading.show({                           
+                    text: "กำลังโหลด"
+                  });
+                },                       
+                success: function(data){ 
+                  EasyLoading.hide();
+                  if(data == "success"){                    
+                    $('#bill-'+bill_id).remove()
+                    $('#bills-'+bill_id).remove()
+                  }else{
+                    $.confirm({
+                      title: 'พบข้อผิดพลาด',
+                      content: 'ลองอีกครั้ง',
+                      backgroundDismiss: true,
+                      buttons: {
+                        formSubmit: {
+                        text: 'ตกลง',
+                        btnClass: 'btn-regis',
+                        action: function () {
+                        }
+                        }
+                      }
+                    });
+                  }                         
+                }               
+              });      
+            }
+          },ยกเลิก: function () {}, 
+        }  
+    });
+    }
+    
     var last_collapse_index = 0;
 
     function appendCollapse(index){
       if($("#detail-"+index).length){
-        if(last_collapse_index){
+        if(last_collapse_index){          
           $("div").closest("#detail-"+last_collapse_index).collapse('hide');
         }
 
-        $("#btn-a4").attr('onclick', 'printA4('+index+")");
-        $("#btn-recep").attr('onclick', 'printRecep('+index+")");
+        $("#btn-a4").attr('onclick', 'printA4('+index+')');
+        $("#btn-recep").attr('onclick', 'printRecep('+index+')');        
 
         if(last_collapse_index != index){
           last_collapse_index = index;
         }
       }else{
-
+        
         if(last_collapse_index){
           $("div").closest("#detail-"+last_collapse_index).collapse('hide');
         }
@@ -243,20 +353,24 @@
           },             
           success: function(data){  
             EasyLoading.hide();
-            var obj = jQuery.parseJSON(data);            
+            var obj = jQuery.parseJSON(data);
             text = text + '<div class="collapse" id="detail-'+index+'">'+
             '<div class="card card-body">'+
               '<div class="row justify-content-center">'+
                   '<h3 style="text-decoration: underline;">รายการ</h3>'+
-              '</div>'
+              '</div>'            
             $.each(obj, function(i, field){
+              sum = field.prod_price*field.prod_amount
               text = text + 
-              '<div id="item-'+field.item_id+'" class="row justify-content-center">'+
+              '<div id="item-'+field.prod_id+'" class="row justify-content-center">'+
                 '<div class="col-1 text-center items">'+(i+1)+'</div>'+
-                '<div class="col-1 text-center items">'+field.prod_amount+'</div>'+
+                '<div id="amt-'+field.prod_id+'" class="col-1 text-center items">'+field.prod_amount+'</div>'+
                 '<div class="col-6 text-center items">'+field.prod_name+'</div>'+
-                '<div class="col-2 text-center items">'+field.prod_price+'</div>'+
-                '<div class="col-2 text-center items">'+field.prod_price*field.prod_amount+'</div>'+
+                '<div class="col-1 text-center items">'+field.prod_price+'</div>'+
+                '<div class="col-1 text-center items">'+sum+'</div>'+
+                '<div class="col-2 text-center items">'+
+                  '<button onclick="init_restore('+index+','+field.prod_id+','+field.prod_price+','+field.prod_amount+','+obj[0].branch_id+',\''+obj[0].type+'\',\''+obj[0].payment_type+'\','+obj[0].credit_id+')" class="btn btn-info" data-toggle="modal" data-target="#reModal" style="color: white;">คืนสินค้า</button>'+
+                '</div>'+
               '</div>'
             });
             text = text + 
@@ -267,7 +381,7 @@
             '</div>'+
             '<div class="row">'+
                 '<div class="col-4 text-right"><h4>รวม</h4></div>'+
-                '<div class="col-4 text-right"><h4>'+obj[0].sum_price+'</h4></div>'+
+                '<div class="col-4 text-right"><h4 id="sum-'+index+'">'+obj[0].sum_price+'</h4></div>'+
             '</div>'+
             '<div class="row">'+
                 '<div class="col-4 text-right"><h4>ลด</h4></div>'+
@@ -275,7 +389,7 @@
             '</div>'+
             '<div class="row">'+
                 '<div class="col-4 text-right"><h4>สุทธิ</h4></div>'+
-                '<div class="col-4 text-right"><h4>'+obj[0].total_price+'</h4></div>'+
+                '<div class="col-4 text-right"><h4 id="total-'+index+'">'+obj[0].total_price+'</h4></div>'+
             '</div>'+
             '<div class="row">'+
                 '<div class="col-4 text-right"><h4>รับ / ทอน</h4></div>'+
@@ -283,8 +397,11 @@
                 '<div class="col-4 text-center"><h4>'+obj[0].chng+'</h4></div>'+
             '</div>'+
             '<div class="row justify-content-center" style="margin-top: 1em;">'+
-                '<div class="col-4 text-center">'+
-                '<button class="btn btn-lg btn-warning" data-toggle="modal" data-target="#printModal" style="color: white;">พิมพ์รายการ  <i class="fas fa-print"></i></button>'+
+                '<div class="col-4 text-right">'+
+                  '<button class="btn btn-lg btn-warning" data-toggle="modal" data-target="#printModal" style="color: white;">พิมพ์รายการ  <i class="fas fa-print"></i></button>'+
+                '</div>'+
+                '<div class="col-4 text-left">'+
+                  '<button class="btn btn-lg btn-danger" style="color: white;" onclick="delete_bill('+index+','+obj[0].branch_id+',\''+obj[0].type+'\',\''+obj[0].payment_type+'\','+obj[0].total_price+','+obj[0].credit_id+')">ลบรายการ <i class="fas fa-trash"></i></button>'+
                 '</div>'+
             '</div>'+
           '</div>'+
@@ -293,8 +410,8 @@
         });       
        
         $("#bill-"+index).append(text);
-        $("#btn-a4").attr('onclick', 'printA4('+index+")");
-        $("#btn-recep").attr('onclick', 'printRecep('+index+")");
+        $("#btn-a4").attr('onclick', 'printA4('+index+')');
+        $("#btn-recep").attr('onclick', 'printRecep('+index+')');       
 
         if(last_collapse_index != index){
           last_collapse_index = index;
@@ -344,13 +461,17 @@
                   '<h3 style="text-decoration: underline;">รายการ</h3>'+
               '</div>'
             $.each(obj, function(i, field){
+              sum = field.prod_price*field.prod_amount
               text = text + 
-              '<div id="item-'+field.item_id+'" class="row justify-content-center">'+
+              '<div id="item-'+field.prod_id+'" class="row justify-content-center">'+
                 '<div class="col-1 text-center items">'+(i+1)+'</div>'+
-                '<div class="col-1 text-center items">'+field.prod_amount+'</div>'+
+                '<div id="amt-'+field.prod_id+'" class="col-1 text-center items">'+field.prod_amount+'</div>'+
                 '<div class="col-6 text-center items">'+field.prod_name+'</div>'+
-                '<div class="col-2 text-center items">'+field.prod_price+'</div>'+
-                '<div class="col-2 text-center items">'+field.prod_price*field.prod_amount+'</div>'+
+                '<div class="col-1 text-center items">'+field.prod_price+'</div>'+
+                '<div class="col-1 text-center items">'+sum+'</div>'+
+                '<div class="col-2 text-center items">'+
+                  '<button onclick="init_restore('+index+','+field.prod_id+','+field.prod_price+','+field.prod_amount+','+obj[0].branch_id+',\''+obj[0].type+'\',\''+obj[0].payment_type+'\','+obj[0].credit_id+')" class="btn btn-info" data-toggle="modal" data-target="#reModal" style="color: white;">คืนสินค้า</button>'+
+                '</div>'+
               '</div>'
             });
             text = text + 
@@ -361,7 +482,7 @@
             '</div>'+
             '<div class="row">'+
                 '<div class="col-4 text-right"><h4>รวม</h4></div>'+
-                '<div class="col-4 text-right"><h4>'+obj[0].sum_price+'</h4></div>'+
+                '<div class="col-4 text-right"><h4 id="sum-'+index+'">'+obj[0].sum_price+'</h4></div>'+
             '</div>'+
             '<div class="row">'+
                 '<div class="col-4 text-right"><h4>ลด</h4></div>'+
@@ -369,7 +490,7 @@
             '</div>'+
             '<div class="row">'+
                 '<div class="col-4 text-right"><h4>สุทธิ</h4></div>'+
-                '<div class="col-4 text-right"><h4>'+obj[0].total_price+'</h4></div>'+
+                '<div class="col-4 text-right"><h4 id="total-'+index+'">'+obj[0].total_price+'</h4></div>'+
             '</div>'+
             '<div class="row">'+
                 '<div class="col-4 text-right"><h4>รับ / ทอน</h4></div>'+
@@ -377,9 +498,12 @@
                 '<div class="col-4 text-center"><h4>'+obj[0].chng+'</h4></div>'+
             '</div>'+
             '<div class="row justify-content-center" style="margin-top: 1em;">'+
-                '<div class="col-4 text-center">'+
-                '<button class="btn btn-lg btn-warning" data-toggle="modal" data-target="#printModal" style="color: white;">พิมพ์รายการ  <i class="fas fa-print"></i></button>'+
+                '<div class="col-4 text-right">'+
+                  '<button class="btn btn-lg btn-warning" data-toggle="modal" data-target="#printModal" style="color: white;">พิมพ์รายการ  <i class="fas fa-print"></i></button>'+
                 '</div>'+
+                '<div class="col-4 text-left">'+
+                  '<button class="btn btn-lg btn-danger" style="color: white;" onclick="delete_bill('+index+','+obj[0].branch_id+',\''+obj[0].type+'\',\''+obj[0].payment_type+'\','+obj[0].total_price+','+obj[0].credit_id+')">ลบรายการ <i class="fas fa-trash"></i></button>'+
+                '</div>'+               
             '</div>'+
           '</div>'+
         '</div>';
@@ -958,6 +1082,24 @@
             <button id="btn-a4" type="button" class="btn btn-warning">ใบรายการขาย(A4) <i class="fas fa-file-invoice"></i> </button>
             <button id="btn-recep" type="button" class="btn btn-primary">ใบเสร็จ <i class="fas fa-receipt"></i> </button>
             <button style="margin-left: 30px;" type="button" class="btn btn-danger" data-dismiss="modal" aria-label="Close">ปิด <i class="fas fa-times"></i> </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal restore -->
+    <div class="modal fade" id="reModal" tabindex="-1" role="dialog" aria-labelledby="reModal" aria-hidden="true" style="margin-top: 25%;">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="reModal">จำนวนคืนสินค้า</h5>
+            <div class="col-3 text-center">
+      				<input id='in-amt' type='text' class='form-control text-center' autofocus>
+      			</div>
+          </div>
+          <div class="modal-footer justify-content-end">            
+            <button id="btn-ok" type="button" class="btn btn-success">ตกลง <i class="fas fa-check"></i> </button>
+            <button style="margin-left: 30px;" type="button" class="btn btn-danger" data-dismiss="modal" aria-label="Close">ยกเลิก <i class="fas fa-times"></i> </button>
           </div>
         </div>
       </div>

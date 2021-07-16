@@ -212,6 +212,54 @@
       start_s += 30;
     }
     
+    function delete_bill(exp_id,ware_id){
+      $.confirm({
+        title: 'ลบรายการ',
+        content: 'ต้องการลบรายการนี้หรือไม่?',
+        backgroundDismiss: true,
+        buttons: { 
+          formSubmit: {
+            text: 'ตกลง',
+            btnClass: 'btn-danger',
+            action: function () {
+              // delete bill
+              $.ajax({
+                type: "POST",
+                url:"php/delete_export.php",         
+                data:{'exp_id' : exp_id,'ware_id' : ware_id},
+                beforeSend: function(){
+                  EasyLoading.show({                           
+                    text: "กำลังโหลด"
+                  });
+                },                       
+                success: function(data){ 
+                  EasyLoading.hide();
+                  if(data == "success"){                    
+                    $('#ipt-'+exp_id).remove()
+                    $('#ipts-'+exp_id).remove()
+                  }else{
+                    $.confirm({
+                      title: 'พบข้อผิดพลาด',
+                      content: 'ลองอีกครั้ง',
+                      backgroundDismiss: true,
+                      buttons: {
+                        formSubmit: {
+                        text: 'ตกลง',
+                        btnClass: 'btn-regis',
+                        action: function () {
+                        }
+                        }
+                      }
+                    });
+                  }                         
+                }               
+              });      
+            }
+          },ยกเลิก: function () {}, 
+        }  
+      });
+    }
+
     var dt,username,warename,stock_num
     function appendCollapse(index){
         if($("#detail-"+index).length){
@@ -268,9 +316,12 @@
                       '<div class="col-4 text-right"><h4>'+obj[0].user_name+'</h4></div>'+ 
                   '</div>'+
                   '<div class="row justify-content-center" style="margin-top: 1em;">'+
-                  '<div class="col-4 text-center">'+                   
+                  '<div class="col-4 text-right">'+                   
                     '<button onclick="print.apply(this,arr_data)" class="btn btn-lg btn-warning" style="color: white;">พิมพ์รายการ  <i class="fas fa-print"></i></button>'+
-                '</div>'+        
+                  '</div>'+
+                  '<div class="col-4 text-left">'+
+                    '<button class="btn btn-lg btn-danger" style="color: white;" onclick="delete_bill('+index+','+obj[0].ware_id+')">ลบรายการ <i class="fas fa-trash"></i></button>'+
+                  '</div>'+        
                 '</div>'+  
                   '</div>'+
                 '</div>';                   
@@ -339,9 +390,12 @@
                       '<div class="col-4 text-right"><h4>'+obj[0].user_name+'</h4></div>'+
                   '</div>'+ 
                   '<div class="row justify-content-center" style="margin-top: 1em;">'+
-                  '<div class="col-4 text-center">'+                   
+                  '<div class="col-4 text-right">'+                   
                     '<button onclick="print.apply(this,arr_data)" class="btn btn-lg btn-warning" style="color: white;">พิมพ์รายการ  <i class="fas fa-print"></i></button>'+
-                '</div>'+        
+                  '</div>'+
+                  '<div class="col-4 text-left">'+
+                    '<button class="btn btn-lg btn-danger" style="color: white;" onclick="delete_bill('+index+','+obj[0].ware_id+')">ลบรายการ <i class="fas fa-trash"></i></button>'+
+                  '</div>'+         
                 '</div>'+         
                 '</div>'+
               '</div>';                   
