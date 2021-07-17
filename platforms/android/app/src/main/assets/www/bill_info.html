@@ -326,19 +326,21 @@
             btnClass: 'btn-danger',
             action: function () {
               var amt = $('#edt-amt').val();
-              if(amt == $("#amt-"+arg).text()){
+              if(amt > $("#amt-"+arg).text()){
                 return 0;
               }
               var sum = $('#sum').text();
               var sum_o = $('#price-'+arg).text()*$("#amt-"+arg).text();
               var sum_n = $('#price-'+arg).text()*amt;
-              var sumsum = (sum-sum_o)+sum_n;
+              //var sumsum = (sum-sum_o)+sum_n;
+              var total_amt = $("#amt-"+arg).text() - amt
+              var sumsum = (sum-sum_n);
               var total =sumsum-$('#discount').text();
               $('#total-'+arg).text(sum_n);
               $('#sum').text(sumsum);
               $('#total').text(total);
               $('#chng').text($('#get').text()-total);
-              $("#amt-"+arg).text(amt);              
+              $("#amt-"+arg).text(total_amt);              
             }
           },ยกเลิก: function () {
               //$(".jconfirm .jconfirm-box").css('margin-bottom', '5%');

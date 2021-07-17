@@ -95,31 +95,19 @@
             }     
         }
          
-        
+        $dif = $amount - $amt
         if($type == $type_b && $b_id == $b_idd){
             if($ch == 1){
-               if($type_b == "โกดัง"){
-                if($amount > $amt){
-                    $dif = $amount - $amt;            
-                    $query = "UPDATE warehouse SET amount=amount+'$dif' WHERE ware_id = '$b_id' AND prod_id = '$prod_id'";  
-                }else if($amt > $amount){
-                    $dif = $amt - $amount;
-                    $query = "UPDATE warehouse SET amount=amount-'$dif' WHERE ware_id = '$b_id' AND prod_id = '$prod_id'";  
-                }
-                $result = mysqli_query($conn, $query);
-                if(!$result){
-                    mysqli_rollback($conn);
-                    echo "fail";
-                    exit;
-                }        
+               if($type_b == "โกดัง"){                    
+                    $query = "UPDATE warehouse SET amount=amount+'$dif' WHERE ware_id = '$b_id' AND prod_id = '$prod_id'";
+                    $result = mysqli_query($conn, $query);
+                    if(!$result){
+                        mysqli_rollback($conn);
+                        echo "fail";
+                        exit;
+                    }
                 }else if($type_b == "หน้าร้าน"){
-                    if($amount > $amt){
-                        $dif = $amount - $amt;            
-                        $query = "UPDATE shop SET amount=amount+'$dif' WHERE shop_id = '$b_id' AND prod_id = '$prod_id'";  
-                    }else if($amt > $amount){
-                        $dif = $amt - $amount;
-                        $query = "UPDATE shop SET amount=amount-'$dif' WHERE shop_id = '$b_id' AND prod_id = '$prod_id'";  
-                    }  
+                    $query = "UPDATE shop SET amount=amount+'$dif' WHERE shop_id = '$b_id' AND prod_id = '$prod_id'";
                     $result = mysqli_query($conn, $query);
                     if(!$result){
                         mysqli_rollback($conn);
@@ -129,7 +117,7 @@
                 }
             }                  
         }else if($type == $type_b && $b_id != $b_idd){
-            if($type_b == "โกดัง"){
+            if($type_b == "โกดัง"){                
                 $query = "UPDATE warehouse SET amount=amount+'$amount' WHERE ware_id = '$b_idd' AND prod_id = '$prod_id'";
                 $result = mysqli_query($conn, $query);
                 if(!$result){

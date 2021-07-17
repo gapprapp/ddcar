@@ -211,11 +211,11 @@
       start_s += 30;
     }
 
-    function init_restore(bill_id,prod_id,price,total_amt,b_id,type,pay,c_id){
-      $("#btn-ok").attr('onclick','restore('+bill_id+','+prod_id+','+price+','+total_amt+','+b_id+',\''+type+'\',\''+pay+'\','+c_id+')')
+    function init_restore(bill_id,prod_id,price,total_amt,b_id,type,pay,c_id,price){
+      $("#btn-ok").attr('onclick','restore('+bill_id+','+prod_id+','+price+','+total_amt+','+b_id+',\''+type+'\',\''+pay+'\','+c_id+','+price+')')
     }
 
-    function restore(bill_id,prod_id,price,total_amt,b_id,type,pay,c_id){
+    function restore(bill_id,prod_id,price,total_amt,b_id,type,pay,c_id,price){
       amt = $("#in-amt").val()
       if(total_amt < amt || amt == ""){
         $.confirm({
@@ -247,12 +247,14 @@
           EasyLoading.hide();
           if(data != "fail"){
             amt_prod = parseInt($("#amt-"+prod_id).text()) - amt
+            itemsum = amt_prod * price
             sum = parseInt($("#sum-"+bill_id).html()) - dis
             total = parseInt($("#total-"+bill_id).html()) - dis
 
             $("#amt-"+prod_id).text(amt_prod)
             $("#sum-"+bill_id).html(sum)
             $("#total-"+bill_id).html(total)
+            $("#itemsum-"+prod_id).text(itemsum)
             $("#reModal").modal('hide');
           }else{
             $.confirm({
@@ -367,9 +369,9 @@
                 '<div id="amt-'+field.prod_id+'" class="col-1 text-center items">'+field.prod_amount+'</div>'+
                 '<div class="col-6 text-center items">'+field.prod_name+'</div>'+
                 '<div class="col-1 text-center items">'+field.prod_price+'</div>'+
-                '<div class="col-1 text-center items">'+sum+'</div>'+
+                '<div id="itemsum-'+field.prod_id+'" class="col-1 text-center items">'+sum+'</div>'+
                 '<div class="col-2 text-center items">'+
-                  '<button onclick="init_restore('+index+','+field.prod_id+','+field.prod_price+','+field.prod_amount+','+obj[0].branch_id+',\''+obj[0].type+'\',\''+obj[0].payment_type+'\','+obj[0].credit_id+')" class="btn btn-info" data-toggle="modal" data-target="#reModal" style="color: white;">คืนสินค้า</button>'+
+                  '<button onclick="init_restore('+index+','+field.prod_id+','+field.prod_price+','+field.prod_amount+','+obj[0].branch_id+',\''+obj[0].type+'\',\''+obj[0].payment_type+'\','+obj[0].credit_id+','+field.prod_price+')" class="btn btn-info" data-toggle="modal" data-target="#reModal" style="color: white;">คืนสินค้า</button>'+
                 '</div>'+
               '</div>'
             });
@@ -401,7 +403,7 @@
                   '<button class="btn btn-lg btn-warning" data-toggle="modal" data-target="#printModal" style="color: white;">พิมพ์รายการ  <i class="fas fa-print"></i></button>'+
                 '</div>'+
                 '<div class="col-4 text-left">'+
-                  '<button class="btn btn-lg btn-danger" style="color: white;" onclick="delete_bill('+index+','+obj[0].branch_id+',\''+obj[0].type+'\',\''+obj[0].payment_type+'\','+obj[0].total_price+','+obj[0].credit_id+')">ลบรายการ <i class="fas fa-trash"></i></button>'+
+                  '<button class="btn btn-lg btn-danger" style="color: white;" onclick="delete_bill('+index+','+obj[0].branch_id+',\''+obj[0].type+'\',\''+obj[0].payment_type+'\','+obj[0].total_price+','+obj[0].credit_id+',)">ลบรายการ <i class="fas fa-trash"></i></button>'+
                 '</div>'+
             '</div>'+
           '</div>'+
@@ -468,9 +470,9 @@
                 '<div id="amt-'+field.prod_id+'" class="col-1 text-center items">'+field.prod_amount+'</div>'+
                 '<div class="col-6 text-center items">'+field.prod_name+'</div>'+
                 '<div class="col-1 text-center items">'+field.prod_price+'</div>'+
-                '<div class="col-1 text-center items">'+sum+'</div>'+
+                '<div id="itemsum-'+field.prod_id+'" class="col-1 text-center items">'+sum+'</div>'+
                 '<div class="col-2 text-center items">'+
-                  '<button onclick="init_restore('+index+','+field.prod_id+','+field.prod_price+','+field.prod_amount+','+obj[0].branch_id+',\''+obj[0].type+'\',\''+obj[0].payment_type+'\','+obj[0].credit_id+')" class="btn btn-info" data-toggle="modal" data-target="#reModal" style="color: white;">คืนสินค้า</button>'+
+                  '<button onclick="init_restore('+index+','+field.prod_id+','+field.prod_price+','+field.prod_amount+','+obj[0].branch_id+',\''+obj[0].type+'\',\''+obj[0].payment_type+'\','+obj[0].credit_id+','+field.prod_price+')" class="btn btn-info" data-toggle="modal" data-target="#reModal" style="color: white;">คืนสินค้า</button>'+
                 '</div>'+
               '</div>'
             });
