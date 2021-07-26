@@ -103,20 +103,27 @@
                   }
                 },
                 form2: {
+                  text: 'ตัดไม่คิดเงิน',
+                  btnClass: 'btn-choice',
+                  action: function () {
+                    $("#pay").val('ตัดไม่คิดเงิน');
+                  }
+                },
+                form3: {
                   text: 'เครดิต (30)',
                   btnClass: 'btn-choice',
                   action: function () {
                     $("#pay").val('เครดิต (30)');
                   }
                 },
-                form3: {
+                form4: {
                   text: 'เครดิต (60)',
                   btnClass: 'btn-choice',
                   action: function () {
                     $("#pay").val('เครดิต (60)');
                   }
                 },
-                form4: {
+                form5: {
                   text: 'เครดิต (90)',
                   btnClass: 'btn-choice',
                   action: function () {
@@ -241,6 +248,7 @@
                     if(pay != "เงินสด"){
                         $('#get').val("0");
                         $('#chng').val("0");
+                        $('#dis').val("0");
                         $('#get').attr("readonly",true);
                     }
                 },
@@ -541,11 +549,20 @@
 				}
 			}	
             json_string = JSON.stringify(arr_data); 
-            json_detail = JSON.stringify(arr_detail);           
-            var dataString =  "JSON=" + json_string + "&JSOND=" + json_detail + "&ware_id=" + localStorage.ware_id_s + "&date=" + datetime + "&type=" + localStorage.ware_type
+            json_detail = JSON.stringify(arr_detail);
+            pay = $("#pay").val()
+            if(pay == 'ตัดไม่คิดเงิน'){
+                var dataString =  "JSON=" + json_string + "&JSOND=" + json_detail + "&ware_id=" + localStorage.ware_id_s + "&date=" + datetime + "&type=" + localStorage.ware_type
+            + "&cus_id=" + localStorage.cus_id + "&pay=" + $("#pay").val() + "&net=0" + "&dis=0" + 
+            + "&total=0" + "&get_price=0" + "&chng=0" + "&user_id=" + localStorage.user_id
+            + "&comment=" + $('#comment').val();
+            }else{
+                var dataString =  "JSON=" + json_string + "&JSOND=" + json_detail + "&ware_id=" + localStorage.ware_id_s + "&date=" + datetime + "&type=" + localStorage.ware_type
             + "&cus_id=" + localStorage.cus_id + "&pay=" + $("#pay").val() + "&net=" + localStorage.net + "&dis=" + dis
             + "&total=" + $('#total').val() + "&get_price=" + $('#get').val() + "&chng=" + $('#chng').val() + "&user_id=" + localStorage.user_id
             + "&comment=" + $('#comment').val();
+            }
+           
             // alert(dataString);
             var msg_alert = ""
             for(var i = 0; i < arr_data.length;i++){                
@@ -562,6 +579,7 @@
                     $(".overlay").prop('hidden', true);                           
                     //alert(data);
                     if(data != "fail"){
+                        if(print != "ไม่พิมพ์" && pay != "ตัดไม่คิดเงิน"){
                         var temp = data.split(" ");
                         var order_num = temp[0];
                         var ch = temp[1];                       
@@ -748,9 +766,8 @@
                             contentP = contentP + '</body></html>';
                             cordova.plugins.printer.print(contentP, { duplex: 'none', border: false}, function (res) {
                                 // response cancle res = false
-                            });  
-                        }
-                        $.confirm({
+                            });
+                            $.confirm({
                             title: 'จำนวนคงเหลือใน'+ localStorage.ware_name_s,
                             content: msg_alert,
                             backgroundDismiss: false,
@@ -763,7 +780,26 @@
                                 }
                                 }
                             }
-                        });                         
+                        }); 
+                              
+                        }
+                        }else{
+                            $.confirm({
+                            title: 'จำนวนคงเหลือใน'+ localStorage.ware_name_s,
+                            content: msg_alert,
+                            backgroundDismiss: false,
+                            buttons: {
+                                formSubmit: {
+                                text: 'ตกลง',
+                                btnClass: 'btn-regis',
+                                action: function () {
+									finish(ch);
+                                }
+                                }
+                            }
+                        }); 
+                        }                       
+                                               
                     }else{
                         $.confirm({
                             title: 'พบข้อผิดพลาด',

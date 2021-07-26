@@ -679,6 +679,9 @@
 		function setpay(arg){
 			$('#btn-p').text(arg);
 			localStorage.pay = arg;
+			if(arg == 'ตัดไม่คิดเงิน'){
+
+			}
 		}
 
 		function set_default(){
@@ -996,20 +999,21 @@
 		}
 
 		function check_bill(){
-      var total = $('#total-price').val();    
-			
-      $('#net-price').val(total);
-      $('#discount-money').val("");
-      $('#final-price').val(total); 
-      $('#get-money').val(""); 
-      $('#change-money').val(""); 
+			var total = $('#total-price').val();    
+					
+			$('#net-price').val(total);
+			$('#discount-money').val("");
+			$('#final-price').val(total); 
+			$('#get-money').val(""); 
+			$('#change-money').val(""); 
 			var pay = $('#btn-p').text();
-			if(pay != "เงินสด"){
-					$('#get-money').val("0");
-					$('#change-money').val("0");
-					$('#get-money').attr("readonly",true);
-			}   
-    }   
+			if(pay != "เงินสด"){				
+				$('#get-money').val("0");
+				$('#change-money').val("0");
+				$('#discount-money').val("0");
+				$('#get-money').attr("readonly",true);
+			}
+    	}   
 
 		arr_a4 = [];
 		arr_dat =[];
@@ -1026,7 +1030,7 @@
 			}	
 			arr_detail = [];
 			var text = "";
-      var texta4 = "";
+      		var texta4 = "";
 			var c = 1;
 			for(var i = 0 ; i < arr_data.length ; i ++){                
 				if(arr_data[i].old_price != arr_data[i].price){
@@ -1182,21 +1186,30 @@
 			var d = new Date($.now());
 			var datetime = d.getFullYear() + "-" + (d.getMonth()+1) + "-" + d.getDate() + " " + d.getHours() + ":" + d.getMinutes() + ":" + d.getSeconds();	
 			var print = $('input[name=print-radio]:checked').val();
-      var print_type = $('input[name=print-option]:checked').val();	
-			var vat = $('input[name=pay-radio]:checked').val();		
-			json_string = JSON.stringify(arr_data); 
-			json_detail = JSON.stringify(arr_detail);           
-			var dataString =  "JSON=" + json_string + "&JSOND=" + json_detail + "&ware_id=" + b_id + "&date=" + datetime + "&type=" + type
+      		var print_type = $('input[name=print-option]:checked').val();
+			var vat = $('input[name=pay-radio]:checked').val();
+			json_string = JSON.stringify(arr_data);
+			json_detail = JSON.stringify(arr_detail);
+			var pay = $('#btn-p').text();
+			if(pay == 'ตัดไม่คิดเงิน'){
+				var dataString =  "JSON=" + json_string + "&JSOND=" + json_detail + "&ware_id=" + b_id + "&date=" + datetime + "&type=" + type
+			+ "&cus_id=" + cus_id + "&pay=" + $("#btn-p").text() + "&net=0" + "&dis=0" +
+			"&total=0"  + "&get_price=0"  + "&chng=0"  + "&user_id=" + localStorage.user_id
+			+ "&comment=" + $('#comment').val();
+			}else{
+				var dataString =  "JSON=" + json_string + "&JSOND=" + json_detail + "&ware_id=" + b_id + "&date=" + datetime + "&type=" + type
 			+ "&cus_id=" + cus_id + "&pay=" + $("#btn-p").text() + "&net=" + $('#net-price').val() + "&dis=" + dis
 			+ "&total=" + $('#final-price').val() + "&get_price=" + $('#get-money').val() + "&chng=" + $('#change-money').val() + "&user_id=" + localStorage.user_id
 			+ "&comment=" + $('#comment').val();
+			}          
+			
 			//alert(dataString);
 			var msg_alert = "";
 			for(var i = 0 ; i < arr_data.length;i++){
 				msg_alert += arr_data[i].name + " คงเหลือ " + (arr_data[i].min-arr_data[i].amt) + '<br>';
 			}	
 
-			if(print == "print"){
+			if(print == "print" && pay != "ตัดไม่คิดเงิน"){
 				var WinPrint  = window.open();
 			} 			
 			$.ajax({
@@ -1211,7 +1224,7 @@
 					success: function(data){  
 						EasyLoading.hide();
 							if(data != "fail"){
-								if(print == "print"){
+								if(print == "print" && pay != "ตัดไม่คิดเงิน"){
 									var temp = data.split(" ");
 									var order_num = temp[0];
 									
@@ -1627,10 +1640,11 @@
       				<button id="btn-p" type="button" class="btn dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="background-color: #666;">เงินสด</button>
 
       				<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+						<a class="dropdown-item text-center" href="#" onclick="setpay('ตัดไม่คิดเงิน')">ตัดไม่คิดเงิน</a>
 						<a class="dropdown-item text-center" href="#" onclick="setpay('เงินสด')">เงินสด</a>
 						<a class="dropdown-item text-center" href="#" onclick="setpay('เครดิต (30)')">เครดิต (30)</a>
 						<a class="dropdown-item text-center" href="#" onclick="setpay('เครดิต (60)')">เครดิต (60)</a>
-						<a class="dropdown-item text-center" href="#" onclick="setpay('เครดิต (90)')">เครดิต (90)</a>
+						<a class="dropdown-item text-center" href="#" onclick="setpay('เครดิต (90)')">เครดิต (90)</a>						
       				</div>
       			</div>
       			<div id="user" class="col-2 text-center nopd" style="margin-top: 5px; color: #666;">
