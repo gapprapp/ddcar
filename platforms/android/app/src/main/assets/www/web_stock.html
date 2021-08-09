@@ -77,7 +77,9 @@
 		$(document).ready(function () {
 			if(!localStorage.user_id){
 				window.location = 'web_login.html';
-      } 
+      		}else if(localStorage.user_role == 'ดูคลังสินค้า'){
+				$('a[name="a-menu"]').click(false);
+			}
 			if(localStorage.arr_prod_st){
 				$("#main-ctn").prop('hidden', true);
 				$("#detail-ctn").prop('hidden', false);
@@ -203,7 +205,7 @@
 										'</div>';												
 						});	
 						var msg_price;					
-						if(localStorage.user_role == "พนักงาน"){
+						if(localStorage.user_role != "แอดมิน" && localStorage.user_role != "เจ้าของร้าน"){
 							msg_price = '<p>ส่ง : '+pricesend+'  ปลีก : '+price+'</p>';
 						}else{
 							msg_price = '<p>ทุน : '+cost+'  ส่ง : '+pricesend+'  ปลีก : '+price+'</p>';
@@ -388,12 +390,12 @@
 		<div class="container">
 				<div class="row" style="margin-top: 2px;">
 					<div class="col-12 text-center">
-						<a href="web_sale.html" class="mgr-20">ขายสินค้า</a>
-						<a href="web_import.html" class="mgr-20">นำสินค้าเข้า</a>
+						<a name="a-menu" href="web_sale.html" class="mgr-20">ขายสินค้า</a>
+						<a name="a-menu" href="web_import.html" class="mgr-20">นำสินค้าเข้า</a>
 						<a href="web_stock.html" class="mgr-20 active">เช็คสต๊อก</a>
-						<a href="web_export.html" class="mgr-20">สินค้าออกโกดัง</a>						
-						<a href="web_select.html" class="mgr-20">รายการย้อนหลัง</a>
-						<a href="web_qrprint.html" class="mgr-20">พิมพ์คิวอาร์</a>
+						<a name="a-menu" href="web_export.html" class="mgr-20">สินค้าออกโกดัง</a>						
+						<a name="a-menu" href="web_select.html" class="mgr-20">รายการย้อนหลัง</a>
+						<a name="a-menu" href="web_qrprint.html" class="mgr-20">พิมพ์คิวอาร์</a>
 						<a href="" class="mgr-20" onclick="logout()">ออกจากระบบ</a>
 					</div>
 				</div>

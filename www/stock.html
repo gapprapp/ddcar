@@ -138,7 +138,7 @@
                   msg = msg + '<div class="row" style="margin-bottom: 3%"><div class="col-6 text-right" style="margin-right: 5%;">'+obj[i][0]+' :'+'</div><div class="col-5 text-left">'+obj[i].amount+' | '+addr+'</div></div>';
               });
               var msg_price;					
-              if(localStorage.user_role == "พนักงาน"){
+              if(localStorage.user_role != "แอดมิน" && localStorage.user_role != "เจ้าของร้าน"){
                 msg_price = '<p>ส่ง : '+pricesend+'  ปลีก : '+price+'</p>';
               }else{
                 msg_price = '<p>ทุน : '+cost+'  ส่ง : '+pricesend+'  ปลีก : '+price+'</p>';

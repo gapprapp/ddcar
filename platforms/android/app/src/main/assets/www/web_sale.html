@@ -53,6 +53,8 @@
 		$(document).ready(function () {
 			if(!localStorage.user_id){
 				window.location = 'web_login.html';
+			}else if(localStorage.user_role == 'ดูคลังสินค้า'){
+				window.location = 'web_stock.html';
 			}
 			get_header();
 			setTimeout(function() {$("#cus").focus();}, 100);
