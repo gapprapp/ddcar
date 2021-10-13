@@ -75,7 +75,13 @@
   <script>	
 		var prod_id,img,cost_o,min;
 		var flag = 0;
-		arr_data = [];		
+		arr_data = [];
+		arr_place = [];
+		var check =  0;
+		var is_show = 0;
+		var avg = 0;
+		var count = 0;
+		var qrcode;
 		$(document).ready(function () {
 			if(!localStorage.user_id){
 				window.location = 'web_login.html';
@@ -274,104 +280,104 @@
 			}
 		});	
 		
-		$(document).scannerDetection({
+	// 	$(document).scannerDetection({
 	   
-		 //https://github.com/kabachello/jQuery-Scanner-Detection
+	// 	 //https://github.com/kabachello/jQuery-Scanner-Detection
 	 
-		 timeBeforeScanTest: 200, // wait for the next character for upto 200ms
-		 avgTimeByChar: 40, // it's not a barcode if a character takes longer than 100ms
-		//  ignoreIfFocusOn: 'input',
-		//  preventDefault: true,
+	// 	 timeBeforeScanTest: 200, // wait for the next character for upto 200ms
+	// 	 avgTimeByChar: 40, // it's not a barcode if a character takes longer than 100ms
+	// 	//  ignoreIfFocusOn: 'input',
+	// 	//  preventDefault: true,
 	 
-		 endChar: [13],
-			onComplete: function(barcode, qty){
-				validScan = true;
-				if($('#btn-b').text() == "เลือกโกดัง/หน้าร้าน"){
-						$.confirm({
-							title: 'พบข้อผิดพลาด',
-							content: 'กรุณาเลือกโกดัง/หน้าร้านก่อนทำรายการ',
-							backgroundDismiss: true,
-							buttons: {
-								formSubmit: {
-									text: 'ตกลง',
-									btnClass: 'btn-regis',
-									action: function () {
-									}
-								}
-							}
-						});  
-						return 0;
-					}
-				if(!$('#btn-folder').prop('disabled')){
-					var bool = true;
-					if(arr_data.length > 0){
-						for(var b = 0; b < arr_data.length; b++){
-							if(barcode == arr_data[b].qr){
-								$.confirm({
-									title: 'เตือน',
-									content: 'มีการเพิ่มสินค้า ' + arr_data[b].name + ' กรุณาแก้ไขที่จำนวนของสินค้าที่ได้เพิ่มแล้ว',
-									backgroundDismiss: true,
-									buttons: {
-										formSubmit: {
-										text: 'ตกลง',
-										btnClass: 'btn-regis',
-										action: function () {
-										}
-										}
-									}
-								});  
-								bool = false;                               
-								break;           
-							}
-						}                 
-					}
-					if(bool){
-						$.ajax({
-							type: "POST",
-							url:"php/get_prod.php",    
-							data:{'qr' : barcode, 'ware_id' : localStorage.ware_id_im, 'type' : localStorage.type_im},
-							//async: false,                       
-							beforeSend: function(){
-								EasyLoading.show({                           
-									text: "กำลังโหลด"                            
-								});
-							},             
-							success: function(data){  
-								EasyLoading.hide();
-								var obj = jQuery.parseJSON(data);                                         
-								$.each(obj, function(i, field){
-									prod_id = obj[i].prod_id;
-									$('#name').val(obj[i].prod_name);
-									$('#barcode').val(obj[i].prod_code); 
-									$('#amount').val("1");
-									cost_o = obj[i].prod_cost;                       
-									img = obj[i].img;
-									min = obj[i].min_amount; 
-									if(obj[i].prod_cost == 0 && obj[i].prod_price == 0 && obj[i].prod_pricesend == 0){
-										$('#fund').val("");
-										$('#whole').val("");
-										$('#retail').val("");  
-									}else{
-										$('#fund').val(cost_o);
-										$('#whole').val(obj[i].prod_pricesend);
-										$('#retail').val(obj[i].prod_price);                     
-										flag = 1;
-									}                        
-								});  
-								get_place();                                                           
-							}               
-						});                    
-					}else{
-						show('dup');
-					}
-				}		
+	// 	 endChar: [13],
+	// 		onComplete: function(barcode, qty){
+	// 			validScan = true;
+	// 			if($('#btn-b').text() == "เลือกโกดัง/หน้าร้าน"){
+	// 					$.confirm({
+	// 						title: 'พบข้อผิดพลาด',
+	// 						content: 'กรุณาเลือกโกดัง/หน้าร้านก่อนทำรายการ',
+	// 						backgroundDismiss: true,
+	// 						buttons: {
+	// 							formSubmit: {
+	// 								text: 'ตกลง',
+	// 								btnClass: 'btn-regis',
+	// 								action: function () {
+	// 								}
+	// 							}
+	// 						}
+	// 					});  
+	// 					return 0;
+	// 				}
+	// 			if(!$('#btn-folder').prop('disabled')){
+	// 				var bool = true;
+	// 				if(arr_data.length > 0){
+	// 					for(var b = 0; b < arr_data.length; b++){
+	// 						if(barcode == arr_data[b].qr){
+	// 							$.confirm({
+	// 								title: 'เตือน',
+	// 								content: 'มีการเพิ่มสินค้า ' + arr_data[b].name + ' กรุณาแก้ไขที่จำนวนของสินค้าที่ได้เพิ่มแล้ว',
+	// 								backgroundDismiss: true,
+	// 								buttons: {
+	// 									formSubmit: {
+	// 									text: 'ตกลง',
+	// 									btnClass: 'btn-regis',
+	// 									action: function () {
+	// 									}
+	// 									}
+	// 								}
+	// 							});  
+	// 							bool = false;                               
+	// 							break;           
+	// 						}
+	// 					}                 
+	// 				}
+	// 				if(bool){
+	// 					$.ajax({
+	// 						type: "POST",
+	// 						url:"php/get_prod.php",    
+	// 						data:{'qr' : barcode, 'ware_id' : localStorage.ware_id_im, 'type' : localStorage.type_im},
+	// 						//async: false,                       
+	// 						beforeSend: function(){
+	// 							EasyLoading.show({                           
+	// 								text: "กำลังโหลด"                            
+	// 							});
+	// 						},             
+	// 						success: function(data){  
+	// 							EasyLoading.hide();
+	// 							var obj = jQuery.parseJSON(data);                                         
+	// 							$.each(obj, function(i, field){
+	// 								prod_id = obj[i].prod_id;
+	// 								$('#name').val(obj[i].prod_name);
+	// 								$('#barcode').val(obj[i].prod_code); 
+	// 								$('#amount').val("1");
+	// 								cost_o = obj[i].prod_cost;                       
+	// 								img = obj[i].img;
+	// 								min = obj[i].min_amount; 
+	// 								if(obj[i].prod_cost == 0 && obj[i].prod_price == 0 && obj[i].prod_pricesend == 0){
+	// 									$('#fund').val("");
+	// 									$('#whole').val("");
+	// 									$('#retail').val("");  
+	// 								}else{
+	// 									$('#fund').val(cost_o);
+	// 									$('#whole').val(obj[i].prod_pricesend);
+	// 									$('#retail').val(obj[i].prod_price);                     
+	// 									flag = 1;
+	// 								}                        
+	// 							});  
+	// 							get_place();                                                           
+	// 						}               
+	// 					});                    
+	// 				}else{
+	// 					show('dup');
+	// 				}
+	// 			}		
            
-		} // main callback function	,
-		 ,
-		 onError: function(string, qty) {
-			// alert(string)
-		 }
-	 });
+	// 	} // main callback function	,
+	// 	 ,
+	// 	 onError: function(string, qty) {
+	// 		// alert(string)
+	// 	 }
+	//  });
 
 		function get_prod(id){
             prod_id = id;
@@ -500,7 +506,7 @@
 			}); 	
 		}
 
-		arr_place = [];
+		
 		function get_place(){
 			if($('#name').val() == ""){
 				return;
@@ -544,9 +550,7 @@
 			get_place();
 		}
 	
-		var check =  0;
-		var is_show = 0;
-		var avg = 0;
+		
 		function cal_avg(type){
 			if(flag == 1){
 				if(type == "cost"){
@@ -709,7 +713,7 @@
 			//$('#name').focus();			          
 		}     
 		
-		var count = 0;
+		
   		function show(arg){
 		if(arg != 'dup'){
 			var bottom = $(window).height() - $("#cnt-add").offset().top - $("#cnt-add").height();
@@ -964,7 +968,7 @@
 			});
     }
 
-		var qrcode;
+		
 		function save2db(){
 			if(arr_data.length == 0){
 					return 0;
@@ -1228,12 +1232,103 @@
 			</div>			
 		</div>
 	<script>		
-		$('#name').on('input', function() {
-			var name = $('#name').val();           
-			if(name == ""){
-				set_default();
-			}            
-		});      
+		// $('#name').on('input', function() {
+		// 	var name = $('#name').val();           
+		// 	if(name == ""){
+		// 		set_default();
+		// 	}            
+		// });
+
+		$('#name').on({
+			keypress: function() { typed_into = true; },
+			change: function() {
+				if (typed_into) {
+					var name = $('#name').val();
+					if($('#btn-b').text() == "เลือกโกดัง/หน้าร้าน"){
+						$.confirm({
+							title: 'พบข้อผิดพลาด',
+							content: 'กรุณาเลือกโกดัง/หน้าร้านก่อนทำรายการ',
+							backgroundDismiss: true,
+							buttons: {
+								formSubmit: {
+									text: 'ตกลง',
+									btnClass: 'btn-regis',
+									action: function () {
+									}
+								}
+							}
+						});  
+						return 0;
+					}
+				if(!$('#btn-folder').prop('disabled')){
+					var bool = true;
+					if(arr_data.length > 0){
+						for(var b = 0; b < arr_data.length; b++){
+							if(name == arr_data[b].qr){
+								$.confirm({
+									title: 'เตือน',
+									content: 'มีการเพิ่มสินค้า ' + arr_data[b].name + ' กรุณาแก้ไขที่จำนวนของสินค้าที่ได้เพิ่มแล้ว',
+									backgroundDismiss: true,
+									buttons: {
+										formSubmit: {
+										text: 'ตกลง',
+										btnClass: 'btn-regis',
+										action: function () {
+										}
+										}
+									}
+								});  
+								bool = false;                               
+								break;           
+							}
+						}                 
+					}
+					if(bool){
+						$.ajax({
+							type: "POST",
+							url:"php/get_prod.php",    
+							data:{'qr' : name, 'ware_id' : localStorage.ware_id_im, 'type' : localStorage.type_im},
+							//async: false,                       
+							beforeSend: function(){
+								EasyLoading.show({                           
+									text: "กำลังโหลด"                            
+								});
+							},             
+							success: function(data){  
+								EasyLoading.hide();
+								var obj = jQuery.parseJSON(data);                                         
+								$.each(obj, function(i, field){
+									prod_id = obj[i].prod_id;
+									$('#name').val(obj[i].prod_name);
+									$('#barcode').val(obj[i].prod_code); 
+									$('#amount').val("1");
+									cost_o = obj[i].prod_cost;                       
+									img = obj[i].img;
+									min = obj[i].min_amount; 
+									if(obj[i].prod_cost == 0 && obj[i].prod_price == 0 && obj[i].prod_pricesend == 0){
+										$('#fund').val("");
+										$('#whole').val("");
+										$('#retail').val("");  
+									}else{
+										$('#fund').val(cost_o);
+										$('#whole').val(obj[i].prod_pricesend);
+										$('#retail').val(obj[i].prod_price);                     
+										flag = 1;
+									}                        
+								});  
+								get_place();                                                           
+							}               
+						});                    
+					}else{
+						show('dup');
+					}
+				}
+					typed_into = false; //reset type listener
+				} else {
+					console.log('not type');
+				}
+			}
+		});
 	</script>
 </body>
 </html>

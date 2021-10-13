@@ -54,6 +54,7 @@
               $.each(obj, function(i, field){
               $('#in-ctn').append(" <div id='cus-"+i+"' class='row'>" +
                 "<span id='user-"+i+"' hidden>"+obj[i].user_id+"</span>" +
+                "<span id='phone-"+i+"' hidden>"+obj[i].phone+"</span>" +
                 "<div class='col-1 text-left'>" + 
                   "<i class='fa fa-trash-alt i-del' onclick='edit_del("+i+");' style='color: #666666;' hidden></i>" +
                   "<i class='fa fa-edit i-edit' onclick='edit_mem("+i+");' style='color: #666666;' hidden></i>" +
@@ -172,75 +173,16 @@
     }
 
     function edit_mem(arg){
-      $.confirm({
-        title: 'บทบาท',
-        content: '<hr style="width: 80%; margin-bottom: 0;">',
-        backgroundDismiss: true,
-        buttons: {
-          form1: {
-            text: 'แอดมิน',
-            btnClass: 'btn-choice',
-            action: function () {
-              update_user(arg,'แอดมิน');            
-            }
-          },
-          form2: {
-            text: 'เจ้าของร้าน',
-            btnClass: 'btn-choice',
-            action: function () {
-              update_user(arg,'เจ้าของร้าน');             
-            }
-          },
-          form3: {
-            text: 'พนักงาน',
-            btnClass: 'btn-choice',
-            action: function () {
-              update_user(arg,'พนักงาน');              
-            }
-          },
-          form4: {
-            text: 'ดูคลังสินค้า',
-            btnClass: 'btn-choice',
-            action: function () {
-              update_user(arg,'ดูคลังสินค้า');              
-            }
-          }
-        }
-      });
+      user_id = $('#user-' + arg).text()
+      user_name = $('#name-' + arg).text()
+      role = $('#role-' + arg).text()
+      phone = $('#phone-' + arg).text()
+      goto = "member_show.html?id=" + user_id + "&name=" + user_name + "&role=" + role + "&phone=" + phone;
+      transition_page_next_flip(goto);
+      window.location = goto;      
     }
 
-    function update_user(arg,role){
-      var user_id = $("#user-"+arg).text();
-      $.ajax({
-        type: "POST",
-        url:localStorage.pathServer + "php/rename_user.php",           
-        data: {'user_id' : user_id,
-                'role' : role},  
-        beforeSend: function(){
-          $(".overlay").prop('hidden', false);
-        },              
-        success: function(data){  
-          $(".overlay").prop('hidden', true);    
-          if(data == "success"){
-            $("#role-"+arg).text(role);
-          }else{
-            $.confirm({
-              title: 'พบข้อผิดพลาด',
-              content: 'ลองอีกครั้ง',
-              backgroundDismiss: true,
-              buttons: {
-                formSubmit: {
-                  text: 'ตกลง',
-                  btnClass: 'btn-regis',
-                  action: function () {
-                  }
-                }
-              }
-            });
-          }         
-        }               
-      });   
-    }
+    
   </script>
 </head>
 

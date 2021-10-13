@@ -12,6 +12,7 @@
     $b_id = $_POST['b_id'];
     $type = $_POST['type'];
     $credit_id = $_POST['credit_id'];
+    $dif = 0;
 
     $query = "SELECT * FROM sale_order WHERE order_id = '$bill_id'";  
     $result = mysqli_query($conn, $query);
@@ -95,7 +96,7 @@
             }     
         }
          
-        $dif = $amount - $amt
+        $dif = $amount - $amt;
         if($type == $type_b && $b_id == $b_idd){
             if($ch == 1){
                if($type_b == "โกดัง"){                    
