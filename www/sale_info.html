@@ -16,6 +16,7 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
     <script defer src="https://use.fontawesome.com/releases/v5.0.8/js/all.js"></script>
     <script src="cordova.js"></script>
+    <script type="text/javascript" src="js/config.js"></script>
 
     <link rel="stylesheet" href="css/index.css">
     <link rel="stylesheet" href="css/jquery-confirm.css">
@@ -58,7 +59,8 @@
 
     <script>
         arr_detail = [];
-        $(document).ready(function () {           
+        $(document).ready(function () {      
+            getConfig()
             if(localStorage.type == "ขายปลีก"){
                 $("#bill").val('ใบเสร็จ');
                 $('#vat').attr('disabled',true);
@@ -68,7 +70,7 @@
                 $("#pay").val('เครดิต (60)')
             }else if(localStorage.type == "ขายส่ง(3)"){
                 $("#pay").val('เครดิต (90)')
-            }	          
+            }        	          
         });
 
         $(document).keydown(function(objEvent) {
@@ -591,9 +593,9 @@
                             var contentP = "<html><head><meta charset='utf-8'><link href='https://fonts.googleapis.com/css?family=Maitree' rel='stylesheet'><link rel='stylesheet' href='https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css' integrity='sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T' crossorigin='anonymous'>"+
                                 "<style>@page {size: auto; margin: 0mm;} body{line-height: 1.5; font-size: 0.9em; } .title{margin-bottom: 0.1em;} .line{text-decoration: underline;} .price, .no{letter-spacing: -0.05em;} .items{margin-bottom: 5px;}</style></head><body>" +
                                 "<div style='width: 7cm;'>"+
-                                    "<div class='col-12 text-center'>DD MOTOR SPORT</div>"+
-                                    "<div class='col-12 text-center'>B-24, B-28 อาคารศรีวรจักร ถ.หลวงป้อมปราบศัตรูพ่าย</div>"+
-                                    "<div class='col-12 text-center'>โทร. 02-2265280 , 02-2222437</div>"+
+                                    "<div class='col-12 text-center'>"+billshopName+"</div>"+
+                                    "<div class='col-12 text-center'>"+billshopDestination+"</div>"+
+                                    "<div class='col-12 text-center'>"+billshopTel+"</div>"+
                                     "<div class='col-12 text-center line' style='margin-top: 0.5em; margin-bottom: 0.5em;'>ใบเสร็จรับเงิน</div>"+						
                                         "<div class='row justify-content-center title'>" +
                                         "<div class='col-4 text-right'>ลูกค้า : </div>" +
@@ -671,7 +673,7 @@
                             for(var m = 0;m < arr_a4.length;m++){
                                 contentP = contentP +"<div class='ctn'>" +
                                     "<div class='fl-35'>" +
-                                        "<img style='width: 250px; height: 150px;' src='img/logo.jpg'>" +
+                                        "<img style='width: 250px; height: 150px;' src="+imgPath+">" +
                                     "</div>" +
                                     '<div class="fl-spc">&emsp;</div>' +
                                     "<div class='fl-25' style='margin-top: 30px; margin-bottom: 10px;'>" +
@@ -689,7 +691,7 @@
                                     '</div>'+
                                     
                                     '<div style=" text-align: left; margin-top: -41px; margin-right: 350px;">'+
-                                        '&emsp; <span class="bold">สถานที่ส่งสินค้า : </span><span>&emsp;รถบริษัท DD MOTOR SPORT B-24, B-28 อาคารศรีวรจักร ถ.หลวงป้อมปราบศัตรูพ่าย</span>'+
+                                        '&emsp; <span class="bold">สถานที่ส่งสินค้า : </span><span>&emsp;'+shopDestination+'</span>'+
                                     '</div>' +
 
                                     '<div style="margin-top: 5px;">' +
@@ -718,7 +720,7 @@
                                 "<div id='ctn2' class='ctn'>" +
                                 '<div style="text-align: center; margin-bottom: 5mm;">--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------</div>'+
                                     "<div class='fl-35'>" +
-                                        "<img style='width: 250px; height: 150px;' src='img/logo.jpg'>" +
+                                        "<img style='width: 250px; height: 150px;' src="+imgPath+">" +
                                     "</div>" +
                                     '<div class="fl-spc">&emsp;</div>' +
                                     "<div class='fl-25' style='margin-top: 30px;'>" +
@@ -736,7 +738,7 @@
                                     '</div>'+
                                     
                                     '<div style=" text-align: left; margin-top: -41px; margin-right: 350px;">'+
-                                        '&emsp; <span class="bold">สถานที่ส่งสินค้า : </span><span>&emsp;รถบริษัท DD MOTOR SPORT B-24, B-28 อาคารศรีวรจักร ถ.หลวงป้อมปราบศัตรูพ่าย</span>'+
+                                        '&emsp; <span class="bold">สถานที่ส่งสินค้า : </span><span>&emsp;'+shopDestination+'</span>'+
                                     '</div>' +
 
                                     '<div style="margin-top: 5px;">' +

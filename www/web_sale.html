@@ -35,6 +35,7 @@
   <link href="https://fonts.googleapis.com/css?family=Prompt" rel="stylesheet">
   <!-- Main -->
   <link href="css/untitled.css" rel="stylesheet">
+  <script type="text/javascript" src="js/config.js"></script>
 
   <style>
   	img{
@@ -59,6 +60,7 @@
 		arr_a4 = [];
 		arr_dat =[];
 		$(document).ready(function () {
+			getConfig();			
 			if(!localStorage.user_id){
 				window.location = 'web_login.html';
 			}else if(localStorage.user_role == 'ดูคลังสินค้า'){
@@ -1244,9 +1246,9 @@
 									WinPrint.document.write("<html><head><meta charset='utf-8'><link href='https://fonts.googleapis.com/css?family=Maitree' rel='stylesheet'><link rel='stylesheet' href='https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css' integrity='sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T' crossorigin='anonymous'>");
 									WinPrint.document.write("<style>@page {size: auto; margin: 0mm;} body{line-height: 1.5; font-size: 0.9em; } .title{margin-bottom: 0.1em;} .line{text-decoration: underline;} .price, .no{letter-spacing: -0.05em;} .items{margin-bottom: 5px;}</style></head><body>" +
 										"<div style='width: 7cm;'>"+
-											"<div class='col-12 text-center'>DD MOTOR SPORT</div>"+
-											"<div class='col-12 text-center'>B-24, B-28 อาคารศรีวรจักร ถ.หลวงป้อมปราบศัตรูพ่าย</div>"+
-											"<div class='col-12 text-center'>โทร. 02-2265280 , 02-2222437</div>"+
+											"<div class='col-12 text-center'>"+billshopName+"</div>"+
+											"<div class='col-12 text-center'>"+billshopDestination+"</div>"+
+											"<div class='col-12 text-center'>"+billshopTel+"</div>"+
 											"<div class='col-12 text-center line' style='margin-top: 0.5em; margin-bottom: 0.5em;'>ใบเสร็จรับเงิน</div>"+						
 												"<div class='row justify-content-center title'>" +
 												"<div class='col-4 text-right'>ลูกค้า : </div>" +
@@ -1329,7 +1331,7 @@
 										for(var m = 0;m < arr_a4.length;m++){
 											WinPrint.document.write("<div class='ctn' style='margin-top: -8mm;'>" +
 												"<div class='fl-35'>" +
-													"<img style='width: 250px; height: 150px;' src='img/logo.jpg'>" +
+													"<img id='img4A4' style='width: 250px; height: 150px;' src="+imgPath+">" +
 												"</div>" +
 												'<div class="fl-spc">&emsp;</div>' +
 												"<div class='fl-25' style='margin-top: 30px;'>" +
@@ -1347,7 +1349,7 @@
 												'</div>'+
 												
 												'<div style=" text-align: left; margin-top: -41px;">'+
-													'&emsp; <span class="bold">สถานที่ส่งสินค้า : </span><span>&emsp;รถบริษัท DD MOTOR SPORT B-24, B-28 อาคารศรีวรจักร ถ.หลวงป้อมปราบศัตรูพ่าย</span>'+
+													'&emsp; <span class="bold">สถานที่ส่งสินค้า : </span><span>&emsp;'+shopDestination+'</span>'+
 												'</div>' +
 
 												'<div style="margin-top: 5px;">' +
@@ -1377,7 +1379,7 @@
 											"<div class='ctn' style='margin-top: 155mm; page-break-after: always;'>" +
 												'<div>--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------</div>'+
 												"<div class='fl-35'>" +
-													"<img style='width: 250px; height: 150px;' src='img/logo.jpg'>" +
+													"<img id='img4A4' style='width: 250px; height: 150px;' src="+imgPath+">" +
 												"</div>" +
 												'<div class="fl-spc">&emsp;</div>' +
 												"<div class='fl-25' style='margin-top: 30px;'>" +
@@ -1395,7 +1397,7 @@
 												'</div>'+
 												
 												'<div style=" text-align: left; margin-top: -41px;">'+
-													'&emsp; <span class="bold">สถานที่ส่งสินค้า : </span><span>&emsp;รถบริษัท DD MOTOR SPORT B-24, B-28 อาคารศรีวรจักร ถ.หลวงป้อมปราบศัตรูพ่าย</span>'+
+													'&emsp; <span class="bold">สถานที่ส่งสินค้า : </span><span>&emsp;'+shopDestination+'/span>'+
 												'</div>' +
 
 												'<div style="margin-top: 5px;">' +
@@ -1421,13 +1423,13 @@
 													arr_a4[m] +						
 													arr_dat[m] +
 											'</div>');
-										}				
+										}										
 										WinPrint.document.write('</body></html>');
 										WinPrint.document.close();
 										WinPrint.focus();
 										setTimeout(function() {
 											WinPrint.print();
-											WinPrint.close();	
+											WinPrint.close();
 											$.confirm({
                             title: 'จำนวนคงเหลือใน'+ $('#btn-b').text(),
                             content: msg_alert,
