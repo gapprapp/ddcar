@@ -59,6 +59,7 @@
 		var total_old;
 		arr_a4 = [];
 		arr_dat =[];
+		var b_id_to
 		$(document).ready(function () {
 			getConfig();			
 			if(!localStorage.user_id){
@@ -73,7 +74,17 @@
                 $('#btn-b').text(localStorage.ware_name_s);
 				b_id = localStorage.ware_id_s;
 				type = localStorage.type;
+				if(localStorage.ware_name_s != "หน้าร้าน"){
+					$('#btn-c').prop('disabled', true);
+				}else{
+					$('#btn-c').prop('disabled', false);
+				}
             }
+
+			if(localStorage.ware_id_c){
+                $('#btn-c').text(localStorage.ware_name_c);
+				b_id_to = localStorage.ware_id_c;				
+            }			
 
 			if(localStorage.pay){
 				$('#btn-p').text(localStorage.pay);			
@@ -626,6 +637,7 @@
 						$.each(obj, function(i, field){							
 							if(obj[i][2] == "โกดัง"){
 								$('#b').append('<a class="dropdown-item text-center" href="#" onclick="setware('+field.ware_id+',\''+field.ware_name+'\',\'โกดัง\')">'+field.ware_name+'</a>');
+								$('#c').append('<a class="dropdown-item text-center" href="#" onclick="setwareto('+field.ware_id+',\''+field.ware_name+'\')">'+field.ware_name+'</a>');
 							}else if(obj[i][2] == "หน้าร้าน"){
 								$('#b').append('<a class="dropdown-item text-center" href="#" onclick="setware('+field.shop_id+',\''+field.shop_name+'\',\'หน้าร้าน\')">'+field.shop_name+'</a>');
 							}										
@@ -633,13 +645,23 @@
 					}
 				}               
 			});			
-		}	
+		}		
 
-		
+		function setwareto(arg,arg2){			
+			b_id_to = arg;
+			$('#btn-c').text(arg2);
+			localStorage.ware_id_c = arg;
+			localStorage.ware_name_c = arg2;			
+		}
+
 		function setware(arg,arg2,arg3){
+			if(arg2 != "หน้าร้าน"){
+				$('#btn-c').prop('disabled', true);
+			}else{
+				$('#btn-c').prop('disabled', false);
+			}
 			b_id = arg;
-			type = arg3;		
-			$('#btn-b').text(arg2);	
+			type = arg3;
 			localStorage.ware_id_s = arg;			
 			localStorage.ware_name_s = arg2;
 			localStorage.type = arg3;
@@ -1024,11 +1046,13 @@
 				$('#discount-money').val("0");
 				$('#get-money').attr("readonly",true);
 			}
+			json_string = JSON.stringify(arr_data);
+			console.log(json_string)
     	}   
 
 		
 		function save2db(){
-			if(arr_data.length == 0 || cus_id == null){
+			if(arr_data.length == 0 || cus_id == null && b_id_to == null){
 					return 0;
 			}
 			if($("#change-money").val() == "" || $("#get-money").val() == ""){
@@ -1205,12 +1229,12 @@
 				var dataString =  "JSON=" + json_string + "&JSOND=" + json_detail + "&ware_id=" + b_id + "&date=" + datetime + "&type=" + type
 			+ "&cus_id=" + cus_id + "&pay=" + $("#btn-p").text() + "&net=0" + "&dis=0" +
 			"&total=0"  + "&get_price=0"  + "&chng=0"  + "&user_id=" + localStorage.user_id
-			+ "&comment=" + $('#comment').val();
+			+ "&comment=" + $('#comment').val() + "&ware_id_to=" + b_id_to;
 			}else{
 				var dataString =  "JSON=" + json_string + "&JSOND=" + json_detail + "&ware_id=" + b_id + "&date=" + datetime + "&type=" + type
 			+ "&cus_id=" + cus_id + "&pay=" + $("#btn-p").text() + "&net=" + $('#net-price').val() + "&dis=" + dis
 			+ "&total=" + $('#final-price').val() + "&get_price=" + $('#get-money').val() + "&chng=" + $('#change-money').val() + "&user_id=" + localStorage.user_id
-			+ "&comment=" + $('#comment').val();
+			+ "&comment=" + $('#comment').val() + "&ware_id_to=" + b_id_to;
 			}          
 			
 			//alert(dataString);
@@ -1221,7 +1245,8 @@
 
 			if(print == "print" && pay != "ตัดไม่คิดเงิน"){
 				var WinPrint  = window.open();
-			} 			
+			}			
+			
 			$.ajax({
 					type: "POST",
 					url:"php/save_order.php",           
@@ -1479,6 +1504,7 @@
 							}
 					}               
 			});
+						
 		}
 
 		function set_print_title(){
@@ -1538,6 +1564,8 @@
 			localStorage.cus_tel = "";
 			localStorage.ware_id_s = "";
 			localStorage.ware_name_s = "";
+			localStorage.ware_id_c = "";
+			localStorage.ware_name_c = "";
 			localStorage.type = "";
 			localStorage.pay = "";
 			location.reload();
@@ -1579,6 +1607,9 @@
   		margin-right: 15px; margin-top: 5px;
   	}
   	#btn-b{
+  		width: 50%; background-color: #666; border-color: #666; color: white;
+  	}
+	#btn-c{
   		width: 50%; background-color: #666; border-color: #666; color: white;
   	}
   	#btn-b:focus{
@@ -1626,9 +1657,10 @@
       		<div id="head" class="row mgb-5" style="padding-left: 2%; padding-right: 2%;">
       		  <div class="col-2 text-center" style="color: #666;">วันที่</div>
       		  <div class="col-2 text-center" style="color: #666;">ลูกค้า</div>
-			  <div class="col-3 text-center" style="color: #666;">ขายจาก</div>		
+			  <div class="col-2 text-center" style="color: #666;">ขายจาก</div>
+			  <div class="col-2 text-center" style="color: #666;">โอนไป(ถ้ามี)</div>		
       		  <div class="col-3 text-center" style="color: #666;">รูปแบบการชำระเงิน</div>
-      		  <div class="col-2 text-center" style="color: #666;">ผู้ทำรายการ</div>
+      		  <div class="col-1 text-center" style="color: #666;">ผู้ทำรายการ</div>
       		</div>
       	</div>
 
@@ -1636,16 +1668,26 @@
       		<div class="row" style="padding-left: 2%; padding-right: 2%;">
       			<div id="date" class="col-2 text-center" style="margin-top: 5px; color: #666;">12/5/2018</div>
       			<div class="col-2 text-center nopd">
-      				<input id='cus' type='text' class='form-control text-center' autofocus data-index="1">
+					
+					<input id='cus' type='text' class='form-control text-center' autofocus data-index="1">
+								
+      				
       			</div>
       			
-      			<div class="col-3 text-center nopd">
+      			<div class="col-2 text-center nopd">
       				<button id="btn-b" type="button" class="btn dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="background-color: #666;">เลือกโกดัง/หน้าร้าน</button>
 
       				<div id="b" class="dropdown-menu" aria-labelledby="dropdownMenuButton">
 
       				</div>
-				  </div>				
+				</div>
+				<div class="col-2 text-center nopd">
+					<button id="btn-c" type="button" class="btn dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="background-color: #666;">เลือกโกดัง</button>
+
+					<div id="c" class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+
+					</div>
+			  </div>
       			<div class="col-3 text-center">
       				<button id="btn-p" type="button" class="btn dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="background-color: #666;">เงินสด</button>
 
@@ -1657,7 +1699,7 @@
 						<a class="dropdown-item text-center" href="#" onclick="setpay('เครดิต (90)')">เครดิต (90)</a>						
       				</div>
       			</div>
-      			<div id="user" class="col-2 text-center nopd" style="margin-top: 5px; color: #666;">
+      			<div id="user" class="col-1 text-center nopd" style="margin-top: 5px; color: #666;">
       				ชายเมืองสิงค์
       			</div>
       		</div>
