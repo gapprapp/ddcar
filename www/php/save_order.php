@@ -20,7 +20,7 @@
     $b_to = $_POST['ware_id_to'];
 
     mysqli_begin_transaction($conn);
-    if(!isset($b_to)){
+    if($b_to == 0){
         foreach ($obj_d as $data){
             $prod_id = $data['prod_id'];
             $price = $data['price'];   
