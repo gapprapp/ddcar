@@ -27,6 +27,7 @@
     <link href="https://fonts.googleapis.com/css?family=Prompt" rel="stylesheet">
     <!-- Main -->
     <link href="css/untitled.css" rel="stylesheet">
+    <script type="text/javascript" src="js/config.js"></script>
     <!--<link href="css/login.css" rel="stylesheet">-->
 </head>
 <body>
@@ -42,7 +43,7 @@
             
             <div class="container" style="margin-top: 3%;">
                 <div class="row">
-                    <img style='width: 30%; height: 30%; margin: 0 auto;' src='img/logo.jpg'>
+                    <img id='id_img' style='width: 30%; height: 30%; margin: 0 auto;'>
                 </div><br><br>
                 <div class="row">
                     <div class="col-12 text-center" >
@@ -72,6 +73,11 @@
     </div>
 
     <script>
+        $(document).ready(function () {      
+            getConfig()
+            $('#id_img').attr('src',imgPath)
+        });
+
          $(document).keydown(function(objEvent) {
           if (objEvent.keyCode == 13) {  //enter pressed
               objEvent.preventDefault();           

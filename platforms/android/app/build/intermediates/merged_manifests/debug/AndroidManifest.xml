@@ -6,8 +6,8 @@
     android:versionName="1.0.0" >
 
     <uses-sdk
-        android:minSdkVersion="19"
-        android:targetSdkVersion="28" />
+        android:minSdkVersion="22"
+        android:targetSdkVersion="29" />
 
     <supports-screens
         android:anyDensity="true"
@@ -19,12 +19,7 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.FLASHLIGHT" />
-
-    <uses-feature
-        android:name="android.hardware.camera"
-        android:required="true" />
 
     <application
         android:debuggable="true"
@@ -34,7 +29,7 @@
         android:supportsRtl="true" >
         <activity
             android:name="com.gitmew.ddcar.MainActivity"
-            android:configChanges="orientation|keyboardHidden|keyboard|screenSize|locale"
+            android:configChanges="orientation|keyboardHidden|keyboard|screenSize|locale|smallestScreenSize|screenLayout|uiMode"
             android:label="@string/activity_name"
             android:launchMode="singleTop"
             android:theme="@android:style/Theme.DeviceDefault.NoActionBar"

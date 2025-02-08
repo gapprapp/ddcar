@@ -292,14 +292,8 @@
                     $min = $row['min_amount'];
                     $status = $row['status'];
                 }
-            } 
-            $sql_up = "UPDATE warehouse SET amount = amount+'$amt' WHERE ware_id = '$b_to' AND prod_id = '$prod_id'";
-            $result_up = mysqli_query($conn, $sql_up);    
-            if(!$result_up){
-                mysqli_rollback($conn);
-                echo "fail";
-                exit;
-            } 
+            }
+
             $sql_up1 = "UPDATE shop SET amount = amount-'$amt' WHERE shop_id = '$b' AND prod_id = '$prod_id'";                   
             $result_up1 = mysqli_query($conn, $sql_up1);    
             if(!$result_up1){
@@ -307,6 +301,27 @@
                 echo "fail";
                 exit;
             }
+            $query = "SELECT * FROM warehouse WHERE ware_id = '$b_to' AND prod_id = '$prod_id'";  
+            $result = mysqli_query($conn, $query);
+                if(mysqli_num_rows($result) > 0){                
+                    $sql_up = "UPDATE warehouse SET amount = amount+'$amt' WHERE ware_id = '$b_to' AND prod_id = '$prod_id'";
+                    $result_up = mysqli_query($conn, $sql_up);    
+                    if(!$result_up){
+                        mysqli_rollback($conn);
+                        echo "fail";
+                        exit;
+                    }
+            }else{
+                $sql_up = "INSERT INTO warehouse(amount,ware_id,prod_id) VALUE ('$amt','$b_to','$prod_id')";
+                $result_up = mysqli_query($conn, $sql_up);    
+                if(!$result_up){
+                    mysqli_rollback($conn);
+                    echo "fail";
+                    exit;
+                }
+            } 
+          
+            
         }
         mysqli_commit($conn); 
         echo "Success";
