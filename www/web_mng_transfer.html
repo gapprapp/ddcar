@@ -74,9 +74,14 @@
 			}
       get_import();
 
-      window.onscroll = function(ev) {
-          if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight) {
-            if(!$("#myUL").prop('hidden')){
+      window.addEventListener('scroll', () => { 
+        // Calculate the scroll position 
+        const scrollPosition = window.scrollY + window.innerHeight; 
+        const documentHeight = document.documentElement.scrollHeight; 
+    
+        // Check if the user has scrolled to the bottom 
+        if (scrollPosition >= documentHeight) { 
+          if(!$("#myUL").prop('hidden')){
               if(bool){
                 return 0;
               }
@@ -87,8 +92,8 @@
               }
               get_import_s();
             }
-          }
-      };     
+        } 
+      });          
     });
     
     $(document).keydown(function(objEvent) {
@@ -194,53 +199,53 @@
       start_s += 30;
     }
   
-    // function delete_bill(im_id,ware_id){
-    //   $.confirm({
-    //     title: 'ลบรายการ',
-    //     content: 'ต้องการลบรายการนี้หรือไม่?',
-    //     backgroundDismiss: true,
-    //     buttons: { 
-    //       formSubmit: {
-    //         text: 'ตกลง',
-    //         btnClass: 'btn-danger',
-    //         action: function () {
-    //           // delete bill
-    //           $.ajax({
-    //             type: "POST",
-    //             url:"php/delete_import.php",         
-    //             data:{'imp_id' : im_id,'ware_id' : ware_id},
-    //             beforeSend: function(){
-    //               EasyLoading.show({                           
-    //                 text: "กำลังโหลด"
-    //               });
-    //             },                       
-    //             success: function(data){ 
-    //               EasyLoading.hide();
-    //               if(data == "success"){                    
-    //                 $('#ipt-'+im_id).remove()
-    //                 $('#ipts-'+im_id).remove()
-    //               }else{
-    //                 $.confirm({
-    //                   title: 'พบข้อผิดพลาด',
-    //                   content: 'ลองอีกครั้ง',
-    //                   backgroundDismiss: true,
-    //                   buttons: {
-    //                     formSubmit: {
-    //                     text: 'ตกลง',
-    //                     btnClass: 'btn-regis',
-    //                     action: function () {
-    //                     }
-    //                     }
-    //                   }
-    //                 });
-    //               }                         
-    //             }               
-    //           });      
-    //         }
-    //       },ยกเลิก: function () {}, 
-    //     }  
-    //   });
-    // }
+    function delete_bill(tf_id,ware_id,shop_id){
+      $.confirm({
+        title: 'ลบรายการ',
+        content: 'ต้องการลบรายการนี้หรือไม่?',
+        backgroundDismiss: true,
+        buttons: { 
+          formSubmit: {
+            text: 'ตกลง',
+            btnClass: 'btn-danger',
+            action: function () {
+              // delete bill
+              $.ajax({
+                type: "POST",
+                url:"php/delete_transfer_to.php",         
+                data:{'imp_id' : tf_id,'ware_id' : ware_id, 'shop_id' : shop_id},
+                beforeSend: function(){
+                  EasyLoading.show({                           
+                    text: "กำลังโหลด"
+                  });
+                },                       
+                success: function(data){ 
+                  EasyLoading.hide();
+                  if(data == "success"){                    
+                    $('#ipt-'+tf_id).remove()
+                    $('#ipts-'+tf_id).remove()
+                  }else{
+                    $.confirm({
+                      title: 'พบข้อผิดพลาด',
+                      content: 'ลองอีกครั้ง',
+                      backgroundDismiss: true,
+                      buttons: {
+                        formSubmit: {
+                        text: 'ตกลง',
+                        btnClass: 'btn-regis',
+                        action: function () {
+                        }
+                        }
+                      }
+                    });
+                  }                         
+                }               
+              });      
+            }
+          },ยกเลิก: function () {}, 
+        }  
+      });
+    }
 
     var dt,username,totalA,wareName,tfID
     function appendCollapse(index){
@@ -306,7 +311,7 @@
                     '<button onclick="print.apply(this,arr_data)" class="btn btn-lg btn-warning" style="color: white;">พิมพ์รายการ  <i class="fas fa-print"></i></button>'+
                   '</div>'+
                   '<div class="col-4 text-left">'+
-                    '<button class="btn btn-lg btn-danger" style="color: white;" onclick="delete_bill('+index+','+obj[0].ware_id+')">ลบรายการ <i class="fas fa-trash"></i></button>'+
+                    '<button class="btn btn-lg btn-danger" style="color: white;" onclick="delete_bill('+index+','+obj[0].branch_id+','+obj[0].shop_id+')">ลบรายการ <i class="fas fa-trash"></i></button>'+
                   '</div>'+         
                 '</div>'+                
             '</div>'+
@@ -384,7 +389,7 @@
                     '<button onclick="print.apply(this,arr_data)" class="btn btn-lg btn-warning" style="color: white;">พิมพ์รายการ  <i class="fas fa-print"></i></button>'+
                   '</div>'+
                   '<div class="col-4 text-left">'+
-                    '<button class="btn btn-lg btn-danger" style="color: white;" onclick="delete_bill('+index+','+obj[0].ware_id+')">ลบรายการ <i class="fas fa-trash"></i></button>'+
+                    '<button class="btn btn-lg btn-danger" style="color: white;" onclick="delete_bill('+index+','+obj[0].branch_id+','+obj[0].shop_id+')">ลบรายการ <i class="fas fa-trash"></i></button>'+
                   '</div>'+         
                 '</div>'+                           
                 '</div>'+

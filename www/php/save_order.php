@@ -259,8 +259,8 @@
         echo $order_number." ".$ch;
         mysqli_close($conn);
     }else{
-        $sql1 = "INSERT INTO transfer_record (total,branch_id,date_time,user) 
-            VALUE ('$total','$b_to','$dt','$user_id')"; 
+        $sql1 = "INSERT INTO transfer_record (total,shop_id,branch_id,date_time,user) 
+            VALUE ('$total','$b','$b_to','$dt','$user_id')"; 
             $result1 = mysqli_query($conn, $sql1);
             if(!$result1){
                 mysqli_rollback($conn);

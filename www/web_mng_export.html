@@ -72,11 +72,16 @@
       if(!localStorage.user_id){
 				window.location = 'web_login.html';
 			}
-      get_export();
-     
-      window.onscroll = function(ev) {
-          if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight) {            
-            if(!$("#myUL").prop('hidden')){              
+      get_export();     
+         
+      window.addEventListener('scroll', () => { 
+        // Calculate the scroll position 
+        const scrollPosition = window.scrollY + window.innerHeight; 
+        const documentHeight = document.documentElement.scrollHeight; 
+    
+        // Check if the user has scrolled to the bottom 
+        if (scrollPosition >= documentHeight) { 
+          if(!$("#myUL").prop('hidden')){              
               if(bool){
                 return 0;
               }
@@ -87,23 +92,8 @@
               }
               get_export_s();
             }
-          }
-      };    
-      // $(window).scroll(function() {
-      //   if($(window).scrollTop() + $(window).height() == $(document).height()) {
-      //     if(!$("#myUL").prop('hidden')){
-      //       if(bool){
-      //         return 0;
-      //       }
-      //       get_export();           
-      //     }else if(!$("#myS").prop('hidden')){
-      //       if(bool_s){
-      //         return 0;
-      //       }
-      //       get_export_s();
-      //     }
-      //   }
-      // });
+        } 
+      });
     });
     
     $(document).keydown(function(objEvent) {
