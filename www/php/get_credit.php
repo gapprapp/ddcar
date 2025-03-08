@@ -6,9 +6,9 @@
     $firstday = date("Y-m-01", strtotime($dt)); 
    
     if(isset($_POST['value'])){
-      $val = $_POST['value'];     
+      $val = $_POST['value'];
       $query = "SELECT d.credit_id,d.cus_id,c.cus_name,d.credit_price,d.date_time FROM credit d INNER JOIN customer c
-      ON d.cus_id = c.cus_id WHERE c.cus_name LIKE '%$val%' OR d.date_time LIKE '%$val%'";
+      ON d.cus_id = c.cus_id WHERE c.cus_name LIKE '%$val%' OR d.date_time LIKE '%$val%' ORDER BY d.date_time DESC";
     }else{
       $query = "SELECT d.credit_id,d.cus_id,c.cus_name,d.credit_price,d.date_time FROM credit d INNER JOIN customer c
       ON d.cus_id = c.cus_id WHERE date_time BETWEEN '$firstday' AND '$lastday'";     

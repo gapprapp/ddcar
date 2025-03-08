@@ -204,7 +204,7 @@
               var cus_id = field.cus_id;                    
               var last_d = new Date(d.getFullYear(),d.getMonth()+1, 0).getDate();              
               var cd = last_d - d.getDate();
-              if(d.getMonth()+1 != date[1]){
+              if(d.getMonth()+1 != date[1] || d.getFullYear() != date[0]){
                 cd = "เลย";
               }
               if(cd <= 3 && cd > 1){
@@ -563,7 +563,7 @@
         <button id="i-back" class="btn btn-outline-secondary" type="button" style="margin-right: 10px;" hidden>
           <i class="fa fa-angle-left"></i>
       </button>
-        <input id="input-search" type="text" class="form-control-lg text-center" placeholder="ค้นหาลูกค้า/เลขที่เดือน" style="width: 60%;">
+        <input id="input-search" type="text" class="form-control-lg text-center" placeholder="ค้นหาชื่อลูกค้า/ปี-เดือน ex.2025-01" style="width: 60%;">
           <!-- <button  class="btn btn-outline-secondary" type="button" style="margin-left: 10px;">
               <i class="fa fa-search"></i>
           </button> -->
