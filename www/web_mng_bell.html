@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <title>รายงานเครดิต</title>
+
+  <!-- Bootstrap Import -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.6/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js"></script>
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.1/css/all.css" integrity="sha384-O8whS3fhG2OnA5Kas0Y9l3cfpmYjapjI0E4theH4iuMD+pLhbf6JI0jIMfYcK3yZ" crossorigin="anonymous">
+
+  <!-- Super cool dialog-->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.0/jquery-confirm.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.0/jquery-confirm.min.js"></script>
+	
+	<!-- Loading -->
+	<link rel="stylesheet" href="css/easy-loading.css">
+	<script src="js/easy-loading.js"></script>	
+
+  <!-- Font -->
+  <link href="https://fonts.googleapis.com/css?family=Prompt" rel="stylesheet"> 
+  <!-- Main -->
+  <link href="css/untitled.css" rel="stylesheet">  
+  <style>
+    body{color: #666;}
+    a{ color: #999;}
+    a:hover{color: #666;}
+    .active{color: #666;}
+    .cus-odd, .cus-even{
+      padding-top: 1%; padding-bottom: 1%; color: #fff; margin-bottom: 1%; cursor: pointer;
+    }
+    .cus-odd{
+      background-color: #999;
+    }
+    .cus-even{
+      background-color: #858585;
+    }
+    h5{
+      letter-spacing: 2px;
+    }
+    ul {
+      list-style-type: none;
+      margin: 0;
+      padding: 0;
+    }   
+    .yellow{
+        color: #ffbb33;
+    }
+    .red{
+      color: #d63232;
+    }
+    .green{
+      color: #3dd12a;
+    } 
+  </style>
+  <script>
+    var start = 0;
+    var bool = false;
+    var color;   
+    $(document).ready(function(){
+      if(!localStorage.user_id){
+				window.location = 'web_login.html';
+      }
+      get_bell();
+
+      window.addEventListener('scroll', () => { 
+        // Calculate the scroll position 
+        const scrollPosition = window.scrollY + window.innerHeight; 
+        const documentHeight = document.documentElement.scrollHeight; 
+    
+        // Check if the user has scrolled to the bottom 
+        if (scrollPosition >= documentHeight) { 
+          if(!$("#myUL").prop('hidden')){              
+              if(bool){
+                return 0;
+              }
+              get_bell();           
+            }
+        } 
+      });
+    });
+
+    $(document).keydown(function(objEvent) {
+      if (objEvent.keyCode == 13) {  //enter pressed
+        objEvent.preventDefault();           
+        search();        
+      }         
+    })
+
+    function get_bell(){
+      $.ajax({
+        type: "POST",
+        url:"php/get_status_prod.php",
+        data: {'start' : start},
+        beforeSend: function(){
+          EasyLoading.show({
+						text: "กำลังโหลด"
+					});
+        },
+        success: function(data){
+          EasyLoading.hide();
+          var obj = jQuery.parseJSON(data);
+          if(obj){
+            $.each(obj, function(i, field){
+              var prod_id = field.prod_id;
+              var prod_name = field.prod_name;
+              var status = field.status;            
+              switch(status) {
+                case "normal":
+                  color = "green";
+                  break;
+                case "warning":
+                  color = "yellow";
+                  break;
+                case "danger":
+                  color = "red";
+                  break;
+              }
+              if(i % 2 == 0){
+                $('#myUL').append('<li> <div class="row justify-content-center cus-odd">'+
+                  '<div class="col-1"><i class="fas fa-circle '+color+'"></i></div>'+
+                  '<div class="col-8 text-center"><h5>'+prod_name+'</h5></div>'+
+                '</div></li>');
+              }else{
+                $('#myUL').append('<li> <div class="row justify-content-center cus-even">'+
+                  '<div class="col-1"><i class="fas fa-circle '+color+'"></i></div>'+
+                  '<div class="col-8 text-center"><h5>'+prod_name+'</h5></div>'+
+                '</div></li>');
+              }
+            });
+          }
+        }
+      });
+      start += 20;
+    }
+
+    function logout(){
+			localStorage.clear();
+		}    
+  </script>
+</head>
+<body>
+	<div class="container-fullwidth justify-content-center">
+		<nav class="navbar navbar-expand-md navbar-dark">
+    	<div class="collapse navbar-collapse justify-content-md-center" id="navbarCollapse">
+      		<h3 id="nav-title">สถานะของรายการสินค้า</h3>
+    	</div>
+    </nav>
+    <div class="container">
+      <div class="row" style="margin-top: 2px;">
+        <div class="col-12 text-center">
+          <a href="web_sale.html" class="mgr-20">ขายสินค้า</a>
+          <a href="web_import.html" class="mgr-20">นำสินค้าเข้า</a>
+          <a href="web_stock.html" class="mgr-20">เช็คสต๊อก</a>
+          <a href="web_export.html" class="mgr-20">สินค้าออกโกดัง</a>
+          <a href="web_mng_bell.html" class="mgr-20 active">เช็คสถานะสินค้า</a>
+          <a href="web_select.html" class="mgr-20">รายการย้อนหลัง</a>
+          <a href="web_qrprint.html" class="mgr-20">พิมพ์คิวอาร์</a>
+          <a href="" class="mgr-20" onclick="logout()">ออกจากระบบ</a>
+        </div>
+      </div>
+    </div><br><br>   
+    <div class="container-fullwidth">
+      <div class="row justify-content-center">
+        <div class="col-8 text-center"><h4>ชื่อสินค้า</h4></div>       
+      </div>
+    </div><hr style="width: 75%; margin-top: 0;"> <br>
+    <div id="ctn-append" class="container-fullwidth">
+      <ul id="myUL"> </ul>              
+    </div>    
+  </div>
+</body>
+</html>
