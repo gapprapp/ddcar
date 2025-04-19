@@ -76,8 +76,10 @@
         const scrollPosition = window.scrollY + window.innerHeight; 
         const documentHeight = document.documentElement.scrollHeight; 
     
-        // Check if the user has scrolled to the bottom 
-        if (scrollPosition >= documentHeight) { 
+        // Check if the user has scrolled to the bottom
+        //console.log(scrollPosition)
+        //console.log(documentHeight)
+        if (scrollPosition >= documentHeight - 1) { 
           if(!$("#myUL").prop('hidden')){
               if(bool){
                 return 0;
@@ -1001,7 +1003,8 @@
                     <a href="web_sale.html" class="mgr-20">ขายสินค้า</a>
                     <a href="web_import.html" class="mgr-20">นำสินค้าเข้า</a>
                     <a href="web_stock.html" class="mgr-20">เช็คสต๊อก</a>
-                    <a href="web_export.html" class="mgr-20">สินค้าออกโกดัง</a>                   
+                    <a href="web_export.html" class="mgr-20">สินค้าออกโกดัง</a>
+                    <a href="web_mng_bell.html" class="mgr-20">เช็คสถานะสินค้า</a>
                     <a href="web_select.html" class="mgr-20 active">รายการย้อนหลัง</a>
                     <a href="web_qrprint.html" class="mgr-20">พิมพ์คิวอาร์</a>
                     <a href="" class="mgr-20" onclick="logout()">ออกจากระบบ</a>
@@ -1032,35 +1035,7 @@
         </div>
         <hr style="width: 75%; margin-top: 0;"> <br>
         <div id="ctn-append" class="container-fullwidth">
-            <ul id="myUL">
-                <!--<li id="bill-1">
-                    <div class="row justify-content-center bill-odd" data-toggle="collapse" href="#detail-1" role="button" aria-expanded="false" aria-controls="detail-1" onclick="appendCollapse(1);">
-                        <div class="col-4 text-center"><h5>S18-00329</h5></div>
-                        <div class="col-3 text-center"><h5>03/10/18</h5></div>
-                        <div class="col-4 text-center"><h5>Phoenix</h5></div>
-                    </div>
-                </li>
-                <li id="bill-2">
-                    <div class="row justify-content-center bill-even" data-toggle="collapse" href="#detail-2" role="button" aria-expanded="false" aria-controls="detail-2" onclick="appendCollapse(2);">
-                        <div class="col-4 text-center"><h5>S18-00329</h5></div>
-                        <div class="col-3 text-center"><h5>03/10/18</h5></div>
-                        <div class="col-4 text-center"><h5>Phoenix</h5></div>
-                    </div>
-                </li>
-                <li id="bill-3">
-                    <div class="row justify-content-center bill-even" data-toggle="collapse" href="#detail-3" role="button" aria-expanded="false" aria-controls="detail-3" onclick="appendCollapse(3);">
-                        <div class="col-4 text-center"><h5>S18-00329</h5></div>
-                        <div class="col-3 text-center"><h5>03/10/18</h5></div>
-                        <div class="col-4 text-center"><h5>Phoenix</h5></div>
-                    </div>
-                </li>
-                <li id="bill-4">
-                    <div class="row justify-content-center bill-even" data-toggle="collapse" href="#detail-4" role="button" aria-expanded="false" aria-controls="detail-4" onclick="appendCollapse(4);">
-                        <div class="col-4 text-center"><h5>S18-00329</h5></div>
-                        <div class="col-3 text-center"><h5>03/10/18</h5></div>
-                        <div class="col-4 text-center"><h5>Phoenix</h5></div>
-                    </div>
-                </li>-->
+            <ul id="myUL">                
             </ul>
             <ul id="myS" hidden>
             </ul>
