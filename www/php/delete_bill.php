@@ -6,7 +6,11 @@
     $pay  = $_POST['pay'];
     $total  = $_POST['total'];
     $credit_id  = $_POST['credit_id'];
+    $remark = $_POST['remark'];
+    $user_id = $_POST['u_id'];
     $txt = "(cancel)";
+    date_default_timezone_set("Asia/Bangkok");
+    $datetime = date("Y-m-d H:i:s");
 
     mysqli_begin_transaction($conn);
     $query = "SELECT prod_amount,prod_id FROM sale_order_item WHERE order_id = '$bill_id'";  
@@ -45,6 +49,14 @@
             echo "fail";
             exit;
         }
+    }
+
+    $sql = "INSERT INTO sale_order_remove (order_id, user_id, date_time, remark) VALUES ('$bill_id','$user_id','$datetime','$remark')";  
+    $result = mysqli_query($conn, $sql);
+    if(!$result){
+        mysqli_rollback($conn);
+        echo "fail";
+        exit;
     }
    
     mysqli_commit($conn);
