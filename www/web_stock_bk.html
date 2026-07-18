@@ -220,42 +220,30 @@
 						}
 						namedq = name.replace(/"/g, '\\"');			
 						if(img == ""){
-							$('#append-ctn').append('<div id="div-'+prod_id+'" class="jumbotron text-center jumbo-center">'+
-								'<p style="text-align: right; margin-bottom: -5%">' +
-									'<i id="i-'+prod_id+'" class="fas fa-pen" data-toggle="modal" data-target="#EditModal" onclick="edit_prod('+prod_id+',\''+namedq+'\',\''+code+'\')" style="cursor: pointer; margin-right: 15px;"></i>' +
-									'<i class="fas fa-trash" onclick="delete_prod('+prod_id+',\''+namedq+'\')" style="cursor: pointer;"></i>' +
-									'</p><br><p id="p-'+prod_id+'" class="display">'+name+'</p><br>'+msg_price+' <hr class="jumbohr">' +
+							$('#append-ctn').append('<div class="jumbotron text-center jumbo-center">'+
+									'<p data-toggle="modal" data-target="#EditModal" style="text-align: right; margin-bottom: -5%"><i id="i-'+prod_id+'" class="fas fa-pen" onclick="edit_prod('+prod_id+',\''+namedq+'\',\''+code+'\')"></i></p><br><p id="p-'+prod_id+'" class="display">'+name+'</p><br>'+msg_price+' <hr class="jumbohr">' +
 									'<img id="img-'+prod_id+'" src="img/no_img.png" alt="pic">'+								
 										msg +								
-							'</div>');
+								'</div>');
 						}else{
-							$('#append-ctn').append('<div id="div-'+prod_id+'" class="jumbotron text-center jumbo-center">'+
-								'<p style="text-align: right; margin-bottom: -5%">' +
-									'<i id="i-'+prod_id+'" class="fas fa-pen" data-toggle="modal" data-target="#EditModal" onclick="edit_prod('+prod_id+',\''+namedq+'\',\''+code+'\')" style="cursor: pointer; margin-right: 15px;"></i>' +
-									'<i class="fas fa-trash" onclick="delete_prod('+prod_id+',\''+namedq+'\')" style="cursor: pointer;"></i>' +
-								'</p><br><p id="p-'+prod_id+'" class="display">'+name+'</p><br>'+msg_price+' <hr class="jumbohr">' +
+							$('#append-ctn').append('<div class="jumbotron text-center jumbo-center">'+
+								'<p data-toggle="modal" data-target="#EditModal" style="text-align: right; margin-bottom: -5%"><i id="i-'+prod_id+'" class="fas fa-pen" onclick="edit_prod('+prod_id+',\''+namedq+'\',\''+code+'\')"></i></p><br><p id="p-'+prod_id+'" class="display">'+name+'</p><br>'+msg_price+' <hr class="jumbohr">' +
 								'<img id="img-'+prod_id+'" class="thumbnails" src="'+img+'">'+		
 									msg +								
 							'</div>');
-						}															
+						}									
 					}else{													       
 						if(img == ""){
-							$('#append-ctn').append('<div id="div-'+prod_id+'" class="jumbotron text-center jumbo-center">'+
-								'<p style="text-align: right; margin-bottom: -5%">'+
-									'<i id="i-'+prod_id+'" class="fas fa-pen" data-toggle="modal" data-target="#EditModal" onclick="edit_prod('+prod_id+',\''+namedq+'\',\''+code+'\')" style="cursor: pointer; margin-right: 15px;"></i>'+
-									'<i class="fas fa-trash" onclick="delete_prod('+prod_id+',\''+namedq+'\')" style="cursor: pointer;"></i>' +
-									'</p><br><p id="p-'+prod_id+'" class="display">'+name+'</p> <hr class="jumbohr">' +
+							$('#append-ctn').append('<div class="jumbotron text-center jumbo-center">'+
+								'<p data-toggle="modal" data-target="#EditModal" style="text-align: right; margin-bottom: -5%"><i id="i-'+prod_id+'" class="fas fa-pen" onclick="edit_prod('+prod_id+',\''+namedq+'\',\''+code+'\')"></i></p><br><p id="p-'+prod_id+'" class="display">'+name+'</p> <hr class="jumbohr">' +
 								'<img id="img-'+prod_id+'" src="img/no_img.png" alt="pic">'+
 								'<div class="inforow row justify-content-center">'+
 									'<p>ไม่มีสินค้าในโกดัง/หน้าร้าน</p>'+
 								'</div>'+
 							'</div>');
 						}else{
-							$('#append-ctn').append('<div id="div-'+prod_id+'" class="jumbotron text-center jumbo-center">'+
-								'<p style="text-align: right; margin-bottom: -5%">'+
-									'<i id="i-'+prod_id+'" class="fas fa-pen" data-toggle="modal" data-target="#EditModal" onclick="edit_prod('+prod_id+',\''+namedq+'\',\''+code+'\')" style="cursor: pointer; margin-right: 15px;"></i>'+
-									'<i class="fas fa-trash" onclick="delete_prod('+prod_id+',\''+namedq+'\')" style="cursor: pointer;"></i>' +
-									'</p><br><p id="p-'+prod_id+'" class="display">'+name+'</p> <hr class="jumbohr">' +
+							$('#append-ctn').append('<div class="jumbotron text-center jumbo-center">'+
+								'<p data-toggle="modal" data-target="#EditModal" style="text-align: right; margin-bottom: -5%"><i id="i-'+prod_id+'" class="fas fa-pen" onclick="edit_prod('+prod_id+',\''+namedq+'\',\''+code+'\')"></i></p><br><p id="p-'+prod_id+'" class="display">'+name+'</p> <hr class="jumbohr">' +
 								'<img id="img-'+prod_id+'" class="thumbnails" src="'+img+'">'+
 								'<div class="inforow row justify-content-center">'+
 									'<p>ไม่มีสินค้าในโกดัง/หน้าร้าน</p>'+
@@ -279,53 +267,6 @@
 			$("#name-prod").val(name)
 			$("#code-prod").val(code)
 			$("#save-edit").attr('onclick', "save_edit("+prod_id+")");
-		}
-
-		function delete_prod(prod_id,name){
-			$.confirm({
-			icon: 'fa fa-warning',
-				title: 'คุณต้องการลบ ' + name,
-				content: 'ต้องการลบรายการสินค้านี้หรือไม่!',
-				buttons: {
-					danger: {
-						btnClass: 'btn-danger',
-						text: 'ลบ',
-						action: function () {							
-							$.ajax({
-								type: "POST",
-								url:"php/delete_prod.php",
-								data: {'title' : prod_id},               
-								beforeSend: function(){
-									EasyLoading.show({                           
-										text: "กำลังโหลด"                            
-									});	
-								},             
-								success: function(data){  
-									EasyLoading.hide();                          
-									if(data == "success"){
-										$('#div-'+prod_id).remove()
-									}else{
-									$.confirm({
-										title: 'พบข้อผิดพลาด',
-										content: 'ลองอีกครั้ง',
-										backgroundDismiss: true,
-										buttons: {
-										formSubmit: {
-											text: 'ตกลง',
-											btnClass: 'btn-regis',
-											action: function () {
-											}
-										}
-										}
-									});
-									}           
-								}               
-							});									
-						}
-					},
-					ยกเลิก: function () {},
-				}
-			});
 		}
 
 		function save_edit(prod_id){
@@ -444,8 +385,7 @@
 
 		function select_folder(){
 			window.location = 'web_folder.html?from=stock';
-		}	
-	
+		}
 
 		function logout(){
 			localStorage.clear();
@@ -483,7 +423,6 @@
 	        <button class="btn btn-outline-secondary" type="button" style="margin-left: 10px;" onclick="show();">
 	            <i class="fa fa-search"></i>
 	        </button>
-			<button class="btn btn-outline-secondary" type="button" style="margin-left: 10px;" onclick="select_folder();">เพิ่มสินค้า</button>
     	</div>
     	<hr style="width: 75%;">
     	<div id="row-folder" class="row justify-content-center" style="margin-bottom: 4%; margin-top: 4%;">

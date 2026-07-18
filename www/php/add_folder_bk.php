@@ -1,17 +1,14 @@
 <?php
     include "db.php";
-    
-    // กรองข้อมูลเพื่อความปลอดภัยจาก SQL Injection
-    $title  = mysqli_real_escape_string($conn, $_POST['title']);    
-    $parent = mysqli_real_escape_string($conn, $_POST['parent']);
+    $title  = $_POST['title'];    
+    $parent  = $_POST['parent'];
    
     $sql = "SELECT title FROM tree";
     $result = mysqli_query($conn, $sql);  
 
     mysqli_begin_transaction($conn);
     if(mysqli_num_rows($result) == 0){    
-        // หากตารางยังว่าง (สร้าง Root Node ครั้งแรก) ให้ parent_title เป็น NULL หรือว่างไว้
-        $sql = "INSERT INTO tree(title,lft,rgt,parent_title) VALUES ('car','1','2', NULL)";
+        $sql = "INSERT INTO tree(title,lft,rgt) VALUES ('car','1','2')";
         $result = mysqli_query($conn, $sql);
         if(!$result){
             mysqli_rollback($conn);
@@ -41,9 +38,7 @@
                 echo "fail";
                 exit;
               }  
-              
-              // ⭐ จุดที่แก้ไขเพิ่ม: เพิ่มฟิลด์ parent_title และใส่ตัวแปร '$parent' เข้าไปด้วย
-              $sql = "INSERT INTO tree(title, lft, rgt, parent_title) VALUES ('$title', '$rgt', '$rgt'+1, '$parent')";
+              $sql = "INSERT INTO tree(title,lft,rgt) VALUES ('$title','$rgt','$rgt'+1)";
               $result = mysqli_query($conn, $sql);  
               if(!$result){
                 mysqli_rollback($conn);

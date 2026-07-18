@@ -1,15 +1,13 @@
 <?php
     include "db.php";   
-    
-    // 1. ดักความปลอดภัยป้องกัน SQL Injection ให้กับทุกค่าที่รับเข้ามา
-    $name    = mysqli_real_escape_string($conn, $_POST['name_prod']);    
-    $code    = mysqli_real_escape_string($conn, $_POST['code']);   
-    $parent  = mysqli_real_escape_string($conn, $_POST['parent']);
-    $min     = mysqli_real_escape_string($conn, $_POST['min']);
+    $name  = $_POST['name_prod'];    
+    $code  = $_POST['code'];   
+    $parent  = $_POST['parent'];
+    $min = $_POST['min'];
     
     mysqli_begin_transaction($conn);
     if(isset($_POST['img'])){
-      $img = mysqli_real_escape_string($conn, $_POST['img']);
+      $img = $_POST['img'];
       $sql = "INSERT INTO product(prod_name,prod_code,img,min_amount) VALUE ('$name','$code','$img','$min')";
       $result = mysqli_query($conn, $sql);    
       $title = mysqli_insert_id($conn);
@@ -45,9 +43,7 @@
           echo "fail";
           exit;
         } 
-        
-        // ⭐ จุดที่แก้ไขเพิ่ม: เพิ่มฟิลด์ parent_title และใส่ค่าตัวแปร '$parent' เข้าไปด้วยเหมือนตอนเพิ่มโฟลเดอร์
-        $sql = "INSERT INTO tree(title, lft, rgt, parent_title) VALUES ('$title', '$rgt', '$rgt'+1, '$parent')";
+        $sql = "INSERT INTO tree(title,lft,rgt) VALUES ('$title','$rgt','$rgt'+1)";
         $result = mysqli_query($conn, $sql); 
         if(!$result){
           mysqli_rollback($conn);

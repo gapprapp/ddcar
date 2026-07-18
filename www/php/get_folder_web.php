@@ -1,52 +1,69 @@
 <?php
     include "db.php";
-    $parent  = $_POST['parent'];
-    $order_by  = $_POST['order_by'];
+    
+    // 1. ป้องกัน SQL Injection ด้วย mysqli_real_escape_string
+    $parent   = mysqli_real_escape_string($conn, $_POST['parent']);
+    $order_by = (strtoupper($_POST['order_by']) === 'DESC') ? 'DESC' : 'ASC'; // ตรวจสอบความปลอดภัยคีย์เวิร์ด ORDER BY
+    
+    // 2. ตั้งชื่อไฟล์แคช (ทำแบบเดียวกับไฟล์แรกเพื่อประหยัดพลังงานเครื่อง)
+    $cache_file = "cache_list_" . md5($parent . "_" . $order_by) . ".json";
+    $cache_time = 300; // 5 นาที
+
+    if (file_exists($cache_file) && (time() - filemtime($cache_file) < $cache_time)) {
+        echo file_get_contents($cache_file);
+        exit;
+    }
+
     $msg = ""; 
     $output = array();  
    
-    $sql = "SELECT node.title, (COUNT(parent.title) - (sub_tree.depth + 1)) AS depth
-    FROM tree AS node,
-            tree AS parent,
-            tree AS sub_parent,
-            (
-                SELECT node.title, (COUNT(parent.title) - 1) AS depth
-                FROM tree AS node,
-                        tree AS parent
-                WHERE node.lft BETWEEN parent.lft AND parent.rgt
-                        AND node.title = '$parent'
-                GROUP BY node.title
-                ORDER BY node.lft
-            )AS sub_tree
-    WHERE node.lft BETWEEN parent.lft AND parent.rgt
-            AND node.lft BETWEEN sub_parent.lft AND sub_parent.rgt
-            AND sub_parent.title = sub_tree.title
-    GROUP BY node.title
-    HAVING depth = 1
-    ORDER BY node.title $order_by;";
+    // 3. ใช้ Query ใหม่ ดึงข้อมูลจบในรอบเดียว (LEFT JOIN ตารางสินค้าตั้งแต่แรก)
+    // โดยใช้เงื่อนไขคัดกรองจาก parent_title ตรงๆ ไม่พึ่งพาสูตรคำนวณคณิตศาสตร์ Nested Set ให้ช้า
+    $sql = "SELECT 
+                node.title,
+                p.prod_name,
+                p.prod_code,
+                p.img,
+                p.prod_id
+            FROM tree AS node
+            -- แทนที่จะใช้ CAST ที่ฝั่ง product ให้เปลี่ยนมา JOIN แบบนี้แทนครับ:
+            LEFT JOIN product AS p ON p.prod_id = node.title 
+            WHERE node.parent_title = '$parent'
+            ORDER BY node.title $order_by;";
+
     $result = mysqli_query($conn, $sql); 
   
     if(mysqli_num_rows($result) > 0){    
-        while($row = mysqli_fetch_array($result)){
-            if(is_numeric($row['title'])){
+        while($row = mysqli_fetch_array($result, MYSQLI_ASSOC)){
+            // ตรวจสอบว่ามีข้อมูลสินค้าติดมาด้วยหรือไม่ (ใช้เช็กแทน IS_NUMERIC ได้แม่นยำกว่า)
+            if(!empty($row['prod_id'])){
                 $msg = "last node";
-                $prod_id = $row['title']; 
-                $sql = "SELECT prod_name,prod_code,img,prod_id FROM product WHERE prod_id = '$prod_id'";
-                $result1 = mysqli_query($conn, $sql);
-                if(mysqli_num_rows($result1) > 0){    
-                    while($row1 = mysqli_fetch_array($result1)){                      
-                        $output[] = $row1;     
-                    }                    
-                }
-            }else{
-                $output[] = $row;      
-            }
-                  
+                $output[] = [
+                    'prod_name' => $row['prod_name'],
+                    'prod_code' => $row['prod_code'],
+                    'img'       => $row['img'],
+                    'prod_id'   => $row['prod_id']
+                ];
+            } else {
+                // ถ้าไม่มีข้อมูลสินค้า แสดงว่าเป็นโฟลเดอร์ย่อย
+                $output[] = [
+                    'title' => $row['title']
+                ];
+            }               
         }
-        array_push($output,$msg);
-        echo json_encode($output);   
+        
+        if($msg !== "") {
+            array_push($output, $msg);
+        }
+        
+        // เขียนลงไฟล์แคชก่อนส่งออก
+        $json_output = json_encode($output);
+        @file_put_contents($cache_file, $json_output);
+        
+        echo $json_output;   
     }else{
         echo "last node";
     } 
+    
     mysqli_close($conn);
 ?>

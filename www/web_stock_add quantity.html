@@ -208,8 +208,16 @@
 								}               
 							});	
 							msg = msg + '<div class="inforow row justify-content-center">'+
-											'<p>'+obj[i][0]+' :'+'</p>'+
-											'<p>&nbsp;'+obj[i].amount+' | '+addr+'</p>'+
+											'<p>'+obj[i][0]+' :'+' &nbsp;</p>'+
+											'<div class="col-1 nopd">'+
+											'<input id="amount-'+prod_id+''+i+'" value="'+obj[i].amount+'" type="number" class="form-control text-center no-spin" readonly>'+
+											'</div>'+											
+											'<p>&nbsp; | '+addr+' &nbsp;&nbsp;</p>'+											
+											'<div class="col-3 nopd text-center">'+
+											'<button id="btn-edit-'+prod_id+''+i+'" class="btn btn-sm btn-primary mgr-5" onclick="edit('+prod_id+','+obj.length+','+i+');"> <i class="fas fa-pencil-alt"></i></button>'+
+											'<button id="btn-save-'+prod_id+''+i+'" class="btn btn-sm btn-success mgr-5" onclick="save('+prod_id+','+obj[i].amount+','+i+',\''+obj[i][0]+'\');" hidden> <i class="fa fa-check"></i></button>'+
+											'<button id="btn-trash-'+prod_id+''+i+'" class="btn btn-sm btn-danger" onclick="cancel('+prod_id+','+obj[i].amount+','+i+');" hidden> <i class="fa fa-window-close"></i></button>'+
+											'</div>'+
 										'</div>';												
 						});	
 						var msg_price;					
@@ -220,42 +228,30 @@
 						}
 						namedq = name.replace(/"/g, '\\"');			
 						if(img == ""){
-							$('#append-ctn').append('<div id="div-'+prod_id+'" class="jumbotron text-center jumbo-center">'+
-								'<p style="text-align: right; margin-bottom: -5%">' +
-									'<i id="i-'+prod_id+'" class="fas fa-pen" data-toggle="modal" data-target="#EditModal" onclick="edit_prod('+prod_id+',\''+namedq+'\',\''+code+'\')" style="cursor: pointer; margin-right: 15px;"></i>' +
-									'<i class="fas fa-trash" onclick="delete_prod('+prod_id+',\''+namedq+'\')" style="cursor: pointer;"></i>' +
-									'</p><br><p id="p-'+prod_id+'" class="display">'+name+'</p><br>'+msg_price+' <hr class="jumbohr">' +
+							$('#append-ctn').append('<div class="jumbotron text-center jumbo-center">'+
+									'<p data-toggle="modal" data-target="#EditModal" style="text-align: right; margin-bottom: -5%"><i id="i-'+prod_id+'" class="fas fa-pen" onclick="edit_prod('+prod_id+',\''+namedq+'\',\''+code+'\')"></i></p><br><p id="p-'+prod_id+'" class="display">'+name+'</p><br>'+msg_price+' <hr class="jumbohr">' +
 									'<img id="img-'+prod_id+'" src="img/no_img.png" alt="pic">'+								
 										msg +								
-							'</div>');
+								'</div>');
 						}else{
-							$('#append-ctn').append('<div id="div-'+prod_id+'" class="jumbotron text-center jumbo-center">'+
-								'<p style="text-align: right; margin-bottom: -5%">' +
-									'<i id="i-'+prod_id+'" class="fas fa-pen" data-toggle="modal" data-target="#EditModal" onclick="edit_prod('+prod_id+',\''+namedq+'\',\''+code+'\')" style="cursor: pointer; margin-right: 15px;"></i>' +
-									'<i class="fas fa-trash" onclick="delete_prod('+prod_id+',\''+namedq+'\')" style="cursor: pointer;"></i>' +
-								'</p><br><p id="p-'+prod_id+'" class="display">'+name+'</p><br>'+msg_price+' <hr class="jumbohr">' +
+							$('#append-ctn').append('<div class="jumbotron text-center jumbo-center">'+
+								'<p data-toggle="modal" data-target="#EditModal" style="text-align: right; margin-bottom: -5%"><i id="i-'+prod_id+'" class="fas fa-pen" onclick="edit_prod('+prod_id+',\''+namedq+'\',\''+code+'\')"></i></p><br><p id="p-'+prod_id+'" class="display">'+name+'</p><br>'+msg_price+' <hr class="jumbohr">' +
 								'<img id="img-'+prod_id+'" class="thumbnails" src="'+img+'">'+		
 									msg +								
 							'</div>');
-						}															
+						}									
 					}else{													       
 						if(img == ""){
-							$('#append-ctn').append('<div id="div-'+prod_id+'" class="jumbotron text-center jumbo-center">'+
-								'<p style="text-align: right; margin-bottom: -5%">'+
-									'<i id="i-'+prod_id+'" class="fas fa-pen" data-toggle="modal" data-target="#EditModal" onclick="edit_prod('+prod_id+',\''+namedq+'\',\''+code+'\')" style="cursor: pointer; margin-right: 15px;"></i>'+
-									'<i class="fas fa-trash" onclick="delete_prod('+prod_id+',\''+namedq+'\')" style="cursor: pointer;"></i>' +
-									'</p><br><p id="p-'+prod_id+'" class="display">'+name+'</p> <hr class="jumbohr">' +
+							$('#append-ctn').append('<div class="jumbotron text-center jumbo-center">'+
+								'<p data-toggle="modal" data-target="#EditModal" style="text-align: right; margin-bottom: -5%"><i id="i-'+prod_id+'" class="fas fa-pen" onclick="edit_prod('+prod_id+',\''+namedq+'\',\''+code+'\')"></i></p><br><p id="p-'+prod_id+'" class="display">'+name+'</p> <hr class="jumbohr">' +
 								'<img id="img-'+prod_id+'" src="img/no_img.png" alt="pic">'+
 								'<div class="inforow row justify-content-center">'+
 									'<p>ไม่มีสินค้าในโกดัง/หน้าร้าน</p>'+
 								'</div>'+
 							'</div>');
 						}else{
-							$('#append-ctn').append('<div id="div-'+prod_id+'" class="jumbotron text-center jumbo-center">'+
-								'<p style="text-align: right; margin-bottom: -5%">'+
-									'<i id="i-'+prod_id+'" class="fas fa-pen" data-toggle="modal" data-target="#EditModal" onclick="edit_prod('+prod_id+',\''+namedq+'\',\''+code+'\')" style="cursor: pointer; margin-right: 15px;"></i>'+
-									'<i class="fas fa-trash" onclick="delete_prod('+prod_id+',\''+namedq+'\')" style="cursor: pointer;"></i>' +
-									'</p><br><p id="p-'+prod_id+'" class="display">'+name+'</p> <hr class="jumbohr">' +
+							$('#append-ctn').append('<div class="jumbotron text-center jumbo-center">'+
+								'<p data-toggle="modal" data-target="#EditModal" style="text-align: right; margin-bottom: -5%"><i id="i-'+prod_id+'" class="fas fa-pen" onclick="edit_prod('+prod_id+',\''+namedq+'\',\''+code+'\')"></i></p><br><p id="p-'+prod_id+'" class="display">'+name+'</p> <hr class="jumbohr">' +
 								'<img id="img-'+prod_id+'" class="thumbnails" src="'+img+'">'+
 								'<div class="inforow row justify-content-center">'+
 									'<p>ไม่มีสินค้าในโกดัง/หน้าร้าน</p>'+
@@ -267,6 +263,72 @@
 			});
 			set_fullImage()
     }
+		function edit(arg,count,index){
+			stop = false;
+			for(i = 0; i < count; i++){
+				if($("#btn-save-" + arg + i).is(":visible")){
+					stop = true;
+				}
+			}
+			if(stop){
+				return 0;
+			}
+			$("#amount-" + arg+index).prop('readonly', false);
+
+			//change btn-edit to save
+			$("#btn-edit-"+arg+index).prop('hidden', true);
+			$("#btn-trash-"+arg+index).prop('hidden', false);
+			$("#btn-save-"+arg+index).prop('hidden', false);
+		}
+
+		function save(arg,ogAmt,index,place){
+			newAmt = parseInt($("#amount-"+arg+index).val());
+			alert(newAmt)
+			$("#amount-" + arg+index).prop('readonly', true);			  
+			$("#btn-edit-"+arg+index).prop('hidden', false);
+			$("#btn-trash-"+arg+index).prop('hidden', true);
+			$("#btn-save-"+arg+index).prop('hidden', true);
+			alert(ogAmt)
+			if(newAmt == parseInt(ogAmt) || isNaN(newAmt)){
+				$("#amount-" + arg+index).val(ogAmt);
+				return 0;
+			}
+			//problem is case save > 1 time casue remember original amount.
+			$.confirm({
+				title: 'แก้ไขจำนวนสต็อค',
+				content: 'ต้องการแก้สินค้านี้ใน ' + place + ' เป็นจำนวน ' + newAmt + ' หรือไม่?',
+				backgroundDismiss: true,
+				buttons: {
+					formSubmit: {
+					text: 'CONFIRM',
+					btnClass: 'btn-blue',
+					action: function () {
+						if(newAmt > ogAmt){
+							// stock in , transfer in
+							alert("stock in , transfer in")
+						}else{
+							// sale , export
+							alert("sale , export")
+						}
+					}
+					},
+					cancel: function () {
+						$("#amount-" + arg+index).val(ogAmt);
+					},
+				}
+			});			
+		}
+
+		function cancel(arg,ogAmt,index){
+			//change btn-edit to save
+			$("#btn-edit-"+arg+index).prop('hidden', false);
+			$("#btn-trash-"+arg+index).prop('hidden', true);
+			$("#btn-save-"+arg+index).prop('hidden', true);
+
+			$("#amount-" + arg+index).val(ogAmt);
+			$("#amount-" + arg+index).prop('readonly', true);
+		}
+
 		function set_fullImage(){
 			$('img.thumbnails').fullscreenimage({
 				scale: 2 // magnify by 2 times when mouse moves over full screen image (set to 1 to disable)
@@ -279,53 +341,6 @@
 			$("#name-prod").val(name)
 			$("#code-prod").val(code)
 			$("#save-edit").attr('onclick', "save_edit("+prod_id+")");
-		}
-
-		function delete_prod(prod_id,name){
-			$.confirm({
-			icon: 'fa fa-warning',
-				title: 'คุณต้องการลบ ' + name,
-				content: 'ต้องการลบรายการสินค้านี้หรือไม่!',
-				buttons: {
-					danger: {
-						btnClass: 'btn-danger',
-						text: 'ลบ',
-						action: function () {							
-							$.ajax({
-								type: "POST",
-								url:"php/delete_prod.php",
-								data: {'title' : prod_id},               
-								beforeSend: function(){
-									EasyLoading.show({                           
-										text: "กำลังโหลด"                            
-									});	
-								},             
-								success: function(data){  
-									EasyLoading.hide();                          
-									if(data == "success"){
-										$('#div-'+prod_id).remove()
-									}else{
-									$.confirm({
-										title: 'พบข้อผิดพลาด',
-										content: 'ลองอีกครั้ง',
-										backgroundDismiss: true,
-										buttons: {
-										formSubmit: {
-											text: 'ตกลง',
-											btnClass: 'btn-regis',
-											action: function () {
-											}
-										}
-										}
-									});
-									}           
-								}               
-							});									
-						}
-					},
-					ยกเลิก: function () {},
-				}
-			});
 		}
 
 		function save_edit(prod_id){
@@ -444,8 +459,7 @@
 
 		function select_folder(){
 			window.location = 'web_folder.html?from=stock';
-		}	
-	
+		}
 
 		function logout(){
 			localStorage.clear();
@@ -483,7 +497,6 @@
 	        <button class="btn btn-outline-secondary" type="button" style="margin-left: 10px;" onclick="show();">
 	            <i class="fa fa-search"></i>
 	        </button>
-			<button class="btn btn-outline-secondary" type="button" style="margin-left: 10px;" onclick="select_folder();">เพิ่มสินค้า</button>
     	</div>
     	<hr style="width: 75%;">
     	<div id="row-folder" class="row justify-content-center" style="margin-bottom: 4%; margin-top: 4%;">
