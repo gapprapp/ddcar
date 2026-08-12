@@ -10,7 +10,7 @@
   <script type="text/javascript" src="js/jquery-3.3.1.min.js"></script>
   <script type="text/javascript" src="js/jquery-ui.min.js"></script>
   <script type="text/javascript" src="js/jquery.easing.1.3.min.js"></script>
-  <script type="text/javascript" src="js/transition.js"></script>
+  
   <script type="text/javascript" src="js/jquery-confirm.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.6/umd/popper.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
@@ -137,8 +137,8 @@
             });
         }
         if (arg == "add") {
-            /*goto = "sale.html";
-            transition_page_back(goto);*/
+            //goto = "sale.html";
+            
         } else if(arg == "edit"){
             // show edit all
             if ($(".amount").hasClass('underline')) {
@@ -182,7 +182,7 @@
                           success: function(data){ 
                             $(".overlay").prop('hidden', true);                     
                             if(data == "success"){                    
-                              transition_page_back('manage_import.html');
+                              
                               window.location = 'manage_import.html';
                             }else{
                               $.confirm({
@@ -355,7 +355,7 @@
   <div id="big-ctn" class="container justify-content-center">
     <!-- Nav menu top -->
     <div class="row navs align-items-center mgem1o5 fixed-top">
-      <div class="col-2 text-center" onclick="transition_page_back('manage_import.html'); window.location = 'manage_import.html';">
+      <div class="col-2 text-center" onclick="window.location = 'manage_import.html';">
         <i id="i-back" class="fas fa-angle-left"></i>
       </div>
       <div class="col-8 text-center">
@@ -381,7 +381,7 @@
 
   <!-- Nav menu bottom -->
   <div class="row fixed-bottom navs">
-    <div class="col-4 text-center" onclick="transition_page_back('index.html'); window.location = 'index.html';">
+    <div class="col-4 text-center" onclick="window.location = 'index.html';">
       <i id="i-home" class="fas fa-home menu"></i>
     </div>
     <div class="col-4 text-center" onclick="menu('edit')">

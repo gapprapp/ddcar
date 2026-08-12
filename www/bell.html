@@ -10,7 +10,7 @@
     <script type="text/javascript" src="js/jquery-3.3.1.min.js"></script>
     <script type="text/javascript" src="js/jquery-ui.min.js"></script>
     <script type="text/javascript" src="js/jquery.easing.1.3.min.js"></script>
-    <script type="text/javascript" src="js/transition.js"></script>
+    
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.6/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
     <script defer src="https://use.fontawesome.com/releases/v5.0.8/js/all.js"></script>
@@ -157,7 +157,7 @@
     <div id="big-ctn" class="container-fullwidth justify-content-center">
       <!-- Nav menu top -->
       <div class="row navs align-items-center mgem1o5 fixed-top">
-        <div class="col-2 text-center" onclick="transition_page_back('index.html'); window.location = 'index.html';">
+        <div class="col-2 text-center" onclick="window.location = 'index.html';">
           <i id="i-back" class="fas fa-angle-left"></i>
         </div>
         <div class="col-8 text-center">
@@ -172,30 +172,22 @@
       </div><hr class="mgem1" style="margin-top: 6.3em; width: 98%;">
 
       <div id="in-ctn" class="container-fullwidth" style="margin-top: 1.5em !important; height: calc(100vh - (4em + 100px)) !important;">
-        
-
-        <!-- Test scroll -->
-        
-        <!-- <div class="row mgem1">
-          <div class="col-1 text-center"></div>
-          <div class="col-8 text-center">ชื่อสินค้า</div>
-          <div class="col-3 text-center nopd">0</div>
-        </div>-->
+      
       </div>
         
         <!-- Nav menu bottom -->
       <div class="row fixed-bottom navs">
-        <div class="col-3 text-center" onclick="transition_page_back('index.html'); window.location = 'index.html';">
+        <div class="col-3 text-center" onclick="window.location = 'index.html';">
           <i id="i-home" class="fas fa-home menu"></i>
         </div>
-        <div class="col-3 text-center" onclick="transition_page_next('bell.html'); window.location ='bell.html';">
+        <div class="col-3 text-center" onclick="window.location ='bell.html';">
           <div class="dot" hidden></div>
           <i id="i-bell" class="fas fa-bell menu"></i>
         </div>
         <div class="col-3 text-center" onclick="scan();">
           <i id="i-qrcode" class="fas fa-qrcode menu"></i>
         </div>
-        <div class="col-3 text-center" onclick="transition_page_next('other.html'); window.location = 'other.html';">
+        <div class="col-3 text-center" onclick="window.location = 'other.html';">
           <i id="i-bars" class="fa fa-bars menu"></i>
         </div>
       </div>

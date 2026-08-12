@@ -10,7 +10,7 @@
   <script type="text/javascript" src="js/jquery-3.3.1.min.js"></script>
   <script type="text/javascript" src="js/jquery-ui.min.js"></script>
   <script type="text/javascript" src="js/jquery.easing.1.3.min.js"></script>
-  <script type="text/javascript" src="js/transition.js"></script>
+  
   <script type="text/javascript" src="js/jquery-confirm.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.6/umd/popper.min.js"></script>
   <script src="http://ajax.googleapis.com/ajax/libs/jquerymobile/1.4.5/jquery.mobile.js"></script>
@@ -39,13 +39,13 @@
   	function back(){
   		screen.orientation.lock('portrait');
 			if(from == "a"){
-				transition_page_back("add_prod.html?folder="+folder);
+				
 				window.location = "add_prod.html?folder="+folder;
 			}else	if(from == "e"){
-				transition_page_back("edit_prod.html?folder="+folder+"&prod_id="+prod_id);
+				
 				window.location = "edit_prod.html?folder="+folder+"&prod_id="+prod_id;
 			}else{
-				transition_page_back(window.history.back());
+				window.history.back();
 				//window.location = window.history.back();
 			}  		
   	}

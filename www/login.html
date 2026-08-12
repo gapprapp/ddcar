@@ -10,7 +10,7 @@
     <script type="text/javascript" src="js/jquery-3.3.1.min.js"></script>
     <script type="text/javascript" src="js/jquery-ui.min.js"></script>
     <script type="text/javascript" src="js/jquery.easing.1.3.min.js"></script>
-    <script type="text/javascript" src="js/transition.js"></script>
+    
     <script type="text/javascript" src="js/jquery-confirm.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.6/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
@@ -58,48 +58,60 @@
 
         function login(){
             getConfig();
-            var path = localStorage.pathServer     
+            var path = localStorage.pathServer;
             var name = $('#name').val();
             var pass = $('#pass').val();
+
             if(name && pass){
                 $.ajax({
                     type: "POST",
                     url: path + "php/login.php",
-                    data: {'name': name,
-                        'pass' : pass},    
+                    data: {
+                        'name': name,
+                        'pass': pass
+                    },    
                     beforeSend: function(){
                         $(".overlay").prop('hidden', false);
                     },                         
                     success: function(data){
-                    $(".overlay").prop('hidden', true);
-                    if(data == "fail"){
-                        $.confirm({
-                            title: 'พบข้อผิดพลาด',
-                            content: 'ชื่อหรือรหัสผ่านไม่ถูกต้อง',
-                            backgroundDismiss: true,
-                            buttons: {
-                                formSubmit: {
-                                text: 'ตกลง',
-                                btnClass: 'btn-regis',
-                                action: function () {
+                        $(".overlay").prop('hidden', true);
+                        if(data == "fail"){
+                            $.confirm({
+                                title: 'พบข้อผิดพลาด',
+                                content: 'ชื่อหรือรหัสผ่านไม่ถูกต้อง',
+                                backgroundDismiss: true,
+                                buttons: {
+                                    formSubmit: {
+                                        text: 'ตกลง',
+                                        btnClass: 'btn-regis'
+                                    }
                                 }
-                                }
-                            }
-                        });
-                    }else{
-                        var obj = jQuery.parseJSON(data);
-                        localStorage.clear();
-                        $.each(obj, function(i, field){                            
-                            localStorage.user_name = name
-                            localStorage.user_id = field.user_id;
-                            localStorage.user_role = field.user_role;
-                            transition_page_next('index.html?u=1');
-                            window.location = 'index.html?u=1';
-                        });                      
-                    }
+                            });
+                        } else {
+                            var obj = jQuery.parseJSON(data);
+                            localStorage.clear();
+                            $.each(obj, function(i, field){                            
+                                localStorage.user_name = name;
+                                localStorage.user_id = field.user_id;
+                                localStorage.user_role = field.user_role;
+                                
+                                window.location = 'index.html?u=1';
+                            });                      
+                        }
+                    },
+                    // *** จุดที่แก้: ต้องใส่ (xhr, status, error) เพื่อรับตัวแปร xhr เข้ามาใช้งาน ***
+                    error: function(xhr, status, error){
+                        $(".overlay").prop('hidden', true);
+                        console.error("AJAX Error:", status, error);
+                        if (typeof xhr !== 'undefined' && xhr.responseText) {
+                            console.error("Response Text:", xhr.responseText);
+                        }
+                        alert("ไม่สามารถเชื่อมต่อ Server ได้ (Status: " + status + ")");
                     }                            
                 });  
-            }           
+            } else {
+                alert("กรุณากรอกชื่อและรหัสผ่าน");
+            }          
         }
 
     </script>

@@ -10,7 +10,7 @@
   <script type="text/javascript" src="js/jquery-3.3.1.min.js"></script>
   <script type="text/javascript" src="js/jquery-ui.min.js"></script>
   <script type="text/javascript" src="js/jquery.easing.1.3.min.js"></script>
-  <script type="text/javascript" src="js/transition.js"></script>
+  
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.6/umd/popper.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
   <script defer src="https://use.fontawesome.com/releases/v5.0.8/js/all.js"></script>
@@ -87,7 +87,7 @@
         tel = "-"
       }
       goto = 'sale.html?cus='+arg+'&name='+name+'&type='+type+'&addr='+addr+'&tel='+tel;
-      transition_page_back_flip(goto);
+      
       window.location = goto;
     }
 
@@ -123,7 +123,7 @@
   <div id="big-ctn" class="container-fullwidth justify-content-center">
     <!-- Nav menu top -->
     <div class="row navs align-items-center mgem1o5 fixed-top">
-      <div class="col-2 text-center" onclick="transition_page_back('sale.html'); window.location = 'sale.html';">
+      <div class="col-2 text-center" onclick="window.location = 'sale.html';">
         <i id="i-back" class="fas fa-angle-left"></i>
       </div>
       <div class="col-8 text-center">

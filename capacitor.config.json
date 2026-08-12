@@ -1,0 +1,23 @@
+{
+  "appId": "com.gitmew.ddcar",
+  "appName": "ddcar",
+  "webDir": "www",
+  "cordova": {
+    "preferences": {
+      "Orientation": "default",
+      "Fullscreen": "true",
+      "DisallowOverscroll": "true"
+    }
+  },
+  "plugins": {
+    "CapacitorHttp": {
+      "enabled": true
+    }
+  },
+  "server": {
+    "cleartext": true,
+    "allowNavigation": [
+      "ddaccessory.trueddns.com:24330"
+    ]
+  }
+}

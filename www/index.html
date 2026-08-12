@@ -2,6 +2,11 @@
 <html>
 
 <head>
+  <!-- <meta http-equiv="Content-Security-Policy" 
+      content="default-src 'self' data: gap: https://ssl.gstatic.com 'unsafe-eval'; 
+               style-src 'self' 'unsafe-inline'; 
+               script-src 'self' 'unsafe-inline' 'unsafe-eval'; 
+               connect-src * 'self' http: https:;"> -->
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <title>Home</title>
@@ -10,7 +15,7 @@
   <script type="text/javascript" src="js/jquery-3.3.1.min.js"></script>
   <script type="text/javascript" src="js/jquery-ui.min.js"></script>
   <script type="text/javascript" src="js/jquery.easing.1.3.min.js"></script>
-  <script type="text/javascript" src="js/transition.js"></script>
+  
   <script type="text/javascript" src="js/jquery-confirm.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.6/umd/popper.min.js"></script>
   <script src="http://ajax.googleapis.com/ajax/libs/jquerymobile/1.4.5/jquery.mobile.js"></script>
@@ -90,7 +95,7 @@
     function onLoad(){
       getConfig();
       if(!localStorage.user_id){                      
-        transition_page_back('login.html');
+        
         window.location = 'login.html';
       }
          
@@ -272,50 +277,46 @@
     <div id="admin" class="scroll container-fullwidth">
       <div class="row justify-content-center mgem1o5">
         <div class="col-9 text-center">
-          <button id="mng-member" class="mbtn" onclick="transition_page_next('member.html'); window.location ='member.html';">ผู้ใช้</button>
+          <button id="mng-member" class="mbtn" onclick="window.location ='member.html';">ผู้ใช้</button>
         </div>
       </div>
       <div class="row justify-content-center mgem1o5">
         <div class="col-9 text-center">
-          <button id="add-cus" class="mbtn" onclick="transition_page_next('customer.html'); window.location ='customer.html';">ลูกค้า</button>
+          <button id="add-cus" class="mbtn" onclick="window.location ='customer.html';">ลูกค้า</button>
         </div>
       </div>
       <div class="row justify-content-center mgem1o5">
         <div class="col-9 text-center">
-          <button id="add-prod" class="mbtn" onclick="transition_page_next('select_folder.html?from=add'); window.location ='select_folder.html?from=add';">สินค้า</button>
+          <button id="add-prod" class="mbtn" onclick="window.location ='select_folder.html?from=add';">สินค้า</button>
         </div>
       </div>
       <div class="row justify-content-center mgem1o5">
         <div class="col-9 text-center">
-          <button id="add-ware" class="mbtn" onclick="transition_page_next('warehouse.html'); window.location ='warehouse.html';">หน้าร้าน / โกดัง</button>
+          <button id="add-ware" class="mbtn" onclick="window.location ='warehouse.html';">หน้าร้าน / โกดัง</button>
         </div>
       </div>
-      <!--<div class="row mg-10">
-        <div class="col-12 text-center nopd">
-          <button class="mbtn" onclick="transition_page_next('threshold.html');">สต๊อกขั้นต่ำ</button>
-        </div>
-      </div>-->
+      
     </div>
     <!-- Main -->
     <div id="main" class="scroll container-fullwidth" hidden>
       <div class="row justify-content-center mgem1o5">
         <div class="col-9 text-center">
-          <button id="btn_sale" class="mbtn" onclick="transition_page_next('sale.html'); window.location = 'sale.html';">ขาย</button>
+          <button id="btn_sale" class="mbtn" onclick="window.location = 'sale.html';">ขาย</button>
         </div>
       </div>
       <div class="row justify-content-center mgem1o5">
         <div class="col-9 text-center">
-          <button class="mbtn" onclick="transition_page_next('stock.html'); window.location = 'stock.html';">เช็คสต๊อก</button>
+          <button class="mbtn" onclick="window.location = 'stock.html';">เช็คสต๊อก</button>
         </div>
       </div>
       <div class="row justify-content-center mgem1o5">
         <div class="col-9 text-center">
-          <button id="btn_import" class="mbtn" onclick="transition_page_next('import.html'); window.location = 'import.html';">สินค้าเข้า</button>
+          <button id="btn_import" class="mbtn" onclick="window.location = 'import.html';">สินค้าเข้า</button>
         </div>
       </div>
       <div class="row justify-content-center mgem1o5">
         <div class="col-9 text-center">
-          <button id="btn_export" class="mbtn" onclick="transition_page_next('export.html'); window.location = 'export.html';">สินค้าออกโกดัง</button>
+          <button id="btn_export" class="mbtn" onclick="window.location = 'export.html';">สินค้าออกโกดัง</button>
         </div>
       </div>
       <div class="row justify-content-center mgem1o5">
@@ -328,32 +329,32 @@
     <div id="log" class="scroll container-fullwidth" hidden>
       <div class="row justify-content-center mgem1o5">
         <div class="col-9 text-center">
-          <button class="mbtn" onclick="localStorage.myS = ''; localStorage.myD = ''; transition_page_next('manage_bill.html'); window.location = 'manage_bill.html';">รายการบิล</button>
+          <button class="mbtn" onclick="localStorage.myS = ''; localStorage.myD = ''; window.location = 'manage_bill.html';">รายการบิล</button>
         </div>
       </div>
       <div class="row justify-content-center mgem1o5">
         <div class="col-9 text-center">
-          <button class="mbtn" onclick="localStorage.myS = ''; localStorage.myD = ''; transition_page_next('manage_import.html'); window.location = 'manage_import.html';">รายการสินค้าเข้าโกดัง</button>
+          <button class="mbtn" onclick="localStorage.myS = ''; localStorage.myD = ''; window.location = 'manage_import.html';">รายการสินค้าเข้าโกดัง</button>
         </div>
       </div>
       <div class="row justify-content-center mgem1o5">
         <div class="col-9 text-center">
-          <button class="mbtn" onclick="localStorage.myS = ''; localStorage.myD = ''; transition_page_next('manage_transfer_in.html'); window.location = 'manage_transfer_in.html';">รายการสินค้าเข้าหน้าร้าน</button>
+          <button class="mbtn" onclick="localStorage.myS = ''; localStorage.myD = ''; window.location = 'manage_transfer_in.html';">รายการสินค้าเข้าหน้าร้าน</button>
         </div>
       </div>
       <div class="row justify-content-center mgem1o5">
         <div class="col-9 text-center">
-          <button class="mbtn" onclick="localStorage.myS = ''; localStorage.myD = ''; transition_page_next('manage_export.html'); window.location = 'manage_export.html';">รายการสินค้าออก</button>
+          <button class="mbtn" onclick="localStorage.myS = ''; localStorage.myD = ''; window.location = 'manage_export.html';">รายการสินค้าออก</button>
         </div>
       </div>
       <div class="row justify-content-center mgem1o5">
         <div class="col-9 text-center">
-          <button class="mbtn" onclick="localStorage.myD = ''; transition_page_next('manage_salesum.html'); window.location = 'manage_salesum.html';">สรุปรายการขาย</button>
+          <button class="mbtn" onclick="localStorage.myD = ''; window.location = 'manage_salesum.html';">สรุปรายการขาย</button>
         </div>
       </div>
       <div class="row justify-content-center mgem1o5">
         <div class="col-9 text-center">
-          <button class="mbtn" onclick="localStorage.myS = ''; transition_page_next('manage_credit.html'); window.location = 'manage_credit.html';">รายการเครดิต</button>
+          <button class="mbtn" onclick="localStorage.myS = ''; window.location = 'manage_credit.html';">รายการเครดิต</button>
         </div>
       </div>
     </div>
@@ -363,21 +364,19 @@
       <div class="col-3 text-center" onclick="return 0;">
         <i id="i-home" class="fas fa-home menu active"></i>
       </div>
-      <div class="col-3 text-center" onclick="transition_page_next('bell.html'); window.location = 'bell.html';">
+      <div class="col-3 text-center" onclick="window.location = 'bell.html';">
         <div class="dot" hidden></div>
         <i id="i-bell" class="fas fa-bell menu"></i>
       </div>
       <div class="col-3 text-center" onclick="scan('index');">
         <i id="i-qrcode" class="fas fa-qrcode menu"></i>
       </div>
-      <div class="col-3 text-center" onclick="transition_page_next('other.html'); window.location = 'other.html';">
+      <div class="col-3 text-center" onclick="window.location = 'other.html';">
         <i class="fa fa-bars menu"></i>
       </div>
     </div><br>
   </div>
-
   
-  <script type="text/javascript" src="js/transition.js"></script>
   <script>
     //Touch animation
     $(".mbtn").on("touchstart", function() {
