@@ -1,24 +1,17 @@
 <?php
     include "db.php";
     
-    // 1. ป้องกัน SQL Injection ด้วย mysqli_real_escape_string
-    $parent   = mysqli_real_escape_string($conn, $_POST['parent']);
-    $order_by = (strtoupper($_POST['order_by']) === 'DESC') ? 'DESC' : 'ASC'; // ตรวจสอบความปลอดภัยคีย์เวิร์ด ORDER BY
+    // 1. รับค่าและตัดเว้นวรรค
+    $parent   = isset($_POST['parent']) ? trim(mysqli_real_escape_string($conn, $_POST['parent'])) : 'car';
+    $order_input = isset($_POST['order_by']) ? $_POST['order_by'] : 'ASC';
+    $order_by    = (strtoupper($order_input) === 'DESC') ? 'DESC' : 'ASC';
     
-    // 2. ตั้งชื่อไฟล์แคช (ทำแบบเดียวกับไฟล์แรกเพื่อประหยัดพลังงานเครื่อง)
-    $cache_file = "cache_list_" . md5($parent . "_" . $order_by) . ".json";
-    $cache_time = 300; // 5 นาที
-
-    if (file_exists($cache_file) && (time() - filemtime($cache_file) < $cache_time)) {
-        echo file_get_contents($cache_file);
-        exit;
-    }
-
     $msg = ""; 
     $output = array();  
    
-    // 3. ใช้ Query ใหม่ ดึงข้อมูลจบในรอบเดียว (LEFT JOIN ตารางสินค้าตั้งแต่แรก)
-    // โดยใช้เงื่อนไขคัดกรองจาก parent_title ตรงๆ ไม่พึ่งพาสูตรคำนวณคณิตศาสตร์ Nested Set ให้ช้า
+    // 2. Query ประสิทธิภาพสูง:
+    // - เชื่อม p.prod_id = node.title ตรงๆ (MySQL จะใช้ Index จาก prod_id ได้ทันที ไม่โดน CAST บล็อก)
+    // - ORDER BY node.lft (ช่วยให้เรียงตามลำดับโฟลเดอร์เดิมและรวดเร็วเพราะ lft มี Index)
     $sql = "SELECT 
                 node.title,
                 p.prod_name,
@@ -26,16 +19,14 @@
                 p.img,
                 p.prod_id
             FROM tree AS node
-            -- แทนที่จะใช้ CAST ที่ฝั่ง product ให้เปลี่ยนมา JOIN แบบนี้แทนครับ:
             LEFT JOIN product AS p ON p.prod_id = node.title 
             WHERE node.parent_title = '$parent'
-            ORDER BY node.title $order_by;";
+            ORDER BY node.lft $order_by;";
 
     $result = mysqli_query($conn, $sql); 
   
-    if(mysqli_num_rows($result) > 0){    
+    if($result && mysqli_num_rows($result) > 0){    
         while($row = mysqli_fetch_array($result, MYSQLI_ASSOC)){
-            // ตรวจสอบว่ามีข้อมูลสินค้าติดมาด้วยหรือไม่ (ใช้เช็กแทน IS_NUMERIC ได้แม่นยำกว่า)
             if(!empty($row['prod_id'])){
                 $msg = "last node";
                 $output[] = [
@@ -45,7 +36,6 @@
                     'prod_id'   => $row['prod_id']
                 ];
             } else {
-                // ถ้าไม่มีข้อมูลสินค้า แสดงว่าเป็นโฟลเดอร์ย่อย
                 $output[] = [
                     'title' => $row['title']
                 ];
@@ -56,11 +46,7 @@
             array_push($output, $msg);
         }
         
-        // เขียนลงไฟล์แคชก่อนส่งออก
-        $json_output = json_encode($output);
-        @file_put_contents($cache_file, $json_output);
-        
-        echo $json_output;   
+        echo json_encode($output);   
     }else{
         echo "last node";
     } 

@@ -1,62 +1,82 @@
 <?php
     include "db.php";   
     
-    // 1. ดักความปลอดภัยป้องกัน SQL Injection ให้กับทุกค่าที่รับเข้ามา
-    $name    = mysqli_real_escape_string($conn, $_POST['name_prod']);    
-    $code    = mysqli_real_escape_string($conn, $_POST['code']);   
-    $parent  = mysqli_real_escape_string($conn, $_POST['parent']);
-    $min     = mysqli_real_escape_string($conn, $_POST['min']);
+    // 1. รับค่า + ตัดเว้นวรรค + กรองข้อมูลเพื่อความปลอดภัยจาก SQL Injection
+    $name    = isset($_POST['name_prod']) ? trim(mysqli_real_escape_string($conn, $_POST['name_prod'])) : '';    
+    $code    = isset($_POST['code']) ? trim(mysqli_real_escape_string($conn, $_POST['code'])) : '';   
+    $parent  = isset($_POST['parent']) ? trim(mysqli_real_escape_string($conn, $_POST['parent'])) : 'car';
+    $min     = isset($_POST['min']) ? trim(mysqli_real_escape_string($conn, $_POST['min'])) : '0';
     
-    mysqli_begin_transaction($conn);
-    if(isset($_POST['img'])){
-      $img = mysqli_real_escape_string($conn, $_POST['img']);
-      $sql = "INSERT INTO product(prod_name,prod_code,img,min_amount) VALUE ('$name','$code','$img','$min')";
-      $result = mysqli_query($conn, $sql);    
-      $title = mysqli_insert_id($conn);
-    }else{
-      $sql = "INSERT INTO product(prod_name,prod_code,min_amount) VALUE ('$name','$code','$min')";
-      $result = mysqli_query($conn, $sql);    
-      $title = mysqli_insert_id($conn);
+    if(empty($name) || empty($code)){
+        echo "fail";
+        exit;
     }
+
+    mysqli_begin_transaction($conn);
+
+    // 2. บันทึกข้อมูลลงในตาราง product ก่อนเพื่อเอา prod_id ( auto_increment )
+    if(isset($_POST['img']) && !empty($_POST['img'])){
+      $img = trim(mysqli_real_escape_string($conn, $_POST['img']));
+      $sql = "INSERT INTO product(prod_name, prod_code, img, min_amount) VALUES ('$name', '$code', '$img', '$min')";
+    } else {
+      $sql = "INSERT INTO product(prod_name, prod_code, min_amount) VALUES ('$name', '$code', '$min')";
+    }
+
+    $result = mysqli_query($conn, $sql);    
     if(!$result){
       mysqli_rollback($conn);
       echo "fail";
       exit;
     } 	
+    
+    // ไอดีสินค้าที่เพิ่งสร้างใหม่ (จะถูกนำไปเก็บเป็น title ในตาราง tree)
+    $title = mysqli_insert_id($conn);
 
-    $sql = "SELECT lft,rgt FROM tree WHERE title = '$parent'";
+    // 3. ค้นหาตำแหน่งโฟลเดอร์แม่เพื่อคำนวณตำแหน่ง lft, rgt
+    $sql = "SELECT lft, rgt FROM tree WHERE title = '$parent' LIMIT 1";
     $result1 = mysqli_query($conn, $sql);  
-    if(mysqli_num_rows($result1) > 0){    
-      while($row = mysqli_fetch_array($result1)){            
-        $rgt = $row['rgt'];
-        $last_child =  $rgt-1;
-        
-        $sql = "UPDATE tree SET rgt = rgt + 2 WHERE rgt > '$last_child'";
-        $result = mysqli_query($conn, $sql);  
-        if(!$result){
-          mysqli_rollback($conn);
-          echo "fail";
-          exit;
-        } 
-        $sql = "UPDATE tree SET lft = lft + 2 WHERE lft > '$last_child'";
-        $result = mysqli_query($conn, $sql);  
-        if(!$result){
-          mysqli_rollback($conn);
-          echo "fail";
-          exit;
-        } 
-        
-        // ⭐ จุดที่แก้ไขเพิ่ม: เพิ่มฟิลด์ parent_title และใส่ค่าตัวแปร '$parent' เข้าไปด้วยเหมือนตอนเพิ่มโฟลเดอร์
-        $sql = "INSERT INTO tree(title, lft, rgt, parent_title) VALUES ('$title', '$rgt', '$rgt'+1, '$parent')";
-        $result = mysqli_query($conn, $sql); 
-        if(!$result){
-          mysqli_rollback($conn);
-          echo "fail";
-          exit;
-        }  
-      }   
-    }       
-    mysqli_commit($conn); 
-    echo $title;   
+
+    if($result1 && mysqli_num_rows($result1) > 0){    
+      $row = mysqli_fetch_array($result1, MYSQLI_ASSOC);
+      $rgt = intval($row['rgt']);
+      $last_child = $rgt - 1;
+      
+      // ขยับค่า rgt ของ Node อื่นๆ
+      $sql = "UPDATE tree SET rgt = rgt + 2 WHERE rgt > $last_child";
+      $result = mysqli_query($conn, $sql);  
+      if(!$result){
+        mysqli_rollback($conn);
+        echo "fail";
+        exit;
+      } 
+
+      // ขยับค่า lft ของ Node อื่นๆ
+      $sql = "UPDATE tree SET lft = lft + 2 WHERE lft > $last_child";
+      $result = mysqli_query($conn, $sql);  
+      if(!$result){
+        mysqli_rollback($conn);
+        echo "fail";
+        exit;
+      } 
+      
+      // คำนวณค่า rgt สำหรับ node สินค้าใหม่
+      $rgt_new = $rgt + 1;
+
+      // 4. บันทึกข้อมูลสินค้าลงในตาราง tree โดยแนบ parent_title ไปด้วย
+      $sql = "INSERT INTO tree(title, lft, rgt, parent_title) VALUES ('$title', $rgt, $rgt_new, '$parent')";
+      $result = mysqli_query($conn, $sql); 
+      if(!$result){
+        mysqli_rollback($conn);
+        echo "fail";
+        exit;
+      }  
+      
+      mysqli_commit($conn); 
+      echo $title;   
+    } else {
+      mysqli_rollback($conn);
+      echo "fail";
+    }
+
     mysqli_close($conn);   
 ?>
