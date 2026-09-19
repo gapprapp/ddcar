@@ -1,27 +1,37 @@
 <?php
+    // เปิด Error Log เพื่อดูสาเหตุจริงหากมีปัญหาอื่นซ่อนอยู่
+    ini_set('display_errors', 1);
+    error_reporting(E_ALL);
+
     include "db.php";   
-    $prod_id  = $_POST['prod_id'];
-    $name  = $_POST['name_prod'];
-    $code  = $_POST['code'];
-    // $code  = $_POST['code'];   
-    // $cost  = $_POST['cost'];
-    // $price_w  = $_POST['price_w'];
-    // $price_s  = $_POST['price_s'];
-     
-    // $min = $_POST['min']; 
-   
-    if(isset($_POST['img'])){
-        $img  = $_POST['img'];
-        $sql = "UPDATE product SET prod_name = '$name',prod_code = '$code',img = '$img' WHERE prod_id = '$prod_id'";
-    }else{
-        $sql = "UPDATE product SET prod_name = '$name',prod_code = '$code' WHERE prod_id = '$prod_id'";
+    $prod_id   = $_POST['prod_id'] ?? null;
+    $name_prod = $_POST['name_prod'] ?? '';
+    $code      = $_POST['code'] ?? '';
+    $img       = $_POST['img'] ?? null;
+
+    if (!$prod_id) {
+        echo "fail";
+        exit;
     }
-    $result = mysqli_query($conn, $sql);
-  
-    if($result){
+
+    if (!empty($img)) {
+        $sql = "UPDATE product SET prod_name = ?, prod_code = ?, img = ? WHERE prod_id = ?";
+        $stmt = mysqli_prepare($conn, $sql);
+        mysqli_stmt_bind_param($stmt, "sssi", $name_prod, $code, $img, $prod_id);
+    } else {
+        $sql = "UPDATE product SET prod_name = ?, prod_code = ? WHERE prod_id = ?";
+        $stmt = mysqli_prepare($conn, $sql);
+        mysqli_stmt_bind_param($stmt, "ssi", $name_prod, $code, $prod_id);
+    }
+
+    if ($stmt && mysqli_stmt_execute($stmt)) {
         echo "success";
-    }else{
+    } else {
         echo "fail";
     }    
+
+    if ($stmt) {
+        mysqli_stmt_close($stmt);
+    }
     mysqli_close($conn);
 ?>

@@ -126,15 +126,15 @@
 			localStorage.arr_prod_st = "";
   	}
 
-  		function show(){
+		function show(){
 			$('#append-ctn').empty();
 			var val = $('#input-search').val();
 			if(val == ""){
 				return 0;
 			}    
-  		// $("#main-ctn").prop('hidden', true);
-  		$("#detail-ctn").prop('hidden', false);
-  		// $("#back i").prop('hidden', true);			 
+  			
+  			$("#detail-ctn").prop('hidden', false);
+  						 
 			$.ajax({
 				type: "POST",
 				url: "php/search_prod.php",
@@ -156,10 +156,11 @@
 						$('#append-ctn').append('<p class="display">ไม่พบสินค้า</p>');
 					}                                                                                                                                      
 				}               
-      }); 
-  	}
+      		}); 
+  		}
 
-		function get_amt(prod_id,name,img,code){	
+		function get_amt(prod_id,name,img,code){
+			var namedq = name.replace(/"/g, '\\"');	
 			var addr;
 			$.ajax({
 				type: "POST",
@@ -218,7 +219,7 @@
 						}else{
 							msg_price = '<p>ทุน : '+cost+'  ส่ง : '+pricesend+'  ปลีก : '+price+'</p>';
 						}
-						namedq = name.replace(/"/g, '\\"');			
+								
 						if(img == ""){
 							$('#append-ctn').append('<div id="div-'+prod_id+'" class="jumbotron text-center jumbo-center">'+
 								'<p style="text-align: right; margin-bottom: -5%">' +
@@ -266,7 +267,8 @@
 				}               
 			});
 			set_fullImage()
-    }
+   		}
+		
 		function set_fullImage(){
 			$('img.thumbnails').fullscreenimage({
 				scale: 2 // magnify by 2 times when mouse moves over full screen image (set to 1 to disable)
@@ -368,17 +370,17 @@
 					ctx.drawImage(this, 0, 0, tempImg.width, tempImg.height, 0, 0, width, height);
 
 					b64 = canvas.toDataURL("image/jpeg");				
-					//console.log(b64)
+					console.log(b64)
 				};			
 			}
 			setTimeout(function() {
 				$.ajax({
 					type: "POST",
-					url:"php/rename_prod_web.php",           
+					url:"php/rename_prod_web.php",
 					data: {'prod_id' : prod_id,
 						'name_prod' : name,
 						'code' : code,
-						'img' : b64},               
+						'img' : b64},
 					beforeSend: function(){
 						EasyLoading.show({                           
 							text: "กำลังโหลด"                            
