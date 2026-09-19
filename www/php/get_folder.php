@@ -1,18 +1,20 @@
 <?php
     include "db.php";
     
-    // 1. รับค่าและตัดเว้นวรรค + ป้องกัน SQL Injection
+    // 1. รับค่าและตัดเว้นวรรค
     $parent = isset($_POST['parent']) ? trim(mysqli_real_escape_string($conn, $_POST['parent'])) : 'car'; 
 
     $msg = ""; 
     $output = array();  
    
-    // 2. Query ดึงข้อมูลโดยตรงจาก parent_title (เทียบ string กันโดยตรงด้วย CAST)
+    // 2. Query ดึงข้อมูลพร้อมนับจำนวนลูกใต้ Node
+    // - ถ้า (SELECT COUNT(*) FROM tree WHERE parent_title = node.title) > 0 แสดงว่ามันเป็น "โฟลเดอร์ย่อย" แน่นอน
     $sql = "SELECT 
                 node.title,
                 p.prod_name,
                 p.prod_code,
-                p.prod_id
+                p.prod_id,
+                (SELECT COUNT(*) FROM tree WHERE parent_title = node.title) AS has_children
             FROM tree AS node
             LEFT JOIN product AS p ON node.title = CAST(p.prod_id AS CHAR)
             WHERE node.parent_title = '$parent'
@@ -22,16 +24,25 @@
   
     if($result && mysqli_num_rows($result) > 0){    
         while($row = mysqli_fetch_array($result, MYSQLI_ASSOC)){
-            // ถ้าเป็นสินค้า (มี prod_id)
-            if(!empty($row['prod_id'])){
+            
+            // ⚡ เงื่อนไขที่ 1: ถ้ามีรายการลูกอยู่ข้างใน (has_children > 0) -> มันคือ "โฟลเดอร์ย่อย"
+            if((int)$row['has_children'] > 0){
+                $output[] = [
+                    'title' => $row['title']
+                ];
+            } 
+            // ⚡ เงื่อนไขที่ 2: ถ้าไม่มีลูก และมี prod_id -> มันคือ "สินค้า"
+            else if(!empty($row['prod_id'])){
                 $msg = "last node";
                 $output[] = [
+                    'title'     => $row['title'],
                     'prod_name' => $row['prod_name'],
                     'prod_code' => $row['prod_code'],
                     'prod_id'   => $row['prod_id']
                 ];
-            } else {
-                // ถ้าเป็นโฟลเดอร์ย่อย
+            } 
+            // ⚡ เงื่อนไขที่ 3: โฟลเดอร์ว่างเปล่า (ไม่มีลูกและไม่ใช่สินค้า)
+            else {
                 $output[] = [
                     'title' => $row['title']
                 ];
@@ -43,7 +54,7 @@
         }
         
         echo json_encode($output);   
-    }else{
+    } else {
         echo "last node";
     } 
     

@@ -2,22 +2,21 @@
     include "db.php";
     
     // 1. รับค่าและตัดเว้นวรรค
-    $parent   = isset($_POST['parent']) ? trim(mysqli_real_escape_string($conn, $_POST['parent'])) : 'car';
+    $parent      = isset($_POST['parent']) ? trim(mysqli_real_escape_string($conn, $_POST['parent'])) : 'car';
     $order_input = isset($_POST['order_by']) ? $_POST['order_by'] : 'ASC';
     $order_by    = (strtoupper($order_input) === 'DESC') ? 'DESC' : 'ASC';
     
     $msg = ""; 
     $output = array();  
    
-    // 2. Query ประสิทธิภาพสูง:
-    // - เชื่อม p.prod_id = node.title ตรงๆ (MySQL จะใช้ Index จาก prod_id ได้ทันที ไม่โดน CAST บล็อก)
-    // - ORDER BY node.lft (ช่วยให้เรียงตามลำดับโฟลเดอร์เดิมและรวดเร็วเพราะ lft มี Index)
+    // 2. Query ดึงข้อมูลพร้อมนับจำนวนรายการลูกใต้ Node (has_children)
     $sql = "SELECT 
                 node.title,
                 p.prod_name,
                 p.prod_code,
                 p.img,
-                p.prod_id
+                p.prod_id,
+                (SELECT COUNT(*) FROM tree WHERE parent_title = node.title) AS has_children
             FROM tree AS node
             LEFT JOIN product AS p ON p.prod_id = node.title 
             WHERE node.parent_title = '$parent'
@@ -27,15 +26,26 @@
   
     if($result && mysqli_num_rows($result) > 0){    
         while($row = mysqli_fetch_array($result, MYSQLI_ASSOC)){
-            if(!empty($row['prod_id'])){
+            
+            // ⚡ เงื่อนไขที่ 1: ถ้ามีรายการลูกอยู่ข้างใน (has_children > 0) -> มันคือ "โฟลเดอร์ย่อย" แน่นอน
+            if((int)$row['has_children'] > 0){
+                $output[] = [
+                    'title' => $row['title']
+                ];
+            } 
+            // ⚡ เงื่อนไขที่ 2: ถ้าไม่มีรายการลูก และมีข้อมูลสินค้า -> มันคือ "สินค้า"
+            else if(!empty($row['prod_id'])){
                 $msg = "last node";
                 $output[] = [
+                    'title'     => $row['title'],
                     'prod_name' => $row['prod_name'],
                     'prod_code' => $row['prod_code'],
                     'img'       => $row['img'],
                     'prod_id'   => $row['prod_id']
                 ];
-            } else {
+            } 
+            // ⚡ เงื่อนไขที่ 3: กรณีเป็นโฟลเดอร์ย่อยที่ยังไม่มีสินค้าข้างใน (โฟลเดอร์ว่าง)
+            else {
                 $output[] = [
                     'title' => $row['title']
                 ];
@@ -47,7 +57,7 @@
         }
         
         echo json_encode($output);   
-    }else{
+    } else {
         echo "last node";
     } 
     
