@@ -38,37 +38,96 @@
 	
 	<style>
 		#back{
-			margin-right: 2%; padding-top: 10px; color: #666; cursor: pointer;
+			margin-right: 2%; padding-top: 10px; color: var(--color-dark); cursor: pointer;
 		}
 		.jumbotron{
-			padding-top: 2%;
-			padding-bottom: 2%;
-			width: 30%;
-			background-color: #f5f5f5; 
+			padding: 18px;
+			width: 31%;
+			background-color: #ffffff;
+			border: 1px solid var(--border-light);
+			border-radius: var(--radius-md);
+			box-shadow: var(--shadow-sm);
+			transition: all 0.2s ease;
+			display: inline-block;
+			vertical-align: top;
+			margin-bottom: 16px;
 		}
-		.jumbo-left{
-			 margin-right: 2%;
+		.jumbotron:hover{
+			border-color: var(--color-dark);
+			box-shadow: var(--shadow-md);
 		}
-    .jumbo-center{
-       margin-right: 2%;
-    }
+		@media (max-width: 991px) {
+			.jumbotron {
+				width: 48% !important;
+				margin-bottom: 16px;
+			}
+		}
+		@media (max-width: 576px) {
+			.jumbotron {
+				width: 100% !important;
+				margin-right: 0 !important;
+				margin-bottom: 16px;
+			}
+		}
 		.display{
-			font-size: 230%;
-			color: #666;
+			font-size: 2.2rem;
+			font-weight: 700;
+			color: var(--color-black);
 		}
 		.jumbohr{
-			margin-top: -3%;
-			width: 85%;
+			margin-top: 10px;
+			margin-bottom: 12px;
+			width: 100%;
+			border-color: var(--border-light);
 		}
 		p{
-			font-size: 110%;
-			color: #666;
+			font-size: 1rem;
+			color: var(--text-secondary);
 		}
-		img{
-			width: 340px; height: 300px; margin-bottom: 4%; margin-left: -4%;
+		.prod-img-wrap {
+			width: 100%;
+			height: 250px;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			background: #f8fafc;
+			border-radius: 8px;
+			overflow: hidden;
+			margin-top: 6px;
+			margin-bottom: 12px;
+			border: 1px solid var(--border-light);
+			position: relative;
 		}
-		.inforow{
-			margin-bottom: -2%;
+		.prod-img-wrap img {
+			max-width: 100%;
+			max-height: 100%;
+			width: auto;
+			height: auto;
+			object-fit: contain;
+			display: block;
+			border-radius: 6px;
+			cursor: pointer;
+			transition: transform 0.2s ease;
+		}
+		.prod-img-wrap:hover img {
+			transform: scale(1.02);
+		}
+		.inforow {
+			margin-top: 8px;
+			margin-bottom: 6px;
+			padding: 6px 10px;
+			background: #f8fafc;
+			border-radius: 6px;
+			border: 1px solid var(--border-light);
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			flex-wrap: wrap;
+			gap: 4px 6px;
+		}
+		.inforow p {
+			margin-bottom: 0 !important;
+			line-height: 1.4;
 		}
 		a{
   		color: #999;
@@ -80,6 +139,77 @@
 			color: #666;
 		}	
 		
+		/* Folder Path Breadcrumb & Tags */
+		.folder-path-container {
+			margin-top: 4px;
+			margin-bottom: 10px;
+		}
+		.folder-path-wrap {
+			background: #f8fafc;
+			border: 1px solid #e2e8f0;
+			border-radius: 8px;
+			padding: 5px 12px;
+			display: inline-flex;
+			align-items: center;
+			flex-wrap: wrap;
+			justify-content: center;
+			max-width: 100%;
+			box-shadow: 0 1px 2px rgba(0,0,0,0.03);
+			line-height: 1.4;
+		}
+		.folder-path-wrap.empty {
+			background: #fbfbfb;
+			border: 1px dashed #cbd5e1;
+		}
+		.folder-path-item {
+			font-size: 0.85rem;
+			color: #475569;
+			font-weight: 500;
+		}
+		.folder-path-item.leaf {
+			background: #e0f2fe;
+			color: #0369a1;
+			font-weight: 700;
+			padding: 2px 8px;
+			border-radius: 5px;
+			border: 1px solid #bae6fd;
+			transition: all 0.2s ease;
+		}
+		.folder-link {
+			text-decoration: none !important;
+			display: inline-flex;
+			align-items: center;
+		}
+		.folder-link:hover .folder-path-item.leaf {
+			background: #0284c7;
+			color: #ffffff;
+			border-color: #0284c7;
+			box-shadow: 0 2px 4px rgba(2,132,199,0.25);
+		}
+		.folder-path-sep {
+			color: #94a3b8;
+			margin: 0 6px;
+			font-size: 0.72rem;
+		}
+		.prod-code-badge {
+			font-size: 0.82rem;
+			background-color: #f1f5f9;
+			color: #334155;
+			border: 1px solid #cbd5e1;
+			border-radius: 6px;
+			padding: 3px 8px;
+			font-weight: 600;
+			display: inline-flex;
+			align-items: center;
+		}
+		.prod-title-name {
+			font-size: 1.4rem !important;
+			font-weight: 600;
+			color: var(--color-black);
+			margin-top: 4px;
+			margin-bottom: 8px;
+			word-break: break-word;
+		}
 	</style>
   <script>
 		$(document).ready(function () {
@@ -126,6 +256,47 @@
 			localStorage.arr_prod_st = "";
   	}
 
+		function render_folder_badge(folder_path, folder_chain){
+			if(!folder_path || folder_path.trim() === ""){
+				return '<div class="folder-path-wrap empty text-muted" title="ยังไม่ได้จัดหมวดหมู่สินค้า">' +
+					   '<i class="fas fa-folder mr-1 text-secondary"></i>' +
+					   '<span class="folder-path-item text-muted">ไม่ได้ระบุโฟลเดอร์</span>' +
+					   '</div>';
+			}
+
+			var chain = (folder_chain && folder_chain.length > 0) 
+				? folder_chain 
+				: folder_path.split('>').map(function(s){ return s.trim(); }).filter(function(s){ return s.length > 0; });
+
+			if(chain.length === 0){
+				return '<div class="folder-path-wrap empty text-muted">' +
+					   '<i class="fas fa-folder mr-1 text-secondary"></i>' +
+					   '<span class="folder-path-item text-muted">ไม่ได้ระบุโฟลเดอร์</span>' +
+					   '</div>';
+			}
+
+			var html = '<div class="folder-path-wrap" title="โฟลเดอร์/หมวดหมู่สินค้า">';
+			html += '<i class="fas fa-folder-open text-warning mr-2"></i>';
+
+			var lastIndex = chain.length - 1;
+			var targetFolder = chain[lastIndex];
+
+			for(var idx = 0; idx < chain.length; idx++){
+				var isLeaf = (idx === lastIndex);
+				if(isLeaf){
+					html += '<a href="web_folder.html?from=stock&folder=' + encodeURIComponent(targetFolder) + '" class="folder-link" title="คลิกเพื่อเปิดโฟลเดอร์ \'' + targetFolder + '\' ในหน้าหมวดหมู่">' +
+							'<span class="folder-path-item leaf"><i class="fas fa-folder mr-1"></i>' + chain[idx] + '</span>' +
+							'</a>';
+				} else {
+					html += '<span class="folder-path-item">' + chain[idx] + '</span>';
+					html += '<i class="fas fa-angle-right folder-path-sep"></i>';
+				}
+			}
+
+			html += '</div>';
+			return html;
+		}
+
 		function show(){
 			$('#append-ctn').empty();
 			var val = $('#input-search').val();
@@ -150,7 +321,7 @@
 					var obj = jQuery.parseJSON(data);										
 					if(obj.length > 0){
 						$.each(obj, function(i, field){ 
-							get_amt(field.prod_id,field.prod_name,field.img,field.prod_code);       
+							get_amt(field.prod_id, field.prod_name, field.img, field.prod_code, field.folder_path, field.folder_chain);       
 						}); 
 					}else{					
 						$('#append-ctn').append('<p class="display">ไม่พบสินค้า</p>');
@@ -159,8 +330,10 @@
       		}); 
   		}
 
-		function get_amt(prod_id,name,img,code){
-			var namedq = name.replace(/"/g, '\\"');	
+		function get_amt(prod_id,name,img,code,folder_path,folder_chain){
+			code = code || "";
+			folder_path = folder_path || "";
+			var namedq = name ? name.replace(/"/g, '\\"') : "";	
 			var addr;
 			$.ajax({
 				type: "POST",
@@ -176,14 +349,23 @@
 					EasyLoading.hide();				
 					var msg = "";		                      
 					var obj = jQuery.parseJSON(data); 	
-					console.log(obj);					        
-					if(obj != ""){                
+					console.log(obj);
+					// หากไม่มี folder_path ส่งเข้ามา ให้ลองดึงจากผลลัพธ์ของ check_amt_prod.php
+					if(!folder_path && obj && obj.length > 0 && obj[0].folder_path){
+						folder_path = obj[0].folder_path;
+						folder_chain = obj[0].folder_chain;
+					}
+
+					var msg_price = "";					
+					if(obj != "" && obj.length > 0){                
 						$.each(obj, function(i, field){            				
-							id = obj[i].id;
-							price = obj[i].prod_price;
-							pricesend = obj[i].prod_pricesend;
-							cost = obj[i].prod_cost;
-							if(obj[i][8] == "ware"){
+							var id = obj[i].id;
+							var price = obj[i].prod_price;
+							var pricesend = obj[i].prod_pricesend;
+							var cost = obj[i].prod_cost;
+							var datastr;
+							var placeType = obj[i].type || obj[i].place_type || obj[i][9] || obj[i][8] || obj[i][0];
+							if(placeType == "ware"){
 								datastr = {'prod_id':prod_id,'ware_id':id};
 							}else{
 								datastr = {'prod_id':prod_id,'shop_id':id};
@@ -201,69 +383,66 @@
 								},             
 								success: function(data){  
 									EasyLoading.hide();
-									var obj = jQuery.parseJSON(data);								
-									$.each(obj, function(i, field){ 
+									var obj2 = jQuery.parseJSON(data);								
+									$.each(obj2, function(i, field){ 
 										addr = addr + field.place + ",";
 									}); 
-								                                                                                                                                   
 								}               
 							});	
-							msg = msg + '<div class="inforow row justify-content-center">'+
-											'<p>'+obj[i][0]+' :'+'</p>'+
-											'<p>&nbsp;'+obj[i].amount+' | '+addr+'</p>'+
+							var addr_clean = addr ? addr.replace(/,+$/, '').replace(/,/g, ', ') : '';
+							var place_label = addr_clean 
+								? '<span class="text-primary font-weight-bold"><i class="fas fa-map-marker-alt text-danger mr-1"></i>' + addr_clean + '</span>'
+								: '<span class="text-muted" style="font-size: 0.88rem;">(ไม่ระบุตำแหน่ง)</span>';
+							var type_label = (placeType == "ware") ? "โกดัง" : "หน้าร้าน";
+							if (obj[i].ware_name) { type_label = obj[i].ware_name; }
+							else if (obj[i].shop_name) { type_label = obj[i].shop_name; }
+							else if (obj[i][0] && obj[i][0] !== "ware" && obj[i][0] !== "shop") { type_label = obj[i][0]; }
+
+							msg = msg + '<div class="inforow row justify-content-center align-items-center my-1">'+
+											'<span class="badge badge-light border text-dark px-2 py-1 mr-1 font-weight-bold">'+type_label+'</span>'+
+											'<span class="font-weight-bold text-dark">: '+obj[i].amount+' ชิ้น</span>'+
+											'<span class="text-muted mx-2">|</span>'+
+											place_label +
 										'</div>';												
 						});	
-						var msg_price;					
 						if(localStorage.user_role != "แอดมิน" && localStorage.user_role != "เจ้าของร้าน"){
-							msg_price = '<p>ส่ง : '+pricesend+'  ปลีก : '+price+'</p>';
+							msg_price = '<p class="m-0">ส่ง : '+obj[0].prod_pricesend+'  ปลีก : '+obj[0].prod_price+'</p>';
 						}else{
-							msg_price = '<p>ทุน : '+cost+'  ส่ง : '+pricesend+'  ปลีก : '+price+'</p>';
+							msg_price = '<p class="m-0">ทุน : '+obj[0].prod_cost+'  ส่ง : '+obj[0].prod_pricesend+'  ปลีก : '+obj[0].prod_price+'</p>';
 						}
-								
-						if(img == ""){
-							$('#append-ctn').append('<div id="div-'+prod_id+'" class="jumbotron text-center jumbo-center">'+
-								'<p style="text-align: right; margin-bottom: -5%">' +
-									'<i id="i-'+prod_id+'" class="fas fa-pen" data-toggle="modal" data-target="#EditModal" onclick="edit_prod('+prod_id+',\''+namedq+'\',\''+code+'\')" style="cursor: pointer; margin-right: 15px;"></i>' +
-									'<i class="fas fa-trash" onclick="delete_prod('+prod_id+',\''+namedq+'\')" style="cursor: pointer;"></i>' +
-									'</p><br><p id="p-'+prod_id+'" class="display">'+name+'</p><br>'+msg_price+' <hr class="jumbohr">' +
-									'<img id="img-'+prod_id+'" src="img/no_img.png" alt="pic">'+								
-										msg +								
-							'</div>');
-						}else{
-							$('#append-ctn').append('<div id="div-'+prod_id+'" class="jumbotron text-center jumbo-center">'+
-								'<p style="text-align: right; margin-bottom: -5%">' +
-									'<i id="i-'+prod_id+'" class="fas fa-pen" data-toggle="modal" data-target="#EditModal" onclick="edit_prod('+prod_id+',\''+namedq+'\',\''+code+'\')" style="cursor: pointer; margin-right: 15px;"></i>' +
-									'<i class="fas fa-trash" onclick="delete_prod('+prod_id+',\''+namedq+'\')" style="cursor: pointer;"></i>' +
-								'</p><br><p id="p-'+prod_id+'" class="display">'+name+'</p><br>'+msg_price+' <hr class="jumbohr">' +
-								'<img id="img-'+prod_id+'" class="thumbnails" src="'+img+'">'+		
-									msg +								
-							'</div>');
-						}															
-					}else{													       
-						if(img == ""){
-							$('#append-ctn').append('<div id="div-'+prod_id+'" class="jumbotron text-center jumbo-center">'+
-								'<p style="text-align: right; margin-bottom: -5%">'+
-									'<i id="i-'+prod_id+'" class="fas fa-pen" data-toggle="modal" data-target="#EditModal" onclick="edit_prod('+prod_id+',\''+namedq+'\',\''+code+'\')" style="cursor: pointer; margin-right: 15px;"></i>'+
-									'<i class="fas fa-trash" onclick="delete_prod('+prod_id+',\''+namedq+'\')" style="cursor: pointer;"></i>' +
-									'</p><br><p id="p-'+prod_id+'" class="display">'+name+'</p> <hr class="jumbohr">' +
-								'<img id="img-'+prod_id+'" src="img/no_img.png" alt="pic">'+
-								'<div class="inforow row justify-content-center">'+
-									'<p>ไม่มีสินค้าในโกดัง/หน้าร้าน</p>'+
-								'</div>'+
-							'</div>');
-						}else{
-							$('#append-ctn').append('<div id="div-'+prod_id+'" class="jumbotron text-center jumbo-center">'+
-								'<p style="text-align: right; margin-bottom: -5%">'+
-									'<i id="i-'+prod_id+'" class="fas fa-pen" data-toggle="modal" data-target="#EditModal" onclick="edit_prod('+prod_id+',\''+namedq+'\',\''+code+'\')" style="cursor: pointer; margin-right: 15px;"></i>'+
-									'<i class="fas fa-trash" onclick="delete_prod('+prod_id+',\''+namedq+'\')" style="cursor: pointer;"></i>' +
-									'</p><br><p id="p-'+prod_id+'" class="display">'+name+'</p> <hr class="jumbohr">' +
-								'<img id="img-'+prod_id+'" class="thumbnails" src="'+img+'">'+
-								'<div class="inforow row justify-content-center">'+
-									'<p>ไม่มีสินค้าในโกดัง/หน้าร้าน</p>'+
-								'</div>'+
-							'</div>');
-						}
-					}                                                                                                                        
+					}else{
+						msg = '<div class="inforow row justify-content-center">'+
+								'<p class="text-muted">ไม่มีสินค้าในโกดัง/หน้าร้าน</p>'+
+							  '</div>';
+						msg_price = '';
+					}
+
+					var folder_html = render_folder_badge(folder_path, folder_chain);
+					var code_html = code 
+						? '<span class="prod-code-badge"><i class="fas fa-barcode mr-1"></i>' + code + '</span>'
+						: '<span></span>';
+					var img_html = (img == "") 
+						? '<div class="prod-img-wrap"><img id="img-'+prod_id+'" src="img/no_img.png" alt="pic"></div>'
+						: '<div class="prod-img-wrap"><img id="img-'+prod_id+'" class="thumbnails" src="'+img+'" alt="pic"></div>';
+
+					var card_html = 
+						'<div id="div-'+prod_id+'" class="jumbotron text-center jumbo-center position-relative">' +
+							'<div class="d-flex justify-content-between align-items-center mb-2">' +
+								code_html +
+								'<div>' +
+									'<i id="i-'+prod_id+'" class="fas fa-pen text-primary" data-toggle="modal" data-target="#EditModal" onclick="edit_prod('+prod_id+',\''+namedq+'\',\''+code+'\')" style="cursor: pointer; margin-right: 15px;" title="แก้ไขสินค้า"></i>' +
+									'<i class="fas fa-trash text-danger" onclick="delete_prod('+prod_id+',\''+namedq+'\')" style="cursor: pointer;" title="ลบสินค้า"></i>' +
+								'</div>' +
+							'</div>' +
+							'<div class="folder-path-container">' + folder_html + '</div>' +
+							'<p id="p-'+prod_id+'" class="display prod-title-name">' + name + '</p>' +
+							msg_price +
+							' <hr class="jumbohr">' +
+							img_html +
+							msg +
+						'</div>';
+
+					$('#append-ctn').append(card_html);
 				}               
 			});
 			set_fullImage()
@@ -458,38 +637,57 @@
 <body>
 	<div id="bg-img" class="bg"></div>
 	<div class="container-fullwidth justify-content-center">
-		<nav class="navbar navbar-expand-md navbar-dark">
-        	<div class="collapse navbar-collapse justify-content-md-center" id="navbarCollapse">
-          		<h3 id="nav-title">เช็คสต๊อกสินค้า</h3>
-        	</div>
-      	</nav>
-		</div>
-		<div class="container">
-				<div class="row" style="margin-top: 2px;">
-					<div class="col-12 text-center">
-						<a name="a-menu" href="web_sale.html" class="mgr-20">ขายสินค้า</a>
-						<a name="a-menu" href="web_import.html" class="mgr-20">นำสินค้าเข้า</a>
-						<a href="web_stock.html" class="mgr-20 active">เช็คสต๊อก</a>
-						<a name="a-menu" href="web_export.html" class="mgr-20">สินค้าออกโกดัง</a>
-						<a href="web_mng_bell.html" class="mgr-20">เช็คสถานะสินค้า</a>
-						<a name="a-menu" href="web_select.html" class="mgr-20">รายการย้อนหลัง</a>
-						<a name="a-menu" href="web_qrprint.html" class="mgr-20">พิมพ์คิวอาร์</a>
-						<a href="" class="mgr-20" onclick="logout()">ออกจากระบบ</a>
-					</div>
-				</div>
-			</div><br><br>
-    <div id="main-ctn" class="container-fullwidth" style="margin-top: 15%;">
-    	<div class="input-group row justify-content-center" style="margin-bottom: 4%; margin-left: 0.5%">
-    		<h4 id="back" onclick="reposition();"><i class="fa fa-arrow-left" hidden></i></h4>
-    		<input id="input-search" data-index="1" type="text" class="form-control-lg text-center" placeholder="ค้นหาสินค้าหรือรหัสสินค้า" style="width: 60%;">
-	        <button class="btn btn-outline-secondary" type="button" style="margin-left: 10px;" onclick="show();">
-	            <i class="fa fa-search"></i>
-	        </button>
-			<button class="btn btn-outline-secondary" type="button" style="margin-left: 10px;" onclick="select_folder();">เพิ่มสินค้า</button>
+		<nav class="navbar navbar-expand-lg navbar-dark navbar-ddcar">
+            <a class="navbar-brand d-flex align-items-center" href="web_select.html">
+                <i class="fa fa-boxes mr-2 text-warning"></i>
+                <span id="nav-title">เช็คสต๊อกสินค้า</span>
+            </a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarDDCar"
+                aria-controls="navbarDDCar" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarDDCar">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item"><a class="nav-link" name="a-menu" href="web_sale.html"><i class="fa fa-shopping-cart mr-1"></i> ขายสินค้า</a></li>
+                    <li class="nav-item"><a class="nav-link" name="a-menu" href="web_import.html"><i class="fa fa-arrow-down mr-1"></i> นำสินค้าเข้า</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="web_stock.html"><i class="fa fa-boxes mr-1"></i> เช็คสต๊อก</a></li>
+                    <li class="nav-item"><a class="nav-link" name="a-menu" href="web_export.html"><i class="fa fa-arrow-up mr-1"></i> สินค้าออกโกดัง</a></li>
+                    <li class="nav-item"><a class="nav-link" href="web_mng_bell.html"><i class="fa fa-bell mr-1"></i> เช็คสถานะสินค้า</a></li>
+                    <li class="nav-item"><a class="nav-link" name="a-menu" href="web_select.html"><i class="fa fa-history mr-1"></i> รายการย้อนหลัง</a></li>
+                    <li class="nav-item"><a class="nav-link" name="a-menu" href="web_customer.html"><i class="fa fa-users mr-1"></i> ลูกค้า</a></li>
+                    <li class="nav-item"><a class="nav-link" name="a-menu" href="web_qrprint.html"><i class="fa fa-qrcode mr-1"></i> พิมพ์คิวอาร์</a></li>
+                    <li class="nav-item"><a class="nav-link text-danger font-weight-bold" href="" onclick="logout()"><i class="fa fa-sign-out-alt mr-1"></i> ออกจากระบบ</a></li>
+                </ul>
+            </div>
+        </nav>
+    <div id="main-ctn" class="container-fullwidth" style="margin-top: 40px;">
+    	<div class="row justify-content-center px-2">
+            <div class="col-12 col-md-8 col-lg-7">
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text bg-white" id="back" onclick="reposition();" style="cursor: pointer;">
+                            <i class="fa fa-arrow-left" hidden></i>
+                        </span>
+                    </div>
+                    <input id="input-search" data-index="1" type="text" class="form-control form-control-lg text-center" placeholder="ค้นหาสินค้าหรือรหัสสินค้า">
+                    <div class="input-group-append">
+                        <button class="btn btn-secondary px-3" type="button" onclick="show();">
+                            <i class="fa fa-search"></i> ค้นหา
+                        </button>
+                        <button class="btn btn-outline-secondary px-3" type="button" onclick="select_folder();">
+                            <i class="fa fa-plus"></i> เพิ่ม
+                        </button>
+                    </div>
+                </div>
+            </div>
     	</div>
-    	<hr style="width: 75%;">
-    	<div id="row-folder" class="row justify-content-center" style="margin-bottom: 4%; margin-top: 4%;">
-    		<button class="btn btn-lg btn-outline-secondary" onclick="select_folder()">เลือกจากหมวดหมู่สินค้า</button>
+    	<hr style="width: 85%;">
+    	<div id="row-folder" class="row justify-content-center my-4 px-2">
+            <div class="col-12 col-md-6 col-lg-5 text-center">
+    		    <button class="btn btn-lg btn-outline-secondary btn-block py-3" style="font-size: 1.2rem; border-radius: 8px;" onclick="select_folder()">
+                    <i class="fa fa-folder-open mr-2"></i> เลือกจากหมวดหมู่สินค้า
+                </button>
+            </div>
     	</div>
     </div>
     <div id="detail-ctn" class="container-fullwidth" style="margin-top: 2%; margin-bottom: 2%;" hidden>
@@ -613,5 +811,7 @@
 			});
 		});
     </script>
+    <!-- Central Navbar Script -->
+    <script src="js/navbar.js"></script>
 </body>
 </html>

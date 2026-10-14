@@ -28,18 +28,17 @@
   <!-- Main -->
   <link href="css/untitled.css" rel="stylesheet">  
   <style>
-    body{color: #666;}
-    a{ color: #999;}
-    a:hover{color: #666;}
-    .active{color: #666;}
+    body{color: var(--text-primary);}
     .cus-odd, .cus-even{
-      padding-top: 1%; padding-bottom: 1%; color: #fff; margin-bottom: 1%; cursor: pointer;
+      padding-top: 14px; padding-bottom: 14px; color: var(--text-primary); margin-bottom: 8px; cursor: pointer;
+      background-color: #ffffff !important; border: 1px solid var(--border-light); border-radius: var(--radius-sm);
+      box-shadow: var(--shadow-sm); transition: all 0.15s ease;
     }
-    .cus-odd{
-      background-color: #999;
+    .cus-odd:hover, .cus-even:hover{
+      border-color: var(--color-dark) !important; background-color: #f8fafc !important; box-shadow: var(--shadow-md); transform: translateY(-1px);
     }
-    .cus-even{
-      background-color: #858585;
+    .cus-odd h5, .cus-even h5{
+      color: var(--color-black) !important; font-weight: 600; font-size: 1rem;
     }
     h5{
       letter-spacing: 2px;
@@ -540,34 +539,41 @@
 </head>
 <body>
 	<div class="container-fullwidth justify-content-center">
-		<nav class="navbar navbar-expand-md navbar-dark">
-    	<div class="collapse navbar-collapse justify-content-md-center" id="navbarCollapse">
-      		<h3 id="nav-title">รายงานเครดิต</h3>
-    	</div>
-    </nav>
-    <div class="container">
-      <div class="row" style="margin-top: 2px;">
-        <div class="col-12 text-center">
-          <a href="web_sale.html" class="mgr-20">ขายสินค้า</a>
-          <a href="web_import.html" class="mgr-20">นำสินค้าเข้า</a>
-          <a href="web_stock.html" class="mgr-20">เช็คสต๊อก</a>
-          <a href="web_export.html" class="mgr-20">สินค้าออกโกดัง</a>
-          <a href="web_mng_bell.html" class="mgr-20">เช็คสถานะสินค้า</a>
-          <a href="web_select.html" class="mgr-20 active">รายการย้อนหลัง</a>
-          <a href="web_qrprint.html" class="mgr-20">พิมพ์คิวอาร์</a>
-          <a href="" class="mgr-20" onclick="logout()">ออกจากระบบ</a>
+		<nav class="navbar navbar-expand-lg navbar-dark navbar-ddcar">
+            <a class="navbar-brand d-flex align-items-center" href="web_select.html">
+                <i class="fa fa-hand-holding-usd mr-2 text-warning"></i>
+                <span id="nav-title">รายงานเครดิต</span>
+            </a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarDDCar"
+                aria-controls="navbarDDCar" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarDDCar">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item"><a class="nav-link" href="web_sale.html"><i class="fa fa-shopping-cart mr-1"></i> ขายสินค้า</a></li>
+                    <li class="nav-item"><a class="nav-link" href="web_import.html"><i class="fa fa-arrow-down mr-1"></i> นำสินค้าเข้า</a></li>
+                    <li class="nav-item"><a class="nav-link" href="web_stock.html"><i class="fa fa-boxes mr-1"></i> เช็คสต๊อก</a></li>
+                    <li class="nav-item"><a class="nav-link" href="web_export.html"><i class="fa fa-arrow-up mr-1"></i> สินค้าออกโกดัง</a></li>
+                    <li class="nav-item"><a class="nav-link" href="web_mng_bell.html"><i class="fa fa-bell mr-1"></i> เช็คสถานะสินค้า</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="web_select.html"><i class="fa fa-history mr-1"></i> รายการย้อนหลัง</a></li>
+                    <li class="nav-item"><a class="nav-link" href="web_customer.html"><i class="fa fa-users mr-1"></i> ลูกค้า</a></li>
+                    <li class="nav-item"><a class="nav-link" href="web_qrprint.html"><i class="fa fa-qrcode mr-1"></i> พิมพ์คิวอาร์</a></li>
+                    <li class="nav-item"><a class="nav-link text-danger font-weight-bold" href="" onclick="logout()"><i class="fa fa-sign-out-alt mr-1"></i> ออกจากระบบ</a></li>
+                </ul>
+            </div>
+        </nav>
+    <div class="container-fullwidth my-3">
+      <div class="row justify-content-center px-2">
+        <div class="col-12 col-md-8 col-lg-6">
+            <div class="input-group">
+                <div class="input-group-prepend">
+                    <button id="i-back" class="btn btn-outline-secondary" type="button" hidden>
+                        <i class="fa fa-angle-left"></i> ย้อนกลับ
+                    </button>
+                </div>
+                <input id="input-search" type="text" class="form-control form-control-lg text-center" placeholder="ค้นหาชื่อลูกค้า/ปี-เดือน ex.2025-01">
+            </div>
         </div>
-      </div>
-    </div><br><br>
-    <div class="container-fullwidth">
-      <div class="input-group row justify-content-center" style="margin-bottom: 4%; margin-left: 0.5%">
-        <button id="i-back" class="btn btn-outline-secondary" type="button" style="margin-right: 10px;" hidden>
-          <i class="fa fa-angle-left"></i>
-      </button>
-        <input id="input-search" type="text" class="form-control-lg text-center" placeholder="ค้นหาชื่อลูกค้า/ปี-เดือน ex.2025-01" style="width: 60%;">
-          <!-- <button  class="btn btn-outline-secondary" type="button" style="margin-left: 10px;">
-              <i class="fa fa-search"></i>
-          </button> -->
       </div>
     </div>
     <div class="container-fullwidth">
@@ -603,5 +609,7 @@
       </div>
     -->
   </div>
+  <!-- Central Navbar Script -->
+  <script src="js/navbar.js"></script>
 </body>
 </html>

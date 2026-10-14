@@ -89,7 +89,8 @@
         }         
       })
 
-      function get_amt(prod_id){
+      function get_amt(prod_id, encoded_folder_path){
+        var folder_path = encoded_folder_path ? decodeURIComponent(encoded_folder_path) : '';
         $.ajax({
           type: "POST",
           url: localStorage.pathServer + "php/check_amt_prod.php",                
@@ -104,7 +105,10 @@
             var msg = "";  
             var addr;                           
             var obj = jQuery.parseJSON(data);              
-            if(obj != ""){                
+            if(obj != ""){
+              if(!folder_path && obj[0] && obj[0].folder_path){
+                folder_path = obj[0].folder_path;
+              }
               $.each(obj, function(i, field){
                   price = obj[i].prod_price;
                   pricesend = obj[i].prod_pricesend;
@@ -112,7 +116,8 @@
                   img = obj[i].img; 
                   name = obj[i].prod_name; 
                   id = obj[i].id;
-                  if(obj[i][8] == "ware"){
+                  var placeType = obj[i].type || obj[i].place_type || obj[i][9] || obj[i][8] || obj[i][0];
+                  if(placeType == "ware"){
                     datastr = {'prod_id':prod_id,'ware_id':id};
                   }else{
                     datastr = {'prod_id':prod_id,'shop_id':id};
@@ -132,10 +137,16 @@
                       $.each(obj, function(i, field){ 
                         addr = addr + field.place + ",";
                       }); 
-                                                                                                                                                      
                     }               
                   });	   
-                  msg = msg + '<div class="row" style="margin-bottom: 3%"><div class="col-6 text-right" style="margin-right: 5%;">'+obj[i][0]+' :'+'</div><div class="col-5 text-left">'+obj[i].amount+' | '+addr+'</div></div>';
+                  var addr_clean = addr ? addr.replace(/,+$/, '').replace(/,/g, ', ') : '';
+                  var place_label = addr_clean || '-';
+                  var type_label = (placeType == "ware") ? "โกดัง" : "หน้าร้าน";
+                  if (obj[i].ware_name) { type_label = obj[i].ware_name; }
+                  else if (obj[i].shop_name) { type_label = obj[i].shop_name; }
+                  else if (obj[i][0] && obj[i][0] !== "ware" && obj[i][0] !== "shop") { type_label = obj[i][0]; }
+
+                  msg = msg + '<div class="row" style="margin-bottom: 3%"><div class="col-6 text-right" style="margin-right: 5%;">'+type_label+' :'+'</div><div class="col-5 text-left">'+obj[i].amount+' | '+place_label+'</div></div>';
               });
               var msg_price;					
               if(localStorage.user_role != "แอดมิน" && localStorage.user_role != "เจ้าของร้าน"){
@@ -143,7 +154,14 @@
               }else{
                 msg_price = '<p>ทุน : '+cost+'  ส่ง : '+pricesend+'  ปลีก : '+price+'</p>';
               }	
-              var top_msg = '<div class="row" style="margin-top: 2%; margin-bottom: 2%;"><div class="col-12 text-center">'+msg_price+'<br><img src="'+img+'" id="img" alt="" onclick="show_pic()" style="width: 300px; height: 300px;"></div></div><br>'; 
+              var folder_badge = folder_path 
+                ? '<div class="row justify-content-center" style="margin-bottom: 10px;">' +
+                    '<span class="badge badge-light border" style="font-size: 0.85rem; padding: 6px 12px; color: #334155; border-radius: 6px; background: #f8fafc; white-space: normal; line-height: 1.4;">' +
+                      '<i class="fas fa-folder-open" style="color: #f59e0b; margin-right: 5px;"></i> โฟลเดอร์: ' + folder_path +
+                    '</span>' +
+                  '</div>' 
+                : '';
+              var top_msg = '<div class="row" style="margin-top: 2%; margin-bottom: 2%;"><div class="col-12 text-center">'+folder_badge+msg_price+'<br><img src="'+img+'" id="img" alt="" onclick="show_pic()" style="width: 300px; height: 300px; border-radius: 8px; object-fit: contain;"></div></div><br>'; 
               $.confirm({
                   title: name,
                   content: top_msg + msg,
@@ -202,13 +220,27 @@
           success: function(data){  
             $(".overlay").prop('hidden', true);                             
             var obj = jQuery.parseJSON(data);
-            if(obj){
+            if(obj && obj.length > 0){
               $.each(obj, function(i, field){ 
-                $('#myUL').append('<li><div id="prod-1" class="row" onclick="get_amt('+field.prod_id+')">' +
-                  '<div class="col-4 text-center p">'+field.prod_code+'</div>' +
-                  '<div class="col-8 text-center p">'+field.prod_name+'</div>' +
-                  '</div><hr></li>');        
+                var folderHtml = '';
+                if(field.folder_path && field.folder_path.trim() !== '') {
+                  folderHtml = '<div class="mt-1" style="font-size: 0.8rem; color: #475569; word-break: break-word;">' +
+                               '<span style="background: #f1f5f9; padding: 2px 8px; border-radius: 4px; border: 1px solid #e2e8f0; display: inline-block;">' +
+                               '<i class="fas fa-folder-open" style="color: #f59e0b; margin-right: 4px;"></i>' + field.folder_path +
+                               '</span></div>';
+                }
+                var codeDisplay = field.prod_code ? field.prod_code : '-';
+                var encFolder = encodeURIComponent(field.folder_path || '');
+                $('#myUL').append('<li><div class="row align-items-center py-2 px-1" onclick="get_amt('+field.prod_id+', \''+encFolder+'\')" style="cursor: pointer;">' +
+                  '<div class="col-4 text-center"><span class="badge badge-light border" style="font-size: 0.85rem; font-weight: bold; color: #334155;">'+codeDisplay+'</span></div>' +
+                  '<div class="col-8 text-left">' +
+                    '<div style="font-weight: 600; color: #1e293b; font-size: 0.95rem;">'+field.prod_name+'</div>' +
+                    folderHtml +
+                  '</div>' +
+                  '</div><hr class="my-1"></li>');        
               }); 
+            } else {
+              $('#myUL').append('<li class="text-center p-3 text-muted">ไม่พบสินค้า</li>');
             }                                                                                                                                        
           }               
         }); 

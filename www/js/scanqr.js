@@ -118,7 +118,8 @@ async function scan(arg, type, ware_id) {
                                     name = obj[i].prod_name;    
                                     id = obj[i].id;
                                     prod_id = obj[i].prod_id;
-                                    if (obj[i][9] == "ware") {
+                                    var placeType = obj[i].type || obj[i].place_type || obj[i][9] || obj[i][8] || obj[i][0];
+                                    if (placeType == "ware") {
                                         datastr = {'prod_id': prod_id, 'ware_id': id};
                                     } else {
                                         datastr = {'prod_id': prod_id, 'shop_id': id};
@@ -140,7 +141,14 @@ async function scan(arg, type, ware_id) {
                                             }); 
                                         }               
                                     });	   
-                                    msg = msg + '<div class="row" style="margin-bottom: 3%"><div class="col-6 text-right" style="margin-right: 5%;">'+obj[i][0]+' :'+'</div><div class="col-5 text-left">'+obj[i].amount+' | '+addr+'</div></div>';
+                                    var addr_clean = addr ? addr.replace(/,+$/, '').replace(/,/g, ', ') : '';
+                                    var place_label = addr_clean || '-';
+                                    var type_label = (placeType == "ware") ? "โกดัง" : "หน้าร้าน";
+                                    if (obj[i].ware_name) { type_label = obj[i].ware_name; }
+                                    else if (obj[i].shop_name) { type_label = obj[i].shop_name; }
+                                    else if (obj[i][0] && obj[i][0] !== "ware" && obj[i][0] !== "shop") { type_label = obj[i][0]; }
+
+                                    msg = msg + '<div class="row" style="margin-bottom: 3%"><div class="col-6 text-right" style="margin-right: 5%;">'+type_label+' :'+'</div><div class="col-5 text-left">'+obj[i].amount+' | '+place_label+'</div></div>';
                                 });
 
                                 var msg_price;					

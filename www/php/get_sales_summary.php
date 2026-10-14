@@ -1,0 +1,734 @@
+<?php
+header("Access-Control-Allow-Origin: *");
+header("Content-Type: application/json; charset=UTF-8");
+include "db.php";
+
+$action = isset($_POST['action']) ? $_POST['action'] : (isset($_GET['action']) ? $_GET['action'] : 'daily');
+$txt_cancel = "(cancel)";
+
+$thai_months = array(
+    1 => 'มกราคม', 2 => 'กุมภาพันธ์', 3 => 'มีนาคม', 4 => 'เมษายน',
+    5 => 'พฤษภาคม', 6 => 'มิถุนายน', 7 => 'กรกฎาคม', 8 => 'สิงหาคม',
+    9 => 'กันยายน', 10 => 'ตุลาคม', 11 => 'พฤศจิกายน', 12 => 'ธันวาคม'
+);
+
+$thai_days = array(
+    'Sunday' => 'อาทิตย์', 'Monday' => 'จันทร์', 'Tuesday' => 'อังคาร',
+    'Wednesday' => 'พุธ', 'Thursday' => 'พฤหัสบดี', 'Friday' => 'ศุกร์', 'Saturday' => 'เสาร์'
+);
+
+// 0. Dashboard Helpers
+function get_top_products($conn, $from_dt, $to_dt, $txt_cancel, $cus_id = null, $limit = 10) {
+    $where_cus = "";
+    if (!empty($cus_id) && $cus_id !== 'all') {
+        $where_cus = " AND s.customer_id = '$cus_id' ";
+    }
+    $query = "SELECT 
+                p.prod_id,
+                COALESCE(NULLIF(TRIM(p.prod_name), ''), 'สินค้าไม่มีชื่อ') AS prod_name,
+                SUM(COALESCE(soi.prod_amount, 0)) AS total_qty,
+                SUM(COALESCE(soi.prod_amount, 0) * COALESCE(soi.prod_price, 0)) AS total_revenue
+              FROM sale_order_item soi
+              INNER JOIN sale_order s ON soi.order_id = s.order_id
+              INNER JOIN product p ON soi.prod_id = p.prod_id
+              WHERE s.date_time BETWEEN '$from_dt' AND '$to_dt'
+                AND s.order_number NOT LIKE '%$txt_cancel%'
+                $where_cus
+              GROUP BY p.prod_id, p.prod_name
+              ORDER BY total_qty DESC, total_revenue DESC
+              LIMIT $limit";
+    $res = mysqli_query($conn, $query);
+    $items = array();
+    if ($res && mysqli_num_rows($res) > 0) {
+        $rank = 1;
+        while ($row = mysqli_fetch_assoc($res)) {
+            $items[] = array(
+                'rank' => $rank++,
+                'prod_id' => $row['prod_id'],
+                'prod_name' => $row['prod_name'],
+                'total_qty' => intval($row['total_qty']),
+                'total_revenue' => round(floatval($row['total_revenue']), 2)
+            );
+        }
+    }
+    return $items;
+}
+
+function get_payment_breakdown($conn, $from_dt, $to_dt, $txt_cancel, $cus_id = null) {
+    $where_cus = "";
+    if (!empty($cus_id) && $cus_id !== 'all') {
+        $where_cus = " AND s.customer_id = '$cus_id' ";
+    }
+    $query = "SELECT 
+                COALESCE(NULLIF(TRIM(s.payment_type), ''), 'ไม่ระบุ') AS payment_type,
+                COUNT(s.order_id) AS bill_count,
+                SUM(s.total_price) AS total_sales
+              FROM sale_order s
+              WHERE s.date_time BETWEEN '$from_dt' AND '$to_dt'
+                AND s.order_number NOT LIKE '%$txt_cancel%'
+                $where_cus
+              GROUP BY payment_type
+              ORDER BY total_sales DESC";
+    $res = mysqli_query($conn, $query);
+    $breakdown = array();
+    if ($res && mysqli_num_rows($res) > 0) {
+        while ($row = mysqli_fetch_assoc($res)) {
+            $breakdown[] = array(
+                'payment_type' => $row['payment_type'],
+                'bill_count' => intval($row['bill_count']),
+                'total_sales' => round(floatval($row['total_sales']), 2)
+            );
+        }
+    }
+    return $breakdown;
+}
+
+function get_hourly_breakdown($conn, $from_dt, $to_dt, $txt_cancel) {
+    $query = "SELECT 
+                HOUR(s.date_time) AS sale_hour,
+                COUNT(s.order_id) AS bill_count,
+                SUM(s.total_price) AS hour_sales,
+                SUM(COALESCE(cost_data.total_cost, 0)) AS hour_cost
+              FROM sale_order s
+              LEFT JOIN (
+                  SELECT soi.order_id, SUM(COALESCE(soi.prod_amount, 0) * COALESCE(pr.prod_cost, 0)) AS total_cost
+                  FROM sale_order_item soi
+                  INNER JOIN product pr ON soi.prod_id = pr.prod_id
+                  WHERE soi.order_id IN (
+                      SELECT order_id FROM sale_order 
+                      WHERE date_time BETWEEN '$from_dt' AND '$to_dt' 
+                        AND order_number NOT LIKE '%$txt_cancel%'
+                  )
+                  GROUP BY soi.order_id
+              ) cost_data ON s.order_id = cost_data.order_id
+              WHERE s.date_time BETWEEN '$from_dt' AND '$to_dt'
+                AND s.order_number NOT LIKE '%$txt_cancel%'
+              GROUP BY HOUR(s.date_time)
+              ORDER BY sale_hour ASC";
+    $res = mysqli_query($conn, $query);
+    $map = array();
+    if ($res && mysqli_num_rows($res) > 0) {
+        while ($row = mysqli_fetch_assoc($res)) {
+            $h = intval($row['sale_hour']);
+            $sales = floatval($row['hour_sales']);
+            $cost = floatval($row['hour_cost']);
+            $profit = round($sales - $cost, 2);
+            $map[$h] = array(
+                'hour' => $h,
+                'hour_label' => sprintf('%02d:00', $h),
+                'bill_count' => intval($row['bill_count']),
+                'sales' => round($sales, 2),
+                'cost' => round($cost, 2),
+                'profit' => $profit
+            );
+        }
+    }
+
+    $hours_list = array();
+    $min_h = 8;
+    $max_h = 18;
+    if (!empty($map)) {
+        $keys = array_keys($map);
+        $min_h = min(min($keys), 8);
+        $max_h = max(max($keys), 18);
+    }
+    for ($h = $min_h; $h <= $max_h; $h++) {
+        if (isset($map[$h])) {
+            $hours_list[] = $map[$h];
+        } else {
+            $hours_list[] = array(
+                'hour' => $h,
+                'hour_label' => sprintf('%02d:00', $h),
+                'bill_count' => 0,
+                'sales' => 0,
+                'cost' => 0,
+                'profit' => 0
+            );
+        }
+    }
+    return $hours_list;
+}
+
+// 1. Get Customers List
+if ($action === 'get_customers') {
+    $query = "SELECT cus_id, cus_name, cus_tel, cus_type FROM customer ORDER BY cus_name ASC";
+    $result = mysqli_query($conn, $query);
+    $customers = array();
+    if ($result && mysqli_num_rows($result) > 0) {
+        while ($row = mysqli_fetch_assoc($result)) {
+            $customers[] = $row;
+        }
+    }
+    echo json_encode(array('success' => true, 'customers' => $customers));
+    mysqli_close($conn);
+    exit;
+}
+
+// 2. Daily Summary & Bills
+if ($action === 'daily') {
+    $date_from = isset($_POST['date_from']) ? mysqli_real_escape_string($conn, trim($_POST['date_from'])) : date('Y-m-d');
+    $date_to = isset($_POST['date_to']) ? mysqli_real_escape_string($conn, trim($_POST['date_to'])) : $date_from;
+    if (empty($date_from)) $date_from = date('Y-m-d');
+    if (empty($date_to)) $date_to = $date_from;
+
+    $from_dt = $date_from . ' 00:00:00';
+    $to_dt = $date_to . ' 23:59:59';
+
+    $query = "SELECT 
+                s.order_id,
+                s.order_number,
+                s.date_time,
+                s.total_price,
+                s.sum_price,
+                s.total_discount,
+                s.payment_type,
+                s.customer_id,
+                COALESCE(c.cus_name, 'ลูกค้าทั่วไป') AS cus_name,
+                COALESCE(c.cus_tel, '-') AS cus_tel,
+                u.user_name,
+                COALESCE(cost_data.total_cost, 0) AS cost
+              FROM sale_order s
+              INNER JOIN user u ON s.user_id = u.user_id
+              LEFT JOIN customer c ON s.customer_id = c.cus_id
+              LEFT JOIN (
+                  SELECT soi.order_id, SUM(COALESCE(soi.prod_amount, 0) * COALESCE(pr.prod_cost, 0)) AS total_cost
+                  FROM sale_order_item soi
+                  INNER JOIN product pr ON soi.prod_id = pr.prod_id
+                  WHERE soi.order_id IN (
+                      SELECT order_id FROM sale_order 
+                      WHERE date_time BETWEEN '$from_dt' AND '$to_dt' 
+                        AND order_number NOT LIKE '%$txt_cancel%'
+                  )
+                  GROUP BY soi.order_id
+              ) cost_data ON s.order_id = cost_data.order_id
+              WHERE s.date_time BETWEEN '$from_dt' AND '$to_dt'
+                AND s.order_number NOT LIKE '%$txt_cancel%'
+              ORDER BY s.order_id DESC";
+
+    $result = mysqli_query($conn, $query);
+    $bills = array();
+    $total_sales = 0;
+    $total_cost = 0;
+    $total_profit = 0;
+    $total_bills = 0;
+
+    if ($result && mysqli_num_rows($result) > 0) {
+        while ($row = mysqli_fetch_assoc($result)) {
+            $price = floatval($row['total_price']);
+            $cost = floatval($row['cost']);
+            $profit = ($price == 0) ? 0 : round($price - $cost, 2);
+
+            $row['total_price'] = $price;
+            $row['cost'] = $cost;
+            $row['profit'] = $profit;
+
+            $total_sales += $price;
+            $total_cost += $cost;
+            $total_profit += $profit;
+            $total_bills++;
+
+            $bills[] = $row;
+        }
+    }
+
+    $avg_per_bill = ($total_bills > 0) ? round($total_sales / $total_bills, 2) : 0;
+    $margin_pct = ($total_sales > 0) ? round(($total_profit / $total_sales) * 100, 2) : 0;
+
+    $top_products = get_top_products($conn, $from_dt, $to_dt, $txt_cancel, null, 10);
+    $payment_breakdown = get_payment_breakdown($conn, $from_dt, $to_dt, $txt_cancel);
+    $hourly_breakdown = get_hourly_breakdown($conn, $from_dt, $to_dt, $txt_cancel);
+
+    echo json_encode(array(
+        'success' => true,
+        'mode' => 'daily',
+        'date_from' => $date_from,
+        'date_to' => $date_to,
+        'summary' => array(
+            'total_sales' => round($total_sales, 2),
+            'total_cost' => round($total_cost, 2),
+            'total_profit' => round($total_profit, 2),
+            'total_bills' => $total_bills,
+            'avg_per_bill' => $avg_per_bill,
+            'margin_pct' => $margin_pct
+        ),
+        'hourly_breakdown' => $hourly_breakdown,
+        'top_products' => $top_products,
+        'payment_breakdown' => $payment_breakdown,
+        'bills' => $bills
+    ));
+    mysqli_close($conn);
+    exit;
+}
+
+// 3. Monthly Summary (Breakdown by Day in selected month)
+if ($action === 'monthly') {
+    $year_month = isset($_POST['year_month']) ? mysqli_real_escape_string($conn, trim($_POST['year_month'])) : date('Y-m');
+    if (empty($year_month) || strlen($year_month) < 7) {
+        $year_month = date('Y-m');
+    }
+    $parts = explode('-', $year_month);
+    $year = intval($parts[0]);
+    $month = intval($parts[1]);
+
+    $start_date = sprintf('%04d-%02d-01', $year, $month);
+    $days_in_month = date('t', strtotime($start_date));
+    $end_date = sprintf('%04d-%02d-%02d', $year, $month, $days_in_month);
+
+    $from_dt = $start_date . ' 00:00:00';
+    $to_dt = $end_date . ' 23:59:59';
+
+    $query = "SELECT 
+                DATE(s.date_time) AS sale_date,
+                COUNT(s.order_id) AS bill_count,
+                SUM(s.total_price) AS day_sales,
+                SUM(COALESCE(cost_data.total_cost, 0)) AS day_cost
+              FROM sale_order s
+              LEFT JOIN (
+                  SELECT soi.order_id, SUM(COALESCE(soi.prod_amount, 0) * COALESCE(pr.prod_cost, 0)) AS total_cost
+                  FROM sale_order_item soi
+                  INNER JOIN product pr ON soi.prod_id = pr.prod_id
+                  WHERE soi.order_id IN (
+                      SELECT order_id FROM sale_order 
+                      WHERE date_time BETWEEN '$from_dt' AND '$to_dt' 
+                        AND order_number NOT LIKE '%$txt_cancel%'
+                  )
+                  GROUP BY soi.order_id
+              ) cost_data ON s.order_id = cost_data.order_id
+              WHERE s.date_time BETWEEN '$from_dt' AND '$to_dt'
+                AND s.order_number NOT LIKE '%$txt_cancel%'
+              GROUP BY DATE(s.date_time)
+              ORDER BY sale_date ASC";
+
+    $result = mysqli_query($conn, $query);
+    $db_days = array();
+
+    if ($result && mysqli_num_rows($result) > 0) {
+        while ($row = mysqli_fetch_assoc($result)) {
+            $db_days[$row['sale_date']] = $row;
+        }
+    }
+
+    $daily_breakdown = array();
+    $total_sales = 0;
+    $total_cost = 0;
+    $total_profit = 0;
+    $total_bills = 0;
+    $best_day = null;
+    $max_day_sales = -1;
+
+    for ($d = 1; $d <= $days_in_month; $d++) {
+        $curr_date = sprintf('%04d-%02d-%02d', $year, $month, $d);
+        $day_name_en = date('l', strtotime($curr_date));
+        $day_name_th = isset($thai_days[$day_name_en]) ? $thai_days[$day_name_en] : $day_name_en;
+
+        $bill_count = 0;
+        $day_sales = 0;
+        $day_cost = 0;
+        $day_profit = 0;
+
+        if (isset($db_days[$curr_date])) {
+            $bill_count = intval($db_days[$curr_date]['bill_count']);
+            $day_sales = floatval($db_days[$curr_date]['day_sales']);
+            $day_cost = floatval($db_days[$curr_date]['day_cost']);
+            $day_profit = round($day_sales - $day_cost, 2);
+
+            $total_sales += $day_sales;
+            $total_cost += $day_cost;
+            $total_profit += $day_profit;
+            $total_bills += $bill_count;
+
+            if ($day_sales > $max_day_sales) {
+                $max_day_sales = $day_sales;
+                $best_day = array(
+                    'date' => $curr_date,
+                    'day' => $d,
+                    'sales' => $day_sales
+                );
+            }
+        }
+
+        $margin = ($day_sales > 0) ? round(($day_profit / $day_sales) * 100, 2) : 0;
+
+        $daily_breakdown[] = array(
+            'date' => $curr_date,
+            'day' => $d,
+            'day_name' => $day_name_th,
+            'bill_count' => $bill_count,
+            'sales' => round($day_sales, 2),
+            'cost' => round($day_cost, 2),
+            'profit' => round($day_profit, 2),
+            'margin_pct' => $margin
+        );
+    }
+
+    $avg_per_day = ($days_in_month > 0) ? round($total_sales / $days_in_month, 2) : 0;
+    $avg_per_bill = ($total_bills > 0) ? round($total_sales / $total_bills, 2) : 0;
+    $margin_pct = ($total_sales > 0) ? round(($total_profit / $total_sales) * 100, 2) : 0;
+
+    $top_products = get_top_products($conn, $from_dt, $to_dt, $txt_cancel, null, 10);
+    $payment_breakdown = get_payment_breakdown($conn, $from_dt, $to_dt, $txt_cancel);
+
+    echo json_encode(array(
+        'success' => true,
+        'mode' => 'monthly',
+        'year_month' => $year_month,
+        'year' => $year,
+        'month' => $month,
+        'month_name' => isset($thai_months[$month]) ? $thai_months[$month] : $month,
+        'summary' => array(
+            'total_sales' => round($total_sales, 2),
+            'total_cost' => round($total_cost, 2),
+            'total_profit' => round($total_profit, 2),
+            'total_bills' => $total_bills,
+            'avg_per_day' => $avg_per_day,
+            'avg_per_bill' => $avg_per_bill,
+            'margin_pct' => $margin_pct,
+            'best_day' => $best_day
+        ),
+        'top_products' => $top_products,
+        'payment_breakdown' => $payment_breakdown,
+        'daily_breakdown' => $daily_breakdown
+    ));
+    mysqli_close($conn);
+    exit;
+}
+
+// 4. Yearly Summary (Breakdown by 12 Months)
+if ($action === 'yearly') {
+    $year = isset($_POST['year']) ? intval($_POST['year']) : intval(date('Y'));
+    if ($year < 2000 || $year > 2100) $year = intval(date('Y'));
+
+    $from_dt = "$year-01-01 00:00:00";
+    $to_dt = "$year-12-31 23:59:59";
+
+    $query = "SELECT 
+                MONTH(s.date_time) AS sale_month,
+                COUNT(s.order_id) AS bill_count,
+                SUM(s.total_price) AS month_sales,
+                SUM(COALESCE(cost_data.total_cost, 0)) AS month_cost
+              FROM sale_order s
+              LEFT JOIN (
+                  SELECT soi.order_id, SUM(COALESCE(soi.prod_amount, 0) * COALESCE(pr.prod_cost, 0)) AS total_cost
+                  FROM sale_order_item soi
+                  INNER JOIN product pr ON soi.prod_id = pr.prod_id
+                  WHERE soi.order_id IN (
+                      SELECT order_id FROM sale_order 
+                      WHERE date_time BETWEEN '$from_dt' AND '$to_dt' 
+                        AND order_number NOT LIKE '%$txt_cancel%'
+                  )
+                  GROUP BY soi.order_id
+              ) cost_data ON s.order_id = cost_data.order_id
+              WHERE s.date_time BETWEEN '$from_dt' AND '$to_dt'
+                AND s.order_number NOT LIKE '%$txt_cancel%'
+              GROUP BY MONTH(s.date_time)
+              ORDER BY sale_month ASC";
+
+    $result = mysqli_query($conn, $query);
+    $db_months = array();
+
+    if ($result && mysqli_num_rows($result) > 0) {
+        while ($row = mysqli_fetch_assoc($result)) {
+            $db_months[intval($row['sale_month'])] = $row;
+        }
+    }
+
+    $monthly_breakdown = array();
+    $total_sales = 0;
+    $total_cost = 0;
+    $total_profit = 0;
+    $total_bills = 0;
+    $best_month = null;
+    $max_month_sales = -1;
+
+    for ($m = 1; $m <= 12; $m++) {
+        $bill_count = 0;
+        $m_sales = 0;
+        $m_cost = 0;
+        $m_profit = 0;
+
+        if (isset($db_months[$m])) {
+            $bill_count = intval($db_months[$m]['bill_count']);
+            $m_sales = floatval($db_months[$m]['month_sales']);
+            $m_cost = floatval($db_months[$m]['month_cost']);
+            $m_profit = round($m_sales - $m_cost, 2);
+
+            $total_sales += $m_sales;
+            $total_cost += $m_cost;
+            $total_profit += $m_profit;
+            $total_bills += $bill_count;
+
+            if ($m_sales > $max_month_sales) {
+                $max_month_sales = $m_sales;
+                $best_month = array(
+                    'month' => $m,
+                    'month_name' => $thai_months[$m],
+                    'sales' => $m_sales
+                );
+            }
+        }
+
+        $margin = ($m_sales > 0) ? round(($m_profit / $m_sales) * 100, 2) : 0;
+
+        $monthly_breakdown[] = array(
+            'month' => $m,
+            'month_str' => sprintf('%04d-%02d', $year, $m),
+            'month_name' => $thai_months[$m],
+            'bill_count' => $bill_count,
+            'sales' => round($m_sales, 2),
+            'cost' => round($m_cost, 2),
+            'profit' => round($m_profit, 2),
+            'margin_pct' => $margin
+        );
+    }
+
+    $avg_per_month = round($total_sales / 12, 2);
+    $avg_per_bill = ($total_bills > 0) ? round($total_sales / $total_bills, 2) : 0;
+    $margin_pct = ($total_sales > 0) ? round(($total_profit / $total_sales) * 100, 2) : 0;
+
+    $top_products = get_top_products($conn, $from_dt, $to_dt, $txt_cancel, null, 10);
+    $payment_breakdown = get_payment_breakdown($conn, $from_dt, $to_dt, $txt_cancel);
+
+    echo json_encode(array(
+        'success' => true,
+        'mode' => 'yearly',
+        'year' => $year,
+        'summary' => array(
+            'total_sales' => round($total_sales, 2),
+            'total_cost' => round($total_cost, 2),
+            'total_profit' => round($total_profit, 2),
+            'total_bills' => $total_bills,
+            'avg_per_month' => $avg_per_month,
+            'avg_per_bill' => $avg_per_bill,
+            'margin_pct' => $margin_pct,
+            'best_month' => $best_month
+        ),
+        'top_products' => $top_products,
+        'payment_breakdown' => $payment_breakdown,
+        'monthly_breakdown' => $monthly_breakdown
+    ));
+    mysqli_close($conn);
+    exit;
+}
+
+// 5. Customer Summary (All Customers Ranking OR Specific Customer Bills)
+if ($action === 'customer') {
+    $cus_id = isset($_POST['cus_id']) && $_POST['cus_id'] !== '' ? mysqli_real_escape_string($conn, trim($_POST['cus_id'])) : '';
+    $date_from = isset($_POST['date_from']) ? mysqli_real_escape_string($conn, trim($_POST['date_from'])) : '';
+    $date_to = isset($_POST['date_to']) ? mysqli_real_escape_string($conn, trim($_POST['date_to'])) : '';
+
+    $where_date_s = "";
+    $where_date_plain = "";
+    if (!empty($date_from) && !empty($date_to)) {
+        $from_dt = $date_from . ' 00:00:00';
+        $to_dt = $date_to . ' 23:59:59';
+        $where_date_s = " AND s.date_time BETWEEN '$from_dt' AND '$to_dt' ";
+        $where_date_plain = " AND date_time BETWEEN '$from_dt' AND '$to_dt' ";
+    } elseif (!empty($date_from)) {
+        $from_dt = $date_from . ' 00:00:00';
+        $where_date_s = " AND s.date_time >= '$from_dt' ";
+        $where_date_plain = " AND date_time >= '$from_dt' ";
+    } elseif (!empty($date_to)) {
+        $to_dt = $date_to . ' 23:59:59';
+        $where_date_s = " AND s.date_time <= '$to_dt' ";
+        $where_date_plain = " AND date_time <= '$to_dt' ";
+    }
+
+    if (!empty($cus_id) && $cus_id !== 'all') {
+        // Specific Customer View: get customer info and all bills
+        $c_query = "SELECT cus_id, cus_name, cus_tel, cus_addr, cus_type FROM customer WHERE cus_id = '$cus_id'";
+        $c_res = mysqli_query($conn, $c_query);
+        $customer_info = ($c_res && mysqli_num_rows($c_res) > 0) ? mysqli_fetch_assoc($c_res) : null;
+
+        $query = "SELECT 
+                    s.order_id,
+                    s.order_number,
+                    s.date_time,
+                    s.total_price,
+                    s.sum_price,
+                    s.total_discount,
+                    s.payment_type,
+                    s.customer_id,
+                    COALESCE(c.cus_name, 'ลูกค้าทั่วไป') AS cus_name,
+                    COALESCE(c.cus_tel, '-') AS cus_tel,
+                    COALESCE(u.user_name, '-') AS user_name,
+                    COALESCE(cost_data.total_cost, 0) AS cost
+                  FROM sale_order s
+                  LEFT JOIN user u ON s.user_id = u.user_id
+                  LEFT JOIN customer c ON s.customer_id = c.cus_id
+                  LEFT JOIN (
+                      SELECT soi.order_id, SUM(COALESCE(soi.prod_amount, 0) * COALESCE(pr.prod_cost, 0)) AS total_cost
+                      FROM sale_order_item soi
+                      INNER JOIN product pr ON soi.prod_id = pr.prod_id
+                      WHERE soi.order_id IN (
+                          SELECT order_id FROM sale_order 
+                          WHERE customer_id = '$cus_id' $where_date_plain
+                            AND order_number NOT LIKE '%$txt_cancel%'
+                      )
+                      GROUP BY soi.order_id
+                  ) cost_data ON s.order_id = cost_data.order_id
+                  WHERE s.customer_id = '$cus_id'
+                    $where_date_s
+                    AND s.order_number NOT LIKE '%$txt_cancel%'
+                  ORDER BY s.order_id DESC";
+
+        $result = mysqli_query($conn, $query);
+        if (!$result) {
+            echo json_encode(array(
+                'success' => false,
+                'message' => 'Query error: ' . mysqli_error($conn)
+            ));
+            mysqli_close($conn);
+            exit;
+        }
+
+        $bills = array();
+        $total_sales = 0;
+        $total_cost = 0;
+        $total_profit = 0;
+        $total_bills = 0;
+
+        if (mysqli_num_rows($result) > 0) {
+            while ($row = mysqli_fetch_assoc($result)) {
+                $price = floatval($row['total_price']);
+                $cost = floatval($row['cost']);
+                $profit = ($price == 0) ? 0 : round($price - $cost, 2);
+
+                $row['total_price'] = $price;
+                $row['cost'] = $cost;
+                $row['profit'] = $profit;
+
+                $total_sales += $price;
+                $total_cost += $cost;
+                $total_profit += $profit;
+                $total_bills++;
+
+                $bills[] = $row;
+            }
+        }
+
+        $margin_pct = ($total_sales > 0) ? round(($total_profit / $total_sales) * 100, 2) : 0;
+
+        $from_dt_c = !empty($date_from) ? $date_from . ' 00:00:00' : '2000-01-01 00:00:00';
+        $to_dt_c = !empty($date_to) ? $date_to . ' 23:59:59' : date('Y-m-d 23:59:59');
+        $top_products = get_top_products($conn, $from_dt_c, $to_dt_c, $txt_cancel, $cus_id, 10);
+        $payment_breakdown = get_payment_breakdown($conn, $from_dt_c, $to_dt_c, $txt_cancel, $cus_id);
+
+        echo json_encode(array(
+            'success' => true,
+            'mode' => 'customer_detail',
+            'customer' => $customer_info,
+            'summary' => array(
+                'total_sales' => round($total_sales, 2),
+                'total_cost' => round($total_cost, 2),
+                'total_profit' => round($total_profit, 2),
+                'total_bills' => $total_bills,
+                'margin_pct' => $margin_pct
+            ),
+            'top_products' => $top_products,
+            'payment_breakdown' => $payment_breakdown,
+            'bills' => $bills
+        ));
+    } else {
+        // All Customers Ranking View
+        $query = "SELECT 
+                    s.customer_id,
+                    COALESCE(c.cus_name, 'ลูกค้าทั่วไป (ไม่ระบุ)') AS cus_name,
+                    COALESCE(c.cus_tel, '-') AS cus_tel,
+                    COALESCE(c.cus_type, 'ทั่วไป') AS cus_type,
+                    COUNT(s.order_id) AS bill_count,
+                    SUM(s.total_price) AS total_sales,
+                    SUM(COALESCE(cost_data.total_cost, 0)) AS total_cost,
+                    MAX(s.date_time) AS last_order_date
+                  FROM sale_order s
+                  LEFT JOIN customer c ON s.customer_id = c.cus_id
+                  LEFT JOIN (
+                      SELECT soi.order_id, SUM(COALESCE(soi.prod_amount, 0) * COALESCE(pr.prod_cost, 0)) AS total_cost
+                      FROM sale_order_item soi
+                      INNER JOIN product pr ON soi.prod_id = pr.prod_id
+                      WHERE soi.order_id IN (
+                          SELECT order_id FROM sale_order 
+                          WHERE order_number NOT LIKE '%$txt_cancel%' $where_date_plain
+                      )
+                      GROUP BY soi.order_id
+                  ) cost_data ON s.order_id = cost_data.order_id
+                  WHERE s.order_number NOT LIKE '%$txt_cancel%'
+                    $where_date_s
+                  GROUP BY s.customer_id, c.cus_name, c.cus_tel, c.cus_type
+                  ORDER BY total_sales DESC";
+
+        $result = mysqli_query($conn, $query);
+        if (!$result) {
+            echo json_encode(array(
+                'success' => false,
+                'message' => 'Query error: ' . mysqli_error($conn)
+            ));
+            mysqli_close($conn);
+            exit;
+        }
+        $customers = array();
+        $total_sales = 0;
+        $total_cost = 0;
+        $total_profit = 0;
+        $total_bills = 0;
+        $top_customer = null;
+
+        if ($result && mysqli_num_rows($result) > 0) {
+            $rank = 1;
+            while ($row = mysqli_fetch_assoc($result)) {
+                $sales = floatval($row['total_sales']);
+                $cost = floatval($row['total_cost']);
+                $profit = round($sales - $cost, 2);
+                $b_count = intval($row['bill_count']);
+
+                $row['rank'] = $rank++;
+                $row['total_sales'] = round($sales, 2);
+                $row['total_cost'] = round($cost, 2);
+                $row['total_profit'] = $profit;
+                $row['bill_count'] = $b_count;
+                $row['margin_pct'] = ($sales > 0) ? round(($profit / $sales) * 100, 2) : 0;
+
+                $total_sales += $sales;
+                $total_cost += $cost;
+                $total_profit += $profit;
+                $total_bills += $b_count;
+
+                if ($top_customer === null && $row['customer_id'] > 0) {
+                    $top_customer = $row;
+                }
+
+                $customers[] = $row;
+            }
+        }
+
+        $margin_pct = ($total_sales > 0) ? round(($total_profit / $total_sales) * 100, 2) : 0;
+
+        $from_dt_c = !empty($date_from) ? $date_from . ' 00:00:00' : '2000-01-01 00:00:00';
+        $to_dt_c = !empty($date_to) ? $date_to . ' 23:59:59' : date('Y-m-d 23:59:59');
+        $top_products = get_top_products($conn, $from_dt_c, $to_dt_c, $txt_cancel, null, 10);
+        $payment_breakdown = get_payment_breakdown($conn, $from_dt_c, $to_dt_c, $txt_cancel);
+
+        echo json_encode(array(
+            'success' => true,
+            'mode' => 'customer_ranking',
+            'summary' => array(
+                'total_sales' => round($total_sales, 2),
+                'total_cost' => round($total_cost, 2),
+                'total_profit' => round($total_profit, 2),
+                'total_bills' => $total_bills,
+                'customer_count' => count($customers),
+                'margin_pct' => $margin_pct,
+                'top_customer' => $top_customer
+            ),
+            'top_products' => $top_products,
+            'payment_breakdown' => $payment_breakdown,
+            'customers' => $customers
+        ));
+    }
+
+    mysqli_close($conn);
+    exit;
+}
+
+echo json_encode(array('success' => false, 'message' => 'Invalid action'));
+mysqli_close($conn);
+?>

@@ -40,36 +40,172 @@
   <link href="css/untitled.css" rel="stylesheet">  
 
   <style>
-  	img{
-  		height: 200px;
-  		width: 200px;
-  	}	
-  	label{
-  		color: #666;
-  		margin-right: 15px; margin-top: 5px;
-  	}
-  	#from{
-  		width: 50%; background-color: #666; border-color: #666; color: white;
-  	}
-  	#from:focus{
-  		outline: 0;
-  	}
-  	a{
-  		color: #999;
-  	}
-  	a:hover{
-  		color: #666;
-  	}
-	.active{
-		color: #666;
+	/* Page and Card Container */
+	.qr-page-container {
+		max-width: 1200px;
+		margin: 0 auto;
+		padding: 0 12px 40px 12px;
 	}
-	.autocomplete-suggestions { border: 1px solid #999; background: #FFF; overflow: auto; }
-	.autocomplete-suggestion { padding: 2px 5px; white-space: nowrap; overflow: hidden; }
-	.autocomplete-selected { background: #F0F0F0; }
-	.autocomplete-suggestions strong { font-weight: normal; color: rgb(51, 82, 255); }
-	.autocomplete-group { padding: 2px 5px; }
-	.autocomplete-group strong { display: block; border-bottom: 1px solid #000; }
-	</style>
+	.qr-card {
+		background: #ffffff;
+		border: 1px solid var(--border-light);
+		border-radius: var(--radius-lg);
+		box-shadow: var(--shadow-sm);
+		overflow: hidden;
+		transition: all 0.2s ease;
+	}
+	.qr-card-header {
+		background: #ffffff;
+		border-bottom: 1px solid var(--border-light);
+		padding: 16px 20px;
+	}
+	.qr-card-body {
+		padding: 20px;
+	}
+	
+	/* Input Row Styles */
+	.qr-input-group label {
+		font-size: 0.85rem;
+		font-weight: 600;
+		color: var(--text-secondary);
+		margin-bottom: 5px;
+		display: flex;
+		align-items: center;
+	}
+	.qr-input-group input {
+		height: 44px;
+		font-size: 0.95rem;
+		border-radius: var(--radius-sm);
+		border: 1.5px solid var(--border-subtle);
+		transition: all 0.15s ease;
+	}
+	.qr-input-group input:focus {
+		border-color: var(--color-dark);
+		box-shadow: 0 0 0 3px rgba(17, 24, 39, 0.08);
+	}
+	
+	/* Button Overrides */
+	#btn-folder, #btn-def {
+		width: auto !important;
+		min-height: 38px !important;
+		display: inline-flex !important;
+		align-items: center !important;
+		justify-content: center !important;
+		border-radius: var(--radius-sm) !important;
+		padding: 6px 14px !important;
+		font-size: 0.88rem !important;
+		font-weight: 600 !important;
+		cursor: pointer;
+		transition: all 0.15s ease;
+		white-space: nowrap;
+	}
+	#btn-folder {
+		background-color: #ffffff !important;
+		border: 1.5px solid #2563eb !important;
+		color: #2563eb !important;
+	}
+	#btn-folder:hover {
+		background-color: #2563eb !important;
+		color: #ffffff !important;
+	}
+	#btn-def {
+		background-color: #ffffff !important;
+		border: 1.5px solid var(--border-subtle) !important;
+		color: var(--text-secondary) !important;
+	}
+	#btn-def:hover {
+		background-color: var(--bg-surface-subtle) !important;
+		color: var(--color-black) !important;
+		border-color: var(--text-secondary) !important;
+	}
+	.btn-qr-add {
+		background-color: #16a34a !important;
+		border: 1.5px solid #16a34a !important;
+		color: #ffffff !important;
+		height: 44px !important;
+		border-radius: var(--radius-sm) !important;
+		font-weight: 700 !important;
+		transition: all 0.15s ease;
+	}
+	.btn-qr-add:hover {
+		background-color: #15803d !important;
+		border-color: #15803d !important;
+		box-shadow: 0 4px 12px rgba(22, 163, 74, 0.25);
+	}
+
+	/* Table Header & Rows */
+	#head {
+		background: #f8fafc !important;
+		border: 1px solid var(--border-light) !important;
+		border-radius: var(--radius-sm) !important;
+		padding: 10px 14px !important;
+		margin-bottom: 8px !important;
+		font-size: 0.88rem;
+		font-weight: 600;
+		color: var(--text-secondary) !important;
+	}
+	#head div {
+		color: var(--text-secondary) !important;
+		font-weight: 600;
+	}
+	.qr-item-row {
+		background: #ffffff;
+		border: 1px solid var(--border-light);
+		border-radius: var(--radius-sm);
+		padding: 8px 12px;
+		margin-bottom: 8px;
+		transition: all 0.15s ease;
+	}
+	.qr-item-row:hover {
+		background: #f8fafc;
+		border-color: var(--border-subtle);
+		box-shadow: var(--shadow-sm);
+	}
+	.qr-item-row input {
+		height: 38px;
+		font-size: 0.92rem;
+	}
+
+	/* Keyboard badge */
+	kbd {
+		background: #1e293b;
+		color: #ffffff;
+		padding: 2px 6px;
+		font-size: 0.72rem;
+		border-radius: 4px;
+		box-shadow: 0 1px 2px rgba(0,0,0,0.15);
+		font-family: inherit;
+		letter-spacing: 0.5px;
+	}
+
+	/* Autocomplete */
+	.autocomplete-suggestions { 
+		border: 1px solid var(--border-light); 
+		background: #ffffff; 
+		overflow: auto; 
+		box-shadow: var(--shadow-lg); 
+		border-radius: var(--radius-sm); 
+		max-height: 280px; 
+		z-index: 9999;
+	}
+	.autocomplete-suggestion { 
+		padding: 8px 14px; 
+		font-size: 0.92rem; 
+		cursor: pointer; 
+		transition: background 0.1s ease; 
+	}
+	.autocomplete-selected { 
+		background: var(--bg-surface-subtle); 
+		color: var(--color-black); 
+		font-weight: 600; 
+	}
+	.autocomplete-suggestions strong { 
+		font-weight: 700; 
+		color: var(--accent-blue); 
+	}
+	.autocomplete-group { padding: 4px 8px; }
+	.autocomplete-group strong { display: block; border-bottom: 1px solid #e2e8f0; }
+  </style>
 	
 	<script>	
 		var prod_id,img,price;	
@@ -104,6 +240,7 @@
 					add_previous();				 	
 				}, 500);					
       		}
+			update_summary();
 
 			var arrayReturn = [];
 			$.ajax({
@@ -390,19 +527,19 @@
 			if(name != "" && amt != "" && code != "" && prod_id != 0){
 				show();
 			}else{			
-					$.confirm({
-						title: 'พบข้อผิดพลาด',
-						content: 'กรุณากรอกข้อมูลให้ครบ',
-						backgroundDismiss: true,
-						buttons: {
-							formSubmit: {
-								text: 'ตกลง',
-								btnClass: 'btn-regis',
-								action: function () {
-								}
+				$.confirm({
+					title: 'พบข้อผิดพลาด',
+					content: 'กรุณากรอกข้อมูลให้ครบ',
+					backgroundDismiss: true,
+					buttons: {
+						formSubmit: {
+							text: 'ตกลง',
+							btnClass: 'btn-regis',
+							action: function () {
 							}
 						}
-					});
+					}
+				});
 			}
 			$('#name').focus();			          
 		}     
@@ -410,47 +547,51 @@
 		var count = 0;
   		function show(){
 			var bottom = $(window).height() - $("#cnt-add").offset().top - $("#cnt-add").height();
-			// Always scroll to the bottom
 			if(bottom < 200){
 				$("#cnt-add").css('max-height', $("#cnt-add").height());
 				$("#cnt-add").animate({scrollTop: $('#cnt-add').prop('scrollHeight')});
 			}   
 
-			$("#cnt-add").append('<div id="add-'+count+'" class="row mgb-5">'+
-					'<div class="col-2"></div>'+
-          '<div class="col-3">'+
-            '<div class="input-group-prepend">'+
-              '<span id="span-no-'+count+'" class="input-group-text">'+(count+1)+'</span>'+
-              '<input id="barcodee" type="text" value="'+$('#barcode').val()+'" class="form-control text-center" readonly>'+
-            '</div>'+
-          '</div>'+          
-          '<div class="col-3 nopd-8">'+
-            '<input id="name-'+count+'" value="'+$('#name').val()+'" class="form-control text-center" rel="popover" data-img="'+img+'" readonly>'+
-          '</div>'+
-          '<div class="col-1 nopd-8">'+
-            '<input id="amount-'+count+'" onkeyup="edit_amt('+count+')" value="'+$('#amount').val()+'" type="number" class="form-control text-center no-spin" min="1">'+
-          '</div>'+       
-          '<div class="col-1 nopd text-center">'+         
-          '<button id="btn-trash-'+count+'" class="btn btn-sm btn-danger" onclick="remove('+count+');"> <i class="fa fa-trash"></i></button>'+
+			var bcode = $('#barcode').val();
+			var pname = $('#name').val();
+			var pamt = $('#amount').val();
+
+			$("#cnt-add").append('<div id="add-'+count+'" class="qr-item-row row no-gutters align-items-center py-2 px-3 mb-2 rounded border bg-white shadow-sm">'+
+					'<div class="col-1 text-center">'+
+						'<span id="span-no-'+count+'" class="badge badge-light border text-dark font-weight-bold px-2 py-1" style="font-size: 0.9rem;">'+(count+1)+'</span>'+
 					'</div>'+
-					'<div class="col-2"></div>'+
-					"<script>" +
-						"$('#name-"+count+"[rel=popover]').popover({" +
-						"html: true," +
-						"trigger: 'hover'," +
-						"placement: 'left'," +
-						"content: function(){" +
-						"return '<img src='+$(this).data('img')+'>';}" +
-						"});" +
-					"</" + "script>" +
+					'<div class="col-3 px-2">'+
+						'<input id="barcodee" type="text" value="'+bcode+'" class="form-control form-control-sm text-center bg-light font-weight-bold" readonly>'+
+					'</div>'+          
+					'<div class="col-5 px-2">'+
+						'<input id="name-'+count+'" value="'+pname+'" class="form-control form-control-sm text-left font-weight-bold text-dark" rel="popover" data-img="'+img+'" readonly style="cursor: pointer;" title="ชี้เพื่อดูรูปสินค้า">'+
+					'</div>'+
+					'<div class="col-2 px-2">'+
+						'<div class="input-group input-group-sm">'+
+							'<input id="amount-'+count+'" onkeyup="edit_amt('+count+')" onchange="edit_amt('+count+')" value="'+pamt+'" type="number" class="form-control text-center font-weight-bold text-primary" min="1">'+
+							'<div class="input-group-append"><span class="input-group-text bg-light text-muted">ดวง</span></div>'+
+						'</div>'+
+					'</div>'+       
+					'<div class="col-1 text-center">'+         
+						'<button id="btn-trash-'+count+'" class="btn btn-sm btn-outline-danger" onclick="remove('+count+');" title="ลบรายการนี้"><i class="fa fa-trash"></i></button>'+
+					'</div>'+
 				'</div>');
+
+			$('#name-'+count+'[rel=popover]').popover({
+				html: true,
+				trigger: 'hover',
+				placement: 'left',
+				content: function(){
+					return '<img src="'+$(this).data('img')+'" style="max-width:200px; max-height:200px; object-fit:contain;">';
+				}
+			});
 				
 			item = {}           
 			item ["count"] =  count; 
 			item ["prod_id"] =  prod_id;
-			item ["qr"] =  $('#barcode').val();		
-			item ["name"] =  $('#name').val();		
-			item ["amt"] =  $('#amount').val();			
+			item ["qr"] =  bcode;		
+			item ["name"] =  pname;		
+			item ["amt"] =  pamt;			
 			item ["price"] = price;   
 			item ["img"] = img;	
 
@@ -460,48 +601,49 @@
 
 			$('#barcode').val("");
 			$('#name').val("");		
-			$('#amount').val("1");		
+			$('#amount').val("1");	
+			update_summary();
 		}
 		
 		function add_previous(){
 			for(var i = 0;i < arr_data.length; i++){
 				var bottom = $(window).height() - $("#cnt-add").offset().top - $("#cnt-add").height();
-				// Always scroll to the bottom
 				if(bottom < 200){
 					$("#cnt-add").css('max-height', $("#cnt-add").height());
 					$("#cnt-add").animate({scrollTop: $('#cnt-add').prop('scrollHeight')});
 				}   
 
-				$("#cnt-add").append('<div id="add-'+arr_data[i].count+'" class="row mgb-5">'+
-						'<div class="col-2"></div>'+
-				'<div class="col-3">'+
-					'<div class="input-group-prepend">'+
-					'<span id="span-no-'+arr_data[i].count+'" class="input-group-text">'+(arr_data[i].count+1)+'</span>'+
-					'<input id="barcodee" type="text" value="'+arr_data[i].qr+'" class="form-control text-center" readonly>'+
-					'</div>'+
-				'</div>'+				
-				'<div class="col-3 nopd-8">'+
-					'<input id="name-'+arr_data[i].count+'" value="'+arr_data[i].name+'" class="form-control text-center" rel="popover" data-img="'+arr_data[i].img+'" readonly>'+
-				'</div>'+
-				'<div class="col-1 nopd-8">'+
-					'<input id="amount-'+arr_data[i].count+'" onkeyup="edit_amt('+arr_data[i].count+')" value="'+arr_data[i].amt+'" type="number" class="form-control text-center no-spin" min="1">'+
-				'</div>'+			
-				'<div class="col-1 nopd text-center">'+			
-				'<button id="btn-trash-'+arr_data[i].count+'" class="btn btn-sm btn-danger" onclick="remove('+arr_data[i].count+');"> <i class="fa fa-trash"></i></button>'+
-				'</div>'+
-				'<div class="col-2"></div>'+
-						"<script>" +
-							"$('#name-"+arr_data[i].count+"[rel=popover]').popover({" +
-							"html: true," +
-							"trigger: 'hover'," +
-							"placement: 'left'," +
-							"content: function(){" +
-							"return '<img src='+$(this).data('img')+'>';}" +
-							"});" +
-						"</" + "script>" +
-					'</div>');				
+				$("#cnt-add").append('<div id="add-'+arr_data[i].count+'" class="qr-item-row row no-gutters align-items-center py-2 px-3 mb-2 rounded border bg-white shadow-sm">'+
+						'<div class="col-1 text-center">'+
+							'<span id="span-no-'+arr_data[i].count+'" class="badge badge-light border text-dark font-weight-bold px-2 py-1" style="font-size: 0.9rem;">'+(arr_data[i].count+1)+'</span>'+
+						'</div>'+
+						'<div class="col-3 px-2">'+
+							'<input id="barcodee" type="text" value="'+arr_data[i].qr+'" class="form-control form-control-sm text-center bg-light font-weight-bold" readonly>'+
+						'</div>'+				
+						'<div class="col-5 px-2">'+
+							'<input id="name-'+arr_data[i].count+'" value="'+arr_data[i].name+'" class="form-control form-control-sm text-left font-weight-bold text-dark" rel="popover" data-img="'+arr_data[i].img+'" readonly style="cursor: pointer;" title="ชี้เพื่อดูรูปสินค้า">'+
+						'</div>'+
+						'<div class="col-2 px-2">'+
+							'<div class="input-group input-group-sm">'+
+								'<input id="amount-'+arr_data[i].count+'" onkeyup="edit_amt('+arr_data[i].count+')" onchange="edit_amt('+arr_data[i].count+')" value="'+arr_data[i].amt+'" type="number" class="form-control text-center font-weight-bold text-primary" min="1">'+
+								'<div class="input-group-append"><span class="input-group-text bg-light text-muted">ดวง</span></div>'+
+							'</div>'+
+						'</div>'+			
+						'<div class="col-1 text-center">'+			
+							'<button id="btn-trash-'+arr_data[i].count+'" class="btn btn-sm btn-outline-danger" onclick="remove('+arr_data[i].count+');" title="ลบรายการนี้"><i class="fa fa-trash"></i></button>'+
+						'</div>'+
+					'</div>');
+
+				$('#name-'+arr_data[i].count+'[rel=popover]').popover({
+					html: true,
+					trigger: 'hover',
+					placement: 'left',
+					content: function(){
+						return '<img src="'+$(this).data('img')+'" style="max-width:200px; max-height:200px; object-fit:contain;">';
+					}
+				});
 			}
-		
+			update_summary();
 		}
 
 		function set_default(){
@@ -514,6 +656,27 @@
 		function edit_amt(arg){
 			arr_data[arg].amt = $("#amount-"+arg).val();		
 			localStorage.setItem('arr_qr', JSON.stringify(arr_data));	
+			update_summary();
+		}
+
+		function update_summary(){
+			var totalItems = (arr_data && arr_data.length) ? arr_data.length : 0;
+			var totalStickers = 0;
+			if(totalItems > 0){
+				for(var i = 0; i < arr_data.length; i++){
+					var a = parseInt(arr_data[i].amt, 10);
+					if(!isNaN(a)){ totalStickers += a; }
+				}
+				$("#empty-state").prop('hidden', true);
+				$("#cnt-add").prop('hidden', false);
+				$("#head").prop('hidden', false);
+			}else{
+				$("#empty-state").prop('hidden', false);
+				$("#cnt-add").prop('hidden', true);
+				$("#head").prop('hidden', true);
+			}
+			$("#badge-total-items").text(totalItems + " รายการ");
+			$("#sum-qty").text(totalStickers);
 		}
 
 		function remove(arg) {
@@ -543,19 +706,43 @@
 							count--;
 							if(arr_data.length == 0){							
 								localStorage.arr_qr = "";
-							}						
+							}
+							update_summary();
 						}
 					},
 					ยกเลิก: function () { },
 				}
 			});
-    }
+		}
 
 		var qrcode;
+		var isPrinting = false;
 		function print(){
-			if(arr_data.length == 0){
-					return 0;
+			if (isPrinting) {
+				return;
 			}
+			if (!arr_data || arr_data.length == 0) {
+				$.confirm({
+					icon: 'fa fa-warning',
+					title: 'แจ้งเตือน',
+					content: 'กรุณาเพิ่มรายการสินค้าก่อนพิมพ์คิวอาร์โค้ด',
+					backgroundDismiss: true,
+					buttons: {
+						formSubmit: {
+							text: 'ตกลง',
+							btnClass: 'btn-regis',
+							action: function () {
+								$('#name').focus();
+							}
+						}
+					}
+				});
+				return 0;
+			}
+
+			// Clear previous QR elements to prevent duplicate IDs or distorted sheets
+			$('#show_qr').empty();
+
 			var sum = 0;
 			var index_qr = 1;
 			$.each(arr_data, function(i, field){				
@@ -587,19 +774,71 @@
 				}				                                                           
 			});	
 
-			var WinPrint  = window.open();
+			var WinPrint = window.open();
+			if (!WinPrint) {
+				alert('กรุณาอนุญาต Pop-up ในเบราว์เซอร์เพื่อทำการพิมพ์');
+				return;
+			}
+			isPrinting = true;
+
+			// Handle resetting page state after printing completes or popup closes
+			var hasReset = false;
+			var pollTimer = null;
+			function finishPrintReset() {
+				if (hasReset) return;
+				hasReset = true;
+				if (pollTimer) {
+					clearInterval(pollTimer);
+					pollTimer = null;
+				}
+				try {
+					if (WinPrint && !WinPrint.closed) {
+						WinPrint.close();
+					}
+				} catch(e) {}
+				isPrinting = false;
+				cancel();
+			}
+
+			// Expose callback on parent window so popup can notify upon afterprint
+			window.onPrintFinished = function() {
+				finishPrintReset();
+			};
+
 			window.setTimeout(function() {
-				var ele =  document.getElementById('show_qr').innerHTML;			
-				WinPrint.document.write("<html><head><link href='https://fonts.googleapis.com/css?family=Maitree' rel='stylesheet'></head><body>");
-				WinPrint.document.write("<style>@media print {body {-webkit-print-color-adjust: exact;}} @page {size: auto; margin: 0mm;} .name{line-height: 1.2; font-size: 0.9em; word-wrap:break-word; height: 3.5em; margin-top: 0%;}.ctn{width: 10.1cm; height: 3.79cm; margin-top: -2.1mm; margin-left: 0mm;} .left{float: left; width: 5.05cm; height: 3.97cm; text-align: center;} .right{float: left; width: 5.05cm; height: 3.97cm; text-align: center;} .qr-r{width: 15mm; height: 15mm; margin-right: 2%; float: right; background-color: black; color: white;} .code-r{margin-right: 8%; margin-top: 3%;font-size: 0.7em} .price-r{margin-top: 8%;font-size: 1em;} .qr-l{width: 15mm; height: 15mm; margin-right: 2%; float: left; background-color: black; color: white;} .code-l{margin-right: 8%; margin-top: 3%;font-size: 0.7em} .price-l{margin-top: 8%;font-size: 1em;} </style>" +
-					ele);
-				WinPrint.document.write('</body></html>');
+				var ele = document.getElementById('show_qr').innerHTML;			
+				WinPrint.document.open();
+				WinPrint.document.write("<html><head><title>พิมพ์คิวอาร์โค้ด</title><link href='https://fonts.googleapis.com/css?family=Maitree' rel='stylesheet'>");
+				WinPrint.document.write("<style>@media print {body {-webkit-print-color-adjust: exact;}} @page {size: auto; margin: 0mm;} .name{line-height: 1.2; font-size: 0.9em; word-wrap:break-word; height: 3.5em; margin-top: 0%;}.ctn{width: 10.1cm; height: 3.79cm; margin-top: -2.1mm; margin-left: 0mm;} .left{float: left; width: 5.05cm; height: 3.97cm; text-align: center;} .right{float: left; width: 5.05cm; height: 3.97cm; text-align: center;} .qr-r{width: 15mm; height: 15mm; margin-right: 2%; float: right; background-color: black; color: white;} .code-r{margin-right: 8%; margin-top: 3%;font-size: 0.7em} .price-r{margin-top: 8%;font-size: 1em;} .qr-l{width: 15mm; height: 15mm; margin-right: 2%; float: left; background-color: black; color: white;} .code-l{margin-right: 8%; margin-top: 3%;font-size: 0.7em} .price-l{margin-top: 8%;font-size: 1em;} </style>");
+				WinPrint.document.write("</head><body>");
+				WinPrint.document.write(ele);
+				WinPrint.document.write("<scr" + "ipt>");
+				WinPrint.document.write("window.addEventListener('afterprint', function() {");
+				WinPrint.document.write("  try { if(window.opener && typeof window.opener.onPrintFinished === 'function') { window.opener.onPrintFinished(); } } catch(e) {}");
+				WinPrint.document.write("  setTimeout(function() { window.close(); }, 100);");
+				WinPrint.document.write("});");
+				WinPrint.document.write("</scr" + "ipt>");
+				WinPrint.document.write("</body></html>");
 				WinPrint.document.close();
 				WinPrint.focus();
+
+				try {
+					WinPrint.onafterprint = finishPrintReset;
+				} catch(e) {}
+
+				// Poll if popup window was closed by user
+				pollTimer = setInterval(function() {
+					if (!WinPrint || WinPrint.closed) {
+						finishPrintReset();
+					}
+				}, 400);
+
 				window.setTimeout(function() {
-					WinPrint.print();
-					WinPrint.close();
-					//cancel();		
+					try {
+						WinPrint.print();
+					} catch(e) {
+						console.error(e);
+					}
 				}, 250);
 			}, 500);
 			
@@ -610,8 +849,16 @@
 		}
 
 		function cancel(){
+			localStorage.removeItem('arr_qr');
+			localStorage.removeItem('arr_prod_qr');
 			localStorage.arr_qr = "";
 			localStorage.arr_prod_qr = "";	
+			arr_data = [];
+			count = 0;
+			$('#cnt-add').empty();
+			$('#show_qr').empty();
+			set_default();
+			update_summary();
 			location.reload();
 		}
 
@@ -623,82 +870,154 @@
 </head>
 <body>
 	<div class="container-fullwidth justify-content-center">
-		<nav class="navbar navbar-expand-md navbar-dark">
-        	<div class="collapse navbar-collapse justify-content-md-center" id="navbarCollapse">
-          	<h3 id="nav-title">พิมพ์คิวอาร์</h3>
-        	</div>
-      	</nav>
-      	<div class="container">
-      		<div class="row" style="margin-top: 2px;">
-      			<div class="col-12 text-center">
-					<a href="web_sale.html" class="mgr-20">ขายสินค้า</a>
-					<a href="web_import.html" class="mgr-20">นำสินค้าเข้า</a>
-					<a href="web_stock.html" class="mgr-20">เช็คสต๊อก</a>
-					<a href="web_export.html" class="mgr-20">สินค้าออกโกดัง</a>
-					<a href="web_mng_bell.html" class="mgr-20">เช็คสถานะสินค้า</a>
-					<a href="web_select.html" class="mgr-20">รายการย้อนหลัง</a>
-					<a href="web_qrprint.html" class="mgr-20 active">พิมพ์คิวอาร์</a>
-					<a href="" class="mgr-20" onclick="logout()">ออกจากระบบ</a>
-      			</div>
-      		</div>
-      	</div><br><br>
-      	
-      	<div class="container-fullwidth nopd">
-      		<div id="head" class="row mgb-5 justify-content-center">
-      		  <div class="col-2"></div>
-      		  <div class="col-3 text-center nopd">บาร์โค้ด</div>
-      		  <div class="col-3 text-center nopd">ชื่อสินค้า</div>
-      		  <div class="col-1 text-center nopd-8">จำนวน</div>
-      		  <div class="col-3"></div>
-      		</div>
-      	</div>
-	
-		<div id="cnt-add" class="container-fullwidth nopd" style="overflow-y: auto; overflow-x: hidden;">
-			<!-- Append Here!! -->
-		</div>
+		<nav class="navbar navbar-expand-lg navbar-dark navbar-ddcar">
+            <a class="navbar-brand d-flex align-items-center" href="web_select.html">
+                <i class="fa fa-qrcode mr-2 text-warning"></i>
+                <span id="nav-title">พิมพ์คิวอาร์</span>
+            </a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarDDCar"
+                aria-controls="navbarDDCar" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarDDCar">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item"><a class="nav-link" href="web_sale.html"><i class="fa fa-shopping-cart mr-1"></i> ขายสินค้า</a></li>
+                    <li class="nav-item"><a class="nav-link" href="web_import.html"><i class="fa fa-arrow-down mr-1"></i> นำสินค้าเข้า</a></li>
+                    <li class="nav-item"><a class="nav-link" href="web_stock.html"><i class="fa fa-boxes mr-1"></i> เช็คสต๊อก</a></li>
+                    <li class="nav-item"><a class="nav-link" href="web_export.html"><i class="fa fa-arrow-up mr-1"></i> สินค้าออกโกดัง</a></li>
+                    <li class="nav-item"><a class="nav-link" href="web_mng_bell.html"><i class="fa fa-bell mr-1"></i> เช็คสถานะสินค้า</a></li>
+                    <li class="nav-item"><a class="nav-link" href="web_select.html"><i class="fa fa-history mr-1"></i> รายการย้อนหลัง</a></li>
+                    <li class="nav-item"><a class="nav-link" href="web_customer.html"><i class="fa fa-users mr-1"></i> ลูกค้า</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="web_qrprint.html"><i class="fa fa-qrcode mr-1"></i> พิมพ์คิวอาร์</a></li>
+                    <li class="nav-item"><a class="nav-link text-danger font-weight-bold" href="" onclick="logout()"><i class="fa fa-sign-out-alt mr-1"></i> ออกจากระบบ</a></li>
+                </ul>
+            </div>
+        </nav>
+        <div class="qr-page-container mt-2">
+            <!-- Page Header -->
+            <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap">
+                <div>
+                    <h4 class="font-weight-bold mb-1 text-dark d-flex align-items-center">
+                        <i class="fas fa-qrcode text-warning mr-2"></i> พิมพ์คิวอาร์โค้ดสินค้า
+                    </h4>
+                    <p class="text-muted small mb-0">สร้างรายการและสั่งพิมพ์สติกเกอร์คิวอาร์โค้ดสำหรับติดสินค้า</p>
+                </div>
+                <div class="d-flex align-items-center mt-2 mt-sm-0 flex-wrap">
+                    <span class="badge badge-light border text-secondary px-2 py-1 mr-1 mb-1"><kbd>F2</kbd> เพิ่ม</span>
+                    <span class="badge badge-light border text-secondary px-2 py-1 mr-1 mb-1"><kbd>F7</kbd> โฟลเดอร์</span>
+                    <span class="badge badge-light border text-secondary px-2 py-1 mr-1 mb-1"><kbd>F4</kbd> ล้างค่า</span>
+                    <span class="badge badge-light border text-secondary px-2 py-1 mr-1 mb-1"><kbd>F8</kbd> สั่งพิมพ์</span>
+                    <span class="badge badge-light border text-secondary px-2 py-1 mb-1"><kbd>F9</kbd> ยกเลิก</span>
+                </div>
+            </div>
 
-		<div class="container-fullwidth nopd ">
-			<!-- Input -->
-			<div class="row justify-content-center align-items-center">
-				<div class="col-2"></div>
-			  <div class="col-3">
-			    <div class='input-group-prepend'>
-			      <span id="span-no" class='input-group-text'>#</span>
-			      <input id='barcode' type='text' class='form-control text-center' readonly>
-			    </div>
-			  </div>
-			  <div class='col-3 nopd-8'>
-			    <input id="name" class="form-control text-center" rel="popover" data-img="" data-index="1" autofocus>
-			  </div>
-			  <div class='col-1 nopd-8'>
-			    <input id='amount' type='number' class='form-control text-center no-spin' min='1' value="1" data-index="2">
-			  </div>
-			  <div class="col-1 nopd text-center">
-			  	<button class="btn btn-sm btn-danger" disabled> <i class="fa fa-trash"></i></button>
-			  </div>
-			  <div class="col-2"></div>
-			</div><br>
-			<div class="row">
-				<div class="col-6"></div>
-				<div class="col-6 text-center">
-					<button class="btn btn-md btn-success" style="margin-right: 5px;" onclick="add();">เพิ่มสินค้า (F2)</button>
-					<button id="btn-folder" class="select_folder btn btn-md btn-primary" style="margin-right: 5px;" onclick="selectfolder();">เลือกสินค้า (F7)</button>
-					<button id="btn-def" class="btn btn-md btn-danger" onclick="set_default()">ค่าเริ่มต้น (F4)</button>
-				</div>
-			</div>
-		</div>
+            <!-- Card 1: Add Item Section -->
+            <div class="card qr-card mb-4">
+                <div class="qr-card-header d-flex justify-content-between align-items-center">
+                    <div class="font-weight-bold text-dark d-flex align-items-center">
+                        <i class="fas fa-plus-circle text-success mr-2"></i> ค้นหาและระบุจำนวนที่ต้องการพิมพ์
+                    </div>
+                    <span class="badge badge-light text-muted small border px-2 py-1">กด Enter หรือ F2 เพื่อเพิ่มรายการ</span>
+                </div>
+                <div class="qr-card-body">
+                    <div class="row align-items-end">
+                        <div class="col-lg-3 col-md-4 mb-3 mb-lg-0 qr-input-group">
+                            <label><i class="fas fa-barcode text-primary mr-1"></i> บาร์โค้ด</label>
+                            <input id="barcode" type="text" class="form-control bg-light font-weight-bold text-center" placeholder="รอสแกน / ค้นหา" readonly>
+                        </div>
+                        <div class="col-lg-5 col-md-5 mb-3 mb-lg-0 qr-input-group">
+                            <label><i class="fas fa-search text-primary mr-1"></i> ค้นหาชื่อสินค้า หรือ รหัสสินค้า</label>
+                            <input id="name" class="form-control font-weight-bold" placeholder="พิมพ์ชื่อสินค้าเพื่อค้นหา (Autocomplete)..." data-index="1" autofocus autocomplete="off">
+                        </div>
+                        <div class="col-lg-2 col-md-3 mb-3 mb-lg-0 qr-input-group">
+                            <label><i class="fas fa-copy text-primary mr-1"></i> จำนวนดวง</label>
+                            <div class="input-group">
+                                <input id="amount" type="number" class="form-control text-center font-weight-bold text-primary" min="1" value="1" data-index="2" style="height: 44px;">
+                                <div class="input-group-append">
+                                    <span class="input-group-text bg-light text-muted" style="border-color: var(--border-subtle);">ดวง</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-2 col-md-12">
+                            <button class="btn btn-qr-add btn-block d-flex align-items-center justify-content-center" onclick="add();" title="เพิ่มลงรายการพิมพ์ (F2)">
+                                <i class="fas fa-plus mr-1"></i> เพิ่มรายการ <kbd class="ml-2 bg-dark text-white">F2</kbd>
+                            </button>
+                        </div>
+                    </div>
 
-		<div id="ctn-bttm" class="container-fullwidth fixed-bottom" style="margin-bottom: 15px; z-index: 0;">
-		  <div class="row">
-		    <div class="col-12 text-center">
-				<button id="btn_checkbill" class="btn btn-warning" onclick="print()">พิมพ์คิวอาร์ (F8)</button>
-				<button class="btn btn-danger" onclick="cancel()">ยกเลิก (F9)</button>
-		    </div>
-			</div>
-			<div id="show_qr" hidden>
+                    <!-- Action Toolbar -->
+                    <div class="d-flex justify-content-between align-items-center mt-3 pt-3 border-top flex-wrap">
+                        <div class="text-muted small mb-2 mb-sm-0">
+                            <i class="fas fa-info-circle text-primary mr-1"></i> ชี้เมาส์ที่ชื่อสินค้าในรายการเพื่อดูรูปตัวอย่าง
+                        </div>
+                        <div class="d-flex">
+                            <button id="btn-folder" class="select_folder mr-2" onclick="selectfolder();" title="เลือกสินค้าจากโครงสร้างโฟลเดอร์ (F7)">
+                                <i class="fas fa-folder-open text-primary mr-1"></i> เลือกสินค้าจากโฟลเดอร์ <kbd class="ml-2 bg-primary text-white">F7</kbd>
+                            </button>
+                            <button id="btn-def" onclick="set_default();" title="ล้างข้อมูลในช่องกรอก (F4)">
+                                <i class="fas fa-redo-alt mr-1"></i> ค่าเริ่มต้น <kbd class="ml-2 bg-secondary text-white">F4</kbd>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
-			</div>			
-		</div>
+            <!-- Card 2: Print Queue Table -->
+            <div class="card qr-card mb-4">
+                <div class="qr-card-header d-flex justify-content-between align-items-center flex-wrap">
+                    <div class="d-flex align-items-center mb-1 mb-sm-0">
+                        <i class="fas fa-list-ul text-primary mr-2" style="font-size: 1.1rem;"></i>
+                        <h5 class="mb-0 font-weight-bold text-dark">คิวพิมพ์คิวอาร์โค้ด</h5>
+                        <span id="badge-total-items" class="badge badge-primary ml-2 px-2 py-1" style="font-size: 0.85rem;">0 รายการ</span>
+                    </div>
+                    <div class="text-secondary font-weight-bold" style="font-size: 0.95rem;">
+                        รวมสติกเกอร์ทั้งหมด <span id="sum-qty" class="text-primary font-weight-bold" style="font-size: 1.2rem;">0</span> ดวง
+                    </div>
+                </div>
+
+                <div class="qr-card-body p-3">
+                    <!-- Table Header -->
+                    <div id="head" class="row no-gutters py-2 px-3 text-secondary font-weight-bold" hidden>
+                        <div class="col-1 text-center">#</div>
+                        <div class="col-3 text-center">บาร์โค้ด</div>
+                        <div class="col-5 text-left pl-3">ชื่อสินค้า (ชี้เพื่อดูรูป)</div>
+                        <div class="col-2 text-center">จำนวนพิมพ์</div>
+                        <div class="col-1 text-center">ลบ</div>
+                    </div>
+
+                    <!-- Empty State -->
+                    <div id="empty-state" class="text-center py-5 text-muted" style="background: #fafbfc; border-radius: 8px; border: 1.5px dashed #cbd5e1;">
+                        <i class="fas fa-qrcode fa-3x mb-3 text-secondary" style="opacity: 0.35;"></i>
+                        <h6 class="font-weight-bold text-secondary">ยังไม่มีรายการพิมพ์คิวอาร์</h6>
+                        <p class="small text-muted mb-0">ค้นหาชื่อสินค้า สแกนบาร์โค้ด หรือกด <kbd>F7</kbd> เพื่อเลือกสินค้าจากโฟลเดอร์</p>
+                    </div>
+
+                    <!-- Queue List Container -->
+                    <div id="cnt-add" style="max-height: 440px; overflow-y: auto; overflow-x: hidden;" hidden>
+                        <!-- Rows appended here -->
+                    </div>
+                </div>
+
+                <!-- Footer Summary & Print Actions -->
+                <div class="card-footer bg-white p-3 border-top d-flex justify-content-between align-items-center flex-wrap">
+                    <div class="text-muted small mb-2 mb-sm-0">
+                        <i class="fas fa-print text-secondary mr-1"></i> รองรับเครื่องพิมพ์สติกเกอร์บาร์โค้ด 2 คอลัมน์ และกระดาษสลิป
+                    </div>
+                    <div class="d-flex align-items-center">
+                        <button class="btn btn-outline-danger mr-2 font-weight-bold px-3 py-2 d-inline-flex align-items-center shadow-sm" onclick="cancel();" title="ยกเลิกทั้งหมด (F9)">
+                            <i class="fas fa-trash-alt mr-2"></i> ยกเลิกทั้งหมด <kbd class="ml-2 bg-danger text-white">F9</kbd>
+                        </button>
+                        <button id="btn_checkbill" class="btn btn-dark font-weight-bold px-4 py-2 d-inline-flex align-items-center shadow" style="background: var(--color-dark); border-color: var(--color-dark);" onclick="print();" title="สั่งพิมพ์คิวอาร์ (F8)">
+                            <i class="fas fa-print mr-2 text-warning"></i> พิมพ์คิวอาร์ <kbd class="ml-2 bg-warning text-dark font-weight-bold">F8</kbd>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Hidden Container for Printing Output -->
+            <div id="show_qr" hidden></div>
+        </div>
+    </div>
 	<script>		
 		$('#name').on('input', function() {
 			var name = $('#name').val();           
@@ -707,5 +1026,7 @@
 			}            
 		});      
 	</script>
+	<!-- Central Navbar Script -->
+	<script src="js/navbar.js"></script>
 </body>
 </html>

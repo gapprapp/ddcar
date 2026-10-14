@@ -174,7 +174,8 @@
 							price = obj[i].prod_price;
 							pricesend = obj[i].prod_pricesend;
 							cost = obj[i].prod_cost;
-							if(obj[i][8] == "ware"){
+							var placeType = obj[i].type || obj[i].place_type || obj[i][9] || obj[i][8] || obj[i][0];
+							if(placeType == "ware"){
 								datastr = {'prod_id':prod_id,'ware_id':id};
 							}else{
 								datastr = {'prod_id':prod_id,'shop_id':id};
@@ -196,12 +197,22 @@
 									$.each(obj, function(i, field){ 
 										addr = addr + field.place + ",";
 									}); 
-								                                                                                                                                   
 								}               
 							});	
-							msg = msg + '<div class="inforow row justify-content-center">'+
-											'<p>'+obj[i][0]+' :'+'</p>'+
-											'<p>&nbsp;'+obj[i].amount+' | '+addr+'</p>'+
+							var addr_clean = addr ? addr.replace(/,+$/, '').replace(/,/g, ', ') : '';
+							var place_label = addr_clean 
+								? '<span class="text-primary font-weight-bold"><i class="fas fa-map-marker-alt text-danger mr-1"></i>' + addr_clean + '</span>'
+								: '<span class="text-muted" style="font-size: 0.88rem;">(ไม่ระบุตำแหน่ง)</span>';
+							var type_label = (placeType == "ware") ? "โกดัง" : "หน้าร้าน";
+							if (obj[i].ware_name) { type_label = obj[i].ware_name; }
+							else if (obj[i].shop_name) { type_label = obj[i].shop_name; }
+							else if (obj[i][0] && obj[i][0] !== "ware" && obj[i][0] !== "shop") { type_label = obj[i][0]; }
+
+							msg = msg + '<div class="inforow row justify-content-center align-items-center my-1">'+
+											'<span class="badge badge-light border text-dark px-2 py-1 mr-1 font-weight-bold">'+type_label+'</span>'+
+											'<span class="font-weight-bold text-dark">: '+obj[i].amount+' ชิ้น</span>'+
+											'<span class="text-muted mx-2">|</span>'+
+											place_label +
 										'</div>';												
 						});	
 						var msg_price;					

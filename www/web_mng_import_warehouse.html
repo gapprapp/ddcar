@@ -34,18 +34,17 @@
     <!-- Main -->
     <link href="css/untitled.css" rel="stylesheet">
     <style>
-    body{color: #666;}
-    a{ color: #999;}
-    a:hover{color: #666;}
-    .active{color: #666;}
+    body{color: var(--text-primary);}
     .ipt-odd, .ipt-even{
-      padding-top: 1%; padding-bottom: 1%; color: #fff; margin-bottom: 1%; cursor: pointer;
+      padding-top: 14px; padding-bottom: 14px; color: var(--text-primary); margin-bottom: 8px; cursor: pointer;
+      background-color: #ffffff !important; border: 1px solid var(--border-light); border-radius: var(--radius-sm);
+      box-shadow: var(--shadow-sm); transition: all 0.15s ease;
     }
-    .ipt-odd{
-      background-color: #999;
+    .ipt-odd:hover, .ipt-even:hover{
+      border-color: var(--color-dark) !important; background-color: #f8fafc !important; box-shadow: var(--shadow-md); transform: translateY(-1px);
     }
-    .ipt-even{
-      background-color: #858585;
+    .ipt-odd h5, .ipt-even h5{
+      color: var(--color-black) !important; font-weight: 600; font-size: 1rem;
     }
     h5{
       letter-spacing: 2px;
@@ -535,6 +534,8 @@
 
         --->
     </div>
+    <!-- Central Navbar Script -->
+    <script src="js/navbar.js"></script>
 </body>
 
 </html>

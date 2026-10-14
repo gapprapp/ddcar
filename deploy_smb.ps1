@@ -1,0 +1,83 @@
+$files = @(
+    "web_customer.html",
+    "web_admin_customer.html",
+    "web_select.html",
+    "web_stock.html",
+    "web_sale.html",
+    "web_import.html",
+    "web_export.html",
+    "web_mng_bill.html",
+    "web_credit.html",
+    "web_mng_sale.html",
+    "web_mng_bell.html",
+    "web_qrprint.html",
+    "web_mng_import.html",
+    "web_mng_transfer.html",
+    "web_mng_import_warehouse.html",
+    "web_mng_export.html",
+    "web_admin_user.html",
+    "web_transfer_in.html",
+    "web_login.html",
+    "web_folder.html",
+    "web_catalog.html",
+    "stock.html",
+    "js\navbar.js",
+    "js\scanqr.js",
+    "css\untitled.css",
+    "php\folder_helper.php",
+    "php\search_prod.php",
+    "php\check_amt_prod.php",
+    "php\get_sales_summary.php",
+    "php\get_shift_bill_web.php",
+    "img\logo.jpg"
+)
+
+$srcDir = "d:\MewP\ddcar\www"
+$dstDir = "\\192.168.1.51\Web\dd-shop"
+
+$backupDir = Join-Path $dstDir "_backup_update_customer"
+if (-not (Test-Path $backupDir)) {
+    New-Item -ItemType Directory -Path $backupDir | Out-Null
+    Write-Host "Created backup folder: $backupDir"
+}
+
+$successCount = 0
+$failCount = 0
+
+foreach ($f in $files) {
+    $src = Join-Path $srcDir $f
+    $dst = Join-Path $dstDir $f
+    $bak = Join-Path $backupDir $f
+    
+    try {
+        $parentDir = Split-Path $dst -Parent
+        if (-not (Test-Path $parentDir)) {
+            New-Item -ItemType Directory -Path $parentDir -Force | Out-Null
+        }
+        $parentBakDir = Split-Path $bak -Parent
+        if (-not (Test-Path $parentBakDir)) {
+            New-Item -ItemType Directory -Path $parentBakDir -Force | Out-Null
+        }
+        if (Test-Path $dst) {
+            Copy-Item -Path $dst -Destination $bak -Force
+        }
+        
+        Copy-Item -Path $src -Destination $dst -Force
+        
+        $srcLen = (Get-Item $src).Length
+        $dstLen = (Get-Item $dst).Length
+        
+        if ($srcLen -eq $dstLen) {
+            Write-Host "SUCCESS: $f ($srcLen bytes)"
+            $successCount++
+        } else {
+            Write-Host "SIZE MISMATCH: $f src=$srcLen dst=$dstLen"
+            $failCount++
+        }
+    } catch {
+        Write-Host "ERROR on $f : $($_.Exception.Message)"
+        $failCount++
+    }
+}
+
+Write-Host "`nResult: $successCount succeeded, $failCount failed."

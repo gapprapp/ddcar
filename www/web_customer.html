@@ -1,0 +1,891 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="ระบบจัดการข้อมูลลูกค้า DD MOTOR SPORT">
+    <meta name="author" content="">
+
+    <title>จัดการข้อมูลลูกค้า</title>
+
+    <!-- Bootstrap Import -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.6/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.1/css/all.css"
+        integrity="sha384-O8whS3fhG2OnA5Kas0Y9l3cfpmYjapjI0E4theH4iuMD+pLhbf6JI0jIMfYcK3yZ" crossorigin="anonymous">
+
+    <!-- Super cool dialog-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.0/jquery-confirm.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.0/jquery-confirm.min.js"></script>
+
+    <!-- Loading -->
+    <link rel="stylesheet" href="css/easy-loading.css">
+    <script src="js/easy-loading.js"></script>
+
+    <!-- Font -->
+    <link href="https://fonts.googleapis.com/css?family=Prompt" rel="stylesheet">
+    <!-- Main -->
+    <link href="css/untitled.css?v=2.0" rel="stylesheet">
+    <script type="text/javascript" src="js/config.js"></script>
+
+    <style>
+        body {
+            color: var(--text-primary);
+        }
+
+        .cus-odd,
+        .cus-even {
+            padding-top: 14px;
+            padding-bottom: 14px;
+            color: var(--text-primary);
+            background-color: #ffffff !important;
+            border: 1px solid var(--border-light);
+            border-radius: var(--radius-sm);
+            margin-bottom: 8px;
+            box-shadow: var(--shadow-sm);
+            transition: all 0.15s ease;
+        }
+
+        .cus-odd:hover,
+        .cus-even:hover {
+            border-color: var(--color-dark) !important;
+            background-color: #f8fafc !important;
+            box-shadow: var(--shadow-md);
+            transform: translateY(-1px);
+        }
+
+        .cus-odd h5,
+        .cus-even h5 {
+            color: var(--color-black);
+            font-weight: 600;
+        }
+
+        h5 {
+            letter-spacing: 1px;
+            margin-bottom: 0;
+            font-size: 1.05rem;
+        }
+
+        ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        .badge-type {
+            font-size: 0.9rem;
+            padding: 5px 12px;
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.25);
+            color: #fff;
+            display: inline-block;
+        }
+
+        .btn-action {
+            margin: 0 3px;
+        }
+
+        .table-price th {
+            background-color: #666;
+            color: #fff;
+            font-weight: normal;
+        }
+
+        .table-price td {
+            vertical-align: middle;
+        }
+
+        .modal-header {
+            background-color: #666;
+            color: #fff;
+        }
+
+        .modal-header .close {
+            color: #fff;
+            opacity: 0.8;
+        }
+
+        .modal-header .close:hover {
+            opacity: 1;
+        }
+
+        .form-label {
+            font-weight: 500;
+            color: #555;
+            margin-bottom: 4px;
+        }
+
+        html, body {
+            width: 100% !important;
+            max-width: 100vw !important;
+            overflow-x: hidden !important;
+            margin: 0 !important;
+            padding: 0 !important;
+        }
+
+        #myUL {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            width: 100%;
+        }
+
+        #myUL li {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            width: 100%;
+        }
+
+        .text-break-word {
+            word-break: break-word !important;
+            overflow-wrap: break-word !important;
+        }
+
+        .search-container {
+            margin-bottom: 16px;
+        }
+
+        .header-row {
+            padding: 10px 0;
+            margin-bottom: 8px;
+            color: #555;
+            font-weight: bold;
+        }
+
+        @media (max-width: 991.98px) {
+            .search-container {
+                margin-bottom: 12px;
+            }
+            .modal-dialog {
+                margin: 8px;
+            }
+            .modal-content {
+                border-radius: 12px;
+            }
+        }
+    </style>
+
+    <script>
+        var allCustomers = [];
+        var apiPath = "";
+
+        $(document).ready(function () {
+            getConfig();
+            if (!localStorage.user_id) {
+                window.location = 'web_login.html';
+                return;
+            }
+
+            // กำหนด API path ให้ยืดหยุ่นรองรับทั้ง Web Server และ Local File
+            apiPath = (window.location.protocol === 'file:' && localStorage.pathServer) ? localStorage.pathServer + 'php/' : 'php/';
+
+            loadCustomers();
+
+            // ค้นหาเมื่อพิมพ์ในช่องค้นหา
+            $('#input-search').on('keyup', function () {
+                filterCustomers($(this).val());
+            });
+        });
+
+        function logout() {
+            localStorage.clear();
+            window.location = 'web_login.html';
+        }
+
+        // 1. ดึงรายชื่อลูกค้าทั้งหมด
+        function loadCustomers() {
+            $.ajax({
+                type: "GET",
+                url: apiPath + "get_cus.php",
+                beforeSend: function () {
+                    EasyLoading.show({ text: "กำลังโหลดข้อมูลลูกค้า" });
+                },
+                success: function (data) {
+                    EasyLoading.hide();
+                    try {
+                        allCustomers = jQuery.parseJSON(data);
+                        if (!Array.isArray(allCustomers)) allCustomers = [];
+                    } catch (e) {
+                        allCustomers = [];
+                    }
+                    renderCustomerList(allCustomers);
+                },
+                error: function () {
+                    EasyLoading.hide();
+                    $.confirm({
+                        title: 'พบข้อผิดพลาด',
+                        content: 'ไม่สามารถโหลดข้อมูลลูกค้าได้ กรุณาลองใหม่อีกครั้ง',
+                        buttons: {
+                            ตกลง: { btnClass: 'btn-danger', action: function () { } }
+                        }
+                    });
+                }
+            });
+        }
+
+        // 2. แสดงรายการลูกค้าลงใน DOM (รองรับทั้ง Desktop Table และ Mobile Card)
+        function renderCustomerList(list) {
+            $('#myUL').empty();
+            $('#total-count').text(list.length);
+
+            if (list.length === 0) {
+                $('#myUL').append('<li class="text-center p-4 text-muted bg-white rounded shadow-sm"><h5>ไม่พบข้อมูลลูกค้า</h5></li>');
+                return;
+            }
+
+            $.each(list, function (i, field) {
+                var rowClass = (i % 2 === 0) ? 'cus-odd' : 'cus-even';
+                var tel = (field.cus_tel && field.cus_tel.trim() !== '') ? field.cus_tel : '-';
+                var addr = (field.cus_addr && field.cus_addr.trim() !== '') ? field.cus_addr : '-';
+                var type = (field.cus_type && field.cus_type.trim() !== '') ? field.cus_type : 'ขายปลีก';
+
+                var escapedName = $('<div>').text(field.cus_name).html();
+                var escapedTel = $('<div>').text(tel).html();
+                var escapedAddr = $('<div>').text(addr).html();
+                var escapedType = $('<div>').text(type).html();
+                var jsSafeName = field.cus_name.replace(/'/g, "\\'");
+
+                // Phone clean string & Click-to-call button for mobile
+                var cleanTel = tel.replace(/[^0-9+]/g, '');
+                var callBtn = '';
+                if (cleanTel.length >= 8) {
+                    callBtn = '<a href="tel:' + cleanTel + '" class="btn btn-sm btn-success text-white ml-auto" style="border-radius: 20px; padding: 4px 14px; font-weight: 500; font-size: 0.85rem;" title="แตะเพื่อโทรออก">' +
+                        '<i class="fa fa-phone-alt mr-1"></i> โทรออก' +
+                        '</a>';
+                }
+
+                // Badge styling
+                var badgeClass = (type.indexOf('ส่ง') !== -1) ? 'badge-primary' : 'badge-secondary';
+
+                var li = '<li id="cus-item-' + field.cus_id + '">' +
+                    '<!-- ================= DESKTOP VIEW (lg and up >= 992px) ================= -->' +
+                    '<div class="row align-items-center justify-content-center ' + rowClass + ' d-none d-lg-flex mx-0">' +
+                    '<div class="col-1 text-center"><h5>' + (i + 1) + '</h5></div>' +
+                    '<div class="col-3 text-left pl-3 text-break-word" style="cursor: pointer;" onclick="viewCustomer(' + field.cus_id + ')" title="คลิกเพื่อดูรายละเอียดและราคาสินค้าพิเศษ">' +
+                    '<h5 class="text-break-word"><i class="fa fa-user mr-2 text-light"></i>' + escapedName + '</h5>' +
+                    '</div>' +
+                    '<div class="col-2 text-center"><h5>' + escapedTel + '</h5></div>' +
+                    '<div class="col-3 text-left text-break-word" title="' + escapedAddr + '"><h5 class="text-truncate">' + escapedAddr + '</h5></div>' +
+                    '<div class="col-1 text-center"><span class="badge-type">' + escapedType + '</span></div>' +
+                    '<div class="col-2 text-center text-nowrap">' +
+                    '<button class="btn btn-sm btn-info btn-action" onclick="viewCustomer(' + field.cus_id + ')" title="ดูรายละเอียดและราคาสินค้าพิเศษ">' +
+                    '<i class="fa fa-search"></i>' +
+                    '</button>' +
+                    '<button class="btn btn-sm btn-warning btn-action text-white" onclick="openEditModal(' + field.cus_id + ')" title="แก้ไขข้อมูลลูกค้า">' +
+                    '<i class="fa fa-edit"></i>' +
+                    '</button>' +
+                    '<button class="btn btn-sm btn-danger btn-action" onclick="deleteCustomer(' + field.cus_id + ', \'' + jsSafeName + '\')" title="ลบลูกค้า">' +
+                    '<i class="fa fa-trash"></i>' +
+                    '</button>' +
+                    '</div>' +
+                    '</div>' +
+
+                    '<!-- ================= MOBILE CARD VIEW (small and medium screens < 992px) ================= -->' +
+                    '<div class="cus-card-mobile d-block d-lg-none">' +
+                    '<div class="card-title-row">' +
+                    '<div class="d-flex align-items-center" onclick="viewCustomer(' + field.cus_id + ')" style="cursor: pointer; max-width: 72%;">' +
+                    '<i class="fa fa-user-circle text-secondary fa-lg mr-2" style="flex-shrink: 0;"></i>' +
+                    '<h5 class="cus-name text-break-word mb-0">' + escapedName + '</h5>' +
+                    '</div>' +
+                    '<span class="badge cus-badge ' + badgeClass + '">' + escapedType + '</span>' +
+                    '</div>' +
+
+                    '<div class="info-row">' +
+                    '<i class="fa fa-phone text-muted"></i>' +
+                    '<span class="font-weight-bold text-dark">' + escapedTel + '</span>' +
+                    callBtn +
+                    '</div>' +
+
+                    '<div class="info-row" style="align-items: flex-start;">' +
+                    '<i class="fa fa-map-marker-alt text-muted mt-1"></i>' +
+                    '<span class="text-secondary small text-break-word" style="line-height: 1.4;">' + escapedAddr + '</span>' +
+                    '</div>' +
+
+                    '<div class="action-row">' +
+                    '<button class="btn btn-info text-white" onclick="viewCustomer(' + field.cus_id + ')" title="ดูรายละเอียดและราคาสินค้าพิเศษ">' +
+                    '<i class="fa fa-search mr-1"></i> ข้อมูล/ราคา' +
+                    '</button>' +
+                    '<button class="btn btn-warning text-white" onclick="openEditModal(' + field.cus_id + ')" title="แก้ไขข้อมูล">' +
+                    '<i class="fa fa-edit mr-1"></i> แก้ไข' +
+                    '</button>' +
+                    '<button class="btn btn-outline-danger" onclick="deleteCustomer(' + field.cus_id + ', \'' + jsSafeName + '\')" title="ลบลูกค้า">' +
+                    '<i class="fa fa-trash"></i>' +
+                    '</button>' +
+                    '</div>' +
+                    '</div>' +
+                    '</li>';
+
+                $('#myUL').append(li);
+            });
+        }
+
+        // 3. ตัวกรองค้นหาลูกค้า
+        function filterCustomers(query) {
+            query = (query || "").trim().toLowerCase();
+            if (query === "") {
+                renderCustomerList(allCustomers);
+                return;
+            }
+
+            var filtered = allCustomers.filter(function (c) {
+                var name = (c.cus_name || "").toLowerCase();
+                var tel = (c.cus_tel || "").toLowerCase();
+                var addr = (c.cus_addr || "").toLowerCase();
+                var type = (c.cus_type || "").toLowerCase();
+                return name.includes(query) || tel.includes(query) || addr.includes(query) || type.includes(query);
+            });
+
+            renderCustomerList(filtered);
+        }
+
+        // 4. เปิด Modal เพิ่มลูกค้าใหม่
+        function openAddModal() {
+            $('#add-name').val('');
+            $('#add-phone').val('');
+            $('#add-addr').val('');
+            $('#add-type').val('ขายส่ง');
+            $('#addModal').modal('show');
+            setTimeout(function () { $('#add-name').focus(); }, 400);
+        }
+
+        // 5. บันทึกเพิ่มลูกค้าใหม่
+        function submitAddCustomer() {
+            var name = $('#add-name').val().trim();
+            var phone = $('#add-phone').val().trim();
+            var addr = $('#add-addr').val().trim();
+            var type = $('#add-type').val();
+
+            if (name === "" || !type) {
+                $.confirm({
+                    title: 'พบข้อผิดพลาด',
+                    content: 'กรุณากรอกชื่อลูกค้าและเลือกประเภทลูกค้าให้ครบถ้วน',
+                    buttons: { ตกลง: { btnClass: 'btn-warning', action: function () { } } }
+                });
+                return;
+            }
+
+            $.ajax({
+                type: "POST",
+                url: apiPath + "add_cus.php",
+                data: {
+                    'cus_name': name,
+                    'phone': phone,
+                    'addr': addr,
+                    'type': type
+                },
+                beforeSend: function () {
+                    EasyLoading.show({ text: "กำลังบันทึกข้อมูล" });
+                },
+                success: function (data) {
+                    EasyLoading.hide();
+                    if (data.trim() === "success") {
+                        $('#addModal').modal('hide');
+                        $.confirm({
+                            title: 'สำเร็จ',
+                            content: 'เพิ่มลูกค้า "' + name + '" เรียบร้อยแล้ว',
+                            buttons: {
+                                ตกลง: {
+                                    btnClass: 'btn-success',
+                                    action: function () {
+                                        loadCustomers();
+                                    }
+                                }
+                            }
+                        });
+                    } else {
+                        $.confirm({
+                            title: 'พบข้อผิดพลาด',
+                            content: 'ไม่สามารถบันทึกข้อมูลลูกค้าได้ กรุณาลองใหม่อีกครั้ง',
+                            buttons: { ตกลง: { btnClass: 'btn-danger', action: function () { } } }
+                        });
+                    }
+                },
+                error: function () {
+                    EasyLoading.hide();
+                    $.confirm({
+                        title: 'พบข้อผิดพลาด',
+                        content: 'การเชื่อมต่อขัดข้อง ไม่สามารถส่งข้อมูลได้',
+                        buttons: { ตกลง: { btnClass: 'btn-danger', action: function () { } } }
+                    });
+                }
+            });
+        }
+
+        // 6. ดูข้อมูลลูกค้าและราคาสินค้าพิเศษ (get_detail_cus.php)
+        function viewCustomer(cusId) {
+            $.ajax({
+                type: "POST",
+                url: apiPath + "get_detail_cus.php",
+                data: { 'cus_id': cusId },
+                beforeSend: function () {
+                    EasyLoading.show({ text: "กำลังดึงข้อมูลลูกค้า" });
+                },
+                success: function (data) {
+                    EasyLoading.hide();
+                    try {
+                        var obj = jQuery.parseJSON(data);
+                        if (obj && obj.length > 0) {
+                            var cus = obj[0];
+                            $('#view-name').text(cus.cus_name || '-');
+                            $('#view-tel').text(cus.cus_tel || '-');
+                            $('#view-addr').text(cus.cus_addr || '-');
+                            $('#view-type').text(cus.cus_type || 'ขายปลีก');
+
+                            // ปุ่มแก้ไขในหน้า Detail Modal
+                            $('#btn-view-to-edit').attr('onclick', 'openEditModalFromDetail(' + cusId + ')');
+
+                            // รายการราคาสินค้าพิเศษ
+                            var tbody = $('#view-price-table tbody');
+                            tbody.empty();
+
+                            var hasSpecialPrice = false;
+                            for (var i = 1; i < obj.length; i++) {
+                                if (obj[i].prod_name) {
+                                    hasSpecialPrice = true;
+                                    var tr = '<tr>' +
+                                        '<td class="text-center">' + i + '</td>' +
+                                        '<td>' + obj[i].prod_name + '</td>' +
+                                        '<td class="text-right font-weight-bold text-primary">' + parseFloat(obj[i].cus_price).toLocaleString() + ' บาท</td>' +
+                                        '</tr>';
+                                    tbody.append(tr);
+                                }
+                            }
+
+                            if (!hasSpecialPrice) {
+                                tbody.append('<tr><td colspan="3" class="text-center text-muted py-3">ยังไม่มีประวัติการบันทึกราคาสินค้าพิเศษสำหรับลูกค้ารายนี้</td></tr>');
+                            }
+
+                            $('#viewModal').modal('show');
+                        }
+                    } catch (e) {
+                        $.confirm({
+                            title: 'พบข้อผิดพลาด',
+                            content: 'ไม่สามารถแสดงรายละเอียดลูกค้าได้',
+                            buttons: { ตกลง: { btnClass: 'btn-danger', action: function () { } } }
+                        });
+                    }
+                },
+                error: function () {
+                    EasyLoading.hide();
+                    $.confirm({
+                        title: 'พบข้อผิดพลาด',
+                        content: 'การเชื่อมต่อขัดข้อง',
+                        buttons: { ตกลง: { btnClass: 'btn-danger', action: function () { } } }
+                    });
+                }
+            });
+        }
+
+        // 7. เปิด Modal แก้ไขลูกค้า
+        function openEditModal(cusId) {
+            var target = allCustomers.find(function (c) { return c.cus_id == cusId; });
+            if (!target) {
+                $.ajax({
+                    type: "POST",
+                    url: apiPath + "get_detail_cus.php",
+                    data: { 'cus_id': cusId },
+                    success: function (data) {
+                        var obj = jQuery.parseJSON(data);
+                        if (obj && obj[0]) {
+                            populateEditForm(cusId, obj[0].cus_name, obj[0].cus_tel, obj[0].cus_addr, obj[0].cus_type);
+                        }
+                    }
+                });
+                return;
+            }
+            populateEditForm(cusId, target.cus_name, target.cus_tel, target.cus_addr, target.cus_type);
+        }
+
+        function openEditModalFromDetail(cusId) {
+            $('#viewModal').modal('hide');
+            setTimeout(function () { openEditModal(cusId); }, 400);
+        }
+
+        function populateEditForm(id, name, phone, addr, type) {
+            $('#edit-id').val(id);
+            $('#edit-name').val(name || '');
+            $('#edit-phone').val(phone || '');
+            $('#edit-addr').val(addr || '');
+            $('#edit-type').val(type || 'ขายส่ง');
+            $('#editModal').modal('show');
+            setTimeout(function () { $('#edit-name').focus(); }, 400);
+        }
+
+        // 8. บันทึกการแก้ไขลูกค้า
+        function submitEditCustomer() {
+            var cusId = $('#edit-id').val();
+            var name = $('#edit-name').val().trim();
+            var phone = $('#edit-phone').val().trim();
+            var addr = $('#edit-addr').val().trim();
+            var type = $('#edit-type').val();
+
+            if (name === "" || !type) {
+                $.confirm({
+                    title: 'พบข้อผิดพลาด',
+                    content: 'กรุณากรอกชื่อลูกค้าและเลือกประเภทลูกค้าให้ครบถ้วน',
+                    buttons: { ตกลง: { btnClass: 'btn-warning', action: function () { } } }
+                });
+                return;
+            }
+
+            $.ajax({
+                type: "POST",
+                url: apiPath + "rename_cus.php",
+                data: {
+                    'cus_id': cusId,
+                    'cus_name': name,
+                    'phone': phone,
+                    'addr': addr,
+                    'type': type
+                },
+                beforeSend: function () {
+                    EasyLoading.show({ text: "กำลังบันทึกการแก้ไข" });
+                },
+                success: function (data) {
+                    EasyLoading.hide();
+                    if (data.trim() === "success") {
+                        $('#editModal').modal('hide');
+                        $.confirm({
+                            title: 'สำเร็จ',
+                            content: 'แก้ไขข้อมูลลูกค้า "' + name + '" เรียบร้อยแล้ว',
+                            buttons: {
+                                ตกลง: {
+                                    btnClass: 'btn-success',
+                                    action: function () {
+                                        loadCustomers();
+                                    }
+                                }
+                            }
+                        });
+                    } else {
+                        $.confirm({
+                            title: 'พบข้อผิดพลาด',
+                            content: 'ไม่สามารถแก้ไขข้อมูลได้ กรุณาลองใหม่อีกครั้ง',
+                            buttons: { ตกลง: { btnClass: 'btn-danger', action: function () { } } }
+                        });
+                    }
+                },
+                error: function () {
+                    EasyLoading.hide();
+                    $.confirm({
+                        title: 'พบข้อผิดพลาด',
+                        content: 'การเชื่อมต่อขัดข้อง',
+                        buttons: { ตกลง: { btnClass: 'btn-danger', action: function () { } } }
+                    });
+                }
+            });
+        }
+
+        // 9. ลบลูกค้า
+        function deleteCustomer(cusId, cusName) {
+            $.confirm({
+                icon: 'fa fa-exclamation-triangle',
+                title: 'ยืนยันการลบลูกค้า',
+                content: 'คุณต้องการลบลูกค้า <strong>"' + cusName + '"</strong> หรือไม่?<br><small class="text-danger">* ข้อมูลราคาพิเศษที่บันทึกไว้สำหรับลูกค้ารายนี้จะถูกลบออกด้วย</small>',
+                buttons: {
+                    danger: {
+                        text: 'ลบข้อมูล',
+                        btnClass: 'btn-danger',
+                        action: function () {
+                            $.ajax({
+                                type: "POST",
+                                url: apiPath + "delete_cus.php",
+                                data: { 'cus_id': cusId },
+                                beforeSend: function () {
+                                    EasyLoading.show({ text: "กำลังลบข้อมูลลูกค้า" });
+                                },
+                                success: function (data) {
+                                    EasyLoading.hide();
+                                    if (data.trim() === "success") {
+                                        $('#cus-item-' + cusId).fadeOut(300, function () {
+                                            $(this).remove();
+                                            allCustomers = allCustomers.filter(function (c) { return c.cus_id != cusId; });
+                                            $('#total-count').text(allCustomers.length);
+                                        });
+                                    } else {
+                                        $.confirm({
+                                            title: 'พบข้อผิดพลาด',
+                                            content: 'ไม่สามารถลบข้อมูลลูกค้าได้ กรุณาลองใหม่อีกครั้ง',
+                                            buttons: { ตกลง: { btnClass: 'btn-danger', action: function () { } } }
+                                        });
+                                    }
+                                },
+                                error: function () {
+                                    EasyLoading.hide();
+                                    $.confirm({
+                                        title: 'พบข้อผิดพลาด',
+                                        content: 'การเชื่อมต่อขัดข้อง',
+                                        buttons: { ตกลง: { btnClass: 'btn-danger', action: function () { } } }
+                                    });
+                                }
+                            });
+                        }
+                    },
+                    ยกเลิก: function () { }
+                }
+            });
+        }
+    </script>
+</head>
+
+<body>
+    <div class="container-fullwidth">
+        <!-- Modern Responsive Navbar with Hamburger -->
+        <nav class="navbar navbar-expand-lg navbar-dark navbar-ddcar">
+            <a class="navbar-brand" href="web_select.html">
+                <i class="fa fa-users mr-2 text-warning"></i>
+                <span id="nav-title">จัดการข้อมูลลูกค้า</span>
+            </a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarDDCar"
+                aria-controls="navbarDDCar" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarDDCar">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item"><a class="nav-link" href="web_sale.html"><i class="fa fa-shopping-cart mr-1"></i> ขายสินค้า</a></li>
+                    <li class="nav-item"><a class="nav-link" href="web_import.html"><i class="fa fa-arrow-down mr-1"></i> นำสินค้าเข้า</a></li>
+                    <li class="nav-item"><a class="nav-link" href="web_stock.html"><i class="fa fa-boxes mr-1"></i> เช็คสต๊อก</a></li>
+                    <li class="nav-item"><a class="nav-link" href="web_export.html"><i class="fa fa-arrow-up mr-1"></i> สินค้าออกโกดัง</a></li>
+                    <li class="nav-item"><a class="nav-link" href="web_mng_bell.html"><i class="fa fa-bell mr-1"></i> เช็คสถานะสินค้า</a></li>
+                    <li class="nav-item"><a class="nav-link" href="web_select.html"><i class="fa fa-history mr-1"></i> รายการย้อนหลัง</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="web_customer.html"><i class="fa fa-users mr-1"></i> ลูกค้า</a></li>
+                    <li class="nav-item"><a class="nav-link" href="web_qrprint.html"><i class="fa fa-qrcode mr-1"></i> พิมพ์คิวอาร์</a></li>
+                    <li class="nav-item"><a class="nav-link text-danger font-weight-bold" href="" onclick="logout()"><i class="fa fa-sign-out-alt mr-1"></i> ออกจากระบบ</a></li>
+                </ul>
+            </div>
+        </nav>
+
+        <!-- Search & Action Toolbar -->
+        <div class="search-container mt-2">
+            <div class="row align-items-center">
+                <div class="col-12 col-lg-7 mb-2">
+                    <div class="input-group" style="width: 100%;">
+                        <input id="input-search" type="text" class="form-control form-control-lg"
+                            placeholder="ค้นหาชื่อลูกค้า, เบอร์โทร, ที่อยู่ หรือประเภท..."
+                            onkeyup="if(event.keyCode===13) filterCustomers(this.value)"
+                            style="min-width: 0;">
+                        <div class="input-group-append">
+                            <button class="btn btn-secondary px-3" type="button" onclick="filterCustomers($('#input-search').val())">
+                                <i class="fa fa-search"></i> ค้นหา
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-lg-5 mb-2">
+                    <div class="d-flex justify-content-between justify-content-lg-end" style="gap: 8px;">
+                        <button class="btn btn-lg btn-success flex-fill flex-lg-grow-0" onclick="openAddModal()">
+                            <i class="fa fa-user-plus mr-1"></i> เพิ่มลูกค้าใหม่
+                        </button>
+                        <button class="btn btn-lg btn-outline-secondary flex-fill flex-lg-grow-0" onclick="loadCustomers()">
+                            <i class="fa fa-sync-alt"></i> รีเฟรช
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="row mt-1">
+                <div class="col-12 text-muted">
+                    <small>จำนวนลูกค้าทั้งหมด: <strong id="total-count" class="text-dark">0</strong> รายการ</small>
+                </div>
+            </div>
+        </div>
+
+        <!-- Table Column Headers (Desktop Only >= 992px) -->
+        <div class="d-none d-lg-block">
+            <div class="row header-row justify-content-center text-center mx-0">
+                <div class="col-1">
+                    <h5>ลำดับ</h5>
+                </div>
+                <div class="col-3 text-left pl-3">
+                    <h5>ชื่อลูกค้า</h5>
+                </div>
+                <div class="col-2">
+                    <h5>เบอร์โทรศัพท์</h5>
+                </div>
+                <div class="col-3 text-left">
+                    <h5>ที่อยู่</h5>
+                </div>
+                <div class="col-1">
+                    <h5>ประเภท</h5>
+                </div>
+                <div class="col-2">
+                    <h5>จัดการ</h5>
+                </div>
+            </div>
+            <hr style="width: 100%; margin-top: 0; margin-bottom: 12px;">
+        </div>
+
+        <!-- Customer List Container -->
+        <div id="ctn-append" class="pb-5">
+            <ul id="myUL">
+                <!-- Rendered by renderCustomerList() -->
+            </ul>
+        </div>
+    </div>
+
+    <!-- ==================== MODAL: เพิ่มลูกค้าใหม่ ==================== -->
+    <div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="addModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title text-white" id="addModalLabel"><i class="fa fa-user-plus mr-2"></i>เพิ่มข้อมูลลูกค้าใหม่</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body p-4">
+                    <div class="form-group mb-3">
+                        <label class="form-label">ชื่อลูกค้า / อู่ / ร้านค้า <span class="text-danger">*</span></label>
+                        <input id="add-name" type="text" class="form-control form-control-lg" placeholder="กรอกชื่อลูกค้า">
+                    </div>
+                    <div class="form-group mb-3">
+                        <label class="form-label">เบอร์โทรศัพท์</label>
+                        <input id="add-phone" type="tel" class="form-control form-control-lg" placeholder="กรอกเบอร์โทรศัพท์">
+                    </div>
+                    <div class="form-group mb-3">
+                        <label class="form-label">ที่อยู่</label>
+                        <textarea id="add-addr" class="form-control" rows="3" placeholder="กรอกที่อยู่สำหรับจัดส่งสินค้า"></textarea>
+                    </div>
+                    <div class="form-group mb-2">
+                        <label class="form-label">ประเภทลูกค้า <span class="text-danger">*</span></label>
+                        <select id="add-type" class="form-control form-control-lg">
+                            <option value="ขายส่ง">ขายส่ง</option>
+                            <option value="ขายส่ง(1)">ขายส่ง(1)</option>
+                            <option value="ขายส่ง(2)">ขายส่ง(2)</option>
+                            <option value="ขายส่ง(3)">ขายส่ง(3)</option>
+                            <option value="ขายปลีก">ขายปลีก</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary btn-lg" data-dismiss="modal">ยกเลิก</button>
+                    <button type="button" class="btn btn-success btn-lg" onclick="submitAddCustomer()">
+                        <i class="fa fa-save mr-1"></i> บันทึกข้อมูล
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================== MODAL: แก้ไขข้อมูลลูกค้า ==================== -->
+    <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title text-white" id="editModalLabel"><i class="fa fa-edit mr-2"></i>แก้ไขข้อมูลลูกค้า</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body p-4">
+                    <input type="hidden" id="edit-id">
+                    <div class="form-group mb-3">
+                        <label class="form-label">ชื่อลูกค้า / อู่ / ร้านค้า <span class="text-danger">*</span></label>
+                        <input id="edit-name" type="text" class="form-control form-control-lg">
+                    </div>
+                    <div class="form-group mb-3">
+                        <label class="form-label">เบอร์โทรศัพท์</label>
+                        <input id="edit-phone" type="tel" class="form-control form-control-lg">
+                    </div>
+                    <div class="form-group mb-3">
+                        <label class="form-label">ที่อยู่</label>
+                        <textarea id="edit-addr" class="form-control" rows="3"></textarea>
+                    </div>
+                    <div class="form-group mb-2">
+                        <label class="form-label">ประเภทลูกค้า <span class="text-danger">*</span></label>
+                        <select id="edit-type" class="form-control form-control-lg">
+                            <option value="ขายส่ง">ขายส่ง</option>
+                            <option value="ขายส่ง(1)">ขายส่ง(1)</option>
+                            <option value="ขายส่ง(2)">ขายส่ง(2)</option>
+                            <option value="ขายส่ง(3)">ขายส่ง(3)</option>
+                            <option value="ขายปลีก">ขายปลีก</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary btn-lg" data-dismiss="modal">ยกเลิก</button>
+                    <button type="button" class="btn btn-success btn-lg" onclick="submitEditCustomer()">
+                        <i class="fa fa-save mr-1"></i> บันทึกการแก้ไข
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================== MODAL: ดูรายละเอียดลูกค้าและราคาสินค้าพิเศษ ==================== -->
+    <div class="modal fade" id="viewModal" tabindex="-1" role="dialog" aria-labelledby="viewModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title text-white" id="viewModalLabel"><i class="fa fa-id-card mr-2"></i>รายละเอียดลูกค้าและราคาสินค้าพิเศษ</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body p-4">
+                    <!-- ข้อมูลทั่วไป -->
+                    <div class="card mb-4 bg-light">
+                        <div class="card-body">
+                            <div class="row mb-2">
+                                <div class="col-md-6 col-sm-12">
+                                    <span class="text-muted">ชื่อลูกค้า:</span>
+                                    <h4 id="view-name" class="font-weight-bold text-dark mb-0"></h4>
+                                </div>
+                                <div class="col-md-6 col-sm-12 text-md-right">
+                                    <span class="text-muted mr-2">ประเภท:</span>
+                                    <span id="view-type" class="badge badge-secondary p-2 font-weight-normal" style="font-size: 1rem;"></span>
+                                </div>
+                            </div>
+                            <hr class="my-2">
+                            <div class="row">
+                                <div class="col-md-6 col-sm-12">
+                                    <span class="text-muted">เบอร์โทรศัพท์:</span>
+                                    <p id="view-tel" class="font-weight-bold mb-1"></p>
+                                </div>
+                                <div class="col-md-6 col-sm-12">
+                                    <span class="text-muted">ที่อยู่:</span>
+                                    <p id="view-addr" class="mb-1"></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ตารางราคาสินค้าพิเศษที่เคยซื้อ (detail_cus) -->
+                    <h5 class="text-dark font-weight-bold mb-2">
+                        <i class="fa fa-tags text-secondary mr-2"></i>ราคาสินค้าพิเศษที่เคยซื้อ (บันทึกอัตโนมัติจากประวัติการขาย)
+                    </h5>
+                    <div class="table-responsive" style="max-height: 320px; overflow-y: auto;">
+                        <table id="view-price-table" class="table table-bordered table-striped table-price">
+                            <thead>
+                                <tr>
+                                    <th style="width: 10%;" class="text-center">ที่</th>
+                                    <th style="width: 60%;">ชื่อสินค้า</th>
+                                    <th style="width: 30%;" class="text-right">ราคาพิเศษ</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Rendered dynamically -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="modal-footer justify-content-between">
+                    <button id="btn-view-to-edit" type="button" class="btn btn-warning text-white btn-lg">
+                        <i class="fa fa-edit mr-1"></i> แก้ไขข้อมูลลูกค้า
+                    </button>
+                    <button type="button" class="btn btn-secondary btn-lg" data-dismiss="modal">ปิดหน้าต่าง</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Central Navbar Script -->
+    <script src="js/navbar.js"></script>
+</body>
+
+</html>

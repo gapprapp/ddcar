@@ -86,6 +86,12 @@
 			}               
 		});
 		
+		var target_folder = url.searchParams.get("folder");
+		if(target_folder){
+			setTimeout(function(){
+				showsub(target_folder, 1);
+			}, 350);
+		}
   	});	
 
 	function next(){
